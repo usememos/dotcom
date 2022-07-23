@@ -26,12 +26,12 @@ const Home: NextPage = () => {
             </a>
           </li>
           <li>
-            <a href="https://demo.usememos.com" className={styles.link}>
+            <a href="https://github.com/usememos/memos" className={styles.link}>
               Source Code
             </a>
           </li>
           <li>
-            <a href="https://demo.usememos.com" className={styles.link}>
+            <a href="https://t.me/+-_tNF1k70UU4ZTc9" className={styles.link}>
               Discuss in Telegram 👾
             </a>
           </li>
