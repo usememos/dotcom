@@ -30,10 +30,7 @@
 }
 
 .links-container {
-  display: flex;
-  flex-direction: column;
-  justify-self: start;
-  margin-top: 1rem;
+  @apply list-disc flex flex-col justify-start mt-4;
 }
 
 .link {
