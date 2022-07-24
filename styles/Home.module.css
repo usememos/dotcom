@@ -1,6 +1,7 @@
-.container {
+.page-wrapper {
   padding: 0 2rem;
   background-color: #f6f5f4;
+  @apply font-mono;
 }
 
 .main {
@@ -14,9 +15,7 @@
 }
 
 .title {
-  margin: 0;
-  line-height: 1.15;
-  font-size: 3rem;
+  @apply text-5xl -mt-10 mb-4;
 }
 
 .title,
@@ -27,6 +26,7 @@
 .description {
   line-height: 1.5;
   font-size: 1.2rem;
+  @apply text-gray-700;
 }
 
 .links-container {
@@ -34,18 +34,6 @@
 }
 
 .link {
+  @apply text-blue-600 leading-8 hover:underline;
   font-size: 1.2rem;
-  line-height: 2rem;
-  color: blue;
-}
-
-.link:hover {
-  text-decoration: underline;
-}
-
-@media (max-width: 600px) {
-  .grid {
-    width: 100%;
-    flex-direction: column;
-  }
 }

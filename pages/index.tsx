@@ -5,7 +5,7 @@ import styles from "../styles/Home.module.css";
 const Home: NextPage = () => {
   console.log("styles", styles);
   return (
-    <div className={styles.container}>
+    <div className={styles["page-wrapper"]}>
       <Head>
         <title>Memos</title>
         <meta name="description" content="usememos/memos" />
@@ -13,7 +13,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Memos</h1>
+        <h1 className={styles.title}>memos</h1>
 
         <p className={styles.description}>
           An open source, self-hosted knowledge base <br /> that works with a SQLite db file.
