@@ -14,26 +14,22 @@
   align-items: center;
 }
 
-.title {
-  @apply text-5xl -mt-10 mb-4;
+.logo {
+  @apply h-28 w-auto mb-2;
 }
 
-.title,
-.description {
-  text-align: center;
+.demo {
+  @apply w-full max-w-3xl;
 }
 
 .description {
-  line-height: 1.5;
-  font-size: 1.2rem;
-  @apply text-gray-700;
+  @apply text-center text-gray-600 text-xl max-w-lg leading-8 mb-4 sm:mb-0;
 }
 
 .links-container {
-  @apply list-disc flex flex-col justify-start mt-4;
+  @apply list-disc flex flex-col justify-start mt-4 first:mt-0;
 }
 
 .link {
-  @apply text-blue-600 leading-8 hover:underline;
-  font-size: 1.2rem;
+  @apply text-blue-600 leading-8 text-lg hover:underline;
 }
