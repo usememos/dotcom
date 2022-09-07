@@ -15,21 +15,25 @@
 }
 
 .logo {
-  @apply h-28 w-auto mb-2;
+  @apply h-28 w-auto;
 }
 
-.demo {
-  @apply w-full max-w-3xl;
+.links-container {
+  @apply flex flex-col sm:flex-row justify-center items-center mb-4;
+}
+
+.split-point {
+  @apply hidden sm:block mx-2;
+}
+
+.link {
+  @apply text-blue-600 leading-8 text-lg hover:underline;
 }
 
 .description {
   @apply text-center text-gray-600 text-xl max-w-lg leading-8 mb-4 sm:mb-0;
 }
 
-.links-container {
-  @apply list-disc flex flex-col justify-start mt-4 first:mt-0;
-}
-
-.link {
-  @apply text-blue-600 leading-8 text-lg hover:underline;
+.demo {
+  @apply w-full max-w-3xl;
 }

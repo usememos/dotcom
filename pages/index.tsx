@@ -13,25 +13,21 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <img className={styles.logo} src="/logo-full.webp" alt="logo-full" />
+        <div className={styles["links-container"]}>
+          <a href="https://demo.usememos.com" className={styles.link}>
+            Live Demo
+          </a>
+          <span className={styles["split-point"]}>•</span>
+          <a href="https://github.com/usememos/memos" className={styles.link}>
+            Source Code
+          </a>
+          <span className={styles["split-point"]}>•</span>
+          <a href="https://t.me/+-_tNF1k70UU4ZTc9" className={styles.link}>
+            Discuss in Telegram 👾
+          </a>
+        </div>
         <p className={styles.description}>An open source, self-hosted knowledge base that works with a SQLite db file.</p>
         <img className={styles.demo} src="/demo.png" alt="logo-full" />
-        <ul className={styles["links-container"]}>
-          <li>
-            <a href="https://demo.usememos.com" className={styles.link}>
-              Live Demo
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/usememos/memos" className={styles.link}>
-              Source Code
-            </a>
-          </li>
-          <li>
-            <a href="https://t.me/+-_tNF1k70UU4ZTc9" className={styles.link}>
-              Discuss in Telegram 👾
-            </a>
-          </li>
-        </ul>
       </main>
     </div>
   );
