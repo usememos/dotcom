@@ -1,21 +1,14 @@
 .page-wrapper {
-  padding: 0 2rem;
+  @apply px-4 sm:px-0 font-mono;
   background-color: #f6f5f4;
-  @apply font-mono;
 }
 
 .main {
-  min-height: 100vh;
-  padding: 4rem 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  @apply min-h-screen w-full max-w-3xl mx-auto flex flex-col justify-start items-center pt-4 pb-16;
 }
 
 .logo {
-  @apply h-28 w-auto;
+  @apply h-20 sm:h-28 w-auto mt-24;
 }
 
 .links-container {
@@ -34,6 +27,6 @@
   @apply text-center text-gray-600 text-xl max-w-lg leading-8 mb-4 sm:mb-0;
 }
 
-.demo {
-  @apply w-full max-w-3xl;
+.demo-img {
+  @apply w-full h-auto mb-6;
 }

@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import ThirdParty from "../components/ThirdParty";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
@@ -27,7 +28,8 @@ const Home: NextPage = () => {
           </a>
         </div>
         <p className={styles.description}>An open source, self-hosted knowledge base that works with a SQLite db file.</p>
-        <img className={styles.demo} src="/demo.png" alt="logo-full" />
+        <img className={styles["demo-img"]} src="/demo.png" alt="logo-full" />
+        <ThirdParty />
       </main>
     </div>
   );
