@@ -1,32 +1,40 @@
 .page-wrapper {
-  @apply px-4 sm:px-0 font-mono;
+  @apply px-4 sm:px-0;
   background-color: #f6f5f4;
 }
 
 .main {
-  @apply min-h-screen w-full max-w-3xl mx-auto flex flex-col justify-start items-center pt-4 pb-16;
+  @apply min-h-screen w-full max-w-3xl mx-auto flex flex-col justify-start items-start pt-4 pb-16;
+}
+
+.header {
+  @apply w-full mt-8 flex flex-row justify-between items-center px-4 sm:px-10;
 }
 
 .logo {
-  @apply h-20 sm:h-28 w-auto mt-24;
+  @apply h-14 sm:h-20 w-auto;
+}
+
+.shields-container {
+  @apply mt-2 w-full flex flex-row justify-start items-center space-x-2 px-4 sm:px-10;
 }
 
 .links-container {
-  @apply flex flex-col sm:flex-row justify-center items-center mb-4;
+  @apply mt-4 flex flex-row justify-start items-center flex-wrap px-4 sm:px-10;
 }
 
 .split-point {
-  @apply hidden sm:block mx-2;
+  @apply block mx-2;
 }
 
 .link {
-  @apply text-blue-600 leading-8 text-lg hover:underline;
+  @apply text-blue-600 leading-6 text-base hover:underline;
 }
 
 .description {
-  @apply text-center text-gray-600 text-xl max-w-lg leading-8 mb-4 sm:mb-0;
+  @apply w-full mt-3 text-gray-600 text-base sm:text-lg px-4 sm:px-10;
 }
 
 .demo-img {
-  @apply w-full h-auto mb-6;
+  @apply w-full h-auto mt-2 mb-2;
 }
