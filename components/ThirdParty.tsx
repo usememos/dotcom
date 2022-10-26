@@ -15,6 +15,12 @@ const THIRD_PARTY_LIST: ThirdPartyItem[] = [
     description: "Quick write down your memo with shortcut in iOS.",
     link: "https://github.com/usememos/memos/discussions/52",
   },
+  {
+    name: "Moe Memos",
+    author: "mudkipme",
+    description: "Third party client for iOS and Android.",
+    link: "https://memos.moe",
+  },
 ];
 
 const ThirdParty = () => {
