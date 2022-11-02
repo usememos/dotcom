@@ -5,7 +5,6 @@ interface ThirdPartyItem {
   author: string;
   description: string;
   link: string;
-  repo?: string;
 }
 
 const THIRD_PARTY_LIST: ThirdPartyItem[] = [
@@ -16,10 +15,22 @@ const THIRD_PARTY_LIST: ThirdPartyItem[] = [
     link: "https://memos.moe",
   },
   {
-    name: "Shortcut in iOS",
-    author: "monlor",
-    description: "Quick write down your memo with shortcut in iOS.",
-    link: "https://github.com/usememos/memos/discussions/52",
+    name: "lmm214/memos-bber",
+    author: "lmm214",
+    description: "Chrome extension",
+    link: "https://github.com/lmm214/memos-bber",
+  },
+  {
+    name: "Rabithua/memos_wmp",
+    author: "Rabithua",
+    description: "Wechat miniprogram",
+    link: "https://github.com/Rabithua/memos_wmp",
+  },
+  {
+    name: "qazxcdswe123/telegramMemoBot",
+    author: "qazxcdswe123",
+    description: "Telegram bot",
+    link: "https://github.com/qazxcdswe123/telegramMemoBot",
   },
 ];
 
@@ -29,7 +40,7 @@ const ThirdParty = () => {
       <p className="text-gray-500 border-t pt-4">🧩 Third party products</p>
       {THIRD_PARTY_LIST.map((thirdPartyItem) => (
         <div key={thirdPartyItem.name} className="w-full max-w-lg mt-4 flex flex-col justify-start items-start">
-          <p className="mb-2 w-full flex flex-row justify-start items-center">
+          <p className="mb-1 w-full flex flex-row justify-start items-center">
             {thirdPartyItem.link && (
               <a
                 href={thirdPartyItem.link}
@@ -42,18 +53,6 @@ const ThirdParty = () => {
             )}
           </p>
           <p className="text-gray-500">{thirdPartyItem.description}</p>
-          <div className="flex flex-row justify-start items-center">
-            {thirdPartyItem.repo && (
-              <a
-                href={thirdPartyItem.repo}
-                target="_blank"
-                className="ml-4 flex flex-row justify-start items-center text-blue-600 hover:underline"
-                rel="noreferrer"
-              >
-                <Icon.GitHub className="w-4 h-auto mr-1 text-gray-600" /> Source Code
-              </a>
-            )}
-          </div>
         </div>
       ))}
     </div>

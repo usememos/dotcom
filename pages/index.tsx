@@ -9,16 +9,25 @@ const Home: NextPage = () => {
     <div className={styles["page-wrapper"]}>
       <Head>
         <title>Memos</title>
-        <meta name="description" content="Open source knowledge base in 1 file." />
         <link rel="icon" href="/logo.webp" />
+        <meta name="description" content="Open source knowledge base in 1 file." />
+        <meta property="og:url" content="https://usememos.com/" />
+        <meta property="og:type" content="website" />
+        <meta name="og:title" content="Memos" />
+        <meta name="og:description" content="Open source knowledge base in 1 file." />
       </Head>
 
       <main className={styles.main}>
         <div className={styles.header}>
           <img className={styles.logo} src="/logo-full.webp" alt="logo-full" />
-          <a className="flex flex-row justify-start items-center" target="_blank" href="https://github.com/usememos/memos" rel="noreferrer">
-            <Icon.GitHub />
-            <span className="hidden sm:block ml-1">Open Source</span>
+          <a
+            className="flex flex-row justify-start items-center hover:opacity-60"
+            target="_blank"
+            href="https://github.com/usememos/memos"
+            rel="noreferrer"
+          >
+            <Icon.GitHub className="w-5 h-auto" />
+            <span className="hidden sm:block ml-1">Source Code</span>
           </a>
         </div>
         <div className={styles["shields-container"]}>
@@ -38,7 +47,7 @@ const Home: NextPage = () => {
             Discuss in Telegram 👾
           </a>
         </div>
-        <p className={styles.description}>An open source, self-hosted knowledge base that works with a SQLite db file.</p>
+        <p className={styles.description}>An open-source, self-hosted memo hub for knowledge management and collaboration.</p>
         <img className={styles["demo-img"]} src="/demo.png" alt="logo-full" />
         <ThirdParty />
       </main>

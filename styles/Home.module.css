@@ -4,7 +4,7 @@
 }
 
 .main {
-  @apply min-h-screen w-full max-w-3xl mx-auto flex flex-col justify-start items-start pt-4 pb-16;
+  @apply min-h-screen w-full max-w-2xl mx-auto flex flex-col justify-start items-start pt-4 pb-16;
 }
 
 .header {
