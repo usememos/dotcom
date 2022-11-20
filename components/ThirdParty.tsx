@@ -37,7 +37,7 @@ const THIRD_PARTY_LIST: ThirdPartyItem[] = [
 const ThirdParty = () => {
   return (
     <div className="w-full flex flex-col justify-start items-start px-4 sm:px-10">
-      <p className="text-gray-500 border-t pt-4">🧩 Third party products</p>
+      <h3 className="text-gray-500 border-t pt-6">🧩 Products made by Community</h3>
       {THIRD_PARTY_LIST.map((thirdPartyItem) => (
         <div key={thirdPartyItem.name} className="w-full max-w-lg mt-4 flex flex-col justify-start items-start">
           <p className="mb-1 w-full flex flex-row justify-start items-center">
