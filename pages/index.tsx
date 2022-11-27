@@ -47,7 +47,7 @@ const Home: NextPage = () => {
             Discuss in Telegram 👾
           </a>
         </div>
-        <p className={styles.description}>An open-source, self-hosted memo hub with knowledge management and collaboration.</p>
+        <p className={styles.description}>An open-source, self-hosted memo hub with knowledge management and socialization.</p>
         <img className={styles["demo-img"]} src="/demo.png" alt="logo-full" />
         <ThirdParty />
       </main>
