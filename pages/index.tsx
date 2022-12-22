@@ -9,7 +9,7 @@ const Home: NextPage = () => {
     <div className={styles["page-wrapper"]}>
       <Head>
         <title>Memos</title>
-        <link rel="icon" href="/logo.webp" />
+        <link rel="icon" href="/logo.png" />
         <meta name="description" content="An open-source, self-hosted memo hub with knowledge management and collaboration." />
         <meta property="og:url" content="https://usememos.com/" />
         <meta name="og:title" content="Memos" />
@@ -19,7 +19,7 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <div className={styles.header}>
-          <img className={styles.logo} src="/logo-full.webp" alt="logo-full" />
+          <img className={styles.logo} src="/logo-full.png" alt="logo-full" />
           <a
             className="flex flex-row justify-start items-center border px-3 py-1 rounded-full hover:shadow"
             href="https://github.com/usememos/memos"
