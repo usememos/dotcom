@@ -26,16 +26,19 @@ const Home: NextPage = () => {
             target="_blank"
             rel="noreferrer"
           >
-            <Icon.GitHub className="w-4 sm:w-5 h-auto text-gray-600" />
-            <span className="text-sm sm:text-lg ml-1">Source Code</span>
+            <Icon.GitHub className="w-4 h-auto text-gray-600" />
+            <span className="text-sm sm:text-base ml-1">Source Code</span>
           </a>
         </div>
         <div className={styles["shields-container"]}>
           <a target="_blank" href="https://github.com/usememos/memos" rel="noreferrer">
             <img alt="GitHub stars" src="https://img.shields.io/github/stars/usememos/memos?style=social&logo=github" />
           </a>
-          <a target="_blank" href="https://github.com/usememos/memos" rel="noreferrer">
-            <img alt="GitHub stars" src="https://img.shields.io/docker/pulls/neosmemo/memos.svg?style=social&logo=docker" />
+          <a target="_blank" href="https://hub.docker.com/r/neosmemo/memos" rel="noreferrer">
+            <img alt="Docker" src="https://img.shields.io/docker/pulls/neosmemo/memos.svg?style=social&logo=docker" />
+          </a>
+          <a target="_blank" href="https://discord.gg/tfPJa4UmAv" rel="noreferrer">
+            <img alt="Discord" src="https://img.shields.io/badge/discord-chat-5865f2?logo=discord&style=social" />
           </a>
         </div>
         <div className={styles["links-container"]}>
@@ -43,8 +46,8 @@ const Home: NextPage = () => {
             Live Demo
           </a>
           <span className={styles["split-point"]}>•</span>
-          <a href="https://t.me/+-_tNF1k70UU4ZTc9" className={styles.link}>
-            Discuss in Telegram 👾
+          <a href="https://discord.gg/tfPJa4UmAv" className={styles.link}>
+            Discuss in Discord 🏂
           </a>
         </div>
         <p className={styles.description}>An open-source, self-hosted memo hub with knowledge management and socialization.</p>
