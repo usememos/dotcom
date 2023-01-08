@@ -13,7 +13,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/logo.png" />
         <meta name="description" content="An open-source, self-hosted memo hub with knowledge management and socialization." />
         <meta property="og:url" content="https://usememos.com/" />
-        <meta name="og:title" content="Memos" />
+        <meta name="og:title" content="memos" />
         <meta name="og:description" content="An open-source, self-hosted memo hub with knowledge management and socialization." />
         <meta property="og:type" content="website" />
       </Head>
