@@ -7,7 +7,7 @@ interface ThirdPartyItem {
   link: string;
 }
 
-const THIRD_PARTY_LIST: ThirdPartyItem[] = [
+export const THIRD_PARTY_LIST: ThirdPartyItem[] = [
   {
     name: "Moe Memos",
     author: "mudkipme",
@@ -36,26 +36,32 @@ const THIRD_PARTY_LIST: ThirdPartyItem[] = [
 
 const ThirdParty = () => {
   return (
-    <div className="w-full flex flex-col justify-start items-start px-4 sm:px-10">
-      <h3 className="text-gray-500 border-t pt-6">🧩 Products made by Community</h3>
-      {THIRD_PARTY_LIST.map((thirdPartyItem) => (
-        <div key={thirdPartyItem.name} className="w-full max-w-lg mt-4 flex flex-col justify-start items-start">
-          <p className="mb-1 w-full flex flex-row justify-start items-center">
-            {thirdPartyItem.link && (
-              <a
-                href={thirdPartyItem.link}
-                target="_blank"
-                className="flex flex-row justify-start items-center hover:text-blue-600 hover:underline"
-                rel="noreferrer"
-              >
-                <span className="">{thirdPartyItem.name}</span> <Icon.ExternalLink className="w-4 h-auto ml-1" />
-              </a>
-            )}
-          </p>
-          <p className="text-gray-500">{thirdPartyItem.description}</p>
-        </div>
-      ))}
-    </div>
+    <>
+      <div className="w-full mt-8 mb-12 flex flex-col justify-center items-center">
+        <h2 className="border-t pt-4 px-8 text-xl text-center text-gray-500 italic">
+          <span className="text-2xl mr-2">🧩</span>Community Products
+        </h2>
+      </div>
+      <div className="w-auto mx-auto flex flex-col justify-start items-start px-4 sm:px-10">
+        {THIRD_PARTY_LIST.map((thirdPartyItem) => (
+          <div key={thirdPartyItem.name} className="w-auto mt-4 flex flex-col justify-start items-start">
+            <p className="mb-1 w-full flex flex-row justify-start items-center">
+              {thirdPartyItem.link && (
+                <a
+                  href={thirdPartyItem.link}
+                  target="_blank"
+                  className="flex flex-row justify-start items-center hover:text-blue-600 hover:underline"
+                  rel="noreferrer"
+                >
+                  <span className="">{thirdPartyItem.name}</span> <Icon.ExternalLink className="w-4 h-auto ml-1" />
+                </a>
+              )}
+            </p>
+            <p className="text-gray-500">{thirdPartyItem.description}</p>
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 
