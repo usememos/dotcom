@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Icon from "./Icon";
 
 const Header = () => {
@@ -5,8 +6,12 @@ const Header = () => {
     <header className="sticky top-0 backdrop-blur border-b w-full mx-auto flex flex-row justify-center items-center">
       <div className="max-w-4xl w-full mx-auto py-2 sm:px-10 flex flex-row justify-between items-center">
         <div className="w-auto flex flex-row justify-start items-center">
-          <img src="/logo.png" className="w-6 h-auto mr-1 mt-1" alt="" />
-          <h1 className="mr-2">memos</h1>
+          <Link href="/">
+            <div className="cursor-pointer flex flex-row justify-start items-center hover:opacity-80">
+              <img src="/logo.png" className="w-6 h-auto mr-1 mt-1" alt="" />
+              <h1 className="mr-2">memos</h1>
+            </div>
+          </Link>
         </div>
         <div className="w-auto flex flex-row justify-end items-center space-x-2 sm:space-x-3">
           <a
