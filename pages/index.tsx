@@ -16,6 +16,7 @@ const Home: NextPage = () => {
         <meta name="og:title" content="memos" />
         <meta name="og:description" content="An open-source, self-hosted memo hub with knowledge management and socialization." />
         <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary" />
       </Head>
 
       <Header />
@@ -27,7 +28,7 @@ const Home: NextPage = () => {
         </div>
         <div className="w-full flex flex-col justify-center items-center sm:px-16">
           <h2 className="w-full text-center text-4xl sm:text-6xl font-bold mt-4 mb-4">
-            A lightweight, self-hosted memo hub. Open source and Free forever.
+            A lightweight, self-hosted memo hub. Open Source and Free forever.
           </h2>
           <h3 className="w-full text-base sm:text-lg text-gray-500 text-center mb-2">
             memos provides the privacy security and reliability that <br className="hidden sm:block" />

@@ -3,7 +3,7 @@ import Icon from "./Icon";
 const Footer = () => {
   return (
     <footer className="border-t w-full mx-auto flex flex-row justify-center items-center">
-      <div className="max-w-4xl w-full mx-auto py-2 sm:px-10 flex flex-row flex-wrap sm:justify-between items-center">
+      <div className="max-w-4xl w-full mx-auto py-4 leading-10 sm:px-10 flex flex-row flex-wrap justify-center sm:justify-between items-center">
         <div className="w-auto flex flex-row justify-start items-center space-x-2 sm:space-x-2">
           <span className="text-gray-500 mr-1">Discuss in</span>
           <a
@@ -31,7 +31,8 @@ const Footer = () => {
             target="_blank"
             rel="noreferrer"
           >
-            <Icon.Heart className="w-5 h-auto mr-1" /> Buy me a coffee
+            <Icon.Heart className="w-5 h-auto mr-1" />
+            Become a Sponsor
           </a>
         </div>
       </div>
