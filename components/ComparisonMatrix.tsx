@@ -37,7 +37,7 @@ export const COMPARISON_LIST: ComparisonItem[] = [
 
 const ComparisonMatrix = () => {
   return (
-    <div className="sr-only w-full grid grid-cols-2 sm:grid-cols-3 gap-4 px-4 sm:px-16">
+    <div className="sr-only hidden w-full grid-cols-2 sm:grid-cols-3 gap-4 px-4 sm:px-16">
       {COMPARISON_LIST.map((comparisonItem) => (
         <Link key={comparisonItem.title} href={`/comparison/${comparisonItem.slug}`}>
           <div className="w-full flex flex-col justify-start items-start mb-2 sm:mb-8">
