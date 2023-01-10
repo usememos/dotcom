@@ -4,7 +4,6 @@ import ComparisonMatrix from "../components/ComparisonMatrix";
 import FeatureMatrix from "../components/FeatureMatrix";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import ThirdParty from "../components/ThirdParty";
 
 const Home: NextPage = () => {
   return (
@@ -69,7 +68,6 @@ const Home: NextPage = () => {
         <img className="w-full h-auto mt-2 mb-2" src="/demo.png" alt="demo-screenshot" />
         <FeatureMatrix />
         <ComparisonMatrix />
-        <ThirdParty />
       </main>
 
       <Footer />

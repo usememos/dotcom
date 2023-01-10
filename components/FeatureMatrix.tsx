@@ -55,7 +55,7 @@ const FeatureMatrix = () => {
           <span className="text-2xl mr-2">✨</span>Features
         </h2>
       </div>
-      <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-4 px-4 sm:px-16">
+      <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-4 sm:px-10">
         {FEATURE_LIST.map((featureItem) => (
           <Link key={featureItem.title} href={`/feature/${featureItem.slug}`}>
             <div className="w-full flex flex-col justify-start items-start mb-2 sm:mb-8">

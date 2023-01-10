@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Icon from "./Icon";
 
 interface ComparisonItem {
   slug: string;
