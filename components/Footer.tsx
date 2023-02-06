@@ -60,7 +60,7 @@ const Footer = () => {
           </div>
           <a
             className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600"
-            href="https://ko-fi.com/stevenlgtm"
+            href="https://github.com/sponsors/usememos"
             target="_blank"
             rel="noreferrer"
           >
