@@ -66,7 +66,7 @@ const Feature: NextPage = () => {
             Discuss in Discord 🙋
           </a>
         </div>
-        <img className="w-full h-auto mt-2 mb-2" src="/demo.png" alt="demo-screenshot" />
+        <img className="w-full h-auto mt-2 mb-2" src="/demo.webp" alt="demo-screenshot" />
         <FeatureMatrix />
       </main>
 
