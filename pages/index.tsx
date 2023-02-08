@@ -9,12 +9,12 @@ const Home: NextPage = () => {
   return (
     <div className="px-4 sm:px-0 bg-zinc-100">
       <Head>
-        <title>memos - An open-source, self-hosted memo hub with knowledge management and socialization</title>
+        <title>memos - An open-source, self-hosted memo hub with knowledge management and social networking</title>
         <link rel="icon" href="/logo.png" />
-        <meta name="description" content="An open-source, self-hosted memo hub with knowledge management and socialization." />
+        <meta name="description" content="An open-source, self-hosted memo hub with knowledge management and social networking." />
         <meta property="og:url" content="https://usememos.com/" />
         <meta name="og:title" content="memos" />
-        <meta name="og:description" content="An open-source, self-hosted memo hub with knowledge management and socialization." />
+        <meta name="og:description" content="An open-source, self-hosted memo hub with knowledge management and social networking." />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary" />
       </Head>
