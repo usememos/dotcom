@@ -1,0 +1,19 @@
+# Deploy Memos with Docker
+
+## Docker Run
+
+```docker
+docker run -d --name memos -p 5230:5230 -v ~/.memos/:/var/opt/memos neosmemo/memos:latest
+```
+
+> `~/.memos/` will be used as the data directory in your machine and `/var/opt/memos` is the directory of the volume in Docker and should not be modified.
+
+## Docker Compose
+
+- Provided docker compose YAML file: [`docker-compose.yaml`](./docker-compose.yaml).
+
+- You can upgrade to the latest version memos with:
+
+```sh
+docker-compose down && docker image rm neosmemo/memos:latest && docker-compose up -d
+```

@@ -25,6 +25,14 @@ const Header = () => {
           <span className="font-mono text-gray-300">/</span>
           <a
             className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600"
+            href="/docs"
+            target="_self"
+          >
+            <Icon.BookOpen className="hidden sm:block w-5 h-auto mr-1" /> Documents
+          </a>
+          <span className="font-mono text-gray-300">/</span>
+          <a
+            className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600"
             href="https://github.com/usememos/memos"
             target="_blank"
             rel="noreferrer"
