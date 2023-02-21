@@ -1,13 +1,15 @@
-import type { NextPage } from "next";
+import type { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import FeatureMatrix, { FEATURE_LIST } from "../../components/FeatureMatrix";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 
-const Feature: NextPage = () => {
-  const router = useRouter();
-  const { featureName } = router.query;
+interface Props {
+  featureName: string;
+}
+
+const Feature = (props: Props) => {
+  const { featureName } = props;
   const feature = FEATURE_LIST.find((feature) => feature.slug === featureName);
 
   return (
@@ -73,6 +75,24 @@ const Feature: NextPage = () => {
       <Footer />
     </div>
   );
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: FEATURE_LIST.map((feature) => {
+      return { params: { featureName: feature.slug } };
+    }),
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const featureName = params!.featureName;
+  return {
+    props: {
+      featureName: featureName,
+    },
+  };
 };
 
 export default Feature;

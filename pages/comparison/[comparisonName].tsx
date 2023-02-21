@@ -1,14 +1,16 @@
-import type { NextPage } from "next";
+import type { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { COMPARISON_LIST } from "../../components/ComparisonMatrix";
 import FeatureMatrix from "../../components/FeatureMatrix";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 
-const Comparison: NextPage = () => {
-  const router = useRouter();
-  const { comparisonName } = router.query;
+interface Props {
+  comparisonName: string;
+}
+
+const Comparison = (props: Props) => {
+  const { comparisonName } = props;
   const comparison = COMPARISON_LIST.find((comparison) => comparison.slug === comparisonName);
 
   return (
@@ -73,6 +75,24 @@ const Comparison: NextPage = () => {
       <Footer />
     </div>
   );
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: COMPARISON_LIST.map((comparison) => {
+      return { params: { comparisonName: comparison.slug } };
+    }),
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const comparisonName = params!.comparisonName;
+  return {
+    props: {
+      comparisonName: comparisonName,
+    },
+  };
 };
 
 export default Comparison;
