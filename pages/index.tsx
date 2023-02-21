@@ -24,7 +24,6 @@ const Home: NextPage = () => {
       <main className="min-h-screen w-full max-w-4xl mx-auto flex flex-col justify-start items-start pt-4 pb-16">
         <div className="w-full flex flex-col justify-start items-center">
           <img className="h-24 sm:h-32 w-auto" src="/logo.png" alt="logo" />
-          <h1 className="text-3xl -mt-4 text-zinc-700">memos</h1>
         </div>
         <div className="w-full flex flex-col justify-center items-center sm:px-16">
           <h2 className="w-full text-center text-4xl sm:text-6xl font-bold mt-4 mb-4">
