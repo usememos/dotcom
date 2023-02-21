@@ -7,7 +7,7 @@ import Header from "../components/Header";
 
 const Home: NextPage = () => {
   return (
-    <div className="px-4 sm:px-0 bg-zinc-100">
+    <div className="px-4 sm:px-0">
       <Head>
         <title>memos - An open-source, self-hosted memo hub with knowledge management and social networking</title>
         <link rel="icon" href="/logo.png" />
@@ -21,7 +21,7 @@ const Home: NextPage = () => {
 
       <Header />
 
-      <main className="min-h-screen w-full max-w-4xl mx-auto flex flex-col justify-start items-start pt-4 pb-16">
+      <main className="w-full max-w-4xl h-auto mx-auto flex flex-col justify-start items-start pt-4 pb-16">
         <div className="w-full flex flex-col justify-start items-center">
           <img className="h-24 sm:h-32 w-auto" src="/logo.png" alt="logo" />
         </div>

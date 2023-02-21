@@ -10,9 +10,10 @@ import Header from "../../components/Header";
 
 interface Frontmatter {
   title: string;
+  author: string;
 }
 
-const Docs = (props: { content: string }) => {
+const Blog = (props: { content: string }) => {
   const markDocAst = Markdoc.parse(props.content);
   const frontmatter = (markDocAst.attributes.frontmatter ? yaml.load(markDocAst.attributes.frontmatter) : {}) as Frontmatter;
   const transformedContent = Markdoc.transform(markDocAst);
@@ -35,6 +36,7 @@ const Docs = (props: { content: string }) => {
       <main className="w-full max-w-4xl h-auto mx-auto flex flex-col justify-start items-start sm:px-24 pt-4 pb-24">
         <div className="pt-12 w-full mx-auto prose prose-neutral">
           <h1>{frontmatter.title}</h1>
+          <p>{frontmatter.author}</p>
           {Markdoc.renderers.react(transformedContent, React)}
         </div>
       </main>
@@ -47,7 +49,7 @@ const Docs = (props: { content: string }) => {
 const getContentSlugList = (): string[][] => {
   const contentSlugList: string[][] = [];
   const travelContentSlugList = (subpath: string) => {
-    const filePath = path.resolve("./content/docs/", subpath);
+    const filePath = path.resolve("./content/blog/", subpath);
     const files = fs.readdirSync(filePath);
     for (const file of files) {
       if (file.endsWith(".md")) {
@@ -73,7 +75,7 @@ export const getStaticPaths: GetStaticPaths = () => {
 
 export const getStaticProps: GetStaticProps = ({ params }) => {
   const contentSlug = params!.contentSlug as string[];
-  const filePath = path.resolve(`./content/docs/${contentSlug.join("/")}.md`);
+  const filePath = path.resolve(`./content/blog/${contentSlug.join("/")}.md`);
   const content = fs.readFileSync(filePath, "utf8");
 
   return {
@@ -83,4 +85,4 @@ export const getStaticProps: GetStaticProps = ({ params }) => {
   };
 };
 
-export default Docs;
+export default Blog;

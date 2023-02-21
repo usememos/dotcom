@@ -14,7 +14,7 @@ const Comparison = (props: Props) => {
   const comparison = COMPARISON_LIST.find((comparison) => comparison.slug === comparisonName);
 
   return (
-    <div className="px-4 sm:px-0 bg-zinc-100">
+    <div className="px-4 sm:px-0">
       <Head>
         <title>memos vs {comparison?.title}</title>
         <link rel="icon" href="/logo.png" />
@@ -28,7 +28,7 @@ const Comparison = (props: Props) => {
 
       <Header />
 
-      <main className="min-h-screen w-full max-w-4xl mx-auto flex flex-col justify-start items-start pt-4 pb-16">
+      <main className="w-full max-w-4xl h-auto mx-auto flex flex-col justify-start items-start pt-4 pb-16">
         <div className="w-full flex flex-col justify-start items-center">
           <img className="h-24 sm:h-32 w-auto" src="/logo.png" alt="logo" />
           <h1 className="text-3xl -mt-4 text-zinc-700">memos</h1>
