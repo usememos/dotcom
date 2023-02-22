@@ -3,7 +3,7 @@ import Icon from "./Icon";
 
 const Header = () => {
   return (
-    <header className="sticky top-0 backdrop-blur border-b w-full mx-auto flex flex-row justify-center items-center">
+    <header className="sticky top-0 backdrop-blur border-b z-10 w-full mx-auto flex flex-row justify-center items-center">
       <div className="max-w-4xl w-full mx-auto py-2 sm:px-10 flex flex-row justify-between items-center">
         <div className="w-auto flex flex-row justify-start items-center">
           <Link href="/">

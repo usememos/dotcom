@@ -61,8 +61,8 @@ const FeatureMatrix = () => {
             <div className="w-full flex flex-col justify-start items-start mb-2 sm:mb-8">
               <featureItem.icon className="h-10 mt-4 mb-2 sm:h-14 w-auto text-gray-500" />
               <span className="relative text-base sm:text-xl sm:leading-10 my-1">
-                <span className="z-10">{featureItem.title}</span>
-                <div className="absolute blur top-3 z-0 w-full h-4 rounded-full opacity-40 bg-green-400"></div>
+                {featureItem.title}
+                <div className="absolute blur top-3 w-full h-4 rounded-full opacity-40 bg-green-400"></div>
               </span>
               <p className="text-sm sm:text-base text-gray-500">{featureItem.description}</p>
             </div>
