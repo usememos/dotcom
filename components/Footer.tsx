@@ -67,7 +67,7 @@ const Footer = () => {
             <Icon.Heart className="w-5 h-auto mr-1" />
             Become a Sponsor
           </a>
-          <Link href={"/docs/hello-world"}>
+          <Link href="/docs">
             <span className="cursor-pointer opacity-60 hover:underline hover:text-blue-600">Hello world</span>
           </Link>
         </div>
