@@ -8,8 +8,7 @@ const Header = () => {
         <div className="w-auto flex flex-row justify-start items-center">
           <Link href="/">
             <div className="cursor-pointer flex flex-row justify-start items-center hover:opacity-80">
-              <img src="/logo.png" className="w-8 h-auto mr-1 mt-1" alt="" />
-              <h1 className="mr-2 font-mono text-2xl opacity-80">memos</h1>
+              <img src="/logo-full.png" className="h-8 w-auto mr-1 mt-1" alt="" />
             </div>
           </Link>
         </div>

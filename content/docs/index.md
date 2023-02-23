@@ -2,12 +2,7 @@
 title: Docs
 ---
 
-This is memos docs page.
+> This document is WIP and **contributions are welcome**.
 
 - [Read me](/docs/readme)
-- [API](/docs/api)
-- [API test page](/docs/api/test)
-
----
-
-- [Blogs](/blog)
+- [Storage](/docs/storage)
