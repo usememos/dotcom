@@ -57,16 +57,14 @@ const FeatureMatrix = () => {
       </div>
       <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-4 sm:px-10">
         {FEATURE_LIST.map((featureItem) => (
-          <Link key={featureItem.title} href={`/feature/${featureItem.slug}`}>
-            <div className="w-full flex flex-col justify-start items-start mb-2 sm:mb-8">
-              <featureItem.icon className="h-10 mt-4 mb-2 sm:h-14 w-auto text-gray-500" />
-              <span className="relative text-base sm:text-xl sm:leading-10 my-1">
-                {featureItem.title}
-                <div className="absolute blur top-3 w-full h-4 rounded-full opacity-40 bg-green-400"></div>
-              </span>
-              <p className="text-sm sm:text-base text-gray-500">{featureItem.description}</p>
-            </div>
-          </Link>
+          <div key={featureItem.title} className="w-full flex flex-col justify-start items-start mb-2 sm:mb-8">
+            <featureItem.icon className="h-10 mt-4 mb-2 sm:h-14 w-auto text-gray-500" />
+            <span className="relative text-base sm:text-xl sm:leading-10 my-1">
+              <Link href={`/feature/${featureItem.slug}`}>{featureItem.title}</Link>
+              <div className="absolute blur top-0 w-full h-full rounded-full opacity-30 bg-green-300"></div>
+            </span>
+            <p className="text-sm sm:text-base text-gray-500">{featureItem.description}</p>
+          </div>
         ))}
       </div>
     </>
