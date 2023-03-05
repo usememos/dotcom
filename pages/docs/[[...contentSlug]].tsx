@@ -4,18 +4,16 @@ import Head from "next/head";
 import fs from "fs";
 import path from "path";
 import React from "react";
-import yaml from "js-yaml";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
+import { markdoc } from "../../markdoc/markdoc";
 
 interface Frontmatter {
   title: string;
 }
 
 const Docs = (props: { content: string }) => {
-  const markDocAst = Markdoc.parse(props.content);
-  const frontmatter = (markDocAst.attributes.frontmatter ? yaml.load(markDocAst.attributes.frontmatter) : {}) as Frontmatter;
-  const transformedContent = Markdoc.transform(markDocAst);
+  const { frontmatter, transformedContent } = markdoc<Frontmatter>(props.content);
 
   return (
     <div className="px-4 sm:px-0">
