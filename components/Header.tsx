@@ -17,7 +17,6 @@ const Header = () => {
             className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600"
             target="_blank"
             href="https://demo.usememos.com"
-            rel="noreferrer"
           >
             <Icon.Package className="hidden sm:block w-5 h-auto mr-1" /> Live demo
           </a>
@@ -26,7 +25,6 @@ const Header = () => {
             className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600"
             href="https://github.com/usememos/memos"
             target="_blank"
-            rel="noreferrer"
           >
             <Icon.Github className="hidden sm:block w-5 h-auto mr-1" /> Source code
           </a>

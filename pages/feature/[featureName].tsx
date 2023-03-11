@@ -3,6 +3,7 @@ import Head from "next/head";
 import FeatureMatrix, { FEATURE_LIST } from "../../components/FeatureMatrix";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
+import LatestVersion from "../../components/LatestVersion";
 
 interface Props {
   featureName: string;
@@ -31,6 +32,7 @@ const Feature = (props: Props) => {
 
       <main className="w-full max-w-4xl h-auto mx-auto flex flex-col justify-start items-start pt-4 pb-16">
         <div className="w-full flex flex-col justify-start items-center">
+          <LatestVersion />
           <img className="h-24 sm:h-32 w-auto" src="/logo.png" alt="logo" />
           <h1 className="text-3xl -mt-4 text-zinc-700">memos</h1>
         </div>
@@ -39,32 +41,22 @@ const Feature = (props: Props) => {
           <h3 className="w-full text-base sm:text-lg text-gray-500 text-center mb-2">{feature?.description}</h3>
         </div>
         <div className="w-full flex flex-row justify-center items-center space-x-2 py-4">
-          <a target="_blank" href="https://github.com/usememos/memos" rel="noreferrer">
+          <a target="_blank" href="https://github.com/usememos/memos">
             <img alt="GitHub stars" src="https://img.shields.io/github/stars/usememos/memos?logo=github" />
           </a>
-          <a target="_blank" href="https://hub.docker.com/r/neosmemo/memos" rel="noreferrer">
+          <a target="_blank" href="https://hub.docker.com/r/neosmemo/memos">
             <img alt="Docker" src="https://img.shields.io/docker/pulls/neosmemo/memos.svg?logo=docker" />
           </a>
-          <a target="_blank" href="https://discord.gg/tfPJa4UmAv" rel="noreferrer">
+          <a target="_blank" href="https://discord.gg/tfPJa4UmAv">
             <img alt="Discord" src="https://img.shields.io/badge/discord-chat-5865f2?logo=discord" />
           </a>
         </div>
         <div className="w-full flex flex-row justify-center items-center space-x-2">
-          <a
-            href="https://demo.usememos.com"
-            target="_blank"
-            className="text-blue-600 leading-6 text-base hover:underline"
-            rel="noreferrer"
-          >
+          <a href="https://demo.usememos.com" target="_blank" className="text-blue-600 leading-6 text-base hover:underline">
             Live Demo
           </a>
           <span className="block mx-2">•</span>
-          <a
-            href="https://discord.gg/tfPJa4UmAv"
-            target="_blank"
-            className="text-blue-600 leading-6 text-base hover:underline"
-            rel="noreferrer"
-          >
+          <a href="https://discord.gg/tfPJa4UmAv" target="_blank" className="text-blue-600 leading-6 text-base hover:underline">
             Discuss in Discord 🙋
           </a>
         </div>

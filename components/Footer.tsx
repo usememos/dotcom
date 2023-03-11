@@ -26,7 +26,6 @@ const Footer = () => {
                 key={product.name}
                 href={product.link}
                 target="_blank"
-                rel="noreferrer"
               >
                 {product.name}
                 <Icon.ExternalLink className="w-4 h-auto inline ml-1" />
@@ -42,7 +41,6 @@ const Footer = () => {
               className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600"
               href="https://discord.gg/tfPJa4UmAv"
               target="_blank"
-              rel="noreferrer"
             >
               <Icon.MessageCircle className="w-5 h-auto mr-1" /> Discord
             </a>
@@ -53,7 +51,6 @@ const Footer = () => {
               className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600"
               target="_blank"
               href="https://t.me/+-_tNF1k70UU4ZTc9"
-              rel="noreferrer"
             >
               <Icon.MessageSquare className="w-5 h-auto mr-1" /> Telegram
             </a>
@@ -62,7 +59,6 @@ const Footer = () => {
             className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600"
             href="https://github.com/sponsors/usememos"
             target="_blank"
-            rel="noreferrer"
           >
             <Icon.Heart className="w-5 h-auto mr-1" />
             Become a Sponsor

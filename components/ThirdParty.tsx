@@ -51,7 +51,6 @@ const ThirdParty = () => {
                   href={thirdPartyItem.link}
                   target="_blank"
                   className="flex flex-row justify-start items-center hover:text-blue-600 hover:underline"
-                  rel="noreferrer"
                 >
                   <span className="">{thirdPartyItem.name}</span> <Icon.ExternalLink className="w-4 h-auto ml-1" />
                 </a>
