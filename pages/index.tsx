@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import ComparisonMatrix from "../components/ComparisonMatrix";
+import Contributors from "../components/Contributors";
 import FeatureMatrix from "../components/FeatureMatrix";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
@@ -59,6 +60,7 @@ const Home: NextPage = () => {
         <img className="w-full h-auto mt-2 mb-2" src="/demo.webp" alt="demo-screenshot" />
         <FeatureMatrix />
         <ComparisonMatrix />
+        <Contributors />
       </main>
 
       <Footer />

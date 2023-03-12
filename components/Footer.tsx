@@ -5,8 +5,8 @@ import { THIRD_PARTY_LIST } from "./ThirdParty";
 
 const Footer = () => {
   return (
-    <footer className="border-t w-full mx-auto flex flex-row justify-center items-center">
-      <div className="max-w-4xl w-full mx-auto py-4 pb-8 sm:px-10 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6">
+    <footer className="border-t w-full mx-auto flex flex-row justify-center items-center sm:bg-zinc-100 sm:shadow-inner">
+      <div className="max-w-4xl w-full mx-auto py-12 pb-16 sm:px-10 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6">
         <div className="w-full flex flex-col justify-start items-start space-y-2">
           <p className="my-2 text-gray-400 font-medium font-mono">Features</p>
           {FEATURE_LIST.map((feature) => {

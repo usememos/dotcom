@@ -50,8 +50,8 @@ export const FEATURE_LIST: FeatureItem[] = [
 const FeatureMatrix = () => {
   return (
     <>
-      <div className="w-full mt-8 mb-12 flex flex-col justify-center items-center">
-        <h2 className="border-t pt-4 px-8 text-xl text-center text-gray-500 italic">
+      <div className="w-full my-8 flex flex-col justify-center items-center">
+        <h2 className="border-t py-8 px-8 text-xl text-center text-gray-500 font-mono">
           <span className="text-2xl mr-2">✨</span>Features
         </h2>
       </div>
@@ -63,7 +63,7 @@ const FeatureMatrix = () => {
               <Link href={`/feature/${featureItem.slug}`}>{featureItem.title}</Link>
               <div className="absolute blur top-0 w-full h-full rounded-full opacity-30 bg-green-300"></div>
             </span>
-            <p className="text-sm sm:text-base text-gray-500">{featureItem.description}</p>
+            <p className="text-sm mt-4 sm:text-base text-gray-500">{featureItem.description}</p>
           </div>
         ))}
       </div>
