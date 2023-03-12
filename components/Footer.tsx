@@ -64,9 +64,14 @@ const Footer = () => {
             Become a Sponsor
           </a>
           <Link href="/docs">
+            <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">
+              Documentation
+            </span>
+          </Link>
+          <Link href="/blog">
             <span className="flex flex-row justify-start items-center cursor-pointer font-medium border px-3 py-1 rounded-full shadow hover:text-blue-600">
-              <Icon.BookOpen className="w-5 h-auto mr-1" />
-              Docs
+              <Icon.BookOpen className="w-4 h-auto mr-1" />
+              Blog
             </span>
           </Link>
         </div>
