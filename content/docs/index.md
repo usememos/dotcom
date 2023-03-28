@@ -7,3 +7,4 @@ title: Docs
 - [Installation](/docs/install)
 - [Read me](/docs/readme)
 - [Storage](/docs/storage)
+- [Keycloak](/docs/keycloak)
