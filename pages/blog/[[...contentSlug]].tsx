@@ -20,7 +20,7 @@ const Blog = (props: { content: string }) => {
     <div className="px-4 sm:px-0">
       <Head>
         <title>{frontmatter.title} - memos</title>
-        <link rel="icon" href="/logo.png" />
+        <link rel="icon" href="/logo.webp" />
         <meta name="description" content="An open-source, self-hosted memo hub with knowledge management and social networking." />
         <meta property="og:url" content="https://usememos.com/" />
         <meta name="og:title" content="memos" />

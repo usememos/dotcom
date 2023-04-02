@@ -19,7 +19,7 @@ const Feature = (props: Props) => {
         <title>
           memos - {feature?.title} - {feature?.description}
         </title>
-        <link rel="icon" href="/logo.png" />
+        <link rel="icon" href="/logo.webp" />
         <meta name="description" content="An open-source, self-hosted memo hub with knowledge management and social networking." />
         <meta property="og:url" content="https://usememos.com/" />
         <meta name="og:title" content="memos" />
@@ -33,7 +33,7 @@ const Feature = (props: Props) => {
       <main className="w-full max-w-4xl h-auto mx-auto flex flex-col justify-start items-start pt-4 pb-16">
         <div className="w-full flex flex-col justify-start items-center">
           <LatestVersion />
-          <img className="h-24 sm:h-32 w-auto" src="/logo.png" alt="logo" />
+          <img className="h-24 sm:h-32 w-auto rounded-lg" src="/logo.webp" alt="logo" />
           <h1 className="text-3xl -mt-4 text-zinc-700">memos</h1>
         </div>
         <div className="w-full flex flex-col justify-center items-center sm:px-16">

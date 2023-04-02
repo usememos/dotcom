@@ -12,7 +12,7 @@ const Home: NextPage = () => {
     <div className="px-4 sm:px-0">
       <Head>
         <title>memos - An open-source, self-hosted memo hub with knowledge management and social networking</title>
-        <link rel="icon" href="/logo.png" />
+        <link rel="icon" href="/logo.webp" />
         <meta name="description" content="An open-source, self-hosted memo hub with knowledge management and social networking." />
         <meta property="og:url" content="https://usememos.com/" />
         <meta name="og:title" content="memos" />
@@ -26,7 +26,7 @@ const Home: NextPage = () => {
       <main className="w-full max-w-4xl h-auto mx-auto flex flex-col justify-start items-start pt-4 pb-16">
         <div className="w-full flex flex-col justify-start items-center">
           <LatestVersion />
-          <img className="h-24 sm:h-32 w-auto" src="/logo.png" alt="logo" />
+          <img className="h-24 sm:h-32 w-auto rounded-lg" src="/logo.webp" alt="logo" />
         </div>
         <div className="w-full flex flex-col justify-center items-center sm:px-16">
           <h2 className="w-full text-center text-4xl sm:text-6xl font-bold mt-4 mb-4">
