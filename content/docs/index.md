@@ -8,3 +8,4 @@ title: Docs
 - [Read me](/docs/readme)
 - [Storage](/docs/storage)
 - [Keycloak](/docs/keycloak)
+- 🆕 [Local storage](/docs/local-storage)
