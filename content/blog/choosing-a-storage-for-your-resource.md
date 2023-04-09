@@ -24,7 +24,7 @@ Related GitHub issue: <https://github.com/usememos/memos/issues/344>
 ## Conclusion
 
 - If you mainly use text and have few files, use the default database storage.
-- If you already have S3 object cloud storage, configure your S3 in memos.
-- If you don't have S3 and use a lot of images, and your database file size has exceeded 100MB, use local storage.
+- If you already have S3 object cloud storage, configure your S3 into memos.
+- If you don't have S3 and use a lot of images, use local storage.
 
 Choose the storage option that best suits your needs. Remember, the right storage option can make a big difference in your application's performance and efficiency.
