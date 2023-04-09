@@ -10,14 +10,14 @@ const Home: NextPage = () => {
   return (
     <div className="h-full flex flex-col justify-start items-start px-4 sm:px-0">
       <Head>
-        <title>memos - An open-source, self-hosted memo hub with knowledge management and social networking</title>
+        <title>memos - A lightweight, self-hosted memo hub. Open Source and Free forever</title>
         <link rel="icon" href="/logo.webp" />
-        <meta name="description" content="An open-source, self-hosted memo hub with knowledge management and social networking." />
-        <meta property="og:url" content="https://usememos.com/" />
-        <meta name="og:title" content="memos" />
-        <meta name="og:description" content="An open-source, self-hosted memo hub with knowledge management and social networking." />
-        <meta property="og:type" content="website" />
+        <meta name="description" content="A lightweight, self-hosted memo hub. Open Source and Free forever" />
+        <meta name="og:title" property="og:title" content="memos" />
+        <meta name="og:description" content="A lightweight, self-hosted memo hub. Open Source and Free forever" />
+        <meta name="og:type" property="og:type" content="website" />
         <meta name="twitter:card" content="summary" />
+        <meta name="og:url" property="og:url" content="https://usememos.com" />
       </Head>
 
       <Header />
