@@ -15,12 +15,11 @@ const LatestVersion = () => {
     <a
       className={`${
         !version && "invisible"
-      } flex flex-row justify-center items-center border my-2 mb-4 px-3 h-8 leading-8 rounded-full text-sm font-mono hover:underline`}
+      } flex flex-row justify-center items-center my-2 mb-4 px-2 h-6 rounded-lg text-xs font-mono bg-pink-200 hover:underline`}
       href="https://github.com/usememos/memos/releases"
       target="_blank"
     >
-      <Icon.Bell className="w-4 h-auto mr-1 animate-bounce" />
-      <span className="mt-0.5">{version}</span>
+      {version}
     </a>
   );
 };
