@@ -34,7 +34,12 @@ const Blog = (props: { content: string }) => {
       <main className="w-full max-w-4xl h-auto mx-auto flex flex-col justify-start items-start sm:px-24 pt-4 pb-24">
         <div className="pt-12 w-full mx-auto prose prose-neutral">
           <h1>{frontmatter.title}</h1>
-          <p>{frontmatter.author}</p>
+          {frontmatter.author && (
+            <p className="">
+              <span className="text-gray-400 font-mono mr-1">Author:</span>
+              {frontmatter.author}
+            </p>
+          )}
           {Markdoc.renderers.react(transformedContent, React)}
         </div>
       </main>
