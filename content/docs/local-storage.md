@@ -1,5 +1,6 @@
 ---
 title: Local storage
+author: Steven
 ---
 
 `memos` supports save your files to local storage. You can use local storage to store your resources in your own server.

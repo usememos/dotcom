@@ -4,16 +4,12 @@ import Head from "next/head";
 import fs from "fs";
 import path from "path";
 import React from "react";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
 import { markdoc } from "../../markdoc/markdoc";
 import authorList from "../../consts/author";
-import Icon from "../../components/Icon";
-
-interface Frontmatter {
-  title: string;
-  author?: string;
-}
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
+import AuthorView from "../../components/AuthorView";
+import { Frontmatter } from "../../types/content";
 
 const Blog = (props: { content: string }) => {
   const { frontmatter, transformedContent } = markdoc<Frontmatter>(props.content);
@@ -37,37 +33,7 @@ const Blog = (props: { content: string }) => {
       <main className="w-full max-w-4xl h-auto mx-auto flex flex-col justify-start items-start sm:px-24 pt-4 pb-24">
         <div className="pt-12 w-full mx-auto prose prose-neutral">
           <h1>{frontmatter.title}</h1>
-          {author && (
-            <p className="w-full flex flex-row justify-start items-center gap-2 text-sm">
-              <span className="text-gray-400 font-mono">Author:</span>
-              <span>{author.name}</span>
-              {author.email && (
-                <a className="text-gray-400 hover:text-gray-500" href={`mailto:${author.email}`} target="_blank">
-                  <Icon.Mail className="w-4 h-auto" />
-                </a>
-              )}
-              {author.url && (
-                <a className="text-gray-400 hover:text-gray-500" href={author.url} target="_blank">
-                  <Icon.Link className="w-4 h-auto" />
-                </a>
-              )}
-              {author.github && (
-                <a className="text-gray-400 hover:text-gray-500" href={`https://github.com/${author.github}`} target="_blank">
-                  <Icon.Github className="w-4 h-auto" />
-                </a>
-              )}
-              {author.twitter && (
-                <a className="text-gray-400 hover:text-gray-500" href={`https://twitter.com/${author.twitter}`} target="_blank">
-                  <Icon.Twitter className="w-4 h-auto" />
-                </a>
-              )}
-              {author.funding && (
-                <a className="text-gray-400 hover:text-gray-500" href={author.funding} target="_blank">
-                  <Icon.Coffee className="w-4 h-auto" />
-                </a>
-              )}
-            </p>
-          )}
+          {author && <AuthorView author={author} />}
           {Markdoc.renderers.react(transformedContent, React)}
         </div>
       </main>

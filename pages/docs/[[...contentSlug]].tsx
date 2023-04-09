@@ -7,13 +7,13 @@ import React from "react";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import { markdoc } from "../../markdoc/markdoc";
-
-interface Frontmatter {
-  title: string;
-}
+import AuthorView from "../../components/AuthorView";
+import authorList from "../../consts/author";
+import { Frontmatter } from "../../types/content";
 
 const Docs = (props: { content: string }) => {
   const { frontmatter, transformedContent } = markdoc<Frontmatter>(props.content);
+  const author = authorList.find((author) => author.name === frontmatter.author);
 
   return (
     <div className="px-4 sm:px-0">
@@ -33,6 +33,7 @@ const Docs = (props: { content: string }) => {
       <main className="w-full max-w-4xl h-auto mx-auto flex flex-col justify-start items-start sm:px-24 pt-4 pb-24">
         <div className="pt-12 w-full mx-auto prose prose-neutral">
           <h1>{frontmatter.title}</h1>
+          {author && <AuthorView author={author} />}
           {Markdoc.renderers.react(transformedContent, React)}
         </div>
       </main>
