@@ -16,7 +16,7 @@ const Docs = (props: { content: string }) => {
   const author = authorList.find((author) => author.name === frontmatter.author);
 
   return (
-    <div className="px-4 sm:px-0">
+    <div className="h-full flex flex-col justify-start items-start px-4 sm:px-0">
       <Head>
         <title>{frontmatter.title} - memos</title>
         <link rel="icon" href="/logo.webp" />

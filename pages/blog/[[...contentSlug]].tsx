@@ -16,7 +16,7 @@ const Blog = (props: { content: string }) => {
   const author = authorList.find((author) => author.name === frontmatter.author);
 
   return (
-    <div className="px-4 sm:px-0">
+    <div className="h-full flex flex-col justify-start items-start px-4 sm:px-0">
       <Head>
         <title>{frontmatter.title} - memos</title>
         <link rel="icon" href="/logo.webp" />
@@ -30,7 +30,7 @@ const Blog = (props: { content: string }) => {
 
       <Header />
 
-      <main className="w-full max-w-4xl h-auto mx-auto flex flex-col justify-start items-start sm:px-24 pt-4 pb-24">
+      <main className="w-full max-w-4xl h-auto grow mx-auto flex flex-col justify-start items-start sm:px-24 pt-4 pb-24">
         <div className="pt-12 w-full mx-auto prose prose-neutral">
           <h1>{frontmatter.title}</h1>
           {author && <AuthorView author={author} />}

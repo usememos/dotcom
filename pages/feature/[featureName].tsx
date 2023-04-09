@@ -14,7 +14,7 @@ const Feature = (props: Props) => {
   const feature = FEATURE_LIST.find((feature) => feature.slug === featureName);
 
   return (
-    <div className="px-4 sm:px-0">
+    <div className="h-full flex flex-col justify-start items-start px-4 sm:px-0">
       <Head>
         <title>
           memos - {feature?.title} - {feature?.description}
@@ -34,7 +34,6 @@ const Feature = (props: Props) => {
         <div className="w-full flex flex-col justify-start items-center">
           <LatestVersion />
           <img className="h-24 sm:h-32 w-auto rounded-lg" src="/logo.webp" alt="logo" />
-          <h1 className="text-3xl -mt-4 text-zinc-700">memos</h1>
         </div>
         <div className="w-full flex flex-col justify-center items-center sm:px-16">
           <h2 className="w-full text-center text-4xl sm:text-6xl font-bold mt-4 mb-4">{feature?.title}</h2>

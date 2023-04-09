@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import ComparisonMatrix from "../components/ComparisonMatrix";
 import Contributors from "../components/Contributors";
 import FeatureMatrix from "../components/FeatureMatrix";
 import Footer from "../components/Footer";
@@ -9,7 +8,7 @@ import LatestVersion from "../components/LatestVersion";
 
 const Home: NextPage = () => {
   return (
-    <div className="px-4 sm:px-0">
+    <div className="h-full flex flex-col justify-start items-start px-4 sm:px-0">
       <Head>
         <title>memos - An open-source, self-hosted memo hub with knowledge management and social networking</title>
         <link rel="icon" href="/logo.webp" />
@@ -59,7 +58,6 @@ const Home: NextPage = () => {
         </div>
         <img className="w-full h-auto mt-2 mb-2" src="/demo.webp" alt="demo-screenshot" />
         <FeatureMatrix />
-        <ComparisonMatrix />
         <Contributors />
       </main>
 
