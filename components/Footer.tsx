@@ -35,16 +35,14 @@ const Footer = () => {
         </div>
         <div className="w-full flex flex-col justify-start items-start space-y-2">
           <p className="my-2 text-gray-400 font-medium font-mono">References</p>
-          <div className="w-auto px-3 py-1 rounded-full border-2 border-blue-700 flex flex-row justify-start items-center space-x-2 cursor-pointer hover:bg-blue-100">
+          <a
+            className="w-auto px-3 py-1 rounded-full border-2 border-blue-700 flex flex-row justify-start items-center space-x-2 cursor-pointer hover:bg-blue-100"
+            href="https://twitter.com/usememos"
+            target="_blank"
+          >
             <span className="text-blue-700">Follow us in </span>
-            <a
-              className="w-auto flex flex-row justify-center items-center text-blue-700 hover:underline"
-              href="https://twitter.com/usememos"
-              target="_blank"
-            >
-              <Icon.Twitter className="w-5 h-auto mr-1" />
-            </a>
-          </div>
+            <Icon.Twitter className="w-5 h-auto mr-1 text-blue-700" />
+          </a>
           <div className="w-auto flex flex-row justify-start items-center space-x-2">
             <span className="text-gray-500">Discuss in</span>
             <a
