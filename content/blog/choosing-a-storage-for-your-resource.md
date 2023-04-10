@@ -1,5 +1,5 @@
 ---
-title: "Choosing a Storage for Your Resource: Database, S3, or Local Storage?"
+title: "Choosing a Storage for Your Resource: Database, S3 or Local Storage?"
 author: Steven
 ---
 
