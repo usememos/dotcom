@@ -14,13 +14,13 @@ const Header = () => {
           </Link>
         </div>
         <div className="w-auto flex flex-row justify-end items-center space-x-2 sm:space-x-3">
-          <a
-            className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600"
-            target="_blank"
-            href="https://demo.usememos.com"
-          >
-            <Icon.Package className="hidden sm:block w-5 h-auto mr-1" /> Live demo
-          </a>
+          <Link className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600" href="/docs">
+            <Icon.BookOpen className="hidden sm:block w-5 h-auto mr-1" /> Docs
+          </Link>
+          <span className="font-mono text-gray-300">/</span>
+          <Link className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600" href="/blog">
+            <Icon.Newspaper className="hidden sm:block w-5 h-auto mr-1" /> Blog
+          </Link>
           <span className="font-mono text-gray-300">/</span>
           <a
             className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600"
