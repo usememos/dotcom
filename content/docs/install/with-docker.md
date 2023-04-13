@@ -9,7 +9,7 @@ This document provides a step-by-step guide to running memos with Docker.
 
 Before starting, make sure you have installed [Docker](https://www.docker.com).
 
-## Start memos
+## Start memos locally
 
 ```bash
 docker run -d \
@@ -22,24 +22,24 @@ docker run -d \
 
 memos will store its data under `~/.memos`, and it will start listening on <http://localhost:5230>.
 
-## Update memos
+## Upgrade memos to latest version
 
-To update memos to the latest version, stop memos first:
+To upgrade memos to the latest version, you need to stop and remove the old container first:
 
 ```bash
-docker stop memos
+docker stop memos && docker rm memos
 ```
 
-And then pull the latest image:
+It's recommended but optional to backup your database:
+
+```bash
+cp -r ~/.memos/memos_prod.db ~/.memos/memos_prod.db.bak
+```
+
+Then pull the latest image:
 
 ```bash
 docker pull ghcr.io/usememos/memos:latest
 ```
 
-Before starting memos again, you need to remove the old container:
-
-```bash
-docker rm memos
-```
-
-Then [start memos](#start-memos) again.
+Finally, start memos again by following the steps in the [Start memos locally](#start-memos-locally) section.
