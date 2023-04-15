@@ -11,7 +11,8 @@ memos is built with a curated tech stack. It is optimized for developer experien
 
 ## Prerequisite
 
-- [Node.js](https://nodejs.org/en), requires version >=18.0
+- [Node.js](https://nodejs.org), requires version >=18.0
+- [pnpm](https://pnpm.io), requires version >=8.0
 - [Go](https://go.dev/), requires Go >= 1.19
 - [Air](https://github.com/cosmtrek/air) for backend live reload
 
@@ -32,7 +33,7 @@ memos is built with a curated tech stack. It is optimized for developer experien
 3. Start frontend
 
    ```bash
-   cd web && yarn && yarn dev
+   cd web && pnpm i && pnpm dev
    ```
 
 memos should now be running at <http://localhost:3001> and change either frontend or backend code would trigger live reload.
