@@ -9,17 +9,7 @@ If you have any more questions, don't hesitate to ask in the [Discord server](ht
 - [Docker compose](#docker-compose)
 - [Render.com](#rendercom)
 - [Fly.io](#flyio)
-  - [Prerequisites](#prerequisites)
-  - [Install flyctl](#install-flyctl)
-  - [Launch a fly application](#launch-a-fly-application)
-  - [Edit your `fly.toml`](#edit-your-flytoml)
-    - [Details of manual modifications](#details-of-manual-modifications)
-      - [1. Add a `build` section.](#1-add-a-build-section)
-      - [2. Add an `env` section.](#2-add-an-env-section)
-      - [3. Configure litestream backups](#3-configure-litestream-backups)
-      - [4. Add a persistent volume](#4-add-a-persistent-volume)
-      - [5. Change `internal_port` in `[[services]]`](#5-change-internal_port-in-services)
-      - [6. Deploy to fly.io](#6-deploy-to-flyio)
+- [PikaPods.com](#pikapods)
 - [Using nginx as a reverse proxy](#using-nginx-as-a-reverse-proxy)
   - [SSL](#ssl)
 
@@ -251,6 +241,12 @@ flyctl deploy
 ```
 
 If all is well, you can now access memos by running `flyctl open`. You should see its login page.
+
+## PikaPods.com
+
+Privacy-focused one-click hosting for open source apps. EU and US regions available. Run memos from $1/month with $5 free welcome credit.
+
+[![Run on PikaPods](https://www.pikapods.com/static/run-button.svg)](https://www.pikapods.com/pods?run=memos)
 
 ## Using nginx as a reverse proxy
 
