@@ -1,5 +1,5 @@
 ---
-title: Install with Docker
+title: Installation
 ---
 
 There's several ways to deploy memos yourself.
