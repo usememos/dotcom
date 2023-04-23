@@ -15,6 +15,7 @@ Here is the [repository](https://github.com/usememos/dotcom) you want to go to.
 - [Know how to contribute](https://docs.github.com/en/get-started/quickstart/contributing-to-projects)
 
 ### Good to have
+
 - [Node.js & npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
 ## Step by step
