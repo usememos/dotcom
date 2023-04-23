@@ -18,6 +18,7 @@ If you have any more questions, don't hesitate to ask in the [Discord server](ht
 - [Contribute to Memo's documentation](/docs/contribution/documentation/)
 
 ## Others
+
 - [FAQ](/docs/FAQ)
 - [S3 Storage](/docs/storage)
 - [SSO - Keycloak](/docs/keycloak)
