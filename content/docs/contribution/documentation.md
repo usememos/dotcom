@@ -10,6 +10,7 @@ Here is the [repository](https://github.com/usememos/dotcom) you want to go to.
 ## Prerequisite
 
 ### Must have
+
 - Preferably a markdown editor, Here's a few: [Visual studio code](https://code.visualstudio.com/), [Typora](https://typora.io/). (If not, any text editor is fine)
 - [Git](https://git-scm.com/downloads)
 - [Know how to contribute](https://docs.github.com/en/get-started/quickstart/contributing-to-projects)
