@@ -13,7 +13,7 @@ If you have any more questions, don't hesitate to ask in the [Discord server](ht
 - [Managed Hosting](/docs/install/managed)
 
 ## Others
-
+- [FAQ](/docs/FAQ)
 - [Development](/docs/development)
 - [S3 Storage](/docs/storage)
 - [SSO - Keycloak](/docs/keycloak)
