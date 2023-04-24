@@ -12,9 +12,14 @@ If you have any more questions, don't hesitate to ask in the [Discord server](ht
 - [Docker](/docs/install/docker)
 - [Managed Hosting](/docs/install/managed)
 
+## Contribution
+
+- [Contribute to Memos's source code](/docs/contribution/development/)
+- [Contribute to Memo's documentation](/docs/contribution/documentation/)
+
 ## Others
 
-- [Development](/docs/development)
+- [FAQ](/docs/FAQ)
 - [S3 Storage](/docs/storage)
 - [SSO - Keycloak](/docs/keycloak)
 - 🆕 [Local storage](/docs/local-storage)
