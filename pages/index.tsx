@@ -32,7 +32,7 @@ const Home: NextPage = () => {
             A lightweight, self-hosted memo hub. Open Source and Free forever.
           </h2>
           <h3 className="w-full text-base sm:text-lg text-gray-500 text-center mb-2">
-            memos provides the privacy security and reliability that <br className="hidden sm:block" />
+            memos provides the privacy, security, and reliability that <br className="hidden sm:block" />
             innovators need in their moments of inspiration.
           </h3>
         </div>
