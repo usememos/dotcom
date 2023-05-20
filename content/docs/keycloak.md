@@ -18,9 +18,9 @@ Once you have selected your desired realm, we must create a client for the Memos
 4. Enter anything for Client ID, such as "memos."
 5. Click the "Next" button.
 6. The following values should be set as such:
-    * "Client authentication" toggled "On"
-    * "Standard flow" checked
-    * "Direct access grants" unchecked
+   - "Client authentication" toggled "On"
+   - "Standard flow" checked
+   - "Direct access grants" unchecked
 7. Click the "Save" button.
 
 ![An example of a correctly-configured Keycloak client](/content/docs/keycloak/keycloak-client-config.png)
@@ -41,8 +41,8 @@ With the Keycloak client ready, all we need now is to copy all the credentials a
 1. Still under "Client details," select "Credentials."
 2. Copy down the "Client secret."
 3. Open the sidebar and select "Realm settings."
-3. Beside "Endpoints," click on the "OpenID Endpoint Configuration" link.
-4. Copy down the URLs under `authorization_endpoint`, `token_endpoint`, and `userinfo_endpoint`.
+4. Beside "Endpoints," click on the "OpenID Endpoint Configuration" link.
+5. Copy down the URLs under `authorization_endpoint`, `token_endpoint`, and `userinfo_endpoint`.
 
 ## Step 5: Create a user in Keycloak
 
@@ -51,9 +51,9 @@ If you do not already have a user in Keycloak, we will create it now.
 1. Go to the sidebar, then select "Users."
 2. Click the "Add user" button.
 3. Enter the following:
-    * Set "Username" to anything you want. If you want to use SSO for your existing Memos account, set it to your Memos username.
-    * (Optional) Set "Email" to your Memos account email.
-    * (Optional) Set "First name" to your Memos display name.
+   - Set "Username" to anything you want. If you want to use SSO for your existing Memos account, set it to your Memos username.
+   - (Optional) Set "Email" to your Memos account email.
+   - (Optional) Set "First name" to your Memos display name.
 4. Click the "Create" button.
 5. Within the newly-created user, select "Credentials."
 6. Click "Set password," then add the desired password for this user.
@@ -68,21 +68,21 @@ Finally, we can open Memos and add Keycloak as an authentication option.
 3. Click the "Create" button.
 4. Under OAuth 2.0, select "Custom."
 5. Fill out the following details:
-    * Set "Name" as anything you wish, such as "Keycloak." This will appear on a button on the Memos login page.
-    * Set "Client ID" as the one created in [Step 2](#step-2:-create-a-client-for-memos).
-    * Paste your client secret.
-    * Paste your authorization endpoint.
-    * Paste your token endpoint.
-    * Paste your user info endpoint.
-    * Set "Scopes" as `openid profile email`.
-    * Set "Identifer" as `preferred_username`.
-    * (Optional) Set "Display name" as `given_name`.
-    * (Optional) Set "Display name" as `email`.
 
-    **Note:** If you set these optional values, the user in Keycloak must have an email and/or first name set, or else the server will return a 500 error.
+   - Set "Name" as anything you wish, such as "Keycloak." This will appear on a button on the Memos login page.
+   - Set "Client ID" as the one created in [Step 2](#step-2:-create-a-client-for-memos).
+   - Paste your client secret.
+   - Paste your authorization endpoint.
+   - Paste your token endpoint.
+   - Paste your user info endpoint.
+   - Set "Scopes" as `openid profile email`.
+   - Set "Identifer" as `preferred_username`.
+   - (Optional) Set "Display name" as `given_name`.
+   - (Optional) Set "Display name" as `email`.
+
+   **Note:** If you set these optional values, the user in Keycloak must have an email and/or first name set, or else the server will return a 500 error.
 
 Congratulations! You may now log into Memos using Keycloak! 🥳
-
 
 ![An example of Keycloak OAUTH2 in Memos](/content/docs/keycloak/memos-keycloak-config.png)
 _👆 Keycloak OAUTH2 entry in Memos_

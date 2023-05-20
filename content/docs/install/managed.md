@@ -6,6 +6,17 @@ The below services can be used to host memos, if you don't administer your own s
 
 - [Render.com](#rendercom)
 - [Fly.io](#flyio)
+  - [Prerequisites](#prerequisites)
+  - [Install flyctl](#install-flyctl)
+  - [Launch a fly application](#launch-a-fly-application)
+  - [Edit your `fly.toml`](#edit-your-flytoml)
+    - [Details of manual modifications](#details-of-manual-modifications)
+      - [1. Add a `build` section.](#1-add-a-build-section)
+      - [2. Add an `env` section.](#2-add-an-env-section)
+      - [3. Configure litestream backups](#3-configure-litestream-backups)
+      - [4. Add a persistent volume](#4-add-a-persistent-volume)
+      - [5. Change `internal_port` in `[[services]]`](#5-change-internal_port-in-services)
+      - [6. Deploy to fly.io](#6-deploy-to-flyio)
 - [PikaPods.com](#pikapodscom)
 
 ## Render.com

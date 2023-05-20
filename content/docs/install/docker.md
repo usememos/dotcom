@@ -19,7 +19,7 @@ Before starting, make sure you have installed [Docker](https://www.docker.com).
 
 To deploy memos using docker run, you simply need to run one command:
 
-```
+```bash
 docker run -d \
   --init \
   --name memos \
