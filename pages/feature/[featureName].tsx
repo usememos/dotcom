@@ -51,6 +51,10 @@ const Feature = (props: Props) => {
           </a>
         </div>
         <div className="w-full flex flex-row justify-center items-center space-x-2">
+          <a href="https://demo.usememos.com" target="_blank" className="text-blue-600 leading-6 text-base hover:underline">
+            Live Demo
+          </a>
+          <span className="block mx-2">•</span>
           <a href="https://discord.gg/tfPJa4UmAv" target="_blank" className="text-blue-600 leading-6 text-base hover:underline">
             Discuss in Discord 🙋
           </a>
