@@ -35,15 +35,19 @@ Here is the [repository](https://github.com/usememos/dotcom) you want to go to.
 
    1. Install dependencies:
       ```bash
-      npm install
+      docker run --rm -it -v `pwd`:/work -w /work node:19.7.0 npm install
       ```
    2. Start the development server:
 
       ```bash
-      npm run dev
+      docker run --rm -it -v `pwd`:/work -w /work -p 3000:3000 node:19.7.0 npm run dev
       ```
 
    Now, the website should be running at http://localhost:3000. It will support live reload upon code changes.
+
+   You can also run `node` on your host instead of docker.
+
+   But before that, make sure you `node` version is below `19.7.0`, `19.8.0` coming with macOS is not working.
 
 3. Go to `consts` folder and open up `author.ts`.
 4. Add you name and links under the `const authorList: Author[]` section in the following format:
