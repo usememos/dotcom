@@ -3,28 +3,22 @@ title: Contribute to documentation
 author: Anthony
 ---
 
-This document explains how you can contribute to the documentation of memos.
-
-Here is the [repository](https://github.com/usememos/dotcom) you want to go to.
-
 ## Prerequisite
 
-### Must have
-
+- [Node.js](https://nodejs.org), requires version >=18.0
+- [pnpm](https://pnpm.io), requires version >=8.0
 - Preferably a markdown editor, Here's a few: [Visual studio code](https://code.visualstudio.com/), [Typora](https://typora.io/). (If not, any text editor is fine)
 - [Git](https://git-scm.com/downloads)
 - [Know how to contribute](https://docs.github.com/en/get-started/quickstart/contributing-to-projects)
 
-### Good to have
-
-- [Node.js & npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-
 ## Step by step
 
 1. Clone your forked repo:
+
    ```bash
    git clone https://github.com/<You username>/dotcom
    ```
+
 2. Change to the directory:
 
    ```bash
@@ -34,9 +28,11 @@ Here is the [repository](https://github.com/usememos/dotcom) you want to go to.
    If you want to see you new docs live on your localhost:
 
    1. Install dependencies:
+
       ```bash
       npm install
       ```
+
    2. Start the development server:
 
       ```bash

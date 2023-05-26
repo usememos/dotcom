@@ -14,8 +14,12 @@ If you have any more questions, don't hesitate to ask in the [Discord server](ht
 
 ## Contribution
 
-- [Contribute to Memos's source code](/docs/contribution/development/)
-- [Contribute to Memo's documentation](/docs/contribution/documentation/)
+- [Contribute to memos](/docs/contribution/development/)
+- [Contribute to documentation](/docs/contribution/documentation/)
+
+## Integration
+
+- 🆕 [Telegram Bot 🤖️](/docs/integration/telegram-bot)
 
 ## Others
 
@@ -23,4 +27,3 @@ If you have any more questions, don't hesitate to ask in the [Discord server](ht
 - [S3 Storage](/docs/storage)
 - [SSO - Keycloak](/docs/keycloak)
 - 🆕 [Local storage](/docs/local-storage)
-- 🆕 [Telegram Bot](/docs/telegram-bot)
