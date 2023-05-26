@@ -3,71 +3,63 @@ title: 🤖️ Telegram Bot
 author: Athurg
 ---
 
-You can now send `memos` from your telegram bot 🎉🎉🎉
+## Prerequisite
 
-## Before all
+- Follow the [How Do I Create a Bot](https://core.telegram.org/bots#how-do-i-create-a-bot) to create a **Telegram Bot**.
+- Get your **bot token** with [Obtain Your Bot Token](https://core.telegram.org/bots/tutorial#obtain-your-bot-token).
 
-Fistly, make sure you known what is [Telegram Bot](https://core.telegram.org/bots).
+Your **bot token** should looks like:
 
-If you don't, maybe this feature is not satisfied with you.
+```plaintext
+4839574812:AAFD39kkdpWt3ywyRZergyOLMaJhac60qc
+```
 
-In this document, we assume that you have created a _Telegram Bot_.
-And got a _bot token_ from Telegram's [@Botfather](https://t.me/botfather).
+## Connect your memos to Telegram Bot
 
-## Connect your Memos to Telegram Bot
+Once you have prepared your bot, you can now connect memos to your bot.
 
-After you prepare your bot, let's start by connect _Memos_ to your Bot.
+1. Sign in to your memos using the **admin account**.
+2. Click the **Settings** button on the sidebar to open **Settings** dialog.
+3. Switch to **System** tab in the **Admin** section.
+4. Copy and paste your **bot token** into **Telegram Robot Token** field, then click **Save**.
 
-1. Sign in you _Memos_ as admin.
-2. Click on _Settings_ button on the sidebar, to open _Settings_ dialog.
-3. Switch to _System_ tab of _Admin_ section.
-4. Paste your _bot token_ into _Telegram Robot Token_ field, _Save_ it.
+Now, the Telegram bot is connected to your memos.
 
-Now, _Memos_ have been connect to your _Telegram Bot_ now.
+## Bind memos user to Telegram user
 
-## Bind Memos user to Telegram user
+After connecting your Telegram bot to memos, you can send messages to the bot.
 
-After config your Telegram bot token, you can now send message to your Telegram Bot.
+You will receive a message like this:
 
-But you will always get a message like:
+![user-id-message](/content/docs/integration/telegram-bot/user-id-message.png)
 
-Please set your telegram userid 2037020633 in UserSetting of _Memos_
+The message contains your **user ID** in Telegram. Make sure to copy it.
 
-That means _Memos_ do not know who you are, so it don't know to create _memo_ for which user.
+Follow these steps to set it as your memos user:
 
-So, just tell it in steps:
+1. Sign in to your memos.
+2. Click on **Settings** button on the sidebar to open **Settings** dialog.
+3. Switch to **Preferences** tab in **Basic** section.
+4. Paste your **userid** into **Telegram UserID** field, then click **Save**.
 
-1. _Sign in_ you _Memos_ as any user.
-2. Click on _Settings_ button on the sidebar, to open _Settings_ dialog.
-3. Switch to _Preferences_ tab of _Basic_ section.
-4. Paste your _userid_ shown to you into _Telegram UserID_ field, and _Save_ it.
+You can now send messages to the Telegram bot, and they will be saved in your memos!
 
-That's it, everything is ready now.
+![message-saved](/content/docs/integration/telegram-bot/message-saved.png)
 
-You can send message to Telegram Bot, and _Memos_ will save it as a new _memo_
+We currently support two types of messages from the Telegram bot:
 
-## About text and photo(s)
+- **Text message**: The message will be the content of memo, and Markdown format is supported.
 
-Currently, two types of Telegram message were support:
+- **Photo message**: The photo will be saved as resources into memo. And the caption of photo will be content of memo.
 
-### text message
+## What's next?
 
-The _text_ of message will be _content_ of _memo_, Markdown format is OK.
+The Telegram bot is a powerful tool, and we have only implemented a few features so far. We plan to add more features in the future, including:
 
-### photo message
-
-The _caption_ of message will be _content_ of memo, also Markdown is support.
-
-The photo will be resource of this memo, even there is more than one photos.
-
-## What about next ?
-
-We may add more feature in the future, such as:
-
-- _command_ of Telegram Bot to do something
-- More message type, such as attachments? and Group Message
-- Webhook for Telegram Bot, for _Memos_ which can't touch the Telegram API Server directly.
-- Send notification by Telegram Bot
+- Commands for the Telegram bot to perform special actions.
+- Support for additional message types, such as attachments and group messages.
+- Webhooks for the Telegram bot.
+- Sending notifications through the Telegram bot.
 - And more...
 
-Any PR will be welcome, just enjoy _Memos_ !
+We welcome any pull requests. Enjoy using memos!
