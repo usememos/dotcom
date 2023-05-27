@@ -122,7 +122,7 @@ Create an account at [Render](https://dashboard.render.com/register)
 
 ## Fly.io
 
-_provided by [@hu3rror](https://github.com/hu3rror/memos-on-fly) on GitHub_
+_provided by [@hu3rror/memos-on-fly](https://github.com/hu3rror/memos-on-fly) on GitHub_
 
 ### Prerequisites
 
@@ -151,7 +151,7 @@ This command creates a `fly.toml` file.
 
 ### Edit your `fly.toml`
 
-You can take [fly.example.toml](fly.example.toml) in this repository as a reference and modify according to the comments.
+You can take [fly.example.toml](https://github.com/hu3rror/memos-on-fly/blob/main/fly.example.toml) in this repository as a reference and modify according to the comments.
 
 #### Details of manual modifications
 
@@ -159,7 +159,7 @@ You can take [fly.example.toml](fly.example.toml) in this repository as a refere
 
 ```toml
 [build]
-  image = "hu3rror/memos-fly:latest"
+  image = "ghcr.io/hu3rror/memos-litestream:latest"
 ```
 
 ##### 2. Add an `env` section.
@@ -199,9 +199,10 @@ You can take [fly.example.toml](fly.example.toml) in this repository as a refere
 
 2. Attach the persistent volume to the container by adding a `mounts` section to `fly.toml`.
    ```toml
-   [mounts]
-     source="memos_data"
-     destination="/var/opt/memos"
+   [[mounts]]
+      source = "memos_data"
+      destination = "/var/opt/memos"
+      processes = ["app"]
    ```
 
 ##### 5. Change `internal_port` in `[[services]]`
@@ -218,6 +219,8 @@ flyctl deploy
 ```
 
 If all is well, you can now access memos by running `flyctl open`. You should see its login page.
+
+If the latest docker image has been released, you can easily upgrade the memo by typing `flyctl deploy` in your memos project's folder.
 
 ## PikaPods.com
 
