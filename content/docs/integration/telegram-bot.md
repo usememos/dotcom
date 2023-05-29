@@ -21,7 +21,7 @@ Once you have prepared your bot, you can now connect memos to your bot.
 1. Sign in to your memos using the **admin account**.
 2. Click the **Settings** button on the sidebar to open **Settings** dialog.
 3. Switch to **System** tab in the **Admin** section.
-4. Copy and paste your **bot token** into **Telegram Robot Token** field, then click **Save**.
+4. Copy and paste your **bot token** into **Telegram Token** field, then click **Save**.
 
 Now, the Telegram bot is connected to your memos.
 
@@ -51,6 +51,23 @@ We currently support two types of messages from the Telegram bot:
 - **Text message**: The message will be the content of memo, and Markdown format is supported.
 
 - **Photo message**: The photo will be saved as resources into memo. And the caption of photo will be content of memo.
+
+## Use a Proxy for Telegram API?
+
+*Memos* support connect to Telegram API with a proxy.
+
+Assuming you have a proxy server running on `PROXY_URL`, you should setup it to make sure:
+
+- Any request on `PROXY_URL/bot<token>` forward to `https://api.telegram.org/bot<token>`
+- Any request on `PROXY_URL/file/bot<token>` forward to `https://api.telegram.org/file/bot<token>`
+
+You can also just forward all request to `PROXY_URL` directly to `https://api.telegram.org` to make it simple.
+
+If that's OK, just config the **bot token** of your *Memos* like below:
+
+   http://proxy.test.com:8081/somepath/bot<token>
+
+Replace `<token>` with the original **bot token** from Telegram's @BotFather.
 
 ## What's next?
 
