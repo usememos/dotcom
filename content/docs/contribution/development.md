@@ -9,14 +9,45 @@ memos is built with a curated tech stack. It is optimized for developer experien
 - It requires zero config.
 - 1 command to start backend and 1 command to start frontend, both with live reload support.
 
-## Prerequisite
+## Working with Docker
+
+1. Clone the repo
+
+   ```bash
+   git clone https://github.com/usememos/memos
+   ```
+
+2. Use `docker-compose.dev.yaml` as default for Docker Compose, instead of `docker-compose.yaml` reserved for normal users
+
+   ```bash
+   echo 'COMPOSE_FILE=docker-compose.dev.yaml' > .env
+   ```
+
+3. Setup the environments
+
+   ```bash
+   docker compose run api go install github.com/cosmtrek/air@latest
+   docker compose run web npm install
+   ```
+
+4. Start your services:
+
+   ```bash
+   docker compose up -d
+   ```
+
+memos should now be running at <http://localhost:3001> and change either frontend or backend code would trigger live reload.
+
+## Working without Docker
+
+### Prerequisite
 
 - [Node.js](https://nodejs.org), requires version >=18.0
 - [pnpm](https://pnpm.io), requires version >=8.0
 - [Go](https://go.dev/), requires Go >= 1.19
 - [Air](https://github.com/cosmtrek/air) for backend live reload
 
-## Steps
+### Steps
 
 1. Clone the repo
 
