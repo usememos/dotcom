@@ -63,7 +63,6 @@ const getContentSlugList = (): string[][] => {
     }
   };
   travelContentSlugList("");
-  console.log(contentSlugList);
   return contentSlugList;
 };
 
