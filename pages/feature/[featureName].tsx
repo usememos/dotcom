@@ -1,6 +1,6 @@
 import type { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
-import FeatureMatrix, { FEATURE_LIST } from "../../components/FeatureMatrix";
+import FeatureMatrix, { FEATURE_LIST, FeatureItem } from "../../components/FeatureMatrix";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import LatestVersion from "../../components/LatestVersion";
@@ -11,17 +11,17 @@ interface Props {
 
 const Feature = (props: Props) => {
   const { featureName } = props;
-  const feature = FEATURE_LIST.find((feature) => feature.slug === featureName);
+  const feature = FEATURE_LIST.find((feature) => feature.slug === featureName) as FeatureItem;
 
   return (
     <div className="h-full flex flex-col justify-start items-start px-4 sm:px-0">
       <Head>
         <title>
-          memos - {feature?.title} - {feature?.description}
+          memos - {feature.title} - {feature.description}
         </title>
         <link rel="icon" href="/logo.webp" />
-        <meta name="description" content="A lightweight, self-hosted memo hub. Open Source and Free forever" />
-        <meta name="og:title" property="og:title" content="memos" />
+        <meta name="description" content="A lightweight, self-hosted memo hub. Open Source and Free forever" key="desc" />
+        <meta name="og:title" property="og:title" content="memos - lightweight, self-hosted memo hub. Open Source and Free forever" />
         <meta name="og:description" content="A lightweight, self-hosted memo hub. Open Source and Free forever" />
         <meta name="og:type" property="og:type" content="website" />
         <meta name="twitter:card" content="summary" />
@@ -30,14 +30,16 @@ const Feature = (props: Props) => {
 
       <Header />
 
+      <h1 className="sr-only">memos - your personal memo hub</h1>
+
       <main className="w-full max-w-4xl h-auto mx-auto flex flex-col justify-start items-start pt-4 pb-16">
         <div className="w-full flex flex-col justify-start items-center">
           <LatestVersion />
           <img className="h-24 sm:h-32 w-auto rounded-lg" src="/logo.webp" alt="logo" />
         </div>
         <div className="w-full flex flex-col justify-center items-center sm:px-16">
-          <h2 className="w-full text-center text-4xl sm:text-6xl font-bold mt-4 mb-4">{feature?.title}</h2>
-          <h3 className="w-full text-base sm:text-lg text-gray-500 text-center mb-2">{feature?.description}</h3>
+          <h2 className="w-full text-center text-4xl sm:text-6xl font-bold mt-4 mb-4">{feature.title}</h2>
+          <h3 className="w-full text-base sm:text-lg text-gray-500 text-center mb-2">{feature.description}</h3>
         </div>
         <div className="w-full flex flex-row justify-center items-center space-x-2 py-4">
           <a target="_blank" href="https://github.com/usememos/memos">

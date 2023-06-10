@@ -18,10 +18,9 @@ const Blog = (props: { content: string }) => {
   return (
     <div className="h-full flex flex-col justify-start items-start px-4 sm:px-0">
       <Head>
-        <title>{frontmatter.title} - memos</title>
-        <link rel="icon" href="/logo.webp" />
-        <meta name="description" content="A lightweight, self-hosted memo hub. Open Source and Free forever" />
-        <meta name="og:title" property="og:title" content="memos" />
+        <title>{frontmatter.title} | memos</title>
+        <meta name="description" content="A lightweight, self-hosted memo hub. Open Source and Free forever" key="desc" />
+        <meta name="og:title" property="og:title" content="memos - lightweight, self-hosted memo hub. Open Source and Free forever" />
         <meta name="og:description" content="A lightweight, self-hosted memo hub. Open Source and Free forever" />
         <meta name="og:type" property="og:type" content="website" />
         <meta name="twitter:card" content="summary" />
@@ -29,6 +28,8 @@ const Blog = (props: { content: string }) => {
       </Head>
 
       <Header />
+
+      <h1 className="sr-only">memos - your personal memo hub</h1>
 
       <main className="w-full max-w-4xl h-auto grow mx-auto flex flex-col justify-start items-start sm:px-24 pt-4 pb-24">
         <div className="pt-12 w-full mx-auto prose prose-neutral">
@@ -62,6 +63,7 @@ const getContentSlugList = (): string[][] => {
     }
   };
   travelContentSlugList("");
+  console.log(contentSlugList);
   return contentSlugList;
 };
 

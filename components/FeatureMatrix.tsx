@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Icon from "./Icon";
 
-interface FeatureItem {
+export interface FeatureItem {
   slug: string;
   icon: Icon.Icon;
   title: string;

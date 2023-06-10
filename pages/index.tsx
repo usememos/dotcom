@@ -10,10 +10,10 @@ const Home: NextPage = () => {
   return (
     <div className="h-full flex flex-col justify-start items-start px-4 sm:px-0">
       <Head>
-        <title>memos - A lightweight, self-hosted memo hub. Open Source and Free forever</title>
+        <title>memos - lightweight, self-hosted memo hub. Open Source and Free forever</title>
         <link rel="icon" href="/logo.webp" />
-        <meta name="description" content="A lightweight, self-hosted memo hub. Open Source and Free forever" />
-        <meta name="og:title" property="og:title" content="memos" />
+        <meta name="description" content="A lightweight, self-hosted memo hub. Open Source and Free forever" key="desc" />
+        <meta name="og:title" property="og:title" content="memos - lightweight, self-hosted memo hub. Open Source and Free forever" />
         <meta name="og:description" content="A lightweight, self-hosted memo hub. Open Source and Free forever" />
         <meta name="og:type" property="og:type" content="website" />
         <meta name="twitter:card" content="summary" />
@@ -22,10 +22,12 @@ const Home: NextPage = () => {
 
       <Header />
 
+      <h1 className="sr-only">memos - your personal memo hub</h1>
+
       <main className="w-full max-w-4xl h-auto mx-auto flex flex-col justify-start items-start pt-4 pb-16">
         <div className="w-full flex flex-col justify-start items-center">
           <LatestVersion />
-          <img className="h-24 sm:h-32 w-auto rounded-lg" src="/logo.webp" alt="logo" />
+          <img className="h-24 sm:h-32 w-auto rounded-lg" src="/logo.webp" alt="memos-logo" />
         </div>
         <div className="w-full flex flex-col justify-center items-center sm:px-16">
           <h2 className="w-full text-center text-4xl sm:text-6xl font-bold mt-4 mb-4">
