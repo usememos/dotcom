@@ -5,6 +5,7 @@ import FeatureMatrix from "../components/FeatureMatrix";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import LatestVersion from "../components/LatestVersion";
+import ShortifyBanner from "../components/ShortifyBanner";
 
 const Home: NextPage = () => {
   return (
@@ -57,6 +58,9 @@ const Home: NextPage = () => {
           <a href="https://discord.gg/tfPJa4UmAv" target="_blank" className="text-blue-600 leading-6 text-base hover:underline">
             Discuss in Discord 🙋
           </a>
+        </div>
+        <div className="w-full flex flex-row justify-center items-center">
+          <ShortifyBanner />
         </div>
         <img className="w-full h-auto mt-2 mb-2" src="/demo.webp" alt="demo-screenshot" />
         <FeatureMatrix />

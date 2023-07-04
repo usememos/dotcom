@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Icon from "./Icon";
 
 const LatestVersion = () => {
   const [version, setVersion] = useState<string>("");
