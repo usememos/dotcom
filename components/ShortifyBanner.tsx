@@ -1,7 +1,7 @@
 const ShortifyBanner = () => {
   return (
     <a
-      className="mt-4 mb-2 px-2 py-1 rounded-lg bg-blue-50 shadow text-blue-600 hover:underline"
+      className="text-sm sm:text-base mt-4 mb-2 px-2 py-1 rounded-lg bg-blue-50 shadow text-blue-600 hover:underline"
       href="https://github.com/boojack/shortify"
       target="_blank"
     >
