@@ -20,9 +20,16 @@ const Feature = (props: Props) => {
           memos - {feature.title} - {feature.description}
         </title>
         <link rel="icon" href="/logo.webp" />
-        <meta name="description" content="A lightweight, self-hosted memo hub. Open Source and Free forever" key="desc" />
+        <meta
+          name="description"
+          content="A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts."
+          key="desc"
+        />
         <meta name="og:title" property="og:title" content="memos - lightweight, self-hosted memo hub. Open Source and Free forever" />
-        <meta name="og:description" content="A lightweight, self-hosted memo hub. Open Source and Free forever" />
+        <meta
+          name="og:description"
+          content="A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts."
+        />
         <meta name="og:type" property="og:type" content="website" />
         <meta name="twitter:card" content="summary" />
         <meta name="og:url" property="og:url" content="https://usememos.com" />
@@ -30,7 +37,7 @@ const Feature = (props: Props) => {
 
       <Header />
 
-      <h1 className="sr-only">memos - your personal memo hub</h1>
+      <h1 className="sr-only">memos - Easily capture and share your great thoughts.</h1>
 
       <main className="w-full max-w-4xl h-auto mx-auto flex flex-col justify-start items-start pt-4 pb-16">
         <div className="w-full flex flex-col justify-start items-center">

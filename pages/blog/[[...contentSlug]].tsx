@@ -19,9 +19,16 @@ const Blog = (props: { content: string }) => {
     <div className="h-full flex flex-col justify-start items-start px-4 sm:px-0">
       <Head>
         <title>{frontmatter.title} | memos</title>
-        <meta name="description" content="A lightweight, self-hosted memo hub. Open Source and Free forever" key="desc" />
-        <meta name="og:title" property="og:title" content="memos - lightweight, self-hosted memo hub. Open Source and Free forever" />
-        <meta name="og:description" content="A lightweight, self-hosted memo hub. Open Source and Free forever" />
+        <meta
+          name="description"
+          content="A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts."
+          key="desc"
+        />
+        <meta name="og:title" property="og:title" content="memos - Easily capture and share your great thoughts." />
+        <meta
+          name="og:description"
+          content="A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts."
+        />
         <meta name="og:type" property="og:type" content="website" />
         <meta name="twitter:card" content="summary" />
         <meta name="og:url" property="og:url" content="https://usememos.com" />
@@ -29,7 +36,7 @@ const Blog = (props: { content: string }) => {
 
       <Header />
 
-      <h1 className="sr-only">memos - your personal memo hub</h1>
+      <h1 className="sr-only">memos - Easily capture and share your great thoughts.</h1>
 
       <main className="w-full max-w-4xl h-auto grow mx-auto flex flex-col justify-start items-start sm:px-24 pt-4 pb-24">
         <div className="pt-12 w-full mx-auto prose prose-neutral hover:prose-a:text-blue-500">

@@ -11,11 +11,18 @@ const Home: NextPage = () => {
   return (
     <div className="h-full flex flex-col justify-start items-start px-4 sm:px-0">
       <Head>
-        <title>memos - lightweight, self-hosted memo hub. Open Source and Free forever</title>
+        <title>memos - Easily capture and share your great thoughts</title>
         <link rel="icon" href="/logo.webp" />
-        <meta name="description" content="A lightweight, self-hosted memo hub. Open Source and Free forever" key="desc" />
+        <meta
+          name="description"
+          content="A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts."
+          key="desc"
+        />
         <meta name="og:title" property="og:title" content="memos - lightweight, self-hosted memo hub. Open Source and Free forever" />
-        <meta name="og:description" content="A lightweight, self-hosted memo hub. Open Source and Free forever" />
+        <meta
+          name="og:description"
+          content="A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts."
+        />
         <meta name="og:type" property="og:type" content="website" />
         <meta name="twitter:card" content="summary" />
         <meta name="og:url" property="og:url" content="https://usememos.com" />
@@ -23,7 +30,7 @@ const Home: NextPage = () => {
 
       <Header />
 
-      <h1 className="sr-only">memos - your personal memo hub</h1>
+      <h1 className="sr-only">memos - Easily capture and share your great thoughts.</h1>
 
       <main className="w-full max-w-4xl h-auto mx-auto flex flex-col justify-start items-start pt-4 pb-16">
         <div className="w-full flex flex-col justify-start items-center">
@@ -31,13 +38,8 @@ const Home: NextPage = () => {
           <img className="h-24 sm:h-32 w-auto rounded-lg" src="/logo.webp" alt="memos-logo" />
         </div>
         <div className="w-full flex flex-col justify-center items-center sm:px-16">
-          <h2 className="w-full text-center text-4xl sm:text-6xl font-bold mt-4 mb-4">
-            A lightweight, self-hosted memo hub. Open Source and Free forever.
-          </h2>
-          <h3 className="w-full text-base sm:text-lg text-gray-500 text-center mb-2">
-            memos provides the privacy, security, and reliability that <br className="hidden sm:block" />
-            innovators need in their moments of inspiration.
-          </h3>
+          <h2 className="w-full text-center text-4xl sm:text-6xl font-bold mt-4 mb-4">A privacy-first, lightweight note-taking service.</h2>
+          <h3 className="w-full text-base sm:text-lg text-gray-500 text-center mb-2">Easily capture and share your great thoughts.</h3>
         </div>
         <div className="w-full flex flex-row justify-center items-center space-x-2 py-4">
           <a target="_blank" href="https://github.com/usememos/memos">
