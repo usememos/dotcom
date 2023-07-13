@@ -38,7 +38,7 @@ const Home: NextPage = () => {
           <img className="h-24 sm:h-32 w-auto rounded-lg" src="/logo.webp" alt="memos-logo" />
         </div>
         <div className="w-full flex flex-col justify-center items-center sm:px-16">
-          <h2 className="w-full text-center text-4xl sm:text-6xl font-bold mt-4 mb-4">A privacy-first, lightweight note-taking service.</h2>
+          <h2 className="w-full text-center text-4xl sm:text-6xl font-bold mt-4 mb-4">A privacy-first, lightweight note-taking service</h2>
           <h3 className="w-full text-base sm:text-lg text-gray-500 text-center mb-2">Easily capture and share your great thoughts.</h3>
         </div>
         <div className="w-full flex flex-row justify-center items-center space-x-2 py-4">
