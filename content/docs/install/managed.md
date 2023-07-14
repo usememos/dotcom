@@ -242,7 +242,9 @@ Create an account on [Zeabur](https://zeabur.com)
 
 ### Method1: Deploy from template(Recommend)
 1. Press on the button below to deploy memos from template.
+
 [![Deploy on Zeabur](https://zeabur.com/button.svg)](https://dash.zeabur.com/templates/LPCVAH)
+
 2. After the deployment is complete, go to the "Domain" section in service page to bind a domain for your memos.
    ![s22](https://i.imgur.com/6IXJuik.png)  
 
