@@ -11,15 +11,14 @@ const authorList: Author[] = [
   {
     name: "Steven",
     github: "boojack",
-    twitter: "stevenlgtm",
+    twitter: "stevenxlee",
     funding: "https://ko-fi.com/stevenlgtm",
   },
   {
     name: "Anthony",
     github: "Antzed",
     url: "https://antzed.com",
-  }
-
+  },
 ];
 
 export default authorList;

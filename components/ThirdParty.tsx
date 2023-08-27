@@ -26,12 +26,6 @@ export const THIRD_PARTY_LIST: ThirdPartyItem[] = [
     description: "Wechat miniprogram",
     link: "https://github.com/Rabithua/memos_wmp",
   },
-  {
-    name: "qazxcdswe123/telegramMemoBot",
-    author: "qazxcdswe123",
-    description: "Telegram bot",
-    link: "https://github.com/qazxcdswe123/telegramMemoBot",
-  },
 ];
 
 const ThirdParty = () => {

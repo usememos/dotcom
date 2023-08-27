@@ -6,10 +6,11 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import LatestVersion from "../components/LatestVersion";
 import SlashBanner from "../components/SlashBanner";
+import DemoPlaceholder from "../components/DemoPlaceholder";
 
 const Home: NextPage = () => {
   return (
-    <div className="h-full flex flex-col justify-start items-start px-4 sm:px-0">
+    <div className="h-full flex flex-col justify-start items-start">
       <Head>
         <title>memos - Easily capture and share your great thoughts</title>
         <link rel="icon" href="/logo.webp" />
@@ -32,13 +33,14 @@ const Home: NextPage = () => {
 
       <h1 className="sr-only">memos - Easily capture and share your great thoughts.</h1>
 
-      <main className="w-full max-w-4xl h-auto mx-auto flex flex-col justify-start items-start pt-4 pb-16">
+      <main className="w-full max-w-6xl h-auto mx-auto flex flex-col justify-start items-start pt-6 pb-16 px-4 sm:px-0">
         <div className="w-full flex flex-col justify-start items-center">
           <LatestVersion />
-          <img className="h-24 sm:h-32 w-auto rounded-lg" src="/logo.webp" alt="memos-logo" />
         </div>
         <div className="w-full flex flex-col justify-center items-center sm:px-16">
-          <h2 className="w-full text-center text-4xl sm:text-6xl font-bold mt-4 mb-4">A privacy-first, lightweight note-taking service</h2>
+          <h2 className="w-full max-w-3xl text-center text-4xl sm:text-6xl font-medium sm:font-bold mt-4 mb-6">
+            A privacy-first, lightweight note-taking service
+          </h2>
           <h3 className="w-full text-base sm:text-lg text-gray-500 text-center mb-2">Easily capture and share your great thoughts.</h3>
         </div>
         <div className="w-full flex flex-row justify-center items-center space-x-2 py-4">
@@ -52,19 +54,10 @@ const Home: NextPage = () => {
             <img alt="Discord" src="https://img.shields.io/badge/discord-chat-5865f2?logo=discord" />
           </a>
         </div>
-        <div className="w-full flex flex-row justify-center items-center space-x-2">
-          <a href="https://demo.usememos.com" target="_blank" className="text-blue-600 leading-6 text-base hover:underline">
-            Live Demo
-          </a>
-          <span className="block mx-2">•</span>
-          <a href="https://discord.gg/tfPJa4UmAv" target="_blank" className="text-blue-600 leading-6 text-base hover:underline">
-            Discuss in Discord 🙋
-          </a>
-        </div>
+        <DemoPlaceholder />
         <div className="w-full flex flex-row justify-center items-center">
           <SlashBanner />
         </div>
-        <img className="w-full h-auto mt-2 mb-2" src="/demo.webp" alt="demo-screenshot" />
         <FeatureMatrix />
         <Contributors />
       </main>

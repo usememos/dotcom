@@ -1,5 +1,5 @@
 ---
-title: Docs
+title: Documentations
 ---
 
 > This document is WIP and **contributions are welcome**.
