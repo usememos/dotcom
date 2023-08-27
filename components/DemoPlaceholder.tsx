@@ -2,7 +2,7 @@ import Icon from "./Icon";
 
 const DemoPlaceholder = () => {
   return (
-    <div className="relative w-full mt-2 mb-2">
+    <div className="relative w-full min-h-[256px] mt-2 mb-2">
       <img className="hidden sm:block w-full h-auto" src="/demo.webp" alt="demo-screenshot" />
       <img className="sm:hidden w-full h-auto" src="/demo-mobile.webp" alt="demo-mobile-screenshot" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-2 drop-shadow flex flex-col justify-center items-center gap-2 sm:gap-4">
