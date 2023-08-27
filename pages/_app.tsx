@@ -7,7 +7,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <Component {...pageProps} />
       <Analytics />
-      <script defer data-domain="usememos.com" src="https://plausible.io/js/script.js"></script>
     </>
   );
 }
