@@ -69,13 +69,17 @@ If that's OK, just config the **bot token** of your *Memos* like below:
 
 Replace `<token>` with the original **bot token** from Telegram's @BotFather.
 
+## Can I Use Webhook instead of API Proxy ?
+
+**NO**.
+
+In addition to receiving updates from Telegram, many features require visit Telegram's API directly, such as downloading images and sending replies. Therefore, the environment in which Memos running on must be able to **Directly** access Telegram. If for some special reasons it is not possible to access it directly, then a Proxy API is a necessity. On this basis, providing additional support for Webhooks is not too necessary, at least it doesn't have much significance in terms of resolving the accessibility of Telegram.
+
 ## What's next?
 
 The Telegram bot is a powerful tool, and we have only implemented a few features so far. We plan to add more features in the future, including:
 
 - Commands for the Telegram bot to perform special actions.
-- Support for additional message types, such as attachments and group messages.
-- Webhooks for the Telegram bot.
 - Sending notifications through the Telegram bot.
 - And more...
 
