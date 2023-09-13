@@ -1,5 +1,6 @@
 import { GetServerSideProps } from "next";
 import { FEATURE_LIST } from "../components/FeatureMatrix";
+import { getBlogSlugList, getDocsSlugList } from "../lib/content";
 
 const DOMAIN_NAME = "https://usememos.com";
 
@@ -12,6 +13,24 @@ const generateSiteMapForFeatures = () => {
   });
 };
 
+const generateSiteMapForDocs = () => {
+  return getDocsSlugList().map((contentSlug) => {
+    return `
+    <url>
+      <loc>${DOMAIN_NAME}/docs/${contentSlug.join("/")}</loc>
+    </url>`;
+  });
+};
+
+const generateSiteMapForBlog = () => {
+  return getBlogSlugList().map((contentSlug) => {
+    return `
+    <url>
+      <loc>${DOMAIN_NAME}/blog/${contentSlug.join("/")}</loc>
+    </url>`;
+  });
+};
+
 const generateSiteMap = () => {
   return `<?xml version="1.0" encoding="UTF-8"?>
    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -19,6 +38,8 @@ const generateSiteMap = () => {
         <loc>${DOMAIN_NAME}</loc>
       </url>
       ${generateSiteMapForFeatures().join("")}
+      ${generateSiteMapForDocs().join("")}
+      ${generateSiteMapForBlog().join("")}
    </urlset>
  `;
 };

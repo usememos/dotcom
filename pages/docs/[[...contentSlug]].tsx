@@ -10,6 +10,7 @@ import { markdoc } from "../../markdoc/markdoc";
 import AuthorView from "../../components/AuthorView";
 import authorList from "../../consts/author";
 import { Frontmatter } from "../../types/content";
+import { getDocsSlugList } from "../../lib/content";
 
 const Docs = (props: { content: string }) => {
   const { frontmatter, transformedContent } = markdoc<Frontmatter>(props.content);
@@ -56,33 +57,11 @@ const Docs = (props: { content: string }) => {
   );
 };
 
-const getContentSlugList = (): string[][] => {
-  const contentSlugList: string[][] = [];
-  const travelContentSlugList = (subpath: string) => {
-    const filePath = path.resolve("./content/docs/", subpath);
-    const files = fs.readdirSync(filePath);
-    for (const file of files) {
-      if (file.endsWith(".md")) {
-        const contentSlug = subpath === "" ? [] : subpath.split("/");
-        if (file === "index.md") {
-          contentSlugList.push(contentSlug);
-        } else {
-          contentSlugList.push([...contentSlug, file.substring(0, file.length - 3)]);
-        }
-      } else {
-        travelContentSlugList(path.join(subpath, file));
-      }
-    }
-  };
-  travelContentSlugList("");
-  return contentSlugList;
-};
-
 export const getStaticPaths: GetStaticPaths = () => {
   return {
     paths: [
       { params: { contentSlug: [] } },
-      ...getContentSlugList().map((contentSlug) => {
+      ...getDocsSlugList().map((contentSlug) => {
         return { params: { contentSlug: contentSlug } };
       }),
     ],
