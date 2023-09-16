@@ -44,3 +44,25 @@ export const getBlogSlugList = (): string[][] => {
   travelContentSlugList("");
   return contentSlugList;
 };
+
+export const getChangelogSlugList = (): string[][] => {
+  const contentSlugList: string[][] = [];
+  const travelContentSlugList = (subpath: string) => {
+    const filePath = path.resolve("./content/changelog/", subpath);
+    const files = fs.readdirSync(filePath);
+    for (const file of files) {
+      if (file.endsWith(".md")) {
+        const contentSlug = subpath === "" ? [] : subpath.split("/");
+        if (file === "index.md") {
+          contentSlugList.push(contentSlug);
+        } else {
+          contentSlugList.push([...contentSlug, file.substring(0, file.length - 3)]);
+        }
+      } else {
+        travelContentSlugList(path.join(subpath, file));
+      }
+    }
+  };
+  travelContentSlugList("");
+  return contentSlugList;
+};

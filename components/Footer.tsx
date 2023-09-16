@@ -35,52 +35,57 @@ const Footer = () => {
         </div>
         <div className="w-full flex flex-col justify-start items-start space-y-2">
           <p className="my-2 text-gray-400 font-medium font-mono">References</p>
-          <a
-            className="w-auto px-3 py-1 rounded-full border-2 border-blue-700 flex flex-row justify-start items-center space-x-2 cursor-pointer hover:bg-blue-100"
-            href="https://twitter.com/usememos"
-            target="_blank"
-          >
-            <span className="text-blue-700">Follow us in </span>
-            <Icon.Twitter className="w-5 h-auto mr-1 text-blue-700" />
-          </a>
+          <Link href="/docs">
+            <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">
+              Documentation
+            </span>
+          </Link>
+          <Link href="/changelog">
+            <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">
+              Changelog
+            </span>
+          </Link>
+          <Link href="/blog">
+            <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">
+              Blogs
+            </span>
+          </Link>
           <div className="w-auto flex flex-row justify-start items-center space-x-2">
             <span className="text-gray-500">Discuss in</span>
-            <a
+            <Link
               className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600"
               href="https://discord.gg/tfPJa4UmAv"
               target="_blank"
             >
               <Icon.MessageCircle className="w-5 h-auto mr-1" /> Discord
-            </a>
+            </Link>
+            D
           </div>
           <div className="w-auto flex flex-row justify-start items-center space-x-2">
             <span className="text-gray-500">Join</span>
-            <a
+            <Link
               className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600"
               target="_blank"
               href="https://t.me/+-_tNF1k70UU4ZTc9"
             >
               <Icon.MessageSquare className="w-5 h-auto mr-1" /> Telegram
-            </a>
+            </Link>
           </div>
-          <a
+          <Link
             className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600"
             href="https://github.com/sponsors/usememos"
             target="_blank"
           >
             <Icon.Heart className="w-5 h-auto mr-1" />
             Become a Sponsor
-          </a>
-          <Link href="/docs">
-            <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">
-              Documentation
-            </span>
           </Link>
-          <Link href="/blog">
-            <span className="flex flex-row justify-start items-center cursor-pointer font-medium border px-3 py-1 rounded-full shadow hover:text-blue-600">
-              <Icon.BookOpen className="w-4 h-auto mr-1" />
-              Blog
-            </span>
+          <Link
+            className="w-auto px-3 py-1 rounded-full border-2 border-blue-700 flex flex-row justify-start items-center space-x-2 cursor-pointer hover:bg-blue-100"
+            href="https://twitter.com/usememos"
+            target="_blank"
+          >
+            <span className="text-blue-700">Follow us in </span>
+            <Icon.Twitter className="w-5 h-auto mr-1 text-blue-700" />
           </Link>
         </div>
       </div>
