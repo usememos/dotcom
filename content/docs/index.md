@@ -12,18 +12,24 @@ If you have any more questions, don't hesitate to ask in the [Discord server](ht
 - [Docker](/docs/install/docker)
 - [Managed Hosting](/docs/install/cloud)
 
-## Contribution
+## Account Security
 
-- [Contribute to memos](/docs/contribution/development/)
-- [Contribute to documentation](/docs/contribution/documentation/)
+- 🆕 [Access Tokens](/docs/access-tokens)
 
 ## Integration
 
-- 🆕 [Telegram Bot 🤖️](/docs/integration/telegram-bot)
+- [Telegram Bot 🤖️](/docs/integration/telegram-bot)
 
 ## Others
 
 - [FAQ](/docs/faq)
 - [S3 Storage](/docs/storage)
 - [SSO - Keycloak](/docs/keycloak)
-- 🆕 [Local storage](/docs/local-storage)
+- [Local storage](/docs/local-storage)
+
+---
+
+## Contribution
+
+- [Contribute to memos](/docs/contribution/development/)
+- [Contribute to documentation](/docs/contribution/documentation/)
