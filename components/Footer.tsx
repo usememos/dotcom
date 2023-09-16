@@ -59,7 +59,6 @@ const Footer = () => {
             >
               <Icon.MessageCircle className="w-5 h-auto mr-1" /> Discord
             </Link>
-            D
           </div>
           <div className="w-auto flex flex-row justify-start items-center space-x-2">
             <span className="text-gray-500">Join</span>
