@@ -11,7 +11,7 @@ const authorList: Author[] = [
   {
     name: "Steven",
     github: "boojack",
-    twitter: "stevenxlee",
+    twitter: "stevenx1ee",
     funding: "https://ko-fi.com/stevenlgtm",
   },
   {
