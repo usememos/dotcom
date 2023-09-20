@@ -50,6 +50,12 @@ const Footer = () => {
               Blogs
             </span>
           </Link>
+          <Link href="https://github.com/orgs/usememos/projects/5/views/1" target="_blank">
+            <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">
+              Roadmap
+              <Icon.ExternalLink className="w-4 h-auto ml-1" />
+            </span>
+          </Link>
           <div className="w-auto flex flex-row justify-start items-center space-x-2">
             <span className="text-gray-500">Discuss in</span>
             <Link
