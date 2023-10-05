@@ -46,6 +46,7 @@ memos should now be running at <http://localhost:3001> and change either fronten
 - [pnpm](https://pnpm.io), requires version >=8.0
 - [Go](https://go.dev/), requires Go >= 1.19
 - [Air](https://github.com/cosmtrek/air) for backend live reload
+- [Buf](https://buf.build/docs/installation) for generating TypeScript code from protobuf
 
 ### Steps
 
@@ -61,7 +62,13 @@ memos should now be running at <http://localhost:3001> and change either fronten
    air -c scripts/.air.toml
    ```
 
-3. Start frontend
+3. Generate TypeScript code from protobuf with buf
+
+   ```bash
+   cd proto && buf generate
+   ```
+
+4. Start frontend dev server
 
    ```bash
    cd web && pnpm i && pnpm dev
