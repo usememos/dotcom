@@ -13,7 +13,7 @@ const Home: NextPage = () => {
     <div className="h-full flex flex-col justify-start items-start">
       <Head>
         <title>memos - Easily capture and share your great thoughts</title>
-        <link rel="icon" href="/logo.webp" />
+        <link rel="icon" href="/logo.png" />
         <meta
           name="description"
           content="A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts."
