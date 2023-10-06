@@ -7,6 +7,7 @@ import Header from "../components/Header";
 import LatestVersion from "../components/LatestVersion";
 import SlashBanner from "../components/SlashBanner";
 import DemoPlaceholder from "../components/DemoPlaceholder";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   return (
@@ -44,15 +45,15 @@ const Home: NextPage = () => {
           <h3 className="w-full text-base sm:text-lg text-gray-500 text-center mb-2">Easily capture and share your great thoughts.</h3>
         </div>
         <div className="w-full flex flex-row justify-center items-center space-x-2 py-4">
-          <a target="_blank" href="https://github.com/usememos/memos">
+          <Link target="_blank" href="https://github.com/usememos/memos">
             <img alt="GitHub stars" src="https://img.shields.io/github/stars/usememos/memos?logo=github" />
-          </a>
-          <a target="_blank" href="https://hub.docker.com/r/neosmemo/memos">
+          </Link>
+          <Link target="_blank" href="https://hub.docker.com/r/neosmemo/memos">
             <img alt="Docker" src="https://img.shields.io/docker/pulls/neosmemo/memos.svg?logo=docker" />
-          </a>
-          <a target="_blank" href="https://discord.gg/tfPJa4UmAv">
+          </Link>
+          <Link target="_blank" href="https://discord.gg/tfPJa4UmAv">
             <img alt="Discord" src="https://img.shields.io/badge/discord-chat-5865f2?logo=discord" />
-          </a>
+          </Link>
         </div>
         <DemoPlaceholder />
         <div className="w-full flex flex-row justify-center items-center">

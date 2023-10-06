@@ -5,6 +5,7 @@ import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import LatestVersion from "../../components/LatestVersion";
 import DemoPlaceholder from "../../components/DemoPlaceholder";
+import Link from "next/link";
 
 interface Props {
   featureName: string;
@@ -50,15 +51,15 @@ const Feature = (props: Props) => {
           <h3 className="w-full text-base sm:text-lg text-gray-500 text-center mb-2">{feature.description}</h3>
         </div>
         <div className="w-full flex flex-row justify-center items-center space-x-2 py-4">
-          <a target="_blank" href="https://github.com/usememos/memos">
+          <Link target="_blank" href="https://github.com/usememos/memos">
             <img alt="GitHub stars" src="https://img.shields.io/github/stars/usememos/memos?logo=github" />
-          </a>
-          <a target="_blank" href="https://hub.docker.com/r/neosmemo/memos">
+          </Link>
+          <Link target="_blank" href="https://hub.docker.com/r/neosmemo/memos">
             <img alt="Docker" src="https://img.shields.io/docker/pulls/neosmemo/memos.svg?logo=docker" />
-          </a>
-          <a target="_blank" href="https://discord.gg/tfPJa4UmAv">
+          </Link>
+          <Link target="_blank" href="https://discord.gg/tfPJa4UmAv">
             <img alt="Discord" src="https://img.shields.io/badge/discord-chat-5865f2?logo=discord" />
-          </a>
+          </Link>
         </div>
         <DemoPlaceholder />
         <FeatureMatrix />

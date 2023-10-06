@@ -5,9 +5,9 @@ import { THIRD_PARTY_LIST } from "./ThirdParty";
 
 const Footer = () => {
   return (
-    <footer className="border-t w-full mx-auto flex flex-row justify-center items-center sm:bg-zinc-100 sm:shadow-inner px-4 sm:px-0">
+    <footer className="border-t w-full mx-auto flex flex-row justify-center items-center bg-zinc-100 px-4 sm:px-0">
       <div className="max-w-6xl w-full mx-auto py-12 pb-16 sm:px-10 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6">
-        <div className="w-full flex flex-col justify-start items-start space-y-2">
+        <div className="w-full flex flex-col justify-start items-start space-y-3">
           <p className="my-2 text-gray-400 font-medium font-mono">Features</p>
           {FEATURE_LIST.map((feature) => {
             return (
@@ -17,23 +17,23 @@ const Footer = () => {
             );
           })}
         </div>
-        <div className="w-full flex flex-col justify-start items-start space-y-2">
+        <div className="w-full flex flex-col justify-start items-start space-y-3">
           <p className="my-2 text-gray-400 font-medium font-mono">Community Products</p>
           {THIRD_PARTY_LIST.map((product) => {
             return (
-              <a
-                className="w-full break-all whitespace-pre-wrap hover:underline hover:text-blue-600"
+              <Link
+                className="break-all whitespace-pre-wrap hover:underline hover:text-blue-600"
                 key={product.name}
                 href={product.link}
                 target="_blank"
               >
                 {product.name}
                 <Icon.ExternalLink className="w-4 h-auto inline ml-1" />
-              </a>
+              </Link>
             );
           })}
         </div>
-        <div className="w-full flex flex-col justify-start items-start space-y-2">
+        <div className="w-full flex flex-col justify-start items-start space-y-3">
           <p className="my-2 text-gray-400 font-medium font-mono">References</p>
           <Link href="/docs">
             <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">

@@ -1,6 +1,8 @@
+import Link from "next/link";
+
 const SlashBanner = () => {
   return (
-    <a
+    <Link
       className="text-sm sm:text-base flex flex-row justify-start items-center px-4 py-2 rounded-full bg-green-100 shadow text-green-600 hover:bg-green-200"
       href="https://github.com/boojack/slash"
       target="_blank"
@@ -11,7 +13,7 @@ const SlashBanner = () => {
         alt=""
       />
       <span className="leading-4">Slash: Your bookmarks and link sharing platform</span>
-    </a>
+    </Link>
   );
 };
 

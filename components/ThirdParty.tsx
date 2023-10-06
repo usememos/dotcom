@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Icon from "./Icon";
 
 interface ThirdPartyItem {
@@ -41,13 +42,13 @@ const ThirdParty = () => {
           <div key={thirdPartyItem.name} className="w-auto mt-4 flex flex-col justify-start items-start">
             <p className="mb-1 w-full flex flex-row justify-start items-center">
               {thirdPartyItem.link && (
-                <a
+                <Link
                   href={thirdPartyItem.link}
                   target="_blank"
                   className="flex flex-row justify-start items-center hover:text-blue-600 hover:underline"
                 >
                   <span className="">{thirdPartyItem.name}</span> <Icon.ExternalLink className="w-4 h-auto ml-1" />
-                </a>
+                </Link>
               )}
             </p>
             <p className="text-gray-500">{thirdPartyItem.description}</p>

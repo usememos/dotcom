@@ -22,13 +22,13 @@ const Header = () => {
             Blog
           </Link>
           <span className="font-mono text-gray-300">/</span>
-          <a
+          <Link
             className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600"
             href="https://github.com/usememos/memos"
             target="_blank"
           >
             <Icon.Github className="w-5 h-auto" />
-          </a>
+          </Link>
         </div>
       </div>
     </header>
