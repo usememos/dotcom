@@ -4,12 +4,12 @@ import Icon from "./Icon";
 const Header = () => {
   return (
     <header className="sticky top-0 bg-white bg-opacity-80 backdrop-blur border-b z-10 w-full mx-auto flex flex-row justify-center items-center px-4 sm:px-0">
-      <div className="max-w-6xl w-full mx-auto py-2 sm:px-10 flex flex-row justify-between items-center">
+      <div className="max-w-6xl w-full mx-auto py-4 sm:px-10 flex flex-row justify-between items-center">
         <div className="w-auto flex flex-row justify-start items-center">
           <Link href="/">
             <div className="cursor-pointer flex flex-row justify-start items-center hover:opacity-80">
-              <img src="/logo.png" className="h-6 w-auto mr-1 rounded-lg" alt="" />
-              <span className="text-lg">memos</span>
+              <img src="/logo.png" className="h-8 w-auto mr-2 rounded-full shadow" alt="" />
+              <span className="text-xl">memos</span>
             </div>
           </Link>
         </div>

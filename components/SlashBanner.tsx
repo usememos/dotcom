@@ -1,7 +1,7 @@
 const SlashBanner = () => {
   return (
     <a
-      className="text-sm sm:text-base flex flex-row justify-start items-start px-2 py-1 rounded-lg bg-blue-50 shadow text-blue-600 hover:underline"
+      className="text-sm sm:text-base flex flex-row justify-start items-center px-4 py-2 rounded-full bg-green-100 shadow text-green-600 hover:bg-green-200"
       href="https://github.com/boojack/slash"
       target="_blank"
     >
@@ -10,7 +10,7 @@ const SlashBanner = () => {
         src="https://github.com/boojack/slash/raw/main/resources/logo.png"
         alt=""
       />
-      <span className="leading-6">Slash: Your bookmarks and link sharing platform</span>
+      <span className="leading-4">Slash: Your bookmarks and link sharing platform</span>
     </a>
   );
 };
