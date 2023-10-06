@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Icon from "./Icon";
 import { FEATURE_LIST } from "./FeatureMatrix";
+import Icon from "./Icon";
 import { THIRD_PARTY_LIST } from "./ThirdParty";
 
 const Footer = () => {

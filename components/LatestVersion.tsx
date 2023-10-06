@@ -1,7 +1,7 @@
 import axios from "axios";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import Icon from "./Icon";
-import Link from "next/link";
 
 const LatestVersion = () => {
   const [version, setVersion] = useState<string>("");

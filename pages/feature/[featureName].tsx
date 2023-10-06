@@ -1,11 +1,11 @@
 import type { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
+import Link from "next/link";
+import DemoPlaceholder from "../../components/DemoPlaceholder";
 import FeatureMatrix, { FEATURE_LIST, FeatureItem } from "../../components/FeatureMatrix";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import LatestVersion from "../../components/LatestVersion";
-import DemoPlaceholder from "../../components/DemoPlaceholder";
-import Link from "next/link";
 
 interface Props {
   featureName: string;

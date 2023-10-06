@@ -1,16 +1,16 @@
 import Markdoc from "@markdoc/markdoc";
+import fs from "fs";
 import type { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
-import fs from "fs";
 import path from "path";
 import React from "react";
-import { markdoc } from "../../markdoc/markdoc";
-import authorList from "../../consts/author";
+import AuthorView from "../../components/AuthorView";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
-import AuthorView from "../../components/AuthorView";
-import { Frontmatter } from "../../types/content";
+import authorList from "../../consts/author";
 import { getChangelogSlugList } from "../../lib/content";
+import { markdoc } from "../../markdoc/markdoc";
+import { Frontmatter } from "../../types/content";
 
 const Changelog = (props: { content: string }) => {
   const { frontmatter, transformedContent } = markdoc<Frontmatter>(props.content);

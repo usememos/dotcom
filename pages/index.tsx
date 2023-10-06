@@ -1,13 +1,13 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import Contributors from "../components/Contributors";
+import DemoPlaceholder from "../components/DemoPlaceholder";
 import FeatureMatrix from "../components/FeatureMatrix";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import LatestVersion from "../components/LatestVersion";
 import SlashBanner from "../components/SlashBanner";
-import DemoPlaceholder from "../components/DemoPlaceholder";
-import Link from "next/link";
 
 const Home: NextPage = () => {
   return (
