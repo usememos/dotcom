@@ -41,7 +41,7 @@ const Changelog = (props: { content: string }) => {
       <h1 className="sr-only">memos - Easily capture and share your great thoughts.</h1>
 
       <main className="w-full max-w-6xl h-auto grow mx-auto flex flex-col justify-start items-start px-4 sm:px-24 pt-4 pb-24">
-        <div className="pt-12 w-full mx-auto prose prose-neutral hover:prose-a:text-blue-500">
+        <div className="pt-12 w-full mx-auto prose prose-lg max-w-none hover:prose-a:text-blue-500">
           <h1>{frontmatter.title}</h1>
           {author && <AuthorView author={author} />}
           {Markdoc.renderers.react(transformedContent, React)}
