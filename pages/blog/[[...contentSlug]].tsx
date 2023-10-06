@@ -19,7 +19,7 @@ const Blog = (props: { content: string }) => {
   return (
     <div className="h-full flex flex-col justify-start items-start">
       <Head>
-        <title>{frontmatter.title} | memos</title>
+        <title>{`${frontmatter.title} | memos`}</title>
         <meta
           name="description"
           content="A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts."

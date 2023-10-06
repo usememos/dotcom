@@ -19,7 +19,7 @@ const Docs = (props: { content: string }) => {
   return (
     <div className="h-full flex flex-col justify-start items-start">
       <Head>
-        <title>{frontmatter.title} | memos</title>
+        <title>{`${frontmatter.title} | memos`}</title>
         <link rel="icon" href="/logo.png" />
         <meta
           name="description"
