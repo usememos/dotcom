@@ -28,6 +28,8 @@ If you have any more questions, don't hesitate to ask in the [Discord server](ht
 - [Local storage](/docs/local-storage)
 - [MySQL](/docs/mysql)
 
+---
+
 ## Contribution
 
 - [Contribute to memos](/docs/contribution/development/)
