@@ -26,8 +26,7 @@ If you have any more questions, don't hesitate to ask in the [Discord server](ht
 - [S3 Storage](/docs/storage)
 - [SSO - Keycloak](/docs/keycloak)
 - [Local storage](/docs/local-storage)
-
----
+- [MySQL](/docs/mysql)
 
 ## Contribution
 
