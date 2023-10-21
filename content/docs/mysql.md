@@ -1,54 +1,34 @@
----
-title: How to use MySQL as db driver
----
+# Using MySQL as the Database Driver
 
-From *v0.16.0*, *Memos* added support for use MySQL as database driver.
+Starting in version 0.16.1, memos has added support for using MySQL as the database driver.
 
-Because this is a big feature, and need more test, so we only enable it in **dev** mode currently.
+## Enabling MySQL
 
-If you're intesting on the feature, please help us to test it.
+By default, memos uses SQLite as the database driver. To switch to MySQL, you need to specify two additional arguments when starting memos:
 
-Any problems? Feeling free to fire bug on Github, or contact us on Slack or Telegram.
+- **--driver** _mysql_ : Specifies that memos should use `mysql` instead of the default `sqlite`.
 
-## How to enable MySQL
+- **--dsn** _dbuser:dbpass@tcp(dbhost)/dbname_: Provides the connection details for your MySQL server.
 
-*Memos* currently use SQLite as the default db drvier.
+Then you can start memos with docker like this:
 
-If you want to use MySQL instead, you should add two args in the command:
-
-
-- **--mode** *dev* :
- 
-  to make Memos works on `dev` mode
-- **--drvier** *mysql* :
- 
-  to tell Memos use `mysql` instead of default `sqlite`
-- **--dsn** *dbuser:dbpass@tcp(dbhost)/dbname*:
-  
-  to tell Memos how to connect to your `mysql` server.
-
-Your can also use environments to specified those args like this:
-
-- MEMOS_MODE=dev
-- MEMOS_DRIVER=mysql
--MEMOS_DSN=dbuser:dbpass@tcp(dbhost)/dbname
-
-For example
-```bash
-/path/to/memos -m dev --driver mysql --dsn 'root:xxx@tcp(localhost)/memos_prod'
+```shell
+docker run -d --name memos -p 5230:5230 -v ~/.memos/:/var/opt/memos ghcr.io/usememos/memos:latest --driver mysql --dsn 'root:password@tcp(localhost)/memos_prod'
 ```
 
-After all arg is set, you can just start Memos as normal.
+And you can also set these via environment variables:
 
-## How to migrate from SQLite to MySQL
-
-We have provide a tools *copydb* to do this. you can running this tool like below:
-
-```bash
-/usr/local/bin/memos -m dev --driver mysql --dsn 'dbuser:dbpass@tcp(dbhost)/dbname' copydb --from sqlite://path_to_your_memos_prod.db
+```
+MEMOS_DRIVER=mysql
+MEMOS_DSN=root:password@tcp(localhost)/memos_prod
 ```
 
-This command will copy all data specifiled by args `--from` of `copydb` into the Memos server.
+## Migrating data from SQLite to MySQL
 
-Also, if you're running a Memo in docker container, you can run this command in the container.
+If you are already using memos with SQLite, you can migrate your data to MySQL with the following command `copydb`:
 
+```shell
+/usr/local/bin/memos --driver mysql --dsn 'dbuser:dbpass@tcp(dbhost)/dbname' copydb --from sqlite://path_to_your_memos_prod.db
+```
+
+This will copy all data from the SQLite database specified by `--from` into the MySQL server. If your memos instance is running in Docker, you can execute this command inside the container.
