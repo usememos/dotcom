@@ -1,4 +1,6 @@
-# Using MySQL as the Database Driver
+---
+title: Using MySQL as the Database Driver
+---
 
 Starting in version 0.16.1, memos has added support for using MySQL as the database driver.
 
