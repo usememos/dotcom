@@ -21,7 +21,7 @@ const Feature = (props: Props) => {
         <title>
           memos - {feature.title} - {feature.description}
         </title>
-        <link rel="icon" href="/logo.png" />
+        <link rel="icon" href="/logo.ico" />
         <meta
           name="description"
           content="A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts."

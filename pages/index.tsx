@@ -1,7 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import Contributors from "../components/Contributors";
 import DemoPlaceholder from "../components/DemoPlaceholder";
 import FeatureMatrix from "../components/FeatureMatrix";
 import Footer from "../components/Footer";
@@ -14,7 +13,7 @@ const Home: NextPage = () => {
     <div className="h-full flex flex-col justify-start items-start">
       <Head>
         <title>memos - Easily capture and share your great thoughts</title>
-        <link rel="icon" href="/logo.png" />
+        <link rel="icon" href="/logo.ico" />
         <meta
           name="description"
           content="A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts."
@@ -60,7 +59,6 @@ const Home: NextPage = () => {
           <SlashBanner />
         </div>
         <FeatureMatrix />
-        <Contributors />
       </main>
 
       <Footer />
