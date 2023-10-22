@@ -1,6 +1,6 @@
 import { nodes } from "@markdoc/markdoc";
 
-function generateID(children: any, attributes: any) {
+const generateID = (children: any, attributes: any) => {
   if (attributes.id && typeof attributes.id === "string") {
     return attributes.id;
   }
@@ -11,7 +11,7 @@ function generateID(children: any, attributes: any) {
     .replace(/\./g, "")
     .replace(/\s+/g, "-")
     .toLowerCase();
-}
+};
 
 const header = {
   ...nodes.heading,

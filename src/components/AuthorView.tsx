@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Author } from "../consts/author";
+import { Author } from "@/consts/author";
 import Icon from "./Icon";
 
 interface Props {
