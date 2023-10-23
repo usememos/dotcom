@@ -23,7 +23,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         />
         <meta name="og:type" property="og:type" content="website" />
         <meta name="twitter:card" content="summary" />
-        <meta name="og:url" property="og:url" content="https://usememos.com" />
+        <meta name="og:url" property="og:url" content="https://www.usememos.com" />
       </head>
       <body className="flex flex-col w-full h-full">
         <div className="relative w-full flex flex-col">
