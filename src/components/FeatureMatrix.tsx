@@ -51,20 +51,23 @@ const FeatureMatrix = () => {
   return (
     <>
       <div className="w-full my-8 flex flex-col justify-center items-center">
-        <h2 className="border-t py-8 px-8 text-xl text-center text-gray-500 font-mono">
+        <h2 className="text-xl text-center text-gray-500 font-mono mb-4">
           <span className="text-2xl mr-2">✨</span>Features
         </h2>
       </div>
-      <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-4 sm:px-10">
+      <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 sm:px-10">
         {FEATURE_LIST.map((featureItem) => (
-          <div key={featureItem.title} className="w-full flex flex-col justify-start items-start mb-2 sm:mb-8">
-            <featureItem.icon strokeWidth="1" className="h-10 mt-4 mb-2 sm:h-14 w-auto text-gray-500" />
-            <span className="relative text-base sm:text-xl sm:leading-10 my-1">
-              <Link href={`/feature/${featureItem.slug}`}>{featureItem.title}</Link>
-              <div className="absolute blur top-0 w-full h-full rounded-full opacity-30 bg-green-300"></div>
+          <Link
+            key={featureItem.title}
+            href={`/feature/${featureItem.slug}`}
+            className="w-full flex flex-col justify-start items-center border p-4 rounded-2xl hover:shadow"
+          >
+            <featureItem.icon strokeWidth="1" className="h-10 sm:h-14 w-auto text-gray-500" />
+            <span className="relative text-base sm:text-xl mt-4 mb-2">
+              <span>{featureItem.title}</span>
             </span>
-            <p className="text-sm mt-4 sm:text-base text-gray-500">{featureItem.description}</p>
-          </div>
+            <p className="text-sm sm:text-base text-gray-500">{featureItem.description}</p>
+          </Link>
         ))}
       </div>
     </>
