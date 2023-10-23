@@ -29,9 +29,10 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.usememos.com"),
   title: "memos - Easily capture and share your great thoughts",
   description: "A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts.",
-  manifest: `https://www.usememos.com/manifest.json`,
+  manifest: "/manifest.json",
   icons: {
     icon: "/favicon/favicon.png",
     apple: [
