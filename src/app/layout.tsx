@@ -10,7 +10,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
         <title>memos - Easily capture and share your great thoughts</title>
-        <link rel="icon" href="/logo.ico" />
+        <link rel="icon" href="/favicon.png" type="image/png" />
         <meta
           name="description"
           content="A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts."
