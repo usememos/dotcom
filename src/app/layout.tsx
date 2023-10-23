@@ -31,6 +31,18 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 export const metadata: Metadata = {
   title: "memos - Easily capture and share your great thoughts",
   description: "A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts.",
+  manifest: `https://www.usememos.com/manifest.json`,
+  icons: {
+    icon: "/favicon/favicon.png",
+    apple: [
+      { url: "/favicon/favicon.png" },
+      { url: "/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon/favicon-48x48.png", sizes: "48x48", type: "image/png" },
+      { url: "/favicon/favicon-128x128.png", sizes: "128x128", type: "image/png" },
+      { url: "/favicon/favicon-256x256.png", sizes: "256x256", type: "image/png" },
+      { url: "/favicon/favicon-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+  },
   openGraph: {
     title: "memos - Easily capture and share your great thoughts. Open Source and Free forever",
     description: "A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts.",
