@@ -60,10 +60,10 @@ const FeatureMatrix = () => {
           <Link
             key={featureItem.title}
             href={`/feature/${featureItem.slug}`}
-            className="w-full flex flex-col justify-start items-center border p-4 rounded-2xl hover:shadow"
+            className="w-full flex flex-col justify-start items-start p-6 rounded-2xl hover:shadow"
           >
-            <featureItem.icon strokeWidth="1" className="h-10 sm:h-14 w-auto text-gray-500" />
-            <span className="relative text-base sm:text-xl mt-4 mb-2">
+            <featureItem.icon strokeWidth="1" className="h-8 w-auto" />
+            <span className="relative text-base sm:text-xl mb-2 mt-4">
               <span>{featureItem.title}</span>
             </span>
             <p className="text-sm sm:text-base text-gray-500">{featureItem.description}</p>
