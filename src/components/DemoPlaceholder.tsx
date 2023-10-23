@@ -7,14 +7,14 @@ const DemoPlaceholder = () => {
       <div className="p-2 flex flex-row justify-center items-center gap-2 sm:gap-4">
         <Link
           className="bg-green-600 text-white w-32 py-2 rounded-md shadow-lg flex flex-row justify-center items-center hover:bg-green-700"
-          href="https://demo.usememos.com"
+          href="/demo"
           target="_blank"
         >
           Live Demo
         </Link>
         <Link
           className="bg-white opacity-70 w-32 py-2 rounded-md drop-shadow flex flex-row justify-center items-center hover:bg-gray-100"
-          href="https://discord.gg/tfPJa4UmAv"
+          href="/discord"
           target="_blank"
         >
           <Icon.MessageCircle className="w-5 h-auto mr-1" />

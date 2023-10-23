@@ -41,7 +41,7 @@ const Header = () => {
           <span className="font-mono text-gray-300">/</span>
           <Link
             className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600"
-            href="https://github.com/usememos/memos"
+            href="/github"
             target="_blank"
           >
             <Icon.Github className="w-5 h-auto" />
