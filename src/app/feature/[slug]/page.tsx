@@ -1,9 +1,14 @@
+import { Metadata } from "next";
 import Link from "next/link";
 import DemoPlaceholder from "@/components/DemoPlaceholder";
 import FeatureMatrix, { FEATURE_LIST, FeatureItem } from "@/components/FeatureMatrix";
 import LatestVersion from "@/components/LatestVersion";
 
-const Page = ({ params }: { params: { slug: string } }) => {
+interface Props {
+  params: { slug: string };
+}
+
+const Page = ({ params }: Props) => {
   const feature = FEATURE_LIST.find((feature) => feature.slug === params.slug) as FeatureItem;
 
   return (
@@ -31,6 +36,13 @@ const Page = ({ params }: { params: { slug: string } }) => {
       <FeatureMatrix />
     </>
   );
+};
+
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  const feature = FEATURE_LIST.find((feature) => feature.slug === params.slug) as FeatureItem;
+  return {
+    title: feature.title,
+  };
 };
 
 export const generateStaticParams = () => {

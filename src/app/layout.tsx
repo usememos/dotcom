@@ -1,4 +1,5 @@
 import { Analytics } from "@vercel/analytics/react";
+import { Metadata } from "next";
 import React from "react";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
@@ -9,21 +10,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
     <html className="w-full h-full">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
-        <title>memos - Easily capture and share your great thoughts</title>
         <link rel="icon" href="/favicon.png" type="image/png" />
-        <meta
-          name="description"
-          content="A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts."
-          key="desc"
-        />
-        <meta name="og:title" property="og:title" content="memos - lightweight, self-hosted memo hub. Open Source and Free forever" />
-        <meta
-          name="og:description"
-          content="A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts."
-        />
-        <meta name="og:type" property="og:type" content="website" />
-        <meta name="twitter:card" content="summary" />
-        <meta name="og:url" property="og:url" content="https://www.usememos.com" />
       </head>
       <body className="flex flex-col w-full h-full">
         <div className="relative w-full flex flex-col">
@@ -39,6 +26,20 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       </body>
     </html>
   );
+};
+
+export const metadata: Metadata = {
+  title: "memos - Easily capture and share your great thoughts",
+  description: "A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts.",
+  openGraph: {
+    title: "memos - Easily capture and share your great thoughts. Open Source and Free forever",
+    description: "A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts.",
+    type: "website",
+    url: "https://www.usememos.com",
+  },
+  twitter: {
+    card: "summary",
+  },
 };
 
 export default RootLayout;

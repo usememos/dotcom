@@ -1,5 +1,6 @@
 import Markdoc from "@markdoc/markdoc";
 import fs from "fs";
+import { Metadata } from "next";
 import path from "path";
 import React from "react";
 import AuthorView from "@/components/AuthorView";
@@ -7,7 +8,11 @@ import authorList from "@/consts/author";
 import { getDocsSlugList } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
 
-const Page = ({ params }: { params: { slug: string[] } }) => {
+interface Props {
+  params: { slug: string[] };
+}
+
+const Page = ({ params }: Props) => {
   const content = readDocsContent(params.slug);
   const { frontmatter, transformedContent } = markdoc(content);
   const author = authorList.find((author) => author.name === frontmatter.author);
@@ -21,6 +26,14 @@ const Page = ({ params }: { params: { slug: string[] } }) => {
       </div>
     </>
   );
+};
+
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  const content = readDocsContent(params.slug);
+  const { frontmatter } = markdoc(content);
+  return {
+    title: frontmatter.title,
+  };
 };
 
 export const generateStaticParams = () => {
