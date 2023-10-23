@@ -3,6 +3,7 @@
 import classNames from "classnames";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Banner from "./Banner";
 import Icon from "./Icon";
 
 const Header = () => {
@@ -17,11 +18,12 @@ const Header = () => {
   return (
     <header
       className={classNames(
-        "sticky top-0 bg-white bg-opacity-80 backdrop-blur-lg z-10 w-full mx-auto flex flex-row justify-center items-center px-4 sm:px-0",
+        "sticky top-0 bg-white bg-opacity-80 backdrop-blur-lg z-10 w-full mx-auto flex flex-col justify-center items-center",
         showShadow && "border-b shadow",
       )}
     >
-      <div className="max-w-6xl w-full mx-auto py-4 sm:px-10 flex flex-row justify-between items-center">
+      <Banner text="🐬 MySQL is already supported" url="/docs/mysql" />
+      <div className="max-w-6xl w-full mx-auto py-2 px-4 sm:px-10 flex flex-row justify-between items-center">
         <div className="w-auto flex flex-row justify-start items-center">
           <Link href="/">
             <div className="cursor-pointer flex flex-row justify-start items-center hover:opacity-80">
