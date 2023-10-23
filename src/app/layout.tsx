@@ -26,7 +26,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         <meta name="og:url" property="og:url" content="https://usememos.com" />
       </head>
       <body className="flex flex-col w-full h-full">
-        <div className="relative w-full min-h-screen flex flex-col">
+        <div className="relative w-full flex flex-col">
           <Header />
 
           <main className="relative shrink-0 grow basis-auto mx-auto pt-6 pb-16 px-4 w-full max-w-6xl flex flex-col justify-start items-center">

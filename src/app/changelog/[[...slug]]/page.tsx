@@ -14,7 +14,7 @@ const Page = ({ params }: { params: { slug: string[] } }) => {
 
   return (
     <>
-      <div className="pt-12 w-full mx-auto sm:px-20 prose prose-lg max-w-none prose-a:text-blue-600">
+      <div className="pt-12 w-full mx-auto sm:px-20 prose sm:prose-lg max-w-none prose-a:text-blue-600">
         <h1>{frontmatter.title}</h1>
         {author && <AuthorView author={author} />}
         {Markdoc.renderers.react(transformedContent, React)}

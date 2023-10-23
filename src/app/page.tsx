@@ -2,12 +2,11 @@ import Link from "next/link";
 import DemoPlaceholder from "@/components/DemoPlaceholder";
 import FeatureMatrix from "@/components/FeatureMatrix";
 import LatestVersion from "@/components/LatestVersion";
-import SlashBanner from "@/components/SlashBanner";
 
 const Page = () => {
   return (
     <>
-      <div className="mt-6 sm:mt-12 w-full flex flex-col justify-start items-center">
+      <div className="mt-4 sm:mt-6 w-full flex flex-col justify-start items-center">
         <LatestVersion />
       </div>
       <div className="w-full flex flex-col justify-center items-center sm:px-16">
@@ -28,9 +27,6 @@ const Page = () => {
         </Link>
       </div>
       <DemoPlaceholder />
-      <div className="w-full flex flex-row justify-center items-center">
-        <SlashBanner />
-      </div>
       <FeatureMatrix />
     </>
   );

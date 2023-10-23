@@ -1,9 +1,26 @@
+"use client";
+
+import classNames from "classnames";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import Icon from "./Icon";
 
 const Header = () => {
+  const [showShadow, setShowShadow] = useState(false);
+
+  useEffect(() => {
+    document.addEventListener("scroll", () => {
+      setShowShadow(window.scrollY > 0);
+    });
+  }, []);
+
   return (
-    <header className="sticky top-0 bg-white bg-opacity-80 backdrop-blur border-b z-10 w-full mx-auto flex flex-row justify-center items-center px-4 sm:px-0">
+    <header
+      className={classNames(
+        "sticky top-0 bg-white bg-opacity-80 backdrop-blur-lg z-10 w-full mx-auto flex flex-row justify-center items-center px-4 sm:px-0",
+        showShadow && "border-b shadow",
+      )}
+    >
       <div className="max-w-6xl w-full mx-auto py-4 sm:px-10 flex flex-row justify-between items-center">
         <div className="w-auto flex flex-row justify-start items-center">
           <Link href="/">

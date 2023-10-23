@@ -14,6 +14,9 @@ dependencies:
   axios:
     specifier: ^1.5.1
     version: 1.5.1
+  classnames:
+    specifier: ^2.3.2
+    version: 2.3.2
   js-yaml:
     specifier: ^4.1.0
     version: 4.1.0
@@ -927,6 +930,10 @@ packages:
     optionalDependencies:
       fsevents: 2.3.3
     dev: true
+
+  /classnames@2.3.2:
+    resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
+    dev: false
 
   /client-only@0.0.1:
     resolution: {integrity: sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==}
