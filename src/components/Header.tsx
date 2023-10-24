@@ -23,12 +23,12 @@ const Header = () => {
       )}
     >
       <Banner text="🐘 Choosing Between SQLite and MySQL" url="/blog/choosing-between-sqlite-and-mysql" />
-      <div className="max-w-6xl w-full mx-auto py-2 sm:py-4 px-4 sm:px-10 flex flex-row justify-between items-center">
+      <div className="max-w-6xl w-full mx-auto py-2 px-4 sm:px-10 flex flex-row justify-between items-center">
         <div className="w-auto flex flex-row justify-start items-center">
           <Link href="/">
             <div className="cursor-pointer flex flex-row justify-start items-center hover:opacity-80">
-              <img src="/logo.png" className="h-8 w-auto mr-2 rounded-full shadow" alt="" />
-              <span className="text-xl">memos</span>
+              <span className="sr-only">memos</span>
+              <img src="/full-logo-landscape.png" className="h-8 sm:h-10 w-auto mr-2" alt="" />
             </div>
           </Link>
         </div>

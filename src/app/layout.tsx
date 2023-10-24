@@ -11,7 +11,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
     <html>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
-        <link rel="icon" href="/favicon.png" type="image/png" />
+        <link rel="icon" href="/favicon/favicon.png" type="image/png" />
       </head>
       <body>
         <div className="relative w-full flex flex-col">

@@ -8,8 +8,7 @@ const Footer = () => {
       <div className="max-w-6xl w-full mx-auto py-12 pb-16 sm:px-10 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6">
         <div className="w-full flex flex-col justify-start items-start">
           <div className="flex flex-row justify-start items-center mb-6">
-            <img src="/logo.png" className="h-10 w-auto mr-2 rounded-full shadow" alt="" />
-            <span className="text-2xl">memo</span>
+            <img src="/full-logo-landscape.png" className="h-12 w-auto" alt="" />
           </div>
           <div className="w-full flex flex-row justify-start items-center gap-3">
             <Link className="hover:opacity-80" href="https://twitter.com/usememos" target="_blank">
@@ -59,6 +58,12 @@ const Footer = () => {
         </div>
         <div className="w-full flex flex-col justify-start items-start space-y-2">
           <p className="my-2 text-gray-400 font-medium font-mono">References</p>
+          <Link
+            className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600"
+            href="/brand"
+          >
+            Brand
+          </Link>
           <Link
             className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600"
             href="/legal/privacy-policy"
