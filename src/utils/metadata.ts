@@ -13,6 +13,7 @@ export const getMetadata = (metadata: Partial<LocalMetadata>): Metadata => {
     metadata.description || "A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts.";
   const url = metadata.pathname || "";
   const imagePath = metadata.imagePath || "/logo.png";
+  const hasFeatureImage = !!metadata.imagePath;
 
   return {
     title: title,
@@ -30,7 +31,7 @@ export const getMetadata = (metadata: Partial<LocalMetadata>): Metadata => {
       ],
     },
     twitter: {
-      card: "summary",
+      card: hasFeatureImage ? "summary_large_image" : "summary",
     },
     metadataBase: new URL("https://www.usememos.com"),
     manifest: "/manifest.json",

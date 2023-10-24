@@ -20,7 +20,12 @@ const Page = ({ params }: Props) => {
 
   return (
     <>
-      <div className="pt-12 w-full mx-auto sm:px-20 prose sm:prose-lg max-w-none prose-a:text-blue-600">
+      <div className="pt-4 w-full mx-auto sm:px-20 prose sm:prose-lg max-w-none prose-a:text-blue-600">
+        {frontmatter.feature_image && (
+          <div className="w-full mb-12">
+            <img className="w-full h-auto" src={frontmatter.feature_image} alt="" />
+          </div>
+        )}
         <h1>{frontmatter.title}</h1>
         {author && <AuthorView author={author} />}
         {Markdoc.renderers.react(transformedContent, React)}
@@ -35,6 +40,7 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
   return getMetadata({
     title: frontmatter.title,
     pathname: params.slug?.length > 0 ? `/blog/${params.slug.join("/")}` : "/blog",
+    imagePath: frontmatter.feature_image,
   });
 };
 
