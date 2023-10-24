@@ -65,7 +65,7 @@ const Footer = () => {
           >
             Policy
           </Link>
-          <Link href="/roadmap" target="_blank">
+          <Link href="https://github.com/orgs/usememos/projects/5/views/1" target="_blank">
             <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">
               Roadmap
               <Icon.ExternalLink className="w-4 h-auto ml-1" />
