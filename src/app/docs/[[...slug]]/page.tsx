@@ -3,8 +3,6 @@ import fs from "fs";
 import { Metadata } from "next";
 import path from "path";
 import React from "react";
-import AuthorView from "@/components/AuthorView";
-import authorList from "@/consts/author";
 import { getDocsSlugList } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
 import { getMetadata } from "@/utils/metadata";
@@ -16,13 +14,11 @@ interface Props {
 const Page = ({ params }: Props) => {
   const content = readDocsContent(params.slug);
   const { frontmatter, transformedContent } = markdoc(content);
-  const author = authorList.find((author) => author.name === frontmatter.author);
 
   return (
     <>
       <div className="pt-12 w-full mx-auto sm:px-20 prose sm:prose-lg max-w-none prose-a:text-blue-600">
         <h1>{frontmatter.title}</h1>
-        {author && <AuthorView author={author} />}
         {Markdoc.renderers.react(transformedContent, React)}
       </div>
     </>

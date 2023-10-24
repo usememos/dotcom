@@ -3,6 +3,7 @@ import Link from "next/link";
 import path from "path";
 import { getBlogSlugList } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
+import { getMetadata } from "@/utils/metadata";
 
 const Page = () => {
   const frontmatters = getBlogFrontmatters();
@@ -32,6 +33,8 @@ const Page = () => {
     </>
   );
 };
+
+export const metadata = getMetadata({ title: "Blogs", pathname: "/blog" });
 
 const getBlogFrontmatters = () => {
   const blogSlugs = getBlogSlugList();

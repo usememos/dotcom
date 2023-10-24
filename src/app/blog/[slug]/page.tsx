@@ -4,7 +4,8 @@ import { Metadata } from "next";
 import path from "path";
 import React from "react";
 import AuthorView from "@/components/AuthorView";
-import authorList from "@/consts/author";
+import Icon from "@/components/Icon";
+import authorList, { Author } from "@/consts/author";
 import { getBlogSlugList } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
 import { getMetadata } from "@/utils/metadata";
@@ -16,7 +17,7 @@ interface Props {
 const Page = ({ params }: Props) => {
   const content = readBlogContent(params.slug);
   const { frontmatter, transformedContent } = markdoc(content);
-  const author = authorList.find((author) => author.name === frontmatter.author);
+  const author = authorList.find((author) => author.name === frontmatter.author) as Author;
 
   return (
     <>
@@ -27,7 +28,11 @@ const Page = ({ params }: Props) => {
           </div>
         )}
         <h1>{frontmatter.title}</h1>
-        {author && <AuthorView author={author} />}
+        <div className="w-full flex flex-row justify-start items-center">
+          <span className="text-sm">{frontmatter.published_at}</span>
+          <Icon.Dot className="w-4 h-auto mx-1 text-gray-400" />
+          <AuthorView author={author} />
+        </div>
         {Markdoc.renderers.react(transformedContent, React)}
       </div>
     </>

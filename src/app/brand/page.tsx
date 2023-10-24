@@ -1,3 +1,5 @@
+import { getMetadata } from "@/utils/metadata";
+
 const Page = () => {
   return (
     <>
@@ -22,5 +24,7 @@ const Page = () => {
     </>
   );
 };
+
+export const metadata = getMetadata({ title: "Brand", pathname: "/brand" });
 
 export default Page;

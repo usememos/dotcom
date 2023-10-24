@@ -1,5 +1,4 @@
 import { Analytics } from "@vercel/analytics/react";
-import { Metadata } from "next";
 import React from "react";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
@@ -29,6 +28,6 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const metadata: Metadata = getMetadata({});
+export const metadata = getMetadata({});
 
 export default RootLayout;

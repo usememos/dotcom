@@ -9,8 +9,7 @@ interface Props {
 const AuthorView = ({ author }: Props) => {
   return (
     author && (
-      <p className="w-full flex flex-row justify-start items-center gap-2 text-sm">
-        <span className="text-gray-400 font-mono">Author:</span>
+      <p className="w-auto flex flex-row justify-start items-center gap-2 text-sm">
         <span>{author.name}</span>
         {author.email && (
           <Link className="text-gray-400 hover:text-gray-500" href={`mailto:${author.email}`} target="_blank">
