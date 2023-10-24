@@ -2,6 +2,7 @@
 title: "Choosing Between SQLite and MySQL: The Database Dilemma"
 author: Steven
 description: In memos v0.16.1, we've introduced support for MySQL as an alternative to the previously used SQLite database. This addition expands your choices for managing your data. In this article, we'll discuss the reasons behind our initial choice of SQLite and why we added MySQL support.
+published_at: 2023/10/24 10:24:00
 feature_image: /content/blog/choosing-between-sqlite-and-mysql/banner.png
 ---
 

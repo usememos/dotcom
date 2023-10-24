@@ -1,6 +1,7 @@
 ---
 title: Best practices to write a TAG
 author: Steven
+published_at: 2022/8/1 10:00:00
 ---
 
 In memos, the tag is written in the content and displayed by a regex parser. If you have some misrecognized tags, you need a good way to manage your tags accurately, especially where they are written.

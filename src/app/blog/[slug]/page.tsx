@@ -10,7 +10,7 @@ import { markdoc } from "@/markdoc/markdoc";
 import { getMetadata } from "@/utils/metadata";
 
 interface Props {
-  params: { slug: string[] };
+  params: { slug: string };
 }
 
 const Page = ({ params }: Props) => {
@@ -39,31 +39,20 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
   const { frontmatter } = markdoc(content);
   return getMetadata({
     title: frontmatter.title,
-    pathname: params.slug?.length > 0 ? `/blog/${params.slug.join("/")}` : "/blog",
+    pathname: `/blog/${params.slug}`,
     description: frontmatter.description,
     imagePath: frontmatter.feature_image,
   });
 };
 
 export const generateStaticParams = () => {
-  return [
-    { slug: [] },
-    ...[...getBlogSlugList()].map((contentSlug) => {
-      return { slug: contentSlug };
-    }),
-  ];
+  return getBlogSlugList().map((contentSlug) => {
+    return { slug: contentSlug };
+  });
 };
 
-const readBlogContent = (contentSlug: string[]) => {
-  let filePath = path.resolve("./content/blog/index.md");
-  if (Array.isArray(contentSlug) && contentSlug.length !== 0) {
-    const indexFilePath = path.resolve(`./content/blog/${contentSlug.join("/")}/index.md`);
-    if (fs.existsSync(indexFilePath)) {
-      filePath = indexFilePath;
-    } else {
-      filePath = path.resolve(`./content/blog/${contentSlug.join("/")}.md`);
-    }
-  }
+const readBlogContent = (contentSlug: string) => {
+  const filePath = path.resolve(`./content/blog/${contentSlug}.md`);
   const content = fs.readFileSync(filePath, "utf8");
   return content;
 };
