@@ -49,28 +49,23 @@ export const FEATURE_LIST: FeatureItem[] = [
 
 const FeatureMatrix = () => {
   return (
-    <>
-      <div className="w-full my-8 flex flex-col justify-center items-center">
-        <h2 className="text-xl text-center text-gray-500 font-mono mb-4">
-          <span className="text-2xl mr-2">✨</span>Features
-        </h2>
-      </div>
-      <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 sm:px-10">
-        {FEATURE_LIST.map((featureItem) => (
-          <Link
-            key={featureItem.title}
-            href={`/feature/${featureItem.slug}`}
-            className="w-full flex flex-col justify-start items-start p-6 rounded-2xl hover:shadow"
-          >
-            <featureItem.icon strokeWidth="1" className="h-8 w-auto" />
-            <span className="relative text-base sm:text-xl mb-2 mt-4">
-              <span>{featureItem.title}</span>
-            </span>
-            <p className="text-sm sm:text-base text-gray-500">{featureItem.description}</p>
-          </Link>
-        ))}
-      </div>
-    </>
+    <div className="w-full my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      {FEATURE_LIST.map((featureItem) => (
+        <Link
+          key={featureItem.title}
+          href={`/feature/${featureItem.slug}`}
+          className="w-full flex flex-col justify-start items-start p-6 rounded-2xl bg-zinc-100 hover:shadow"
+        >
+          <div className="w-10 h-10 bg-white text-gray-600 rounded-lg p-2">
+            <featureItem.icon className="h-6 w-auto " />
+          </div>
+          <span className="relative text-base sm:text-lg mb-2 mt-4">
+            <span>{featureItem.title}</span>
+          </span>
+          <p className="text-sm text-gray-500">{featureItem.description}</p>
+        </Link>
+      ))}
+    </div>
   );
 };
 

@@ -23,7 +23,7 @@ const Header = () => {
       )}
     >
       <Banner text="🐘 Choosing Between SQLite and MySQL" url="/blog/choosing-between-sqlite-and-mysql" />
-      <div className="max-w-6xl w-full mx-auto py-2 px-4 sm:px-10 flex flex-row justify-between items-center">
+      <div className="max-w-6xl w-full mx-auto py-2 sm:py-4 px-4 sm:px-10 flex flex-row justify-between items-center">
         <div className="w-auto flex flex-row justify-start items-center">
           <Link href="/">
             <div className="cursor-pointer flex flex-row justify-start items-center hover:opacity-80">
