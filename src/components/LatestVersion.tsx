@@ -22,7 +22,8 @@ const LatestVersion = () => {
       href="https://github.com/usememos/memos/releases"
       target="_blank"
     >
-      🎉 memos {version} is ready
+      🎉 Released
+      <span className="font-medium ml-1">{version}</span>
       <Icon.ArrowRight className="w-4 h-auto ml-1" />
     </Link>
   );
