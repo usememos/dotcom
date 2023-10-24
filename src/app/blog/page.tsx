@@ -40,7 +40,7 @@ const Page = () => {
   );
 };
 
-export const metadata = getMetadata({ title: "Blogs", pathname: "/blog" });
+export const metadata = getMetadata({ title: "Blogs - memos", pathname: "/blog" });
 
 const getBlogFrontmatters = () => {
   const blogSlugs = getBlogSlugList();
