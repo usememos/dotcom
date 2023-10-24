@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import path from "path";
 import React from "react";
 import { markdoc } from "@/markdoc/markdoc";
+import { getMetadata } from "@/utils/metadata";
 
 interface Props {
   params: { slug: string };
@@ -26,21 +27,10 @@ const Page = ({ params }: Props) => {
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const content = readLegalContent(params.slug);
   const { frontmatter } = markdoc(content);
-  return {
+  return getMetadata({
     title: frontmatter.title,
-    openGraph: {
-      title: frontmatter.title,
-      description: "A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts.",
-      type: "website",
-      url: "https://www.usememos.com",
-      images: [
-        {
-          url: "/logo.png",
-          alt: "memos",
-        },
-      ],
-    },
-  };
+    pathname: `/legal/${params.slug}`,
+  });
 };
 
 export const generateStaticParams = () => {

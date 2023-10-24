@@ -7,6 +7,7 @@ import AuthorView from "@/components/AuthorView";
 import authorList from "@/consts/author";
 import { getBlogSlugList } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
+import { getMetadata } from "@/utils/metadata";
 
 interface Props {
   params: { slug: string[] };
@@ -31,21 +32,10 @@ const Page = ({ params }: Props) => {
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const content = readBlogContent(params.slug);
   const { frontmatter } = markdoc(content);
-  return {
+  return getMetadata({
     title: frontmatter.title,
-    openGraph: {
-      title: frontmatter.title,
-      description: "A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts.",
-      type: "website",
-      url: "https://www.usememos.com",
-      images: [
-        {
-          url: "/logo.png",
-          alt: "memos",
-        },
-      ],
-    },
-  };
+    pathname: params.slug?.length > 0 ? `/blog/${params.slug.join("/")}` : "/blog",
+  });
 };
 
 export const generateStaticParams = () => {

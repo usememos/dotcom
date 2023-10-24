@@ -7,6 +7,7 @@ import AuthorView from "@/components/AuthorView";
 import authorList from "@/consts/author";
 import { getDocsSlugList } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
+import { getMetadata } from "@/utils/metadata";
 
 interface Props {
   params: { slug: string[] };
@@ -31,9 +32,10 @@ const Page = ({ params }: Props) => {
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const content = readDocsContent(params.slug);
   const { frontmatter } = markdoc(content);
-  return {
+  return getMetadata({
     title: frontmatter.title,
-  };
+    pathname: params.slug?.length > 0 ? `/docs/${params.slug.join("/")}` : "/docs",
+  });
 };
 
 export const generateStaticParams = () => {

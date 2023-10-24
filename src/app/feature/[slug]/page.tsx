@@ -3,6 +3,7 @@ import Link from "next/link";
 import DemoPlaceholder from "@/components/DemoPlaceholder";
 import FeatureMatrix, { FEATURE_LIST, FeatureItem } from "@/components/FeatureMatrix";
 import LatestVersion from "@/components/LatestVersion";
+import { getMetadata } from "@/utils/metadata";
 
 interface Props {
   params: { slug: string };
@@ -40,9 +41,11 @@ const Page = ({ params }: Props) => {
 
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const feature = FEATURE_LIST.find((feature) => feature.slug === params.slug) as FeatureItem;
-  return {
+  return getMetadata({
     title: feature.title,
-  };
+    description: feature.description,
+    pathname: `/feature/${feature.slug}`,
+  });
 };
 
 export const generateStaticParams = () => {
