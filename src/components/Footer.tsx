@@ -12,27 +12,27 @@ const Footer = () => {
             <span className="text-2xl">memo</span>
           </div>
           <div className="w-full flex flex-row justify-start items-center gap-3">
-            <Link href="https://twitter.com/usememos" target="_blank">
+            <Link className="hover:opacity-80" href="https://twitter.com/usememos" target="_blank">
               <BsTwitter className="w-6 h-auto text-blue-700" />
             </Link>
-            <Link href="https://github.com/usememos" target="_blank">
+            <Link className="hover:opacity-80" href="https://github.com/usememos" target="_blank">
               <BsGithub className="w-6 h-auto text-blue-700" />
             </Link>
-            <Link href="https://discord.gg/tfPJa4UmAv" target="_blank">
+            <Link className="hover:opacity-80" href="https://discord.gg/tfPJa4UmAv" target="_blank">
               <BsDiscord className="w-6 h-auto text-blue-700" />
             </Link>
-            <Link href="https://t.me/+-_tNF1k70UU4ZTc9" target="_blank">
+            <Link className="hover:opacity-80" href="https://t.me/+-_tNF1k70UU4ZTc9" target="_blank">
               <BsTelegram className="w-6 h-auto text-blue-700" />
             </Link>
           </div>
           <div className="mt-4">
             <Link
-              className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600"
+              className="w-auto flex flex-row justify-center items-center border px-3 py-1 rounded-full border-red-200 hover:shadow hover:bg-white"
               href="https://github.com/sponsors/usememos"
               target="_blank"
             >
               <Icon.Heart className="w-5 h-auto mr-1 text-red-700" />
-              Become a Sponsor
+              Sponsor Us
             </Link>
           </div>
         </div>
