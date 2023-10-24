@@ -33,6 +33,18 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
   const { frontmatter } = markdoc(content);
   return {
     title: frontmatter.title,
+    openGraph: {
+      title: frontmatter.title,
+      description: "A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts.",
+      type: "website",
+      url: "https://www.usememos.com",
+      images: [
+        {
+          url: "/logo.png",
+          alt: "memos",
+        },
+      ],
+    },
   };
 };
 

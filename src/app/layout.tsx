@@ -49,6 +49,12 @@ export const metadata: Metadata = {
     description: "A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts.",
     type: "website",
     url: "https://www.usememos.com",
+    images: [
+      {
+        url: "/logo.png",
+        alt: "memos",
+      },
+    ],
   },
   twitter: {
     card: "summary",
