@@ -1,9 +1,9 @@
-import Markdoc from "@markdoc/markdoc";
 import fs from "fs";
 import { Metadata } from "next";
 import path from "path";
 import React from "react";
 import AuthorView from "@/components/AuthorView";
+import ContentRender from "@/components/ContentRender";
 import Icon from "@/components/Icon";
 import authorList, { Author } from "@/consts/author";
 import { getBlogSlugList } from "@/lib/content";
@@ -21,19 +21,19 @@ const Page = ({ params }: Props) => {
 
   return (
     <>
-      <div className="pt-4 w-full mx-auto sm:px-20 prose sm:prose-lg max-w-none prose-a:text-blue-600">
+      <div className="w-full max-w-4xl mx-auto sm:px-6">
         {frontmatter.feature_image && (
-          <div className="w-full mb-12">
-            <img className="w-full h-auto" src={frontmatter.feature_image} alt="" />
+          <div className="w-full mb-6 sm:mb-12">
+            <img className="w-full h-auto rounded-lg" src={frontmatter.feature_image} alt="" />
           </div>
         )}
-        <h1>{frontmatter.title}</h1>
+        <h2 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold mt-4 mb-4">{frontmatter.title}</h2>
         <div className="w-full flex flex-row justify-start items-center">
-          <span className="text-sm">{frontmatter.published_at}</span>
+          <span className="text-gray-500">{frontmatter.published_at}</span>
           <Icon.Dot className="w-4 h-auto mx-1 text-gray-400" />
           <AuthorView author={author} />
         </div>
-        {Markdoc.renderers.react(transformedContent, React)}
+        <ContentRender markdocNode={transformedContent} />
       </div>
     </>
   );

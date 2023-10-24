@@ -49,7 +49,7 @@ export const FEATURE_LIST: FeatureItem[] = [
 
 const FeatureMatrix = () => {
   return (
-    <div className="w-full my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+    <div className="w-full my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 sm:px-6">
       {FEATURE_LIST.map((featureItem) => (
         <Link
           key={featureItem.title}

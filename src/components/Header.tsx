@@ -3,8 +3,8 @@
 import classNames from "classnames";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { BsGithub } from "react-icons/bs";
 import Banner from "./Banner";
-import Icon from "./Icon";
 
 const Header = () => {
   const [showShadow, setShowShadow] = useState(false);
@@ -38,7 +38,7 @@ const Header = () => {
           </Link>
           <span className="font-mono text-gray-300">/</span>
           <Link className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600" href="/blog">
-            Blog
+            Blogs
           </Link>
           <span className="font-mono text-gray-300">/</span>
           <Link
@@ -46,7 +46,7 @@ const Header = () => {
             href="https://github.com/usememos/memos"
             target="_blank"
           >
-            <Icon.Github className="w-5 h-auto" />
+            <BsGithub className="w-5 h-auto" />
           </Link>
         </div>
       </div>

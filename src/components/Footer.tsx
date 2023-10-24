@@ -5,26 +5,26 @@ import Icon from "./Icon";
 const Footer = () => {
   return (
     <footer className="border-t w-full mx-auto flex flex-row justify-center items-center bg-zinc-100 px-6 sm:px-0">
-      <div className="max-w-6xl w-full mx-auto py-12 pb-16 sm:px-10 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6">
+      <div className="max-w-6xl w-full mx-auto py-12 pb-16 sm:px-10 grid grid-cols-1 sm:grid-cols-3 gap-6">
         <div className="w-full flex flex-col justify-start items-start">
-          <div className="flex flex-row justify-start items-center mb-6">
+          <div className="flex flex-row justify-start items-center">
             <img src="/full-logo-landscape.png" className="h-12 w-auto" alt="" />
           </div>
-          <div className="w-full flex flex-row justify-start items-center gap-3">
+          <div className="mt-4 ml-2 w-full flex flex-row justify-start items-center gap-3">
             <Link className="hover:opacity-80" href="https://twitter.com/usememos" target="_blank">
-              <BsTwitter className="w-6 h-auto text-blue-700" />
+              <BsTwitter className="w-6 h-auto text-blue-600" />
             </Link>
             <Link className="hover:opacity-80" href="https://github.com/usememos" target="_blank">
-              <BsGithub className="w-6 h-auto text-blue-700" />
+              <BsGithub className="w-6 h-auto text-blue-600" />
             </Link>
             <Link className="hover:opacity-80" href="https://discord.gg/tfPJa4UmAv" target="_blank">
-              <BsDiscord className="w-6 h-auto text-blue-700" />
+              <BsDiscord className="w-6 h-auto text-blue-600" />
             </Link>
             <Link className="hover:opacity-80" href="https://t.me/+-_tNF1k70UU4ZTc9" target="_blank">
-              <BsTelegram className="w-6 h-auto text-blue-700" />
+              <BsTelegram className="w-6 h-auto text-blue-600" />
             </Link>
           </div>
-          <div className="mt-4">
+          <div className="mt-6 ml-2">
             <Link
               className="w-auto flex flex-row justify-center items-center border px-3 py-1 rounded-full border-red-200 hover:shadow hover:bg-white"
               href="https://github.com/sponsors/usememos"

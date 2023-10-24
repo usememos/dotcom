@@ -1,8 +1,8 @@
-import Markdoc from "@markdoc/markdoc";
 import fs from "fs";
 import { Metadata } from "next";
 import path from "path";
 import React from "react";
+import ContentRender from "@/components/ContentRender";
 import { getDocsSlugList } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
 import { getMetadata } from "@/utils/metadata";
@@ -16,12 +16,10 @@ const Page = ({ params }: Props) => {
   const { frontmatter, transformedContent } = markdoc(content);
 
   return (
-    <>
-      <div className="pt-12 w-full mx-auto sm:px-20 prose sm:prose-lg max-w-none prose-a:text-blue-600">
-        <h1>{frontmatter.title}</h1>
-        {Markdoc.renderers.react(transformedContent, React)}
-      </div>
-    </>
+    <div className="w-full max-w-4xl sm:px-6">
+      <h2 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold mt-4 mb-4">{frontmatter.title}</h2>
+      <ContentRender className="lg:prose-lg" markdocNode={transformedContent} />
+    </div>
   );
 };
 
