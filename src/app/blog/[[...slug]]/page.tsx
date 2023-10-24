@@ -40,6 +40,7 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
   return getMetadata({
     title: frontmatter.title,
     pathname: params.slug?.length > 0 ? `/blog/${params.slug.join("/")}` : "/blog",
+    description: frontmatter.description,
     imagePath: frontmatter.feature_image,
   });
 };
