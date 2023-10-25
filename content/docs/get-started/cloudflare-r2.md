@@ -1,5 +1,5 @@
 ---
-title: Configuring Cloudflare R2 Storage in Memos
+title: Configuring Cloudflare R2 Storage
 ---
 
 Cloudflare R2 Storage is a reliable and secure storage solution that can be integrated with Memos to store and fetch files. In this guide, we will walk you through the steps to configure Cloudflare R2 Storage in Memos.

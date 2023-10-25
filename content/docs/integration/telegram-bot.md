@@ -1,6 +1,5 @@
 ---
-title: 🤖️ Telegram Bot
-author: Athurg
+title: Telegram Bot
 ---
 
 ## Prerequisite
@@ -54,7 +53,7 @@ We currently support two types of messages from the Telegram bot:
 
 ## Use a Proxy for Telegram API?
 
-*Memos* support connect to Telegram API with a proxy.
+_Memos_ support connect to Telegram API with a proxy.
 
 Assuming you have a proxy server running on `PROXY_URL`, you should setup it to make sure:
 
@@ -63,9 +62,9 @@ Assuming you have a proxy server running on `PROXY_URL`, you should setup it to 
 
 You can also just forward all request to `PROXY_URL` directly to `https://api.telegram.org` to make it simple.
 
-If that's OK, just config the **bot token** of your *Memos* like below:
+If that's OK, just config the **bot token** of your _Memos_ like below:
 
-   http://proxy.test.com:8081/somepath/bot<token>
+http://proxy.test.com:8081/somepath/bot<token>
 
 Replace `<token>` with the original **bot token** from Telegram's @BotFather.
 

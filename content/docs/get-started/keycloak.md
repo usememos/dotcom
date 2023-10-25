@@ -1,5 +1,5 @@
 ---
-title: Configuring Keycloak for Authentication in Memos
+title: Configuring Keycloak for Authentication
 ---
 
 Keycloak is a self-hosted identity provider which supports the OpenID Connect (OIDC) protocol. As such, we may use it for single sign-on authentication in Memos. This guide assumes you already have a Keycloak instance set up and running.

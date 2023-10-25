@@ -6,6 +6,7 @@ import ContentRender from "@/components/ContentRender";
 import { getDocsSlugList } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
 import { getMetadata } from "@/utils/metadata";
+import Sidebar from "./navigation";
 
 interface Props {
   params: { slug: string[] };
@@ -16,9 +17,14 @@ const Page = ({ params }: Props) => {
   const { frontmatter, transformedContent } = markdoc(content);
 
   return (
-    <div className="w-full max-w-4xl sm:px-6">
-      <h2 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold mt-4 mb-4">{frontmatter.title}</h2>
-      <ContentRender className="lg:prose-lg" markdocNode={transformedContent} />
+    <div className="w-full max-w-5xl grid grid-cols-1 sm:grid-cols-[200px_1fr]">
+      <div className="hidden sm:block col-span-1">
+        <Sidebar />
+      </div>
+      <div className="col-span-1">
+        <h2 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold mt-4 mb-4">{frontmatter.title}</h2>
+        <ContentRender className="lg:!prose-lg" markdocNode={transformedContent} />
+      </div>
     </div>
   );
 };

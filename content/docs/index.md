@@ -1,39 +1,13 @@
 ---
-title: Documentations
+title: What is memos
 ---
 
-> This document is WIP and **contributions are welcome**.
+memos is a privacy-first, lightweight note-taking service. Easily capture and share your great thoughts.
 
-## Installation
+## Key points
 
-There's several ways to deploy memos yourself.
-If you have any more questions, don't hesitate to ask in the [Discord server](https://discord.gg/tfPJa4UmAv)!
-
-- [Docker](/docs/install/docker)
-- [Managed Hosting](/docs/install/cloud)
-
-## Database
-
-- 🆕 [MySQL](/docs/mysql)
-
-## Account Security
-
-- [Access Tokens](/docs/access-tokens)
-
-## Integration
-
-- [Telegram Bot 🤖️](/docs/integration/telegram-bot)
-
-## Others
-
-- [FAQ](/docs/faq)
-- [S3 Storage](/docs/storage)
-- [SSO - Keycloak](/docs/keycloak)
-- [Local storage](/docs/local-storage)
-
----
-
-## Contribution
-
-- [Contribute to memos](/docs/contribution/development/)
-- [Contribute to documentation](/docs/contribution/documentation/)
+- **Open source and free forever**. Embrace a future where creativity knows no boundaries with our open-source solution – free today, tomorrow, and always.
+- **Self-hosting with Docker in just seconds**. Enjoy the flexibility, scalability, and ease of setup that Docker provides, allowing you to have full control over your data and privacy.
+- **Pure text with added Markdown support.** Say goodbye to the overwhelming mental burden of rich formatting and embrace a minimalist approach.
+- **Customize and share your notes effortlessly**. With our intuitive sharing features, you can easily collaborate and distribute your notes with others.
+- **RESTful API for third-party services.** Embrace the power of integration and unleash new possibilities with our RESTful API support.
