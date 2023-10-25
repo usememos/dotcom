@@ -1,6 +1,7 @@
 "use client";
 
 import { DialogTitle, Drawer, IconButton, ModalClose } from "@mui/joy";
+import classNames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -89,14 +90,14 @@ const NavigationItem = ({ node }: { node: DocsNode }) => {
   return (
     <div className="w-full flex flex-col justify-start items-start">
       {node.link ? (
-        <Link className="text-gray-600 hover:text-blue-600" href={node.link}>
+        <Link className={classNames("text-gray-600 hover:text-blue-600", node.children && "font-medium")} href={node.link}>
           {node.text}
         </Link>
       ) : (
-        <div className="text-gray-600">{node.text}</div>
+        <div className={classNames("text-gray-600", node.children && "font-medium")}>{node.text}</div>
       )}
       {node.children && (
-        <div className="w-full pl-4 pt-4 flex flex-col justify-start items-start gap-3">
+        <div className="w-full pl-5 pt-4 flex flex-col justify-start items-start gap-3">
           {node.children.map((child) => {
             return <NavigationItem key={child.text} node={child} />;
           })}
