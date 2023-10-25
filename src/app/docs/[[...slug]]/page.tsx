@@ -17,11 +17,11 @@ const Page = ({ params }: Props) => {
   const { frontmatter, transformedContent } = markdoc(content);
 
   return (
-    <div className="w-full max-w-5xl grid grid-cols-1 sm:grid-cols-[200px_1fr]">
-      <div className="hidden sm:block col-span-1">
+    <div className="w-full max-w-5xl flex flex-row justify-start items-start sm:px-10">
+      <div className="hidden sm:block w-[200px]">
         <Sidebar />
       </div>
-      <div className="col-span-1">
+      <div className="w-full sm:max-w-[calc(100%-200px)]">
         <h2 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold mt-4 mb-4">{frontmatter.title}</h2>
         <ContentRender className="lg:!prose-lg" markdocNode={transformedContent} />
       </div>
