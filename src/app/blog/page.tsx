@@ -11,14 +11,13 @@ const Page = () => {
   return (
     <>
       <div className="w-full max-w-3xl flex flex-col justify-center items-center sm:px-16">
-        <h2 className="w-full text-2xl sm:text-4xl font-medium sm:font-bold mt-4">Blogs</h2>
-        <h3 className="w-full mt-2 mb-6">Learn more and better about memos.</h3>
-        <div className="w-full flex flex-col justify-start items-start">
+        <h2 className="w-full text-2xl text-center sm:text-4xl font-medium sm:font-bold mt-4">Blogs</h2>
+        <div className="mt-12 w-full flex flex-col justify-start items-start gap-4">
           {frontmatters.map((frontmatter) => {
             return (
               <Link
                 key={frontmatter.slug}
-                className="group border-b py-4 w-full flex flex-col justify-start items-start last:border-none"
+                className="group border rounded-xl p-4 w-full flex flex-col justify-start items-start"
                 href={`/blog/${frontmatter.slug}`}
               >
                 {frontmatter.feature_image && (

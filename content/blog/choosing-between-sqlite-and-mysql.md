@@ -2,7 +2,7 @@
 title: "Choosing Between SQLite and MySQL: The Database Dilemma"
 author: Steven
 description: In memos v0.16.1, we've introduced support for MySQL as an alternative to the previously used SQLite database. This addition expands your choices for managing your data. In this article, we'll discuss the reasons behind our initial choice of SQLite and why we added MySQL support.
-published_at: 2023/10/24 10:24:00
+published_at: 2023/10/24 20:24:00
 feature_image: /content/blog/choosing-between-sqlite-and-mysql/banner.png
 ---
 
@@ -59,3 +59,9 @@ When deciding between MySQL and SQLite for memos, it's essential to consider you
 - If you have a clear understanding of the advantages MySQL can bring to your memos instance, and you already have the necessary cloud server resources, opting for MySQL is a viable choice.
 
 - Furthermore, you can always use SQLite as your database.
+
+---
+
+## References
+
+- [Using MySQL as the Database Driver](/docs/get-started/mysql)

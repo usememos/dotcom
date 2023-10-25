@@ -1,7 +1,7 @@
 ---
 title: "Choosing a Storage for Your Resource: Database, S3 or Local Storage?"
 author: Steven
-published_at: 2023/6/24 10:00:00
+published_at: 2023/6/24 10:30:00
 ---
 
 In memos v0.12.0, we introduces a new feature for saving resources into local file system, which means that there are now three storage options available: database, S3, and local storage. Each option has its own advantages and disadvantages, and choosing the right one depends on your specific needs.
