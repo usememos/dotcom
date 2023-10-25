@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Icon from "./Icon";
 
 export interface FeatureItem {
@@ -51,11 +50,7 @@ const FeatureMatrix = () => {
   return (
     <div className="w-full my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 sm:px-6">
       {FEATURE_LIST.map((featureItem) => (
-        <Link
-          key={featureItem.title}
-          href={`/feature/${featureItem.slug}`}
-          className="w-full flex flex-col justify-start items-start p-6 rounded-2xl bg-zinc-100 hover:shadow"
-        >
+        <div key={featureItem.title} className="w-full flex flex-col justify-start items-start p-6 rounded-2xl bg-zinc-100 hover:shadow">
           <div className="w-10 h-10 bg-white text-gray-600 rounded-lg p-2">
             <featureItem.icon className="h-6 w-auto " />
           </div>
@@ -63,7 +58,7 @@ const FeatureMatrix = () => {
             <span>{featureItem.title}</span>
           </span>
           <p className="text-sm text-gray-500">{featureItem.description}</p>
-        </Link>
+        </div>
       ))}
     </div>
   );
