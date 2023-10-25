@@ -2,7 +2,6 @@
 
 import { usePathname, useSearchParams } from "next/navigation";
 import posthog from "posthog-js";
-import { PostHogProvider } from "posthog-js/react";
 import React, { useEffect } from "react";
 
 if (typeof window !== "undefined") {
@@ -17,6 +16,10 @@ export function PostHogPageview() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
+    if (window.location.host.startsWith("localhost")) {
+      return;
+    }
+
     if (pathname) {
       let url = window.origin + pathname;
       if (searchParams && searchParams.toString()) {
@@ -29,8 +32,4 @@ export function PostHogPageview() {
   }, [pathname, searchParams]);
 
   return <></>;
-}
-
-export function PHProvider({ children }: { children: React.ReactNode }) {
-  return <PostHogProvider client={posthog}>{children}</PostHogProvider>;
 }
