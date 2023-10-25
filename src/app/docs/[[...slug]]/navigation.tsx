@@ -71,6 +71,10 @@ const DOCS_NODES: DocsNode[] = [
     text: "Contribution",
     children: [
       {
+        text: "Community",
+        link: "/docs/contribution/community",
+      },
+      {
         text: "Development",
         link: "/docs/contribution/development",
       },
@@ -109,7 +113,7 @@ const NavigationItem = ({ node }: { node: DocsNode }) => {
 
 const Navigation = () => {
   return (
-    <div className="pt-6 w-full flex flex-col justify-start items-start gap-4">
+    <div className="pt-8 py-4 w-full flex flex-col justify-start items-start gap-4">
       {DOCS_NODES.map((node) => {
         return <NavigationItem key={node.text} node={node} />;
       })}
@@ -135,8 +139,8 @@ export const DocsNavigationDrawer = () => {
 
   return (
     <div>
-      <IconButton onClick={toggleDrawer(true)}>
-        <Icon.Menu />
+      <IconButton size="sm" onClick={toggleDrawer(true)}>
+        <Icon.Menu className="w-5 h-auto" />
       </IconButton>
       <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
         <DialogTitle>Documentations</DialogTitle>
