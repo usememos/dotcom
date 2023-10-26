@@ -91,10 +91,19 @@ const DOCS_NODES: DocsNode[] = [
 ];
 
 const NavigationItem = ({ node }: { node: DocsNode }) => {
+  const pathname = usePathname();
+
   return (
     <div className="w-full flex flex-col justify-start items-start">
       {node.link ? (
-        <Link className={classNames("text-gray-600 hover:text-blue-600", node.children && "font-medium")} href={node.link}>
+        <Link
+          className={classNames(
+            "text-gray-600 hover:text-blue-600",
+            node.children && "font-medium",
+            node.link === pathname && "!text-blue-600",
+          )}
+          href={node.link}
+        >
           {node.text}
         </Link>
       ) : (

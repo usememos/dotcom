@@ -17,7 +17,7 @@ const Page = () => {
             return (
               <Link
                 key={frontmatter.slug}
-                className="group border rounded-xl p-4 w-full flex flex-col justify-start items-start"
+                className="border rounded-xl p-4 w-full flex flex-col justify-start items-start hover:bg-blue-50"
                 href={`/blog/${frontmatter.slug}`}
               >
                 {frontmatter.feature_image && (
@@ -25,7 +25,7 @@ const Page = () => {
                     <img className="rounded-lg" src={frontmatter.feature_image} alt="" />
                   </div>
                 )}
-                <p className="text-lg !leading-tight sm:text-xl line-clamp-2 group-hover:text-blue-600">{frontmatter.title}</p>
+                <p className="text-lg !leading-tight sm:text-xl line-clamp-2">{frontmatter.title}</p>
                 {frontmatter.description && <p className="mt-2 text-sm text-gray-500 line-clamp-2">{frontmatter.description}</p>}
                 <div className="mt-2 w-full flex flex-row justify-start items-center">
                   <span className="text-sm text-gray-400">{frontmatter.published_at}</span>
