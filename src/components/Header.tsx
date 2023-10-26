@@ -26,7 +26,7 @@ const Header = () => {
         showShadow && "border-b shadow",
       )}
     >
-      <Banner text="🐘 Choosing Between SQLite and MySQL" url="/blog/choosing-between-sqlite-and-mysql" />
+      <Banner text="☁️ Syncing Data Across My Macbooks with iCloud" url="/blog/syncing-data-with-icloud" />
       <div className="max-w-6xl w-full mx-auto py-2 px-4 sm:px-10 flex flex-row justify-between items-center">
         <div className="w-auto flex flex-row justify-start items-center">
           <Link href="/">
