@@ -31,11 +31,6 @@ const AuthorView = ({ author }: Props) => {
             <Icon.Twitter className="w-4 h-auto" />
           </Link>
         )}
-        {author.funding && (
-          <Link className="text-gray-400 hover:text-gray-500" href={author.funding} target="_blank">
-            <Icon.Coffee className="w-4 h-auto" />
-          </Link>
-        )}
       </p>
     )
   );
