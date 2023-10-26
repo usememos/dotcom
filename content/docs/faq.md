@@ -1,6 +1,5 @@
 ---
 title: Frequently Asked questions
-author: Anthony
 ---
 
 This is a curated list of common questions about memos.
@@ -11,8 +10,6 @@ This is a curated list of common questions about memos.
   - [How to delete old tags](#how-to-delete-old-tags)
   - [How to change datetime to a memo](#how-to-change-datetime-to-a-memo)
   - [How to upload videos in memos](#how-to-upload-videos-in-memos)
-- Deploy questions
-  - [WIP]
 
 ## How to delete old tags
 

@@ -1,15 +1,14 @@
 ---
 title: Contribute to documentation
-author: Anthony
 ---
 
 ## Prerequisite
 
+- [Know how to contribute](https://docs.github.com/en/get-started/quickstart/contributing-to-projects)
 - [Node.js](https://nodejs.org), requires version >=18.0
 - [pnpm](https://pnpm.io), requires version >=8.0
 - Preferably a markdown editor, Here's a few: [Visual studio code](https://code.visualstudio.com/), [Typora](https://typora.io/). (If not, any text editor is fine)
 - [Git](https://git-scm.com/downloads)
-- [Know how to contribute](https://docs.github.com/en/get-started/quickstart/contributing-to-projects)
 
 ## Step by step
 
@@ -19,13 +18,7 @@ author: Anthony
    git clone https://github.com/<You username>/dotcom
    ```
 
-2. Change to the directory:
-
-   ```bash
-   cd dotcom
-   ```
-
-   If you want to see you new docs live on your localhost:
+2. Start the dev environment:
 
    1. Install dependencies:
 
@@ -41,26 +34,7 @@ author: Anthony
 
    Now, the website should be running at http://localhost:3000. It will support live reload upon code changes.
 
-3. Go to `consts` folder and open up `author.ts`.
-4. Add you name and links under the `const authorList: Author[]` section in the following format:
-
-   ```typescript
-   {
-       name: "Your name",
-       email: "Your email", //optional
-       url: "Your website link", //optional
-       github: "Your github usename", //optional
-       twitter: "Your twitter handle", //optional
-       funding: "Your funding link", //optional
-   },
-   ```
-
-5. Go to `content/docs/` and open up `index.md`.
-6. Add the name and link of you document in the desired section.
-
-   **Note**: If it's a single document with no relation to existing section, add it to the `Others` section. If it's a serveral document requiring a new section, create a new section using the markdown's headings 2.
-
-7. Create corresponding markdown files under the `content` folder in the corresponding location.
+3. Create corresponding markdown files under the `content` folder in the corresponding location.
 
    **Note**: If it's a whole new section you are adding:
 
@@ -75,13 +49,6 @@ author: Anthony
           ---
       ```
 
-8. Add this on top you makrdown file, change the variables accordingly:
+4. Add your link into [DOCS_NODES](https://github.com/usememos/dotcom/blob/main/src/app/docs/%5B%5B...slug%5D%5D/navigation.tsx#L16).
 
-   ```yaml
-       ---
-       title: <Your title>
-       author: <You name(the one you just put in author.ts)>
-       ---
-   ```
-
-9. Enjoy writing you documentation!
+5. Enjoy writing!

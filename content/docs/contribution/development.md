@@ -1,6 +1,5 @@
 ---
 title: Contribute to memos
-author: Steven
 ---
 
 memos is built with a curated tech stack. It is optimized for developer experience and is very easy to start working on the code:
