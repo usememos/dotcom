@@ -1,5 +1,5 @@
 ---
-title: Syncing Data Across My Macbooks with iCloud
+title: Syncing Data Across My MacBooks with iCloud
 author: Steven
 description: In all honesty, I don't have a suitable cloud service for deploying memos, but I do have two trusty MacBooks - a MacBook Air in home and a MacBook Pro in company. But how to keep data in sync between them?
 published_at: 2023/10/26 21:19:00
@@ -14,7 +14,7 @@ The solution began with the realization that the memos' startup command could ho
 docker run -d --name memos -p 5230:5230 -v ~/.memos/:/var/opt/memos ghcr.io/usememos/memos:latest
 ```
 
-Then I had an idea - what if I replaced `~/.memos` with a folder in iCloud? This simple change held the promise of realizing multi-device data sharing, and potentially, it meant I could set up a memos instance on my work MacBook Pro without relying on external cloud servers. It was a challenge worth taking, so let's explore how I embarked on this endeavor.
+I had an idea - what if I replaced `~/.memos` with a folder in iCloud? This simple change held the promise of realizing multi-device data sharing, and potentially, it meant I could set up a memos instance on my work MacBook Pro without relying on external cloud servers. It was a challenge worth taking, so let's explore how I embarked on this endeavor.
 
 ## The Experiment
 
