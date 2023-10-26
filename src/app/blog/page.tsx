@@ -17,7 +17,7 @@ const Page = () => {
             return (
               <Link
                 key={frontmatter.slug}
-                className="border rounded-xl p-4 w-full flex flex-col justify-start items-start hover:bg-blue-50"
+                className="border rounded-xl p-4 sm:p-6 w-full flex flex-col justify-start items-start hover:bg-gray-50"
                 href={`/blog/${frontmatter.slug}`}
               >
                 {frontmatter.feature_image && (
