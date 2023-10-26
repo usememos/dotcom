@@ -43,7 +43,7 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
   const content = readBlogContent(params.slug);
   const { frontmatter } = markdoc(content);
   return getMetadata({
-    title: frontmatter.title,
+    title: frontmatter.title + " - memos",
     pathname: `/blog/${params.slug}`,
     description: frontmatter.description,
     imagePath: frontmatter.feature_image,

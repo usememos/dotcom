@@ -28,7 +28,7 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
   const content = readLegalContent(params.slug);
   const { frontmatter } = markdoc(content);
   return getMetadata({
-    title: frontmatter.title,
+    title: frontmatter.title + " - memos",
     pathname: `/legal/${params.slug}`,
   });
 };
