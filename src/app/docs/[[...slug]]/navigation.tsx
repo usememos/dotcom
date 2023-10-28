@@ -32,6 +32,10 @@ const DOCS_NODES: DocsNode[] = [
     text: "Getting Started",
     children: [
       {
+        text: "Custom Style and Script",
+        link: "/docs/get-started/custom-style-and-script",
+      },
+      {
         text: "Local storage",
         link: "/docs/get-started/local-storage",
       },
