@@ -158,7 +158,7 @@ export const DocsNavigationDrawer = () => {
       <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
         <DialogTitle>Documentations</DialogTitle>
         <ModalClose />
-        <div className="w-full px-4 pt-4">
+        <div className="w-full px-4 pt-4 pb-8">
           <Navigation />
         </div>
       </Drawer>
