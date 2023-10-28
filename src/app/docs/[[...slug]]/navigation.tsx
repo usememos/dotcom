@@ -94,7 +94,7 @@ const DOCS_NODES: DocsNode[] = [
   },
 ];
 
-const NavigationItem = ({ node }: { node: DocsNode }) => {
+const NavigationItem = ({ node, level }: { node: DocsNode; level: number }) => {
   const pathname = usePathname();
 
   return (
@@ -103,7 +103,7 @@ const NavigationItem = ({ node }: { node: DocsNode }) => {
         <Link
           className={classNames(
             "text-gray-600 hover:text-blue-600",
-            node.children && "font-medium",
+            level === 0 && "font-medium",
             node.link === pathname && "!text-blue-600",
           )}
           href={node.link}
@@ -111,12 +111,12 @@ const NavigationItem = ({ node }: { node: DocsNode }) => {
           {node.text}
         </Link>
       ) : (
-        <div className={classNames("text-gray-600", node.children && "font-medium")}>{node.text}</div>
+        <div className={classNames("text-gray-600", level === 0 && "font-medium")}>{node.text}</div>
       )}
       {node.children && (
-        <div className="w-full pl-5 pt-4 flex flex-col justify-start items-start gap-3">
+        <div className="w-full pl-4 pt-4 flex flex-col justify-start items-start gap-3">
           {node.children.map((child) => {
-            return <NavigationItem key={child.text} node={child} />;
+            return <NavigationItem key={child.text} node={child} level={level + 1} />;
           })}
         </div>
       )}
@@ -126,9 +126,9 @@ const NavigationItem = ({ node }: { node: DocsNode }) => {
 
 const Navigation = () => {
   return (
-    <div className="pt-8 py-4 w-full flex flex-col justify-start items-start gap-4">
+    <div className="w-full flex flex-col justify-start items-start gap-4">
       {DOCS_NODES.map((node) => {
-        return <NavigationItem key={node.text} node={node} />;
+        return <NavigationItem key={node.text} node={node} level={0} />;
       })}
     </div>
   );
@@ -158,7 +158,7 @@ export const DocsNavigationDrawer = () => {
       <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
         <DialogTitle>Documentations</DialogTitle>
         <ModalClose />
-        <div className="w-full px-4">
+        <div className="w-full px-4 pt-4">
           <Navigation />
         </div>
       </Drawer>
