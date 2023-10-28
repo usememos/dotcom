@@ -2,16 +2,12 @@
 
 import classNames from "classnames";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BsGithub } from "react-icons/bs";
-import { DocsNavigationDrawer } from "@/app/docs/[[...slug]]/navigation";
 import Banner from "./Banner";
 
 const Header = () => {
-  const pathname = usePathname();
   const [showShadow, setShowShadow] = useState(false);
-  const showDocsNavigationMenu = pathname.startsWith("/docs");
 
   useEffect(() => {
     document.addEventListener("scroll", () => {
@@ -52,11 +48,6 @@ const Header = () => {
           >
             <BsGithub className="w-5 h-auto" />
           </Link>
-          {showDocsNavigationMenu && (
-            <div className="block sm:hidden col-span-1">
-              <DocsNavigationDrawer />
-            </div>
-          )}
         </div>
       </div>
     </header>

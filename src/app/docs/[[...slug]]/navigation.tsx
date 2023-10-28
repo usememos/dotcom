@@ -1,6 +1,6 @@
 "use client";
 
-import { DialogTitle, Drawer, IconButton, ModalClose } from "@mui/joy";
+import { Button, DialogTitle, Drawer, ModalClose } from "@mui/joy";
 import classNames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -152,10 +152,10 @@ export const DocsNavigationDrawer = () => {
 
   return (
     <div>
-      <IconButton size="sm" onClick={toggleDrawer(true)}>
-        <Icon.Menu className="w-5 h-auto" />
-      </IconButton>
-      <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
+      <Button color="neutral" variant="outlined" onClick={toggleDrawer(true)} startDecorator={<Icon.Menu className="w-5 h-auto" />}>
+        Menu
+      </Button>
+      <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
         <DialogTitle>Documentations</DialogTitle>
         <ModalClose />
         <div className="w-full px-4 pt-4">

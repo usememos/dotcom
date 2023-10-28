@@ -6,7 +6,7 @@ import ContentRender from "@/components/ContentRender";
 import { getDocsSlugList } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
 import { getMetadata } from "@/utils/metadata";
-import Navigation from "./navigation";
+import Navigation, { DocsNavigationDrawer } from "./navigation";
 
 interface Props {
   params: { slug: string[] };
@@ -18,10 +18,13 @@ const Page = ({ params }: Props) => {
 
   return (
     <div className="w-full max-w-6xl flex flex-row justify-start items-start sm:px-10 sm:gap-6">
-      <div className="hidden sm:block w-56 h-[calc(100vh-10rem)] overflow-auto sticky top-36 shrink-0">
+      <div className="hidden sm:block w-56 max-h-[calc(100vh-10rem)] overflow-auto sticky top-36 py-2 shrink-0">
         <Navigation />
       </div>
       <div className="w-full sm:max-w-[calc(100%-16rem)]">
+        <div className="block sm:hidden w-full">
+          <DocsNavigationDrawer />
+        </div>
         <h2 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold mt-4 mb-4">{frontmatter.title}</h2>
         <ContentRender className="lg:!prose-lg" markdocNode={transformedContent} />
       </div>
