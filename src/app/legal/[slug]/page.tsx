@@ -1,8 +1,7 @@
 import Markdoc from "@markdoc/markdoc";
-import fs from "fs";
 import { Metadata } from "next";
-import path from "path";
 import React from "react";
+import { getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
 import { getMetadata } from "@/utils/metadata";
 
@@ -11,7 +10,8 @@ interface Props {
 }
 
 const Page = ({ params }: Props) => {
-  const content = readLegalContent(params.slug);
+  const filePath = getFilePathFromSlugs("legal", params.slug.split("/"));
+  const content = readFileContenxt(filePath);
   const { frontmatter, transformedContent } = markdoc(content);
 
   return (
@@ -25,7 +25,8 @@ const Page = ({ params }: Props) => {
 };
 
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
-  const content = readLegalContent(params.slug);
+  const filePath = getFilePathFromSlugs("legal", params.slug.split("/"));
+  const content = readFileContenxt(filePath);
   const { frontmatter } = markdoc(content);
   return getMetadata({
     title: frontmatter.title + " - memos",
@@ -39,12 +40,6 @@ export const generateStaticParams = () => {
       slug: "privacy-policy",
     },
   ];
-};
-
-const readLegalContent = (contentSlug: string) => {
-  const filePath = path.resolve(`./content/legal/${contentSlug}.md`);
-  const content = fs.readFileSync(filePath, "utf8");
-  return content;
 };
 
 export default Page;

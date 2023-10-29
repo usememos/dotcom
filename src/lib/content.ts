@@ -13,7 +13,7 @@ export const getBlogSlugList = (): string[] => {
   return contentSlugList;
 };
 
-export const getContentFilePaths = (base: "docs" | "blog" | "changelog"): string[] => {
+export const getContentFilePaths = (base: "docs" | "blog" | "changelog" | "legal"): string[] => {
   const filePaths: string[] = [];
   const travelContentSlugList = (subpath: string) => {
     const filePath = path.resolve(`./content/${base}/`, subpath);
@@ -35,7 +35,7 @@ export const getContentFilePaths = (base: "docs" | "blog" | "changelog"): string
   return filePaths;
 };
 
-export const getFilePathFromSlugs = (base: "docs" | "blog" | "changelog", slugs: string[]) => {
+export const getFilePathFromSlugs = (base: "docs" | "blog" | "changelog" | "legal", slugs: string[]) => {
   let filePath = `content/${base}/index.md`;
   if (Array.isArray(slugs) && slugs.length !== 0) {
     const indexFilePath = `content/${base}/${slugs.join("/")}/index.md`;
