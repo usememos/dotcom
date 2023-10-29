@@ -22,7 +22,7 @@ const Header = () => {
         showShadow && "border-b shadow",
       )}
     >
-      <Banner text="☁️ Syncing Data Across My Macbooks with iCloud" url="/blog/syncing-data-with-icloud" />
+      <Banner text="🧑‍💻 Syncing and Managing Data with GitHub" url="/blog/syncing-and-managing-data-with-github" />
       <div className="max-w-6xl w-full mx-auto py-2 px-4 sm:px-10 flex flex-row justify-between items-center">
         <div className="w-auto flex flex-row justify-start items-center">
           <Link href="/">
