@@ -30,11 +30,15 @@ const DOCS_NODES: DocsNode[] = [
   },
   {
     text: "Getting Started",
-    link: "/docs/getting-started",
+    children: [
+      {
+        text: "Tags",
+        link: "/docs/getting-started/tags",
+      },
+    ],
   },
   {
     text: "Advanced Settings",
-    link: "/docs/advanced-settings",
     children: [
       {
         text: "Custom Style and Script",
