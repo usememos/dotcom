@@ -12,9 +12,7 @@ Before proceeding with memos installation, ensure you meet the following prerequ
 
 ## Docker Run
 
-To set up memos using `docker run`, follow these simple steps:
-
-1. Execute the following command to start memos as a Docker container:
+To set up memos using `docker run`, execute the following one command to start memos:
 
 ```bash
 docker run -d \
@@ -51,20 +49,20 @@ To upgrade memos to the latest version, perform the following steps:
 
 1. First, stop and remove the old container:
 
-```bash
-docker stop memos && docker rm memos
-```
+   ```bash
+   docker stop memos && docker rm memos
+   ```
 
 2. Although optional, it's advisable to back up your database:
 
-```bash
-cp -r ~/.memos/memos_prod.db ~/.memos/memos_prod.db.bak
-```
+   ```bash
+   cp -r ~/.memos/memos_prod.db ~/.memos/memos_prod.db.bak
+   ```
 
 3. Next, pull the latest memos image:
 
-```bash
-docker pull ghcr.io/usememos/memos:latest
-```
+   ```bash
+   docker pull ghcr.io/usememos/memos:latest
+   ```
 
 4. Finally, initiate memos by following the steps outlined in the [Docker Run](#docker-run) section. Your upgraded memos instance will now be up and running with the latest enhancements and features.
