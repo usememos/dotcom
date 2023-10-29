@@ -1,9 +1,7 @@
-import fs from "fs";
 import { Metadata } from "next";
-import path from "path";
 import React from "react";
 import ContentRender from "@/components/ContentRender";
-import { getChangelogSlugList } from "@/lib/content";
+import { getContentFilePaths, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
 import { getMetadata } from "@/utils/metadata";
 
@@ -12,7 +10,8 @@ interface Props {
 }
 
 const Page = ({ params }: Props) => {
-  const content = readChangelogContent(params.slug);
+  const filePath = getFilePathFromSlugs("changelog", params.slug);
+  const content = readFileContenxt(filePath);
   const { frontmatter, transformedContent } = markdoc(content);
 
   return (
@@ -24,7 +23,8 @@ const Page = ({ params }: Props) => {
 };
 
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
-  const content = readChangelogContent(params.slug);
+  const filePath = getFilePathFromSlugs("changelog", params.slug);
+  const content = readFileContenxt(filePath);
   const { frontmatter } = markdoc(content);
   return getMetadata({
     title: frontmatter.title + " - memos",
@@ -33,26 +33,13 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
 };
 
 export const generateStaticParams = () => {
+  const filePaths = getContentFilePaths("changelog");
   return [
     { slug: [] },
-    ...[...getChangelogSlugList()].map((contentSlug) => {
+    ...[...filePaths.map((filePath) => filePath.split("/"))].map((contentSlug) => {
       return { slug: contentSlug };
     }),
   ];
-};
-
-const readChangelogContent = (contentSlug: string[]) => {
-  let filePath = path.resolve("./content/changelog/index.md");
-  if (Array.isArray(contentSlug) && contentSlug.length !== 0) {
-    const indexFilePath = path.resolve(`./content/changelog/${contentSlug.join("/")}/index.md`);
-    if (fs.existsSync(indexFilePath)) {
-      filePath = indexFilePath;
-    } else {
-      filePath = path.resolve(`./content/changelog/${contentSlug.join("/")}.md`);
-    }
-  }
-  const content = fs.readFileSync(filePath, "utf8");
-  return content;
 };
 
 export default Page;

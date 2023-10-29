@@ -1,7 +1,5 @@
-import fs from "fs";
 import Link from "next/link";
-import path from "path";
-import { getBlogSlugList } from "@/lib/content";
+import { getContentFilePaths, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
 import { getMetadata } from "@/utils/metadata";
 
@@ -42,15 +40,14 @@ const Page = () => {
 export const metadata = getMetadata({ title: "Blogs - memos", pathname: "/blog" });
 
 const getBlogFrontmatters = () => {
-  const blogSlugs = getBlogSlugList();
-  const frontmatters = blogSlugs
-    .map((slug) => {
-      const filePath = path.resolve(`./content/blog/${slug}.md`);
-      const content = fs.readFileSync(filePath, "utf8");
+  const filePaths = getContentFilePaths("blog");
+  const frontmatters = filePaths
+    .map((filePath) => {
+      const content = readFileContenxt(getFilePathFromSlugs("blog", filePath.split("/")));
       const { frontmatter } = markdoc(content);
       return {
         ...frontmatter,
-        slug: slug,
+        slug: filePath,
       };
     })
     .sort((a, b) => {

@@ -1,12 +1,10 @@
-import fs from "fs";
 import { Metadata } from "next";
-import path from "path";
 import React from "react";
 import AuthorView from "@/components/AuthorView";
 import ContentRender from "@/components/ContentRender";
 import Icon from "@/components/Icon";
 import authorList, { Author } from "@/consts/author";
-import { getBlogSlugList } from "@/lib/content";
+import { getBlogSlugList, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
 import { getMetadata } from "@/utils/metadata";
 
@@ -15,7 +13,8 @@ interface Props {
 }
 
 const Page = ({ params }: Props) => {
-  const content = readBlogContent(params.slug);
+  const filePath = getFilePathFromSlugs("blog", params.slug.split("/"));
+  const content = readFileContenxt(filePath);
   const { frontmatter, transformedContent } = markdoc(content);
   const author = authorList.find((author) => author.name === frontmatter.author) as Author;
 
@@ -40,7 +39,8 @@ const Page = ({ params }: Props) => {
 };
 
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
-  const content = readBlogContent(params.slug);
+  const filePath = getFilePathFromSlugs("blog", params.slug.split("/"));
+  const content = readFileContenxt(filePath);
   const { frontmatter } = markdoc(content);
   return getMetadata({
     title: frontmatter.title + " - memos",
@@ -54,12 +54,6 @@ export const generateStaticParams = () => {
   return getBlogSlugList().map((contentSlug) => {
     return { slug: contentSlug };
   });
-};
-
-const readBlogContent = (contentSlug: string) => {
-  const filePath = path.resolve(`./content/blog/${contentSlug}.md`);
-  const content = fs.readFileSync(filePath, "utf8");
-  return content;
 };
 
 export default Page;
