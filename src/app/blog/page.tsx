@@ -1,4 +1,7 @@
+import { Divider } from "@mui/joy";
 import Link from "next/link";
+import Icon from "@/components/Icon";
+import authorList, { Author } from "@/consts/author";
 import { getContentFilePaths, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
 import { getMetadata } from "@/utils/metadata";
@@ -10,25 +13,31 @@ const Page = () => {
     <>
       <div className="w-full max-w-3xl flex flex-col justify-center items-center sm:px-16">
         <h2 className="w-full text-2xl text-center sm:text-4xl font-medium sm:font-bold mt-4">Blogs</h2>
-        <div className="mt-12 w-full flex flex-col justify-start items-start gap-4">
-          {frontmatters.map((frontmatter) => {
+        <h3 className="text-lg mt-4">Get the latest news about memos</h3>
+        <div className="mt-12 w-full flex flex-col justify-start items-start gap-8">
+          {frontmatters.map((frontmatter, index) => {
+            const author = authorList.find((author) => author.name === frontmatter.author) as Author;
+
             return (
-              <Link
-                key={frontmatter.slug}
-                className="border rounded-xl p-4 sm:p-6 w-full flex flex-col justify-start items-start hover:bg-gray-50"
-                href={`/blog/${frontmatter.slug}`}
-              >
-                {frontmatter.feature_image && (
-                  <div className="mb-4">
-                    <img className="rounded-lg" src={frontmatter.feature_image} alt="" />
+              <>
+                <div key={frontmatter.slug} className="w-full flex flex-col justify-start items-start">
+                  {frontmatter.feature_image && (
+                    <Link className="mb-4 rounded-lg overflow-clip hover:opacity-80 hover:shadow" href={`/blog/${frontmatter.slug}`}>
+                      <img src={frontmatter.feature_image} alt="" />
+                    </Link>
+                  )}
+                  <Link className="text-lg !leading-tight sm:text-xl line-clamp-2 hover:text-blue-600" href={`/blog/${frontmatter.slug}`}>
+                    {frontmatter.title}
+                  </Link>
+                  {frontmatter.description && <p className="mt-2 text-gray-400 line-clamp-2">{frontmatter.description}</p>}
+                  <div className="mt-2 w-full flex flex-row justify-start items-center text-gray-500">
+                    <span>{author.name}</span>
+                    <Icon.Dot />
+                    <span>{frontmatter.published_at}</span>
                   </div>
-                )}
-                <p className="text-lg !leading-tight sm:text-xl line-clamp-2">{frontmatter.title}</p>
-                {frontmatter.description && <p className="mt-2 text-sm text-gray-500 line-clamp-2">{frontmatter.description}</p>}
-                <div className="mt-2 w-full flex flex-row justify-start items-center">
-                  <span className="text-sm text-gray-400">{frontmatter.published_at}</span>
                 </div>
-              </Link>
+                {index !== frontmatters.length - 1 && <Divider />}
+              </>
             );
           })}
         </div>
