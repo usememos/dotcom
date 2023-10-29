@@ -1,5 +1,5 @@
 ---
-title: Local storage
+title: Local Storage
 ---
 
 `memos` supports save your files to local storage. You can use local storage to store your resources in your own server.

@@ -1,5 +1,5 @@
 ---
-title: Access tokens
+title: Access Tokens
 ---
 
 Access tokens are used in token-based authentication to allow an application to access an API. You can view and manage your access tokens in the settings page.

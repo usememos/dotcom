@@ -1,5 +1,5 @@
 ---
-title: Telegram Bot
+title: Integration with Telegram Bot
 ---
 
 ## Prerequisite
