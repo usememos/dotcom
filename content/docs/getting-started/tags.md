@@ -4,7 +4,7 @@ title: Tags
 
 Tags are a powerful tool for organizing and categorizing your contents. **memos** displays tags within the content of your notes in a visually distinct manner.
 
-When you include tags within your memo content, they are highlighted to stand out. For example, if you have a sentence that mentions "#NewTag," memos will automatically highlight and format it to draw your attention to the tag.
+When you include tags within your memo content, they are highlighted to stand out. For example, if you have a sentence that mentions "#NewTag" memos will automatically highlight and format it to draw your attention to the tag.
 
 This visual representation within your notes makes it easy to spot relevant tags and quickly identify the key topics or categories associated with your memo content.
 
@@ -46,6 +46,6 @@ You can also view and delete tags quickly by clicking the "+" button in the tag 
 
 ---
 
-## Read more
+**Read more**
 
 - [Best practices to write a TAG](/blog/best-practices-to-write-tag)
