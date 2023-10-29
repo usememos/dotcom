@@ -30,26 +30,31 @@ const DOCS_NODES: DocsNode[] = [
   },
   {
     text: "Getting Started",
+    link: "/docs/getting-started",
+  },
+  {
+    text: "Advanced Settings",
+    link: "/docs/advanced-settings",
     children: [
       {
         text: "Custom Style and Script",
-        link: "/docs/get-started/custom-style-and-script",
+        link: "/docs/advanced-settings/custom-style-and-script",
       },
       {
         text: "Local storage",
-        link: "/docs/get-started/local-storage",
+        link: "/docs/advanced-settings/local-storage",
       },
       {
         text: "MySQL",
-        link: "/docs/get-started/mysql",
+        link: "/docs/advanced-settings/mysql",
       },
       {
         text: "Cloudflare R2",
-        link: "/docs/get-started/cloudflare-r2",
+        link: "/docs/advanced-settings/cloudflare-r2",
       },
       {
         text: "Keycloak",
-        link: "/docs/get-started/keycloak",
+        link: "/docs/advanced-settings/keycloak",
       },
     ],
   },

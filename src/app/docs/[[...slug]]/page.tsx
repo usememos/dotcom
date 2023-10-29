@@ -18,7 +18,7 @@ const Page = ({ params }: Props) => {
 
   return (
     <div className="w-full max-w-6xl flex flex-row justify-start items-start sm:px-10 sm:gap-6">
-      <div className="hidden sm:block w-56 max-h-[calc(100vh-10rem)] overflow-auto sticky top-36 py-2 shrink-0">
+      <div className="hidden sm:block w-56 pt-8 pb-4 shrink-0">
         <Navigation />
       </div>
       <div className="w-full sm:max-w-[calc(100%-16rem)]">

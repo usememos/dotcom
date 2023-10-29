@@ -4,6 +4,8 @@ title: What is memos
 
 memos is a privacy-first, lightweight note-taking service. Easily capture and share your great thoughts.
 
+![demo](./demo.webp)
+
 ## Key points
 
 - **Open source and free forever**. Embrace a future where creativity knows no boundaries with our open-source solution – free today, tomorrow, and always.
