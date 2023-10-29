@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { BsTwitter, BsGithub, BsDiscord, BsTelegram } from "react-icons/bs";
+import { BsGithub, BsDiscord, BsTelegram } from "react-icons/bs";
+import { RiTwitterXLine } from "react-icons/ri";
 import Icon from "./Icon";
 
 const Footer = () => {
@@ -11,8 +12,8 @@ const Footer = () => {
             <img src="/full-logo-landscape.png" className="h-12 w-auto" alt="" />
           </div>
           <div className="mt-4 ml-2 w-full flex flex-row justify-start items-center gap-3">
-            <Link className="text-gray-400 hover:text-blue-600" href="https://twitter.com/usememos" target="_blank">
-              <BsTwitter className="w-6 h-auto" />
+            <Link className="text-gray-400 hover:text-blue-600" href="https://x.com/usememos" target="_blank">
+              <RiTwitterXLine className="w-6 h-auto" />
             </Link>
             <Link className="text-gray-400 hover:text-blue-600" href="https://github.com/usememos" target="_blank">
               <BsGithub className="w-6 h-auto" />
