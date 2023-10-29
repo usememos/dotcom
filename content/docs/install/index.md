@@ -2,6 +2,6 @@
 title: Installation
 ---
 
-There's several ways to deploy memos yourself. If you have any more questions, don't hesitate to ask in the [Discord server](https://discord.gg/tfPJa4UmAv)!
+> memos is designed to be self-hosted with Docker and you can run it on any server with Docker installed.
 
 - [Self-Hosted](/docs/install/self-hosted)
