@@ -1,0 +1,4 @@
+.content h2,
+.content h3 {
+  @apply !-mt-28 !pt-28;
+}

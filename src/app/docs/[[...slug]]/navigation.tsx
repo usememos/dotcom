@@ -23,8 +23,8 @@ const DOCS_NODES: DocsNode[] = [
     link: "/docs/install",
     children: [
       {
-        text: "Self-Hosted",
-        link: "/docs/install/self-hosted",
+        text: "Self-Hosting",
+        link: "/docs/install/self-hosting",
       },
     ],
   },
