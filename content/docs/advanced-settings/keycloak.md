@@ -23,7 +23,7 @@ Once you have selected your desired realm, we must create a client for the Memos
    - "Direct access grants" unchecked
 7. Click the "Save" button.
 
-![An example of a correctly-configured Keycloak client](/content/docs/keycloak/keycloak-client-config.png)
+![An example of a correctly-configured Keycloak client](/content/docs/advanced-settings/keycloak/keycloak-client-config.png)
 _👆 A correctly-configured Keycloak client for Memos_
 
 ## Step 3: Configure the Keycloak client details
@@ -84,5 +84,5 @@ Finally, we can open Memos and add Keycloak as an authentication option.
 
 Congratulations! You may now log into Memos using Keycloak! 🥳
 
-![An example of Keycloak OAUTH2 in Memos](/content/docs/keycloak/memos-keycloak-config.png)
+![An example of Keycloak OAUTH2 in Memos](/content/docs/advanced-settings/keycloak/memos-keycloak-config.png)
 _👆 Keycloak OAUTH2 entry in Memos_

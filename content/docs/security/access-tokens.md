@@ -4,7 +4,7 @@ title: Access Tokens
 
 Access tokens are used in token-based authentication to allow an application to access an API. You can view and manage your access tokens in the settings page.
 
-![setting](/content/docs/access-tokens/setting.png)
+![setting](/content/docs/security/access-tokens/setting.png)
 
 ## Generate an access token
 
@@ -13,7 +13,7 @@ Go to the settings page and click on the "Create" button to create an access tok
 - **Descirption**: A description of the access token.
 - **Expiration**: The expiration date of the access token.
 
-  ![create](/content/docs/access-tokens/create.png)
+  ![create](/content/docs/security/access-tokens/create.png)
 
 ## Call the API with an access token
 
@@ -26,7 +26,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 
 For example with `curl`:
 
-```
+```shell
 curl https://demo.usememos.com/api/v1/memo \
    -H "Accept: application/json" \
    -H "Authorization: Bearer {YOUR_ACCESS_TOKEN}"

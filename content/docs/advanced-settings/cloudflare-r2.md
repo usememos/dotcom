@@ -43,5 +43,5 @@ Now that you have your Cloudflare R2 Storage bucket and credentials, you can con
 
 Congratulations! You have successfully configured Cloudflare R2 Storage in Memos. You can now upload and fetch files to and from your Cloudflare R2 Storage bucket.
 
-![r2-storage-config](/content/docs/storage/r2-storage-config.png)
+![r2-storage-config](/content/docs/advanced-settings/cloudflare-r2/r2-storage-config.png)
 _👆 A complete configuration of R2 storage_
