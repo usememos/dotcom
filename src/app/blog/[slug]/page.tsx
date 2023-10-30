@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import React from "react";
 import AuthorView from "@/components/AuthorView";
 import ContentRender from "@/components/ContentRender";
@@ -15,6 +16,10 @@ interface Props {
 const Page = ({ params }: Props) => {
   const filePath = getFilePathFromSlugs("blog", params.slug.split("/"));
   const content = readFileContenxt(filePath);
+  if (!content) {
+    return notFound();
+  }
+
   const { frontmatter, transformedContent } = markdoc(content);
   const author = authorList.find((author) => author.name === frontmatter.author) as Author;
 
@@ -41,6 +46,10 @@ const Page = ({ params }: Props) => {
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const filePath = getFilePathFromSlugs("blog", params.slug.split("/"));
   const content = readFileContenxt(filePath);
+  if (!content) {
+    return notFound();
+  }
+
   const { frontmatter } = markdoc(content);
   return getMetadata({
     title: frontmatter.title + " - memos",

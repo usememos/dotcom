@@ -1,6 +1,7 @@
 import { Button } from "@mui/joy";
 import { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import React from "react";
 import ContentRender from "@/components/ContentRender";
 import Icon from "@/components/Icon";
@@ -17,6 +18,10 @@ interface Props {
 const Page = ({ params }: Props) => {
   const filePath = getFilePathFromSlugs("docs", params.slug);
   const content = readFileContenxt(filePath);
+  if (!content) {
+    return notFound();
+  }
+
   const { frontmatter, transformedContent } = markdoc(content);
   const remoteFilePath = `${GITHUB_REPO_LINK}/blob/main/${filePath}`;
 
@@ -46,6 +51,10 @@ const Page = ({ params }: Props) => {
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const filePath = getFilePathFromSlugs("docs", params.slug);
   const content = readFileContenxt(filePath);
+  if (!content) {
+    return notFound();
+  }
+
   const { frontmatter } = markdoc(content);
   return getMetadata({
     title: frontmatter.title + " - memos",

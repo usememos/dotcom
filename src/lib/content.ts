@@ -49,6 +49,10 @@ export const getFilePathFromSlugs = (base: "docs" | "blog" | "changelog" | "lega
 };
 
 export const readFileContenxt = (filePath: string) => {
-  const content = fs.readFileSync(path.resolve("./", filePath), "utf8");
-  return content;
+  try {
+    const content = fs.readFileSync(path.resolve("./", filePath), "utf8");
+    return content;
+  } catch (error) {
+    return null;
+  }
 };

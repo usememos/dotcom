@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import React from "react";
 import ContentRender from "@/components/ContentRender";
 import { getContentFilePaths, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
@@ -12,6 +13,10 @@ interface Props {
 const Page = ({ params }: Props) => {
   const filePath = getFilePathFromSlugs("changelog", params.slug);
   const content = readFileContenxt(filePath);
+  if (!content) {
+    return notFound();
+  }
+
   const { frontmatter, transformedContent } = markdoc(content);
 
   return (
@@ -25,6 +30,10 @@ const Page = ({ params }: Props) => {
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const filePath = getFilePathFromSlugs("changelog", params.slug);
   const content = readFileContenxt(filePath);
+  if (!content) {
+    return notFound();
+  }
+
   const { frontmatter } = markdoc(content);
   return getMetadata({
     title: frontmatter.title + " - memos",

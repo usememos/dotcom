@@ -1,5 +1,6 @@
 import { Divider } from "@mui/joy";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import Icon from "@/components/Icon";
 import authorList, { Author } from "@/consts/author";
 import { getContentFilePaths, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
@@ -53,6 +54,10 @@ const getBlogFrontmatters = () => {
   const frontmatters = filePaths
     .map((filePath) => {
       const content = readFileContenxt(getFilePathFromSlugs("blog", filePath.split("/")));
+      if (!content) {
+        return notFound();
+      }
+
       const { frontmatter } = markdoc(content);
       return {
         ...frontmatter,

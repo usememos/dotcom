@@ -1,5 +1,6 @@
 import Markdoc from "@markdoc/markdoc";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import React from "react";
 import { getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
@@ -12,6 +13,10 @@ interface Props {
 const Page = ({ params }: Props) => {
   const filePath = getFilePathFromSlugs("legal", params.slug.split("/"));
   const content = readFileContenxt(filePath);
+  if (!content) {
+    return notFound();
+  }
+
   const { frontmatter, transformedContent } = markdoc(content);
 
   return (
@@ -27,6 +32,10 @@ const Page = ({ params }: Props) => {
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const filePath = getFilePathFromSlugs("legal", params.slug.split("/"));
   const content = readFileContenxt(filePath);
+  if (!content) {
+    return notFound();
+  }
+
   const { frontmatter } = markdoc(content);
   return getMetadata({
     title: frontmatter.title + " - memos",
