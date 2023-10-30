@@ -42,7 +42,7 @@ const Page = ({ params }: Props) => {
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const feature = FEATURE_LIST.find((feature) => feature.slug === params.slug) as FeatureItem;
   return getMetadata({
-    title: feature.title + " - memos",
+    title: feature.title + " - Memos",
     description: feature.description,
     pathname: `/feature/${feature.slug}`,
   });

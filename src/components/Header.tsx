@@ -27,7 +27,7 @@ const Header = () => {
         <div className="w-auto flex flex-row justify-start items-center">
           <Link href="/">
             <div className="cursor-pointer flex flex-row justify-start items-center hover:opacity-80">
-              <span className="sr-only">memos</span>
+              <span className="sr-only">Memos</span>
               <img src="/full-logo-landscape.png" className="h-8 sm:h-10 w-auto mr-2" alt="" />
             </div>
           </Link>

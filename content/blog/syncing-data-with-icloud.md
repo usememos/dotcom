@@ -1,14 +1,14 @@
 ---
 title: Syncing Data Across My MacBooks with iCloud
 author: Steven
-description: In all honesty, I don't have a suitable cloud service for deploying memos, but I do have two trusty MacBooks - a MacBook Air in home and a MacBook Pro in company. But how to keep data in sync between them?
+description: In all honesty, I don't have a suitable cloud service for deploying Memos, but I do have two trusty MacBooks - a MacBook Air in home and a MacBook Pro in company. But how to keep data in sync between them?
 published_at: 2023/10/26 21:19:00
 feature_image: /content/blog/syncing-data-with-icloud/banner.png
 ---
 
 In all honesty, I don't have a suitable cloud service for deploying memos, but I do have two trusty MacBooks - a MacBook Air in home and a MacBook Pro in company. Each served its unique role, but the problem was keeping data in sync between them.
 
-The solution began with the realization that the memos' startup command could hold the key. The recommand command looked like this:
+The solution began with the realization that the Memos' startup command could hold the key. The recommand command looked like this:
 
 ```shell
 docker run -d --name memos -p 5230:5230 -v ~/.memos/:/var/opt/memos ghcr.io/usememos/memos:latest
@@ -32,13 +32,13 @@ The journey started with a visit to my MacBook Air, where I aimed to create a sh
 
 ### Step 2: Docker Configuration
 
-With the iCloud folder in place, I was eager to make use of it in my memos setup. Here's where Docker came into play:
+With the iCloud folder in place, I was eager to make use of it in my Memos setup. Here's where Docker came into play:
 
 ```shell
 docker run -d --name memos -p 5230:5230 -v ~/Documents/memos/:/var/opt/memos ghcr.io/usememos/memos:latest
 ```
 
-With this new configuration, I replaced `~/.memos` in the Docker command with the path to the `~/Documents/memos/` folder I created in iCloud Drive. This change meant that memos would now read and write data directly from iCloud, making it accessible from both my MacBook Air and MacBook Pro.
+With this new configuration, I replaced `~/.memos` in the Docker command with the path to the `~/Documents/memos/` folder I created in iCloud Drive. This change meant that Memos would now read and write data directly from iCloud, making it accessible from both my MacBook Air and MacBook Pro.
 
 ### Step 3: Sync in Action
 
@@ -52,6 +52,6 @@ This creative twist set the stage for the grand experiment. Memos, now configure
 
 - **Data Privacy**: My data's privacy and security remained under my control, using my own iCloud account.
 
-- **Space Management**: Monitoring my iCloud storage space ensured it could comfortably handle my growing memos database.
+- **Space Management**: Monitoring my iCloud storage space ensured it could comfortably handle my growing Memos database.
 
-In summary, using iCloud to share memos data between my MacBook Air and MacBook Pro, complemented by creative Docker modifications, has been transformative. It's a straightforward and efficient solution that seamlessly integrates both personal and professional note-taking needs. Now, my notes are always just a click away, and there's no need for a dedicated cloud server for my memos database.
+In summary, using iCloud to share Memos data between my MacBook Air and MacBook Pro, complemented by creative Docker modifications, has been transformative. It's a straightforward and efficient solution that seamlessly integrates both personal and professional note-taking needs. Now, my notes are always just a click away, and there's no need for a dedicated cloud server for my Memos database.

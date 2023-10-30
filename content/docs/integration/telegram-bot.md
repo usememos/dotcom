@@ -13,20 +13,20 @@ Your **bot token** should looks like:
 4839574812:AAFD39kkdpWt3ywyRZergyOLMaJhac60qc
 ```
 
-## Connect your memos to Telegram Bot
+## Connect your Memos to Telegram Bot
 
-Once you have prepared your bot, you can now connect memos to your bot.
+Once you have prepared your bot, you can now connect Memos to your bot.
 
-1. Sign in to your memos using the **admin account**.
+1. Sign in to your Memos using the **admin account**.
 2. Click the **Settings** button on the sidebar to open **Settings** dialog.
 3. Switch to **System** tab in the **Admin** section.
 4. Copy and paste your **bot token** into **Telegram Token** field, then click **Save**.
 
-Now, the Telegram bot is connected to your memos.
+Now, the Telegram bot is connected to your Memos.
 
-## Bind memos user to Telegram user
+## Bind Memos user to Telegram user
 
-After connecting your Telegram bot to memos, you can send messages to the bot.
+After connecting your Telegram bot to Memos, you can send messages to the bot.
 
 You will receive a message like this:
 
@@ -34,14 +34,14 @@ You will receive a message like this:
 
 The message contains your **user ID** in Telegram. Make sure to copy it.
 
-Follow these steps to set it as your memos user:
+Follow these steps to set it as your Memos user:
 
-1. Sign in to your memos.
+1. Sign in to your Memos.
 2. Click on **Settings** button on the sidebar to open **Settings** dialog.
 3. Switch to **Preferences** tab in **Basic** section.
 4. Paste your **userid** into **Telegram UserID** field, then click **Save**.
 
-You can now send messages to the Telegram bot, and they will be saved in your memos!
+You can now send messages to the Telegram bot, and they will be saved in your Memos!
 
 ![message-saved](/content/docs/integration/telegram-bot/message-saved.png)
 
@@ -82,4 +82,4 @@ The Telegram bot is a powerful tool, and we have only implemented a few features
 - Sending notifications through the Telegram bot.
 - And more...
 
-We welcome any pull requests. Enjoy using memos!
+We welcome any pull requests. Enjoy using Memos!

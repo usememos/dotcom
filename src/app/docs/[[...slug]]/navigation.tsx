@@ -15,7 +15,7 @@ interface DocsNode {
 
 const DOCS_NODES: DocsNode[] = [
   {
-    text: "What is memos",
+    text: "What is Memos",
     link: "/docs",
   },
   {

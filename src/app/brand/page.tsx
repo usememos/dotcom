@@ -27,6 +27,6 @@ const Page = () => {
   );
 };
 
-export const metadata = getMetadata({ title: "Brand - memos", pathname: "/brand" });
+export const metadata = getMetadata({ title: "Brand - Memos", pathname: "/brand" });
 
 export default Page;

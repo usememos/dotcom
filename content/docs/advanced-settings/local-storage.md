@@ -2,7 +2,7 @@
 title: Local Storage
 ---
 
-`memos` supports save your files to local storage. You can use local storage to store your resources in your own server.
+Memos supports save your files to local storage. You can use local storage to store your resources in your own server.
 
 ![local-storage-select](/content/docs/advanced-settings/local-storage/local-storage-select.png)
 
@@ -12,7 +12,7 @@ When you enable local storage, you can configure the storage path template.
 
 ![local-storage-edit](/content/docs/advanced-settings/local-storage/local-storage-edit.png)
 
-The local storage path is relative to your database file. And `memos` supports a dynamic storage path. You can use the following variables in the storage path:
+The local storage path is relative to your database file. And Memos supports a dynamic storage path. You can use the following variables in the storage path:
 
 - `{year}`: The current year.
 - `{month}`: The current month.

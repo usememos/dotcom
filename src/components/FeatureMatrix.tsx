@@ -36,7 +36,7 @@ export const FEATURE_LIST: FeatureItem[] = [
     slug: "open-source",
     icon: Icon.Github,
     title: "Open Source Completely",
-    description: "memos believes that open source is the future, and all code is already open source in GitHub.",
+    description: "Memos believes that open source is the future, and all code is already open source in GitHub.",
   },
   {
     slug: "free-forever",

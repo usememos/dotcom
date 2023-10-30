@@ -2,7 +2,7 @@
 title: Privacy Policy
 ---
 
-> This Privacy Policy governs your use of the memos service.
+> This Privacy Policy governs your use of the Memos service.
 
 ## Information Collection
 

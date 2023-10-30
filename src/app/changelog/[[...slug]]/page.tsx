@@ -36,7 +36,7 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
 
   const { frontmatter } = markdoc(content);
   return getMetadata({
-    title: frontmatter.title + " - memos",
+    title: frontmatter.title + " - Memos",
     pathname: params.slug?.length > 0 ? `/changelog/${params.slug.join("/")}` : "/changelog",
   });
 };

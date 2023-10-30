@@ -2,17 +2,17 @@
 title: Self-Hosting
 ---
 
-This document provides a comprehensive guide on deploying memos with Docker, including installation and upgrading instructions.
+This document provides a comprehensive guide on deploying Memos with Docker, including installation and upgrading instructions.
 
 ## Prerequisites
 
-Before proceeding with memos installation, ensure you meet the following prerequisites:
+Before proceeding with Memos installation, ensure you meet the following prerequisites:
 
-- **A server with [Docker](https://www.docker.com) installed:** memos is designed to be self-hosted with Docker.
+- **A server with [Docker](https://www.docker.com) installed:** Memos is designed to be self-hosted with Docker.
 
 ## Docker Run
 
-To set up memos using `docker run`, execute the following one command to start memos:
+To set up Memos using `docker run`, execute the following one command to start Memos:
 
 ```bash
 docker run -d \
@@ -23,11 +23,11 @@ docker run -d \
   ghcr.io/usememos/memos:latest
 ```
 
-This command will launch memos in the background, exposing it on port `5230`. Data will be stored in the `~/.memos/` directory. You can customize the port and the data directory path as needed.
+This command will launch Memos in the background, exposing it on port `5230`. Data will be stored in the `~/.memos/` directory. You can customize the port and the data directory path as needed.
 
 ## Docker Compose
 
-To deploy memos using `docker compose`, create a `docker-compose.yml` file with the following configuration:
+To deploy Memos using `docker compose`, create a `docker-compose.yml` file with the following configuration:
 
 ```yaml
 version: "3.0"
@@ -41,11 +41,11 @@ services:
       - 5230:5230
 ```
 
-Now, execute `docker-compose up -d` to initiate memos. While editing the port and data directory is possible, only modify the first port (e.g., `8081:5230`) to specify an alternative port. The second port designates the port memos is listening on inside the container. The same principle applies to directory paths, where the first path represents the location on your host system, and the second path signifies the directory inside the container.
+Now, execute `docker-compose up -d` to initiate Memos. While editing the port and data directory is possible, only modify the first port (e.g., `8081:5230`) to specify an alternative port. The second port designates the port Memos is listening on inside the container. The same principle applies to directory paths, where the first path represents the location on your host system, and the second path signifies the directory inside the container.
 
-## Upgrading memos
+## Upgrading Memos
 
-To upgrade memos to the latest version, perform the following steps:
+To upgrade Memos to the latest version, perform the following steps:
 
 1. First, stop and remove the old container:
 
@@ -65,4 +65,4 @@ To upgrade memos to the latest version, perform the following steps:
    docker pull ghcr.io/usememos/memos:latest
    ```
 
-4. Finally, initiate memos by following the steps outlined in the [Docker Run](#docker-run) section. Your upgraded memos instance will now be up and running with the latest enhancements and features.
+4. Finally, initiate Memos by following the steps outlined in the [Docker Run](#docker-run) section. Your upgraded Memos instance will now be up and running with the latest enhancements and features.

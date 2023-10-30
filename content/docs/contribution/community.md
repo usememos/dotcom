@@ -2,7 +2,7 @@
 title: Community
 ---
 
-memos has a very active community and produces a lot of design products, including but not limited to Android APP, iOS APP, browser extensions, etc.
+Memos has a very active community and produces a lot of design products, including but not limited to Android APP, iOS APP, browser extensions, etc.
 
 - [Moe Memos](https://memos.moe/) - Third party client for iOS and Android
 - [lmm214/memos-bber](https://github.com/lmm214/memos-bber) - Chrome extension

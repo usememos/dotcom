@@ -1,8 +1,8 @@
 ---
-title: What is memos
+title: What is Memos
 ---
 
-**memos** is a privacy-first, lightweight note-taking service. Easily capture and share your great thoughts.
+**Memos** is a privacy-first, lightweight note-taking service. Easily capture and share your great thoughts.
 
 ![demo](/demo.webp)
 

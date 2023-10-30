@@ -1,18 +1,18 @@
 ---
 title: "Choosing Between SQLite and MySQL: The Database Dilemma"
 author: Steven
-description: In memos v0.16.1, we've introduced support for MySQL as an alternative to the previously used SQLite database. This addition expands your choices for managing your data. In this article, we'll discuss the reasons behind our initial choice of SQLite and why we added MySQL support.
+description: In Memos v0.16.1, we've introduced support for MySQL as an alternative to the previously used SQLite database. This addition expands your choices for managing your data. In this article, we'll discuss the reasons behind our initial choice of SQLite and why we added MySQL support.
 published_at: 2023/10/24 20:24:00
 feature_image: /content/blog/choosing-between-sqlite-and-mysql/banner.png
 ---
 
-In memos v0.16.1, we've introduced support for MySQL as an alternative to the previously used SQLite database. This addition expands your choices for managing your data. In this article, we'll discuss the reasons behind our initial choice of SQLite and why we added MySQL support. We'll also explore the key differences between the two and offer guidance on which one you should choose for your specific needs.
+In Memos v0.16.1, we've introduced support for MySQL as an alternative to the previously used SQLite database. This addition expands your choices for managing your data. In this article, we'll discuss the reasons behind our initial choice of SQLite and why we added MySQL support. We'll also explore the key differences between the two and offer guidance on which one you should choose for your specific needs.
 
 ## Why We Started with SQLite
 
 ### Lightweight and Widely Supported
 
-At the inception of memos, we selected SQLite as our primary database due to its lightweight nature and widespread use. SQLite's single-file design allows for easy deployment and integration across various systems. This makes it an excellent choice for applications that prioritize simplicity and compatibility.
+At the inception of Memos, we selected SQLite as our primary database due to its lightweight nature and widespread use. SQLite's single-file design allows for easy deployment and integration across various systems. This makes it an excellent choice for applications that prioritize simplicity and compatibility.
 
 ### Versatile on Any Machine
 
@@ -20,7 +20,7 @@ SQLite is well-suited for use on diverse hardware and software environments. Its
 
 ## Presenting MySQL Support
 
-After memos was launched, there were numerous user requests for support for other database types to enable seamless integration with popular cloud database services: [GitHub Issue #163](https://github.com/usememos/memos/issues/163), [GitHub Issue #1816](https://github.com/usememos/memos/issues/1816). With the primary focus being on MySQL support, we also took a moment to highlight its advantages.
+After Memos was launched, there were numerous user requests for support for other database types to enable seamless integration with popular cloud database services: [GitHub Issue #163](https://github.com/usememos/memos/issues/163), [GitHub Issue #1816](https://github.com/usememos/memos/issues/1816). With the primary focus being on MySQL support, we also took a moment to highlight its advantages.
 
 ### Cloud Compatibility
 
@@ -54,9 +54,9 @@ MySQL outperforms SQLite when it comes to handling large datasets and complex qu
 
 ## How to Choose
 
-When deciding between MySQL and SQLite for memos, it's essential to consider your specific use case and existing infrastructure. Here's a tailored guideline to help you make the choice:
+When deciding between MySQL and SQLite for Memos, it's essential to consider your specific use case and existing infrastructure. Here's a tailored guideline to help you make the choice:
 
-- If you have a clear understanding of the advantages MySQL can bring to your memos instance, and you already have the necessary cloud server resources, opting for MySQL is a viable choice.
+- If you have a clear understanding of the advantages MySQL can bring to your Memos instance, and you already have the necessary cloud server resources, opting for MySQL is a viable choice.
 
 - Furthermore, you can always use SQLite as your database.
 

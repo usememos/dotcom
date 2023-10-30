@@ -1,8 +1,8 @@
 ---
-title: Contribute to memos
+title: Contribute to Memos
 ---
 
-memos is built with a curated tech stack. It is optimized for developer experience and is very easy to start working on the code:
+Memos is built with a curated tech stack. It is optimized for developer experience and is very easy to start working on the code:
 
 - It has no external dependency.
 - It requires zero config.
@@ -35,7 +35,7 @@ memos is built with a curated tech stack. It is optimized for developer experien
    docker compose up -d
    ```
 
-memos should now be running at <http://localhost:3001> and change either frontend or backend code would trigger live reload.
+Memos should now be running at <http://localhost:3001> and change either frontend or backend code would trigger live reload.
 
 ## Working without Docker
 
@@ -73,4 +73,4 @@ memos should now be running at <http://localhost:3001> and change either fronten
    cd web && pnpm i && pnpm dev
    ```
 
-memos should now be running at <http://localhost:3001> and change either frontend or backend code would trigger live reload.
+Memos should now be running at <http://localhost:3001> and change either frontend or backend code would trigger live reload.

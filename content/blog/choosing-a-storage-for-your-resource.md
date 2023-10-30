@@ -4,7 +4,7 @@ author: Steven
 published_at: 2023/6/24 10:30:00
 ---
 
-In memos v0.12.0, we introduces a new feature for saving resources into local file system, which means that there are now three storage options available: database, S3, and local storage. Each option has its own advantages and disadvantages, and choosing the right one depends on your specific needs.
+In Memos v0.12.0, we introduces a new feature for saving resources into local file system, which means that there are now three storage options available: database, S3, and local storage. Each option has its own advantages and disadvantages, and choosing the right one depends on your specific needs.
 
 ## Database storage
 
@@ -25,7 +25,7 @@ Related GitHub issue: [GitHub/344](https://github.com/usememos/memos/issues/344)
 ## Conclusion
 
 - If you mainly use text and have few files, use the default database storage.
-- If you already have S3 object cloud storage, configure your S3 into memos.
+- If you already have S3 object cloud storage, configure your S3 into Memos.
 - If you don't have S3 and use a lot of images, use local storage.
 
 Choose the storage option that best suits your needs. Remember, the right storage option can make a big difference in your application's performance and efficiency.
