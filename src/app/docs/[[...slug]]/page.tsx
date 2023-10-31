@@ -1,10 +1,11 @@
-import { Button } from "@mui/joy";
+import { Button, Divider } from "@mui/joy";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import React from "react";
 import ContentRender from "@/components/ContentRender";
 import Icon from "@/components/Icon";
+import Subscription from "@/components/Subscription";
 import { GITHUB_REPO_LINK } from "@/consts/common";
 import { getContentFilePaths, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
@@ -43,6 +44,8 @@ const Page = ({ params }: Props) => {
             </Link>
           </Button>
         </div>
+        <Divider className="my-12" />
+        <Subscription />
       </div>
     </div>
   );

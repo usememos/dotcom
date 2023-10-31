@@ -1,9 +1,11 @@
+import { Divider } from "@mui/joy";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import React from "react";
 import AuthorView from "@/components/AuthorView";
 import ContentRender from "@/components/ContentRender";
 import Icon from "@/components/Icon";
+import Subscription from "@/components/Subscription";
 import authorList, { Author } from "@/consts/author";
 import { getBlogSlugList, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
@@ -38,6 +40,8 @@ const Page = ({ params }: Props) => {
           <AuthorView author={author} />
         </div>
         <ContentRender markdocNode={transformedContent} />
+        <Divider className="my-12" />
+        <Subscription />
       </div>
     </>
   );

@@ -2,6 +2,7 @@ import { Divider } from "@mui/joy";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Icon from "@/components/Icon";
+import Subscription from "@/components/Subscription";
 import authorList, { Author } from "@/consts/author";
 import { getContentFilePaths, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
@@ -41,6 +42,7 @@ const Page = () => {
               </>
             );
           })}
+          <Subscription className="mt-8" />
         </div>
       </div>
     </>

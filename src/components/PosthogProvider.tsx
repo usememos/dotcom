@@ -5,12 +5,10 @@ import posthog from "posthog-js";
 import React, { useEffect } from "react";
 
 if (typeof window !== "undefined") {
-  if (!window.location.host.startsWith("localhost")) {
-    posthog.init("phc_Ohx7qYjHKRAnrgp1Y6ohGEP5EoyLyPi9kBiSAzzPzEX", {
-      api_host: "https://app.posthog.com",
-      capture_pageview: false,
-    });
-  }
+  posthog.init("phc_Ohx7qYjHKRAnrgp1Y6ohGEP5EoyLyPi9kBiSAzzPzEX", {
+    api_host: "https://app.posthog.com",
+    capture_pageview: false,
+  });
 }
 
 export function PostHogPageview() {

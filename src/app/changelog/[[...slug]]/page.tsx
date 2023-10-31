@@ -1,7 +1,9 @@
+import { Divider } from "@mui/joy";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import React from "react";
 import ContentRender from "@/components/ContentRender";
+import Subscription from "@/components/Subscription";
 import { getContentFilePaths, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
 import { getMetadata } from "@/utils/metadata";
@@ -23,6 +25,8 @@ const Page = ({ params }: Props) => {
     <div className="w-full max-w-4xl sm:px-6">
       <h2 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold mt-4 mb-4">{frontmatter.title}</h2>
       <ContentRender markdocNode={transformedContent} />
+      <Divider className="my-12" />
+      <Subscription />
     </div>
   );
 };
