@@ -4,7 +4,6 @@ import { Button, Input } from "@mui/joy";
 import classNames from "classnames";
 import posthog from "posthog-js";
 import React, { useState } from "react";
-import toast from "react-hot-toast";
 
 interface Props {
   className?: string;
@@ -28,14 +27,12 @@ const Subscription = ({ className }: Props) => {
       return;
     }
     if (!validateEmail(email)) {
-      toast.error("Invalid email");
       return;
     }
 
     posthog.capture("Subscribe", {
       email,
     });
-    toast.success("Subscribed!");
     setSubscribed(true);
   };
 

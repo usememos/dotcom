@@ -1,6 +1,5 @@
 import { Analytics } from "@vercel/analytics/react";
 import React, { Suspense } from "react";
-import { Toaster } from "react-hot-toast";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { PostHogPageview } from "@/components/PosthogProvider";
@@ -21,7 +20,6 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
             {children}
           </main>
           <Footer />
-          <Toaster />
         </div>
         <Suspense>
           <Analytics />
