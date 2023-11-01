@@ -44,7 +44,9 @@ The statistics and data surrounding Memos serve as a compelling testament to the
 
 As we peer into the future, Memos remains unwavering in its commitment to a set of fundamental principles that will continue to guide its journey:
 
-- **Enhancing Architectural Design and Code Cleanliness**: We are committed to further improving the overall architecture and ensuring that our code remains clean and efficient, providing a seamless user experience.
+- **Exploring More Possibilities in Note-taking and Social Interaction**: We're excited to discover new possibilities in note-taking and social engagement. Mainly, we'll focus on enhancing the connectivity between notes and making social features more user-friendly."
+
+- **Optimizing Functionality While Preserving Code Quality**: While we work on expanding and enhancing features, our primary goal is to ensure that every line of code contributes meaningfully to the user experience.
 
 - **Staying True to Our Roots**: Memos will continue to uphold its core values, remaining permanently free and supporting private self-hosted, just as it has from the very beginning.
 
@@ -52,4 +54,4 @@ As we peer into the future, Memos remains unwavering in its commitment to a set 
 
 ## In the End
 
-Memos' success isn't just about the star numbers. It's a testament to hard work, growth, and the power of open source. It's redefined digital note-taking, making it a form of self-conversation. If you haven't tried Memos yet, now's a great time. Those 20,000 GitHub stars aren't just a number; they represent Memos' journey and its exciting future. 🌟✨
+Memos' success isn't just about the star numbers. It's proof of dedication, progress, and the impact of open source. If you haven't tried Memos yet, now's a great time. 🌟✨
