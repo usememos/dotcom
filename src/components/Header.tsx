@@ -22,7 +22,7 @@ const Header = () => {
         showShadow && "border-b shadow",
       )}
     >
-      <Banner text="🧑‍💻 Syncing and Managing Data with GitHub" url="/blog/syncing-and-managing-data-with-github" />
+      <Banner text="🤩 20k GitHub Stars in Just 2 Years" url="/blog/20k-github-stars-in-2-years" />
       <div className="max-w-6xl w-full mx-auto py-2 px-4 sm:px-10 flex flex-row justify-between items-center">
         <div className="w-auto flex flex-row justify-start items-center">
           <Link href="/">
