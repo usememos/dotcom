@@ -17,7 +17,7 @@ const Page = () => {
         <h2 className="w-full text-2xl text-center sm:text-4xl font-medium sm:font-bold mt-4">Blogs</h2>
         <h3 className="text-lg mt-4">Get the latest news about Memos</h3>
         <div className="mt-12 w-full flex flex-col justify-start items-start gap-8">
-          {frontmatters.map((frontmatter, index) => {
+          {frontmatters.map((frontmatter) => {
             const author = authorList.find((author) => author.name === frontmatter.author) as Author;
 
             return (
@@ -38,11 +38,11 @@ const Page = () => {
                     <span>{frontmatter.published_at}</span>
                   </div>
                 </div>
-                {index !== frontmatters.length - 1 && <Divider />}
+                <Divider />
               </>
             );
           })}
-          <Subscription className="mt-8" />
+          <Subscription className="mt-4" />
         </div>
       </div>
     </>

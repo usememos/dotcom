@@ -44,7 +44,7 @@ const Page = ({ params }: Props) => {
             </Link>
           </Button>
         </div>
-        <Divider className="my-12" />
+        <Divider className="!my-12" />
         <Subscription />
       </div>
     </div>

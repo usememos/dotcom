@@ -40,7 +40,7 @@ const Page = ({ params }: Props) => {
           <AuthorView author={author} />
         </div>
         <ContentRender markdocNode={transformedContent} />
-        <Divider className="my-12" />
+        <Divider className="!my-12" />
         <Subscription />
       </div>
     </>
