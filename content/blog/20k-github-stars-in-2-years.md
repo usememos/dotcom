@@ -44,7 +44,7 @@ The statistics and data surrounding Memos serve as a compelling testament to the
 
 As we peer into the future, Memos remains unwavering in its commitment to a set of fundamental principles that will continue to guide its journey:
 
-- **Exploring More Possibilities in Note-taking and Social Interaction**: We're excited to discover new possibilities in note-taking and social engagement. Mainly, we'll focus on enhancing the connectivity between notes and making social features more user-friendly."
+- **Exploring More Possibilities in Note-taking and Social Interaction**: We're excited to discover new possibilities in note-taking and social engagement. Mainly, we'll focus on enhancing the connectivity between notes and making social features more user-friendly.
 
 - **Optimizing Functionality While Preserving Code Quality**: While we work on expanding and enhancing features, our primary goal is to ensure that every line of code contributes meaningfully to the user experience.
 
