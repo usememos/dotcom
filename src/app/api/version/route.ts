@@ -6,5 +6,5 @@ export const GET = async () => {
     },
   });
   const data = (await res.json()) as any[];
-  return Response.json(data[0].name);
+  return Response.json(data[0].name.slice(1));
 };
