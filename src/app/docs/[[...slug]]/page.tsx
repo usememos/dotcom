@@ -35,7 +35,7 @@ const Page = ({ params }: Props) => {
         <div className="block sm:hidden w-full">
           <DocsNavigationDrawer />
         </div>
-        <h2 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold mt-4 mb-4">{frontmatter.title}</h2>
+        <h2 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold mt-4 mb-10">{frontmatter.title}</h2>
         <ContentRender className="lg:!prose-lg" markdocNode={transformedContent} />
         <div className="mt-12">
           <Button size="sm" variant="outlined" color="neutral" startDecorator={<Icon.Edit className="w-4 h-auto" />}>

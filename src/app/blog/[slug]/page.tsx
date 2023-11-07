@@ -33,7 +33,7 @@ const Page = ({ params }: Props) => {
             <img className="w-full h-auto rounded-lg" src={frontmatter.feature_image} alt="" />
           </div>
         )}
-        <h2 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold mt-4 mb-4">{frontmatter.title}</h2>
+        <h2 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold mt-4 mb-10">{frontmatter.title}</h2>
         <div className="mt-8 w-full flex flex-row justify-start items-center">
           <span className="text-gray-500">{frontmatter.published_at}</span>
           <Icon.Dot className="w-4 h-auto mx-1 text-gray-400" />

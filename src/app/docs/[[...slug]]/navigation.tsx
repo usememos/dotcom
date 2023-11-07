@@ -39,6 +39,10 @@ const DOCS_NODES: DocsNode[] = [
         text: "Tags",
         link: "/docs/getting-started/tags",
       },
+      {
+        text: "Resources",
+        link: "/docs/getting-started/resources",
+      },
     ],
   },
   {
