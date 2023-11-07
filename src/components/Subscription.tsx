@@ -40,7 +40,7 @@ const Subscription = ({ className }: Props) => {
     <div className={classNames("w-full shadow border rounded-2xl p-4 sm:p-8", className)}>
       <div className="mb-2 sm:mb-4 flex flex-row justify-start items-center">
         <span className="text-3xl sm:text-6xl mr-2">💌</span>
-        <span className="text-lg sm:text-2xl md:text-3xl leading-tight">Get the latest news of Memos.</span>
+        <span className="text-lg sm:text-2xl md:text-3xl leading-tight">Get the latest news of Memos</span>
       </div>
       <form onSubmit={handleFormSubmit} className="flex flex-row justify-start items-center gap-4">
         {!subscribed && (

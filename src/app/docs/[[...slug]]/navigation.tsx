@@ -32,6 +32,10 @@ const DOCS_NODES: DocsNode[] = [
     text: "Getting Started",
     children: [
       {
+        text: "Memo",
+        link: "/docs/getting-started/memo",
+      },
+      {
         text: "Tags",
         link: "/docs/getting-started/tags",
       },
