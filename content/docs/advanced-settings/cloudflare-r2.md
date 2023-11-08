@@ -13,11 +13,15 @@ If you don't have one already, you will need to create a Cloudflare account. You
 After you have created your Cloudflare account, you will need to create an R2 Storage bucket. To do this, follow these steps:
 
 1. Log in to your Cloudflare account.
-2. Go to the "R2 Storage" section.
-3. Click on the "Create Bucket" button.
-4. Give your bucket a name.
-5. Choose the appropriate storage class and retention period.
-6. Click on the "Create Bucket" button.
+2. Expand the R2 submenu from the left bar.
+3. Select "Overview".
+4. Click on "Manage R2 API Tokens" on the right part of the screen.
+5. Click on the "Create API token" button.
+6. Choose a Token name (es. MEMOS Token).
+7. Choose the "Admin Read & Write" permission.
+8. Optional: limit the IP adrress access range using the "Client IP Address Filtering".
+9. Click on "Create API token" at the bottom of the page.
+10. Copy your Access Key ID and Secret Access Key.
 
 ## Step 3: Obtain Your R2 Credentials
 
