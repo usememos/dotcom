@@ -16,18 +16,32 @@ After you have created your Cloudflare account, you will need to create an R2 St
 2. Go to the "R2 Storage" section.
 3. Click on the "Create Bucket" button.
 4. Give your bucket a name.
-5. Choose the appropriate storage class and retention period.
-6. Click on the "Create Bucket" button.
+5. Choose the appropriate object lifecycle rules (reccomended: reduce the value of "Abort uploads after" field to 1 day.)
+7. Click on the "Create Bucket" button.
 
 ## Step 3: Obtain Your R2 Credentials
 
 To integrate Cloudflare R2 Storage with Memos, you will need to obtain your R2 credentials. To do this, follow these steps:
 
 1. Log in to your Cloudflare account.
-2. Go to the "R2 Storage" section.
-3. Click on the "Access Keys" tab.
-4. Click on the "Create Access Key" button.
-5. Copy your Access Key and Secret Key.
+2. Expand the "R2" submenu from the left bar.
+3. Select "Overview".
+4. Click on "Manage R2 API Tokens" on the right part of the screen.
+5. Click on the "Create API token" button.
+6. Choose a Token name (es. MEMOS Token).
+7. Choose the "Admin Read & Write" permission (or select the 
+8. Optional: limit the IP adrress access range using the "Client IP Address Filtering".
+9. Click on "Create API token" at the bottom of the page.
+10. Copy your Access Key ID and Secret Access Key.
+11. Copy your Endpoint Key.
+12. Take note of the Region of your bucket (usually either EU or Auto).
+13. Return to the "R2" submenu from the left bar menu.
+14. From the "Overview" tab, select the newly created bucket.
+15. Select the "Settings" tab from the top bar menu.
+16. Scroll down to the "R2.dev subdomain" tab and click the "Allow Access" button.
+17. Confirm the activation by writing "allow" in the pop-up and click the "Allow" button once more.
+18. Wait 120s for the setting to apply.
+19. Copy your "Public R2.dev Bucket URL".
 
 ## Step 4: Configure Memos
 
@@ -36,10 +50,15 @@ Now that you have your Cloudflare R2 Storage bucket and credentials, you can con
 1. Log in to your Memos account.
 2. Go to the "Settings" section.
 3. Click on the "Storage" tab.
-4. Select "Cloudflare R2 Storage" as your storage provider.
-5. Enter your Access Key and Secret Key.
-6. Enter the name of your Cloudflare R2 bucket.
-7. Click on the "Save" button.
+4. Select the "Create" button.
+5. Insert a name for your storage, for example "Cloudflare R2".
+6. Insert the Endpoint Key in the "Endpoint" field.
+7. Insert "auto" in the Region field. (alternatively you may try to use your bucket specific region)
+8. Insert your Access Key and Secret Key in the respective fields.
+10. Enter the name of your Cloudflare R2 bucket in the "Bucket" field.
+11. Insert the "Public R2.dev Bucket URL" into the "URL Prefix" field.
+12. Click on the "Save" button.
+13. Select the newly created storage option under the "current object storage" list.
 
 Congratulations! You have successfully configured Cloudflare R2 Storage in Memos. You can now upload and fetch files to and from your Cloudflare R2 Storage bucket.
 
