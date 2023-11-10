@@ -4,12 +4,14 @@ import { Button, Input } from "@mui/joy";
 import classNames from "classnames";
 import posthog from "posthog-js";
 import React, { useState } from "react";
+import useResponsiveWidth from "@/hooks/useResponsiveWidth";
 
 interface Props {
   className?: string;
 }
 
 const Subscription = ({ className }: Props) => {
+  const { sm } = useResponsiveWidth();
   const [email, setEmail] = useState<string>("");
   const [subscribed, setSubscribed] = useState<boolean>(false);
 
@@ -48,6 +50,7 @@ const Subscription = ({ className }: Props) => {
             className="grow"
             type="email"
             placeholder="Type your email..."
+            size={sm ? "lg" : "md"}
             value={email}
             onChange={(event) => handleEmailChanged(event.target.value)}
           />
@@ -57,6 +60,7 @@ const Subscription = ({ className }: Props) => {
           type="submit"
           variant="outlined"
           color="primary"
+          size={sm ? "lg" : "md"}
           disabled={!validateEmail(email)}
           onClick={handleSubscribeButtonClick}
         >
