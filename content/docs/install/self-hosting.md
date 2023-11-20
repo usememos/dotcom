@@ -25,6 +25,49 @@ docker run -d \
 
 This command will launch Memos in the background, exposing it on port `5230`. Data will be stored in the `~/.memos/` directory. You can customize the port and the data directory path as needed.
 
+### Parameter Options
+
+- **mode (-m, --mode):**
+
+  - Values: "prod" or "dev"
+  - Default: "prod"
+  - Purpose: Sets the mode of the server, influencing its runtime behavior. Options include production ("prod"), development ("dev").
+
+- **addr (-a, --addr):**
+
+  - Value: String representing the server address.
+  - Default: Empty string.
+  - Purpose: Specifies the address on which the server will listen for incoming connections.
+
+- **port (-p, --port):**
+
+  - Value: Integer representing the server port.
+  - Default: 8081.
+  - Purpose: Sets the port on which the server will be accessible.
+
+- **data (-d, --data):**
+
+  - Value: String representing the data directory.
+  - Default: Empty string.
+  - Purpose: Specifies the directory where Memos will store its data.
+
+- **driver (--driver):**
+
+  - Value: String representing the database driver. We currently support "sqlite" and "mysql".
+  - Default: "sqlite"
+  - Purpose: Sets the database driver to be used by Memos.
+
+- **dsn (--dsn):**
+
+  - Value: String representing the database source name. Only applicable when using the MySQL driver.
+  - Default: Empty string.
+  - Purpose: Specifies the database source name (DSN) for connecting to the database.
+
+- **metric (--metric):**
+  - Value: Boolean (true/false).
+  - Default: true.
+  - Purpose: Enables or disables metric collection. When enabled, Memos collects metrics for analysis. See more with our [Privacy Policy](/legal/privacy-policy) pages.
+
 ## Docker Compose
 
 To deploy Memos using `docker compose`, create a `docker-compose.yml` file with the following configuration:
