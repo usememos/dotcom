@@ -30,7 +30,7 @@ MEMOS_DSN=root:password@tcp(localhost)/memos_prod
 If you are already using Memos with SQLite, you can migrate your data to MySQL with the following command `copydb`:
 
 ```shell
-/usr/local/bin/memos --driver mysql --dsn 'dbuser:dbpass@tcp(dbhost)/dbname' copydb --from sqlite://path_to_your_memos_prod.db
+/usr/local/memos/memos --driver mysql --dsn 'dbuser:dbpass@tcp(dbhost)/dbname' copydb --from sqlite://path_to_your_memos_prod.db
 ```
 
 This will copy all data from the SQLite database specified by `--from` into the MySQL server. If your Memos instance is running in Docker, you can execute this command inside the container.
