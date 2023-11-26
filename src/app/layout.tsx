@@ -24,6 +24,11 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         <Suspense>
           <Analytics />
           <PostHogPageview />
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4774626535817335"
+            crossOrigin="anonymous"
+          ></script>
         </Suspense>
       </body>
     </html>
