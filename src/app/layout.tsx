@@ -11,6 +11,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
     <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
+        <meta name="google-adsense-account" content="ca-pub-4774626535817335" />
         <link rel="icon" href="/favicon/favicon.png" type="image/png" />
       </head>
       <body>
