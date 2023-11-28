@@ -1,4 +1,3 @@
-import Link from "next/link";
 import DemoPlaceholder from "@/components/DemoPlaceholder";
 import FeatureMatrix from "@/components/FeatureMatrix";
 import LatestVersion from "@/components/LatestVersion";
@@ -14,14 +13,6 @@ const Page = () => {
           A privacy-first, lightweight note-taking service
         </h2>
         <h3 className="w-full text-base sm:text-xl text-gray-500 text-center">Easily capture and share your great thoughts.</h3>
-      </div>
-      <div className="w-full flex flex-row justify-center items-center space-x-2 py-4">
-        <Link target="_blank" href="https://github.com/usememos/memos">
-          <img alt="GitHub stars" src="https://img.shields.io/github/stars/usememos/memos?logo=github" />
-        </Link>
-        <Link target="_blank" href="https://hub.docker.com/r/neosmemo/memos">
-          <img alt="Docker" src="https://img.shields.io/docker/pulls/neosmemo/memos.svg?logo=docker" />
-        </Link>
       </div>
       <DemoPlaceholder />
       <FeatureMatrix />
