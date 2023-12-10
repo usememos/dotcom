@@ -57,8 +57,8 @@ const DOCS_NODES: DocsNode[] = [
         link: "/docs/advanced-settings/local-storage",
       },
       {
-        text: "MySQL",
-        link: "/docs/advanced-settings/mysql",
+        text: "Database",
+        link: "/docs/advanced-settings/database",
       },
       {
         text: "Cloudflare R2",
