@@ -29,16 +29,6 @@ MEMOS_DRIVER=mysql
 MEMOS_DSN=root:password@tcp(localhost)/memos_prod
 ```
 
-### Migrating data from SQLite to MySQL
-
-If you are already using Memos with SQLite, you can migrate your data to MySQL with the following command `copydb`:
-
-```shell
-/usr/local/memos/memos --driver mysql --dsn 'dbuser:dbpass@tcp(dbhost)/dbname' copydb --from sqlite://path_to_your_memos_prod.db
-```
-
-This will copy all data from the SQLite database specified by `--from` into the MySQL server. If your Memos instance is running in Docker, you can execute this command inside the container.
-
 ## Using PostgreSQL
 
 Starting from version 0.18.0, Memos also supports PostgreSQL as a database driver. To switch to PostgreSQL, you can use the following steps:
@@ -54,3 +44,9 @@ docker run -d --name memos -p 5230:5230 -v ~/.memos/:/var/opt/memos ghcr.io/usem
 ```
 
 Choose the database driver that best suits your needs and configure Memos accordingly.
+
+## Migrating data between different drivers
+
+You can do this with some scripting language, for example I used ChatGPT to help me implement a SQLite to MySQL Python script: https://chat.openai.com/share/5a9b9e03-3666-4eb2-b9d9-31688729fcd3.
+
+Similarly, you can make a SQLite to PostgreSQL script.
