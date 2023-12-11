@@ -2,3 +2,6 @@
 .content h3 {
   @apply !-mt-20 !pt-28;
 }
+.content em {
+  @apply break-all;
+}

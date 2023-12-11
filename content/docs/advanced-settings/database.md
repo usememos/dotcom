@@ -47,6 +47,6 @@ Choose the database driver that best suits your needs and configure Memos accord
 
 ## Migrating data between different drivers
 
-You can do this with some scripting language, for example I used ChatGPT to help me implement a SQLite to MySQL Python script: https://chat.openai.com/share/5a9b9e03-3666-4eb2-b9d9-31688729fcd3.
+You can do this with some scripting language, for example I used ChatGPT to help me implement a SQLite to MySQL Python script: [SQLite to MySQL Migration](https://chat.openai.com/share/5a9b9e03-3666-4eb2-b9d9-31688729fcd3).
 
 Similarly, you can make a SQLite to PostgreSQL script.
