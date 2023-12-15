@@ -1,6 +1,5 @@
 import { Analytics } from "@vercel/analytics/react";
-import { GeistMono } from "geist/font/mono";
-import { GeistSans } from "geist/font/sans";
+import { Inter } from "next/font/google";
 import React, { Suspense } from "react";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
@@ -8,9 +7,14 @@ import { PostHogPageview } from "@/components/PosthogProvider";
 import "@/styles/global.css";
 import { getMetadata } from "@/utils/metadata";
 
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
+
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+    <html lang="en" className={`${inter.variable} font-sans`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
         <link rel="icon" href="/favicon/favicon.png" type="image/png" />

@@ -26,9 +26,6 @@ dependencies:
   classnames:
     specifier: ^2.3.2
     version: 2.3.2
-  geist:
-    specifier: ^1.2.0
-    version: 1.2.0(next@14.0.3)
   js-yaml:
     specifier: ^4.1.0
     version: 4.1.0
@@ -2108,14 +2105,6 @@ packages:
   /functions-have-names@1.2.3:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
     dev: true
-
-  /geist@1.2.0(next@14.0.3):
-    resolution: {integrity: sha512-RZsgCkGnSi1IV1Ozg3s6Ou4r/jzLff9+47ChjpJ5yX8ncEC/RwdStGwhdFzDcnSv0xU0+9J/fTX5Kht0NajTXA==}
-    peerDependencies:
-      next: ^13.2 || ^14
-    dependencies:
-      next: 14.0.3(react-dom@18.2.0)(react@18.2.0)
-    dev: false
 
   /get-intrinsic@1.2.2:
     resolution: {integrity: sha512-0gSo4ml/0j98Y3lngkFEot/zhiCeWsbYIlZ+uZOVgzLyLaUw7wxUL+nCTP0XJvJg1AXulJRI3UJi8GsbDuxdGA==}
