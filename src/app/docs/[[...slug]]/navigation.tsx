@@ -72,6 +72,10 @@ const DOCS_NODES: DocsNode[] = [
         text: "Webhook",
         link: "/docs/advanced-settings/webhook",
       },
+      {
+        text: "SEO",
+        link: "/docs/advanced-settings/seo",
+      },
     ],
   },
   {
