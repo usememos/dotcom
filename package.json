@@ -17,6 +17,7 @@
     "@vercel/analytics": "^0.1.11",
     "axios": "^1.6.2",
     "classnames": "^2.3.2",
+    "geist": "^1.2.0",
     "js-yaml": "^4.1.0",
     "lucide-react": "^0.288.0",
     "next": "^14.0.3",
