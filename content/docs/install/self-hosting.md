@@ -86,6 +86,13 @@ services:
 
 Now, execute `docker-compose up -d` to initiate Memos. While editing the port and data directory is possible, only modify the first port (e.g., `8081:5230`) to specify an alternative port. The second port designates the port Memos is listening on inside the container. The same principle applies to directory paths, where the first path represents the location on your host system, and the second path signifies the directory inside the container.
 
+## Deploy on Sealos (oneClick deployment)
+
+> Click the button below to deploy with one click.👇
+
+[![Deploy-on-Sealos.svg](https://raw.githubusercontent.com/labring-actions/templates/main/Deploy-on-Sealos.svg)](https://cloud.sealos.io/?openapp=system-fastdeploy?templateName=memos)
+
+
 ## Upgrading Memos
 
 To upgrade Memos to the latest version, perform the following steps:
