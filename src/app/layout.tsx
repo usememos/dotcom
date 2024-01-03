@@ -20,7 +20,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         <link rel="icon" href="/favicon/favicon.png" type="image/png" />
       </head>
       <body>
-        <div className="relative w-full flex flex-col">
+        <div className="relative w-full min-h-[100svh] flex flex-col">
           <Header />
           <main className="shrink-0 grow basis-auto mx-auto pt-6 pb-16 px-6 w-full max-w-6xl flex flex-col justify-start items-center">
             {children}
