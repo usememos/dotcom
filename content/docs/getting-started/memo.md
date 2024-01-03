@@ -16,6 +16,8 @@ Each memo contains:
 
 3. **Links**: Memos can be linked to one another, creating a web of interconnected knowledge. This fosters a deeper understanding of the relationships between different concepts.
 
+4. **Visibility**: Memos can be set to public, workspace, or private. Public memos are visible to everyone. Workspace memos are only visible to you and your team. Private memos are only visible to you.
+
 ## How to Create Memos
 
 1. **Start Small**: Each memo should focus on a single idea or concept. Keep it concise and to the point.
