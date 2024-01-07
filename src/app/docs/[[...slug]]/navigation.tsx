@@ -76,6 +76,10 @@ const DOCS_NODES: DocsNode[] = [
         text: "SEO",
         link: "/docs/advanced-settings/seo",
       },
+      {
+        text: "Metrics",
+        link: "/docs/advanced-settings/metrics",
+      },
     ],
   },
   {
