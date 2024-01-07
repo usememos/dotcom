@@ -10,7 +10,7 @@ By default, Memos collects anonymized metrics using [PostHog](https://posthog.co
 - Resource Creation
 - User Creation
 
-If you wish to opt out of metrics collections, add the `--metrics=false` flag to your Docker command like so:
+If you wish to opt out of metrics collections, add the `--metric=false` flag to your Docker command like so:
 
 ```shell
 docker run -d --name memos -p 5230:5230 -v ~/.memos/:/var/opt/memos ghcr.io/usememos/memos:latest --metric=false
