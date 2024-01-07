@@ -49,7 +49,7 @@ Memos should now be running at <http://localhost:3001> and change either fronten
 
 ### Steps
 
-1. Clone the repoetup the environments
+1. Clone the repo
 
    ```bash
    git clone https://github.com/usememos/memos
