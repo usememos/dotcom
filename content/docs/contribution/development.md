@@ -19,14 +19,14 @@ Memos is built with a curated tech stack. It is optimized for developer experien
 2. Use `docker-compose.dev.yaml` as default for Docker Compose, instead of `docker-compose.yaml` reserved for normal users
 
    ```bash
-   echo 'COMPOSE_FILE=docker-compose.dev.yaml' > .env
+   echo 'COMPOSE_FILE=scripts/docker-compose.dev.yaml' > .env
    ```
 
-3. Setup the environments
+3. For the first run, you'll need to install Node modules and generate TypeScript code of gRPC proto
 
    ```bash
-   docker compose run api go install github.com/cosmtrek/air@latest
-   docker compose run web npm install
+   docker compose run npm install
+   docker compose run buf generate
    ```
 
 4. Start your services:
@@ -49,7 +49,7 @@ Memos should now be running at <http://localhost:3001> and change either fronten
 
 ### Steps
 
-1. Clone the repo
+1. Clone the repoetup the environments
 
    ```bash
    git clone https://github.com/usememos/memos
