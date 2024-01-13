@@ -12,7 +12,7 @@ export const getMetadata = (metadata: Partial<LocalMetadata>): Metadata => {
   const description =
     metadata.description || "A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts.";
   const url = metadata.pathname || "";
-  const imagePath = metadata.imagePath || "/logo.png";
+  const imagePath = metadata.imagePath || "/logo-rounded.png";
   const hasFeatureImage = !!metadata.imagePath;
 
   return {
