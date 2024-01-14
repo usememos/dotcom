@@ -4,9 +4,11 @@ import classNames from "classnames";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BsGithub } from "react-icons/bs";
+import useResponsiveWidth from "@/hooks/useResponsiveWidth";
 import Banner from "./Banner";
 
 const Header = () => {
+  const { sm } = useResponsiveWidth();
   const [showShadow, setShowShadow] = useState(false);
 
   useEffect(() => {
@@ -28,25 +30,27 @@ const Header = () => {
           <Link href="/">
             <div className="cursor-pointer flex flex-row justify-start items-center hover:opacity-80">
               <span className="sr-only">Memos</span>
-              <img src="/full-logo-landscape.png" className="h-8 sm:h-10 w-auto mr-2" alt="" />
+              <img src="/full-logo-landscape.png" className="h-9 sm:h-10 w-auto mr-2" alt="" />
             </div>
           </Link>
+          <div className="ml-2 sm:ml-4 w-auto flex flex-row justify-end items-center space-x-2 sm:space-x-3 font-medium text-zinc-700">
+            <Link className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600" href="/docs">
+              {sm ? "Documentation" : "Docs"}
+            </Link>
+            <span className="font-mono text-gray-300">/</span>
+            <Link className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600" href="/blog">
+              Blogs
+            </Link>
+          </div>
         </div>
         <div className="w-auto flex flex-row justify-end items-center space-x-2 sm:space-x-3">
-          <Link className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600" href="/docs">
-            Docs
-          </Link>
-          <span className="font-mono text-gray-300">/</span>
-          <Link className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600" href="/blog">
-            Blogs
-          </Link>
-          <span className="font-mono text-gray-300">/</span>
           <Link
             className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600"
             href="https://github.com/usememos/memos"
             target="_blank"
           >
-            <BsGithub className="w-5 h-auto" />
+            <BsGithub className="w-5 h-auto mr-1 -mt-0.5" />
+            <span className="hidden sm:block">GitHub</span>
           </Link>
         </div>
       </div>
