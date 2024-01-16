@@ -2,11 +2,11 @@
 title: Content Syntax
 ---
 
-Memos primarily focuses on plain text recording, but also supports some commonly used Markdown syntax. Here is a list of supported syntax:
+Memos primarily focuses on plain text recording, but also supports some commonly used Markdown syntax. Here is a list of supported content syntax:
 
 ## Headings
 
-| Markdown           | Rendered           |
+| Syntax             | Rendered           |
 | ------------------ | ------------------ |
 | `# Heading 1`      | <h1>Heading 1</h1> |
 | `## Heading 2`     | <h2>Heading 2</h2> |
@@ -17,7 +17,7 @@ Memos primarily focuses on plain text recording, but also supports some commonly
 
 ## Emphasis
 
-| Markdown            | Rendered          |
+| Syntax              | Rendered          |
 | ------------------- | ----------------- |
 | `*Italic*`          | _Italic_          |
 | `**Bold**`          | **Bold**          |
@@ -27,7 +27,7 @@ Memos primarily focuses on plain text recording, but also supports some commonly
 
 ### Unordered
 
-Markdown:
+Syntax:
 
 ```markdown
 - Item 1
@@ -45,7 +45,7 @@ Rendered:
 
 ### Ordered
 
-Markdown:
+Syntax:
 
 ```markdown
 1. Item 1
@@ -63,7 +63,7 @@ Rendered:
 
 ## Task Lists
 
-Markdown:
+Syntax:
 
 ```markdown
 - [x] Item 1
@@ -81,11 +81,13 @@ Rendered:
 
 ## Links
 
-Markdown:
+Syntax:
 
+```markdown
 - `[Memos](https://usememos.com)`
 - `<https://usememos.com>`
 - `https://usememos.com`
+```
 
 Rendered:
 
@@ -97,9 +99,11 @@ And we supported automatically turn URLs into links. That means if you type http
 
 ## Images
 
-Markdown:
+Syntax:
 
-`![Memos](https://www.usememos.com/full-logo-landscape.png)`
+```markdown
+![Memos](https://www.usememos.com/full-logo-landscape.png)
+```
 
 Rendered:
 
@@ -109,9 +113,11 @@ Rendered:
 
 ### Inline
 
-Markdown:
+Syntax:
 
-`` `const x = 1` ``
+```markdown
+`const x = 1`
+```
 
 Rendered:
 
@@ -119,13 +125,15 @@ Rendered:
 
 ### Block
 
-Markdown:
+Syntax:
 
-    ```javascript
-    const x = 1;
-    const y = 2;
-    const z = 3;
-    ```
+````markdown
+```javascript
+const x = 1;
+const y = 2;
+const z = 3;
+```
+````
 
 Rendered:
 
@@ -137,30 +145,36 @@ const z = 3;
 
 ## Blockquotes
 
-| Markdown       | Rendered                            |
-| -------------- | ----------------------------------- |
-| `> Blockquote` | <blockquote>Blockquote</blockquote> |
+Syntax:
+
+```markdown
+> Blockquote
+```
+
+Rendered:
+
+> Blockquote
 
 ## LaTeX
 
 ### Inline
 
-Markdown:
+Syntax:
 
 `$x^2$`
 
 ### Block
 
-Markdown:
+Syntax:
 
-    ```latex
-    $$
-    x^2 + y^2 = z^2
-    $$
-    ```
+```latex
+$$
+x^2 + y^2 = z^2
+$$
+```
 
 ## Highlight
 
-Markdown:
+Syntax:
 
 `==text==`
