@@ -61,28 +61,61 @@ Rendered:
    1. Item 2.1
    2. Item 2.2
 
+## Task Lists
+
+Markdown:
+
+```markdown
+- [x] Item 1
+- [ ] Item 2
+  - [ ] Item 2.1
+  - [x] Item 2.2
+```
+
+Rendered:
+
+- [x] Item 1
+- [ ] Item 2
+  - [ ] Item 2.1
+  - [x] Item 2.2
+
 ## Links
 
-| Markdown                        | Rendered                      |
-| ------------------------------- | ----------------------------- |
-| `[Memos](https://usememos.com)` | [Memos](https://usememos.com) |
-| `<https://usememos.com>`        | <https://usememos.com>        |
-| `https://usememos.com`          | https://usememos.com          |
+Markdown:
+
+- `[Memos](https://usememos.com)`
+- `<https://usememos.com>`
+- `https://usememos.com`
+
+Rendered:
+
+- [Memos](https://usememos.com)
+- <https://usememos.com>
+- <https://usememos.com>
+
+And we supported automatically turn URLs into links. That means if you type https://www.usememos.com, it will automatically be turned into a link even though you haven’t used brackets.
 
 ## Images
 
-| Markdown                                                     | Rendered                                                   |
-| ------------------------------------------------------------ | ---------------------------------------------------------- |
-| `![Memos](https://www.usememos.com/full-logo-landscape.png)` | ![Memos](https://www.usememos.com/full-logo-landscape.png) |
+Markdown:
+
+`![Memos](https://www.usememos.com/full-logo-landscape.png)`
+
+Rendered:
+
+![Memos](https://www.usememos.com/full-logo-landscape.png)
 
 ## Code
 
 ### Inline
 
-| Markdown                          | Rendered                    |
-| --------------------------------- | --------------------------- |
-| `` `const x = 1` ``               | `const x = 1`               |
-| `` `const x = 1, y = 2, z = 3` `` | `const x = 1, y = 2, z = 3` |
+Markdown:
+
+`` `const x = 1` ``
+
+Rendered:
+
+`const x = 1`
 
 ### Block
 
@@ -108,19 +141,13 @@ const z = 3;
 | -------------- | ----------------------------------- |
 | `> Blockquote` | <blockquote>Blockquote</blockquote> |
 
-## Tags
-
-| Markdown | Rendered |
-| -------- | -------- |
-| `#tag`   | #tag     |
-
 ## LaTeX
 
 ### Inline
 
-| Markdown | Rendered |
-| -------- | -------- |
-| `$x^2$`  | $x^2$    |
+Markdown:
+
+`$x^2$`
 
 ### Block
 
@@ -132,14 +159,8 @@ Markdown:
     $$
     ```
 
-Rendered:
-
-$$
-x^2 + y^2 = z^2
-$$
-
 ## Highlight
 
-| Markdown   | Rendered |
-| ---------- | -------- |
-| `==text==` | ==text== |
+Markdown:
+
+`==text==`
