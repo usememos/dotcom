@@ -20,7 +20,7 @@ docker run -d \
   --name memos \
   --publish 5230:5230 \
   --volume ~/.memos/:/var/opt/memos \
-  ghcr.io/usememos/memos:latest
+  neosmemo/memos:stable
 ```
 
 This command will launch Memos in the background, exposing it on port `5230`. Data will be stored in the `~/.memos/` directory. You can customize the port and the data directory path as needed.
@@ -76,7 +76,7 @@ To deploy Memos using `docker compose`, create a `docker-compose.yml` file with 
 version: "3.0"
 services:
   memos:
-    image: ghcr.io/usememos/memos:latest
+    image: neosmemo/memos:stable
     container_name: memos
     volumes:
       - ~/.memos/:/var/opt/memos
@@ -105,7 +105,7 @@ To upgrade Memos to the latest version, perform the following steps:
 3. Next, pull the latest memos image:
 
    ```bash
-   docker pull ghcr.io/usememos/memos:latest
+   docker pull neosmemo/memos:stable
    ```
 
 4. Finally, initiate Memos by following the steps outlined in the [Docker Run](#docker-run) section. Your upgraded Memos instance will now be up and running with the latest enhancements and features.

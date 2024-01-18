@@ -19,7 +19,7 @@ By default, Memos continues to use SQLite as the default database driver. To swi
 You can start Memos with Docker using the following command:
 
 ```shell
-docker run -d --name memos -p 5230:5230 -v ~/.memos/:/var/opt/memos ghcr.io/usememos/memos:latest --driver mysql --dsn 'root:password@tcp(localhost)/memos_prod'
+docker run -d --name memos -p 5230:5230 -v ~/.memos/:/var/opt/memos neosmemo/memos:stable --driver mysql --dsn 'root:password@tcp(localhost)/memos_prod'
 ```
 
 Additionally, you can set these configurations via environment variables:
@@ -40,7 +40,7 @@ Starting from version 0.18.0, Memos also supports PostgreSQL as a database drive
 You can start Memos with Docker using the following command:
 
 ```shell
-docker run -d --name memos -p 5230:5230 -v ~/.memos/:/var/opt/memos ghcr.io/usememos/memos:latest --driver postgres --dsn 'postgresql://postgres:PASSWORD@localhost:5432/memos'
+docker run -d --name memos -p 5230:5230 -v ~/.memos/:/var/opt/memos neosmemo/memos:stable --driver postgres --dsn 'postgresql://postgres:PASSWORD@localhost:5432/memos'
 ```
 
 Choose the database driver that best suits your needs and configure Memos accordingly.

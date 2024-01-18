@@ -11,7 +11,7 @@ In all honesty, I don't have a suitable cloud service for deploying memos, but I
 The solution began with the realization that the Memos' startup command could hold the key. The recommand command looked like this:
 
 ```shell
-docker run -d --name memos -p 5230:5230 -v ~/.memos/:/var/opt/memos ghcr.io/usememos/memos:latest
+docker run -d --name memos -p 5230:5230 -v ~/.memos/:/var/opt/memos neosmemo/memos:stable
 ```
 
 I had an idea - what if I replaced `~/.memos` with a folder in iCloud? This simple change held the promise of realizing multi-device data sharing, and potentially, it meant I could set up a memos instance on my work MacBook Pro without relying on external cloud servers. It was a challenge worth taking, so let's explore how I embarked on this endeavor.
@@ -35,7 +35,7 @@ The journey started with a visit to my MacBook Air, where I aimed to create a sh
 With the iCloud folder in place, I was eager to make use of it in my Memos setup. Here's where Docker came into play:
 
 ```shell
-docker run -d --name memos -p 5230:5230 -v ~/Documents/memos/:/var/opt/memos ghcr.io/usememos/memos:latest
+docker run -d --name memos -p 5230:5230 -v ~/Documents/memos/:/var/opt/memos neosmemo/memos:stable
 ```
 
 With this new configuration, I replaced `~/.memos` in the Docker command with the path to the `~/Documents/memos/` folder I created in iCloud Drive. This change meant that Memos would now read and write data directly from iCloud, making it accessible from both my MacBook Air and MacBook Pro.
