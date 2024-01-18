@@ -21,8 +21,8 @@ const DemoPlaceholder = () => {
           Discord
         </Link>
       </div>
-      <img className="hidden sm:block w-full h-auto" src="/demo.webp" alt="demo-screenshot" />
-      <img className="sm:hidden w-full h-auto" src="/demo-mobile.webp" alt="demo-mobile-screenshot" />
+      <img className="hidden sm:block w-full h-auto" src="/demo.png" alt="demo-screenshot" />
+      <img className="sm:hidden w-full h-auto" src="/demo-mobile.png" alt="demo-mobile-screenshot" />
     </div>
   );
 };
