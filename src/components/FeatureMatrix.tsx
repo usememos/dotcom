@@ -86,18 +86,20 @@ const FeatureMatrix = () => {
           </div>
         ))}
       </div>
-      <div className="w-full my-8 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 sm:px-12">
-        {SUB_FEATURES.map((featureItem) => (
-          <div key={featureItem.title} className="w-full flex flex-row justify-start items-center gap-4">
-            <div className="text-gray-600 rounded-lg">
-              <featureItem.icon className="h-8 sm:h-10 w-auto" strokeWidth={1} />
+      <div className="w-full mt-4 sm:px-12">
+        <div className="w-full bg-white rounded-xl p-4 sm:p-6 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+          {SUB_FEATURES.map((featureItem) => (
+            <div key={featureItem.title} className="w-full flex flex-row justify-start items-center gap-4">
+              <div className="text-gray-600 rounded-lg">
+                <featureItem.icon className="h-8 sm:h-10 w-auto" strokeWidth={1} />
+              </div>
+              <div className="flex flex-col justify-center items-start whitespace-nowrap">
+                <p className="text-sm text-gray-500">{featureItem.description}</p>
+                <p className="relative text-base font-medium sm:text-lg">{featureItem.title}</p>
+              </div>
             </div>
-            <div className="flex flex-col justify-center items-start whitespace-nowrap">
-              <p className="text-sm text-gray-500">{featureItem.description}</p>
-              <p className="relative text-base sm:text-lg">{featureItem.title}</p>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </>
   );
