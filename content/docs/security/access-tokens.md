@@ -10,7 +10,7 @@ Access tokens are used in token-based authentication to allow an application to 
 
 Go to the settings page and click on the "Create" button to create an access token.
 
-- **Descirption**: A description of the access token.
+- **Description**: A description of the access token.
 - **Expiration**: The expiration date of the access token.
 
   ![create](/content/docs/security/access-tokens/create.png)
