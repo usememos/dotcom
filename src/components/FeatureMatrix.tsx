@@ -1,13 +1,13 @@
 import Icon from "./Icon";
 
 export interface FeatureItem {
-  slug: string;
   icon: Icon.LucideIcon;
   title: string;
   description: string;
+  slug?: string;
 }
 
-export const FEATURE_LIST: FeatureItem[] = [
+export const MAIN_FEATURES: FeatureItem[] = [
   {
     slug: "privacy-first",
     icon: Icon.Shield,
@@ -46,20 +46,56 @@ export const FEATURE_LIST: FeatureItem[] = [
   },
 ];
 
+const SUB_FEATURES: FeatureItem[] = [
+  {
+    icon: Icon.Star,
+    title: "22k+",
+    description: "GitHub Stars",
+  },
+  {
+    icon: Icon.Users,
+    title: "170+",
+    description: "Contributors",
+  },
+  {
+    icon: Icon.Download,
+    title: "1M+",
+    description: "Docker Pulls",
+  },
+  {
+    icon: Icon.Package,
+    title: "50+",
+    description: "Releases",
+  },
+];
+
 const FeatureMatrix = () => {
   return (
     <>
       <p className="w-full text-center mt-8 mb-4 sm:px-6 text-xl sm:text-3xl text-gray-400">Why Memos?</p>
-      <div className="w-full my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 sm:px-6">
-        {FEATURE_LIST.map((featureItem) => (
-          <div key={featureItem.title} className="w-full flex flex-col justify-start items-start p-6 rounded-2xl bg-zinc-100 hover:shadow">
-            <div className="w-10 h-10 bg-white text-gray-600 rounded-lg p-2">
-              <featureItem.icon className="h-6 w-auto " />
+      <div className="w-full my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12 sm:px-12">
+        {MAIN_FEATURES.map((featureItem) => (
+          <div key={featureItem.title} className="w-full flex flex-col justify-start items-start rounded-2xl bg-zinc-100">
+            <div className="w-10 h-10 text-gray-600 rounded-lg">
+              <featureItem.icon className="h-10 w-auto" strokeWidth={1} />
             </div>
             <span className="relative text-base sm:text-lg mb-2 mt-4">
               <span>{featureItem.title}</span>
             </span>
             <p className="text-sm text-gray-500">{featureItem.description}</p>
+          </div>
+        ))}
+      </div>
+      <div className="w-full my-8 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 sm:px-12">
+        {SUB_FEATURES.map((featureItem) => (
+          <div key={featureItem.title} className="w-full flex flex-row justify-start items-center gap-4">
+            <div className="text-gray-600 rounded-lg">
+              <featureItem.icon className="h-8 sm:h-10 w-auto" strokeWidth={1} />
+            </div>
+            <div className="flex flex-col justify-center items-start whitespace-nowrap">
+              <p className="text-sm text-gray-500">{featureItem.description}</p>
+              <p className="relative text-base sm:text-lg">{featureItem.title}</p>
+            </div>
           </div>
         ))}
       </div>

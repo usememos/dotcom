@@ -9,19 +9,20 @@ import Banner from "./Banner";
 
 const Header = () => {
   const { sm } = useResponsiveWidth();
-  const [showShadow, setShowShadow] = useState(false);
+  const [pageScrolled, setPageScrolled] = useState(false);
 
   useEffect(() => {
     document.addEventListener("scroll", () => {
-      setShowShadow(window.scrollY > 0);
+      setPageScrolled(window.scrollY > 0);
     });
   }, []);
 
   return (
     <header
       className={classNames(
-        "sticky top-0 bg-white bg-opacity-80 backdrop-blur-lg z-10 w-full mx-auto flex flex-col justify-center items-center",
-        showShadow && "border-b shadow",
+        "sticky top-0 transition-all bg-zinc-100 bg-opacity-80 backdrop-blur-lg z-10 w-full mx-auto flex flex-col justify-center items-center",
+        pageScrolled && "border-b shadow",
+        pageScrolled ? "pt-0" : "pt-2",
       )}
     >
       {false && <Banner text="🤩 20k GitHub Stars in Just 2 Years" url="/blog/20k-github-stars-in-2-years" />}

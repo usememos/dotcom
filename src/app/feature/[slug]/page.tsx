@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import DemoPlaceholder from "@/components/DemoPlaceholder";
-import FeatureMatrix, { FEATURE_LIST, FeatureItem } from "@/components/FeatureMatrix";
+import FeatureMatrix, { MAIN_FEATURES, FeatureItem } from "@/components/FeatureMatrix";
 import LatestVersion from "@/components/LatestVersion";
 import { getMetadata } from "@/utils/metadata";
 
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Page = ({ params }: Props) => {
-  const feature = FEATURE_LIST.find((feature) => feature.slug === params.slug) as FeatureItem;
+  const feature = MAIN_FEATURES.find((feature) => feature.slug === params.slug) as FeatureItem;
 
   return (
     <>
@@ -40,7 +40,7 @@ const Page = ({ params }: Props) => {
 };
 
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
-  const feature = FEATURE_LIST.find((feature) => feature.slug === params.slug) as FeatureItem;
+  const feature = MAIN_FEATURES.find((feature) => feature.slug === params.slug) as FeatureItem;
   return getMetadata({
     title: feature.title + " - Memos",
     description: feature.description,
@@ -49,7 +49,7 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
 };
 
 export const generateStaticParams = () => {
-  return FEATURE_LIST.map((feature) => {
+  return MAIN_FEATURES.map((feature) => {
     return {
       slug: feature.slug,
     };
