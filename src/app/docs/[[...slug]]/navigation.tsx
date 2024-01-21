@@ -167,7 +167,7 @@ const Navigation = () => {
   );
 };
 
-export const DocsNavigationDrawer = () => {
+export const NavigationMobileMenu = () => {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 

@@ -1,16 +1,20 @@
 import { Button, Divider } from "@mui/joy";
 import { Metadata } from "next";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import React from "react";
 import ContentRender from "@/components/ContentRender";
 import Icon from "@/components/Icon";
-import Subscription from "@/components/Subscription";
 import { GITHUB_REPO_LINK } from "@/consts/common";
 import { getContentFilePaths, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
 import { getMetadata } from "@/utils/metadata";
-import Navigation, { DocsNavigationDrawer } from "./navigation";
+import Navigation, { NavigationMobileMenu } from "./navigation";
+
+const Subscription = dynamic(() => import("@/components/Subscription"), {
+  ssr: false,
+});
 
 interface Props {
   params: { slug: string[] };
@@ -33,7 +37,7 @@ const Page = ({ params }: Props) => {
       </div>
       <div className="w-full sm:max-w-[calc(100%-16rem)]">
         <div className="block sm:hidden w-full">
-          <DocsNavigationDrawer />
+          <NavigationMobileMenu />
         </div>
         <h2 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold mt-4 mb-10">{frontmatter.title}</h2>
         <ContentRender className="lg:!prose-lg" markdocNode={transformedContent} />

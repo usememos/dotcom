@@ -2,13 +2,13 @@
 
 import classNames from "classnames";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsGithub } from "react-icons/bs";
-import useResponsiveWidth from "@/hooks/useResponsiveWidth";
 import Banner from "./Banner";
+import Icon from "./Icon";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "./kit/DropdownMenu";
 
 const Header = () => {
-  const { sm } = useResponsiveWidth();
   const [pageScrolled, setPageScrolled] = useState(false);
 
   useEffect(() => {
@@ -34,9 +34,9 @@ const Header = () => {
               <img src="/full-logo-landscape.png" className="h-9 sm:h-10 w-auto mr-2" alt="" />
             </div>
           </Link>
-          <div className="ml-2 sm:ml-4 w-auto flex flex-row justify-end items-center space-x-2 sm:space-x-3 font-medium text-zinc-700">
+          <div className="ml-2 sm:ml-4 w-auto hidden sm:flex flex-row justify-end items-center space-x-2 sm:space-x-3 font-medium text-zinc-700">
             <Link className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600" href="/docs">
-              {sm ? "Documentation" : "Docs"}
+              Documentation
             </Link>
             <span className="font-mono text-gray-300">/</span>
             <Link className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600" href="/blog">
@@ -46,16 +46,52 @@ const Header = () => {
         </div>
         <div className="w-auto flex flex-row justify-end items-center space-x-2 sm:space-x-3">
           <Link
-            className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600"
+            className="w-auto hidden sm:flex flex-row justify-center items-center hover:underline hover:text-blue-600"
             href="https://github.com/usememos/memos"
             target="_blank"
           >
             <BsGithub className="w-5 h-auto mr-1 -mt-0.5" />
             <span className="hidden sm:block">GitHub</span>
           </Link>
+          <HeaderMobileMenu />
         </div>
       </div>
     </header>
+  );
+};
+
+const HeaderMobileMenu = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <DropdownMenu open={open} onOpenChange={setOpen}>
+      <DropdownMenuTrigger className="outline-none" asChild>
+        <Icon.Menu className="w-6 h-auto opacity-80" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="bg-white">
+        <DropdownMenuItem>
+          <Link className="w-full" href="/docs" onClick={() => setOpen(false)}>
+            Documentation
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link className="w-full" href="/blog" onClick={() => setOpen(false)}>
+            Blogs
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator className="bg-zinc-100" />
+        <DropdownMenuItem>
+          <Link
+            className="w-full flex flex-row justify-start items-center"
+            href="https://github.com/usememos/memos"
+            target="_blank"
+            onClick={() => setOpen(false)}
+          >
+            <BsGithub className="w-5 h-auto mr-1 -mt-0.5" /> GitHub
+          </Link>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 

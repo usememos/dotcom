@@ -1,12 +1,16 @@
 import { Divider } from "@mui/joy";
 import { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import React from "react";
 import ContentRender from "@/components/ContentRender";
-import Subscription from "@/components/Subscription";
 import { getContentFilePaths, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
 import { getMetadata } from "@/utils/metadata";
+
+const Subscription = dynamic(() => import("@/components/Subscription"), {
+  ssr: false,
+});
 
 interface Props {
   params: { slug: string[] };

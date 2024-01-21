@@ -1,12 +1,16 @@
 import { Divider } from "@mui/joy";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Icon from "@/components/Icon";
-import Subscription from "@/components/Subscription";
 import authorList, { Author } from "@/consts/author";
 import { getContentFilePaths, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
 import { getMetadata } from "@/utils/metadata";
+
+const Subscription = dynamic(() => import("@/components/Subscription"), {
+  ssr: false,
+});
 
 const Page = () => {
   const frontmatters = getBlogFrontmatters();

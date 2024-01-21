@@ -1,15 +1,19 @@
 import { Divider } from "@mui/joy";
 import { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import React from "react";
 import AuthorView from "@/components/AuthorView";
 import ContentRender from "@/components/ContentRender";
 import Icon from "@/components/Icon";
-import Subscription from "@/components/Subscription";
 import authorList, { Author } from "@/consts/author";
 import { getBlogSlugList, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
 import { getMetadata } from "@/utils/metadata";
+
+const Subscription = dynamic(() => import("@/components/Subscription"), {
+  ssr: false,
+});
 
 interface Props {
   params: { slug: string };
