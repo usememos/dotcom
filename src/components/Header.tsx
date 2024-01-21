@@ -53,7 +53,9 @@ const Header = () => {
             <BsGithub className="w-5 h-auto mr-1 -mt-0.5" />
             <span className="hidden sm:block">GitHub</span>
           </Link>
-          <HeaderMobileMenu />
+          <div className="sm:hidden">
+            <HeaderMobileMenu />
+          </div>
         </div>
       </div>
     </header>
