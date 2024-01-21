@@ -5,6 +5,7 @@ import LatestVersion from "@/components/LatestVersion";
 const Page = () => {
   return (
     <>
+      <h1 className="sr-only">Memos</h1>
       <div className="mt-4 sm:mt-6 w-full flex flex-col justify-start items-center">
         <LatestVersion />
       </div>

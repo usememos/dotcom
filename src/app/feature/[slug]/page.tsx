@@ -19,8 +19,8 @@ const Page = ({ params }: Props) => {
       </div>
       <div className="w-full flex flex-col justify-center items-center sm:px-16">
         <feature.icon strokeWidth="1" className="h-14 mt-4 mb-2 sm:h-20 w-auto text-gray-500" />
-        <h2 className="w-full text-center text-2xl sm:text-4xl font-bold mt-4 mb-4">{feature.title}</h2>
-        <h3 className="w-full text-base sm:text-lg text-gray-500 text-center mb-2">{feature.description}</h3>
+        <h1 className="w-full text-center text-2xl sm:text-4xl font-bold mt-4 mb-4">{feature.title}</h1>
+        <h2 className="w-full text-base sm:text-lg text-gray-500 text-center mb-2">{feature.description}</h2>
       </div>
       <div className="w-full flex flex-row justify-center items-center space-x-2 py-4">
         <Link target="_blank" href="https://github.com/usememos/memos">
