@@ -34,9 +34,8 @@ export const getMetadata = (metadata: Partial<LocalMetadata>): Metadata => {
       card: hasFeatureImage ? "summary_large_image" : "summary",
     },
     metadataBase: new URL("https://www.usememos.com"),
-    manifest: "/manifest.json",
     icons: {
-      icon: "/favicon/favicon.png",
+      icon: "/logo-rounded.png",
       apple: [
         { url: "/favicon/favicon.png" },
         { url: "/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
