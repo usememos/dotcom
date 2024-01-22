@@ -25,19 +25,16 @@ const Footer = () => {
               <BsTelegram className="w-6 h-auto" />
             </Link>
           </div>
-          <div className="mt-5 ml-2">
-            <Link
-              className="w-auto flex flex-row justify-center items-center border px-3 py-1 rounded-full border-red-200 hover:shadow hover:bg-white"
-              href="https://github.com/sponsors/usememos"
-              target="_blank"
-            >
-              <Icon.Heart className="w-5 h-auto mr-1 text-red-700" />
-              Sponsor Us
-            </Link>
-          </div>
         </div>
         <div className="w-full flex flex-col justify-start items-start space-y-2">
           <p className="my-2 text-gray-400 font-medium font-mono">Resources</p>
+          <Link
+            className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600"
+            href="https://github.com/usememos/memos"
+            target="_blank"
+          >
+            Source code
+          </Link>
           <Link
             className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600"
             href="/docs"
@@ -48,7 +45,7 @@ const Footer = () => {
             className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600"
             href="/blog"
           >
-            Blogs
+            Blog
           </Link>
           <Link
             className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600"
@@ -70,6 +67,12 @@ const Footer = () => {
             href="/legal/privacy-policy"
           >
             Policy
+          </Link>
+          <Link href="https://github.com/sponsors/usememos" target="_blank">
+            <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">
+              Sponsor us
+              <Icon.ExternalLink className="w-4 h-auto ml-1" />
+            </span>
           </Link>
           <Link href="https://github.com/orgs/usememos/projects/5/views/1" target="_blank">
             <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">

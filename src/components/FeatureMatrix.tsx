@@ -72,7 +72,7 @@ const SUB_FEATURES: FeatureItem[] = [
 const FeatureMatrix = () => {
   return (
     <>
-      <p className="w-full text-center mt-8 mb-4 sm:px-6 text-xl sm:text-3xl text-gray-400">Why Memos?</p>
+      <p className="w-full text-center mt-8 mb-4 sm:px-6 text-xl sm:text-2xl font-normal text-gray-400">Why Memos?</p>
       <div className="w-full my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12 sm:px-12">
         {MAIN_FEATURES.map((featureItem) => (
           <div key={featureItem.title} className="w-full flex flex-col justify-start items-start rounded-2xl bg-zinc-100">

@@ -34,25 +34,26 @@ const Header = () => {
               <img src="/full-logo-landscape.png" className="h-9 sm:h-10 w-auto mr-2" alt="" />
             </div>
           </Link>
-          <div className="ml-2 sm:ml-4 w-auto hidden sm:flex flex-row justify-end items-center space-x-2 sm:space-x-3 font-medium text-zinc-700">
+        </div>
+        <div className="w-auto flex flex-row justify-end items-center space-x-2 sm:space-x-3">
+          <div className="w-auto hidden sm:flex flex-row justify-end items-center space-x-2 sm:space-x-3 font-medium text-zinc-700">
             <Link className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600" href="/docs">
               Documentation
             </Link>
             <span className="font-mono text-gray-300">/</span>
             <Link className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600" href="/blog">
-              Blogs
+              Blog
+            </Link>
+            <span className="font-mono text-gray-300">/</span>
+            <Link
+              className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600"
+              href="https://github.com/usememos/memos"
+              target="_blank"
+            >
+              <span className="hidden sm:block">GitHub</span>
+              <BsGithub className="w-5 h-auto ml-1" />
             </Link>
           </div>
-        </div>
-        <div className="w-auto flex flex-row justify-end items-center space-x-2 sm:space-x-3">
-          <Link
-            className="w-auto hidden sm:flex flex-row justify-center items-center hover:underline hover:text-blue-600"
-            href="https://github.com/usememos/memos"
-            target="_blank"
-          >
-            <BsGithub className="w-5 h-auto mr-1 -mt-0.5" />
-            <span className="hidden sm:block">GitHub</span>
-          </Link>
           <div className="sm:hidden">
             <HeaderMobileMenu />
           </div>
@@ -78,7 +79,7 @@ const HeaderMobileMenu = () => {
         </DropdownMenuItem>
         <DropdownMenuItem>
           <Link className="w-full" href="/blog" onClick={() => setOpen(false)}>
-            Blogs
+            Blog
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator className="bg-zinc-100" />

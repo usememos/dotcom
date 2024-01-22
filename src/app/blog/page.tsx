@@ -18,7 +18,7 @@ const Page = () => {
   return (
     <>
       <div className="w-full max-w-3xl flex flex-col justify-center items-center sm:px-16">
-        <h1 className="w-full text-2xl text-center sm:text-4xl font-medium sm:font-bold mt-4">Blogs</h1>
+        <h1 className="w-full text-2xl text-center sm:text-4xl font-medium sm:font-bold mt-4">Blog</h1>
         <h2 className="text-lg mt-4">Get the latest news about Memos</h2>
         <div className="mt-12 w-full flex flex-col justify-start items-start gap-8">
           {frontmatters.map((frontmatter) => {
@@ -53,7 +53,7 @@ const Page = () => {
   );
 };
 
-export const metadata = getMetadata({ title: "Blogs - Memos", pathname: "/blog" });
+export const metadata = getMetadata({ title: "Blog - Memos", pathname: "/blog" });
 
 const getBlogFrontmatters = () => {
   const filePaths = getContentFilePaths("blog");
