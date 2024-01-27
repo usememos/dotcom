@@ -1,5 +1,5 @@
-import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import React, { Suspense } from "react";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
@@ -18,6 +18,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
         <link rel="icon" href="/logo-rounded.png" type="image/png" />
+        <Script id="clarity">{`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "ksdrw31b15");`}</Script>
       </head>
       <body>
         <div className="relative w-full min-h-[100svh] flex flex-col bg-zinc-100">
@@ -28,7 +29,6 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           <Footer />
         </div>
         <Suspense>
-          <Analytics />
           <PostHogPageview />
         </Suspense>
       </body>
