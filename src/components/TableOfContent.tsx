@@ -25,10 +25,15 @@ const TableOfContent = ({ headings }: Props) => {
   });
 
   const updateCurrentAnchor = useCallback(() => {
-    const currentTitleIndex = titles.current.findIndex((anchor) => anchor.getBoundingClientRect().top - 40 >= 0);
+    const currentTitleIndex = titles.current.findIndex((anchor) => anchor.getBoundingClientRect().top >= 0);
     if (currentTitleIndex !== -1) {
       const currentTitle = titles.current[currentTitleIndex];
-      setCurrentAnchor(currentTitle.id);
+      const previousTitle = titles.current[currentTitleIndex - 1];
+      if (currentTitle.getBoundingClientRect().top > window.innerHeight && previousTitle) {
+        setCurrentAnchor(previousTitle.id);
+      } else {
+        setCurrentAnchor(currentTitle.id);
+      }
     }
   }, []);
 
