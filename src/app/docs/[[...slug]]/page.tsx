@@ -31,15 +31,15 @@ const Page = ({ params }: Props) => {
   const remoteFilePath = `${GITHUB_REPO_LINK}/blob/main/${filePath}`;
 
   return (
-    <div className="w-full max-w-6xl flex flex-row justify-start items-start sm:px-10 sm:gap-6">
-      <div className="hidden sm:block sticky top-24 h-[calc(100svh-6rem)] w-56 shrink-0">
+    <div className="w-full flex flex-row justify-start items-start sm:px-6 sm:gap-6">
+      <div className="hidden sm:block sticky top-24 h-[calc(100svh-6rem)] w-40 shrink-0">
         <div className="relative w-full h-full overflow-auto py-4 no-scrollbar">
           <Navigation />
         </div>
-        <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-t from-transparent to-zinc-100"></div>
-        <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-b from-transparent to-zinc-100"></div>
+        <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-t from-transparent to-zinc-100 pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-b from-transparent to-zinc-100 pointer-events-none"></div>
       </div>
-      <div className="w-full sm:max-w-[calc(100%-16rem)]">
+      <div className="w-full sm:max-w-[calc(100%-10rem)] sm:px-4">
         <div className="block sm:hidden w-full">
           <NavigationMobileMenu />
         </div>

@@ -135,9 +135,9 @@ const NavigationItem = ({ node, level }: { node: DocsNode; level: number }) => {
       {node.link ? (
         <Link
           className={classNames(
-            "text-gray-600 hover:text-blue-600",
-            level === 0 && "font-medium",
-            node.link === pathname && "!text-blue-600",
+            "hover:text-blue-600 hover:opacity-80",
+            node.link === pathname && "text-blue-600 font-medium",
+            level === 0 ? "text-gray-600 font-medium" : "text-gray-500 text-sm",
           )}
           href={node.link}
         >
@@ -147,7 +147,7 @@ const NavigationItem = ({ node, level }: { node: DocsNode; level: number }) => {
         <div className={classNames("text-gray-600", level === 0 && "font-medium")}>{node.text}</div>
       )}
       {node.children && (
-        <div className="w-full pl-4 pt-4 flex flex-col justify-start items-start gap-3">
+        <div className="w-full pt-2 flex flex-col justify-start items-start gap-2">
           {node.children.map((child) => {
             return <NavigationItem key={child.text} node={child} level={level + 1} />;
           })}

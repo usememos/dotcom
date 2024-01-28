@@ -6,7 +6,7 @@ import Icon from "./Icon";
 const Footer = () => {
   return (
     <footer className="border-t w-full mx-auto flex flex-row justify-center items-center bg-zinc-200 px-6 sm:px-0">
-      <div className="max-w-6xl w-full mx-auto py-12 pb-16 sm:px-10 grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div className="max-w-7xl w-full mx-auto py-12 pb-16 sm:px-10 grid grid-cols-1 sm:grid-cols-3 gap-6">
         <div className="w-full flex flex-col justify-start items-start">
           <div className="flex flex-row justify-start items-center">
             <img src="/full-logo-landscape.png" className="h-12 w-auto" alt="" />
