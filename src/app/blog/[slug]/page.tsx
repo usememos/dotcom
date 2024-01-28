@@ -60,7 +60,7 @@ const Page = ({ params }: Props) => {
           <Divider className="!my-12" />
           <Subscription />
         </div>
-        <div className="hidden lg:block sticky top-24 h-[calc(100svh-6rem)] w-64 shrink-0">
+        <div className="hidden md:block sticky top-24 h-[calc(100svh-6rem)] w-64 shrink-0">
           <div className="relative w-full h-full overflow-auto py-4 no-scrollbar">
             <TableOfContent headings={headings} />
           </div>

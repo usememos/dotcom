@@ -26,23 +26,22 @@ const TableOfContent = ({ headings }: Props) => {
 
   const updateCurrentAnchor = useCallback(() => {
     const currentTitleIndex = titles.current.findIndex((anchor) => anchor.getBoundingClientRect().top - 40 >= 0);
-    const index = currentTitleIndex === -1 ? titles.current.length - 1 : Math.max(currentTitleIndex - 1, 0);
-    const currentTitle = titles.current[index];
-    setCurrentAnchor(currentTitle.id);
+    if (currentTitleIndex !== -1) {
+      const currentTitle = titles.current[currentTitleIndex];
+      setCurrentAnchor(currentTitle.id);
+    }
   }, []);
 
   return (
     <div className="w-full flex flex-col justify-start items-start">
       <p className="font-medium text-sm pl-2 pb-3">ON THIS PAGE</p>
-      <ul className="w-full flex flex-col justify-start items-start gap-2">
+      <ul className="w-full flex flex-col justify-start items-start">
         {headings.map((heading) => {
           const id = heading.attributes.id;
           return (
             <li
               key={id}
-              className={classNames("w-full border-l-2 pl-2 border-transparent", {
-                "border-gray-600": currentAnchor === id,
-              })}
+              className={classNames("w-full border-l-2 pl-2 py-1", currentAnchor === id ? "border-gray-600" : "border-gray-200")}
             >
               <a
                 href={`#${id}`}
