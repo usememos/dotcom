@@ -169,7 +169,7 @@ Automatic URL linking will automatically turn a URL into a link. That means if y
 Memos supports embedding content from other memo. You can embed a memo by using the following syntax:
 
 ```markdown
-![[memos/your-memo-id]]
+![[memos/memoid]]
 ```
 
 Then the memo will be embedded in your current memo.
