@@ -18,11 +18,12 @@ const LatestVersion = () => {
     <Link
       className={`${
         !version && "invisible"
-      } flex flex-row justify-center items-center my-2 mb-4 px-4 py-2 rounded-full text-sm bg-blue-100 text-blue-600 hover:shadow hover:bg-blue-200`}
+      } flex flex-row justify-center items-center my-2 mb-4 px-4 py-2 rounded-full text-sm bg-cyan-100 text-gray-800 border border-cyan-200 hover:shadow hover:bg-cyan-200`}
       href="https://github.com/usememos/memos/releases"
       target="_blank"
     >
-      🎉 Released
+      <span className="mr-2">🎉</span>
+      Released
       <span className="font-medium ml-1">v{version}</span>
       <Icon.ArrowRight className="w-4 h-auto ml-1" />
     </Link>
