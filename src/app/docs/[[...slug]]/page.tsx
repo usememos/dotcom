@@ -1,3 +1,4 @@
+import { Tag } from "@markdoc/markdoc";
 import { Button, Divider } from "@mui/joy";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
@@ -6,6 +7,7 @@ import { notFound } from "next/navigation";
 import React from "react";
 import ContentRender from "@/components/ContentRender";
 import Icon from "@/components/Icon";
+import TableOfContent from "@/components/TableOfContent";
 import { GITHUB_REPO_LINK } from "@/consts/common";
 import { getContentFilePaths, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
@@ -29,6 +31,14 @@ const Page = ({ params }: Props) => {
 
   const { frontmatter, transformedContent } = markdoc(content);
   const remoteFilePath = `${GITHUB_REPO_LINK}/blob/main/${filePath}`;
+  if (!transformedContent || !(transformedContent instanceof Tag)) {
+    return null;
+  }
+
+  const children = transformedContent.children;
+  const headings = JSON.parse(
+    JSON.stringify(children.filter((child) => child instanceof Tag && (child.name === "h2" || child.name === "h3"))),
+  ) as Tag[];
 
   return (
     <div className="w-full flex flex-row justify-start items-start sm:px-6 sm:gap-6">
@@ -39,7 +49,7 @@ const Page = ({ params }: Props) => {
         <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-t from-transparent to-zinc-100 pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-b from-transparent to-zinc-100 pointer-events-none"></div>
       </div>
-      <div className="w-full sm:max-w-[calc(100%-10rem)] sm:px-4">
+      <div className="w-full sm:max-w-[calc(100%-10rem)] lg:max-w-[calc(100%-20rem)] sm:px-4">
         <div className="block sm:hidden w-full">
           <NavigationMobileMenu />
         </div>
@@ -54,6 +64,13 @@ const Page = ({ params }: Props) => {
         </div>
         <Divider className="!my-12" />
         <Subscription />
+      </div>
+      <div className="hidden lg:block sticky top-24 h-[calc(100svh-6rem)] w-40 shrink-0">
+        <div className="relative w-full h-full overflow-auto py-4 no-scrollbar">
+          <TableOfContent headings={headings} />
+        </div>
+        <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-t from-transparent to-zinc-100"></div>
+        <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-b from-transparent to-zinc-100"></div>
       </div>
     </div>
   );
