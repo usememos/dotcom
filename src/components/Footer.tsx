@@ -6,12 +6,12 @@ import Icon from "./Icon";
 const Footer = () => {
   return (
     <footer className="border-t w-full mx-auto flex flex-row justify-center items-center bg-zinc-200 px-6 sm:px-0">
-      <div className="max-w-7xl w-full mx-auto py-12 pb-16 sm:px-10 grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div className="max-w-7xl w-full mx-auto py-12 pb-16 sm:px-10 grid grid-cols-1 sm:grid-cols-4 gap-4 md:gap-6">
         <div className="w-full flex flex-col justify-start items-start">
           <div className="flex flex-row justify-start items-center">
-            <img src="/full-logo-landscape.png" className="h-12 w-auto" alt="" />
+            <img src="/full-logo-landscape.png" className="h-10 md:h-12 w-auto" alt="" />
           </div>
-          <div className="mt-4 ml-2 w-full flex flex-row justify-start items-center gap-3">
+          <div className="mt-4 ml-2 w-full flex flex-row justify-start items-center gap-2">
             <Link className="text-gray-400 hover:text-blue-600" href="https://x.com/usememos" target="_blank">
               <RiTwitterXLine className="w-6 h-auto" />
             </Link>
@@ -77,6 +77,21 @@ const Footer = () => {
           <Link href="https://github.com/orgs/usememos/projects/5/views/1" target="_blank">
             <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">
               Roadmap
+              <Icon.ExternalLink className="w-4 h-auto ml-1" />
+            </span>
+          </Link>
+        </div>
+        <div className="w-full flex flex-col justify-start items-start space-y-2">
+          <p className="my-2 text-gray-400 font-medium font-mono">Others</p>
+          <Link href="https://github.com/yourselfhosted/slash" target="_blank">
+            <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">
+              Slash
+              <Icon.ExternalLink className="w-4 h-auto ml-1" />
+            </span>
+          </Link>
+          <Link href="https://github.com/usememos/gomark" target="_blank">
+            <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">
+              gomark
               <Icon.ExternalLink className="w-4 h-auto ml-1" />
             </span>
           </Link>
