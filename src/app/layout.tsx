@@ -1,3 +1,4 @@
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Inter } from "next/font/google";
 import React, { Suspense } from "react";
 import Footer from "@/components/Footer";
@@ -26,6 +27,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           </main>
           <Footer />
         </div>
+        <SpeedInsights />
         <Suspense>
           <PostHogPageview />
         </Suspense>
