@@ -53,13 +53,13 @@ This command will launch Memos in the background, exposing it on port `5230`. Da
 
 - **driver (--driver):**
 
-  - Value: String representing the database driver. We currently support "sqlite" and "mysql".
+  - Value: String representing the database driver. We currently support "sqlite", "mysql" and "postgres".
   - Default: "sqlite"
   - Purpose: Sets the database driver to be used by Memos.
 
 - **dsn (--dsn):**
 
-  - Value: String representing the database source name. Only applicable when using the MySQL driver.
+  - Value: String representing the database source name. Only applicable when using the MySQL or PostgreSQL driver.
   - Default: Empty string.
   - Purpose: Specifies the database source name (DSN) for connecting to the database.
 
