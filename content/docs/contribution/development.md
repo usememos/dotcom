@@ -25,15 +25,16 @@ Memos is built with a curated tech stack. It is optimized for developer experien
 3. For the first run, you'll need to install Node modules and generate TypeScript code of gRPC proto
 
    ```bash
-   docker compose run npm install
+   docker compose run pnpm install
    docker compose run buf generate
    ```
 
 4. Start your services:
-
    ```bash
-   docker compose up -d
+   docker compose --profile PROFILE_NAME up
    ```
+   Where `PROFILE_NAME` can be: `sqlite` | `mysql` | `postgres`
+   For more info, see `/scripts/docker-compose.dev.yaml`
 
 Memos should now be running at <http://localhost:3001> and change either frontend or backend code would trigger live reload.
 
