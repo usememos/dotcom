@@ -92,6 +92,18 @@ const z = 3;
 ```
 ````
 
+#### Rendering custom html
+
+In rare cases, you might want to render custom HTML in your memos. To do this, use `__html` as langauge for block.
+
+Example shows how to render horizontal divider in your memos.
+
+````markdown
+```__html
+</hr>
+```
+````
+
 ### Blockquotes
 
 Blockquotes are used to indicate the quotation of a large section of text from another source. You can use the `>` character to create a blockquote.
