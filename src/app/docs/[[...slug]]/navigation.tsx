@@ -135,9 +135,9 @@ const NavigationItem = ({ node, level }: { node: DocsNode; level: number }) => {
       {node.link ? (
         <Link
           className={classNames(
-            "hover:text-blue-600 hover:opacity-80",
-            node.link === pathname && "text-blue-600 font-medium",
+            "hover:opacity-80",
             level === 0 ? "text-gray-600 font-medium" : "text-gray-500 text-sm",
+            node.link === pathname && "!text-blue-600 font-medium",
           )}
           href={node.link}
         >
