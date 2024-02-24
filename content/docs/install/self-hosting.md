@@ -8,7 +8,7 @@ This document provides a comprehensive guide on deploying Memos with Docker, inc
 
 Before proceeding with Memos installation, ensure you meet the following prerequisites:
 
-- **A server with [Docker](https://www.docker.com) installed:** Memos is designed to be self-hosted with Docker.
+- **A server with [Docker](https://www.docker.com) installed**
 
 ## Docker Run
 
@@ -62,6 +62,12 @@ This command will launch Memos in the background, exposing it on port `5230`. Da
   - Value: String representing the database source name. Only applicable when using the MySQL or PostgreSQL driver.
   - Default: Empty string.
   - Purpose: Specifies the database source name (DSN) for connecting to the database.
+
+- **frontend (--frontend)**
+
+  - Value: Boolean (true/false).
+  - Default: true.
+  - Purpose: Enables or disables the frontend. When disabled, Memos will not serve the frontend. You can deploy the frontend separately and set this flag to false.
 
 - **metric (--metric):**
   - Value: Boolean (true/false).
