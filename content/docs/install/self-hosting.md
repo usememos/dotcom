@@ -69,11 +69,6 @@ This command will launch Memos in the background, exposing it on port `5230`. Da
   - Default: true.
   - Purpose: Enables or disables the frontend. When disabled, Memos will not serve the frontend. You can deploy the frontend separately and set this flag to false.
 
-- **metric (--metric):**
-  - Value: Boolean (true/false).
-  - Default: true.
-  - Purpose: Enables or disables metric collection. When enabled, Memos collects metrics for analysis. See more with our [Privacy Policy](/legal/privacy-policy) pages.
-
 ## Docker Compose
 
 To deploy Memos using `docker compose`, create a `docker-compose.yml` file with the following configuration:

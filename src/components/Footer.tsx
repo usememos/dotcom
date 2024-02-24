@@ -62,12 +62,6 @@ const Footer = () => {
           >
             Brand
           </Link>
-          <Link
-            className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600"
-            href="/legal/privacy-policy"
-          >
-            Policy
-          </Link>
           <Link href="https://github.com/sponsors/usememos" target="_blank">
             <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">
               Sponsor us
