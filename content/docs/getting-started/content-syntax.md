@@ -104,6 +104,22 @@ Example shows how to render horizontal divider in your memos.
 ```
 ````
 
+### Rendering mermaid diagrams
+
+Memos supports rendering mermaid diagrams. To do this, use `__mermaid` as langauge for block.
+
+Example shows how to render a flowchart in your memos.
+
+````markdown
+```__mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
+````
+
 ### Blockquotes
 
 Blockquotes are used to indicate the quotation of a large section of text from another source. You can use the `>` character to create a blockquote.
@@ -171,6 +187,14 @@ This isn’t common, but some Markdown processors allow you to use subscript to 
 ### Superscript
 
 This isn’t common, but some Markdown processors allow you to use superscript to position one or more characters slightly above the normal line of type. To create a superscript, use one caret symbol (^) before and after the characters. e.g. `2^10^`
+
+### Spoiler
+
+Spolier allows you to hide some content.
+
+Syntax:
+
+`||text||`
 
 ### Automatic URL Linking
 
