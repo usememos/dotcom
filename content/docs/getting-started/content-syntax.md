@@ -106,12 +106,12 @@ Example shows how to render horizontal divider in your memos.
 
 ### Rendering mermaid diagrams
 
-Memos supports rendering mermaid diagrams. To do this, use `__mermaid` as langauge for block.
+Memos supports rendering mermaid diagrams. To do this, use `mermaid` as langauge for block.
 
 Example shows how to render a flowchart in your memos.
 
 ````markdown
-```__mermaid
+```mermaid
 graph TD;
     A-->B;
     A-->C;
