@@ -50,6 +50,8 @@ MEMOS_DRIVER=postgres
 MEMOS_DSN=postgresql://root:password@localhost:5432/memos
 ```
 
+Note that if the PostgreSQL server is not configured to support SSL connections you will need to add `?sslmode=disable` to the DSN.
+
 Choose the database driver that best suits your needs and configure Memos accordingly.
 
 ## Migrating data between different drivers
