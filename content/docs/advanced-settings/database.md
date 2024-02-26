@@ -43,6 +43,15 @@ You can start Memos with Docker using the following command:
 docker run -d --name memos -p 5230:5230 -v ~/.memos/:/var/opt/memos neosmemo/memos:stable --driver postgres --dsn 'postgresql://postgres:PASSWORD@localhost:5432/memos'
 ```
 
+Additionally, you can set these configurations via environment variables:
+
+```shell
+MEMOS_DRIVER=postgres
+MEMOS_DSN=postgresql://root:password@localhost:5432/memos
+```
+
+Note that if the PostgreSQL server is not configured to support SSL connections you will need to add `?sslmode=disable` to the DSN.
+
 Choose the database driver that best suits your needs and configure Memos accordingly.
 
 ## Migrating data between different drivers
