@@ -8,18 +8,18 @@ const Page = () => {
 
         <div className="mt-6 sm:mt-12 w-full grid grid-cols-2 gap-6 sm:gap-12">
           <div className="col-span-1 border p-4 flex justify-center items-center">
-            <img src="/logo.png" alt="memos" />
+            <img src="/logo.png" alt="Memos" />
           </div>
           <div className="col-span-1 border p-4 flex justify-center items-center">
-            <img src="/logo-rounded.png" alt="memos" />
+            <img src="/logo-rounded.png" alt="Memos" />
           </div>
         </div>
         <div className="mt-6 sm:mt-12 w-full grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-12">
           <div className="col-span-1 sm:col-span-2 border p-4 flex justify-center items-center">
-            <img src="/full-logo-landscape.png" alt="memos" />
+            <img src="/full-logo-landscape.png" alt="Memos" />
           </div>
           <div className="col-span-1 border p-4 flex justify-center items-center">
-            <img src="/full-logo.png" alt="memos" />
+            <img src="/full-logo.png" alt="Memos" />
           </div>
         </div>
       </div>

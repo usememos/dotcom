@@ -26,7 +26,7 @@ export const getMetadata = (metadata: Partial<LocalMetadata>): Metadata => {
       images: [
         {
           url: imagePath,
-          alt: "memos",
+          alt: "Memos",
         },
       ],
     },
