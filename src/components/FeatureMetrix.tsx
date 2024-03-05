@@ -49,27 +49,27 @@ export const MAIN_FEATURES: FeatureItem[] = [
 const SUB_FEATURES: FeatureItem[] = [
   {
     icon: Icon.Star,
-    title: "22K+",
+    title: "25K+",
     description: "GitHub Stars",
   },
   {
     icon: Icon.Users,
-    title: "170+",
+    title: "180+",
     description: "Contributors",
   },
   {
     icon: Icon.Download,
-    title: "1M+",
+    title: "1.1M+",
     description: "Docker Pulls",
   },
   {
     icon: Icon.Package,
-    title: "50+",
+    title: "60+",
     description: "Releases",
   },
 ];
 
-const FeatureMatrix = () => {
+const FeatureMetrix = () => {
   return (
     <>
       <p className="w-full text-center mt-8 mb-4 sm:px-6 text-xl sm:text-2xl font-normal text-gray-400">Why Memos?</p>
@@ -95,7 +95,7 @@ const FeatureMatrix = () => {
               </div>
               <div className="flex flex-col justify-center items-start whitespace-nowrap">
                 <p className="text-sm text-gray-500">{featureItem.description}</p>
-                <p className="relative text-base font-medium sm:text-lg">{featureItem.title}</p>
+                <p className="relative text-base font-medium font-mono sm:text-lg">{featureItem.title}</p>
               </div>
             </div>
           ))}
@@ -105,4 +105,4 @@ const FeatureMatrix = () => {
   );
 };
 
-export default FeatureMatrix;
+export default FeatureMetrix;

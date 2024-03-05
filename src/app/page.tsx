@@ -1,5 +1,5 @@
 import DemoPlaceholder from "@/components/DemoPlaceholder";
-import FeatureMatrix from "@/components/FeatureMatrix";
+import FeatureMetrix from "@/components/FeatureMetrix";
 import LatestVersion from "@/components/LatestVersion";
 
 const Page = () => {
@@ -16,7 +16,7 @@ const Page = () => {
         <h3 className="w-full text-base sm:text-xl text-gray-500 text-center">Easily capture and share your great thoughts.</h3>
       </div>
       <DemoPlaceholder />
-      <FeatureMatrix />
+      <FeatureMetrix />
     </>
   );
 };

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import DemoPlaceholder from "@/components/DemoPlaceholder";
-import FeatureMatrix, { MAIN_FEATURES, FeatureItem } from "@/components/FeatureMatrix";
+import FeatureMetrix, { MAIN_FEATURES, FeatureItem } from "@/components/FeatureMetrix";
 import LatestVersion from "@/components/LatestVersion";
 import { getMetadata } from "@/utils/metadata";
 
@@ -34,7 +34,7 @@ const Page = ({ params }: Props) => {
         </Link>
       </div>
       <DemoPlaceholder />
-      <FeatureMatrix />
+      <FeatureMetrix />
     </>
   );
 };
