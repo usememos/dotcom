@@ -49,17 +49,17 @@ export const MAIN_FEATURES: FeatureItem[] = [
 const SUB_FEATURES: FeatureItem[] = [
   {
     icon: Icon.Star,
-    title: "25K+",
+    title: "26K+",
     description: "GitHub Stars",
   },
   {
     icon: Icon.Users,
-    title: "180+",
+    title: "200+",
     description: "Contributors",
   },
   {
     icon: Icon.Download,
-    title: "1.1M+",
+    title: "1.5M+",
     description: "Docker Pulls",
   },
   {
