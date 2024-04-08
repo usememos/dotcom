@@ -30,13 +30,6 @@ const Footer = () => {
           <p className="my-2 text-gray-400 font-medium font-mono">Resources</p>
           <Link
             className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600"
-            href="https://github.com/usememos/memos"
-            target="_blank"
-          >
-            Source code
-          </Link>
-          <Link
-            className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600"
             href="/docs"
           >
             Documentation
@@ -52,6 +45,14 @@ const Footer = () => {
             href="/changelog"
           >
             Changelog
+          </Link>
+          <Link
+            className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600"
+            href="https://github.com/usememos/memos"
+            target="_blank"
+          >
+            Source code
+            <Icon.ExternalLink className="w-4 h-auto ml-1" />
           </Link>
         </div>
         <div className="w-full flex flex-col justify-start items-start space-y-2">
