@@ -69,6 +69,12 @@ This command will launch Memos in the background, exposing it on port `5230`. Da
   - Default: true.
   - Purpose: Enables or disables the frontend. When disabled, Memos will not serve the frontend. You can deploy the frontend separately and set this flag to false.
 
+- **origins (--origins)**
+
+  - Value: String array representing the allowed origins.
+  - Default: Empty array.
+  - Purpose: Sets the allowed origins for CORS requests. If empty, all origins are allowed.
+
 ## Docker Compose
 
 To deploy Memos using `docker compose`, create a `docker-compose.yml` file with the following configuration:
