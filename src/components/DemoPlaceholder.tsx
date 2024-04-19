@@ -13,7 +13,7 @@ const DemoPlaceholder = () => {
         </Link>
         <Link
           className="w-32 py-2 rounded-md flex flex-row justify-center items-center hover:bg-gray-200 hover:opacity-70"
-          href="https://discord.gg/tfPJa4UmAv"
+          href="https://demo.usememos.com/"
           target="_blank"
         >
           Live Demo
