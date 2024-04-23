@@ -104,8 +104,8 @@ devDependencies:
     specifier: ^3.2.5
     version: 3.2.5
   react-icons:
-    specifier: ^4.12.0
-    version: 4.12.0(react@18.2.0)
+    specifier: ^5.1.0
+    version: 5.1.0(react@18.2.0)
   tailwindcss:
     specifier: ^3.4.3
     version: 3.4.3
@@ -3746,8 +3746,8 @@ packages:
       scheduler: 0.23.0
     dev: false
 
-  /react-icons@4.12.0(react@18.2.0):
-    resolution: {integrity: sha512-IBaDuHiShdZqmfc/TwHu6+d6k2ltNCf3AszxNmjJc1KUfXdEeRJOKyNvLmAHaarhzGmTSVygNdyu8/opXv2gaw==}
+  /react-icons@5.1.0(react@18.2.0):
+    resolution: {integrity: sha512-D3zug1270S4hbSlIRJ0CUS97QE1yNNKDjzQe3HqY0aefp2CBn9VgzgES27sRR2gOvFK+0CNx/BW0ggOESp6fqQ==}
     peerDependencies:
       react: '*'
     dependencies:
