@@ -79,10 +79,8 @@ const FeatureMetrix = () => {
             <div className="w-10 h-10 text-gray-600 rounded-lg">
               <featureItem.icon className="h-10 w-auto" strokeWidth={1} />
             </div>
-            <span className="relative text-base sm:text-lg mb-2 mt-4">
-              <span>{featureItem.title}</span>
-            </span>
-            <p className="text-sm text-gray-500">{featureItem.description}</p>
+            <span className="relative text-base sm:text-xl mt-4">{featureItem.title}</span>
+            <p className="mt-1 text-sm sm:text-base text-gray-500">{featureItem.description}</p>
           </div>
         ))}
       </div>

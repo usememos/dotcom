@@ -86,6 +86,12 @@ const Footer = () => {
         </div>
         <div className="w-full flex flex-col justify-start items-start space-y-2">
           <p className="my-2 text-gray-400 font-medium font-mono">Others</p>
+          <Link href="https://github.com/usememos/telegram-integration" target="_blank">
+            <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">
+              Telegram integration
+              <Icon.ExternalLink className="w-4 h-auto ml-1" />
+            </span>
+          </Link>
           <Link href="https://github.com/yourselfhosted/slash" target="_blank">
             <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">
               Slash
