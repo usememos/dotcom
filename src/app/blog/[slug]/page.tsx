@@ -42,20 +42,15 @@ const Page = ({ params }: Props) => {
   return (
     <div className="w-full">
       <div className="w-full sm:px-6">
-        {frontmatter.feature_image && (
-          <div className="w-full mb-6 sm:mb-12">
-            <img className="w-full max-w-lg h-auto mx-auto rounded-lg" src={frontmatter.feature_image} alt="" />
-          </div>
-        )}
-        <h1 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold mt-4 sm:text-center">{frontmatter.title}</h1>
-        <div className="mt-4 w-full flex flex-row justify-start sm:justify-center items-center">
+        <h1 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold mt-4 sm:mt-8">{frontmatter.title}</h1>
+        <div className="mt-4 w-full flex flex-row justify-start items-center">
           <span className="text-gray-500">{frontmatter.published_at}</span>
           <Icon.Dot className="w-4 h-auto mx-1 text-gray-400" />
           <AuthorView author={author} />
         </div>
       </div>
-      <div className="w-full flex flex-row justify-start items-start sm:mt-8">
-        <div className="w-full md:max-w-[calc(100%-16rem)] sm:px-6">
+      <div className="w-full flex flex-row justify-start items-start sm:px-6 md:gap-8 sm:mt-8">
+        <div className="w-full md:max-w-[calc(100%-16rem)]">
           <ContentRender markdocNode={transformedContent} />
           <Divider className="!my-12" />
           <Subscription />
