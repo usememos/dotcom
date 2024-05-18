@@ -34,15 +34,7 @@ Tags in Memos serve various purposes, including:
 
 ## Creating a New Tag
 
-There are two ways to create new tags:
-
-- **Inline Tag Creation**: In your memo's content, use the format `#tag` and add a space after the tag name. For example, type `#programming/java` and then press the spacebar.
-
-* **Creating Tags in the Tag List**: You can also create multiple tags quickly by clicking the "+" button in the tag list. This is a convenient method, especially when you need to create several tags at once.
-
-## Deleting a Tag
-
-You can also view and delete tags quickly by clicking the "+" button in the tag list.
+In your memo's content, use the format `#tag` and add a space after the tag name. For example, type `#programming/java` and then press the spacebar.
 
 ---
 
