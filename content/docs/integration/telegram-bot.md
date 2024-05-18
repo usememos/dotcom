@@ -2,84 +2,44 @@
 title: Integration with Telegram Bot
 ---
 
+**[Memogram](https://github.com/usememos/telegram-integration)** is an easy to use integration service for syncing messages and images from a Telegram bot into your Memos.
+
 ## Prerequisite
 
 - Follow the [How Do I Create a Bot](https://core.telegram.org/bots#how-do-i-create-a-bot) to create a **Telegram Bot**.
 - Get your **bot token** with [Obtain Your Bot Token](https://core.telegram.org/bots/tutorial#obtain-your-bot-token).
 
-Your **bot token** should looks like:
+## Installation
 
-```plaintext
-4839574812:AAFD39kkdpWt3ywyRZergyOLMaJhac60qc
+Download the binary files for your operating system from the [Releases](https://github.com/usememos/telegram-integration/releases) page.
+
+## Configuration
+
+Create a `.env` file in the project's root directory and add the following configuration:
+
+```env
+SERVER_ADDR=dns:localhost:5230
+BOT_TOKEN=your_telegram_bot_token
 ```
 
-## Connect your Memos to Telegram Bot
+The `SERVER_ADDR` should be a gRPC server address that the Memos is running on. It follows the [gRPC Name Resolution](https://github.com/grpc/grpc/blob/master/doc/naming.md).
 
-Once you have prepared your bot, you can now connect Memos to your bot.
+## Usage
 
-1. Sign in to your Memos using the **admin account**.
-2. Click the **Settings** button on the sidebar to open **Settings** dialog.
-3. Switch to **System** tab in the **Admin** section.
-4. Copy and paste your **bot token** into **Telegram Token** field, then click **Save**.
+### Starting `memogram`
 
-Now, the Telegram bot is connected to your Memos.
+1. Download and extract the released binary file;
+2. Create a `.env` file in the same directory as the binary file;
+3. Run the executable in the terminal:
 
-## Bind Memos user to Telegram user
+   ```sh
+   ./memogram
+   ```
 
-After connecting your Telegram bot to Memos, you can send messages to the bot.
+4. Once the bot is running, you can interact with it via your Telegram bot.
 
-You will receive a message like this:
+### Interaction Commands
 
-![user-id-message](/content/docs/integration/telegram-bot/user-id-message.png)
-
-The message contains your **user ID** in Telegram. Make sure to copy it.
-
-Follow these steps to set it as your Memos user:
-
-1. Sign in to your Memos.
-2. Click on **Settings** button on the sidebar to open **Settings** dialog.
-3. Switch to **Preferences** tab in **Basic** section.
-4. Paste your **userid** into **Telegram UserID** field, then click **Save**.
-
-You can now send messages to the Telegram bot, and they will be saved in your Memos!
-
-![message-saved](/content/docs/integration/telegram-bot/message-saved.png)
-
-We currently support two types of messages from the Telegram bot:
-
-- **Text message**: The message will be the content of memo, and Markdown format is supported.
-
-- **Photo message**: The photo will be saved as resources into memo. And the caption of photo will be content of memo.
-
-## Use a Proxy for Telegram API?
-
-_Memos_ support connect to Telegram API with a proxy.
-
-Assuming you have a proxy server running on `PROXY_URL`, you should setup it to make sure:
-
-- Any request on `PROXY_URL/bot<token>` forward to `https://api.telegram.org/bot<token>`
-- Any request on `PROXY_URL/file/bot<token>` forward to `https://api.telegram.org/file/bot<token>`
-
-You can also just forward all request to `PROXY_URL` directly to `https://api.telegram.org` to make it simple.
-
-If that's OK, just config the **bot token** of your _Memos_ like below:
-
-http://proxy.test.com:8081/somepath/bot<token>
-
-Replace `<token>` with the original **bot token** from Telegram's @BotFather.
-
-## Can I Use Webhook instead of API Proxy ?
-
-**NO**.
-
-In addition to receiving updates from Telegram, many features require visit Telegram's API directly, such as downloading images and sending replies. Therefore, the environment in which Memos running on must be able to **Directly** access Telegram. If for some special reasons it is not possible to access it directly, then a Proxy API is a necessity. On this basis, providing additional support for Webhooks is not too necessary, at least it doesn't have much significance in terms of resolving the accessibility of Telegram.
-
-## What's next?
-
-The Telegram bot is a powerful tool, and we have only implemented a few features so far. We plan to add more features in the future, including:
-
-- Commands for the Telegram bot to perform special actions.
-- Sending notifications through the Telegram bot.
-- And more...
-
-We welcome any pull requests. Enjoy using Memos!
+- `/start <access_token>`: Start the bot with your Memos access token.
+- Send text messages: Save the message content as a memo.
+- Send files (photos, documents): Save the files as resources in a memo.
