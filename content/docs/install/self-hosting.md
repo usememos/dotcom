@@ -63,18 +63,6 @@ This command will launch Memos in the background, exposing it on port `5230`. Da
   - Default: Empty string.
   - Purpose: Specifies the database source name (DSN) for connecting to the database.
 
-- **frontend (--frontend)**
-
-  - Value: Boolean (true/false).
-  - Default: true.
-  - Purpose: Enables or disables the frontend. When disabled, Memos will not serve the frontend. You can deploy the frontend separately and set this flag to false.
-
-- **origins (--origins)**
-
-  - Value: String array representing the allowed origins.
-  - Default: Empty array.
-  - Purpose: Sets the allowed origins for CORS requests. If empty, all origins are allowed.
-
 ## Docker Compose
 
 To deploy Memos using `docker compose`, create a `docker-compose.yml` file with the following configuration:
@@ -103,7 +91,7 @@ To upgrade Memos to the latest version, perform the following steps:
    docker stop memos && docker rm memos
    ```
 
-2. Although optional, it's advisable to back up your database:
+2. Although optional, it's **recommended** to back up your database:
 
    ```bash
    cp -r ~/.memos/memos_prod.db ~/.memos/memos_prod.db.bak
