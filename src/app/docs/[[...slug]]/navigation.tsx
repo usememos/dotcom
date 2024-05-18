@@ -132,7 +132,7 @@ const NavigationItem = ({ node, level }: { node: DocsNode; level: number }) => {
         <Link
           className={classNames(
             "hover:opacity-80",
-            level === 0 ? "text-gray-600 font-medium" : "text-gray-500 text-sm",
+            level === 0 ? "text-gray-600 font-medium" : "text-gray-500 sm:text-sm",
             node.link === pathname && "!text-blue-600 font-medium",
           )}
           href={node.link}
@@ -185,7 +185,7 @@ export const NavigationMobileMenu = () => {
         Menu
       </Button>
       <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
-        <DialogTitle>Documentations</DialogTitle>
+        <DialogTitle className="px-1">Documentations</DialogTitle>
         <ModalClose />
         <div className="w-full px-4 pt-4 pb-8">
           <Navigation />
