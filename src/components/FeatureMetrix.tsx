@@ -39,10 +39,10 @@ export const MAIN_FEATURES: FeatureItem[] = [
     description: "Memos believes that open source is the future, and all code is already open source in GitHub.",
   },
   {
-    slug: "free-forever",
+    slug: "free-to-use",
     icon: Icon.Smile,
-    title: "Free Forever",
-    description: "All features are free forever and will never be charged in any form or content.",
+    title: "Free to Use",
+    description: "All features are free to use and will never be charged in any form or content.",
   },
 ];
 

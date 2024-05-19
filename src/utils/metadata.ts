@@ -8,7 +8,7 @@ interface LocalMetadata {
 }
 
 export const getMetadata = (metadata: Partial<LocalMetadata>): Metadata => {
-  const title = metadata.title || "Memos - Easily capture and share your great thoughts. Open Source and Free forever";
+  const title = metadata.title || "Memos - Easily capture and share your great thoughts. Open Source and Free to Use";
   const description =
     metadata.description || "A privacy-first, lightweight note-taking service. Easily capture and share your great thoughts.";
   const url = metadata.pathname || "";
