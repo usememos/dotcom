@@ -79,7 +79,7 @@ services:
       - 5230:5230
 ```
 
-Now, execute `docker-compose up -d` to initiate Memos. While editing the port and data directory is possible, only modify the first port (e.g., `8081:5230`) to specify an alternative port. The second port designates the port Memos is listening on inside the container. The same principle applies to directory paths, where the first path represents the location on your host system, and the second path signifies the directory inside the container.
+Now, execute `docker compose up -d` to initiate Memos. While editing the port and data directory is possible, only modify the first port (e.g., `8081:5230`) to specify an alternative port. The second port designates the port Memos is listening on inside the container. The same principle applies to directory paths, where the first path represents the location on your host system, and the second path signifies the directory inside the container.
 
 ## Upgrading Memos
 
