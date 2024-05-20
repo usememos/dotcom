@@ -20,14 +20,14 @@ Go to the settings page and click on the "Create" button to create an access tok
 To call the API with an access token, you need to add the `Authorization` header to your request.
 
 ```
-GET /api/v1/memo
+GET /api/v1/memos
 Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 ```
 
 For example with `curl`:
 
 ```shell
-curl https://demo.usememos.com/api/v1/memo \
+curl https://demo.usememos.com/api/v1/memos \
    -H "Accept: application/json" \
    -H "Authorization: Bearer {YOUR_ACCESS_TOKEN}"
 ```
