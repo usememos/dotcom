@@ -25,6 +25,8 @@ docker run -d \
 
 This command will launch Memos in the background, exposing it on port `5230`. Data will be stored in the `~/.memos/` directory. You can customize the port and the data directory path as needed.
 
+For Windows users, replace `~/.memos/` with the full path to the directory where you want to store Memos data.
+
 ### Parameter Options
 
 - **mode (-m, --mode):**
