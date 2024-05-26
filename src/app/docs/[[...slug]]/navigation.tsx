@@ -73,6 +73,10 @@ const DOCS_NODES: DocsNode[] = [
         link: "/docs/advanced-settings/keycloak",
       },
       {
+        text: "SSO - Authentik",
+        link: "/docs/advanced-settings/authentik",
+      },
+      {
         text: "Webhook",
         link: "/docs/advanced-settings/webhook",
       },
