@@ -69,20 +69,12 @@ const DOCS_NODES: DocsNode[] = [
         link: "/docs/advanced-settings/cloudflare-r2",
       },
       {
-        text: "SSO - Keycloak",
-        link: "/docs/advanced-settings/keycloak",
-      },
-      {
-        text: "SSO - Authentik",
-        link: "/docs/advanced-settings/authentik",
+        text: "Single Sign-On",
+        link: "/docs/advanced-settings/sso",
       },
       {
         text: "Webhook",
         link: "/docs/advanced-settings/webhook",
-      },
-      {
-        text: "SEO",
-        link: "/docs/advanced-settings/seo",
       },
     ],
   },

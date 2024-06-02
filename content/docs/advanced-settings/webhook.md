@@ -16,6 +16,6 @@ The data sent in the webhook includes information about the memo and its associa
 
 - `creatorId`: Identifier of the memo creator.
 - `createdTs`: Timestamp of when the webhook payload is created.
-- `memo`: Details about the memo, including its ID, timestamps, content, visibility, associated resources and relations.
+- `memo`: Details about the memo, including its ID, content. If you need more information about the memo, you can use the memo ID to fetch the memo details from the [Memos API](https://memos.apidocumentation.com/reference).
 
 Once your server is configured to receive payloads, it will listen for any delivery that's sent to the endpoint you configured. To ensure that your server only processes webhook deliveries that were sent by GitHub and to ensure that the delivery was not tampered with, you should validate the webhook signature before processing the delivery further.
