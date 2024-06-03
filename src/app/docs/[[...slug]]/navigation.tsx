@@ -177,7 +177,13 @@ export const NavigationMobileMenu = () => {
 
   return (
     <div>
-      <Button color="neutral" size="sm" variant="outlined" onClick={toggleDrawer(true)} endDecorator={<Icon.ChevronRight className="w-5 h-auto" />}>
+      <Button
+        color="neutral"
+        size="sm"
+        variant="outlined"
+        onClick={toggleDrawer(true)}
+        endDecorator={<Icon.ChevronRight className="w-5 h-auto" />}
+      >
         Menu
       </Button>
       <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
