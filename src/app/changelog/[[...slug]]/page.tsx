@@ -27,8 +27,8 @@ const Page = ({ params }: Props) => {
 
   return (
     <div className="w-full max-w-4xl sm:px-6">
-      <h1 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold mt-4 mb-10">{frontmatter.title}</h1>
-      <ContentRender markdocNode={transformedContent} />
+      <h1 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold my-6">{frontmatter.title}</h1>
+      <ContentRender className="markdown-body" markdocNode={transformedContent} />
       <Divider className="!my-12" />
       <Subscription />
     </div>

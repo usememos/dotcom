@@ -53,8 +53,8 @@ const Page = ({ params }: Props) => {
         <div className="block sm:hidden w-full">
           <NavigationMobileMenu />
         </div>
-        <h1 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold mt-4 mb-10">{frontmatter.title}</h1>
-        <ContentRender className="lg:!prose-lg" markdocNode={transformedContent} />
+        <h1 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold my-6">{frontmatter.title}</h1>
+        <ContentRender className="markdown-body" markdocNode={transformedContent} />
         <div className="mt-12">
           <Button size="sm" variant="outlined" color="neutral" startDecorator={<Icon.Edit className="w-4 h-auto" />}>
             <Link href={remoteFilePath} target="_blank">
