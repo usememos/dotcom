@@ -59,8 +59,8 @@ const Page = ({ params }: Props) => {
           <div className="relative w-full h-full overflow-auto py-4 no-scrollbar">
             <TableOfContent headings={headings} />
           </div>
-          <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-t from-transparent to-zinc-100"></div>
-          <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-b from-transparent to-zinc-100"></div>
+          <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-t from-transparent to-white"></div>
+          <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-b from-transparent to-white"></div>
         </div>
       </div>
     </div>

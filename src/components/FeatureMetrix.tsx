@@ -75,7 +75,7 @@ const FeatureMetrix = () => {
       <p className="w-full text-center mt-8 mb-4 sm:px-6 text-xl sm:text-2xl font-normal text-gray-400">Why Memos?</p>
       <div className="w-full my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12 sm:px-12">
         {MAIN_FEATURES.map((featureItem) => (
-          <div key={featureItem.title} className="w-full flex flex-col justify-start items-start rounded-2xl bg-zinc-100">
+          <div key={featureItem.title} className="w-full flex flex-col justify-start items-start rounded-2xl">
             <div className="w-10 h-10 text-gray-600 rounded-lg">
               <featureItem.icon className="h-10 w-auto" strokeWidth={1} />
             </div>
@@ -85,7 +85,7 @@ const FeatureMetrix = () => {
         ))}
       </div>
       <div className="w-full mt-4 sm:px-12">
-        <div className="w-full bg-white rounded-xl p-4 sm:p-6 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+        <div className="w-full bg-zinc-100 shadow rounded-xl p-4 sm:p-6 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           {SUB_FEATURES.map((featureItem) => (
             <div key={featureItem.title} className="w-full flex flex-row justify-start items-center gap-4">
               <div className="text-gray-600 rounded-lg">

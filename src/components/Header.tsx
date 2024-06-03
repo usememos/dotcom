@@ -20,7 +20,7 @@ const Header = () => {
   return (
     <header
       className={classNames(
-        "sticky top-0 transition-all bg-zinc-100 bg-opacity-80 backdrop-blur-lg z-10 w-full mx-auto flex flex-col justify-center items-center",
+        "sticky top-0 transition-all bg-white bg-opacity-80 backdrop-blur-lg z-10 w-full mx-auto flex flex-col justify-center items-center",
         pageScrolled && "border-b shadow",
         pageScrolled ? "pt-0" : "pt-2",
       )}
