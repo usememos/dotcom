@@ -24,7 +24,7 @@
     "lucide-react": "^0.379.0",
     "next": "^14.2.3",
     "next-sitemap": "^4.2.3",
-    "posthog-js": "^1.136.2",
+    "posthog-js": "^1.136.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-use": "^17.5.0",
