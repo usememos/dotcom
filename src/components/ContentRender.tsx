@@ -1,6 +1,6 @@
 import Markdoc, { RenderableTreeNode } from "@markdoc/markdoc";
 import classNames from "classnames";
-import "github-markdown-css/github-markdown.css";
+import "github-markdown-css/github-markdown-light.css";
 import React from "react";
 import "@/styles/typography.css";
 
