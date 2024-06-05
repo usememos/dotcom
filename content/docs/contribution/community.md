@@ -11,6 +11,7 @@ Memos has a very active community and produces a lot of design products, includi
 - [eallion/memos.top](https://github.com/eallion/memos.top) - Static page rendered with the Memos API
 - [eindex/logseq-memos-sync](https://github.com/EINDEX/logseq-memos-sync) - Logseq plugin
 - [quanru/obsidian-periodic-para](https://github.com/quanru/obsidian-periodic-para#daily-record) - Obsidian plugin
+- [RyoJerryYu/obsidian-memos-sync](https://github.com/RyoJerryYu/obsidian-memos-sync) - Another Obsidian plugin, allow to sync memos to obsidian daily note. Fully compatible with official Daily Notes plugin, Calendar plugin and Periodic Notes plugin.
 - [JakeLaoyu/memos-import-from-flomo](https://github.com/JakeLaoyu/memos-import-from-flomo) - Import data. Support from flomo, wechat reading
 - [Quick Memo](https://www.icloud.com/shortcuts/1eaef307112843ed9f91d256f5ee7ad9) - Shortcuts (iOS, iPadOS or macOS)
 - [Memos Raycast Extension](https://www.raycast.com/JakeYu/memos) - Raycast extension
