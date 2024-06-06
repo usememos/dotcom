@@ -38,7 +38,7 @@ const Header = () => {
         <div className="w-auto flex flex-row justify-end items-center space-x-2 sm:space-x-3">
           <div className="w-auto hidden sm:flex flex-row justify-end items-center space-x-2 sm:space-x-3 font-medium text-zinc-700">
             <Link className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600" href="/docs">
-              Documentation
+              Docs
             </Link>
             <span className="font-mono text-gray-300">/</span>
             <Link className="w-auto flex flex-row justify-center items-center hover:underline hover:text-blue-600" href="/blog">

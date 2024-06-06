@@ -72,9 +72,9 @@ const Page = () => {
                 href="https://github.com/sponsors/usememos"
                 target="_blank"
               >
-                <Icon.SmilePlus className="w-5 sm:w-7 h-auto" strokeWidth={1} />
+                <Icon.SmilePlus className="w-5 sm:w-7 h-auto" strokeWidth={1.5} />
                 <div className="h-auto flex flex-col justify-center items-start">
-                  <span className="text-lg">Become a sponsor</span>
+                  <span className="text-lg">Become a backer</span>
                 </div>
               </a>
             </div>

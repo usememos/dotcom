@@ -48,11 +48,9 @@ const Footer = () => {
           </Link>
           <Link
             className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600"
-            href="https://memos.apidocumentation.com/reference"
-            target="_blank"
+            href="/supporters"
           >
-            API reference
-            <Icon.ExternalLink className="w-4 h-auto ml-1" />
+            Supporters 💗
           </Link>
         </div>
         <div className="w-full flex flex-col justify-start items-start space-y-2">
@@ -63,10 +61,13 @@ const Footer = () => {
           >
             Brand
           </Link>
-          <Link href="/supporters">
-            <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">
-              Supporters
-            </span>
+          <Link
+            className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600"
+            href="https://memos.apidocumentation.com/reference"
+            target="_blank"
+          >
+            API reference
+            <Icon.ExternalLink className="w-4 h-auto ml-1" />
           </Link>
           <Link
             className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600"
