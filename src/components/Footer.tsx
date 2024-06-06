@@ -98,15 +98,9 @@ const Footer = () => {
               <Icon.ExternalLink className="w-4 h-auto ml-1" />
             </span>
           </Link>
-          <Link href="https://github.com/yourselfhosted/gomark" target="_blank">
+          <Link href="https://github.com/usememos/gomark" target="_blank">
             <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">
               gomark
-              <Icon.ExternalLink className="w-4 h-auto ml-1" />
-            </span>
-          </Link>
-          <Link href="https://github.com/yourselfhosted/favicons" target="_blank">
-            <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">
-              favicons
               <Icon.ExternalLink className="w-4 h-auto ml-1" />
             </span>
           </Link>
