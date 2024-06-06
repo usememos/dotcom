@@ -63,6 +63,11 @@ const Footer = () => {
           >
             Brand
           </Link>
+          <Link href="/supporters">
+            <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">
+              Supporters
+            </span>
+          </Link>
           <Link
             className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600"
             href="https://github.com/usememos/memos"
@@ -70,12 +75,6 @@ const Footer = () => {
           >
             Source code
             <Icon.ExternalLink className="w-4 h-auto ml-1" />
-          </Link>
-          <Link href="https://github.com/sponsors/usememos" target="_blank">
-            <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">
-              Sponsor us
-              <Icon.ExternalLink className="w-4 h-auto ml-1" />
-            </span>
           </Link>
           <Link href="https://github.com/orgs/usememos/projects/5/views/1" target="_blank">
             <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-blue-600">
