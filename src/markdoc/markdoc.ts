@@ -1,11 +1,15 @@
 import Markdoc from "@markdoc/markdoc";
+import type { Config } from "@markdoc/markdoc";
 import yaml from "js-yaml";
-import { Frontmatter } from "@/types/content";
+import type { Frontmatter } from "@/types/content";
+import admonition from "./admonition";
 import heading from "./heading";
 
 export const markdoc = (content: string) => {
-  const config = {
-    tags: {},
+  const config: Config = {
+    tags: {
+      admonition: admonition,
+    },
     nodes: {
       heading,
     },
