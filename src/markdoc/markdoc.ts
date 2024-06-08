@@ -1,17 +1,23 @@
-import Markdoc from "@markdoc/markdoc";
-import type { Config } from "@markdoc/markdoc";
+import Markdoc, { type Config } from "@markdoc/markdoc";
 import yaml from "js-yaml";
+import { Admonition } from "@/components/Admonition";
+import { Heading } from "@/components/Heading";
 import type { Frontmatter } from "@/types/content";
-import admonition from "./admonition";
-import heading from "./heading";
+import admonitionSchema from "./admonition";
+import headingSchema from "./heading";
+
+export const components = {
+  Admonition: Admonition,
+  Heading: Heading,
+};
 
 export const markdoc = (content: string) => {
   const config: Config = {
     tags: {
-      admonition: admonition,
+      admonition: admonitionSchema,
     },
     nodes: {
-      heading,
+      heading: headingSchema,
     },
     variables: {},
   };

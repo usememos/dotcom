@@ -1,7 +1,7 @@
 import type { Schema } from "@markdoc/markdoc";
-import { admonitionTones } from "../components/Admonition";
+import { admonitionTones } from "@/components/Admonition";
 
-const admonition: Schema = {
+const admonitionSchema: Schema = {
   render: "Admonition",
   description: "Display the enclosed content in an admonition block",
   children: ["paragraph", "tag", "list", "link"],
@@ -19,4 +19,4 @@ const admonition: Schema = {
   },
 };
 
-export default admonition;
+export default admonitionSchema;
