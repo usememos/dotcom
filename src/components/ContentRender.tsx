@@ -1,7 +1,8 @@
-import Markdoc, { RenderableTreeNode } from "@markdoc/markdoc";
+import Markdoc, { type RenderableTreeNode } from "@markdoc/markdoc";
 import classNames from "classnames";
 import "github-markdown-css/github-markdown-light.css";
 import React from "react";
+import { components } from "@/markdoc/markdoc";
 import "@/styles/typography.css";
 
 interface Props {
@@ -17,7 +18,7 @@ const ContentRender = ({ markdocNode, className }: Props) => {
         className,
       )}
     >
-      {Markdoc.renderers.react(markdocNode, React)}
+      {Markdoc.renderers.react(markdocNode, React, { components })}
     </div>
   );
 };
