@@ -1,20 +1,16 @@
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Inter } from "next/font/google";
-import React, { Suspense } from "react";
+import type React from "react";
+import { Suspense } from "react";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { PostHogPageview } from "@/components/PosthogProvider";
 import "@/styles/global.css";
 import { getMetadata } from "@/utils/metadata";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
+import { fontLoader } from "./fonts";
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang="en" className={`${inter.variable} font-sans`}>
+    <html lang="en" className={fontLoader()}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
         <link rel="icon" href="/logo-rounded.png" type="image/png" />

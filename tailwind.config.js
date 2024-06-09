@@ -1,10 +1,12 @@
+import { fontFamily } from "tailwindcss/defaultTheme";
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-inter)"],
-        mono: ["var(--font-roboto-mono)"],
+        sans: ["var(--font-inter)", ...fontFamily.sans],
+        mono: ["var(--font-roboto-mono)", ...fontFamily.mono],
       },
     },
   },
