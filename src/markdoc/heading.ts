@@ -28,7 +28,6 @@ const headingSchema = {
     const attributes = node.transformAttributes(config);
     const children = node.transformChildren(config || {});
     const id = generateID(children, attributes);
-
     return new Tag(this.render, { ...attributes, id }, children);
   },
 };

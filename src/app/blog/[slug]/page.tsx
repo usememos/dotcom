@@ -36,7 +36,9 @@ const Page = ({ params }: Props) => {
 
   const children = transformedContent.children;
   const headings = JSON.parse(
-    JSON.stringify(children.filter((child) => child instanceof Tag && (child.name === "h2" || child.name === "h3"))),
+    JSON.stringify(
+      children.filter((child) => child instanceof Tag && child.name === "Heading" && [2, 3].includes(child.attributes["level"])),
+    ),
   ) as Tag[];
 
   return (

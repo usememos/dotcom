@@ -36,15 +36,18 @@ const CodeBlock = ({ children, language }: Props) => {
 
   return (
     <>
-      <div className={"border-[.1vh] my-2 hover:border-zinc-300 rounded-lg relative"}>
-        <pre ref={ref} className={`language-${language} !font-mono !tracking-tight !leading-tight !bg-transparent`}>
+      <div className={"relative"}>
+        <pre
+          ref={ref}
+          className={`language-${language} border-[.1vh] hover:border-zinc-300 rounded-lg !font-mono !tracking-tight !leading-tight !bg-transparent`}
+        >
           {children}
         </pre>
         <button
           type="button"
           onClick={() => setCopied(true)}
           className={
-            "top-4 rounded-lg absolute right-2 p-2 hover:bg-zinc-200 hover:text-zinc-500 text-zinc-400 transition-colors duration-300"
+            "rounded-lg absolute top-1 right-1 p-1 backdrop-blur bg-white bg-opacity-60 hover:bg-zinc-200 hover:text-zinc-500 text-zinc-400 transition-colors duration-300"
           }
         >
           {copied ? <Icon.Check className="w-4 h-4" /> : <Icon.Copy className="w-4 h-4" />}

@@ -46,7 +46,10 @@ const TableOfContent = ({ headings }: Props) => {
           return (
             <li
               key={id}
-              className={classNames("w-full border-l-2 pl-2 py-1 leading-5", currentAnchor === id ? "border-blue-600" : "border-gray-200")}
+              className={classNames(
+                "w-full border-l-2 pl-2 py-1 leading-tight line-clamp-2",
+                currentAnchor === id ? "border-blue-600" : "border-gray-200",
+              )}
             >
               <a href={`#${id}`} className={classNames("text-sm text-gray-600 hover:opacity-80")}>
                 {Markdoc.renderers.react(heading.children, React)}

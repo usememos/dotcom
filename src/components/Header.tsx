@@ -74,7 +74,7 @@ const HeaderMobileMenu = () => {
       <DropdownMenuContent className="bg-white">
         <DropdownMenuItem>
           <Link className="w-full" href="/docs" onClick={() => setOpen(false)}>
-            Documentation
+            Docs
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
