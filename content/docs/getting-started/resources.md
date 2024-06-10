@@ -25,3 +25,12 @@ Resources are seamlessly integrated into Memos, making it easy to access and ref
 Resources within Memos offer an effective way to manage and reference non-textual content, enriching your knowledge management system. By combining multimedia content with textual notes and efficiently organizing resources, you can unlock new dimensions of understanding and creativity.
 
 Start attaching images, videos, and more to your Memos today and experience the benefits of a truly multimedia knowledge management system.
+
+## Uploading video and audio files to Memos
+
+By default, you can upload resources up to 30 MB in size. You can increase this limit by going to storage settings and changing "maximum upload size" to a higher value.
+
+{% admonition icon="important" %}
+Uploaded video and audio files must be HTML5 compatible for proper playback; otherwise, you will see a black screen.
+For more information, refer to the [Chromium Browser Project](https://www.chromium.org/audio-video/).
+{% /admonition %}
