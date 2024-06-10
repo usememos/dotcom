@@ -117,6 +117,10 @@ const DOCS_NODES: DocsNode[] = [
     text: "FAQ",
     link: "/docs/faq",
   },
+  {
+    text: "Troubleshooting",
+    link: "/docs/troubleshooting",
+  },
 ];
 
 const NavigationItem = ({ node, level }: { node: DocsNode; level: number }) => {
