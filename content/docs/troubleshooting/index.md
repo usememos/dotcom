@@ -2,7 +2,7 @@
 title: Troubleshooting
 ---
 
-{% admonition icon="warning" title="Warning"%}
+{% admonition icon="warning"%}
 Instructions in this section are for advanced users.
 {% /admonition %}
 
@@ -17,8 +17,8 @@ Some assumptions are made in the instructions below:
 - The database file is `/var/opt/memos/memos_prod.db`.
 
 {% admonition icon="important" %}
-  `/var/opt/memos/memos_prod.db` is the standard path *inside* the container. It will only be different if you have supplied a different `MEMOS_DATA` environment variable on the container creation, which deviates from the default.
-  {% /admonition %}
+`/var/opt/memos/memos_prod.db` is the standard path _inside_ the container. It will only be different if you have supplied a different `MEMOS_DATA` environment variable on the container creation, which deviates from the default.
+{% /admonition %}
 
 ## Re-enable password login
 
@@ -40,8 +40,8 @@ If you have locked yourself out of your Memos instance with a failed Single-Sign
 
   ```bash
   sqlite3 /var/opt/memos/memos_prod.db -cmd '.mode csv' <<EOF
-    UPDATE system_setting 
-      SET value = json_patch(value, '{"disallowPasswordLogin": false}') 
+    UPDATE system_setting
+      SET value = json_patch(value, '{"disallowPasswordLogin": false}')
         WHERE name = 'GENERAL';
   EOF
   ```
@@ -82,7 +82,7 @@ If you have locked yourself out of your Memos instance with a failed Single-Sign
 
   ```bash
   sqlite3 /var/opt/memos/memos_prod.db -cmd '.mode csv' <<EOF
-    UPDATE user 
+    UPDATE user
       SET password_hash='\$2a\$12\$fWLqtEFiwr0oFwz3I9H6Uu/W7MvPCJGA9fLlTDV5eO2qsH8yUANku',
         row_status = 'NORMAL'
           WHERE id = 1;

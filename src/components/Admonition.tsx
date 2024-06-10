@@ -1,4 +1,5 @@
 import classnames from "classnames";
+import { startCase } from "lodash-es";
 import type React from "react";
 import Icon from "./Icon";
 
@@ -24,7 +25,7 @@ const Admonition = ({ title, icon = "note", children }: AdmonitionProps) => {
   const borderColor = {
     "border-sky-500": icon === "note",
     "border-green-500": icon === "tip",
-    "border-violet-500": icon === "important",
+    "border-blue-500": icon === "important",
     "border-amber-400": icon === "warning",
     "border-red-600": icon === "caution",
   };
@@ -32,25 +33,18 @@ const Admonition = ({ title, icon = "note", children }: AdmonitionProps) => {
   const iconColor = {
     "text-sky-500": icon === "note",
     "text-green-500": icon === "tip",
-    "text-violet-500": icon === "important",
+    "text-blue-500": icon === "important",
     "text-amber-400": icon === "warning",
     "text-red-600": icon === "caution",
   };
 
-  const iconMargin = title ? "mt-0.5" : "mt-2";
   return (
-    <div className={classnames("border-l-[.8vh] border-r-[.3vh] pl-4 pt-2  m-1", borderColor)}>
-      <div className="flex">
-        <div className={classnames("flex-shrink-0", iconMargin)}>
-          <Icon className={classnames("w-5 h-5", iconColor)} />
-        </div>
-        <div className="ml-3">
-          <span className={classnames("font-semibold", iconColor)}>{title}</span>
-          <div className="mt-[1vh] text-sm text-slate-700">
-            <span className="flex flex-col space-y-2">{children}</span>
-          </div>
-        </div>
+    <div className={classnames("w-full flex flex-col bg-zinc-50 rounded-lg", "border-l-[6px] pl-4 pr-2 pt-3", borderColor)}>
+      <div className={classnames("flex flex-row items-center gap-2")}>
+        <Icon className={classnames("w-5 h-5", iconColor)} />
+        <span className={classnames("font-semibold", iconColor)}>{title || startCase(icon)}</span>
       </div>
+      <div className="mt-3 text-slate-700">{children}</div>
     </div>
   );
 };
