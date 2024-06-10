@@ -36,6 +36,18 @@ Tags in Memos serve various purposes, including:
 
 In your memo's content, use the format `#tag` and add a space after the tag name. For example, type `#programming/java` and then press the spacebar.
 
+## Renaming Tags
+
+- Find the Tags section on the right sidebar.
+- Hover over the **#** sign next to the tag, it will change to **⁝** .
+- Click on the menu button and then choose "**Rename**".
+
+## Deleting Tags
+
+- Find the Tags section on the right sidebar.
+- Hover over the **#** sign next to the tag, it will change to **⁝** .
+- Click on the menu button and then choose "**Delete**".
+
 ---
 
 **Read more**
