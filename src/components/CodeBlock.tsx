@@ -16,7 +16,7 @@ interface Props {
   language: string;
 }
 
-export function CodeBlock({ children, language }: Props) {
+const CodeBlock = ({ children, language }: Props) => {
   const ref = useRef<HTMLPreElement>(null);
   const [copied, setCopied] = useState(false);
 
@@ -36,7 +36,7 @@ export function CodeBlock({ children, language }: Props) {
 
   return (
     <>
-      <div className={"border-[.1vh] m-2 hover:border-zinc-300 rounded-lg relative"}>
+      <div className={"border-[.1vh] my-2 hover:border-zinc-300 rounded-lg relative"}>
         <pre ref={ref} className={`language-${language} !font-mono !tracking-tight !leading-tight !bg-transparent`}>
           {children}
         </pre>
@@ -44,12 +44,14 @@ export function CodeBlock({ children, language }: Props) {
           type="button"
           onClick={() => setCopied(true)}
           className={
-            "top-4 rounded-lg absolute right-3 p-1.5 hover:bg-zinc-200 hover:text-zinc-500 text-zinc-400 transition-colors duration-300"
+            "top-4 rounded-lg absolute right-2 p-2 hover:bg-zinc-200 hover:text-zinc-500 text-zinc-400 transition-colors duration-300"
           }
         >
-          {copied ? <Icon.Check /> : <Icon.Copy />}
+          {copied ? <Icon.Check className="w-4 h-4" /> : <Icon.Copy className="w-4 h-4" />}
         </button>
       </div>
     </>
   );
-}
+};
+
+export default CodeBlock;

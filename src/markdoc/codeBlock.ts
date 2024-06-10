@@ -10,4 +10,5 @@ const codeBlockSchema: Schema = {
     },
   },
 };
+
 export default codeBlockSchema;

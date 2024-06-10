@@ -1,8 +1,8 @@
 import Markdoc, { type Config } from "@markdoc/markdoc";
 import yaml from "js-yaml";
-import { Admonition } from "@/components/Admonition";
-import { CodeBlock } from "@/components/CodeBlock";
-import { Heading } from "@/components/Heading";
+import Admonition from "@/components/Admonition";
+import CodeBlock from "@/components/CodeBlock";
+import Heading from "@/components/Heading";
 import type { Frontmatter } from "@/types/content";
 import admonitionSchema from "./admonition";
 import codeBlockSchema from "./codeBlock";

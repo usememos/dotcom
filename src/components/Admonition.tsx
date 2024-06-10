@@ -9,15 +9,16 @@ const icons = {
   warning: Icon.TriangleAlert,
   caution: Icon.AlertOctagon,
 };
+
 export const admonitionTones = Object.keys(icons);
 
-export interface AdmonitionProps {
+interface AdmonitionProps {
   title: string;
   icon?: keyof typeof icons;
   children: React.ReactNode;
 }
 
-export function Admonition({ title, icon = "note", children }: AdmonitionProps) {
+const Admonition = ({ title, icon = "note", children }: AdmonitionProps) => {
   const Icon = icons[icon] || icons.note;
 
   const borderColor = {
@@ -52,4 +53,6 @@ export function Admonition({ title, icon = "note", children }: AdmonitionProps) 
       </div>
     </div>
   );
-}
+};
+
+export default Admonition;

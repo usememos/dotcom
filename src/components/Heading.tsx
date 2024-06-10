@@ -9,7 +9,7 @@ interface Props {
   className: string;
 }
 
-export function Heading({ id = "", level = 1, children, className }: Props) {
+const Heading = ({ id = "", level = 1, children, className }: Props) => {
   const textSize = {
     "text-3xl": level === 1,
     "text-2xl": level === 2,
@@ -29,4 +29,6 @@ export function Heading({ id = "", level = 1, children, className }: Props) {
       </a>
     </Component>
   );
-}
+};
+
+export default Heading;
