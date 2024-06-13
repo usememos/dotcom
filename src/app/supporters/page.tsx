@@ -35,7 +35,7 @@ const Page = () => {
         <p className="text-2xl sm:text-3xl font-medium">🦄 Sponsors</p>
         <div className="mt-4 sm:mt-6 flex flex-row flex-wrap gap-3 sm:gap-4">
           {SPONSORS.map((sponsor) => (
-            <div key={sponsor.title} className="w-auto p-4 border rounded-2xl hover:shadow">
+            <div key={sponsor.title} className="w-auto py-4 px-6 border rounded-2xl hover:shadow">
               <a className="w-full h-full flex flex-row justify-start items-center gap-2" href={sponsor.url} target="_blank">
                 <img className="w-12 sm:w-16 rounded-2xl" src={sponsor.logo} alt="" />
                 <span className="text-2xl sm:text-3xl">{sponsor.title}</span>
@@ -43,7 +43,7 @@ const Page = () => {
             </div>
           ))}
 
-          <div className="w-auto p-4 border border-dashed rounded-2xl hover:shadow">
+          <div className="w-auto py-4 px-6 border border-dashed rounded-2xl hover:shadow">
             <a
               className="w-full h-full flex flex-row justify-start items-center gap-2 opacity-40"
               href="https://github.com/sponsors/usememos"
