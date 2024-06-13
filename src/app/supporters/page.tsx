@@ -15,6 +15,11 @@ const GITHUB_USER_SPONSORS = [
     logo: "https://avatars.githubusercontent.com/u/121377500?v=4",
     url: "https://github.com/redmetablue",
   },
+  {
+    title: "weikib",
+    logo: "https://avatars.githubusercontent.com/u/80217737?v=4",
+    url: "https://github.com/weikib",
+  },
 ];
 
 const Page = () => {
