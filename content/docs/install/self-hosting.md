@@ -65,6 +65,8 @@ For Windows users, replace `~/.memos/` with the full path to the directory where
   - Default: Empty string.
   - Purpose: Specifies the database source name (DSN) for connecting to the database.
 
+    Special characters in the username and password must be escaped, such as converting `=` to `%3D`. Refer to the [Connection URIs documentation](https://www.postgresql.org/docs/11/libpq-connect.html#id-1.7.3.8.3.6) for more details. Tools like [URL Encoder](https://www.urlencoder.org/) can assist with this process.
+
 ## Docker Compose
 
 To deploy Memos using `docker compose`, create a `docker-compose.yml` file with the following configuration:
