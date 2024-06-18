@@ -86,8 +86,8 @@ devDependencies:
     specifier: ^4.17.12
     version: 4.17.12
   '@types/node':
-    specifier: ^20.14.0
-    version: 20.14.3
+    specifier: ^20.14.4
+    version: 20.14.4
   '@types/prismjs':
     specifier: ^1.26.4
     version: 1.26.4
@@ -1398,8 +1398,8 @@ packages:
     dev: false
     optional: true
 
-  /@types/node@20.14.3:
-    resolution: {integrity: sha512-Nuzqa6WAxeGnve6SXqiPAM9rA++VQs+iLZ1DDd56y0gdvygSZlQvZuvdFPR3yLqkVxPu4WrO02iDEyH1g+wazw==}
+  /@types/node@20.14.4:
+    resolution: {integrity: sha512-1ChboN+57suCT2t/f8lwtPY/k3qTpuD/qnqQuYoBg6OQOcPyaw7PiZVdGpaZYAvhDDtqrt0oAaM8+oSu1xsUGw==}
     dependencies:
       undici-types: 5.26.5
     dev: true
