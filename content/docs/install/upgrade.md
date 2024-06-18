@@ -1,11 +1,8 @@
 ---
-title: Updating Memos
+title: Upgrade
 ---
 
-
-## Manual Update
-
-This is the recommended method for updating Memos.
+## Manual Upgrade
 
 To upgrade Memos to the latest version, perform the following steps:
 
@@ -35,15 +32,14 @@ To upgrade Memos to the latest version, perform the following steps:
 
 4. Finally, start Memos by following the steps outlined in the [Docker Run](/docs/install/container-install#docker-run) section. Your upgraded Memos instance will now be up and running with the latest enhancements and features.
 
-## Automatic Updates
+## Automatic Upgrades
 
-Memos can be automatically updated by [Watchtower](https://github.com/containrrr/watchtower).
+Memos can be automatically upgraded by [Watchtower](https://github.com/containrrr/watchtower).
 
 {% admonition icon="caution" %}
 It's advised that you use a custom automatic data backup strategy in parallel to automatic updates. This way, you can easily roll back to a previous version if needed.
 
 While automatic updates usually work well, they can cause issues if you use the `latest` or even the `stable` tag, as they can receive major and minor version upgrades with database schema changes.
-
 {% /admonition %}
 
 {% admonition icon="note" %}

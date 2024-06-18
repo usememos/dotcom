@@ -36,8 +36,8 @@ const DOCS_NODES: DocsNode[] = [
         link: "/docs/install/startup-options",
       },
       {
-        text: "Updating Memos",
-        link: "/docs/install/update",
+        text: "Upgrade",
+        link: "/docs/install/upgrade",
       },
       {
         text: "Using HTTPS",
