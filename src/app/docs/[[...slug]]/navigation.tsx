@@ -4,7 +4,8 @@ import { Button, DialogTitle, Drawer, ModalClose } from "@mui/joy";
 import classNames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import type React from "react";
+import { useEffect, useState } from "react";
 import Icon from "@/components/Icon";
 
 interface DocsNode {
@@ -23,8 +24,24 @@ const DOCS_NODES: DocsNode[] = [
     link: "/docs/install",
     children: [
       {
-        text: "Self-Hosting",
-        link: "/docs/install/self-hosting",
+        text: "Container Install",
+        link: "/docs/install/container-install",
+      },
+      {
+        text: "Database Drivers",
+        link: "/docs/install/database",
+      },
+      {
+        text: "Startup Options",
+        link: "/docs/install/startup-options",
+      },
+      {
+        text: "Updating Memos",
+        link: "/docs/install/update",
+      },
+      {
+        text: "Using HTTPS",
+        link: "/docs/install/https",
       },
     ],
   },
@@ -53,20 +70,16 @@ const DOCS_NODES: DocsNode[] = [
     text: "Advanced Settings",
     children: [
       {
+        text: "Cloudflare R2",
+        link: "/docs/advanced-settings/cloudflare-r2",
+      },
+      {
         text: "Custom Style and Script",
         link: "/docs/advanced-settings/custom-style-and-script",
       },
       {
         text: "Local storage",
         link: "/docs/advanced-settings/local-storage",
-      },
-      {
-        text: "Database",
-        link: "/docs/advanced-settings/database",
-      },
-      {
-        text: "Cloudflare R2",
-        link: "/docs/advanced-settings/cloudflare-r2",
       },
       {
         text: "Single Sign-On",

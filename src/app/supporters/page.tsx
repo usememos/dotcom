@@ -94,7 +94,7 @@ const Page = () => {
 
 export const generateMetadata = () => {
   return getMetadata({
-    title: "Suppoters - Memos",
+    title: "Supporters - Memos",
     description: "A simple note-taking app that helps you to organize your thoughts.",
     pathname: `/supporters`,
   });

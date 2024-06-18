@@ -39,7 +39,7 @@ const Admonition = ({ title, icon = "note", children }: AdmonitionProps) => {
   };
 
   return (
-    <div className={classnames("w-full flex flex-col bg-zinc-50 rounded-lg", "border-l-[6px] pl-4 pr-2 pt-3", borderColor)}>
+    <div className={classnames("w-full flex flex-col bg-zinc-50 rounded-lg", "border-l-[6px] pl-4 pr-2 pt-3 mb-2", borderColor)}>
       <div className={classnames("flex flex-row items-center gap-2")}>
         <Icon className={classnames("w-5 h-5", iconColor)} />
         <span className={classnames("font-semibold", iconColor)}>{title || startCase(icon)}</span>

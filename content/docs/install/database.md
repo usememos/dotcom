@@ -1,5 +1,5 @@
 ---
-title: Database Driver
+title: Database Drivers
 ---
 
 Memos supports the following database types:
