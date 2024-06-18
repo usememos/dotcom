@@ -49,19 +49,16 @@ Now, execute `docker compose up -d` to initiate Memos. While editing the port an
 As long as you have plenty of RAM, you can use [Docker Desktop](https://www.docker.com/products/docker-desktop/) to run Memos.
 
 {% admonition icon="important" %}
-Using `~/.memos/` would set the data storage inside the WSL 2 virtual machine.
-
-To store the data directly on the host, use `/c/Users/<username>/.memos/` or `./.memos/` as the data directory.
+To store the data directly on the host, use `/c/Users/<username>/memos/` or an absolute Windows path.
 {% /admonition %}
 
 ### Docker Run on PowerShell
 
 ```
-cd $Env:USERPROFILE
 docker run -d `
   --init `
   --name memos `
   --publish 5230:5230 `
-  --volume ./.memos/:/var/opt/memos `
+  --volume $Env:USERPROFILE\memos:/var/opt/memos `
   neosmemo/memos:stable
 ```
