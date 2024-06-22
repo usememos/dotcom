@@ -78,7 +78,7 @@ Code is a common element in technical content. Memos supports inline and block c
 
 #### Inline
 
-Inline code is wrapped in backticks (`). Its syntax is for example `const x = 1`.
+Inline code is wrapped in backticks (\`). Its syntax is for example `const x = 1`.
 
 #### Block
 
