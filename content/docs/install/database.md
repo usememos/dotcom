@@ -54,6 +54,35 @@ Note that if the PostgreSQL server is not configured to support SSL connections 
 
 Choose the database driver that best suits your needs and configure Memos accordingly.
 
+## Docker Compose Example
+
+The `compose.yml` below demonstrates the usage of Memos with a PostgreSQL database.
+
+```yml
+version: "3.0"
+services:
+  memos:
+    image: neosmemo/memos:stable
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 5230:5230
+    environment:
+      - MEMOS_DRIVER=postgres
+      - MEMOS_DSN=user=memos password=secret dbname=memosdb host=db sslmode=disable
+
+  db:
+    image: postgres:16.1
+    restart: unless-stopped
+    volumes:
+      - "./database:/var/lib/postgresql/data/"
+    environment:
+      POSTGRES_USER: memos
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: memosdb
+```
+
 ## Migrating data between different drivers
 
 You can do this with some scripting language, for example I used ChatGPT to help me implement a SQLite to MySQL Python script: [SQLite to MySQL Migration](https://chat.openai.com/share/5a9b9e03-3666-4eb2-b9d9-31688729fcd3).
