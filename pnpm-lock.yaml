@@ -39,8 +39,8 @@ importers:
         specifier: ^1.11.11
         version: 1.11.11
       github-markdown-css:
-        specifier: ^5.6.0
-        version: 5.6.0
+        specifier: ^5.6.1
+        version: 5.6.1
       js-yaml:
         specifier: ^4.1.0
         version: 4.1.0
@@ -1514,8 +1514,8 @@ packages:
   get-tsconfig@4.7.5:
     resolution: {integrity: sha512-ZCuZCnlqNzjb4QprAzXKdpp/gh6KTxSJuw3IBsPnV/7fV4NxC9ckB+vPTt8w7fJA0TaSD7c55BR47JD6MEDyDw==}
 
-  github-markdown-css@5.6.0:
-    resolution: {integrity: sha512-bI+F5IeR/Ziqg06nmM2nUWBPbZKJRktDRhgAZXYTOHJYy0i4z43cvQAIySr4frpT7eoOuvzVdUbeaPOR2xCNFQ==}
+  github-markdown-css@5.6.1:
+    resolution: {integrity: sha512-DItLFgHd+s7HQmk63YN4/TdvLeRqk1QP7pPKTTPrDTYoI5x7f/luJWSOZxesmuxBI2srHp8RDyoZd+9WF+WK8Q==}
     engines: {node: '>=10'}
 
   glob-parent@5.1.2:
@@ -4154,7 +4154,7 @@ snapshots:
     dependencies:
       resolve-pkg-maps: 1.0.0
 
-  github-markdown-css@5.6.0: {}
+  github-markdown-css@5.6.1: {}
 
   glob-parent@5.1.2:
     dependencies:
