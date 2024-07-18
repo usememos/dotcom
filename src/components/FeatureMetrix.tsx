@@ -54,12 +54,12 @@ const SUB_FEATURES: FeatureItem[] = [
   },
   {
     icon: Icon.Users,
-    title: "220+",
+    title: "230+",
     description: "Contributors",
   },
   {
     icon: Icon.Download,
-    title: "2.2M+",
+    title: "2.5M+",
     description: "Docker Pulls",
   },
   {
