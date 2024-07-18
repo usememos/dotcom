@@ -53,7 +53,7 @@ The following is a sample docker-compose.yml that spins up Memos and Watchtower.
 ```yaml
 services:
   memos:
-    image: neosmemo/memos:0.22
+    image: neosmemo/memos:stable
     labels: { com.centurylinklabs.watchtower.enable: true }
     container_name: memos
     hostname: memos
