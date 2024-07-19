@@ -1,5 +1,5 @@
 import Markdoc, { type RenderableTreeNode } from "@markdoc/markdoc";
-import classNames from "classnames";
+import clsx from "clsx";
 import "github-markdown-css/github-markdown-light.css";
 import React from "react";
 import { components } from "@/markdoc/markdoc";
@@ -13,7 +13,7 @@ interface Props {
 const ContentRender = ({ markdocNode, className }: Props) => {
   return (
     <div
-      className={classNames(
+      className={clsx(
         "content w-full max-w-full prose prose-base sm:prose-lg lg:prose-xl prose-img:rounded-xl prose-a:text-teal-600 prose-code:break-all",
         className,
       )}

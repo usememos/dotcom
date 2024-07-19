@@ -1,6 +1,6 @@
 "use client";
 
-import classNames from "classnames";
+import clsx from "clsx";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { BsGithub } from "react-icons/bs";
@@ -19,7 +19,7 @@ const Header = () => {
 
   return (
     <header
-      className={classNames(
+      className={clsx(
         "sticky top-0 transition-all bg-white bg-opacity-80 backdrop-blur-lg z-10 w-full mx-auto flex flex-col justify-center items-center",
         pageScrolled && "border-b shadow",
         pageScrolled ? "pt-0" : "pt-2",

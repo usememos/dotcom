@@ -1,7 +1,7 @@
 "use client";
 
 import Markdoc, { Tag } from "@markdoc/markdoc";
-import classNames from "classnames";
+import clsx from "clsx";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import "@/styles/typography.css";
 
@@ -46,12 +46,12 @@ const TableOfContent = ({ headings }: Props) => {
           return (
             <li
               key={id}
-              className={classNames(
+              className={clsx(
                 "w-full border-l-2 pl-2 py-1 leading-tight line-clamp-2",
                 currentAnchor === id ? "border-teal-600" : "border-gray-200",
               )}
             >
-              <a href={`#${id}`} className={classNames("text-sm text-gray-600 hover:opacity-80")}>
+              <a href={`#${id}`} className={clsx("text-sm text-gray-600 hover:opacity-80")}>
                 {Markdoc.renderers.react(heading.children, React)}
               </a>
             </li>

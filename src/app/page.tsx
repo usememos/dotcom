@@ -1,6 +1,7 @@
 import DemoPlaceholder from "@/components/DemoPlaceholder";
 import FeatureMetrix from "@/components/FeatureMetrix";
 import LatestVersion from "@/components/LatestVersion";
+import SectionContainer from "@/components/SectionContainer";
 
 const Page = () => {
   return (
@@ -16,7 +17,9 @@ const Page = () => {
         <h3 className="w-full text-base sm:text-xl text-gray-600 text-center">Easily capture and share your great thoughts.</h3>
       </div>
       <DemoPlaceholder />
-      <FeatureMetrix />
+      <SectionContainer>
+        <FeatureMetrix />
+      </SectionContainer>
     </>
   );
 };

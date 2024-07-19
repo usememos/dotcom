@@ -1,4 +1,4 @@
-import classnames from "classnames";
+import clsx from "clsx";
 import type { ReactNode, JSX } from "react";
 import Icon from "./Icon";
 
@@ -25,7 +25,7 @@ const Heading = ({ id = "", level = 1, children, className }: Props) => {
     <Component id={id} className={["not-prose group", className].filter(Boolean).join(" ")}>
       {children}
       <a href={`#${id}`}>
-        <Icon.Hash className={classnames("w-4 h-4 ml-2 mb-1 inline opacity-0 group-hover:opacity-100 text-slate-400", textSize)} />
+        <Icon.Hash className={clsx("w-4 h-4 ml-2 mb-1 inline opacity-0 group-hover:opacity-100 text-slate-400", textSize)} />
       </a>
     </Component>
   );

@@ -3,6 +3,7 @@ import Link from "next/link";
 import DemoPlaceholder from "@/components/DemoPlaceholder";
 import FeatureMetrix, { MAIN_FEATURES, FeatureItem } from "@/components/FeatureMetrix";
 import LatestVersion from "@/components/LatestVersion";
+import SectionContainer from "@/components/SectionContainer";
 import { getMetadata } from "@/utils/metadata";
 
 interface Props {
@@ -13,7 +14,7 @@ const Page = ({ params }: Props) => {
   const feature = MAIN_FEATURES.find((feature) => feature.slug === params.slug) as FeatureItem;
 
   return (
-    <>
+    <SectionContainer>
       <div className="mt-6 sm:mt-12 w-full flex flex-col justify-start items-center">
         <LatestVersion />
       </div>
@@ -35,7 +36,7 @@ const Page = ({ params }: Props) => {
       </div>
       <DemoPlaceholder />
       <FeatureMetrix />
-    </>
+    </SectionContainer>
   );
 };
 

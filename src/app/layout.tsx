@@ -18,9 +18,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       <body>
         <div className="relative w-full min-h-[100svh] flex flex-col bg-white">
           <Header />
-          <main className="shrink-0 grow basis-auto mx-auto pt-6 pb-16 px-6 w-full max-w-7xl flex flex-col justify-start items-center">
-            {children}
-          </main>
+          <main className="shrink-0 grow basis-auto mx-auto pt-6 pb-16 w-full flex flex-col justify-start items-center">{children}</main>
           <Footer />
         </div>
         <SpeedInsights />

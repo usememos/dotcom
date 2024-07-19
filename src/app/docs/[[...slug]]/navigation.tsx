@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, DialogTitle, Drawer, ModalClose } from "@mui/joy";
-import classNames from "classnames";
+import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type React from "react";
@@ -139,7 +139,7 @@ const NavigationItem = ({ node, level }: { node: DocsNode; level: number }) => {
     <div className="w-full flex flex-col justify-start items-start">
       {node.link ? (
         <Link
-          className={classNames(
+          className={clsx(
             "hover:opacity-80",
             level === 0 ? "text-gray-600 font-medium" : "text-gray-500 sm:text-sm",
             node.link === pathname && "!text-teal-600 font-medium",
@@ -149,7 +149,7 @@ const NavigationItem = ({ node, level }: { node: DocsNode; level: number }) => {
           {node.text}
         </Link>
       ) : (
-        <div className={classNames("text-gray-600", level === 0 && "font-medium")}>{node.text}</div>
+        <div className={clsx("text-gray-600", level === 0 && "font-medium")}>{node.text}</div>
       )}
       {node.children && (
         <div className="w-full pt-2 flex flex-col justify-start items-start gap-2">
