@@ -142,7 +142,7 @@ const NavigationItem = ({ node, level }: { node: DocsNode; level: number }) => {
           className={classNames(
             "hover:opacity-80",
             level === 0 ? "text-gray-600 font-medium" : "text-gray-500 sm:text-sm",
-            node.link === pathname && "!text-blue-600 font-medium",
+            node.link === pathname && "!text-teal-600 font-medium",
           )}
           href={node.link}
         >

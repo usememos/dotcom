@@ -48,7 +48,7 @@ const TableOfContent = ({ headings }: Props) => {
               key={id}
               className={classNames(
                 "w-full border-l-2 pl-2 py-1 leading-tight line-clamp-2",
-                currentAnchor === id ? "border-blue-600" : "border-gray-200",
+                currentAnchor === id ? "border-teal-600" : "border-gray-200",
               )}
             >
               <a href={`#${id}`} className={classNames("text-sm text-gray-600 hover:opacity-80")}>

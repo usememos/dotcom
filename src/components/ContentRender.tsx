@@ -14,7 +14,7 @@ const ContentRender = ({ markdocNode, className }: Props) => {
   return (
     <div
       className={classNames(
-        "content w-full max-w-full prose prose-base sm:prose-lg lg:prose-xl prose-img:rounded-xl prose-a:text-blue-600 prose-code:break-all",
+        "content w-full max-w-full prose prose-base sm:prose-lg lg:prose-xl prose-img:rounded-xl prose-a:text-teal-600 prose-code:break-all",
         className,
       )}
     >

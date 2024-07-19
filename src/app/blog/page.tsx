@@ -36,7 +36,7 @@ const Page = () => {
                       <img src={frontmatter.feature_image} alt="" />
                     </Link>
                   )}
-                  <Link className="text-lg !leading-tight sm:text-xl line-clamp-2 hover:text-blue-600" href={`/blog/${frontmatter.slug}`}>
+                  <Link className="text-lg !leading-tight sm:text-xl line-clamp-2 hover:text-teal-600" href={`/blog/${frontmatter.slug}`}>
                     {frontmatter.title}
                   </Link>
                   {frontmatter.description && <p className="mt-2 text-gray-400 line-clamp-2">{frontmatter.description}</p>}

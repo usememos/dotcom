@@ -6,7 +6,7 @@ const DemoPlaceholder = () => {
     <div className="relative w-full min-h-[256px] mt-4 mb-2">
       <div className="p-2 flex flex-row justify-center items-center gap-2 sm:gap-4">
         <Link
-          className="bg-green-600 text-white w-32 py-2 rounded-md shadow-lg flex flex-row justify-center items-center hover:bg-green-700"
+          className="bg-teal-600 text-white w-32 py-2 rounded-md shadow-lg flex flex-row justify-center items-center hover:bg-teal-700"
           href="/docs"
         >
           Get Started

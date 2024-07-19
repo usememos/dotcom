@@ -24,7 +24,7 @@ const Admonition = ({ title, icon = "note", children }: AdmonitionProps) => {
 
   const borderColor = {
     "border-sky-500": icon === "note",
-    "border-green-500": icon === "tip",
+    "border-teal-500": icon === "tip",
     "border-blue-500": icon === "important",
     "border-amber-400": icon === "warning",
     "border-red-600": icon === "caution",
@@ -32,7 +32,7 @@ const Admonition = ({ title, icon = "note", children }: AdmonitionProps) => {
 
   const iconColor = {
     "text-sky-500": icon === "note",
-    "text-green-500": icon === "tip",
+    "text-teal-500": icon === "tip",
     "text-blue-500": icon === "important",
     "text-amber-400": icon === "warning",
     "text-red-600": icon === "caution",

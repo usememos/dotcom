@@ -83,7 +83,7 @@ const Page = () => {
             </a>
           </div>
         </div>
-        <a className="mt-2 text-blue-600 hover:underline hover:opacity-80" href="https://github.com/sponsors/usememos" target="_blank">
+        <a className="mt-2 text-teal-600 hover:underline hover:opacity-80" href="https://github.com/sponsors/usememos" target="_blank">
           <span className="">And more than 40+ sponsors in GitHub</span>
           <Icon.ExternalLink className="ml-1 inline w-4 h-auto" />
         </a>
