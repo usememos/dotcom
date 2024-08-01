@@ -19,7 +19,7 @@
     "axios": "^1.7.2",
     "clsx": "^2.1.1",
     "copy-to-clipboard": "^3.3.3",
-    "dayjs": "^1.11.11",
+    "dayjs": "^1.11.12",
     "github-markdown-css": "^5.6.1",
     "js-yaml": "^4.1.0",
     "lodash-es": "^4.17.21",
