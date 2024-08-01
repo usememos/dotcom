@@ -16,7 +16,7 @@
     "@mui/joy": "5.0.0-beta.47",
     "@radix-ui/react-dropdown-menu": "^2.1.1",
     "@vercel/speed-insights": "^1.0.11",
-    "axios": "^1.7.2",
+    "axios": "^1.7.3",
     "clsx": "^2.1.1",
     "copy-to-clipboard": "^3.3.3",
     "dayjs": "^1.11.11",
