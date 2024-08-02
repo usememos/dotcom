@@ -57,8 +57,8 @@ importers:
         specifier: ^4.2.3
         version: 4.2.3(next@14.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       posthog-js:
-        specifier: ^1.147.0
-        version: 1.147.0
+        specifier: ^1.154.1
+        version: 1.154.1
       prismjs:
         specifier: ^1.29.0
         version: 1.29.0
@@ -2115,8 +2115,8 @@ packages:
     resolution: {integrity: sha512-0vzE+lAiG7hZl1/9I8yzKLx3aR9Xbof3fBHKunvMfOCYAtMhrsnccJY2iTURb9EZd5+pLuiNV9/c/GZJOHsgIw==}
     engines: {node: ^10 || ^12 || >=14}
 
-  posthog-js@1.147.0:
-    resolution: {integrity: sha512-cALKIcix1W9xMsfUUI/QUFhtBeabDGsQCb3lpZEFd7WCPNLOcGmpeomm4xMX7MO2OnfK6Ov91/HNyfK1wncjSA==}
+  posthog-js@1.154.1:
+    resolution: {integrity: sha512-usjAGEQjU5DQWo4H+LLxYdptfCaz8uMJohT1lR9K1T8vTkPO+6EwMQ88RyU8qGoSya1XMNUemJ2888OlOtmjQg==}
 
   preact@10.22.0:
     resolution: {integrity: sha512-RRurnSjJPj4rp5K6XoP45Ui33ncb7e4H7WiOHVpjbkvqvA3U+N8Z6Qbo0AE6leGYBV66n8EhEaFixvIu3SkxFw==}
@@ -4747,7 +4747,7 @@ snapshots:
       picocolors: 1.0.1
       source-map-js: 1.2.0
 
-  posthog-js@1.147.0:
+  posthog-js@1.154.1:
     dependencies:
       fflate: 0.4.8
       preact: 10.22.0
