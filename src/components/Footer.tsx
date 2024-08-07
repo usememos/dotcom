@@ -5,8 +5,8 @@ import Icon from "./Icon";
 
 const Footer = () => {
   return (
-    <footer className="border-t w-full mx-auto flex flex-row justify-center items-center bg-zinc-100 px-6 sm:px-0">
-      <div className="max-w-7xl w-full mx-auto py-12 pb-16 sm:px-10 grid grid-cols-1 sm:grid-cols-4 gap-4 md:gap-6">
+    <footer className="w-full mx-auto flex flex-row justify-center items-center py-8 px-6 sm:px-8">
+      <div className="max-w-7xl w-full shadow mx-auto bg-zinc-50 rounded-3xl py-8 sm:py-12 sm:pb-16 px-6 sm:px-10 grid grid-cols-1 sm:grid-cols-4 gap-4 md:gap-6">
         <div className="w-full flex flex-col justify-start items-start">
           <div className="flex flex-row justify-start items-center">
             <img src="/full-logo-landscape.png" className="h-10 md:h-12 w-auto" alt="" />
