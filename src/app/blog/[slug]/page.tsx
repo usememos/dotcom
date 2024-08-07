@@ -55,7 +55,7 @@ const Page = ({ params }: Props) => {
         </div>
         <div className="w-full flex flex-row justify-start items-start sm:px-6 md:gap-8 sm:mt-8">
           <div className="w-full md:max-w-[calc(100%-16rem)]">
-            <ContentRender markdocNode={transformedContent} />
+            <ContentRender className="markdown-body" markdocNode={transformedContent} />
             <Divider className="!my-12" />
             <Subscription />
           </div>
