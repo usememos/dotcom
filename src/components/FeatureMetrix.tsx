@@ -59,7 +59,7 @@ const SUB_FEATURES: FeatureItem[] = [
   },
   {
     icon: Icon.Download,
-    title: "2.8M+",
+    title: "3.2M+",
     description: "Docker Pulls",
   },
   {
