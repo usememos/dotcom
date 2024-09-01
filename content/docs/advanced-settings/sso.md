@@ -10,4 +10,7 @@ Memos supports SSO integration with OAuth 2.0 standard.
 
 As an admin, you can create a new SSO provider in Settings > SSO.
 
-Learn more details with [Configuring Authentik for Authentication](/docs/advanced-settings/authentik) and [Configuring Keycloak for Authentication](/docs/advanced-settings/keycloak).
+Learn more details with
+- [Configuring Authentik for Authentication](/docs/advanced-settings/authentik)
+- [Configuring Keycloak for Authentication](/docs/advanced-settings/keycloak)
+- [Configuring Authelia for Authentication](/docs/advanced-settings/authelia)
