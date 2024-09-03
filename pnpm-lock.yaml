@@ -18,8 +18,8 @@ importers:
         specifier: ^0.4.0
         version: 0.4.0(@types/react@18.3.4)(react@18.3.1)
       '@mui/joy':
-        specifier: 5.0.0-beta.47
-        version: 5.0.0-beta.47(@emotion/react@11.13.3(@types/react@18.3.4)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.4)(react@18.3.1))(@types/react@18.3.4)(react@18.3.1))(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 5.0.0-beta.48
+        version: 5.0.0-beta.48(@emotion/react@11.13.3(@types/react@18.3.4)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.4)(react@18.3.1))(@types/react@18.3.4)(react@18.3.1))(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-dropdown-menu':
         specifier: ^2.1.1
         version: 2.1.1(@types/react-dom@18.3.0)(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -363,8 +363,8 @@ packages:
   '@mui/core-downloads-tracker@5.16.7':
     resolution: {integrity: sha512-RtsCt4Geed2/v74sbihWzzRs+HsIQCfclHeORh5Ynu2fS4icIKozcSubwuG7vtzq2uW3fOR1zITSP84TNt2GoQ==}
 
-  '@mui/joy@5.0.0-beta.47':
-    resolution: {integrity: sha512-iWTuabnVg8XA5oBB5d6inNbCfYBhE0oq0d0+DMs2ndI4Nq459LheJ74P7mTkohg4sFIhTbvr3uXuKk8U9Rw+zg==}
+  '@mui/joy@5.0.0-beta.48':
+    resolution: {integrity: sha512-OhTvjuGl9I5IvpBr0BQyDehIW/xb2yteW6YglHJMdOb/279nItn76X1NBtPV9ImldNlBjReGwvpOXmBTTGER9w==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       '@emotion/react': ^11.5.0
@@ -2906,7 +2906,7 @@ snapshots:
 
   '@mui/core-downloads-tracker@5.16.7': {}
 
-  '@mui/joy@5.0.0-beta.47(@emotion/react@11.13.3(@types/react@18.3.4)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.4)(react@18.3.1))(@types/react@18.3.4)(react@18.3.1))(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@mui/joy@5.0.0-beta.48(@emotion/react@11.13.3(@types/react@18.3.4)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.4)(react@18.3.1))(@types/react@18.3.4)(react@18.3.1))(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.25.4
       '@mui/base': 5.0.0-beta.40(@types/react@18.3.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
