@@ -12,6 +12,11 @@ const SPONSORS = [
 
 const GITHUB_USER_SPONSORS = [
   {
+    title: "Burning_Wipf",
+    logo: "https://avatars.githubusercontent.com/u/24418303?v=4",
+    url: "https://github.com/KUKARAF",
+  },
+  {
     title: "redmetablue",
     logo: "https://avatars.githubusercontent.com/u/121377500?v=4",
     url: "https://github.com/redmetablue",
@@ -85,7 +90,7 @@ const Page = () => {
               </a>
             </div>
           </div>
-          <a className="mt-2 text-teal-600 hover:underline hover:opacity-80" href="https://github.com/sponsors/usememos" target="_blank">
+          <a className="mt-4 text-teal-600 hover:underline hover:opacity-80" href="https://github.com/sponsors/usememos" target="_blank">
             <span className="">And more than 40+ sponsors in GitHub</span>
             <Icon.ExternalLink className="ml-1 inline w-4 h-auto" />
           </a>
