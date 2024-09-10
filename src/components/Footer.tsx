@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BsGithub, BsDiscord, BsTelegram } from "react-icons/bs";
+import { BsGithub, BsDiscord } from "react-icons/bs";
 import { RiTwitterXLine } from "react-icons/ri";
 import Icon from "./Icon";
 
@@ -9,20 +9,17 @@ const Footer = () => {
       <div className="max-w-7xl w-full shadow mx-auto bg-zinc-50 rounded-3xl py-8 sm:py-12 sm:pb-16 px-6 sm:px-10 grid grid-cols-1 sm:grid-cols-4 gap-4 md:gap-6">
         <div className="w-full flex flex-col justify-start items-start">
           <div className="flex flex-row justify-start items-center">
-            <img src="/full-logo-landscape.png" className="h-10 md:h-12 w-auto" alt="" />
+            <img src="/full-logo-landscape.png" className="h-12 md:h-14 w-auto" alt="" />
           </div>
-          <div className="mt-4 ml-2 w-full flex flex-row justify-start items-center gap-2">
+          <div className="mt-4 ml-2 w-full flex flex-row justify-start items-center gap-3">
             <Link className="text-gray-400 hover:text-teal-600" href="https://x.com/usememos" target="_blank">
-              <RiTwitterXLine className="w-6 h-auto" />
+              <RiTwitterXLine className="w-7 h-auto" />
             </Link>
             <Link className="text-gray-400 hover:text-teal-600" href="https://github.com/usememos" target="_blank">
-              <BsGithub className="w-6 h-auto" />
+              <BsGithub className="w-7 h-auto" />
             </Link>
             <Link className="text-gray-400 hover:text-teal-600" href="https://discord.gg/tfPJa4UmAv" target="_blank">
-              <BsDiscord className="w-6 h-auto" />
-            </Link>
-            <Link className="text-gray-400 hover:text-teal-600" href="https://t.me/+-_tNF1k70UU4ZTc9" target="_blank">
-              <BsTelegram className="w-6 h-auto" />
+              <BsDiscord className="w-7 h-auto" />
             </Link>
           </div>
         </div>
