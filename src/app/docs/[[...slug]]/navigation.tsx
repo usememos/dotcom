@@ -32,8 +32,8 @@ const DOCS_NODES: DocsNode[] = [
         link: "/docs/install/database",
       },
       {
-        text: "Startup Options",
-        link: "/docs/install/startup-options",
+        text: "Runtime Options",
+        link: "/docs/install/runtime-options",
       },
       {
         text: "Upgrade",

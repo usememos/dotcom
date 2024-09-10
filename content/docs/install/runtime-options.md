@@ -1,8 +1,8 @@
 ---
-title: Startup Options
+title: Runtime Options
 ---
 
-The following options can be set at startup to adjust some of the server's behavior. Options can be passed either as command line arguments to the **memos** binary or as environment variables.
+The following options can be set at runtime to configure the Memos server. These options can be set as environment variables or passed as command-line arguments when starting the server. Command-line arguments take precedence over environment variables. The options are listed below:
 
 | Environment  | CLI Flag | Default        | Description                                                                                                                                                                                                                       |
 | ------------ | -------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
