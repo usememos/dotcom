@@ -35,7 +35,7 @@ _Custom JavaScript allows you to add interactive features and automation to your
 - Ensure your JavaScript code is well-structured and free from errors.
 - For example, you can create a simple alert when the page loads:
   ```javascript
-  alert("Welcome to my custom Memos page!");  
+  alert("Welcome to my custom Memos page!");
   ```
 - Once you've added your JavaScript, click "Save" to make the changes active.
 

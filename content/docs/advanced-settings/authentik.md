@@ -12,7 +12,7 @@ Authentik is a self-hosted identity provider which supports the OpenID Connect (
 2. Create a new OAuth2/OpenID Provider
 3. Set "Name" as `Provider for Memos`
 4. Set your Authorization flow, default `default-provider-authorization-explicit-consent (Authorize Application)` works
-5. Set "Redirect URIs/Origins (RegEx)" to  `https://<YOUR-MEMOS-DOMAIN>/auth/callback`
+5. Set "Redirect URIs/Origins (RegEx)" to `https://<YOUR-MEMOS-DOMAIN>/auth/callback`
 6. Click "Finish" at the bottom of the page
 
 ### Setup Authentik Application
@@ -27,7 +27,6 @@ Authentik is a self-hosted identity provider which supports the OpenID Connect (
 8. Under "Icon" upload the logo-rounded.png you downloaded
 9. Click "Create" at the bottom of the page
 
-
 ## Step 2: Obtaining the necessary endpoints for Memos
 
 With the Authentik configuration ready, all we need now is to copy all the credentials and authentication endpoints.
@@ -35,7 +34,6 @@ With the Authentik configuration ready, all we need now is to copy all the crede
 1. Back in Authentik, under Applications > Providers, Select the `Provider for Memos` you created earlier
 2. Copy down the URLs under `Authorize URL`, `Token URL`, and `Userinfo URL`
 3. Click "Edit" and copy down the `Client ID` and `Client Secret`
-
 
 ## Step 3: Configuring Memos
 

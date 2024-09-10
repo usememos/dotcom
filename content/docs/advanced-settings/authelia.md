@@ -5,27 +5,39 @@ title: Configuring Authelia for Authentication
 Authelia is a self-hosted identity provider which supports the OpenID Connect (OIDC) protocol. As such, we may use it for single sign-on authentication in Memos. This guide assumes you already have an Authelia instance set up and running.
 
 ## Step 1: Create client_id and secret
+
 ### Create a random client_id to use for Memos
+
 ```shell
 $ authelia crypto rand --length 72 --charset rfc3986
 ```
+
 Output
+
 ```
 Random Value: KBWBhDTF~JWtNvJzFtE5taA~Pwas1NT8QPIa_PyCPp4aK3eQFoXkjkc1xPwRXnISRTFLyzWu
 ```
+
 ### Create a random secret to use for Memos
+
 ```shell
 authelia crypto hash generate pbkdf2 --variant sha512 --random --random.length 72 --random.charset rfc3986
 ```
+
 Output:
+
 ```
 Random Password: 4n0DT~2f8HxSWXMWG7v7w04vT9bg3~GlppjgAeaN0B.N7s.f40abK1UQeRLgSY0fGYNOXr-t
 Digest: $pbkdf2-sha512$310000$TUUA9RwCwfJ80DU6eQ5Vnw$szmkmnTcRtuOArWirCHCvA7lnWcRaPxWuNu7qEyjond2k3fQINfkjxbJ0vG6nUaUoqW5FoykkuBgNiDnGSY15Q
 ```
+
 Use the `Random Password` in your Memos SSO configuration.  
 Use the `Digest` in your Authelia client configuration.
+
 ## Step 2: Create a client config for Memos in `authelia.yml`
+
 ⚠️ Do not use the example values from above - create your own identifiers and passwords!
+
 ```
     clients:
       - client_name: 'Memos'
@@ -42,6 +54,7 @@ Use the `Digest` in your Authelia client configuration.
           - 'email'
         token_endpoint_auth_method: 'client_secret_post'
 ```
+
 Restart your Authelia service if necessary.
 
 ## Step 3: Configuring Memos

@@ -82,7 +82,7 @@ const DOCS_NODES: DocsNode[] = [
         link: "/docs/advanced-settings/local-storage",
       },
       {
-        text: "Single Sign-On",
+        text: "Single Sign-On(SSO)",
         link: "/docs/advanced-settings/sso",
       },
       {
