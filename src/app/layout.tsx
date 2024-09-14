@@ -14,7 +14,6 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
         <link rel="icon" href="/logo-rounded.png" type="image/png" />
-        <meta name="google-adsense-account" content="ca-pub-4774626535817335" />
       </head>
       <body>
         <div className="relative w-full min-h-[100svh] flex flex-col bg-white">
