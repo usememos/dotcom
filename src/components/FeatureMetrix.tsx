@@ -56,7 +56,7 @@ const SUB_FEATURES: FeatureItem[] = [
     description: "Contributors",
   },
   {
-    icon: "🧑‍💻",
+    icon: "📈",
     title: "3.5M+",
     description: "Docker Pulls",
   },
