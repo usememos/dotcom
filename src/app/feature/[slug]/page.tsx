@@ -17,8 +17,8 @@ const Page = ({ params }: Props) => {
       <div className="mt-6 sm:mt-12 w-full flex flex-col justify-start items-center">
         <LatestVersion />
       </div>
-      <div className="w-full flex flex-col justify-center items-center sm:px-16">
-        <feature.icon strokeWidth="1" className="h-20 mt-4 mb-2 sm:h-24 w-auto text-gray-500" />
+      <div className="w-full flex flex-col justify-center items-center sm:px-16 pt-6">
+        <span className="text-6xl">{feature.icon}</span>
         <h1 className="w-full text-center text-3xl sm:text-6xl font-bold mt-4 mb-4">{feature.title}</h1>
         <h2 className="w-full text-lg sm:text-xl text-gray-500 text-center mb-2">{feature.description}</h2>
       </div>
