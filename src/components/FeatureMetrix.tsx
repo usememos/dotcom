@@ -74,8 +74,10 @@ const FeatureMetrix = () => {
       <div className="w-full my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12 sm:px-12">
         {MAIN_FEATURES.map((featureItem) => (
           <div key={featureItem.title} className="w-full flex flex-col justify-start items-start rounded-2xl">
-            <span className="text-4xl sm:text-5xl">{featureItem.icon}</span>
-            <span className="relative text-base sm:text-xl mt-4">{featureItem.title}</span>
+            <div className="flex flex-row items-center gap-2 sm:gap-4 sm:flex-col sm:items-start">
+              <span className="text-3xl sm:text-5xl">{featureItem.icon}</span>
+              <span className="text-base sm:text-xl">{featureItem.title}</span>
+            </div>
             <p className="mt-1 text-sm sm:text-base text-gray-500">{featureItem.description}</p>
           </div>
         ))}
@@ -84,10 +86,10 @@ const FeatureMetrix = () => {
         <div className="w-full bg-teal-50 border-2 border-teal-600 shadow rounded-xl p-4 sm:p-6 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           {SUB_FEATURES.map((featureItem) => (
             <div key={featureItem.title} className="w-full flex flex-row justify-start items-center gap-4">
-              <span className="text-3xl sm:text-4xl">{featureItem.icon}</span>
+              <span className="text-3xl sm:text-5xl">{featureItem.icon}</span>
               <div className="flex flex-col justify-center items-start whitespace-nowrap">
-                <p className="text-sm text-gray-500">{featureItem.description}</p>
-                <p className="relative text-base font-medium font-mono sm:text-lg">{featureItem.title}</p>
+                <p className="text-sm sm:text-base text-gray-500">{featureItem.description}</p>
+                <p className="relative text-lg font-medium font-mono sm:text-xl">{featureItem.title}</p>
               </div>
             </div>
           ))}
