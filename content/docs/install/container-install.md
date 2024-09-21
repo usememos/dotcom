@@ -24,7 +24,7 @@ docker run -d \
 This command will launch Memos in the background, exposing it on port **5230**. Data will be stored in **~/.memos/**, a hidden directory inside your user's home.
 
 {% admonition icon="note" %}
-Memos supports advanced [runtime options](/docs/install/runtime-options) to customize the server behavior.
+Memos supports advanced [runtime options](runtime-options.md) to customize the server behavior.
 {% /admonition %}
 
 ## Docker Compose
