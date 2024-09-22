@@ -12,7 +12,9 @@ const Footer = () => {
             <img src="/full-logo-landscape.png" className="h-12 md:h-14 w-auto" alt="" />
           </div>
           <div className="mt-2">
-            <img src="https://trendshift.io/api/badge/repositories/1854" className="h-12" alt="Trendshift" />
+            <Link href="https://trendshift.io/repositories/1854" target="_blank">
+              <img src="https://trendshift.io/api/badge/repositories/1854" className="h-12" alt="Trendshift" />
+            </Link>
           </div>
           <div className="mt-4 ml-2 w-full flex flex-row justify-start items-center gap-3">
             <Link className="text-gray-400 hover:text-teal-600" href="https://x.com/usememos" target="_blank">
