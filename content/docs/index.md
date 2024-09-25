@@ -2,7 +2,7 @@
 title: What is Memos
 ---
 
-**Memos** is a privacy-first, lightweight note-taking application that allows you to effortlessly capture and share your ideas.
+**Memos** is a privacy-first, lightweight note-taking solution that allows you to effortlessly capture and share your ideas.
 
 ![demo](/demo.png)
 

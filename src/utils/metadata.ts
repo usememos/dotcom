@@ -11,7 +11,7 @@ export const getMetadata = (metadata: Partial<LocalMetadata>): Metadata => {
   const title = metadata.title || "Memos - Open Source, Self-hosted, Your Notes, Your Way";
   const description =
     metadata.description ||
-    "A privacy-first, lightweight note-taking application that allows you to effortlessly capture and share your ideas.";
+    "A privacy-first, lightweight note-taking solution that allows you to effortlessly capture and share your ideas.";
   const url = metadata.pathname || "";
   const imagePath = metadata.imagePath || "/logo-rounded.png";
   const hasFeatureImage = !!metadata.imagePath;
