@@ -10,37 +10,37 @@ export const MAIN_FEATURES: FeatureItem[] = [
     icon: "🏠",
     slug: "privacy-first",
     title: "Privacy First",
-    description: "Keep your own data by yourself. All data generated at runtime is saved in the SQLite database file.",
+    description: "Take control of your data. All runtime data is securely stored in your local database.",
   },
   {
     icon: "✍️",
     slug: "plain-text",
-    title: "Plain text with Markdown",
-    description: "All content will be saved as plain text, not HTML. And lots of useful markdown syntax are supported.",
+    title: "Create at Speed",
+    description: "Save content as plain text for quick access, with Markdown support for fast formatting and easy sharing.",
   },
   {
     icon: "🤲",
     slug: "lightweight",
     title: "Lightweight but Powerful",
-    description: "Using Go + React.js + SQLite architecture, the overall package is very lightweight.",
+    description: "Built with Go, React.js, and a compact architecture, our service delivers powerful performance in a lightweight package.",
   },
   {
     icon: "🧩",
     slug: "customizable",
     title: "Customizable",
-    description: "You can customize the server name, icon, description, custom system style and execution script, etc.",
+    description: "Easily customize your server name, icon, description, system style, and execution scripts to make it uniquely yours.",
   },
   {
     icon: "🦦",
     slug: "open-source",
-    title: "Open Source Completely",
-    description: "Memos believes that open source is the future, and all code is already open source in GitHub.",
+    title: "Open Source",
+    description: "Memos embraces the future of open source, with all code available on GitHub for transparency and collaboration.",
   },
   {
     icon: "💸",
     slug: "free-to-use",
     title: "Free to Use",
-    description: "All features are free to use and will never be charged in any form or content.",
+    description: "Enjoy all features completely free, with no charges ever for any content",
   },
 ];
 
@@ -70,8 +70,10 @@ const SUB_FEATURES: FeatureItem[] = [
 const FeatureMetrix = () => {
   return (
     <>
-      <p className="w-full text-center mt-8 mb-4 sm:px-6 text-xl sm:text-2xl font-normal text-gray-400">Why Memos?</p>
-      <div className="w-full my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12 sm:px-12">
+      <p className="w-full text-start mt-8 mb-4 sm:px-12 text-3xl sm:text-5xl font-serif font-medium text-gray-500">
+        The pain-less way to create meaningful notes.
+      </p>
+      <div className="w-full mb-8 mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12 sm:px-12">
         {MAIN_FEATURES.map((featureItem) => (
           <div key={featureItem.title} className="w-full flex flex-col justify-start items-start rounded-2xl">
             <div className="flex flex-row items-center gap-2 sm:gap-4 sm:flex-col sm:items-start">
