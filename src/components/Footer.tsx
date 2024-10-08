@@ -79,12 +79,6 @@ const Footer = () => {
             Source code
             <Icon.ExternalLink className="w-4 h-auto ml-1" />
           </Link>
-          <Link href="https://github.com/orgs/usememos/projects/5/views/1" target="_blank">
-            <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-teal-600">
-              Roadmap
-              <Icon.ExternalLink className="w-4 h-auto ml-1" />
-            </span>
-          </Link>
         </div>
         <div className="w-full flex flex-col justify-start items-start space-y-2">
           <p className="my-2 text-gray-400 font-medium font-mono">Others</p>
