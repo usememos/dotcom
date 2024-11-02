@@ -1,13 +1,13 @@
 import { Tag } from "@markdoc/markdoc";
 import { Button, Divider } from "@mui/joy";
 import { Metadata } from "next";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import React from "react";
 import ContentRender from "@/components/ContentRender";
 import Icon from "@/components/Icon";
 import SectionContainer from "@/components/SectionContainer";
+import Subscription from "@/components/Subscription";
 import TableOfContent from "@/components/TableOfContent";
 import { GITHUB_REPO_LINK } from "@/consts/common";
 import { getContentFilePaths, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
@@ -15,15 +15,12 @@ import { markdoc } from "@/markdoc/markdoc";
 import { getMetadata } from "@/utils/metadata";
 import Navigation, { NavigationMobileMenu } from "./navigation";
 
-const Subscription = dynamic(() => import("@/components/Subscription"), {
-  ssr: false,
-});
-
 interface Props {
-  params: { slug: string[] };
+  params: Promise<{ slug: string[] }>;
 }
 
-const Page = ({ params }: Props) => {
+const Page = async (props: Props) => {
+  const params = await props.params;
   const filePath = getFilePathFromSlugs("docs", params.slug);
   const content = readFileContenxt(filePath);
   if (!content) {
@@ -81,7 +78,8 @@ const Page = ({ params }: Props) => {
   );
 };
 
-export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+export const generateMetadata = async (props: Props): Promise<Metadata> => {
+  const params = await props.params;
   const filePath = getFilePathFromSlugs("docs", params.slug);
   const content = readFileContenxt(filePath);
   if (!content) {

@@ -1,18 +1,14 @@
 import dayjs from "dayjs";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import React from "react";
 import Icon from "@/components/Icon";
 import SectionContainer from "@/components/SectionContainer";
+import Subscription from "@/components/Subscription";
 import authorList, { Author } from "@/consts/author";
 import { getContentFilePaths, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
 import { getMetadata } from "@/utils/metadata";
-
-const Subscription = dynamic(() => import("@/components/Subscription"), {
-  ssr: false,
-});
 
 const Page = () => {
   const frontmatters = getBlogFrontmatters();

@@ -6,10 +6,11 @@ import SectionContainer from "@/components/SectionContainer";
 import { getMetadata } from "@/utils/metadata";
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-const Page = ({ params }: Props) => {
+const Page = async (props: Props) => {
+  const params = await props.params;
   const feature = MAIN_FEATURES.find((feature) => feature.slug === params.slug) as FeatureItem;
 
   return (
@@ -28,7 +29,8 @@ const Page = ({ params }: Props) => {
   );
 };
 
-export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+export const generateMetadata = async (props: Props): Promise<Metadata> => {
+  const params = await props.params;
   const feature = MAIN_FEATURES.find((feature) => feature.slug === params.slug) as FeatureItem;
   return getMetadata({
     title: feature.title + " - Memos",

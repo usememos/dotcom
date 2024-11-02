@@ -1,28 +1,25 @@
 import { Tag } from "@markdoc/markdoc";
 import { Divider } from "@mui/joy";
 import { Metadata } from "next";
-import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import React from "react";
 import AuthorView from "@/components/AuthorView";
 import ContentRender from "@/components/ContentRender";
 import Icon from "@/components/Icon";
 import SectionContainer from "@/components/SectionContainer";
+import Subscription from "@/components/Subscription";
 import TableOfContent from "@/components/TableOfContent";
 import authorList, { Author } from "@/consts/author";
 import { getBlogSlugList, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
 import { getMetadata } from "@/utils/metadata";
 
-const Subscription = dynamic(() => import("@/components/Subscription"), {
-  ssr: false,
-});
-
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-const Page = ({ params }: Props) => {
+const Page = async (props: Props) => {
+  const params = await props.params;
   const filePath = getFilePathFromSlugs("blog", params.slug.split("/"));
   const content = readFileContenxt(filePath);
   if (!content) {
@@ -72,7 +69,8 @@ const Page = ({ params }: Props) => {
   );
 };
 
-export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+export const generateMetadata = async (props: Props): Promise<Metadata> => {
+  const params = await props.params;
   const filePath = getFilePathFromSlugs("blog", params.slug.split("/"));
   const content = readFileContenxt(filePath);
   if (!content) {
