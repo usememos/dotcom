@@ -94,21 +94,21 @@ const z = 3;
 
 #### Rendering custom html
 
-In rare cases, you might want to render custom HTML in your memos. To do this, use `__html` as language for block.
+In rare cases, you might want to render custom HTML. To do this, use `__html` as language for block.
 
-Example shows how to render horizontal divider in your memos.
+Example shows how to render horizontal divider.
 
 ````markdown
 ```__html
-</hr>
+<hr />
 ```
 ````
 
-### Rendering mermaid diagrams
+### Mermaid diagrams
 
 Memos supports rendering mermaid diagrams. To do this, use `mermaid` as language for block.
 
-Example shows how to render a flowchart in your memos.
+Example shows how to render a flowchart.
 
 ````markdown
 ```mermaid
