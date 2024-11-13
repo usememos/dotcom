@@ -88,15 +88,21 @@ const Footer = () => {
               <Icon.ExternalLink className="w-4 h-auto ml-1" />
             </span>
           </Link>
-          <Link href="https://github.com/yourselfhosted/slash" target="_blank">
+          <Link href="https://github.com/usememos/mui" target="_blank">
             <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-teal-600">
-              Slash
+              MUI
               <Icon.ExternalLink className="w-4 h-auto ml-1" />
             </span>
           </Link>
           <Link href="https://github.com/usememos/gomark" target="_blank">
             <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-teal-600">
               gomark
+              <Icon.ExternalLink className="w-4 h-auto ml-1" />
+            </span>
+          </Link>
+          <Link href="https://github.com/yourselfhosted/slash" target="_blank">
+            <span className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-teal-600">
+              Slash
               <Icon.ExternalLink className="w-4 h-auto ml-1" />
             </span>
           </Link>
