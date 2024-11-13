@@ -15,6 +15,7 @@ const ContentRender = ({ markdocNode, className }: Props) => {
     <div
       className={clsx(
         "content w-full max-w-full prose prose-base sm:prose-lg lg:prose-xl prose-img:rounded-xl prose-a:text-teal-600 prose-code:break-all",
+        "markdown-body",
         className,
       )}
     >

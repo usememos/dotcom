@@ -70,7 +70,7 @@ const SUB_FEATURES: FeatureItem[] = [
 const FeatureMetrix = () => {
   return (
     <>
-      <p className="w-full text-start mt-8 mb-4 sm:px-12 text-3xl sm:text-5xl font-serif font-medium text-gray-500">
+      <p className="w-full text-start mt-20 mb-4 sm:px-12 text-3xl sm:text-5xl font-serif font-medium text-gray-500">
         The pain-less way to create meaningful notes.
       </p>
       <div className="w-full mb-8 mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12 sm:px-12">

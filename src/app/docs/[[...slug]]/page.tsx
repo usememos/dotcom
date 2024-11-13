@@ -55,7 +55,7 @@ const Page = async (props: Props) => {
             <NavigationMobileMenu />
           </div>
           <h1 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold my-6">{frontmatter.title}</h1>
-          <ContentRender className="markdown-body" markdocNode={transformedContent} />
+          <ContentRender markdocNode={transformedContent} />
           <div className="mt-12">
             <Button size="sm" variant="outlined" color="neutral" startDecorator={<Icon.Edit className="w-4 h-auto" />}>
               <Link href={remoteFilePath} target="_blank">

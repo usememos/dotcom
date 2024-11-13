@@ -1,7 +1,6 @@
 "use client";
 
 import copy from "copy-to-clipboard";
-import "github-markdown-css/github-markdown-light.css";
 import prism from "prismjs";
 import "prismjs/components/prism-bash";
 import "prismjs/components/prism-markdown";

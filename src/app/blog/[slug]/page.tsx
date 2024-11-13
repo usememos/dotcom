@@ -52,7 +52,7 @@ const Page = async (props: Props) => {
         </div>
         <div className="w-full flex flex-row justify-start items-start sm:px-6 md:gap-8 mt-4 sm:mt-8">
           <div className="w-full md:max-w-[calc(100%-16rem)]">
-            <ContentRender className="markdown-body" markdocNode={transformedContent} />
+            <ContentRender markdocNode={transformedContent} />
             <Divider className="!my-12" />
             <Subscription />
           </div>
