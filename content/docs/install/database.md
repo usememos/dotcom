@@ -10,6 +10,8 @@ Memos supports the following database types:
 
 ## Using MySQL
 
+> MySQL version 8.0 or higher is recommended. Default charset and collation are `utf8mb4` and `utf8mb4_unicode_ci` respectively.
+
 By default, Memos continues to use SQLite as the default database driver. To switch to MySQL, you can use the following steps:
 
 - **--driver** _mysql_ : This argument specifies that Memos should use the `mysql` driver instead of the default `sqlite`.
