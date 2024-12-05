@@ -17,9 +17,9 @@ const GITHUB_USER_SPONSORS = [
     url: "https://github.com/KUKARAF",
   },
   {
-    title: "redmetablue",
+    title: "jeancoded",
     logo: "https://avatars.githubusercontent.com/u/121377500?v=4",
-    url: "https://github.com/redmetablue",
+    url: "https://github.com/jeancoded",
   },
   {
     title: "weikib",
