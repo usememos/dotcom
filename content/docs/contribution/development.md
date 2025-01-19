@@ -6,14 +6,12 @@ Memos is built with a curated tech stack. It is optimized for developer experien
 
 - It has no external dependency.
 - It requires zero config.
-- 1 command to start backend and 1 command to start frontend, both with live reload support.
 
 ## Prerequisite
 
-- [Node.js](https://nodejs.org), requires version >=18.0
-- [pnpm](https://pnpm.io), requires version >=8.0
-- [Go](https://go.dev/), requires Go >= 1.19
-- [Air](https://github.com/cosmtrek/air) for backend live reload
+- [Go](https://go.dev/)
+- [Node.js](https://nodejs.org)
+- [pnpm](https://pnpm.io)
 
 ## Steps
 
@@ -23,11 +21,13 @@ Memos is built with a curated tech stack. It is optimized for developer experien
    git clone https://github.com/usememos/memos
    ```
 
-2. Start backend using air
+2. Build and run backend server
 
    ```bash
-   air -c scripts/.air.toml
+   sh scripts/build.sh
    ```
+
+   Then you can run the server following building outputs.
 
 3. Start frontend dev server
 
