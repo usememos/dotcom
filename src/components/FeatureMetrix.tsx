@@ -85,7 +85,7 @@ const FeatureMetrix = () => {
         ))}
       </div>
       <div className="w-full mt-12 sm:px-12">
-        <div className="w-full bg-teal-50 border-2 border-teal-600 shadow rounded-xl p-4 sm:p-6 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+        <div className="w-full bg-teal-50 border-2 border-teal-600 shadow-sm rounded-xl p-4 sm:p-6 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           {SUB_FEATURES.map((featureItem) => (
             <div key={featureItem.title} className="w-full flex flex-row justify-start items-center gap-4">
               <span className="text-3xl sm:text-5xl">{featureItem.icon}</span>

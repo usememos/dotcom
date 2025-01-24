@@ -21,7 +21,7 @@ const Header = () => {
     <header
       className={clsx(
         "sticky top-0 transition-all bg-white bg-opacity-80 backdrop-blur-lg z-10 w-full mx-auto flex flex-col justify-center items-center",
-        pageScrolled && "border-b shadow",
+        pageScrolled && "shadow-sm",
         pageScrolled ? "pt-0" : "pt-2",
       )}
     >
@@ -68,7 +68,7 @@ const HeaderMobileMenu = () => {
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger className="outline-none" asChild>
+      <DropdownMenuTrigger className="outline-hidden" asChild>
         <Icon.Menu className="w-6 h-auto opacity-80" />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-white">

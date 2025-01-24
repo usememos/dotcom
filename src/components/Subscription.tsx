@@ -39,7 +39,7 @@ const Subscription = ({ className }: Props) => {
   };
 
   return (
-    <div className={clsx("w-full bg-white border rounded-2xl p-4 sm:p-8 hover:shadow", className)}>
+    <div className={clsx("w-full bg-white border border-gray-300 rounded-2xl p-4 sm:p-8 hover:shadow-sm", className)}>
       <div className="mb-2 sm:mb-4 flex flex-row justify-start items-center">
         <span className="text-3xl sm:text-6xl mr-2">💌</span>
         <span className="text-lg sm:text-2xl md:text-3xl leading-tight">Get the latest news of Memos</span>

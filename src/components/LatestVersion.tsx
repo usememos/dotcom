@@ -18,7 +18,7 @@ const LatestVersion = () => {
     <Link
       className={`${
         !version && "invisible"
-      } flex flex-row justify-center items-center my-2 mb-4 px-4 py-2 rounded-full text-sm bg-orange-100 text-gray-800 border border-orange-200 hover:shadow hover:bg-orange-200`}
+      } flex flex-row justify-center items-center my-2 mb-4 px-4 py-2 rounded-full text-sm bg-orange-100 text-gray-800 border border-orange-200 hover:shadow-sm hover:bg-orange-200`}
       href="https://github.com/usememos/memos/releases"
       target="_blank"
     >

@@ -42,7 +42,7 @@ const Page = () => {
           <p className="text-2xl sm:text-3xl font-medium">🦄 Sponsors</p>
           <div className="mt-4 sm:mt-6 flex flex-row flex-wrap gap-3 sm:gap-4">
             {SPONSORS.map((sponsor) => (
-              <div key={sponsor.title} className="w-auto py-4 px-6 border rounded-2xl hover:shadow">
+              <div key={sponsor.title} className="w-auto py-4 px-6 border rounded-2xl hover:shadow-sm">
                 <a className="w-full h-full flex flex-row justify-start items-center gap-2" href={sponsor.url} target="_blank">
                   <img className="w-12 sm:w-16 rounded-2xl" src={sponsor.logo} alt="" />
                   <span className="text-2xl sm:text-3xl">{sponsor.title}</span>
@@ -50,7 +50,7 @@ const Page = () => {
               </div>
             ))}
 
-            <div className="w-auto py-4 px-6 border border-dashed rounded-2xl hover:shadow">
+            <div className="w-auto py-4 px-6 border border-dashed rounded-2xl hover:shadow-sm">
               <a
                 className="w-full h-full flex flex-row justify-start items-center gap-2 opacity-40"
                 href="https://github.com/sponsors/usememos"
@@ -58,7 +58,7 @@ const Page = () => {
               >
                 <Icon.HeartHandshake className="w-10 sm:w-14 h-auto" strokeWidth={1} />
                 <div className="h-auto flex flex-col justify-center items-start">
-                  <span className="text-2xl !leading-none">Your logo</span>
+                  <span className="text-2xl leading-none!">Your logo</span>
                   <p className="opacity-70">Become a sponsor</p>
                 </div>
               </a>
@@ -69,7 +69,7 @@ const Page = () => {
           <p className="text-2xl sm:text-3xl font-medium">🤠 Current backers</p>
           <div className="mt-4 sm:mt-6 flex flex-row flex-wrap gap-3 sm:gap-4">
             {GITHUB_USER_SPONSORS.map((sponsor) => (
-              <div key={sponsor.title} className="w-auto p-3 border rounded-2xl hover:shadow">
+              <div key={sponsor.title} className="w-auto p-3 border rounded-2xl hover:shadow-sm">
                 <a className="w-full h-full flex flex-row justify-start items-center gap-2" href={sponsor.url} target="_blank">
                   <img className="w-6 sm:w-8 rounded-full" src={sponsor.logo} alt="" />
                   <span className="text-lg sm:text-xl">{sponsor.title}</span>
@@ -77,7 +77,7 @@ const Page = () => {
               </div>
             ))}
 
-            <div className="w-auto p-3 border border-dashed rounded-2xl hover:shadow">
+            <div className="w-auto p-3 border border-dashed rounded-2xl hover:shadow-sm">
               <a
                 className="w-full h-full flex flex-row justify-start items-center gap-2 opacity-40"
                 href="https://github.com/sponsors/usememos"

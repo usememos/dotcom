@@ -53,15 +53,15 @@ const Page = async (props: Props) => {
         <div className="w-full flex flex-row justify-start items-start sm:px-6 md:gap-8 mt-4 sm:mt-8">
           <div className="w-full md:max-w-[calc(100%-16rem)]">
             <ContentRender markdocNode={transformedContent} />
-            <Divider className="!my-12" />
+            <Divider className="my-12!" />
             <Subscription />
           </div>
           <div className="hidden md:block sticky top-24 h-[calc(100svh-6rem)] w-64 shrink-0">
             <div className="relative w-full h-full overflow-auto py-4 no-scrollbar">
               <TableOfContent headings={headings} />
             </div>
-            <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-t from-transparent to-white"></div>
-            <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-b from-transparent to-white"></div>
+            <div className="absolute top-0 left-0 w-full h-8 bg-linear-to-t from-transparent to-white"></div>
+            <div className="absolute bottom-0 left-0 w-full h-8 bg-linear-to-b from-transparent to-white"></div>
           </div>
         </div>
       </div>

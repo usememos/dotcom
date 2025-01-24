@@ -28,7 +28,7 @@ const Page = async (props: Props) => {
       <div className="w-full mx-auto sm:px-4">
         <h1 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold my-6">{frontmatter.title}</h1>
         <ContentRender markdocNode={transformedContent} />
-        <Divider className="!my-12" />
+        <Divider className="my-12!" />
         <Subscription />
       </div>
     </SectionContainer>

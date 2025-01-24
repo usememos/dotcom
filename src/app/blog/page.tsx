@@ -24,17 +24,17 @@ const Page = () => {
 
             return (
               <React.Fragment key={frontmatter.slug}>
-                <div className="w-full bg-white p-4 border rounded-2xl flex flex-row justify-start items-start gap-x-4 hover:shadow">
+                <div className="w-full bg-white p-4 border rounded-2xl flex flex-row justify-start items-start gap-x-4 hover:shadow-sm">
                   <div className="flex flex-1 flex-col sm:p-2 justify-start items-start">
                     {frontmatter.feature_image && (
                       <Link
-                        className="w-full sm:hidden mb-4 shrink-0 rounded-lg overflow-clip hover:opacity-80 hover:shadow"
+                        className="w-full sm:hidden mb-4 shrink-0 rounded-lg overflow-clip hover:opacity-80 hover:shadow-sm"
                         href={`/blog/${frontmatter.slug}`}
                       >
                         <img src={frontmatter.feature_image} alt="" />
                       </Link>
                     )}
-                    <Link className="text-lg !leading-tight sm:text-xl line-clamp-2 hover:text-teal-600" href={`/blog/${frontmatter.slug}`}>
+                    <Link className="text-lg leading-tight! sm:text-xl line-clamp-2 hover:text-teal-600" href={`/blog/${frontmatter.slug}`}>
                       {frontmatter.title}
                     </Link>
                     {frontmatter.description && <p className="mt-2 text-gray-400 line-clamp-2">{frontmatter.description}</p>}
@@ -46,7 +46,7 @@ const Page = () => {
                   </div>
                   {frontmatter.feature_image && (
                     <Link
-                      className="hidden sm:block shrink-0 rounded-lg overflow-clip hover:opacity-80 hover:shadow"
+                      className="hidden sm:block shrink-0 rounded-lg overflow-clip hover:opacity-80 hover:shadow-sm"
                       href={`/blog/${frontmatter.slug}`}
                     >
                       <img className="w-60" src={frontmatter.feature_image} alt="" />

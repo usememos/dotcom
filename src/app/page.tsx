@@ -6,7 +6,7 @@ import SectionContainer from "@/components/SectionContainer";
 const Page = () => {
   return (
     <>
-      <div className="w-full bg-gradient-to-b from-white to-teal-50">
+      <div className="w-full bg-linear-to-b from-white to-teal-50">
         <h1 className="sr-only">Memos</h1>
         <div className="mt-4 sm:mt-6 w-full flex flex-col justify-start items-center">
           <LatestVersion />
