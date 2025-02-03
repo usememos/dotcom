@@ -18,6 +18,14 @@ The `filter` field in a Shortcut is where you define the conditions that memos m
 
 ### Factors and Supported Operators
 
+| **Factor**        | **Supported Operators**          |
+| ----------------- | -------------------------------- |
+| **`tag`**         | `in`                             |
+| **`visibility`**  | `==`, `!=`, `in`                 |
+| **`content`**     | `contains`, `==`, `!=`,          |
+| **`create_time`** | `==`, `!=`, `<`, `>`, `<=`, `>=` |
+| **`update_time`** | `==`, `!=`, `<`, `>`, `<=`, `>=` |
+
 #### Supported Factors
 
 1. **`tag`**: A list of tags assigned to a memo (e.g., `tag in ["tag1", "tag2"]`).
