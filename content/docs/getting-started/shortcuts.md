@@ -6,7 +6,7 @@ title: Shortcuts
 
 In this document, we'll focus on **how to write the filter** and provide examples for different use cases.
 
-## How to Write a Filter in a Shortcut?
+## How to Write a Filter?
 
 The `filter` field in a Shortcut is where you define the conditions that memos must meet to be selected. It uses the [CEL(Common Expression Language)](https://github.com/google/cel-spec) syntax to combine various operators and factors.
 
