@@ -64,6 +64,10 @@ const DOCS_NODES: DocsNode[] = [
         text: "Content Syntax",
         link: "/docs/getting-started/content-syntax",
       },
+      {
+        text: "Shortcuts",
+        link: "/docs/getting-started/shortcuts",
+      },
     ],
   },
   {
