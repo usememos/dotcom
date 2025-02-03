@@ -58,30 +58,24 @@ Here are some examples to demonstrate how to write filters using different opera
 
 This filter selects memos that have the tag `tag1` or `tag2`.
 
-```json
-{
-  "filter": "tag in [\"tag1\", \"tag2\"]"
-}
+```cel
+tag in ["tag1", "tag2"]
 ```
 
 #### 2. Filter by Tag and Visibility
 
 This filter selects memos that have the tag `tag1` or `tag2` **and** have visibility set to `PUBLIC`.
 
-```json
-{
-  "filter": "tag in [\"tag1\", \"tag2\"] && visibility == \"PUBLIC\""
-}
+```cel
+tag in ["tag1", "tag2"] && visibility == "PUBLIC"
 ```
 
 #### 3. Filter by Multiple Tags with OR Condition
 
 This filter selects memos that have either `tag1`, `tag2`, `tag3`, or `tag4`.
 
-```json
-{
-  "filter": "tag in [\"tag1\", \"tag2\"] || tag in [\"tag3\", \"tag4\"]"
-}
+```cel
+tag in ["tag1", "tag2"] || tag in ["tag3", "tag4"]
 ```
 
 #### 4. Combining AND and OR for Complex Conditions
@@ -92,30 +86,24 @@ This filter selects memos that:
 - **And** have a creation time before `2023-01-01`.
 - **Or** have a visibility of `PRIVATE`.
 
-```json
-{
-  "filter": "(tag in [\"tag1\", \"tag2\"] && create_time < \"2023-01-01T00:00:00Z\") || visibility == \"PRIVATE\""
-}
+```cel
+(tag in ["tag1", "tag2"] && create_time < "2023-01-01T00:00:00Z") || visibility == "PRIVATE"
 ```
 
 #### 5. Filter by Date Range
 
 This filter selects memos that were created **after** `2023-01-01` and **before** `2023-12-31`.
 
-```json
-{
-  "filter": "create_time > \"2023-01-01T00:00:00Z\" && create_time < \"2023-12-31T23:59:59Z\""
-}
+```cel
+create_time > "2023-01-01T00:00:00Z" && create_time < "2023-12-31T23:59:59Z"
 ```
 
 #### 6. Filter by Content and Tags with NOT
 
 This filter selects memos that **do not** contain the word `memos` in their content **and** have a visibility of `PUBLIC`.
 
-```json
-{
-  "filter": "!content.contains(\"memos\") && visibility == \"PUBLIC\""
-}
+```cel
+!content.contains("memos") && visibility == "PUBLIC"
 ```
 
 #### 7. Filter Using Multiple Logical Operators
@@ -126,10 +114,8 @@ This filter selects memos that:
 - **And** have a creation time before `2023-01-01`.
 - **And** their content contains the word `memos`.
 
-```json
-{
-  "filter": "(tag in [\"tag1\", \"tag2\"] && create_time < \"2023-01-01T00:00:00Z\") && content.contains(\"memos\")"
-}
+```cel
+(tag in ["tag1", "tag2"] && create_time < "2023-01-01T00:00:00Z") && content.contains("memos")
 ```
 
 #### 8. Filter with Time Comparisons
@@ -139,20 +125,16 @@ This filter selects memos that:
 - Have been **updated** after `2023-01-01`.
 - **Or** were **created** before `2023-01-01`.
 
-```json
-{
-  "filter": "update_time > \"2023-01-01T00:00:00Z\" || create_time < \"2023-01-01T00:00:00Z\""
-}
+```cel
+update_time > "2023-01-01T00:00:00Z" || create_time < "2023-01-01T00:00:00Z"
 ```
 
 #### 9. Filter by Tags and Visibility (Multiple Tags)
 
 This filter selects memos that have any of the tags `tag1`, `tag2`, or `tag3`, and have visibility set to either `PUBLIC` or `PRIVATE`.
 
-```json
-{
-  "filter": "tag in [\"tag1\", \"tag2\", \"tag3\"] && visibility in [\"PUBLIC\", \"PRIVATE\"]"
-}
+```cel
+tag in ["tag1", "tag2", "tag3"] && visibility in ["PUBLIC", "PRIVATE"]
 ```
 
 ### Summary of Filter Syntax
