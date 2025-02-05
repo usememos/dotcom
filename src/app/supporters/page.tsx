@@ -12,11 +12,6 @@ const SPONSORS = [
 
 const GITHUB_USER_SPONSORS = [
   {
-    title: "Burning_Wipf",
-    logo: "https://avatars.githubusercontent.com/u/24418303?v=4",
-    url: "https://github.com/KUKARAF",
-  },
-  {
     title: "jeancoded",
     logo: "https://avatars.githubusercontent.com/u/121377500?v=4",
     url: "https://github.com/jeancoded",

@@ -1,11 +1,8 @@
-import dayjs from "dayjs";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import React from "react";
-import Icon from "@/components/Icon";
 import SectionContainer from "@/components/SectionContainer";
 import Subscription from "@/components/Subscription";
-import authorList, { Author } from "@/consts/author";
 import { getContentFilePaths, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
 import { getMetadata } from "@/utils/metadata";
@@ -20,8 +17,6 @@ const Page = () => {
         <h3 className="text-xl mt-4 leading-normal text-gray-500">Get the latest articles from Memos</h3>
         <div className="mt-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           {frontmatters.map((frontmatter) => {
-            const author = authorList.find((author) => author.name === frontmatter.author) as Author;
-
             return (
               <React.Fragment key={frontmatter.slug}>
                 <div className="w-full bg-white p-4 border rounded-2xl flex flex-row justify-start items-start gap-x-4 hover:shadow-sm">
@@ -37,12 +32,7 @@ const Page = () => {
                     <Link className="text-lg leading-tight! sm:text-xl line-clamp-2 hover:text-teal-600" href={`/blog/${frontmatter.slug}`}>
                       {frontmatter.title}
                     </Link>
-                    {frontmatter.description && <p className="mt-2 text-gray-400 line-clamp-2">{frontmatter.description}</p>}
-                    <div className="mt-2 w-full flex flex-row justify-start items-center text-gray-500">
-                      <span>{author.name}</span>
-                      <Icon.Dot />
-                      <span>{dayjs(frontmatter.published_at).format("DD/MM/YYYY")}</span>
-                    </div>
+                    {frontmatter.description && <p className="mt-2 text-gray-400 line-clamp-3 leading-snug">{frontmatter.description}</p>}
                   </div>
                   {frontmatter.feature_image && (
                     <Link

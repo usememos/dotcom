@@ -14,13 +14,13 @@ Imagine you have different devices for work and personal use. You might want to 
 
 ## The GitHub Solution
 
-### **Step 1: Creating a GitHub Repository**
+### Step 1: Creating a GitHub Repository
 
 1. Begin by creating a GitHub account if you don't already have one. It's free and straightforward.
 
 2. Once you're logged in, you can create a new repository. Give it a name that represents the type of data you want to sync, for example, "memos" or "my-memos." Ensure it's a **private repository** to keep your data secure.
 
-### **Step 2: Initializing Git on Your Devices**
+### Step 2: Initializing Git on Your Devices
 
 1. On your computer, navigate to the folder where you store the data you want to sync. This could be your notes, documents, or any type of files.
 
@@ -38,7 +38,7 @@ Imagine you have different devices for work and personal use. You might want to 
 
    Replace `<repository_URL>` with the URL of the GitHub repository you created in Step 1.
 
-### **Step 3: Syncing Your Data**
+### Step 3: Syncing Your Data
 
 Now you're set up to sync your data between devices. Here's how:
 
