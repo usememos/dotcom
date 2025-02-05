@@ -27,12 +27,12 @@ Memos is built with a curated tech stack. It is optimized for developer experien
    sh scripts/build.sh
    ```
 
-   Then you can run the server following building outputs.
+   After a successful build, run the server following the build outputs.
 
-3. Start frontend dev server
+3. Start frontend
 
    ```bash
    cd web && pnpm i && pnpm dev
    ```
 
-Memos should now be running at <http://localhost:3001> and change either frontend or backend code would trigger live reload.
+Memos should now be running at <http://localhost:3001>.
