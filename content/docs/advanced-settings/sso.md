@@ -14,4 +14,5 @@ Learn more details with:
 
 - [Configuring Authentik for Authentication](/docs/advanced-settings/authentik)
 - [Configuring Keycloak for Authentication](/docs/advanced-settings/keycloak)
-- [Configuring Authelia for Authentication](/docs/advanced-settings/authelia)
+- [Configuring Authelia for Authentication](/docs/advanced-settings/authelia) 
+- [Configuring Microsoft Entra ID (Azure AD) for Authentication](/docs/advanced-settings/entraid) 
