@@ -12,14 +12,14 @@ const SPONSORS = [
 
 const GITHUB_USER_SPONSORS = [
   {
+    title: "fixermark",
+    logo: "https://avatars.githubusercontent.com/u/169982?v=4",
+    url: "https://github.com/fixermark",
+  },
+  {
     title: "jeancoded",
     logo: "https://avatars.githubusercontent.com/u/121377500?v=4",
     url: "https://github.com/jeancoded",
-  },
-  {
-    title: "weikib",
-    logo: "https://avatars.githubusercontent.com/u/80217737?v=4",
-    url: "https://github.com/weikib",
   },
 ];
 
