@@ -46,7 +46,7 @@
     "code-inspector-plugin": "^0.18.3",
     "eslint": "^8.57.1",
     "eslint-config-next": "^15.1.7",
-    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-prettier": "^10.0.2",
     "eslint-plugin-prettier": "^5.2.1",
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
