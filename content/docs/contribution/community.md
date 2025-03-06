@@ -17,3 +17,4 @@ Memos has a very active community and produces a lot of design products, includi
 - [Memos Raycast Extension](https://www.raycast.com/JakeYu/memos) - Raycast extension
 - [Memos Desktop](https://github.com/xudaolong/memos-desktop) - Third party client for MacOS and Windows
 - [MemosGallery](https://github.com/BarryYangi/MemosGallery) - A static Gallery rendered with the Memos API
+- [Memos Chinese Docs - Memos 中文文档](https://thebestxt.cc/documents/memos/?from=official_website) - Chinese edition of Memos Docs / Memos 文档的中文版本
