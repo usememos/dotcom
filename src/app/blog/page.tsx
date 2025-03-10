@@ -19,7 +19,7 @@ const Page = () => {
           {frontmatters.map((frontmatter) => {
             return (
               <React.Fragment key={frontmatter.slug}>
-                <div className="w-full bg-white p-4 border rounded-2xl flex flex-row justify-start items-start gap-x-4 hover:shadow-sm">
+                <div className="w-full bg-white p-4 border border-zinc-200 rounded-2xl flex flex-row justify-start items-start gap-x-4 hover:shadow-sm">
                   <div className="flex flex-1 flex-col sm:p-2 justify-start items-start">
                     {frontmatter.feature_image && (
                       <Link
