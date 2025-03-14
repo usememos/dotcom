@@ -21,18 +21,16 @@ Memos is built with a curated tech stack. It is optimized for developer experien
    git clone https://github.com/usememos/memos
    ```
 
-2. Build and run backend server
+2. Start backend server
 
    ```bash
-   sh scripts/build.sh
+   make backend
    ```
 
-   After a successful build, run the server following the build outputs.
-
-3. Start frontend
+3. Start frontend UI
 
    ```bash
-   cd web && pnpm i && pnpm dev
+   make frontend
    ```
 
 Memos should now be running at <http://localhost:3001>.
