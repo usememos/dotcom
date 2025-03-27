@@ -21,6 +21,11 @@ const GITHUB_USER_SPONSORS = [
     logo: "https://avatars.githubusercontent.com/u/121377500?v=4",
     url: "https://github.com/jeancoded",
   },
+  {
+    title: "alik-agaev",
+    logo: "https://avatars.githubusercontent.com/u/2662697?v=4",
+    url: "https://github.com/alik-agaev",
+  },
 ];
 
 const Page = () => {
