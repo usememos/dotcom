@@ -4,7 +4,7 @@ import Link from "next/link";
 import Icon from "./Icon";
 
 const LatestVersion = () => {
-  const latestVerion = "v0.24.0";
+  const latestVerion = "v0.24.2";
 
   return (
     <Link
