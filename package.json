@@ -45,7 +45,7 @@
     "@types/react-dom": "^18.3.5",
     "code-inspector-plugin": "^0.18.3",
     "eslint": "^8.57.1",
-    "eslint-config-next": "^15.2.1",
+    "eslint-config-next": "^15.3.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.3",
     "postcss": "^8.5.3",
