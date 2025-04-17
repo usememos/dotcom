@@ -38,7 +38,7 @@ const CodeBlock = ({ children, language }: Props) => {
       <div className={"relative"}>
         <pre
           ref={ref}
-          className={`language-${language} border-[.1vh] hover:border-zinc-300 rounded-lg font-mono! tracking-tight! leading-tight! bg-transparent!`}
+          className={`language-${language} border border-zinc-200 hover:border-zinc-300 rounded-lg font-mono! tracking-tight! leading-tight! bg-transparent!`}
         >
           {children}
         </pre>
