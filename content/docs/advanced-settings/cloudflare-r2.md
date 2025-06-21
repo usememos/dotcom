@@ -30,7 +30,7 @@ To integrate Cloudflare R2 Storage with Memos, you will need to obtain your R2 c
 5. Click on the "Create API token" button.
 6. Choose a Token name (es. MEMOS Token).
 7. Choose the "Admin Read & Write" permission.
-8. Optional: limit the IP adrress access range using the "Client IP Address Filtering".
+8. Optional: limit the IP address access range using the "Client IP Address Filtering".
 9. Click on "Create API token" at the bottom of the page.
 10. Copy your **Access Key ID** and **Secret Access Key**.
 11. Copy your **Endpoint**.
