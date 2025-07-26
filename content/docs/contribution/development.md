@@ -15,24 +15,39 @@ Memos is built with a curated tech stack. It is optimized for developer experien
 
 ## Steps
 
-1. Clone the repo
+#### 1.  Backend Development
 
    ```bash
-   git clone https://github.com/usememos/memos
+   # Clone the repository
+   git clone https://github.com/usememos/memos.git
+   cd memos
+
+   # Install Go dependencies
+   go mod download
+
+   # Run the backend server
+   go run ./bin/memos/main.go --mode dev --port 8081
    ```
 
-2. Build and run backend server
+#### 2.  Frontend Development
 
    ```bash
-   sh scripts/build.sh
+   # Navigate to web directory
+   cd web
+
+   # Install dependencies
+   pnpm install
+
+   # Start development server
+   pnpm dev
    ```
 
-   After a successful build, run the server following the build outputs.
+The development servers will be available at:
 
-3. Start frontend
+    Backend API: http://localhost:8081
+    Frontend: http://localhost:3001
 
-   ```bash
-   cd web && pnpm i && pnpm dev
-   ```
+The development servers will be available at:
 
-Memos should now be running at <http://localhost:3001>.
+    Backend API: `http://localhost:8081`
+    Frontend: `http://localhost:3001`
