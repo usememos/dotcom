@@ -20,3 +20,4 @@ Memos has a very active community and produces a lot of design products, includi
 - [Memos Chinese Docs - Memos 中文文档](https://thebestxt.cc/documents/memos/?from=official_website) - Chinese edition of Memos Docs / Memos 文档的中文版本
 - [LeslieLeung/mcp-server-memos](https://github.com/LeslieLeung/mcp-server-memos) - MCP(Model Context Protocal) Server for Memos.
 - [Memos Public Proxy](https://github.com/clnhlzmn/memos-public-proxy) - A proxy for sharing public memos.
+- [rc2dev/get-memos](https://github.com/rc2dev/get-memos) - Export memos to a markdown file.
