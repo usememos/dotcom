@@ -19,22 +19,59 @@ export const getMetadata = (metadata: Partial<LocalMetadata>): Metadata => {
   return {
     title: title,
     description: description,
+    keywords: [
+      "memos",
+      "note-taking",
+      "self-hosted",
+      "open source",
+      "privacy-first",
+      "markdown",
+      "docker",
+      "notes",
+      "productivity",
+      "knowledge management",
+    ],
+    authors: [{ name: "Memos Team" }],
+    creator: "Memos",
+    publisher: "Memos",
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
     openGraph: {
       title: title,
       description: description,
       type: "website",
       url: url,
+      siteName: "Memos",
+      locale: "en_US",
       images: [
         {
           url: imagePath,
           alt: "Memos",
+          width: 1200,
+          height: 630,
         },
       ],
     },
     twitter: {
       card: hasFeatureImage ? "summary_large_image" : "summary",
+      title: title,
+      description: description,
+      creator: "@usememos",
+      images: [imagePath],
     },
     metadataBase: new URL("https://www.usememos.com"),
+    alternates: {
+      canonical: url,
+    },
     icons: {
       icon: "/logo-rounded.png",
       apple: [

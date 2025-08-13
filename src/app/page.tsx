@@ -7,7 +7,7 @@ const Page = () => {
   return (
     <>
       <div className="w-full bg-linear-to-b from-white to-teal-50">
-        <h1 className="sr-only">Memos</h1>
+        <h1 className="sr-only">Memos - Open Source, Self-hosted Note-Taking Solution</h1>
         <div className="mt-4 sm:mt-6 w-full flex flex-col justify-start items-center">
           <LatestVersion />
         </div>
@@ -18,7 +18,7 @@ const Page = () => {
             <span className="inline sm:hidden"> </span>
             Your Notes, Your Way
           </h2>
-          <h3 className="w-full text-lg sm:text-2xl text-gray-600 text-center font-serif">Effortlessly craft your impactful content</h3>
+          <p className="w-full text-lg sm:text-2xl text-gray-600 text-center font-serif">Effortlessly craft your impactful content</p>
         </div>
         <DemoPlaceholder />
       </div>
