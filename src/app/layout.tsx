@@ -1,9 +1,6 @@
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import type React from "react";
-import { Suspense } from "react";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import { PostHogPageview } from "@/components/PosthogProvider";
 import "@/styles/global.css";
 import { getMetadata } from "@/utils/metadata";
 import { fontLoader } from "./fonts";
@@ -22,10 +19,6 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           <main className="shrink-0 grow basis-auto mx-auto pt-6 pb-16 w-full flex flex-col justify-start items-center">{children}</main>
           <Footer />
         </div>
-        <SpeedInsights />
-        <Suspense>
-          <PostHogPageview />
-        </Suspense>
       </body>
     </html>
   );
