@@ -1,5 +1,4 @@
 import { Tag } from "@markdoc/markdoc";
-import { Divider } from "@mui/joy";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import React from "react";
@@ -7,7 +6,6 @@ import AuthorView from "@/components/AuthorView";
 import ContentRender from "@/components/ContentRender";
 import Icon from "@/components/Icon";
 import SectionContainer from "@/components/SectionContainer";
-import Subscription from "@/components/Subscription";
 import TableOfContent from "@/components/TableOfContent";
 import authorList, { Author } from "@/consts/author";
 import { getBlogSlugList, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
@@ -53,8 +51,6 @@ const Page = async (props: Props) => {
         <div className="w-full flex flex-row justify-start items-start sm:px-6 md:gap-8 mt-4 sm:mt-8">
           <div className="w-full md:max-w-[calc(100%-16rem)]">
             <ContentRender markdocNode={transformedContent} />
-            <Divider className="my-12!" />
-            <Subscription />
           </div>
           <div className="hidden md:block sticky top-24 h-[calc(100svh-6rem)] w-64 shrink-0">
             <div className="relative w-full h-full overflow-auto py-4 no-scrollbar">

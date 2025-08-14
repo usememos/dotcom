@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import React from "react";
 import SectionContainer from "@/components/SectionContainer";
-import Subscription from "@/components/Subscription";
 import { getContentFilePaths, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
 import { markdoc } from "@/markdoc/markdoc";
 import { getMetadata } from "@/utils/metadata";
@@ -47,7 +46,6 @@ const Page = () => {
             );
           })}
         </div>
-        <Subscription className="mt-6" />
       </div>
     </SectionContainer>
   );
