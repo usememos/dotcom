@@ -14,9 +14,8 @@ Using a secure connection will also get rid of the browser warnings that may app
 
 [Caddy](https://caddyserver.com) is a high-performance, easy-to-use, and open-source web server and reverse proxy with automatic TLS certificates that is perfect for securing Memos.
 
-{% admonition icon="important" %}
-Should you experience problems with Caddy, we recommend that you ask the Caddy community for advice, as it's a third-party software.
-{% /admonition %}
+> **📌 Important**  
+> Should you experience problems with Caddy, we recommend that you ask the Caddy community for advice, as it's a third-party software.
 
 The following is a sample all-in-one docker-compose.yml that spins up Caddy with Memos.
 
@@ -78,9 +77,8 @@ configs:
       }
 ```
 
-{% admonition icon="warning" %}
-If you use a local domain name, the kind resolved via hosts file or a local DNS server, you must add another entry to the Caddyfile. Watch for the indentation!
-{% /admonition %}
+> **⚠️ Warning**  
+> If you use a local domain name, the kind resolved via hosts file or a local DNS server, you must add another entry to the Caddyfile. Watch for the indentation!
 
 ```yaml
 localhost, memos.local {

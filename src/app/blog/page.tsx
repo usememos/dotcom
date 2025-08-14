@@ -1,9 +1,7 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import React from "react";
 import SectionContainer from "@/components/SectionContainer";
-import { getContentFilePaths, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
-import { markdoc } from "@/markdoc/markdoc";
+import { getBlogFrontmatters } from "@/lib/mdx-content";
 import { getMetadata } from "@/utils/metadata";
 
 const Page = () => {
@@ -52,26 +50,5 @@ const Page = () => {
 };
 
 export const metadata = getMetadata({ title: "Blog - Memos", pathname: "/blog" });
-
-const getBlogFrontmatters = () => {
-  const filePaths = getContentFilePaths("blog");
-  const frontmatters = filePaths
-    .map((filePath) => {
-      const content = readFileContenxt(getFilePathFromSlugs("blog", filePath.split("/")));
-      if (!content) {
-        return notFound();
-      }
-
-      const { frontmatter } = markdoc(content);
-      return {
-        ...frontmatter,
-        slug: filePath,
-      };
-    })
-    .sort((a, b) => {
-      return new Date(a.published_at) > new Date(b.published_at) ? -1 : 1;
-    });
-  return frontmatters;
-};
 
 export default Page;

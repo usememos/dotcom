@@ -36,17 +36,15 @@ To upgrade Memos to the latest version, perform the following steps:
 
 Memos can be automatically upgraded by [Watchtower](https://github.com/containrrr/watchtower).
 
-{% admonition icon="caution" %}
-It's advised that you use a custom automatic data backup strategy in parallel to automatic updates. This way, you can easily roll back to a previous version if needed.
+> **⚠️ Caution**  
+> It's advised that you use a custom automatic data backup strategy in parallel to automatic updates. This way, you can easily roll back to a previous version if needed.
+> 
+> While automatic updates usually work well, they can cause issues if you use the `latest` or even the `stable` tag, as they can receive major and minor version upgrades with database schema changes.
 
-While automatic updates usually work well, they can cause issues if you use the `latest` or even the `stable` tag, as they can receive major and minor version upgrades with database schema changes.
-{% /admonition %}
-
-{% admonition icon="note" %}
-Patch version upgrades are safe, as they only contain bug fixes and small changes to the codebase.
-
-To only receive **Patch** version updates automatically, use a **Major**.**Minor** tag like `0.22`.
-{% /admonition %}
+> **📝 Note**  
+> Patch version upgrades are safe, as they only contain bug fixes and small changes to the codebase.
+> 
+> To only receive **Patch** version updates automatically, use a **Major**.**Minor** tag like `0.22`.
 
 The following is a sample docker-compose.yml that spins up Memos and Watchtower. Watchtower will check for updates every day at 4 AM. If you need to set a custom schedule, write your own [cron expression](https://crontab.cronhub.io).
 
@@ -70,6 +68,5 @@ services:
     volumes: ["/var/run/docker.sock:/var/run/docker.sock"]
 ```
 
-{% admonition icon="tip" %}
-By setting up Watchtower with `--label-enable` and the Memos container with the label `com.centurylinklabs.watchtower.enable: true`, only the Memos container will be updated, leaving other containers untouched.
-{% /admonition %}
+> **💡 Tip**  
+> By setting up Watchtower with `--label-enable` and the Memos container with the label `com.centurylinklabs.watchtower.enable: true`, only the Memos container will be updated, leaving other containers untouched.

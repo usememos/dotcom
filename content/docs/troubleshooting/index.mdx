@@ -2,9 +2,8 @@
 title: Troubleshooting
 ---
 
-{% admonition icon="warning"%}
-Instructions in this section are for advanced users.
-{% /admonition %}
+> **⚠️ Warning**  
+> Instructions in this section are for advanced users.
 
 ## Introduction
 
@@ -16,9 +15,8 @@ Some assumptions are made in the instructions below:
 - The database driver is `sqlite`.
 - The database file is `/var/opt/memos/memos_prod.db`.
 
-{% admonition icon="important" %}
-`/var/opt/memos/memos_prod.db` is the standard path _inside_ the container. It will only be different if you have supplied a different `MEMOS_DATA` environment variable on the container creation, which deviates from the default.
-{% /admonition %}
+> **📌 Important**  
+> `/var/opt/memos/memos_prod.db` is the standard path _inside_ the container. It will only be different if you have supplied a different `MEMOS_DATA` environment variable on the container creation, which deviates from the default.
 
 ## Re-enable password login
 
@@ -46,9 +44,8 @@ If you have locked yourself out of your Memos instance with a failed Single-Sign
   EOF
   ```
 
-  {% admonition icon="important" %}
-  This is a single command. Paste at once.
-  {% /admonition %}
+  > **📌 Important**  
+  > This is a single command. Paste at once.
 
 - Exit the container shell:
 
@@ -90,9 +87,8 @@ If you have locked yourself out of your Memos instance with a failed Single-Sign
   EOF
   ```
 
-  {% admonition icon="important" %}
-  This is a single command. Paste at once.
-  {% /admonition %}
+  > **📌 Important**  
+  > This is a single command. Paste at once.
 
 - Exit the container shell:
 

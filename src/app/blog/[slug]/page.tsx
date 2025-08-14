@@ -1,15 +1,12 @@
-import { Tag } from "@markdoc/markdoc";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import React from "react";
 import AuthorView from "@/components/AuthorView";
-import ContentRender from "@/components/ContentRender";
 import Icon from "@/components/Icon";
+import MdxRenderer from "@/components/MdxRenderer";
 import SectionContainer from "@/components/SectionContainer";
-import TableOfContent from "@/components/TableOfContent";
 import authorList, { Author } from "@/consts/author";
-import { getBlogSlugList, getFilePathFromSlugs, readFileContenxt } from "@/lib/content";
-import { markdoc } from "@/markdoc/markdoc";
+import { getBlogSlugList, getMdxFilePathFromSlugs, readMdxFileContent } from "@/lib/mdx-content";
 import { getMetadata } from "@/utils/metadata";
 
 interface Props {
@@ -18,24 +15,15 @@ interface Props {
 
 const Page = async (props: Props) => {
   const params = await props.params;
-  const filePath = getFilePathFromSlugs("blog", params.slug.split("/"));
-  const content = readFileContenxt(filePath);
-  if (!content) {
+  const filePath = getMdxFilePathFromSlugs("blog", params.slug.split("/"));
+  const contentItem = readMdxFileContent(filePath);
+
+  if (!contentItem) {
     return notFound();
   }
 
-  const { frontmatter, transformedContent } = markdoc(content);
+  const { frontmatter, content } = contentItem;
   const author = authorList.find((author) => author.name === frontmatter.author) as Author;
-  if (!transformedContent || !(transformedContent instanceof Tag)) {
-    return null;
-  }
-
-  const children = transformedContent.children;
-  const headings = JSON.parse(
-    JSON.stringify(
-      children.filter((child) => child instanceof Tag && child.name === "Heading" && [2, 3].includes(child.attributes["level"])),
-    ),
-  ) as Tag[];
 
   return (
     <SectionContainer>
@@ -50,11 +38,11 @@ const Page = async (props: Props) => {
         </div>
         <div className="w-full flex flex-row justify-start items-start sm:px-6 md:gap-8 mt-4 sm:mt-8">
           <div className="w-full md:max-w-[calc(100%-16rem)]">
-            <ContentRender markdocNode={transformedContent} />
+            <MdxRenderer content={content} />
           </div>
           <div className="hidden md:block sticky top-24 h-[calc(100svh-6rem)] w-64 shrink-0">
             <div className="relative w-full h-full overflow-auto py-4 no-scrollbar">
-              <TableOfContent headings={headings} />
+              {/* TODO: Extract headings from MDX content for table of contents */}
             </div>
             <div className="absolute top-0 left-0 w-full h-8 bg-linear-to-t from-transparent to-white"></div>
             <div className="absolute bottom-0 left-0 w-full h-8 bg-linear-to-b from-transparent to-white"></div>
@@ -67,13 +55,14 @@ const Page = async (props: Props) => {
 
 export const generateMetadata = async (props: Props): Promise<Metadata> => {
   const params = await props.params;
-  const filePath = getFilePathFromSlugs("blog", params.slug.split("/"));
-  const content = readFileContenxt(filePath);
-  if (!content) {
+  const filePath = getMdxFilePathFromSlugs("blog", params.slug.split("/"));
+  const contentItem = readMdxFileContent(filePath);
+
+  if (!contentItem) {
     return notFound();
   }
 
-  const { frontmatter } = markdoc(content);
+  const { frontmatter } = contentItem;
   return getMetadata({
     title: frontmatter.title + " - Memos",
     pathname: `/blog/${params.slug}`,

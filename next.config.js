@@ -1,11 +1,14 @@
 /** @type {import('next').NextConfig} */
 
 const { codeInspectorPlugin } = require("code-inspector-plugin");
+const createMDX = require("@next/mdx");
 
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
+  // Configure pageExtensions to include markdown and MDX files
+  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   images: {
     formats: ["image/webp", "image/avif"],
     minimumCacheTTL: 60,
@@ -50,4 +53,13 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+const withMDX = createMDX({
+  // Add markdown plugins here, as desired
+  options: {
+    remarkPlugins: ["remark-gfm", "remark-frontmatter"],
+    rehypePlugins: [],
+  },
+});
+
+// Merge MDX config with Next.js config
+module.exports = withMDX(nextConfig);

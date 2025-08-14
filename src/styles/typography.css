@@ -3,7 +3,3 @@
 .content {
   @apply whitespace-pre-wrap break-words;
 }
-.content h2,
-.content h3 {
-  @apply -mt-16! pt-24!;
-}

@@ -13,6 +13,5 @@ The following options can be set at runtime to configure the Memos server. These
 | MEMOS_DRIVER | --driver | sqlite         | Sets the database driver to be used by Memos. Can be **sqlite**, **postgres** or **mysql**.                                                                                                                                       |
 | MEMOS_DSN    | --dsn    |                | Specifies the database source name (DSN) for connecting to the database. Note that each database driver has its own format for specifying the DSN. See the [database documentation](/docs/install/database) for more information. |
 
-{% admonition icon="important" %}
-Special characters in the **DSN** username and password must be escaped, such as converting `=` to `%3D`. Refer to the [Connection URIs documentation](https://www.postgresql.org/docs/11/libpq-connect.html#id-1.7.3.8.3.6) for more details. Tools like [URL Encoder](https://www.urlencoder.org/) can assist with this process.  
-{% /admonition %}
+> **📌 Important**  
+> Special characters in the **DSN** username and password must be escaped, such as converting `=` to `%3D`. Refer to the [Connection URIs documentation](https://www.postgresql.org/docs/11/libpq-connect.html#id-1.7.3.8.3.6) for more details. Tools like [URL Encoder](https://www.urlencoder.org/) can assist with this process.
