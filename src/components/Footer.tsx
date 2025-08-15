@@ -65,6 +65,12 @@ const Footer = () => {
           </Link>
           <Link
             className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-teal-600"
+            href="/privacy"
+          >
+            Privacy Policy
+          </Link>
+          <Link
+            className="w-auto flex flex-row justify-center items-center cursor-pointer hover:underline hover:text-teal-600"
             href="https://memos.apidocumentation.com/reference"
             target="_blank"
           >
