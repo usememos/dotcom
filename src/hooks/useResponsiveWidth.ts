@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import useWindowSize from "react-use/lib/useWindowSize";
 
 enum TailwindResponsiveWidth {
