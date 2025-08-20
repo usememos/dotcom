@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { baseOptions } from "@/app/layout.config";
-import { Footer } from "@/components/footerz";
+import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Brand - Memos",

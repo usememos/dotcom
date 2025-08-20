@@ -4,7 +4,7 @@ import { Calendar, User, ArrowRight } from "lucide-react";
 import { blogSource } from "@/lib/source";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { baseOptions } from "@/app/layout.config";
-import { Footer } from "@/components/footerz";
+import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Blog - Memos",

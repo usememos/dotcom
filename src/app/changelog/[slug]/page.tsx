@@ -6,7 +6,7 @@ import { DocsBody } from "fumadocs-ui/page";
 import { notFound } from "next/navigation";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { baseOptions } from "@/app/layout.config";
-import { Footer } from "@/components/footerz";
+import { Footer } from "@/components/footer";
 
 interface ChangelogPageProps {
   params: Promise<{ slug: string }>;

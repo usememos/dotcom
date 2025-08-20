@@ -3,7 +3,7 @@ import { Github, Download } from "lucide-react";
 import { HeroSection } from "@/components/hero-section";
 import { FeatureCard } from "@/components/feature-card";
 import { StatsCard } from "@/components/stats-card";
-import { Footer } from "@/components/footerz";
+import { Footer } from "@/components/footer";
 
 export default function HomePage() {
   return (

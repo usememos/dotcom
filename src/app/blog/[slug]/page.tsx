@@ -7,7 +7,7 @@ import { TOCProvider, TOCScrollArea, TOCItems } from "fumadocs-ui/components/lay
 import { notFound } from "next/navigation";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { baseOptions } from "@/app/layout.config";
-import { Footer } from "@/components/footerz";
+import { Footer } from "@/components/footer";
 
 interface BlogPageProps {
   params: Promise<{ slug: string }>;
