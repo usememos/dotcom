@@ -1,18 +1,15 @@
-import {
-  defineConfig,
-  defineDocs,
-  frontmatterSchema,
-  metaSchema,
-} from 'fumadocs-mdx/config';
-import { z } from 'zod';
+import { defineConfig, defineDocs, frontmatterSchema, metaSchema } from "fumadocs-mdx/config";
+import { z } from "zod";
 
 // Enhanced schemas for Memos documentation
 export const docs = defineDocs({
   docs: {
     schema: frontmatterSchema.extend({
-      category: z.enum(['installation', 'guides', 'configuration', 'integrations', 'api', 'deployment', 'troubleshooting', 'contributing', 'faq']).optional(),
+      category: z
+        .enum(["installation", "guides", "configuration", "integrations", "api", "deployment", "troubleshooting", "contributing", "faq"])
+        .optional(),
       tags: z.array(z.string()).optional(),
-      difficulty: z.enum(['beginner', 'intermediate', 'advanced']).optional(),
+      difficulty: z.enum(["beginner", "intermediate", "advanced"]).optional(),
       estimatedTime: z.string().optional(),
       relatedPages: z.array(z.string()).optional(),
       lastUpdated: z.string().optional(),
@@ -26,7 +23,7 @@ export const docs = defineDocs({
 
 // Blog configuration using defineDocs
 export const blog = defineDocs({
-  dir: 'content/blog',
+  dir: "content/blog",
   docs: {
     schema: frontmatterSchema.extend({
       author: z.string(),
@@ -39,9 +36,9 @@ export const blog = defineDocs({
   },
 });
 
-// Changelog configuration using defineDocs  
+// Changelog configuration using defineDocs
 export const changelog = defineDocs({
-  dir: 'content/changelog',
+  dir: "content/changelog",
   docs: {
     schema: frontmatterSchema.extend({
       version: z.string().optional(),
