@@ -1,0 +1,10 @@
+{
+  "title": "Deployment",
+  "description": "Production deployment guides and best practices",
+  "pages": [
+    "index",
+    "docker",
+    "https",
+    "upgrades"
+  ]
+}

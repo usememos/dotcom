@@ -1,0 +1,578 @@
+---
+title: Authentication Configuration
+description: Configure authentication methods including SSO, LDAP, and OAuth providers for your Memos instance.
+category: configuration
+difficulty: advanced
+estimatedTime: "20 min read"
+lastUpdated: "2025-08-19"
+authors: ["Memos Team"]
+relatedPages:
+  - /docs/configuration/security
+  - /docs/api/authentication
+  - /docs/integrations/sso
+---
+
+# Authentication Configuration
+
+Memos supports multiple authentication methods to fit different organizational needs. This comprehensive guide covers local authentication, Single Sign-On (SSO), LDAP, and OAuth integration.
+
+## Authentication Methods Overview
+
+<Cards>
+  <Card title="Local Authentication" href="#local-authentication" icon="Key">
+    Built-in username/password authentication with security features
+  </Card>
+  <Card title="OAuth Providers" href="#oauth-providers" icon="Users">
+    Google, GitHub, Microsoft, and other OAuth 2.0 providers
+  </Card>
+  <Card title="LDAP Integration" href="#ldap-integration" icon="Network">
+    Active Directory and LDAP directory services
+  </Card>
+  <Card title="SAML SSO" href="#saml-sso" icon="Shield">
+    Enterprise SAML 2.0 Single Sign-On integration
+  </Card>
+</Cards>
+
+## Local Authentication
+
+Local authentication is enabled by default and provides a secure foundation for user management.
+
+### Basic Configuration
+
+```bash
+# Enable local authentication (default)
+export MEMOS_AUTH_LOCAL_ENABLED=true
+
+# Allow user registration
+export MEMOS_ALLOW_SIGNUP=true
+
+# Require email verification
+export MEMOS_REQUIRE_EMAIL_VERIFICATION=true
+
+# Admin approval for new users
+export MEMOS_REQUIRE_ADMIN_APPROVAL=false
+```
+
+### Password Security
+
+Configure strong password policies for enhanced security.
+
+```bash
+# Password requirements
+export MEMOS_PASSWORD_MIN_LENGTH=12
+export MEMOS_PASSWORD_REQUIRE_UPPERCASE=true
+export MEMOS_PASSWORD_REQUIRE_LOWERCASE=true
+export MEMOS_PASSWORD_REQUIRE_NUMBERS=true
+export MEMOS_PASSWORD_REQUIRE_SYMBOLS=true
+
+# Password history
+export MEMOS_PASSWORD_HISTORY_COUNT=5
+export MEMOS_PASSWORD_MIN_AGE_DAYS=1
+
+# Account lockout
+export MEMOS_MAX_LOGIN_ATTEMPTS=5
+export MEMOS_LOCKOUT_DURATION=900  # 15 minutes
+```
+
+### Email Configuration
+
+Set up email services for verification and notifications.
+
+```bash
+# SMTP configuration
+export MEMOS_SMTP_HOST=smtp.gmail.com
+export MEMOS_SMTP_PORT=587
+export MEMOS_SMTP_USERNAME=your-email@gmail.com
+export MEMOS_SMTP_PASSWORD=your-app-password
+export MEMOS_SMTP_FROM=noreply@yourdomain.com
+
+# Email templates
+export MEMOS_EMAIL_VERIFICATION_TEMPLATE=custom
+export MEMOS_EMAIL_RESET_PASSWORD_TEMPLATE=custom
+```
+
+## OAuth Providers
+
+Integrate with popular OAuth 2.0 providers for seamless authentication.
+
+### Google OAuth
+
+Enable Google authentication for your users.
+
+#### Prerequisites
+
+1. **Create Google OAuth App**:
+   - Go to [Google Cloud Console](https://console.cloud.google.com/)
+   - Create a new project or select existing
+   - Enable Google+ API
+   - Create OAuth 2.0 credentials
+
+2. **Configure OAuth Consent Screen**:
+   - Set application name and logo
+   - Add authorized domains
+   - Configure scopes: email, profile
+
+#### Configuration
+
+```bash
+# Google OAuth settings
+export MEMOS_OAUTH_GOOGLE_ENABLED=true
+export MEMOS_OAUTH_GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
+export MEMOS_OAUTH_GOOGLE_CLIENT_SECRET=your-google-client-secret
+
+# Optional: Restrict to specific domains
+export MEMOS_OAUTH_GOOGLE_ALLOWED_DOMAINS=yourcompany.com,yourdomain.org
+
+# Callback URL: https://your-memos-domain.com/api/v1/auth/callback/google
+```
+
+#### Docker Configuration
+
+```yaml
+services:
+  memos:
+    image: neosmemo/memos:stable
+    environment:
+      - MEMOS_OAUTH_GOOGLE_ENABLED=true
+      - MEMOS_OAUTH_GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
+      - MEMOS_OAUTH_GOOGLE_CLIENT_SECRET=your-google-client-secret
+      - MEMOS_OAUTH_GOOGLE_ALLOWED_DOMAINS=yourcompany.com
+    ports:
+      - "5230:5230"
+```
+
+### GitHub OAuth
+
+Enable GitHub authentication for developer-focused teams.
+
+#### Setup Steps
+
+1. **Create GitHub OAuth App**:
+   - Go to GitHub Settings → Developer settings → OAuth Apps
+   - Click "New OAuth App"
+   - Set Authorization callback URL: `https://your-domain.com/api/v1/auth/callback/github`
+
+#### Configuration
+
+```bash
+# GitHub OAuth settings
+export MEMOS_OAUTH_GITHUB_ENABLED=true
+export MEMOS_OAUTH_GITHUB_CLIENT_ID=your-github-client-id
+export MEMOS_OAUTH_GITHUB_CLIENT_SECRET=your-github-client-secret
+
+# Optional: Restrict to organization members
+export MEMOS_OAUTH_GITHUB_ALLOWED_ORGS=your-org,another-org
+```
+
+### Microsoft Azure AD
+
+Integrate with Microsoft Azure Active Directory.
+
+#### Azure AD Setup
+
+1. **Register Application** in Azure Portal
+2. **Configure Authentication**:
+   - Add redirect URI: `https://your-domain.com/api/v1/auth/callback/azure`
+   - Enable ID tokens and access tokens
+
+#### Configuration
+
+```bash
+# Azure AD OAuth settings
+export MEMOS_OAUTH_AZURE_ENABLED=true
+export MEMOS_OAUTH_AZURE_CLIENT_ID=your-azure-client-id
+export MEMOS_OAUTH_AZURE_CLIENT_SECRET=your-azure-client-secret
+export MEMOS_OAUTH_AZURE_TENANT_ID=your-tenant-id
+
+# Optional: Restrict to specific tenant
+export MEMOS_OAUTH_AZURE_ALLOWED_TENANTS=tenant1,tenant2
+```
+
+### Custom OAuth Provider
+
+Configure custom OAuth 2.0 providers.
+
+```bash
+# Custom OAuth provider
+export MEMOS_OAUTH_CUSTOM_ENABLED=true
+export MEMOS_OAUTH_CUSTOM_NAME="Company SSO"
+export MEMOS_OAUTH_CUSTOM_CLIENT_ID=your-custom-client-id
+export MEMOS_OAUTH_CUSTOM_CLIENT_SECRET=your-custom-client-secret
+
+# OAuth endpoints
+export MEMOS_OAUTH_CUSTOM_AUTH_URL=https://sso.company.com/oauth/authorize
+export MEMOS_OAUTH_CUSTOM_TOKEN_URL=https://sso.company.com/oauth/token
+export MEMOS_OAUTH_CUSTOM_USER_URL=https://sso.company.com/oauth/userinfo
+
+# Attribute mapping
+export MEMOS_OAUTH_CUSTOM_USERNAME_ATTR=preferred_username
+export MEMOS_OAUTH_CUSTOM_EMAIL_ATTR=email
+export MEMOS_OAUTH_CUSTOM_NAME_ATTR=name
+```
+
+## LDAP Integration
+
+Connect Memos with your LDAP directory service for centralized user management.
+
+### Active Directory Configuration
+
+```bash
+# LDAP connection settings
+export MEMOS_LDAP_ENABLED=true
+export MEMOS_LDAP_HOST=ldap.company.com
+export MEMOS_LDAP_PORT=389
+export MEMOS_LDAP_USE_TLS=true
+export MEMOS_LDAP_SKIP_VERIFY=false
+
+# Bind credentials
+export MEMOS_LDAP_BIND_DN="CN=memos-service,OU=Service Accounts,DC=company,DC=com"
+export MEMOS_LDAP_BIND_PASSWORD=service-account-password
+
+# Search configuration
+export MEMOS_LDAP_BASE_DN="OU=Users,DC=company,DC=com"
+export MEMOS_LDAP_FILTER="(&(objectClass=user)(!(userAccountControl:1.2.840.113556.1.4.803:=2)))"
+export MEMOS_LDAP_USERNAME_ATTR=sAMAccountName
+export MEMOS_LDAP_EMAIL_ATTR=mail
+export MEMOS_LDAP_DISPLAY_NAME_ATTR=displayName
+```
+
+### OpenLDAP Configuration
+
+```bash
+# OpenLDAP settings
+export MEMOS_LDAP_ENABLED=true
+export MEMOS_LDAP_HOST=openldap.company.com
+export MEMOS_LDAP_PORT=389
+export MEMOS_LDAP_USE_TLS=true
+
+# Bind configuration
+export MEMOS_LDAP_BIND_DN="cn=memos,ou=services,dc=company,dc=com"
+export MEMOS_LDAP_BIND_PASSWORD=ldap-service-password
+
+# User search
+export MEMOS_LDAP_BASE_DN="ou=people,dc=company,dc=com"
+export MEMOS_LDAP_FILTER="(&(objectClass=inetOrgPerson)(uid=%s))"
+export MEMOS_LDAP_USERNAME_ATTR=uid
+export MEMOS_LDAP_EMAIL_ATTR=mail
+export MEMOS_LDAP_DISPLAY_NAME_ATTR=cn
+
+# Group mapping (optional)
+export MEMOS_LDAP_GROUP_BASE_DN="ou=groups,dc=company,dc=com"
+export MEMOS_LDAP_GROUP_FILTER="(&(objectClass=groupOfNames)(member=%s))"
+export MEMOS_LDAP_ADMIN_GROUP="cn=memos-admins,ou=groups,dc=company,dc=com"
+```
+
+### LDAP Testing
+
+```bash
+# Test LDAP connection
+ldapsearch -x -H ldap://ldap.company.com:389 \
+  -D "CN=memos-service,OU=Service Accounts,DC=company,DC=com" \
+  -w service-account-password \
+  -b "OU=Users,DC=company,DC=com" \
+  "(&(objectClass=user)(sAMAccountName=testuser))"
+```
+
+## SAML SSO
+
+Configure SAML 2.0 Single Sign-On for enterprise authentication.
+
+### SAML Configuration
+
+```bash
+# SAML SSO settings
+export MEMOS_SAML_ENABLED=true
+export MEMOS_SAML_ENTITY_ID=https://your-memos-domain.com/saml/metadata
+export MEMOS_SAML_SSO_URL=https://sso.company.com/saml/sso
+export MEMOS_SAML_SLO_URL=https://sso.company.com/saml/slo
+
+# Certificates
+export MEMOS_SAML_CERT_PATH=/etc/memos/saml.crt
+export MEMOS_SAML_KEY_PATH=/etc/memos/saml.key
+export MEMOS_SAML_IDP_CERT_PATH=/etc/memos/idp.crt
+
+# Attribute mapping
+export MEMOS_SAML_USERNAME_ATTR=NameID
+export MEMOS_SAML_EMAIL_ATTR=http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress
+export MEMOS_SAML_DISPLAY_NAME_ATTR=http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name
+export MEMOS_SAML_ROLE_ATTR=http://schemas.microsoft.com/ws/2008/06/identity/claims/role
+```
+
+### Identity Provider Examples
+
+#### Okta SAML
+
+```bash
+# Okta-specific configuration
+export MEMOS_SAML_ENTITY_ID=http://www.okta.com/your-app-id
+export MEMOS_SAML_SSO_URL=https://your-org.okta.com/app/your-app-id/sso/saml
+export MEMOS_SAML_ISSUER=http://www.okta.com/your-app-id
+
+# Okta attribute mapping
+export MEMOS_SAML_USERNAME_ATTR=user.login
+export MEMOS_SAML_EMAIL_ATTR=user.email
+export MEMOS_SAML_DISPLAY_NAME_ATTR=user.displayName
+```
+
+#### Azure AD SAML
+
+```bash
+# Azure AD SAML configuration
+export MEMOS_SAML_ENTITY_ID=https://sts.windows.net/your-tenant-id/
+export MEMOS_SAML_SSO_URL=https://login.microsoftonline.com/your-tenant-id/saml2
+export MEMOS_SAML_ISSUER=https://sts.windows.net/your-tenant-id/
+
+# Azure AD attributes
+export MEMOS_SAML_USERNAME_ATTR=http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name
+export MEMOS_SAML_EMAIL_ATTR=http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress
+export MEMOS_SAML_DISPLAY_NAME_ATTR=http://schemas.microsoft.com/identity/claims/displayname
+```
+
+## Multi-Factor Authentication
+
+Add an extra layer of security with MFA support.
+
+### TOTP (Time-based One-Time Password)
+
+```bash
+# Enable TOTP MFA
+export MEMOS_MFA_TOTP_ENABLED=true
+export MEMOS_MFA_TOTP_ISSUER="Memos"
+export MEMOS_MFA_TOTP_PERIOD=30
+export MEMOS_MFA_TOTP_DIGITS=6
+
+# MFA enforcement
+export MEMOS_MFA_REQUIRED_FOR_ADMINS=true
+export MEMOS_MFA_GRACE_PERIOD=86400  # 24 hours
+```
+
+### SMS MFA (Optional)
+
+```bash
+# SMS provider configuration (Twilio example)
+export MEMOS_MFA_SMS_ENABLED=true
+export MEMOS_MFA_SMS_PROVIDER=twilio
+export MEMOS_MFA_SMS_ACCOUNT_SID=your-twilio-sid
+export MEMOS_MFA_SMS_AUTH_TOKEN=your-twilio-token
+export MEMOS_MFA_SMS_FROM_NUMBER=+1234567890
+```
+
+### Email MFA
+
+```bash
+# Email-based MFA
+export MEMOS_MFA_EMAIL_ENABLED=true
+export MEMOS_MFA_EMAIL_CODE_LENGTH=6
+export MEMOS_MFA_EMAIL_CODE_EXPIRY=300  # 5 minutes
+export MEMOS_MFA_EMAIL_RATE_LIMIT=3    # Max 3 codes per hour
+```
+
+## Advanced Authentication Features
+
+### Just-In-Time (JIT) Provisioning
+
+Automatically create user accounts from external authentication sources.
+
+```bash
+# JIT provisioning
+export MEMOS_AUTH_JIT_ENABLED=true
+export MEMOS_AUTH_JIT_DEFAULT_ROLE=user
+export MEMOS_AUTH_JIT_AUTO_APPROVE=true
+
+# Role mapping from external attributes
+export MEMOS_AUTH_JIT_ADMIN_GROUPS=memos-admins,it-admins
+export MEMOS_AUTH_JIT_MODERATOR_GROUPS=memos-moderators
+```
+
+### Session Management
+
+Configure session behavior and security.
+
+```bash
+# Session settings
+export MEMOS_SESSION_TIMEOUT=3600      # 1 hour idle timeout
+export MEMOS_SESSION_MAX_DURATION=28800 # 8 hour absolute timeout
+export MEMOS_SESSION_REMEMBER_ME=true
+export MEMOS_SESSION_REMEMBER_DURATION=2592000 # 30 days
+
+# Session security
+export MEMOS_SESSION_COOKIE_SECURE=true
+export MEMOS_SESSION_COOKIE_HTTP_ONLY=true
+export MEMOS_SESSION_COOKIE_SAME_SITE=strict
+
+# Concurrent sessions
+export MEMOS_MAX_CONCURRENT_SESSIONS=5
+export MEMOS_SESSION_INVALIDATE_ON_PASSWORD_CHANGE=true
+```
+
+### Account Management
+
+Configure user account lifecycle and management.
+
+```bash
+# Account policies
+export MEMOS_ACCOUNT_ACTIVATION_REQUIRED=true
+export MEMOS_ACCOUNT_ADMIN_APPROVAL=false
+export MEMOS_ACCOUNT_EMAIL_VERIFICATION=true
+
+# Account cleanup
+export MEMOS_INACTIVE_ACCOUNT_CLEANUP=true
+export MEMOS_INACTIVE_ACCOUNT_DAYS=90
+export MEMOS_ACCOUNT_DELETION_GRACE_PERIOD=30
+```
+
+## Authentication Testing
+
+### Test Configuration
+
+Create test scripts to verify authentication setup.
+
+```bash
+#!/bin/bash
+# test-auth.sh
+
+MEMOS_URL="https://your-memos-domain.com"
+
+echo "Testing authentication methods..."
+
+# Test local login
+echo "1. Testing local authentication..."
+curl -X POST "$MEMOS_URL/api/v1/auth/signin" \
+  -H "Content-Type: application/json" \
+  -d '{"username":"testuser","password":"testpass"}' \
+  -w "HTTP Status: %{http_code}\n"
+
+# Test OAuth endpoints
+echo "2. Testing OAuth endpoints..."
+curl -I "$MEMOS_URL/api/v1/auth/oauth/google" -w "HTTP Status: %{http_code}\n"
+curl -I "$MEMOS_URL/api/v1/auth/oauth/github" -w "HTTP Status: %{http_code}\n"
+
+# Test SAML endpoints
+echo "3. Testing SAML endpoints..."
+curl -I "$MEMOS_URL/api/v1/auth/saml/login" -w "HTTP Status: %{http_code}\n"
+curl -I "$MEMOS_URL/saml/metadata" -w "HTTP Status: %{http_code}\n"
+```
+
+### LDAP Testing
+
+```bash
+#!/bin/bash
+# test-ldap.sh
+
+# Test LDAP connectivity
+echo "Testing LDAP connection..."
+ldapsearch -x -H ldap://$MEMOS_LDAP_HOST:$MEMOS_LDAP_PORT \
+  -D "$MEMOS_LDAP_BIND_DN" \
+  -w "$MEMOS_LDAP_BIND_PASSWORD" \
+  -b "$MEMOS_LDAP_BASE_DN" \
+  -s sub \
+  "$MEMOS_LDAP_FILTER" \
+  $MEMOS_LDAP_USERNAME_ATTR $MEMOS_LDAP_EMAIL_ATTR
+
+echo "LDAP test completed."
+```
+
+## Troubleshooting
+
+### Common Issues
+
+#### OAuth Configuration Problems
+
+```bash
+# Check OAuth callback URLs
+echo "Verify callback URLs:"
+echo "Google: https://your-domain.com/api/v1/auth/callback/google"
+echo "GitHub: https://your-domain.com/api/v1/auth/callback/github"
+echo "Azure: https://your-domain.com/api/v1/auth/callback/azure"
+
+# Test OAuth endpoints
+curl -I https://your-domain.com/api/v1/auth/oauth/google
+```
+
+#### LDAP Connection Issues
+
+```bash
+# Test LDAP connectivity
+telnet ldap.company.com 389
+
+# Test bind authentication
+ldapwhoami -x -H ldap://ldap.company.com:389 \
+  -D "CN=service-account,DC=company,DC=com" \
+  -w password
+
+# Test user search
+ldapsearch -x -H ldap://ldap.company.com:389 \
+  -D "CN=service-account,DC=company,DC=com" \
+  -w password \
+  -b "OU=Users,DC=company,DC=com" \
+  "(sAMAccountName=testuser)"
+```
+
+#### SAML Debugging
+
+```bash
+# Validate SAML metadata
+xmllint --format /path/to/saml-metadata.xml
+
+# Check certificate validity
+openssl x509 -in /etc/memos/saml.crt -text -noout
+
+# Verify SAML response
+# Use browser developer tools to inspect SAML responses
+```
+
+### Log Analysis
+
+Monitor authentication logs for troubleshooting.
+
+```bash
+# Memos authentication logs
+tail -f /var/log/memos/auth.log | grep -E "(login|oauth|ldap|saml)"
+
+# System authentication logs
+tail -f /var/log/auth.log | grep memos
+
+# Filter failed attempts
+grep "authentication failed" /var/log/memos/auth.log
+```
+
+## Security Best Practices
+
+### Authentication Security
+
+<Callout type="warning">
+**Security Reminder**: Always use HTTPS in production to protect authentication credentials and session tokens.
+</Callout>
+
+- **Use strong passwords** and enforce password policies
+- **Enable MFA** for administrative accounts
+- **Regularly rotate** service account passwords
+- **Monitor authentication logs** for suspicious activity
+- **Implement account lockout** policies
+- **Use secure session configurations**
+
+### External Integration Security
+
+- **Validate SSL certificates** for external authentication providers
+- **Use service accounts** with minimal required permissions
+- **Regularly update** OAuth application secrets
+- **Monitor external service** availability and security
+- **Implement fallback** authentication methods
+
+### Compliance Considerations
+
+- **GDPR**: Ensure user consent for data processing
+- **HIPAA**: Use appropriate authentication for healthcare data
+- **SOX**: Implement proper access controls and audit logging
+- **ISO 27001**: Follow security management best practices
+
+## Next Steps
+
+- [Configure security settings](/docs/configuration/security) for additional protection
+- [Set up API authentication](/docs/api/authentication) for programmatic access
+- [Monitor your instance](/docs/troubleshooting) for authentication issues
+- [Plan user management](/docs/guides/user-management) workflows
+
+---
+
+Need help with authentication configuration? Check the [troubleshooting guide](/docs/troubleshooting) or ask in [GitHub Discussions](https://github.com/usememos/memos/discussions).

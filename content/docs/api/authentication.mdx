@@ -1,0 +1,526 @@
+---
+title: API Authentication
+description: Learn how to authenticate with the Memos API using access tokens and manage API security.
+category: api
+difficulty: intermediate
+estimatedTime: "8 min read"
+lastUpdated: "2025-08-19"
+authors: ["Memos Team"]
+relatedPages:
+  - /docs/api/rest
+  - /docs/configuration/security
+  - /docs/integrations/webhooks
+---
+
+# API Authentication
+
+The Memos API uses token-based authentication to secure access to your data. This guide covers everything you need to know about API authentication, token management, and security best practices.
+
+## Authentication Methods
+
+Memos API supports the following authentication methods:
+
+<Cards>
+  <Card title="Access Tokens" href="#access-tokens" icon="Key">
+    Personal access tokens for API authentication (Recommended)
+  </Card>
+  <Card title="Session Cookies" href="#session-authentication" icon="Cookie">
+    Browser session authentication for web applications
+  </Card>
+</Cards>
+
+## Access Tokens
+
+Access tokens are the recommended way to authenticate with the Memos API. They provide secure, long-lived authentication without exposing user credentials.
+
+### Creating Access Tokens
+
+#### Via Web Interface
+
+1. **Login to your Memos instance**
+2. **Navigate to Settings** → **Access Tokens**
+3. **Click "Create Token"**
+4. **Configure token settings:**
+   - **Name**: Descriptive name for the token
+   - **Description**: Optional description
+   - **Expires**: Token expiration date (optional)
+5. **Copy the token** - it's only shown once!
+
+<Callout type="warning">
+**Save Your Token**: Access tokens are only displayed once during creation. Store them securely immediately after creation.
+</Callout>
+
+#### Via API (Admin Only)
+
+```bash
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $ADMIN_TOKEN" \
+  -d '{
+    "name": "My API Token",
+    "description": "Token for automation scripts",
+    "expiresAt": "2026-08-19T00:00:00Z"
+  }' \
+  "$MEMOS_HOST/api/v1/access-tokens"
+```
+
+### Using Access Tokens
+
+Include the token in the `Authorization` header using the Bearer scheme:
+
+```bash
+curl -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+     "$MEMOS_HOST/api/v1/memos"
+```
+
+#### Examples by Language
+
+##### JavaScript/Node.js
+
+```javascript
+const MEMOS_API_TOKEN = process.env.MEMOS_API_TOKEN;
+const MEMOS_HOST = process.env.MEMOS_HOST;
+
+const response = await fetch(`${MEMOS_HOST}/api/v1/memos`, {
+  headers: {
+    'Authorization': `Bearer ${MEMOS_API_TOKEN}`,
+    'Content-Type': 'application/json',
+  },
+});
+
+const memos = await response.json();
+```
+
+##### Python
+
+```python
+import os
+import requests
+
+MEMOS_API_TOKEN = os.environ['MEMOS_API_TOKEN']
+MEMOS_HOST = os.environ['MEMOS_HOST']
+
+headers = {
+    'Authorization': f'Bearer {MEMOS_API_TOKEN}',
+    'Content-Type': 'application/json',
+}
+
+response = requests.get(f'{MEMOS_HOST}/api/v1/memos', headers=headers)
+memos = response.json()
+```
+
+##### Go
+
+```go
+package main
+
+import (
+    "fmt"
+    "io"
+    "net/http"
+    "os"
+)
+
+func main() {
+    token := os.Getenv("MEMOS_API_TOKEN")
+    host := os.Getenv("MEMOS_HOST")
+    
+    client := &http.Client{}
+    req, _ := http.NewRequest("GET", host+"/api/v1/memos", nil)
+    req.Header.Add("Authorization", "Bearer "+token)
+    
+    resp, err := client.Do(req)
+    if err != nil {
+        panic(err)
+    }
+    defer resp.Body.Close()
+    
+    body, _ := io.ReadAll(resp.Body)
+    fmt.Println(string(body))
+}
+```
+
+##### PHP
+
+```php
+<?php
+$token = $_ENV['MEMOS_API_TOKEN'];
+$host = $_ENV['MEMOS_HOST'];
+
+$context = stream_context_create([
+    'http' => [
+        'method' => 'GET',
+        'header' => [
+            'Authorization: Bearer ' . $token,
+            'Content-Type: application/json',
+        ],
+    ],
+]);
+
+$response = file_get_contents($host . '/api/v1/memos', false, $context);
+$memos = json_decode($response, true);
+?>
+```
+
+### Token Management
+
+#### List Access Tokens
+
+View all your access tokens:
+
+```bash
+curl -H "Authorization: Bearer $MEMOS_TOKEN" \
+     "$MEMOS_HOST/api/v1/access-tokens"
+```
+
+#### Token Information
+
+Get details about a specific token:
+
+```bash
+curl -H "Authorization: Bearer $MEMOS_TOKEN" \
+     "$MEMOS_HOST/api/v1/access-tokens/{token-id}"
+```
+
+#### Revoke Token
+
+Delete/revoke an access token:
+
+```bash
+curl -X DELETE \
+     -H "Authorization: Bearer $MEMOS_TOKEN" \
+     "$MEMOS_HOST/api/v1/access-tokens/{token-id}"
+```
+
+<Callout type="info">
+**Token Revocation**: Revoked tokens become invalid immediately. Any applications using the token will need to be updated with a new token.
+</Callout>
+
+## Session Authentication
+
+Session authentication uses browser cookies and is primarily for web applications that integrate directly with the Memos web interface.
+
+### Login Process
+
+```javascript
+// Login to get session cookie
+const loginResponse = await fetch('/api/v1/auth/signin', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  credentials: 'include', // Important: include cookies
+  body: JSON.stringify({
+    username: 'your-username',
+    password: 'your-password',
+  }),
+});
+
+// Subsequent requests use the session cookie automatically
+const memosResponse = await fetch('/api/v1/memos', {
+  credentials: 'include', // Include cookies
+});
+```
+
+### Session Management
+
+#### Check Session Status
+
+```bash
+curl -c cookies.txt -b cookies.txt \
+     "$MEMOS_HOST/api/v1/auth/status"
+```
+
+#### Logout
+
+```bash
+curl -X POST \
+     -c cookies.txt -b cookies.txt \
+     "$MEMOS_HOST/api/v1/auth/signout"
+```
+
+## Security Best Practices
+
+### Token Storage
+
+#### ✅ Secure Storage
+
+```bash
+# Environment variables
+export MEMOS_API_TOKEN="your-token-here"
+
+# Configuration files (with proper permissions)
+chmod 600 ~/.memos/config
+echo "token=your-token-here" > ~/.memos/config
+
+# Secure credential stores
+# macOS Keychain, Windows Credential Store, Linux Secret Service
+```
+
+#### ❌ Insecure Storage
+
+```javascript
+// Never store tokens in client-side code
+const apiToken = "memos_access_token_123456"; // DON'T DO THIS
+
+// Never commit tokens to version control
+// tokens.js
+export const MEMOS_TOKEN = "memos_access_token_123456"; // DON'T DO THIS
+```
+
+### Token Lifecycle Management
+
+#### Token Rotation
+
+```bash
+#!/bin/bash
+# Token rotation script
+
+OLD_TOKEN=$MEMOS_API_TOKEN
+
+# Create new token
+NEW_TOKEN=$(curl -X POST \
+  -H "Authorization: Bearer $OLD_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Rotated Token"}' \
+  "$MEMOS_HOST/api/v1/access-tokens" | jq -r '.accessToken')
+
+# Update environment/config with new token
+export MEMOS_API_TOKEN=$NEW_TOKEN
+
+# Verify new token works
+if curl -H "Authorization: Bearer $NEW_TOKEN" "$MEMOS_HOST/api/v1/auth/status" > /dev/null; then
+  # Revoke old token
+  curl -X DELETE -H "Authorization: Bearer $NEW_TOKEN" "$MEMOS_HOST/api/v1/access-tokens/$OLD_TOKEN_ID"
+  echo "Token rotated successfully"
+else
+  echo "New token verification failed"
+  export MEMOS_API_TOKEN=$OLD_TOKEN
+fi
+```
+
+#### Token Expiration
+
+```javascript
+class MemosAPI {
+  constructor(baseURL, token) {
+    this.baseURL = baseURL;
+    this.token = token;
+    this.tokenExpiry = null;
+  }
+
+  async checkTokenExpiry() {
+    try {
+      const response = await this.request('GET', '/api/v1/auth/status');
+      this.tokenExpiry = response.user.tokenExpiry;
+      
+      if (this.tokenExpiry && Date.now() > new Date(this.tokenExpiry)) {
+        throw new Error('Token expired');
+      }
+    } catch (error) {
+      if (error.status === 401) {
+        throw new Error('Token invalid or expired');
+      }
+      throw error;
+    }
+  }
+}
+```
+
+### Network Security
+
+#### HTTPS Only
+
+```javascript
+// Always use HTTPS in production
+const MEMOS_HOST = 'https://memos.example.com'; // ✅ Secure
+// const MEMOS_HOST = 'http://memos.example.com'; // ❌ Insecure
+```
+
+#### Certificate Validation
+
+```python
+import requests
+
+# Enable certificate verification (default)
+response = requests.get(
+    'https://memos.example.com/api/v1/memos',
+    headers={'Authorization': f'Bearer {token}'},
+    verify=True  # Always True in production
+)
+
+# Custom CA bundle if needed
+response = requests.get(
+    'https://memos.example.com/api/v1/memos',
+    headers={'Authorization': f'Bearer {token}'},
+    verify='/path/to/ca-bundle.crt'
+)
+```
+
+## Error Handling
+
+### Authentication Errors
+
+```javascript
+async function handleAuthError(response) {
+  if (response.status === 401) {
+    const error = await response.json();
+    
+    switch (error.code) {
+      case 'UNAUTHENTICATED':
+        throw new Error('Missing or invalid token');
+      case 'TOKEN_EXPIRED':
+        throw new Error('Token has expired');
+      case 'TOKEN_REVOKED':
+        throw new Error('Token has been revoked');
+      default:
+        throw new Error('Authentication failed');
+    }
+  }
+}
+
+// Usage
+try {
+  const response = await fetch('/api/v1/memos', {
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+  
+  if (!response.ok) {
+    await handleAuthError(response);
+  }
+  
+  return await response.json();
+} catch (error) {
+  console.error('Authentication error:', error.message);
+  // Handle token renewal or user re-authentication
+}
+```
+
+### Retry Logic
+
+```javascript
+async function apiRequestWithRetry(url, options, maxRetries = 3) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      const response = await fetch(url, options);
+      
+      if (response.status === 401 && i < maxRetries - 1) {
+        // Try to refresh token
+        await refreshToken();
+        options.headers['Authorization'] = `Bearer ${getNewToken()}`;
+        continue;
+      }
+      
+      return response;
+    } catch (error) {
+      if (i === maxRetries - 1) throw error;
+      await sleep(1000 * Math.pow(2, i)); // Exponential backoff
+    }
+  }
+}
+```
+
+## Advanced Authentication
+
+### Custom Authentication Middleware
+
+#### Express.js Middleware
+
+```javascript
+const memosAuth = (req, res, next) => {
+  const token = req.headers.authorization?.replace('Bearer ', '');
+  
+  if (!token) {
+    return res.status(401).json({ error: 'Missing token' });
+  }
+  
+  // Verify token with Memos API
+  fetch(`${MEMOS_HOST}/api/v1/auth/status`, {
+    headers: { 'Authorization': `Bearer ${token}` }
+  })
+  .then(response => {
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error('Invalid token');
+  })
+  .then(data => {
+    req.user = data.user;
+    next();
+  })
+  .catch(error => {
+    res.status(401).json({ error: 'Authentication failed' });
+  });
+};
+
+// Usage
+app.get('/api/user-memos', memosAuth, (req, res) => {
+  // req.user contains authenticated user info
+  res.json({ user: req.user });
+});
+```
+
+### Proxy Authentication
+
+```nginx
+# Nginx proxy with authentication headers
+location /api/ {
+    proxy_pass http://memos-backend;
+    proxy_set_header Authorization $http_authorization;
+    proxy_set_header X-Original-URI $request_uri;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+```
+
+## Testing Authentication
+
+### Test Script
+
+```bash
+#!/bin/bash
+# Test authentication setup
+
+MEMOS_HOST="https://your-memos-instance.com"
+MEMOS_TOKEN="your-access-token"
+
+echo "Testing Memos API authentication..."
+
+# Test 1: Check authentication status
+echo "1. Checking auth status..."
+response=$(curl -s -w "%{http_code}" -H "Authorization: Bearer $MEMOS_TOKEN" "$MEMOS_HOST/api/v1/auth/status")
+status_code=$(echo "$response" | tail -n1)
+
+if [ "$status_code" = "200" ]; then
+    echo "✅ Authentication successful"
+else
+    echo "❌ Authentication failed (HTTP $status_code)"
+    exit 1
+fi
+
+# Test 2: Test API access
+echo "2. Testing API access..."
+memos_response=$(curl -s -w "%{http_code}" -H "Authorization: Bearer $MEMOS_TOKEN" "$MEMOS_HOST/api/v1/memos?limit=1")
+memos_status=$(echo "$memos_response" | tail -n1)
+
+if [ "$memos_status" = "200" ]; then
+    echo "✅ API access successful"
+else
+    echo "❌ API access failed (HTTP $memos_status)"
+    exit 1
+fi
+
+echo "🎉 All authentication tests passed!"
+```
+
+## Next Steps
+
+- [Explore the REST API](/docs/api/rest) endpoints
+- [Set up Webhooks](/docs/integrations/webhooks) for real-time events
+- [Configure Security Settings](/docs/configuration/security)
+- [Learn about Integrations](/docs/integrations)
+
+---
+
+Need help with authentication? Check the [troubleshooting guide](/docs/troubleshooting) or ask in our [community discussions](https://github.com/usememos/memos/discussions).

@@ -1,103 +1,50 @@
 ---
 title: Troubleshooting
+description: Common issues and their solutions when using Memos.
+category: troubleshooting
+difficulty: intermediate
+estimatedTime: "10 min read"
+lastUpdated: "2025-08-19"
+authors: ["Memos Team"]
 ---
 
-> **⚠️ Warning**  
-> Instructions in this section are for advanced users.
+# Troubleshooting
 
-## Introduction
+Find solutions to common issues when using Memos.
 
-This page contains instructions for troubleshooting Memos instances.
+## Installation Issues
 
-Some assumptions are made in the instructions below:
+### Docker Container Won't Start
 
-- The container name is `memos`.
-- The database driver is `sqlite`.
-- The database file is `/var/opt/memos/memos_prod.db`.
+**Problem**: Container exits immediately or won't start.
 
-> **📌 Important**  
-> `/var/opt/memos/memos_prod.db` is the standard path _inside_ the container. It will only be different if you have supplied a different `MEMOS_DATA` environment variable on the container creation, which deviates from the default.
+**Solutions**:
+1. Check container logs: `docker logs memos`
+2. Verify port availability: `lsof -i :5230`
+3. Check file permissions on data directory
+4. Ensure sufficient disk space
 
-## Re-enable password login
+### Permission Denied Errors
 
-If you have locked yourself out of your Memos instance with a failed Single-Sign-On (SSO) setup, you can re-enable regular login by following these steps.
+**Problem**: Database or file permission errors.
 
-- Get a container shell:
+**Solutions**:
+```bash
+# Fix ownership of data directory
+sudo chown -R 1001:1001 ~/.memos/
 
-  ```bash
-  docker exec -it memos ash
-  ```
+# Or use current user
+sudo chown -R $(id -u):$(id -g) ~/.memos/
+```
 
-- Install SQLite shell:
+## Common Issues
 
-  ```bash
-  apk add --no-cache sqlite
-  ```
+More troubleshooting content coming soon...
 
-- Enable password login on the database:
+## Getting Help
 
-  ```bash
-  sqlite3 /var/opt/memos/memos_prod.db -cmd '.mode csv' <<EOF
-    UPDATE system_setting
-      SET value = json_patch(value, '{"disallowPasswordLogin": false}')
-        WHERE name = 'GENERAL';
-  EOF
-  ```
+If you can't find a solution here:
 
-  > **📌 Important**  
-  > This is a single command. Paste at once.
-
-- Exit the container shell:
-
-  ```bash
-  exit
-  ```
-
-- Restart the container:
-
-  ```bash
-  docker restart memos
-  ```
-
-## Reset admin password
-
-- Get a container shell:
-
-  ```bash
-  docker exec -it memos ash
-  ```
-
-- Install SQLite shell:
-
-  ```bash
-  apk add --no-cache sqlite
-  ```
-
-- Reset the password on the database:
-
-  This will change the main user password to `secret` and unarchive the user. It will also show the user name, in case you forgot it.
-
-  ```bash
-  sqlite3 /var/opt/memos/memos_prod.db -cmd '.mode csv' <<EOF
-    UPDATE user
-      SET password_hash='\$2a\$12\$fWLqtEFiwr0oFwz3I9H6Uu/W7MvPCJGA9fLlTDV5eO2qsH8yUANku',
-        row_status = 'NORMAL'
-          WHERE id = 1;
-    SELECT user.username FROM user WHERE user.id = 1;
-  EOF
-  ```
-
-  > **📌 Important**  
-  > This is a single command. Paste at once.
-
-- Exit the container shell:
-
-  ```bash
-  exit
-  ```
-
-- Restart the container:
-
-  ```bash
-  docker restart memos
-  ```
+1. Check [GitHub Issues](https://github.com/usememos/memos/issues)
+2. Search [Discussions](https://github.com/usememos/memos/discussions) 
+3. Create a new issue with detailed information

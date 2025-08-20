@@ -1,0 +1,575 @@
+---
+title: Database Configuration
+description: Configure and optimize database settings for your Memos instance.
+category: configuration
+difficulty: intermediate
+estimatedTime: "10 min read"
+lastUpdated: "2025-08-19"
+authors: ["Memos Team"]
+relatedPages:
+  - /docs/installation/docker
+  - /docs/installation/binary
+  - /docs/deployment/docker
+---
+
+# Database Configuration
+
+Memos supports multiple database backends to suit different deployment scenarios. This guide covers setup, configuration, and optimization for each supported database.
+
+## Supported Databases
+
+<Cards>
+  <Card title="SQLite" href="#sqlite-configuration" icon="Database">
+    Default option - perfect for single users and small teams
+  </Card>
+  <Card title="PostgreSQL" href="#postgresql-configuration" icon="Database">  
+    Recommended for production and multi-user deployments
+  </Card>
+  <Card title="MySQL" href="#mysql-configuration" icon="Database">
+    Alternative for existing MySQL infrastructure
+  </Card>
+</Cards>
+
+## Database Selection Guide
+
+### SQLite (Default)
+**Best for:**
+- Single-user installations
+- Development environments  
+- Small teams (< 10 users)
+- Simple deployment requirements
+
+**Advantages:**
+- Zero configuration
+- File-based storage
+- High performance for read-heavy workloads
+- Built-in with Memos
+
+**Limitations:**
+- Single writer at a time
+- No remote access
+- Limited concurrent users
+
+### PostgreSQL (Recommended for Production)
+**Best for:**
+- Multi-user production deployments
+- High-concurrency environments
+- Enterprise installations
+- Advanced querying needs
+
+**Advantages:**
+- Excellent concurrent performance
+- Advanced indexing and querying
+- Full ACID compliance
+- Mature ecosystem
+
+**Requirements:**
+- Separate PostgreSQL server
+- Additional maintenance overhead
+
+### MySQL/MariaDB
+**Best for:**
+- Existing MySQL infrastructure
+- Specific MySQL expertise
+- Legacy system integration
+
+**Advantages:**
+- Wide adoption and expertise
+- Good performance
+- Extensive tooling
+
+**Considerations:**
+- Additional complexity vs SQLite
+- Less optimal than PostgreSQL for concurrent workloads
+
+## SQLite Configuration
+
+### Default Setup
+
+SQLite works out of the box with zero configuration:
+
+```bash
+# No additional setup needed
+memos
+# Database file created automatically at: data/memos_prod.db
+```
+
+### Custom SQLite Location
+
+```bash
+# Environment variable
+export MEMOS_DATA="/custom/path/to/data"
+memos
+
+# Docker
+docker run -v /host/path:/var/opt/memos neosmemo/memos:stable
+
+# Docker Compose
+services:
+  memos:
+    image: neosmemo/memos:stable
+    volumes:
+      - ./custom-data:/var/opt/memos
+```
+
+### SQLite Optimization
+
+#### Database Settings
+
+```sql
+-- Connect to SQLite database
+sqlite3 /path/to/memos_prod.db
+
+-- Optimize settings
+PRAGMA journal_mode = WAL;
+PRAGMA synchronous = NORMAL;
+PRAGMA cache_size = 1000000;
+PRAGMA temp_store = MEMORY;
+```
+
+#### Performance Tuning
+
+```bash
+# Set environment variables for better SQLite performance
+export SQLITE_TMPDIR="/tmp"
+export SQLITE_DEFAULT_CACHE_SIZE=1000000
+```
+
+<Callout type="tip">
+**SQLite Performance**: For better performance with SQLite, ensure your data directory is on fast storage (SSD) and consider using WAL mode for better concurrent access.
+</Callout>
+
+## PostgreSQL Configuration
+
+### Server Installation
+
+#### Ubuntu/Debian
+```bash
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+
+# Start service
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+```
+
+#### CentOS/RHEL
+```bash
+sudo yum install postgresql-server postgresql-contrib
+sudo postgresql-setup initdb
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+```
+
+#### Docker PostgreSQL
+```yaml
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: memos
+      POSTGRES_USER: memos
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  memos:
+    image: neosmemo/memos:stable
+    depends_on:
+      - postgres
+    environment:
+      - MEMOS_DRIVER=postgres
+      - MEMOS_DSN=postgresql://memos:${DB_PASSWORD}@postgres:5432/memos?sslmode=disable
+    ports:
+      - "5230:5230"
+
+volumes:
+  postgres_data:
+```
+
+### Database Setup
+
+```sql
+-- Connect as postgres user
+sudo -u postgres psql
+
+-- Create database and user
+CREATE DATABASE memos;
+CREATE USER memos WITH ENCRYPTED PASSWORD 'your-secure-password';
+
+-- Grant permissions
+GRANT ALL PRIVILEGES ON DATABASE memos TO memos;
+
+-- Connect to the database
+\c memos
+
+-- Grant schema permissions (PostgreSQL 15+)
+GRANT ALL ON SCHEMA public TO memos;
+GRANT ALL ON ALL TABLES IN SCHEMA public TO memos;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO memos;
+
+-- Set default permissions for future objects
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO memos;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO memos;
+
+\q
+```
+
+### Connection Configuration
+
+#### Environment Variables
+```bash
+export MEMOS_DRIVER=postgres
+export MEMOS_DSN="postgresql://memos:password@localhost:5432/memos?sslmode=disable"
+```
+
+#### Docker Environment
+```bash
+docker run -d \
+  --name memos \
+  -p 5230:5230 \
+  -e MEMOS_DRIVER=postgres \
+  -e MEMOS_DSN="postgresql://memos:password@postgres:5432/memos?sslmode=disable" \
+  neosmemo/memos:stable
+```
+
+### PostgreSQL Optimization
+
+#### Server Configuration
+
+Edit `/etc/postgresql/15/main/postgresql.conf`:
+
+```ini
+# Memory settings
+shared_buffers = 256MB
+effective_cache_size = 1GB
+maintenance_work_mem = 64MB
+work_mem = 16MB
+
+# Connection settings  
+max_connections = 100
+shared_preload_libraries = 'pg_stat_statements'
+
+# Write-ahead logging
+wal_buffers = 16MB
+checkpoint_completion_target = 0.9
+
+# Query optimization
+random_page_cost = 1.1  # For SSD storage
+effective_io_concurrency = 200
+```
+
+#### Performance Monitoring
+
+```sql
+-- Enable pg_stat_statements extension
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+
+-- Monitor slow queries
+SELECT 
+  query,
+  calls,
+  total_time,
+  mean_time,
+  rows
+FROM pg_stat_statements 
+ORDER BY total_time DESC 
+LIMIT 10;
+```
+
+## MySQL Configuration
+
+### Server Installation
+
+#### Ubuntu/Debian
+```bash
+sudo apt update
+sudo apt install mysql-server
+
+# Secure installation
+sudo mysql_secure_installation
+
+# Start service
+sudo systemctl start mysql
+sudo systemctl enable mysql
+```
+
+#### Docker MySQL
+```yaml
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: memos
+      MYSQL_USER: memos
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  memos:
+    image: neosmemo/memos:stable
+    depends_on:
+      - mysql
+    environment:
+      - MEMOS_DRIVER=mysql
+      - MEMOS_DSN=memos:${DB_PASSWORD}@tcp(mysql:3306)/memos?charset=utf8mb4&parseTime=True&loc=Local
+    ports:
+      - "5230:5230"
+
+volumes:
+  mysql_data:
+```
+
+### Database Setup
+
+```sql
+-- Connect as root
+mysql -u root -p
+
+-- Create database and user
+CREATE DATABASE memos CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'memos'@'%' IDENTIFIED BY 'your-secure-password';
+GRANT ALL PRIVILEGES ON memos.* TO 'memos'@'%';
+FLUSH PRIVILEGES;
+
+EXIT;
+```
+
+### Connection Configuration
+
+```bash
+# Environment variables
+export MEMOS_DRIVER=mysql
+export MEMOS_DSN="memos:password@tcp(localhost:3306)/memos?charset=utf8mb4&parseTime=True&loc=Local"
+```
+
+## Connection String Format
+
+### PostgreSQL DSN Examples
+
+```bash
+# Basic connection
+postgresql://username:password@host:port/database
+
+# With SSL
+postgresql://username:password@host:port/database?sslmode=require
+
+# Connection pooling
+postgresql://username:password@host:port/database?pool_max_conns=10
+
+# Full example
+postgresql://memos:secretpass@localhost:5432/memos?sslmode=disable&connect_timeout=10
+```
+
+### MySQL DSN Examples
+
+```bash
+# Basic connection  
+username:password@tcp(host:port)/database
+
+# With charset and timezone
+username:password@tcp(host:port)/database?charset=utf8mb4&parseTime=True&loc=Local
+
+# Connection limits
+username:password@tcp(host:port)/database?charset=utf8mb4&maxOpenConns=10&maxIdleConns=5
+
+# Full example
+memos:secretpass@tcp(localhost:3306)/memos?charset=utf8mb4&parseTime=True&loc=Local&timeout=10s
+```
+
+## Database Migrations
+
+### Automatic Migrations
+
+Memos handles database schema migrations automatically:
+
+```bash
+# Migrations run on startup
+2025/08/19 12:00:00 [INFO] Running database migrations...
+2025/08/19 12:00:01 [INFO] Applied migration: 001_initial_schema
+2025/08/19 12:00:01 [INFO] Applied migration: 002_add_user_settings
+2025/08/19 12:00:01 [INFO] Database migrations completed
+```
+
+### Manual Migration Control
+
+```bash
+# Skip migrations (not recommended)
+export MEMOS_SKIP_MIGRATIONS=true
+
+# Migration timeout (seconds)
+export MEMOS_MIGRATION_TIMEOUT=300
+```
+
+## Backup and Maintenance
+
+### SQLite Backup
+
+```bash
+# Simple file copy (while service is stopped)
+cp /path/to/memos_prod.db /backup/location/
+
+# Online backup using SQLite command
+sqlite3 /path/to/memos_prod.db ".backup /backup/location/memos_backup.db"
+
+# Compressed backup
+sqlite3 /path/to/memos_prod.db ".dump" | gzip > backup.sql.gz
+```
+
+### PostgreSQL Backup
+
+```bash
+# Database dump
+pg_dump -h localhost -U memos -d memos > memos_backup.sql
+
+# Compressed backup
+pg_dump -h localhost -U memos -d memos | gzip > memos_backup.sql.gz
+
+# Custom format (recommended)
+pg_dump -h localhost -U memos -d memos -Fc > memos_backup.dump
+
+# Automated backup script
+#!/bin/bash
+BACKUP_DIR="/backups/memos"
+DATE=$(date +%Y%m%d_%H%M%S)
+pg_dump -h localhost -U memos -d memos -Fc > "$BACKUP_DIR/memos_$DATE.dump"
+```
+
+### MySQL Backup
+
+```bash
+# Database dump
+mysqldump -u memos -p memos > memos_backup.sql
+
+# Compressed backup
+mysqldump -u memos -p memos | gzip > memos_backup.sql.gz
+
+# All databases
+mysqldump -u root -p --all-databases > all_databases_backup.sql
+```
+
+## Monitoring and Troubleshooting
+
+### Connection Issues
+
+#### Check Database Status
+
+```bash
+# PostgreSQL
+sudo systemctl status postgresql
+pg_isready -h localhost -p 5432
+
+# MySQL  
+sudo systemctl status mysql
+mysqladmin -u memos -p ping
+
+# SQLite
+ls -la /path/to/data/
+sqlite3 /path/to/memos_prod.db ".tables"
+```
+
+#### Test Connections
+
+```bash
+# PostgreSQL
+psql -h localhost -U memos -d memos -c "SELECT version();"
+
+# MySQL
+mysql -h localhost -u memos -p -e "SELECT version();"
+```
+
+### Performance Monitoring
+
+#### Database Size Monitoring
+
+```sql
+-- PostgreSQL
+SELECT 
+  pg_size_pretty(pg_database_size('memos')) as db_size,
+  pg_size_pretty(pg_total_relation_size('memos')) as table_size;
+
+-- MySQL
+SELECT 
+  table_schema as 'Database',
+  ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) as 'Size (MB)'
+FROM information_schema.tables 
+WHERE table_schema = 'memos';
+```
+
+#### Query Performance
+
+```sql
+-- PostgreSQL slow queries
+SELECT 
+  query,
+  calls,
+  total_time / calls as avg_time_ms
+FROM pg_stat_statements 
+WHERE calls > 100
+ORDER BY avg_time_ms DESC
+LIMIT 10;
+
+-- MySQL slow queries  
+SELECT * FROM mysql.slow_log 
+ORDER BY start_time DESC 
+LIMIT 10;
+```
+
+<Callout type="warning">
+**Production Reminder**: Always test database configuration changes in a non-production environment first, and ensure you have proper backups before making any changes.
+</Callout>
+
+## Security Considerations
+
+### Connection Security
+
+- **Use strong passwords** for database users
+- **Enable SSL/TLS** for remote connections
+- **Restrict network access** using firewalls
+- **Regular security updates** for database software
+- **Monitor access logs** for suspicious activity
+
+### Database Hardening
+
+#### PostgreSQL Security
+
+```sql
+-- Remove public schema permissions
+REVOKE ALL ON SCHEMA public FROM public;
+GRANT USAGE ON SCHEMA public TO memos;
+
+-- Limit connection attempts
+ALTER SYSTEM SET log_connections = 'on';
+ALTER SYSTEM SET log_disconnections = 'on';
+```
+
+#### MySQL Security
+
+```sql
+-- Remove anonymous users
+DELETE FROM mysql.user WHERE User='';
+
+-- Remove remote root access
+DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+
+FLUSH PRIVILEGES;
+```
+
+## Next Steps
+
+- [Configure storage options](/docs/configuration/storage)
+- [Set up authentication](/docs/configuration/authentication)  
+- [Deploy to production](/docs/deployment)
+- [Monitor your instance](/docs/troubleshooting)
+
+---
+
+Need help with database configuration? Check the [troubleshooting guide](/docs/troubleshooting) or ask in [GitHub Discussions](https://github.com/usememos/memos/discussions).

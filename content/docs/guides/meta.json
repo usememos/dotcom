@@ -1,0 +1,11 @@
+{
+  "title": "User Guides",
+  "description": "Comprehensive guides for using Memos effectively",
+  "pages": [
+    "index",
+    "getting-started",
+    "content-syntax",
+    "shortcuts",
+    "tags"
+  ]
+}

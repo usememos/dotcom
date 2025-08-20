@@ -1,0 +1,79 @@
+---
+title: Installation
+description: Learn how to install Memos using different methods including Docker, binary releases, and development setup.
+category: installation
+difficulty: beginner
+estimatedTime: "5 min read"
+lastUpdated: "2025-08-19"
+authors: ["Memos Team"]
+---
+
+# Installation Options
+
+Memos offers several installation methods to suit different use cases and environments. Choose the method that works best for your needs.
+
+## Quick Start
+
+For most users, we recommend using Docker as it's the fastest and most reliable way to get started:
+
+```bash
+docker run -d \
+  --name memos \
+  --publish 5230:5230 \
+  --volume ~/.memos/:/var/opt/memos \
+  neosmemo/memos:stable
+```
+
+Then visit [http://localhost:5230](http://localhost:5230) to access your Memos instance.
+
+## Installation Methods
+
+<Cards>
+  <Card title="Docker" href="/docs/installation/docker" icon="Container">
+    Recommended method for most users. Quick setup with container isolation.
+  </Card>
+  <Card title="Binary" href="/docs/installation/binary" icon="Download">
+    Direct binary installation for custom environments and production deployments.
+  </Card>
+  <Card title="Development" href="/docs/installation/development" icon="Code">
+    Set up a development environment for contributing or customization.
+  </Card>
+</Cards>
+
+## System Requirements
+
+### Minimum Requirements
+- **RAM**: 512 MB
+- **Storage**: 1 GB available space
+- **CPU**: Any modern x86_64 or ARM64 processor
+
+### Supported Platforms
+- Linux (x86_64, ARM64)
+- macOS (Intel, Apple Silicon)
+- Windows (x86_64)
+- Docker (all platforms)
+
+## Database Support
+
+Memos supports multiple database backends:
+
+- **SQLite** (default) - Perfect for single-user instances
+- **PostgreSQL** - Recommended for multi-user production deployments
+- **MySQL/MariaDB** - Alternative for existing MySQL infrastructure
+
+## Next Steps
+
+After installation, you'll want to:
+
+1. **[Configure your instance](/docs/configuration)** - Set up database, storage, and security
+2. **[Learn the basics](/docs/guides/getting-started)** - Create your first memo
+3. **[Explore integrations](/docs/integrations)** - Connect with other tools
+4. **[Set up authentication](/docs/configuration/authentication)** - Secure your instance
+
+## Need Help?
+
+If you encounter issues during installation:
+
+- Check the [troubleshooting guide](/docs/troubleshooting)
+- Search [GitHub Issues](https://github.com/usememos/memos/issues)
+- Ask for help in [Discussions](https://github.com/usememos/memos/discussions)

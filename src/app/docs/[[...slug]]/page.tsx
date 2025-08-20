@@ -1,85 +1,44 @@
-import { Button } from "@mui/joy";
+import { source } from "@/lib/source";
+import { DocsPage, DocsBody, DocsDescription, DocsTitle } from "fumadocs-ui/page";
 import { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import React from "react";
-import Icon from "@/components/Icon";
-import MdxRenderer from "@/components/MdxRenderer";
-import SectionContainer from "@/components/SectionContainer";
-import { GITHUB_REPO_LINK } from "@/consts/common";
-import { getContentFilePaths, getMdxFilePathFromSlugs, readMdxFileContent } from "@/lib/mdx-content";
-import { getMetadata } from "@/utils/metadata";
-import Navigation, { NavigationMobileMenu } from "./navigation";
+import { createRelativeLink } from "fumadocs-ui/mdx";
+import { getMDXComponents } from "@/mdx-components";
 
-interface Props {
-  params: Promise<{ slug: string[] }>;
-}
-
-const Page = async (props: Props) => {
+export default async function Page(props: { params: Promise<{ slug?: string[] }> }) {
   const params = await props.params;
-  const filePath = getMdxFilePathFromSlugs("docs", params.slug);
-  const contentItem = readMdxFileContent(filePath);
+  const page = source.getPage(params.slug);
+  if (!page) notFound();
 
-  if (!contentItem) {
-    return notFound();
-  }
-
-  const { frontmatter, content } = contentItem;
-  const remoteFilePath = `${GITHUB_REPO_LINK}/blob/main/${filePath}`;
+  const MDXContent = page.data.body;
 
   return (
-    <SectionContainer>
-      <div className="w-full flex flex-row justify-start items-start sm:px-6 sm:gap-6">
-        <div className="hidden sm:block sticky top-24 h-[calc(100svh-6rem)] w-48 shrink-0">
-          <div className="relative w-full h-full overflow-auto py-4 no-scrollbar">
-            <Navigation />
-          </div>
-          <div className="absolute top-0 left-0 w-full h-8 bg-linear-to-t from-transparent to-white pointer-events-none"></div>
-          <div className="absolute bottom-0 left-0 w-full h-8 bg-linear-to-b from-transparent to-white pointer-events-none"></div>
-        </div>
-        <div className="w-full sm:px-4">
-          <div className="block sm:hidden w-full">
-            <NavigationMobileMenu />
-          </div>
-          <h1 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold my-6">{frontmatter.title}</h1>
-          <MdxRenderer content={content} />
-          <div className="mt-12">
-            <Button size="sm" variant="outlined" color="neutral" startDecorator={<Icon.Edit className="w-4 h-auto" />}>
-              <Link href={remoteFilePath} target="_blank">
-                Edit this page
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </div>
-    </SectionContainer>
+    <DocsPage toc={page.data.toc} full={page.data.full}>
+      <DocsTitle>{page.data.title}</DocsTitle>
+      <DocsDescription>{page.data.description}</DocsDescription>
+      <DocsBody>
+        <MDXContent
+          components={getMDXComponents({
+            // this allows you to link to other pages with relative file paths
+            a: createRelativeLink(source, page),
+          })}
+        />
+      </DocsBody>
+    </DocsPage>
   );
-};
+}
 
-export const generateMetadata = async (props: Props): Promise<Metadata> => {
+export async function generateStaticParams() {
+  return source.generateParams();
+}
+
+export async function generateMetadata(props: { params: Promise<{ slug?: string[] }> }): Promise<Metadata> {
   const params = await props.params;
-  const filePath = getMdxFilePathFromSlugs("docs", params.slug);
-  const contentItem = readMdxFileContent(filePath);
+  const page = source.getPage(params.slug);
+  if (!page) notFound();
 
-  if (!contentItem) {
-    return notFound();
-  }
-
-  const { frontmatter } = contentItem;
-  return getMetadata({
-    title: frontmatter.title + " - Memos",
-    pathname: params.slug?.length > 0 ? `/docs/${params.slug.join("/")}` : "/docs",
-  });
-};
-
-export const generateStaticParams = () => {
-  const filePaths = getContentFilePaths("docs");
-  return [
-    { slug: [] },
-    ...[...filePaths.map((filePath) => filePath.split("/"))].map((contentSlug) => {
-      return { slug: contentSlug };
-    }),
-  ];
-};
-
-export default Page;
+  return {
+    title: page.data.title,
+    description: page.data.description,
+  };
+}

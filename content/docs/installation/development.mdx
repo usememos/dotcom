@@ -1,0 +1,582 @@
+---
+title: Development Setup
+description: Set up a local development environment for contributing to Memos or building custom features.
+category: installation
+difficulty: advanced
+estimatedTime: "20 min read"
+lastUpdated: "2025-08-19"
+authors: ["Memos Team"]
+relatedPages:
+  - /docs/contributing/development
+  - /docs/api/rest
+  - /docs/installation/docker
+---
+
+# Development Setup
+
+This guide will help you set up a complete development environment for Memos, whether you want to contribute to the project or build custom features.
+
+## Prerequisites
+
+### Required Software
+
+- **Go 1.21+** - [Download Go](https://golang.org/dl/)
+- **Node.js 18+** - [Download Node.js](https://nodejs.org/)
+- **npm/yarn/pnpm** - Package manager (pnpm recommended)
+- **Git** - [Download Git](https://git-scm.com/)
+
+### Optional Tools
+
+- **Docker** - For containerized development
+- **Make** - For build automation
+- **Air** - For hot reloading Go applications
+
+### System Requirements
+
+- **OS**: Linux, macOS, or Windows
+- **RAM**: 4GB minimum, 8GB recommended
+- **Storage**: 2GB free space
+
+## Source Code Setup
+
+### Clone Repository
+
+```bash
+# Clone the main repository
+git clone https://github.com/usememos/memos.git
+cd memos
+
+# Or fork and clone your fork
+git clone https://github.com/YOUR_USERNAME/memos.git
+cd memos
+
+# Add upstream remote (if forked)
+git remote add upstream https://github.com/usememos/memos.git
+```
+
+### Project Structure
+
+Understanding the project structure:
+
+```
+memos/
+├── cmd/                    # Application entry points
+├── internal/              # Private application code
+│   ├── server/           # HTTP server and routes
+│   ├── store/            # Data access layer
+│   └── util/             # Utility functions
+├── web/                   # Frontend code
+│   ├── src/              # React source code
+│   └── dist/             # Built frontend assets
+├── scripts/              # Build and utility scripts
+├── test/                 # Test files
+├── docs/                 # Documentation
+└── Dockerfile            # Container definition
+```
+
+## Backend Development
+
+### Go Environment Setup
+
+1. **Verify Go installation:**
+
+```bash
+go version
+```
+
+2. **Install development dependencies:**
+
+```bash
+# Install Air for hot reloading
+go install github.com/cosmtrek/air@latest
+
+# Install golangci-lint for linting
+curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.54.2
+```
+
+### Database Setup
+
+#### SQLite (Default)
+
+No additional setup needed. SQLite database will be created automatically.
+
+#### PostgreSQL (Recommended for Development)
+
+```bash
+# Install PostgreSQL
+brew install postgresql          # macOS
+sudo apt install postgresql     # Ubuntu
+sudo yum install postgresql     # CentOS
+
+# Start PostgreSQL service
+brew services start postgresql  # macOS
+sudo systemctl start postgresql # Linux
+
+# Create development database
+createdb memos_dev
+
+# Create test database
+createdb memos_test
+```
+
+### Environment Configuration
+
+Create development configuration:
+
+```bash
+# Copy example environment file
+cp .env.example .env
+
+# Edit configuration
+cat > .env << EOF
+MEMOS_MODE=dev
+MEMOS_PORT=8080
+MEMOS_DATA=./dev_data
+MEMOS_DRIVER=postgres
+MEMOS_DSN=postgresql://localhost:5432/memos_dev?sslmode=disable
+EOF
+```
+
+### Build and Run
+
+#### Manual Build
+
+```bash
+# Build backend
+make build
+
+# Run development server
+./memos
+```
+
+#### Hot Reloading with Air
+
+```bash
+# Create Air configuration
+cat > .air.toml << EOF
+root = "."
+testdata_dir = "testdata"
+tmp_dir = "tmp"
+
+[build]
+  args_bin = []
+  bin = "./tmp/main"
+  cmd = "go build -o ./tmp/main ./cmd/memos"
+  delay = 1000
+  exclude_dir = ["assets", "tmp", "vendor", "web/dist"]
+  exclude_file = []
+  exclude_regex = ["_test.go"]
+  exclude_unchanged = false
+  follow_symlink = false
+  full_bin = ""
+  include_dir = []
+  include_ext = ["go", "tpl", "tmpl", "html"]
+  kill_delay = "0s"
+  log = "build-errors.log"
+  send_interrupt = false
+  stop_on_root = false
+
+[color]
+  app = ""
+  build = "yellow"
+  main = "magenta"
+  runner = "green"
+  watcher = "cyan"
+
+[log]
+  time = false
+
+[misc]
+  clean_on_exit = false
+EOF
+
+# Start with hot reloading
+air
+```
+
+## Frontend Development
+
+### Node.js Environment
+
+1. **Navigate to web directory:**
+
+```bash
+cd web
+```
+
+2. **Install dependencies:**
+
+```bash
+# Using pnpm (recommended)
+pnpm install
+
+# Using npm
+npm install
+
+# Using yarn
+yarn install
+```
+
+### Development Server
+
+```bash
+# Start frontend development server
+pnpm dev
+
+# Or with npm/yarn
+npm run dev
+yarn dev
+```
+
+The frontend will be available at `http://localhost:3000` and proxy API requests to the backend.
+
+### Frontend Structure
+
+```
+web/
+├── src/
+│   ├── components/       # React components
+│   ├── pages/           # Page components
+│   ├── stores/          # State management
+│   ├── types/           # TypeScript types
+│   ├── utils/           # Utility functions
+│   └── styles/          # CSS/SCSS files
+├── public/              # Static assets
+└── package.json         # Dependencies
+```
+
+## Full Stack Development
+
+### Concurrent Development
+
+Run both backend and frontend in development mode:
+
+```bash
+# Terminal 1 - Backend with hot reload
+air
+
+# Terminal 2 - Frontend with hot reload
+cd web && pnpm dev
+```
+
+### Docker Development
+
+For a complete containerized setup:
+
+```bash
+# Build development image
+docker build -t memos:dev .
+
+# Run with development settings
+docker run -p 5230:5230 \
+  -v $(pwd):/app \
+  -e MEMOS_MODE=dev \
+  memos:dev
+```
+
+## Testing
+
+### Backend Tests
+
+```bash
+# Run all tests
+go test ./...
+
+# Run tests with coverage
+go test -cover ./...
+
+# Run specific package tests
+go test ./internal/store/...
+
+# Run tests with verbose output
+go test -v ./...
+```
+
+### Frontend Tests
+
+```bash
+cd web
+
+# Run unit tests
+pnpm test
+
+# Run tests in watch mode
+pnpm test:watch
+
+# Run integration tests
+pnpm test:integration
+
+# Run tests with coverage
+pnpm test:coverage
+```
+
+### Database Tests
+
+```bash
+# Set test database
+export MEMOS_DSN="postgresql://localhost:5432/memos_test?sslmode=disable"
+
+# Run database-specific tests
+go test ./internal/store/... -v
+```
+
+## Code Quality
+
+### Linting
+
+```bash
+# Backend linting
+golangci-lint run
+
+# Frontend linting
+cd web && pnpm lint
+
+# Fix linting issues
+cd web && pnpm lint:fix
+```
+
+### Formatting
+
+```bash
+# Format Go code
+go fmt ./...
+
+# Format frontend code
+cd web && pnpm format
+```
+
+### Pre-commit Hooks
+
+Set up pre-commit hooks for quality assurance:
+
+```bash
+# Install pre-commit
+pip install pre-commit
+
+# Install hooks
+pre-commit install
+
+# Run hooks manually
+pre-commit run --all-files
+```
+
+## Debugging
+
+### Backend Debugging
+
+#### Using Delve (Go Debugger)
+
+```bash
+# Install Delve
+go install github.com/go-delve/delve/cmd/dlv@latest
+
+# Start debug session
+dlv debug ./cmd/memos
+
+# Set breakpoints and debug
+(dlv) break main.main
+(dlv) continue
+```
+
+#### VS Code Debug Configuration
+
+`.vscode/launch.json`:
+
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Memos",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "./cmd/memos",
+            "env": {
+                "MEMOS_MODE": "dev",
+                "MEMOS_PORT": "8080"
+            },
+            "args": []
+        }
+    ]
+}
+```
+
+### Frontend Debugging
+
+#### Browser Developer Tools
+
+- Open Chrome/Firefox Developer Tools
+- Use React Developer Tools extension
+- Set breakpoints in Sources tab
+- Use Console for logging
+
+#### VS Code Debugging
+
+Install "Debugger for Chrome" extension and configure:
+
+`.vscode/launch.json`:
+
+```json
+{
+    "name": "Launch Chrome",
+    "type": "chrome",
+    "request": "launch",
+    "url": "http://localhost:3000",
+    "webRoot": "${workspaceFolder}/web/src",
+    "sourceMapPathOverrides": {
+        "webpack:///src/*": "${webRoot}/*"
+    }
+}
+```
+
+## Common Development Tasks
+
+### Adding New API Endpoints
+
+1. **Define route in server:**
+
+```go
+// internal/server/router.go
+func (s *Server) registerRoutes() {
+    s.router.POST("/api/v1/my-endpoint", s.handleMyEndpoint)
+}
+
+func (s *Server) handleMyEndpoint(c *gin.Context) {
+    // Implementation
+}
+```
+
+2. **Add store method:**
+
+```go
+// internal/store/my_store.go
+func (s *Store) CreateMyEntity(ctx context.Context, create *MyEntity) (*MyEntity, error) {
+    // Database operation
+}
+```
+
+3. **Add frontend service:**
+
+```typescript
+// web/src/services/api.ts
+export const myService = {
+  create: (data: MyEntityCreate) => 
+    api.post<MyEntity>('/api/v1/my-endpoint', data),
+};
+```
+
+### Database Migrations
+
+```bash
+# Create migration file
+touch scripts/migration/001_add_my_table.sql
+
+# Apply migrations
+go run scripts/migration/migrate.go
+```
+
+### Adding Frontend Components
+
+```bash
+cd web/src/components
+
+# Create component
+mkdir MyComponent
+touch MyComponent/index.tsx
+touch MyComponent/MyComponent.module.scss
+```
+
+## Troubleshooting
+
+### Common Issues
+
+#### Port Already in Use
+
+```bash
+# Find process using port 8080
+lsof -i :8080
+
+# Kill process
+kill -9 PID
+```
+
+#### Database Connection Issues
+
+```bash
+# Check PostgreSQL status
+pg_isready
+
+# Reset database
+dropdb memos_dev && createdb memos_dev
+```
+
+#### Module Dependencies
+
+```bash
+# Clean Go module cache
+go clean -modcache
+
+# Tidy modules
+go mod tidy
+
+# Update dependencies
+go get -u ./...
+```
+
+#### Frontend Build Issues
+
+```bash
+cd web
+
+# Clear node_modules and reinstall
+rm -rf node_modules package-lock.json
+pnpm install
+
+# Clear cache
+pnpm store prune
+```
+
+## Contributing Workflow
+
+### Branch Strategy
+
+```bash
+# Create feature branch
+git checkout -b feature/my-feature
+
+# Make changes and commit
+git add .
+git commit -m "feat: add my feature"
+
+# Push to fork
+git push origin feature/my-feature
+
+# Create pull request on GitHub
+```
+
+### Commit Guidelines
+
+Follow conventional commits:
+
+```bash
+# Types: feat, fix, docs, style, refactor, test, chore
+git commit -m "feat(api): add user preferences endpoint"
+git commit -m "fix(ui): resolve mobile navigation issue"
+git commit -m "docs(setup): update development guide"
+```
+
+<Callout type="success">
+**Ready to Contribute?** Check out the [Contributing Guide](/docs/contributing) for detailed information about the contribution process, coding standards, and community guidelines.
+</Callout>
+
+## Next Steps
+
+- [Read the Contributing Guide](/docs/contributing/development)
+- [Explore the API Documentation](/docs/api)
+- [Join the Community Discussions](https://github.com/usememos/memos/discussions)
+- [Review Open Issues](https://github.com/usememos/memos/issues)
+
+---
+
+Need help with your development setup? Join our [GitHub Discussions](https://github.com/usememos/memos/discussions) or check the [troubleshooting guide](/docs/troubleshooting) for common solutions.

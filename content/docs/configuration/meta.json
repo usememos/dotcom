@@ -1,0 +1,11 @@
+{
+  "title": "Configuration",
+  "description": "Configure your Memos instance for optimal performance",
+  "pages": [
+    "index",
+    "database",
+    "storage",
+    "authentication",
+    "security"
+  ]
+}

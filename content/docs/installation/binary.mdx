@@ -1,0 +1,355 @@
+---
+title: Binary Installation  
+description: Install Memos using pre-compiled binary releases for production deployments.
+category: installation
+difficulty: intermediate
+estimatedTime: "5 min read"
+lastUpdated: "2025-08-19"
+authors: ["Memos Team"]
+relatedPages:
+  - /docs/installation/docker
+  - /docs/deployment/upgrades
+  - /docs/configuration/database
+---
+
+# Binary Installation
+
+Binary installation gives you direct control over the Memos process and is ideal for production deployments where you want to manage the service directly.
+
+## Download Binary
+
+### Latest Release
+
+Download the latest binary for your platform from [GitHub Releases](https://github.com/usememos/memos/releases):
+
+```bash
+# Linux x86_64
+wget https://github.com/usememos/memos/releases/latest/download/memos_linux_amd64.tar.gz
+
+# Linux ARM64  
+wget https://github.com/usememos/memos/releases/latest/download/memos_linux_arm64.tar.gz
+
+# macOS Intel
+wget https://github.com/usememos/memos/releases/latest/download/memos_darwin_amd64.tar.gz
+
+# macOS Apple Silicon
+wget https://github.com/usememos/memos/releases/latest/download/memos_darwin_arm64.tar.gz
+
+# Windows x86_64
+# Download from GitHub releases page
+```
+
+### Extract and Install
+
+```bash
+# Extract the archive
+tar -xzf memos_*.tar.gz
+
+# Move to system location (Linux/macOS)
+sudo mv memos /usr/local/bin/
+
+# Make executable
+sudo chmod +x /usr/local/bin/memos
+```
+
+## Configuration
+
+### Environment Variables
+
+Create a configuration file or set environment variables:
+
+```bash
+# Create config directory
+sudo mkdir -p /etc/memos
+
+# Create environment file
+sudo tee /etc/memos/memos.env << EOF
+MEMOS_MODE=prod
+MEMOS_PORT=5230
+MEMOS_DATA=/var/lib/memos
+MEMOS_DRIVER=sqlite
+# MEMOS_DSN=postgresql://user:pass@localhost/memos
+EOF
+```
+
+### Data Directory
+
+Create and set permissions for the data directory:
+
+```bash
+# Create data directory
+sudo mkdir -p /var/lib/memos
+
+# Create memos user (recommended)
+sudo useradd --system --home /var/lib/memos --shell /bin/false memos
+
+# Set ownership
+sudo chown -R memos:memos /var/lib/memos
+```
+
+## Running Memos
+
+### Manual Start
+
+```bash
+# Load environment and start
+export $(cat /etc/memos/memos.env | xargs)
+memos
+```
+
+### As a Service (systemd)
+
+Create a systemd service file:
+
+```bash
+sudo tee /etc/systemd/system/memos.service << 'EOF'
+[Unit]
+Description=Memos
+After=network.target
+
+[Service]
+Type=simple
+User=memos
+Group=memos
+WorkingDirectory=/var/lib/memos
+EnvironmentFile=/etc/memos/memos.env
+ExecStart=/usr/local/bin/memos
+Restart=always
+RestartSec=3
+StandardOutput=journal
+StandardError=journal
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/memos
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+Enable and start the service:
+
+```bash
+# Reload systemd
+sudo systemctl daemon-reload
+
+# Enable auto-start
+sudo systemctl enable memos
+
+# Start service
+sudo systemctl start memos
+
+# Check status
+sudo systemctl status memos
+```
+
+## Database Configuration
+
+### SQLite (Default)
+
+No additional configuration needed. Database file will be created in the data directory.
+
+### PostgreSQL
+
+1. Install PostgreSQL:
+
+```bash
+# Ubuntu/Debian
+sudo apt install postgresql postgresql-contrib
+
+# CentOS/RHEL
+sudo yum install postgresql-server postgresql-contrib
+```
+
+2. Create database and user:
+
+```sql
+-- Connect as postgres user
+sudo -u postgres psql
+
+-- Create database
+CREATE DATABASE memos;
+
+-- Create user
+CREATE USER memos WITH PASSWORD 'your-secure-password';
+
+-- Grant permissions
+GRANT ALL PRIVILEGES ON DATABASE memos TO memos;
+
+\q
+```
+
+3. Update configuration:
+
+```bash
+sudo tee -a /etc/memos/memos.env << EOF
+MEMOS_DRIVER=postgres
+MEMOS_DSN=postgresql://memos:your-secure-password@localhost:5432/memos
+EOF
+```
+
+## Reverse Proxy Setup
+
+### Nginx
+
+```nginx
+server {
+    listen 80;
+    server_name memos.example.com;
+    
+    location / {
+        proxy_pass http://localhost:5230;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        
+        # WebSocket support
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
+```
+
+### Apache
+
+```apache
+<VirtualHost *:80>
+    ServerName memos.example.com
+    
+    ProxyPreserveHost On
+    ProxyRequests Off
+    ProxyPass / http://localhost:5230/
+    ProxyPassReverse / http://localhost:5230/
+    
+    # WebSocket support
+    RewriteEngine on
+    RewriteCond %{HTTP:UPGRADE} websocket [NC]
+    RewriteCond %{HTTP:CONNECTION} upgrade [NC]
+    RewriteRule ^/?(.*) "ws://localhost:5230/$1" [P,L]
+</VirtualHost>
+```
+
+## Monitoring and Logs
+
+### Service Logs
+
+```bash
+# View recent logs
+sudo journalctl -u memos -f
+
+# View logs from specific date
+sudo journalctl -u memos --since "2025-08-19"
+
+# Export logs
+sudo journalctl -u memos > memos.log
+```
+
+### Health Check
+
+```bash
+# Simple health check
+curl -f http://localhost:5230/healthz || echo "Service unhealthy"
+
+# Detailed status
+systemctl status memos
+```
+
+## Updates
+
+### Manual Update
+
+```bash
+# Stop service
+sudo systemctl stop memos
+
+# Backup current binary
+sudo cp /usr/local/bin/memos /usr/local/bin/memos.backup
+
+# Download and install new version
+wget https://github.com/usememos/memos/releases/latest/download/memos_linux_amd64.tar.gz
+tar -xzf memos_linux_amd64.tar.gz
+sudo mv memos /usr/local/bin/
+
+# Start service
+sudo systemctl start memos
+
+# Verify
+sudo systemctl status memos
+```
+
+### Automated Updates
+
+Create an update script:
+
+```bash
+#!/bin/bash
+# /usr/local/bin/update-memos.sh
+
+set -e
+
+echo "Updating Memos..."
+
+# Download latest release
+LATEST_URL=$(curl -s https://api.github.com/repos/usememos/memos/releases/latest | grep "browser_download_url.*linux_amd64.tar.gz" | cut -d'"' -f4)
+
+# Download and extract
+cd /tmp
+wget -O memos.tar.gz "$LATEST_URL"
+tar -xzf memos.tar.gz
+
+# Stop service
+sudo systemctl stop memos
+
+# Backup and replace
+sudo cp /usr/local/bin/memos /usr/local/bin/memos.backup.$(date +%Y%m%d)
+sudo mv memos /usr/local/bin/
+sudo chmod +x /usr/local/bin/memos
+
+# Start service
+sudo systemctl start memos
+
+echo "Memos updated successfully!"
+```
+
+## Troubleshooting
+
+### Service Won't Start
+
+1. Check logs: `sudo journalctl -u memos -f`
+2. Verify permissions: `ls -la /var/lib/memos`
+3. Test configuration: `memos --help`
+4. Check port availability: `sudo netstat -tlnp | grep :5230`
+
+### Performance Issues
+
+1. Check system resources: `htop`
+2. Monitor database size: `du -sh /var/lib/memos`
+3. Review query performance in logs
+4. Consider upgrading to PostgreSQL for large datasets
+
+### Database Issues
+
+```bash
+# SQLite integrity check
+sqlite3 /var/lib/memos/memos_prod.db "PRAGMA integrity_check;"
+
+# Backup database
+cp /var/lib/memos/memos_prod.db /var/lib/memos/backup_$(date +%Y%m%d).db
+```
+
+<Callout type="warning">
+**Backup Reminder**: Always backup your data directory before performing updates or major configuration changes.
+</Callout>
+
+## Next Steps
+
+- [Configure HTTPS](/docs/deployment/https) for secure access
+- [Set up authentication](/docs/configuration/authentication) for team access  
+- [Configure backups](/docs/configuration/backup) for data protection
+- [Monitor your instance](/docs/deployment/monitoring) for optimal performance

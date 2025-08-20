@@ -1,0 +1,220 @@
+---
+title: Getting Started
+description: Learn the basics of Memos and create your first memo in minutes.
+category: guides
+difficulty: beginner
+estimatedTime: "10 min read"
+lastUpdated: "2025-08-19"
+authors: ["Memos Team"]
+relatedPages:
+  - /docs/installation/docker
+  - /docs/guides/content-syntax
+  - /docs/guides/shortcuts
+---
+
+# Getting Started
+
+Welcome to Memos! This guide will help you get up and running with your new note-taking system in just a few minutes.
+
+## Prerequisites
+
+Before you start, make sure you have Memos installed and running. If you haven't installed it yet, check out our [installation guide](/docs/installation).
+
+## First Login
+
+1. **Access your instance**: Open your browser and navigate to your Memos instance (e.g., `http://localhost:5230`)
+
+2. **Create your account**: On first visit, you'll see a setup screen. Create your admin account:
+   - Choose a username (this will be your permanent identifier)
+   - Set a secure password
+   - Optionally set your display name
+
+<Callout type="info">
+**Security Tip**: The first user created automatically becomes the administrator. Make sure to use a strong password!
+</Callout>
+
+## Creating Your First Memo
+
+### Quick Creation
+
+The fastest way to create a memo:
+
+1. Click the **"+"** button or use the keyboard shortcut `Ctrl/Cmd + Enter`
+2. Type your content using Markdown syntax
+3. Click **"Save"** or press `Ctrl/Cmd + Enter` to save
+
+### Example Memo
+
+Try creating this sample memo:
+
+```markdown
+# My First Memo
+
+Welcome to my **Memos** instance! 
+
+## Today's Tasks
+- [x] Install Memos ✨
+- [ ] Write my first memo
+- [ ] Explore the features
+
+#getting-started #todo
+```
+
+## Understanding the Interface
+
+### Main Components
+
+- **Editor**: Where you write and edit your memos
+- **Memo List**: Displays all your memos in chronological order
+- **Sidebar**: Navigation, filters, and settings
+- **Search Bar**: Find memos quickly by content or tags
+
+### Key Features
+
+**Rich Text Support**
+- Full Markdown formatting
+- Code syntax highlighting  
+- Mathematical expressions (LaTeX)
+- Mermaid diagrams
+
+**Organization**
+- Tags for categorization (`#tag-name`)
+- Date-based browsing
+- Full-text search
+- Filters and sorting
+
+**Sharing & Export**
+- Public/private memo settings
+- Direct link sharing
+- Export to various formats
+
+## Basic Markdown Syntax
+
+Memos supports GitHub-flavored Markdown. Here are the essentials:
+
+### Text Formatting
+
+```markdown
+**Bold text** or __Bold text__
+*Italic text* or _Italic text_
+~~Strikethrough text~~
+`Inline code`
+```
+
+### Headers
+
+```markdown
+# Header 1
+## Header 2
+### Header 3
+```
+
+### Lists
+
+```markdown
+- Unordered list item
+- Another item
+  - Nested item
+
+1. Ordered list item
+2. Another item
+   1. Nested item
+```
+
+### Links and Images
+
+```markdown
+[Link text](https://example.com)
+![Alt text](/path/to/image.png)
+```
+
+### Code Blocks
+
+````markdown
+```javascript
+function greet(name) {
+  console.log(`Hello, ${name}!`);
+}
+```
+````
+
+## Using Tags Effectively
+
+Tags help organize your memos. Best practices:
+
+### Tag Syntax
+
+```markdown
+#work #project #meeting
+#personal #ideas
+#tech #programming #javascript
+```
+
+### Tag Organization Tips
+
+- **Be consistent**: Use the same tag format across memos
+- **Start simple**: Begin with broad categories, refine over time
+- **Use hierarchies**: `#work/project/alpha` for detailed organization
+- **Avoid over-tagging**: 3-5 tags per memo is usually sufficient
+
+### Popular Tag Patterns
+
+```markdown
+#daily-notes #journal #reflection
+#work #meeting #project-alpha
+#learning #tech #docker
+#ideas #features #roadmap
+```
+
+## Keyboard Shortcuts
+
+Speed up your workflow with these shortcuts:
+
+| Action | Shortcut | Description |
+|--------|----------|-------------|
+| New memo | `Ctrl/Cmd + Enter` | Create a new memo |
+| Save memo | `Ctrl/Cmd + S` | Save current memo |
+| Search | `Ctrl/Cmd + K` | Focus search bar |
+| Toggle edit | `E` | Edit selected memo |
+| Archive | `A` | Archive selected memo |
+
+<Callout type="tip" title="Pro Tip">
+Master the keyboard shortcuts early - they'll save you significant time as your memo collection grows!
+</Callout>
+
+## Next Steps
+
+Now that you've created your first memo, explore these features:
+
+<Cards>
+  <Card title="Content Syntax" href="/docs/guides/content-syntax" icon="FileText">
+    Master advanced Markdown features and Memos-specific syntax
+  </Card>
+  <Card title="Keyboard Shortcuts" href="/docs/guides/shortcuts" icon="Keyboard">
+    Learn all shortcuts for efficient memo management
+  </Card>
+  <Card title="Tags & Organization" href="/docs/guides/tags" icon="Tag">
+    Develop a tagging strategy that scales with your needs
+  </Card>
+  <Card title="API Access" href="/docs/api" icon="Code">
+    Automate memo creation and integrate with other tools
+  </Card>
+</Cards>
+
+## Common Questions
+
+**Q: Can I edit memos after creating them?**
+A: Yes! Click on any memo to edit it. Changes are saved automatically.
+
+**Q: Are my memos private?**
+A: By default, yes. You can choose to make specific memos public for sharing.
+
+**Q: Can I backup my data?**
+A: Absolutely. Use the export feature or backup your database file directly.
+
+**Q: Is there a mobile app?**
+A: Not yet, but the web interface works great on mobile browsers!
+
+---
+
+Ready to dive deeper? Check out the [content syntax guide](/docs/guides/content-syntax) to learn about advanced formatting options, or explore the [API documentation](/docs/api) if you're interested in automation.

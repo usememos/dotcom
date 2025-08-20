@@ -1,80 +1,195 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { Calendar, User, ArrowLeft, ExternalLink } from "lucide-react";
+import { blogSource } from "@/lib/source";
+import { DocsBody } from "fumadocs-ui/page";
+import { TOCProvider, TOCScrollArea, TOCItems } from "fumadocs-ui/components/layout/toc";
 import { notFound } from "next/navigation";
-import React from "react";
-import AuthorView from "@/components/AuthorView";
-import Icon from "@/components/Icon";
-import MdxRenderer from "@/components/MdxRenderer";
-import SectionContainer from "@/components/SectionContainer";
-import authorList, { Author } from "@/consts/author";
-import { getBlogSlugList, getMdxFilePathFromSlugs, readMdxFileContent } from "@/lib/mdx-content";
-import { getMetadata } from "@/utils/metadata";
+import { HomeLayout } from "fumadocs-ui/layouts/home";
+import { baseOptions } from "@/app/layout.config";
+import { Footer } from "@/components/footer";
 
-interface Props {
+interface BlogPageProps {
   params: Promise<{ slug: string }>;
 }
 
-const Page = async (props: Props) => {
-  const params = await props.params;
-  const filePath = getMdxFilePathFromSlugs("blog", params.slug.split("/"));
-  const contentItem = readMdxFileContent(filePath);
+export default async function BlogPostPage({ params }: BlogPageProps) {
+  const { slug } = await params;
+  const page = blogSource.getPage([slug]);
 
-  if (!contentItem) {
-    return notFound();
+  if (!page) {
+    notFound();
   }
 
-  const { frontmatter, content } = contentItem;
-  const author = authorList.find((author) => author.name === frontmatter.author) as Author;
+  const { data } = page;
+  const MDXContent = page.data.body;
 
   return (
-    <SectionContainer>
-      <div className="w-full">
-        <div className="w-full sm:px-6">
-          <h1 className="w-full text-3xl sm:text-5xl font-medium sm:font-bold mt-4 sm:mt-8">{frontmatter.title}</h1>
-          <div className="mt-4 w-full flex flex-row justify-start items-center">
-            <span className="text-gray-500">{frontmatter.published_at}</span>
-            <Icon.Dot className="w-4 h-auto mx-1 text-gray-400" />
-            <AuthorView author={author} />
-          </div>
-        </div>
-        <div className="w-full flex flex-row justify-start items-start sm:px-6 md:gap-8 mt-4 sm:mt-8">
-          <div className="w-full md:max-w-[calc(100%-16rem)]">
-            <MdxRenderer content={content} />
-          </div>
-          <div className="hidden md:block sticky top-24 h-[calc(100svh-6rem)] w-64 shrink-0">
-            <div className="relative w-full h-full overflow-auto py-4 no-scrollbar">
-              {/* TODO: Extract headings from MDX content for table of contents */}
+    <HomeLayout {...baseOptions}>
+      <main className="flex flex-1 flex-col">
+        <div className="max-w-4xl mx-auto px-4 py-8">
+          {/* Back to Blog */}
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-teal-600 dark:hover:text-teal-400 mb-8 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Back to Blog</span>
+          </Link>
+
+          {/* Article Header */}
+          <header className="mb-12">
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-5xl mb-6">{data.title}</h1>
+
+            <div className="flex flex-wrap items-center gap-4 text-gray-600 dark:text-gray-300 mb-8">
+              <div className="flex items-center gap-2">
+                <User className="w-5 h-5" />
+                <span className="font-medium">{data.author}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Calendar className="w-5 h-5" />
+                <span>
+                  {new Date(data.published_at).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </span>
+              </div>
+              {data.tags && data.tags.length > 0 && (
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-400">•</span>
+                  <div className="flex gap-2">
+                    {data.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2 py-1 bg-teal-50 dark:bg-teal-950 text-teal-700 dark:text-teal-300 rounded text-sm font-medium"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-            <div className="absolute top-0 left-0 w-full h-8 bg-linear-to-t from-transparent to-white"></div>
-            <div className="absolute bottom-0 left-0 w-full h-8 bg-linear-to-b from-transparent to-white"></div>
-          </div>
+
+            {/* Feature Image */}
+            {data.feature_image && (
+              <div className="mb-8">
+                <img
+                  src={data.feature_image}
+                  alt={data.title}
+                  className="w-full h-64 sm:h-80 object-cover rounded-xl border border-gray-200 dark:border-gray-700"
+                />
+              </div>
+            )}
+
+            {/* Description */}
+            <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed">{data.description}</p>
+          </header>
         </div>
-      </div>
-    </SectionContainer>
+
+        {/* Article Content with TOC */}
+        <div className="max-w-7xl mx-auto px-4 flex gap-8">
+          {/* Main Content */}
+          <div className="flex-1 min-w-0">
+            <article className="prose prose-gray dark:prose-invert prose-lg max-w-none prose-headings:font-semibold prose-a:text-teal-600 dark:prose-a:text-teal-400 prose-a:no-underline hover:prose-a:underline prose-code:text-teal-600 dark:prose-code:text-teal-400 prose-code:bg-teal-50 dark:prose-code:bg-teal-950 prose-code:px-1 prose-code:py-0.5 prose-code:rounded">
+              <DocsBody>
+                <MDXContent />
+              </DocsBody>
+            </article>
+
+            {/* Footer */}
+            <footer className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex flex-col sm:flex-row gap-6 justify-between items-start sm:items-center">
+                <div>
+                  <p className="text-gray-600 dark:text-gray-300 mb-2">
+                    Written by <span className="font-medium text-gray-900 dark:text-gray-100">{data.author}</span>
+                  </p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Published on{" "}
+                    {new Date(data.published_at).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
+                </div>
+
+                <div className="flex gap-4">
+                  <Link
+                    href="/blog"
+                    className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                  >
+                    More Posts
+                  </Link>
+                  <a
+                    href="https://github.com/usememos/memos"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
+                  >
+                    <span>Try Memos</span>
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                </div>
+              </div>
+            </footer>
+          </div>
+
+          {/* Table of Contents Sidebar */}
+          {page.data.toc && page.data.toc.length > 0 && (
+            <div className="hidden xl:block w-64 flex-shrink-0">
+              <div className="sticky top-16 max-h-[calc(100vh-4rem)] overflow-y-auto">
+                <TOCProvider toc={page.data.toc}>
+                  <TOCScrollArea>
+                    <TOCItems />
+                  </TOCScrollArea>
+                </TOCProvider>
+              </div>
+            </div>
+          )}
+        </div>
+      </main>
+      <Footer />
+    </HomeLayout>
   );
-};
+}
 
-export const generateMetadata = async (props: Props): Promise<Metadata> => {
-  const params = await props.params;
-  const filePath = getMdxFilePathFromSlugs("blog", params.slug.split("/"));
-  const contentItem = readMdxFileContent(filePath);
+export async function generateStaticParams() {
+  return blogSource.getPages().map((page) => ({
+    slug: page.slugs[0],
+  }));
+}
 
-  if (!contentItem) {
-    return notFound();
+export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const page = blogSource.getPage([slug]);
+
+  if (!page) {
+    return {
+      title: "Blog Post Not Found - Memos",
+    };
   }
 
-  const { frontmatter } = contentItem;
-  return getMetadata({
-    title: frontmatter.title + " - Memos",
-    pathname: `/blog/${params.slug}`,
-    description: frontmatter.description,
-    imagePath: frontmatter.feature_image,
-  });
-};
+  const { data } = page;
 
-export const generateStaticParams = () => {
-  return getBlogSlugList().map((contentSlug) => {
-    return { slug: contentSlug };
-  });
-};
-
-export default Page;
+  return {
+    title: `${data.title} - Memos Blog`,
+    description: data.description,
+    openGraph: {
+      title: data.title,
+      description: data.description,
+      type: "article",
+      publishedTime: data.published_at,
+      authors: [data.author],
+      images: data.feature_image ? [data.feature_image] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: data.title,
+      description: data.description,
+      images: data.feature_image ? [data.feature_image] : undefined,
+    },
+  };
+}

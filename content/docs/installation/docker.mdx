@@ -1,0 +1,185 @@
+---
+title: Docker Installation
+description: Install Memos using Docker for the easiest and most reliable setup experience.
+category: installation
+difficulty: beginner
+estimatedTime: "3 min read"
+lastUpdated: "2025-08-19"
+authors: ["Memos Team"]
+relatedPages:
+  - /docs/configuration/database
+  - /docs/deployment/docker
+---
+
+# Docker Installation
+
+Docker is the recommended installation method for Memos. It provides isolation, easy updates, and works consistently across all platforms.
+
+## Quick Start
+
+The fastest way to get Memos running:
+
+```bash
+docker run -d \
+  --name memos \
+  --publish 5230:5230 \
+  --volume ~/.memos/:/var/opt/memos \
+  neosmemo/memos:stable
+```
+
+After the container starts, visit [http://localhost:5230](http://localhost:5230) to access your Memos instance.
+
+## Docker Compose (Recommended)
+
+For production deployments, use Docker Compose:
+
+```yaml title="docker-compose.yml"
+version: '3.8'
+
+services:
+  memos:
+    image: neosmemo/memos:stable
+    container_name: memos
+    ports:
+      - "5230:5230"
+    volumes:
+      - ./memos:/var/opt/memos
+    environment:
+      - MEMOS_MODE=prod
+      - MEMOS_PORT=5230
+    restart: unless-stopped
+```
+
+Start with:
+
+```bash
+docker compose up -d
+```
+
+## Configuration Options
+
+### Environment Variables
+
+Common environment variables for Docker:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MEMOS_MODE` | `dev` | Server mode (`dev` or `prod`) |
+| `MEMOS_PORT` | `5230` | Server port |
+| `MEMOS_DATA` | `/var/opt/memos` | Data directory |
+| `MEMOS_DRIVER` | `sqlite` | Database driver |
+| `MEMOS_DSN` | - | Database connection string |
+
+### Volume Mounts
+
+The container uses `/var/opt/memos` as the data directory. Mount this to persist data:
+
+```bash
+# Linux/macOS
+-v ~/.memos/:/var/opt/memos
+
+# Windows
+-v %USERPROFILE%\.memos:/var/opt/memos
+```
+
+## Database Configuration
+
+### SQLite (Default)
+
+No additional configuration needed. Data is stored in the mounted volume.
+
+### PostgreSQL
+
+```yaml
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: memos
+      POSTGRES_USER: memos
+      POSTGRES_PASSWORD: your-password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  memos:
+    image: neosmemo/memos:stable
+    depends_on:
+      - postgres
+    environment:
+      - MEMOS_DRIVER=postgres
+      - MEMOS_DSN=postgresql://memos:your-password@postgres:5432/memos
+    ports:
+      - "5230:5230"
+
+volumes:
+  postgres_data:
+```
+
+## Updates
+
+### Update Container
+
+```bash
+# Stop current container
+docker stop memos
+
+# Remove container (data is preserved in volume)
+docker rm memos
+
+# Pull latest image
+docker pull neosmemo/memos:stable
+
+# Start new container
+docker run -d \
+  --name memos \
+  --publish 5230:5230 \
+  --volume ~/.memos/:/var/opt/memos \
+  neosmemo/memos:stable
+```
+
+### Using Docker Compose
+
+```bash
+docker compose pull
+docker compose up -d
+```
+
+## Troubleshooting
+
+### Container Won't Start
+
+Check container logs:
+
+```bash
+docker logs memos
+```
+
+### Permission Issues
+
+Ensure proper ownership of the data directory:
+
+```bash
+sudo chown -R 1001:1001 ~/.memos/
+```
+
+### Port Conflicts
+
+If port 5230 is in use, change the mapping:
+
+```bash
+# Use port 8080 instead
+--publish 8080:5230
+```
+
+## Next Steps
+
+After installation:
+
+1. **[Set up a reverse proxy](/docs/deployment/https)** for HTTPS
+2. **[Configure authentication](/docs/configuration/authentication)** 
+3. **[Set up backups](/docs/configuration/backup)**
+4. **[Explore the API](/docs/api)**
+
+<Callout type="info">
+**Production Tip**: Always use specific version tags (e.g., `neosmemo/memos:0.24.0`) instead of `stable` in production to avoid unexpected updates.
+</Callout>

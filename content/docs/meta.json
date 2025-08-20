@@ -1,0 +1,15 @@
+{
+  "title": "Documentation",
+  "pages": [
+    "index",
+    "installation",
+    "guides", 
+    "configuration",
+    "integrations",
+    "api",
+    "deployment",
+    "troubleshooting",
+    "contributing",
+    "faq"
+  ]
+}
