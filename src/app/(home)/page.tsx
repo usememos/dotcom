@@ -4,6 +4,38 @@ import { HeroSection } from "@/components/hero-section";
 import { FeatureCard } from "@/components/feature-card";
 import { StatsCard } from "@/components/stats-card";
 import { Footer } from "@/components/footer";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Memos - Open Source, Self-hosted Note Taking",
+  description:
+    "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
+  keywords: ["note taking", "self-hosted", "open source", "privacy", "markdown", "memos"],
+  openGraph: {
+    title: "Memos - Open Source, Self-hosted Note Taking",
+    description:
+      "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
+    url: "https://usememos.com",
+    siteName: "Memos",
+    images: [
+      {
+        url: "/demo-light.png",
+        width: 1200,
+        height: 630,
+        alt: "Memos Dashboard Screenshot",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Memos - Open Source, Self-hosted Note Taking",
+    description:
+      "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
+    images: ["/demo-light.png"],
+  },
+};
 
 export default function HomePage() {
   return (
@@ -19,7 +51,8 @@ export default function HomePage() {
         subtitle="Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution"
         primaryCta={{ text: "Get Started", href: "/docs" }}
         secondaryCta={{ text: "Live Demo", href: "https://demo.usememos.com/", external: true }}
-        demoImage={{ src: "/demo.png", alt: "Memos Dashboard Screenshot" }}
+        demoImageLight={{ src: "/demo-light.png", alt: "Memos Dashboard Screenshot (Light Mode)" }}
+        demoImageDark={{ src: "/demo-dark.png", alt: "Memos Dashboard Screenshot (Dark Mode)" }}
       />
 
       {/* Features Section */}
@@ -73,7 +106,7 @@ export default function HomePage() {
           </div>
 
           {/* Stats Section */}
-          <div className="bg-teal-50 border-2 border-teal-200 rounded-xl p-6 sm:p-8">
+          <div className="bg-teal-50 dark:bg-gray-800 border-2 border-teal-200 dark:border-gray-700 rounded-xl p-6 sm:p-8">
             <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
               {[
                 { icon: "🌟", value: "39K+", label: "GitHub Stars" },
@@ -94,7 +127,7 @@ export default function HomePage() {
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl mb-6">
             Ready to take control of your notes?
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
+          <p className="text-lg text-gray-600 dark:text-gray-200 mb-8">
             Join thousands of users who have chosen privacy, simplicity, and control over their data.
           </p>
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">

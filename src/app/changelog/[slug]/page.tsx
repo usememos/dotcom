@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { baseOptions } from "@/app/layout.config";
 import { Footer } from "@/components/footer";
+import { getMDXComponents } from "@/mdx-components";
 
 interface ChangelogPageProps {
   params: Promise<{ slug: string }>;
@@ -146,9 +147,9 @@ export default async function ChangelogEntryPage({ params }: ChangelogPageProps)
           )}
 
           {/* Changelog Content */}
-          <article className="prose prose-gray dark:prose-invert prose-lg max-w-none prose-headings:font-semibold prose-a:text-teal-600 dark:prose-a:text-teal-400 prose-a:no-underline hover:prose-a:underline prose-code:text-teal-600 dark:prose-code:text-teal-400 prose-code:bg-teal-50 dark:prose-code:bg-teal-950 prose-code:px-1 prose-code:py-0.5 prose-code:rounded">
+          <article className="max-w-none">
             <DocsBody>
-              <MDXContent />
+              <MDXContent components={getMDXComponents()} />
             </DocsBody>
           </article>
 

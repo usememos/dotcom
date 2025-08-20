@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { baseOptions } from "@/app/layout.config";
 import { Footer } from "@/components/footer";
+import { getMDXComponents } from "@/mdx-components";
 
 interface BlogPageProps {
   params: Promise<{ slug: string }>;
@@ -93,14 +94,14 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
         <div className="max-w-7xl mx-auto px-4 flex gap-8">
           {/* Main Content */}
           <div className="flex-1 min-w-0">
-            <article className="prose prose-gray dark:prose-invert prose-lg max-w-none prose-headings:font-semibold prose-a:text-teal-600 dark:prose-a:text-teal-400 prose-a:no-underline hover:prose-a:underline prose-code:text-teal-600 dark:prose-code:text-teal-400 prose-code:bg-teal-50 dark:prose-code:bg-teal-950 prose-code:px-1 prose-code:py-0.5 prose-code:rounded">
+            <article className="max-w-none">
               <DocsBody>
-                <MDXContent />
+                <MDXContent components={getMDXComponents()} />
               </DocsBody>
             </article>
 
             {/* Footer */}
-            <footer className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-700">
+            <footer className="mt-16 py-8 border-t border-gray-200 dark:border-gray-700">
               <div className="flex flex-col sm:flex-row gap-6 justify-between items-start sm:items-center">
                 <div>
                   <p className="text-gray-600 dark:text-gray-300 mb-2">

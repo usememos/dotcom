@@ -13,7 +13,7 @@ export function FeatureCard({ icon, title, description, className = "" }: Featur
           <span className="text-4xl">{icon}</span>
           <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
         </div>
-        <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{description}</p>
+        <p className="text-gray-600 dark:text-gray-200 leading-relaxed">{description}</p>
       </div>
     </div>
   );
