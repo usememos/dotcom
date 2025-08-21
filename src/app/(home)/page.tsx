@@ -146,7 +146,7 @@ export default function HomePage() {
             Ready to take control of your notes?
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
-            Join thousands of users who have chosen privacy, simplicity, and control over their data.
+            Join users who have chosen privacy, simplicity, and control over their data.
           </p>
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
             <Link

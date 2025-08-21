@@ -9,7 +9,8 @@ export const metadata: Metadata = {
     default: "Memos - Open Source, Self-hosted Note Taking",
     template: "%s - Memos",
   },
-  description: "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
+  description:
+    "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
   keywords: ["note taking", "self-hosted", "open source", "privacy", "markdown", "memos"],
   authors: [{ name: "Memos Team" }],
   creator: "Memos Team",
@@ -24,7 +25,8 @@ export const metadata: Metadata = {
     url: "https://usememos.com",
     siteName: "Memos",
     title: "Memos - Open Source, Self-hosted Note Taking",
-    description: "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
+    description:
+      "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
     images: [
       {
         url: "/demo.png",
@@ -37,13 +39,14 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Memos - Open Source, Self-hosted Note Taking",
-    description: "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
+    description:
+      "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
     images: ["/demo.png"],
   },
   icons: {
-    icon: "/logo.png",
-    shortcut: "/logo.png",
-    apple: "/logo.png",
+    icon: "/logo-rounded.png",
+    shortcut: "/logo-rounded.png",
+    apple: "/logo-rounded.png",
   },
 };
 
