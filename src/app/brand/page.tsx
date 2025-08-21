@@ -16,7 +16,7 @@ export default function BrandPage() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-20">
               <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6 leading-tight">Brand</h1>
-              <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-xl text-gray-600 dark:text-gray-300 text-balance mx-auto leading-relaxed">
                 Download official Memos brand assets and learn about proper usage guidelines for our open-source note-taking platform.
               </p>
             </div>
@@ -111,31 +111,6 @@ export default function BrandPage() {
               </div>
             </section>
 
-            {/* Colors */}
-            <section className="mb-20">
-              <h2 className="text-3xl font-bold tracking-tight mb-12 text-center">Brand Colors</h2>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-                <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-8 text-center hover:shadow-lg transition-shadow shadow-sm">
-                  <div className="w-full h-24 bg-teal-600 rounded-xl mb-4 border border-gray-200"></div>
-                  <p className="font-bold text-lg">Primary Teal</p>
-                  <p className="text-sm text-gray-500 font-mono">#0D9488</p>
-                </div>
-
-                <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-8 text-center hover:shadow-lg transition-shadow shadow-sm">
-                  <div className="w-full h-24 bg-gray-900 rounded-xl mb-4 border border-gray-200"></div>
-                  <p className="font-bold text-lg">Dark Gray</p>
-                  <p className="text-sm text-gray-500 font-mono">#111827</p>
-                </div>
-
-                <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-8 text-center hover:shadow-lg transition-shadow shadow-sm">
-                  <div className="w-full h-24 bg-gray-100 rounded-xl mb-4 border border-gray-200"></div>
-                  <p className="font-bold text-lg">Light Gray</p>
-                  <p className="text-sm text-gray-500 font-mono">#F3F4F6</p>
-                </div>
-              </div>
-            </section>
-
             {/* Usage */}
             <section className="mb-20">
               <h2 className="text-3xl font-bold tracking-tight mb-12 text-center">Usage & Attribution</h2>
@@ -149,7 +124,11 @@ export default function BrandPage() {
                 <ul className="space-y-3 text-gray-700 dark:text-gray-300">
                   <li>• Attribution is appreciated but not required</li>
                   <li>
-                    • Link back to <span className="font-mono text-teal-700 dark:text-teal-400 bg-teal-100 dark:bg-teal-900 px-2 py-1 rounded">usememos.com</span> when possible
+                    • Link back to{" "}
+                    <span className="font-mono text-teal-700 dark:text-teal-400 bg-teal-100 dark:bg-teal-900 px-2 py-1 rounded">
+                      usememos.com
+                    </span>{" "}
+                    when possible
                   </li>
                   <li>• Ensure usage aligns with our open-source values</li>
                   <li>• Contact us for special usage requests or questions</li>
@@ -161,7 +140,7 @@ export default function BrandPage() {
             <section className="text-center">
               <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-3xl p-12 shadow-lg">
                 <h3 className="text-2xl font-bold mb-6">Questions about brand usage?</h3>
-                <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+                <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 text-balance mx-auto leading-relaxed">
                   If you have questions about using our brand assets or need special permissions, we&apos;d love to hear from you.
                 </p>
                 <a

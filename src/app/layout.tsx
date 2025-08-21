@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     description: "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
     images: [
       {
-        url: "/demo-light.png",
+        url: "/demo.png",
         width: 1200,
         height: 630,
         alt: "Memos Dashboard Screenshot",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Memos - Open Source, Self-hosted Note Taking",
     description: "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
-    images: ["/demo-light.png"],
+    images: ["/demo.png"],
   },
   icons: {
     icon: "/logo.png",

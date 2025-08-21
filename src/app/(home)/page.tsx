@@ -1,17 +1,17 @@
 import Link from "next/link";
-import { 
-  GithubIcon, 
-  DownloadIcon, 
-  ShieldIcon, 
-  PenToolIcon, 
-  ZapIcon, 
-  PuzzleIcon, 
-  CodeIcon, 
+import {
+  GithubIcon,
+  DownloadIcon,
+  ShieldIcon,
+  PenToolIcon,
+  ZapIcon,
+  PuzzleIcon,
+  CodeIcon,
   DollarSignIcon,
   StarIcon,
   UsersIcon,
   TrendingUpIcon,
-  PackageIcon
+  PackageIcon,
 } from "lucide-react";
 import { HeroSection } from "@/components/hero-section";
 import { FeatureCard } from "@/components/feature-card";
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     siteName: "Memos",
     images: [
       {
-        url: "/demo-light.png",
+        url: "/demo.png",
         width: 1200,
         height: 630,
         alt: "Memos Dashboard Screenshot",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     title: "Memos - Open Source, Self-hosted Note Taking",
     description:
       "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
-    images: ["/demo-light.png"],
+    images: ["/demo.png"],
   },
 };
 
@@ -64,7 +64,7 @@ export default function HomePage() {
         subtitle="Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution"
         primaryCta={{ text: "Get Started", href: "/docs" }}
         secondaryCta={{ text: "Live Demo", href: "https://demo.usememos.com/", external: true }}
-        demoImageLight={{ src: "/demo-light.png", alt: "Memos Dashboard Screenshot (Light Mode)" }}
+        demoImageLight={{ src: "/demo.png", alt: "Memos Dashboard Screenshot (Light Mode)" }}
         demoImageDark={{ src: "/demo-dark.png", alt: "Memos Dashboard Screenshot (Dark Mode)" }}
       />
 
@@ -72,12 +72,10 @@ export default function HomePage() {
       <section className="py-24 px-4 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-20">
-            <h2 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-6xl mb-4 leading-tight">
+            <h2 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-6xl mb-4 leading-tight text-balance">
               The pain-less way to create meaningful notes
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Built for privacy, speed, and simplicity
-            </p>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Built for privacy, speed, and simplicity</p>
           </div>
 
           {/* Main Features Grid */}
@@ -129,10 +127,10 @@ export default function HomePage() {
             </div>
             <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
               {[
-                { icon: <StarIcon className="w-8 h-8" />, value: "39K+", label: "GitHub Stars" },
-                { icon: <UsersIcon className="w-8 h-8" />, value: "300+", label: "Contributors" },
-                { icon: <TrendingUpIcon className="w-8 h-8" />, value: "5.3M+", label: "Docker Pulls" },
-                { icon: <PackageIcon className="w-8 h-8" />, value: "70+", label: "Releases" },
+                { icon: <StarIcon className="w-8 h-8" />, value: "43K+", label: "GitHub Stars" },
+                { icon: <UsersIcon className="w-8 h-8" />, value: "330+", label: "Contributors" },
+                { icon: <TrendingUpIcon className="w-8 h-8" />, value: "6.1M+", label: "Docker Pulls" },
+                { icon: <PackageIcon className="w-8 h-8" />, value: "80+", label: "Releases" },
               ].map((stat) => (
                 <StatsCard key={stat.label} {...stat} />
               ))}
