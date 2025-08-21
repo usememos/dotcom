@@ -1,5 +1,18 @@
 import Link from "next/link";
-import { Github, Download } from "lucide-react";
+import { 
+  GithubIcon, 
+  DownloadIcon, 
+  ShieldIcon, 
+  PenToolIcon, 
+  ZapIcon, 
+  PuzzleIcon, 
+  CodeIcon, 
+  DollarSignIcon,
+  StarIcon,
+  UsersIcon,
+  TrendingUpIcon,
+  PackageIcon
+} from "lucide-react";
 import { HeroSection } from "@/components/hero-section";
 import { FeatureCard } from "@/components/feature-card";
 import { StatsCard } from "@/components/stats-card";
@@ -56,47 +69,50 @@ export default function HomePage() {
       />
 
       {/* Features Section */}
-      <section className="py-16 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-5xl">
+      <section className="py-24 px-4 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-6xl mb-4 leading-tight">
               The pain-less way to create meaningful notes
             </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Built for privacy, speed, and simplicity
+            </p>
           </div>
 
           {/* Main Features Grid */}
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 mb-16">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 mb-20">
             {[
               {
-                icon: "🏠",
+                icon: <ShieldIcon className="w-8 h-8" />,
                 title: "Privacy First",
                 description: "Take control of your data. All runtime data is securely stored in your local database.",
               },
               {
-                icon: "✍️",
+                icon: <PenToolIcon className="w-8 h-8" />,
                 title: "Create at Speed",
                 description: "Save content as plain text for quick access, with Markdown support for fast formatting and easy sharing.",
               },
               {
-                icon: "🤲",
+                icon: <ZapIcon className="w-8 h-8" />,
                 title: "Lightweight but Powerful",
                 description:
                   "Built with Go, React.js, and a compact architecture, our service delivers powerful performance in a lightweight package.",
               },
               {
-                icon: "🧩",
+                icon: <PuzzleIcon className="w-8 h-8" />,
                 title: "Customizable",
                 description:
                   "Easily customize your server name, icon, description, system style, and execution scripts to make it uniquely yours.",
               },
               {
-                icon: "🦦",
+                icon: <CodeIcon className="w-8 h-8" />,
                 title: "Open Source",
                 description:
                   "Memos embraces the future of open source, with all code available on GitHub for transparency and collaboration.",
               },
               {
-                icon: "💸",
+                icon: <DollarSignIcon className="w-8 h-8" />,
                 title: "Free to Use",
                 description: "Enjoy all features completely free, with no charges ever for any content.",
               },
@@ -106,13 +122,17 @@ export default function HomePage() {
           </div>
 
           {/* Stats Section */}
-          <div className="bg-teal-50 dark:bg-gray-800 border-2 border-teal-200 dark:border-gray-700 rounded-xl p-6 sm:p-8">
-            <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+          <div className="bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-gray-800 dark:to-gray-700 border border-teal-100 dark:border-gray-600 rounded-3xl p-8 sm:p-12 shadow-lg">
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Trusted by developers worldwide</h3>
+              <p className="text-gray-600 dark:text-gray-300">Join our growing community</p>
+            </div>
+            <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
               {[
-                { icon: "🌟", value: "39K+", label: "GitHub Stars" },
-                { icon: "👥", value: "300+", label: "Contributors" },
-                { icon: "📈", value: "5.3M+", label: "Docker Pulls" },
-                { icon: "📦", value: "70+", label: "Releases" },
+                { icon: <StarIcon className="w-8 h-8" />, value: "39K+", label: "GitHub Stars" },
+                { icon: <UsersIcon className="w-8 h-8" />, value: "300+", label: "Contributors" },
+                { icon: <TrendingUpIcon className="w-8 h-8" />, value: "5.3M+", label: "Docker Pulls" },
+                { icon: <PackageIcon className="w-8 h-8" />, value: "70+", label: "Releases" },
               ].map((stat) => (
                 <StatsCard key={stat.label} {...stat} />
               ))}
@@ -122,29 +142,29 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 bg-gray-50 dark:bg-gray-900">
+      <section className="py-24 px-4 bg-gradient-to-br from-gray-50 via-white to-teal-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl mb-6">
+          <h2 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-5xl mb-6 leading-tight">
             Ready to take control of your notes?
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-200 mb-8">
+          <p className="text-xl text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
             Join thousands of users who have chosen privacy, simplicity, and control over their data.
           </p>
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
             <Link
               href="/docs/installation"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-medium text-white bg-teal-600 border border-transparent rounded-lg shadow-lg hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all"
+              className="group inline-flex items-center justify-center gap-3 px-8 py-4 text-base font-semibold text-white bg-gradient-to-r from-teal-600 to-cyan-600 border border-transparent rounded-2xl shadow-lg hover:from-teal-700 hover:to-cyan-700 hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-300"
             >
-              <Download className="w-5 h-5" />
+              <DownloadIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
               Install Now
             </Link>
             <Link
               href="https://github.com/usememos/memos"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all"
+              className="group inline-flex items-center justify-center gap-3 px-8 py-4 text-base font-semibold text-gray-700 dark:text-gray-200 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-600 rounded-2xl hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-300"
             >
-              <Github className="w-5 h-5" />
+              <GithubIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
               View on GitHub
             </Link>
           </div>

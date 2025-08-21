@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Calendar, Tag, Users, ArrowRight } from "lucide-react";
+import { CalendarIcon, TagIcon, UsersIcon, ArrowRightIcon } from "lucide-react";
 import { changelogSource } from "@/lib/source";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { baseOptions } from "@/app/layout.config";
@@ -34,17 +34,18 @@ export default function ChangelogPage() {
   return (
     <HomeLayout {...baseOptions}>
       <main className="flex flex-1 flex-col">
-        <div className="max-w-4xl mx-auto px-4 py-16">
-          {/* Hero Section */}
-          <div className="text-center mb-16">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6">Changelog</h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Stay up to date with new features, improvements, and bug fixes in Memos.
-            </p>
-          </div>
+        <section className="py-24 px-4 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50">
+          <div className="max-w-4xl mx-auto">
+            {/* Hero Section */}
+            <div className="text-center mb-20">
+              <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6 leading-tight">Changelog</h1>
+              <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
+                Stay up to date with new features, improvements, and bug fixes in Memos.
+              </p>
+            </div>
 
-          {/* Changelog Entries */}
-          <div className="space-y-8">
+            {/* Changelog Entries */}
+            <div className="space-y-8">
             {entries.map((entry, index) => {
               const version = entry.data.title.replace("Release ", "");
               const isLatest = index === 0;
@@ -52,7 +53,7 @@ export default function ChangelogPage() {
               return (
                 <article
                   key={entry.url}
-                  className={`relative border border-gray-200 dark:border-gray-700 rounded-xl p-8 hover:shadow-lg transition-all ${
+                  className={`relative bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 shadow-sm ${
                     isLatest ? "ring-2 ring-teal-500 border-teal-200 dark:border-teal-600" : ""
                   }`}
                 >
@@ -72,7 +73,7 @@ export default function ChangelogPage() {
                         </h2>
                         {entry.data.date && (
                           <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 mt-1">
-                            <Calendar className="w-4 h-4" />
+                            <CalendarIcon className="w-4 h-4" />
                             <span className="text-sm">
                               {new Date(entry.data.date).toLocaleDateString("en-US", {
                                 year: "numeric",
@@ -85,9 +86,9 @@ export default function ChangelogPage() {
                       </div>
 
                       <div className="sm:ml-auto">
-                        <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-medium group-hover:gap-3 transition-all">
+                        <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-semibold group-hover:gap-3 transition-all">
                           <span>View Details</span>
-                          <ArrowRight className="w-4 h-4" />
+                          <ArrowRightIcon className="w-4 h-4" />
                         </div>
                       </div>
                     </div>
@@ -101,8 +102,8 @@ export default function ChangelogPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                       {entry.data.features && entry.data.features.length > 0 && (
                         <div className="bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg p-4">
-                          <h3 className="font-medium text-green-800 dark:text-green-200 mb-2 flex items-center gap-2">
-                            <Tag className="w-4 h-4" />
+                          <h3 className="font-bold text-green-800 dark:text-green-200 mb-2 flex items-center gap-2">
+                            <TagIcon className="w-4 h-4" />
                             Features
                           </h3>
                           <ul className="space-y-1 text-green-700 dark:text-green-300">
@@ -121,8 +122,8 @@ export default function ChangelogPage() {
 
                       {entry.data.fixes && entry.data.fixes.length > 0 && (
                         <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-                          <h3 className="font-medium text-blue-800 dark:text-blue-200 mb-2 flex items-center gap-2">
-                            <Tag className="w-4 h-4" />
+                          <h3 className="font-bold text-blue-800 dark:text-blue-200 mb-2 flex items-center gap-2">
+                            <TagIcon className="w-4 h-4" />
                             Bug Fixes
                           </h3>
                           <ul className="space-y-1 text-blue-700 dark:text-blue-300">
@@ -141,8 +142,8 @@ export default function ChangelogPage() {
 
                       {entry.data.contributors && entry.data.contributors.length > 0 && (
                         <div className="bg-purple-50 dark:bg-purple-950 border border-purple-200 dark:border-purple-800 rounded-lg p-4 sm:col-span-2">
-                          <h3 className="font-medium text-purple-800 dark:text-purple-200 mb-2 flex items-center gap-2">
-                            <Users className="w-4 h-4" />
+                          <h3 className="font-bold text-purple-800 dark:text-purple-200 mb-2 flex items-center gap-2">
+                            <UsersIcon className="w-4 h-4" />
                             New Contributors
                           </h3>
                           <div className="flex flex-wrap gap-2">
@@ -181,40 +182,41 @@ export default function ChangelogPage() {
             })}
           </div>
 
-          {/* Empty State */}
-          {entries.length === 0 && (
-            <div className="text-center py-16">
-              <div className="w-16 h-16 mx-auto mb-6 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
-                <Calendar className="w-8 h-8 text-gray-400" />
+            {/* Empty State */}
+            {entries.length === 0 && (
+              <div className="text-center py-16">
+                <div className="w-16 h-16 mx-auto mb-6 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
+                  <CalendarIcon className="w-8 h-8 text-gray-400" />
               </div>
               <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No changelog entries yet</h3>
               <p className="text-gray-600 dark:text-gray-300">Check back soon for updates and new releases.</p>
             </div>
           )}
 
-          {/* Footer */}
-          <div className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-700 text-center">
-            <p className="text-gray-600 dark:text-gray-300 mb-4">Want to contribute to Memos or report an issue?</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="https://github.com/usememos/memos"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              >
-                <span>View on GitHub</span>
-              </a>
-              <a
-                href="https://github.com/usememos/memos/releases"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
-              >
-                <span>All Releases</span>
-              </a>
+            {/* Footer */}
+            <div className="mt-20 pt-8 border-t border-gray-200 dark:border-gray-700 text-center">
+              <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">Want to contribute to Memos or report an issue?</p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a
+                  href="https://github.com/usememos/memos"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-200 font-semibold border border-gray-200 dark:border-gray-600 rounded-2xl hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 backdrop-blur-sm"
+                >
+                  <span>View on GitHub</span>
+                </a>
+                <a
+                  href="https://github.com/usememos/memos/releases"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-teal-600 to-cyan-600 text-white font-semibold rounded-2xl hover:from-teal-700 hover:to-cyan-700 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 shadow-lg"
+                >
+                  <span>All Releases</span>
+                </a>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
       </main>
       <Footer />
     </HomeLayout>

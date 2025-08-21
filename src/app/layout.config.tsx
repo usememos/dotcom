@@ -29,11 +29,6 @@ export const baseOptions: BaseLayoutProps = {
       text: "Changelog",
       url: "/changelog",
     },
-    {
-      text: "Live Demo",
-      url: "https://demo.usememos.com/",
-      external: true,
-    },
   ],
   githubUrl: "https://github.com/usememos/memos",
 };

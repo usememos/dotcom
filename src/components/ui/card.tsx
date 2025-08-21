@@ -1,69 +1,69 @@
 import Link from "next/link";
 import { ReactNode } from "react";
 import {
-  Play,
-  FileText,
-  Keyboard,
-  Tag,
-  BookOpen,
-  Settings,
-  Users,
-  Code,
-  Search,
-  Share,
-  Download,
-  Lightbulb,
-  Star,
-  ArrowRight,
-  ArrowUp,
-  Key,
-  Lock,
-  Shield,
-  Container,
-  Database,
-  HardDrive,
-  Cloud,
-  ExternalLink,
-  Network,
-  MessageCircle,
-  Zap,
-  Activity,
-  Cookie,
-  Webhook,
+  PlayIcon,
+  FileTextIcon,
+  KeyboardIcon,
+  TagIcon,
+  BookOpenIcon,
+  SettingsIcon,
+  UsersIcon,
+  CodeIcon,
+  SearchIcon,
+  ShareIcon,
+  DownloadIcon,
+  LightbulbIcon,
+  StarIcon,
+  ArrowRightIcon,
+  ArrowUpIcon,
+  KeyIcon,
+  LockIcon,
+  ShieldIcon,
+  ContainerIcon,
+  DatabaseIcon,
+  HardDriveIcon,
+  CloudIcon,
+  ExternalLinkIcon,
+  NetworkIcon,
+  MessageCircleIcon,
+  ZapIcon,
+  ActivityIcon,
+  CookieIcon,
+  WebhookIcon,
   LucideIcon,
 } from "lucide-react";
 
 // Icon mapping for string-based icon names
 const iconMap: Record<string, LucideIcon> = {
-  Play,
-  FileText,
-  Keyboard,
-  Tag,
-  BookOpen,
-  Settings,
-  Users,
-  Code,
-  Search,
-  Share,
-  Download,
-  Lightbulb,
-  Star,
-  ArrowRight,
-  ArrowUp,
-  Key,
-  Lock,
-  Shield,
-  Container,
-  Database,
-  HardDrive,
-  Cloud,
-  ExternalLink,
-  Network,
-  MessageCircle,
-  Zap,
-  Activity,
-  Cookie,
-  Webhook,
+  Play: PlayIcon,
+  FileText: FileTextIcon,
+  Keyboard: KeyboardIcon,
+  Tag: TagIcon,
+  BookOpen: BookOpenIcon,
+  Settings: SettingsIcon,
+  Users: UsersIcon,
+  Code: CodeIcon,
+  Search: SearchIcon,
+  Share: ShareIcon,
+  Download: DownloadIcon,
+  Lightbulb: LightbulbIcon,
+  Star: StarIcon,
+  ArrowRight: ArrowRightIcon,
+  ArrowUp: ArrowUpIcon,
+  Key: KeyIcon,
+  Lock: LockIcon,
+  Shield: ShieldIcon,
+  Container: ContainerIcon,
+  Database: DatabaseIcon,
+  HardDrive: HardDriveIcon,
+  Cloud: CloudIcon,
+  ExternalLink: ExternalLinkIcon,
+  Network: NetworkIcon,
+  MessageCircle: MessageCircleIcon,
+  Zap: ZapIcon,
+  Activity: ActivityIcon,
+  Cookie: CookieIcon,
+  Webhook: WebhookIcon,
 };
 
 interface CardsProps {
@@ -78,7 +78,7 @@ interface CardProps {
 }
 
 export function Cards({ children }: CardsProps) {
-  return <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 mb-6">{children}</div>;
+  return <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 mb-8 not-prose">{children}</div>;
 }
 
 export function Card({ title, href, icon, children }: CardProps) {
@@ -88,19 +88,26 @@ export function Card({ title, href, icon, children }: CardProps) {
   return (
     <Link
       href={href}
-      className="group block p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-colors duration-200 hover:shadow-sm no-underline"
+      className="group block p-8 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-teal-200 dark:hover:border-teal-600 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 no-underline shadow-sm"
     >
-      <div className="flex items-start space-x-3">
+      <div className="flex items-start space-x-4">
         {IconComponent && (
-          <div className="flex-shrink-0 w-6 h-6 text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300">
+          <div className="flex-shrink-0 inline-flex items-center justify-center w-12 h-12 bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 rounded-xl group-hover:scale-110 transition-transform">
             <IconComponent className="w-6 h-6" />
           </div>
         )}
-        <div className="flex-1">
-          <p className="text-lg mt-0 font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 mb-2">
-            {title}
-          </p>
-          {children && <div className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">{children}</div>}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors tracking-tight">
+              {title}
+            </h3>
+            <ArrowRightIcon className="w-5 h-5 text-gray-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 group-hover:translate-x-1 transition-all flex-shrink-0" />
+          </div>
+          {children && (
+            <div className="text-gray-600 dark:text-gray-300 leading-relaxed">
+              {children}
+            </div>
+          )}
         </div>
       </div>
     </Link>
