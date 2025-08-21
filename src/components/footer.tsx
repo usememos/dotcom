@@ -4,11 +4,11 @@ import { Github, ExternalLink } from "lucide-react";
 export function Footer() {
   return (
     <footer className="border-t bg-fd-background/50 mt-auto">
-      <div className="mx-auto max-w-fd-container px-4 py-8">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto max-w-fd-container px-4 py-6 sm:py-8">
+        <div className="grid grid-cols-1 gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* About */}
           <div>
-            <h3 className="font-semibold text-fd-foreground mb-4">Memos</h3>
+            <h3 className="font-semibold text-fd-foreground mb-3 sm:mb-4">Memos</h3>
             <p className="text-sm text-fd-muted-foreground leading-relaxed">
               Open source, self-hosted note-taking platform that puts your privacy first.
             </p>
@@ -16,8 +16,8 @@ export function Footer() {
 
           {/* Product */}
           <div>
-            <h3 className="font-semibold text-fd-foreground mb-4">Product</h3>
-            <ul className="space-y-3 text-sm">
+            <h3 className="font-semibold text-fd-foreground mb-3 sm:mb-4">Product</h3>
+            <ul className="space-y-2 sm:space-y-3 text-sm">
               <li>
                 <Link href="/docs" className="text-fd-muted-foreground hover:text-fd-foreground transition-colors">
                   Documentation
@@ -49,8 +49,8 @@ export function Footer() {
 
           {/* Community */}
           <div>
-            <h3 className="font-semibold text-fd-foreground mb-4">Community</h3>
-            <ul className="space-y-3 text-sm">
+            <h3 className="font-semibold text-fd-foreground mb-3 sm:mb-4">Community</h3>
+            <ul className="space-y-2 sm:space-y-3 text-sm">
               <li>
                 <a
                   href="https://github.com/usememos/memos"
@@ -83,8 +83,8 @@ export function Footer() {
 
           {/* Legal */}
           <div>
-            <h3 className="font-semibold text-fd-foreground mb-4">Legal</h3>
-            <ul className="space-y-3 text-sm">
+            <h3 className="font-semibold text-fd-foreground mb-3 sm:mb-4">Legal</h3>
+            <ul className="space-y-2 sm:space-y-3 text-sm">
               <li>
                 <Link href="/privacy" className="text-fd-muted-foreground hover:text-fd-foreground transition-colors">
                   Privacy Policy
