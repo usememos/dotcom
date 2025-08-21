@@ -50,8 +50,8 @@ export default function SupportersPage() {
               </div>
               <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6 leading-tight">Thanks!</h1>
               <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-                All donations directly support the development and operation of Memos. Recurring donations allow us to plan for the future. We
-                deeply appreciate every donation — Thank you!
+                All donations directly support the development and operation of Memos. Recurring donations allow us to plan for the future.
+                We deeply appreciate every donation — Thank you!
               </p>
             </div>
 
@@ -64,40 +64,40 @@ export default function SupportersPage() {
                 <h2 className="text-3xl font-bold tracking-tight">Sponsors</h2>
               </div>
 
-            <div className="flex flex-wrap gap-4">
-              {SPONSORS.map((sponsor) => (
+              <div className="flex flex-wrap gap-4">
+                {SPONSORS.map((sponsor) => (
+                  <a
+                    key={sponsor.title}
+                    href={sponsor.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group px-8 py-6 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl hover:shadow-xl hover:border-teal-200 dark:hover:border-teal-600 hover:-translate-y-1 transition-all duration-300 shadow-sm"
+                  >
+                    <div className="flex items-center gap-6">
+                      <img src={sponsor.logo} alt={`${sponsor.title} logo`} className="w-16 h-16 rounded-2xl object-contain" />
+                      <span className="text-2xl font-bold group-hover:text-teal-600 dark:text-gray-100 transition-colors tracking-tight">
+                        {sponsor.title}
+                      </span>
+                    </div>
+                  </a>
+                ))}
+
                 <a
-                  key={sponsor.title}
-                  href={sponsor.url}
+                  href="https://github.com/sponsors/usememos"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group p-8 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl hover:shadow-xl hover:border-teal-200 dark:hover:border-teal-600 hover:-translate-y-1 transition-all duration-300 shadow-sm"
+                  className="group px-8 py-6 border-2 border-dashed border-gray-200 dark:border-gray-600 rounded-2xl hover:border-teal-300 dark:hover:border-teal-600 hover:bg-teal-50 dark:hover:bg-teal-950 transition-all duration-300"
                 >
-                  <div className="flex items-center gap-6">
-                    <img src={sponsor.logo} alt={`${sponsor.title} logo`} className="w-16 h-16 rounded-2xl object-contain" />
-                    <span className="text-2xl font-bold group-hover:text-teal-600 dark:text-gray-100 transition-colors tracking-tight">
-                      {sponsor.title}
-                    </span>
+                  <div className="flex items-center gap-6 opacity-60 group-hover:opacity-80 transition-opacity">
+                    <HandshakeIcon strokeWidth={"1px"} className="w-16 h-16 text-gray-400 dark:text-gray-500" />
+                    <div>
+                      <div className="text-2xl font-bold dark:text-gray-200 tracking-tight">Your logo</div>
+                      <p className="text-gray-500 dark:text-gray-400 mt-1">Become a sponsor</p>
+                    </div>
                   </div>
                 </a>
-              ))}
-
-              <a
-                href="https://github.com/sponsors/usememos"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group p-8 border-2 border-dashed border-gray-200 dark:border-gray-600 rounded-2xl hover:border-teal-300 dark:hover:border-teal-600 hover:bg-teal-50 dark:hover:bg-teal-950 transition-all duration-300"
-              >
-                <div className="flex items-center gap-6 opacity-60 group-hover:opacity-80 transition-opacity">
-                  <HandshakeIcon className="w-16 h-16 text-gray-400 dark:text-gray-500" />
-                  <div>
-                    <div className="text-2xl font-bold dark:text-gray-200 tracking-tight">Your logo</div>
-                    <p className="text-gray-500 dark:text-gray-400 mt-1">Become a sponsor</p>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </section>
+              </div>
+            </section>
 
             {/* Current Backers Section */}
             <section className="mb-20">
@@ -108,47 +108,46 @@ export default function SupportersPage() {
                 <h2 className="text-3xl font-bold tracking-tight">Current Backers</h2>
               </div>
 
-            <div className="flex flex-wrap gap-3">
-              {GITHUB_USER_SPONSORS.map((sponsor) => (
+              <div className="flex flex-wrap gap-3">
+                {GITHUB_USER_SPONSORS.map((sponsor) => (
+                  <a
+                    key={sponsor.title}
+                    href={sponsor.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group p-4 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl hover:shadow-lg hover:border-teal-200 dark:hover:border-teal-600 hover:-translate-y-0.5 transition-all duration-300 shadow-sm"
+                  >
+                    <div className="flex items-center gap-3">
+                      <img src={sponsor.logo} alt={`${sponsor.title} avatar`} className="w-8 h-8 rounded-full object-cover" />
+                      <span className="text-base font-semibold group-hover:text-teal-600 dark:text-gray-100 transition-colors">
+                        {sponsor.title}
+                      </span>
+                    </div>
+                  </a>
+                ))}
+
                 <a
-                  key={sponsor.title}
-                  href={sponsor.url}
+                  href="https://github.com/sponsors/usememos"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group p-4 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl hover:shadow-lg hover:border-teal-200 dark:hover:border-teal-600 hover:-translate-y-0.5 transition-all duration-300 shadow-sm"
+                  className="group p-4 border-2 border-dashed border-gray-200 dark:border-gray-600 rounded-2xl hover:border-teal-300 dark:hover:border-teal-600 hover:bg-teal-50 dark:hover:bg-teal-950 transition-all duration-300"
                 >
-                  <div className="flex items-center gap-3">
-                    <img src={sponsor.logo} alt={`${sponsor.title} avatar`} className="w-8 h-8 rounded-full object-cover" />
-                    <span className="text-base font-semibold group-hover:text-teal-600 dark:text-gray-100 transition-colors">
-                      {sponsor.title}
-                    </span>
+                  <div className="flex items-center gap-3 opacity-60 group-hover:opacity-80 transition-opacity">
+                    <span className="block text-base font-semibold dark:text-gray-200">Become a backer</span>
                   </div>
                 </a>
-              ))}
+              </div>
 
               <a
                 href="https://github.com/sponsors/usememos"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group p-4 border-2 border-dashed border-gray-200 dark:border-gray-600 rounded-2xl hover:border-teal-300 dark:hover:border-teal-600 hover:bg-teal-50 dark:hover:bg-teal-950 transition-all duration-300"
+                className="inline-flex items-center gap-2 mt-8 text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 hover:underline transition-colors font-semibold"
               >
-                <div className="flex items-center gap-3 opacity-60 group-hover:opacity-80 transition-opacity">
-                  <UsersIcon className="w-8 h-8 text-gray-400 dark:text-gray-500" />
-                  <span className="text-base font-semibold dark:text-gray-200">Become a backer</span>
-                </div>
+                And more than 40+ sponsors on GitHub
+                <ExternalLinkIcon className="w-4 h-4" />
               </a>
-            </div>
-
-            <a
-              href="https://github.com/sponsors/usememos"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 mt-8 text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 hover:underline transition-colors font-semibold"
-            >
-              And more than 40+ sponsors on GitHub
-              <ExternalLinkIcon className="w-4 h-4" />
-            </a>
-          </section>
+            </section>
 
             {/* Support Options */}
             <section className="bg-gradient-to-br from-teal-50 via-cyan-50 to-blue-50 dark:from-teal-950 dark:via-cyan-950 dark:to-blue-950 rounded-3xl p-12 sm:p-16 shadow-lg">

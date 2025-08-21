@@ -24,8 +24,7 @@ export default function PrivacyPage() {
               </div>
               <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6 leading-tight">Privacy Policy</h1>
               <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
-                Your privacy is our priority. Memos is designed with privacy-first principles, ensuring your data stays completely under your
-                control.
+                Memos is designed with privacy-first principles, ensuring your data stays completely under your control.
               </p>
             </div>
 
@@ -37,10 +36,12 @@ export default function PrivacyPage() {
                     <LockIcon className="w-8 h-8" />
                   </div>
                   <div>
-                    <h2 className="text-3xl font-bold text-teal-900 dark:text-teal-100 mb-6 tracking-tight">Our Commitment to Your Privacy</h2>
+                    <h2 className="text-3xl font-bold text-teal-900 dark:text-teal-100 mb-6 tracking-tight">
+                      Our Commitment to Your Privacy
+                    </h2>
                     <p className="text-lg text-teal-800 dark:text-teal-200 leading-relaxed">
-                      Memos is a <strong>free, open-source</strong> note-taking application that puts your privacy first. We believe that your
-                      personal data belongs to you, and you alone. When you use Memos, your data never leaves your control.
+                      Memos is a <strong>free, open-source</strong> note-taking application that puts your privacy first. We believe that
+                      your personal data belongs to you, and you alone. When you use Memos, your data never leaves your control.
                     </p>
                   </div>
                 </div>
@@ -110,7 +111,10 @@ export default function PrivacyPage() {
                     description: "Our code is publicly available for audit, review, and verification of our privacy claims.",
                   },
                 ].map((feature, index) => (
-                  <div key={index} className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 shadow-sm">
+                  <div
+                    key={index}
+                    className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 shadow-sm"
+                  >
                     <h3 className="text-xl font-bold text-blue-900 dark:text-blue-100 mb-4 tracking-tight">{feature.title}</h3>
                     <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{feature.description}</p>
                   </div>
@@ -143,39 +147,6 @@ export default function PrivacyPage() {
                     <div key={index} className="flex items-start gap-4">
                       <div className="w-3 h-3 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
                       <span className="text-gray-700 dark:text-gray-300 font-medium">{guarantee}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
-
-            {/* Data Security */}
-            <section className="mb-20">
-              <div className="flex items-center justify-center gap-4 mb-12">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-xl">
-                  <LockIcon className="w-6 h-6" />
-                </div>
-                <h2 className="text-3xl font-bold tracking-tight">Data Security</h2>
-              </div>
-
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border border-green-200 dark:border-green-800 rounded-3xl p-12 shadow-lg">
-                <p className="text-xl text-green-800 dark:text-green-200 mb-8 text-center leading-relaxed">
-                  Since your data never leaves your control when using Memos, data security is entirely in your hands. We recommend following
-                  these security best practices:
-                </p>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {[
-                    "Use HTTPS for secure connections",
-                    "Implement regular automated backups",
-                    "Use strong authentication methods",
-                    "Keep your Memos installation updated",
-                    "Monitor access logs regularly",
-                    "Follow server security best practices",
-                  ].map((practice, index) => (
-                    <div key={index} className="flex items-start gap-4 p-4 bg-white/60 dark:bg-gray-800/60 rounded-2xl backdrop-blur-sm">
-                      <div className="w-3 h-3 bg-green-600 rounded-full mt-2 flex-shrink-0"></div>
-                      <span className="text-green-800 dark:text-green-200 font-medium">{practice}</span>
                     </div>
                   ))}
                 </div>
