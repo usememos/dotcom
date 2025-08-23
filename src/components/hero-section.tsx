@@ -35,7 +35,7 @@ export function HeroSection({
   demoImageDark,
 }: HeroSectionProps) {
   return (
-    <section className="flex flex-col items-center justify-center px-4 py-12 sm:py-16 lg:py-20 text-center bg-gradient-to-b from-white to-teal-50/30 dark:from-gray-950 dark:to-teal-950/30">
+    <section className="flex flex-col items-center justify-center pt-12 text-center bg-gradient-to-b from-white to-teal-50/30 dark:from-gray-950 dark:to-teal-950/30">
       {version && (
         <div className="mb-4 sm:mb-6">
           <Link
