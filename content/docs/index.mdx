@@ -1,26 +1,47 @@
 ---
 title: What is Memos
-description: A privacy-first, lightweight note-taking solution that allows you to effortlessly capture and share your ideas.
-category: guides
-difficulty: beginner
-estimatedTime: "3 min read"
-lastUpdated: "2025-08-19"
-authors: ["Memos Team"]
+description: A modern, open-source, self-hosted knowledge management and note-taking platform designed for privacy-conscious users and organizations.
+lastUpdated: "2025-08-23"
 ---
 
-**Memos** is a privacy-first, lightweight note-taking solution that allows you to effortlessly capture and share your ideas.
+**Memos** is a modern, open-source, self-hosted knowledge management and note-taking platform designed for privacy-conscious users and organizations. Memos provides a lightweight yet powerful solution for capturing, organizing, and sharing thoughts with comprehensive Markdown support and cross-platform accessibility.
 
 ## Key Features
 
-- **Open Source and Free**: Memos believes in a future where creativity knows no limits. All features are completely free, and you will never incur charges for any content.
-- **Self-Hosting Made Easy**: Set up your instance in seconds using Docker. Enjoy flexibility, scalability, and complete control over your data and privacy.
-- **Plain Text with Markdown Support**: Create and manage your notes in plain text, utilizing Markdown for easy formatting, without the complications of rich text editing.
-- **Effortless Customization and Sharing**: Personalize your notes and share them easily with others through intuitive collaboration features.
-- **Powerful RESTful API**: Integrate seamlessly with third-party applications and unlock new possibilities through our RESTful API support.
+### Privacy & Security
+
+- **Complete Data Ownership** — All data stored locally in your chosen database
+- **Self-Hosted Architecture** — Full control over infrastructure and access policies
+- **No External Dependencies** — Zero third-party services or cloud connections required
+
+### Content Creation
+
+- **Instant Save** — Streamlined plain text input with automatic persistence
+- **Rich Markdown Support** — Full Markdown rendering with syntax highlighting
+- **Media Integration** — Native support for images, links, and embedded content
+
+### Performance & Technology
+
+- **High-Performance Backend** — Built with Go for optimal resource utilization
+- **Modern React Frontend** — Responsive, intuitive user interface
+- **Lightweight Deployment** — Minimal system requirements, maximum efficiency
+- **Cross-Platform** — Linux, macOS, Windows, and containerized environments
+
+### Customization
+
+- **Configurable Interface** — Custom branding, themes, and UI elements
+- **API-First Design** — RESTful API for seamless third-party integrations
+- **Multi-Database Support** — SQLite, PostgreSQL, and MySQL compatibility
+
+### Cost-Effective
+
+- **Open Source (MIT)** — Full source code availability with permissive licensing
+- **Zero Subscription Fees** — No usage limits, premium tiers, or hidden costs
+- **Community-Driven** — Transparent development with active community support
 
 ## Getting Started
 
-Ready to start using Memos? Here's what you need to know:
+Ready to start using Memos? Get up and running in under 1 minute with our comprehensive guides:
 
 <Cards>
   <Card title="Installation" href="/docs/installation" icon="Download">
@@ -30,12 +51,27 @@ Ready to start using Memos? Here's what you need to know:
     Step-by-step guides for using Memos effectively
   </Card>
   <Card title="Configuration" href="/docs/configuration" icon="Settings">
-    Configure your Memos instance for optimal performance
+    Configure your Memos instance for optimal performance and security
   </Card>
   <Card title="API Documentation" href="/docs/api" icon="Code">
     Explore the RESTful API for integrations and automation
   </Card>
 </Cards>
+
+## Quick Start
+
+Get Memos running with Docker in under 1 minute:
+
+```bash
+docker run -d \
+  --name memos \
+  --restart unless-stopped \
+  -p 5230:5230 \
+  -v ~/.memos:/var/opt/memos \
+  neosmemo/memos:stable
+```
+
+Access Memos at `http://localhost:5230` and complete the initial setup.
 
 ## Quick Links
 
@@ -43,6 +79,17 @@ Ready to start using Memos? Here's what you need to know:
 - [Basic Usage Guide](/docs/guides/getting-started) - Learn the fundamentals
 - [Content Syntax](/docs/guides/content-syntax) - Master Markdown formatting
 - [API Authentication](/docs/api/authentication) - Secure API access
+- [Development Setup](/docs/installation/development) - Contribute to Memos
+
+## Why Choose Memos?
+
+Memos stands out as a lightweight, self-hosted alternative to cloud-based note-taking services. Built with privacy and performance in mind, it offers a comprehensive platform for personal knowledge management without compromising data ownership or security.
+
+**Key Advantages:**
+- **Privacy-First**: Complete control over your data with local storage
+- **Performance**: High-performance Go backend with modern React frontend
+- **Flexibility**: Multi-database support and extensive customization options
+- **Cost-Effective**: Zero subscription fees with full MIT license freedom
 
 ## Community & Support
 
