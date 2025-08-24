@@ -1,9 +1,0 @@
-{
-  "title": "API Documentation",
-  "description": "Complete API reference and authentication guide",
-  "pages": [
-    "index",
-    "rest",
-    "authentication"
-  ]
-}

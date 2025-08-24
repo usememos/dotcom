@@ -3,13 +3,9 @@
   "pages": [
     "index",
     "installation",
-    "guides", 
+    "guides",
     "configuration",
     "integrations",
-    "api",
-    "deployment",
-    "troubleshooting",
-    "contributing",
     "faq"
   ]
 }
