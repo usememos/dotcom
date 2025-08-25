@@ -32,7 +32,7 @@ Start with simple filters like `"work" in tags` and add complexity as needed.
 
 Filters use simple expressions to find specific memos:
 
-```cel
+```text
 content.contains("meeting")    # Text search
 "work" in tags                # Has specific tag
 pinned                        # Pinned memos only
@@ -42,20 +42,20 @@ has_task_list                 # Contains task lists
 ## Common Filter Examples
 
 ### By Tags
-```cel
+```text
 "work" in tags                    # Work memos
 tag in ["urgent", "important"]   # Multiple tag options
 !("archive" in tags)             # Exclude archived
 ```
 
 ### By Time
-```cel
+```text
 created_ts > now() - 86400       # Last 24 hours
 created_ts > now() - 604800      # Last week
 ```
 
 ### By Content Type
-```cel
+```text
 has_task_list                    # Contains tasks
 has_incomplete_tasks             # Has unfinished tasks
 has_link                         # Contains links
@@ -63,7 +63,7 @@ has_code                         # Contains code blocks
 ```
 
 ### By Properties
-```cel
+```text
 pinned                           # Pinned memos
 visibility == "PUBLIC"           # Public memos
 size(tags) == 0                  # Untagged memos
@@ -73,7 +73,7 @@ size(tags) == 0                  # Untagged memos
 
 Use `&&` (AND) and `||` (OR) to combine conditions:
 
-```cel
+```text
 # Work tasks from this week
 "work" in tags && has_task_list && created_ts > now() - 604800
 
