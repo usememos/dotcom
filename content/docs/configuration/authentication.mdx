@@ -1,9 +1,9 @@
 ---
 title: Authentication Configuration
-description: Configure authentication methods including SSO, LDAP, and OAuth providers for your Memos instance.
+description: Configure authentication methods including local authentication and OAuth SSO providers for your Memos instance.
 ---
 
-Memos supports multiple authentication methods to fit different organizational needs. This comprehensive guide covers local authentication, Single Sign-On (SSO), LDAP, and OAuth integration.
+Memos supports multiple authentication methods to fit different organizational needs. This comprehensive guide covers local authentication and OAuth SSO integration.
 
 ## Authentication Methods Overview
 
@@ -14,401 +14,310 @@ Memos supports multiple authentication methods to fit different organizational n
   <Card title="OAuth Providers" href="#oauth-providers" icon="Users">
     Google, GitHub, Microsoft, and other OAuth 2.0 providers
   </Card>
-  <Card title="LDAP Integration" href="#ldap-integration" icon="Network">
-    Active Directory and LDAP directory services
-  </Card>
-  <Card title="SAML SSO" href="#saml-sso" icon="Shield">
-    Enterprise SAML 2.0 Single Sign-On integration
-  </Card>
 </Cards>
 
 ## Local Authentication
 
-Local authentication is enabled by default and provides a secure foundation for user management.
+Local authentication is enabled by default and provides a secure foundation for user management. Passwords are securely hashed using bcrypt for storage.
 
 ### Basic Configuration
 
-```bash
-# Enable local authentication (default)
-export MEMOS_AUTH_LOCAL_ENABLED=true
+Local authentication settings are configured through the Memos web interface:
 
-# Allow user registration
-export MEMOS_ALLOW_SIGNUP=true
+1. **Access Workspace Settings**:
+   - Log in as an administrator
+   - Navigate to Settings → Workspace
 
-# Require email verification
-export MEMOS_REQUIRE_EMAIL_VERIFICATION=true
-
-# Admin approval for new users
-export MEMOS_REQUIRE_ADMIN_APPROVAL=false
-```
+2. **Authentication Settings**:
+   - **Allow User Registration**: Control whether new users can sign up
+   - **Disable Password Authentication**: Option to disable password-based login when using SSO
 
 ### Password Security
 
-Configure strong password policies for enhanced security.
+Memos uses bcrypt hashing with default cost settings for secure password storage. Password policies are not currently configurable through environment variables.
 
-```bash
-# Password requirements
-export MEMOS_PASSWORD_MIN_LENGTH=12
-export MEMOS_PASSWORD_REQUIRE_UPPERCASE=true
-export MEMOS_PASSWORD_REQUIRE_LOWERCASE=true
-export MEMOS_PASSWORD_REQUIRE_NUMBERS=true
-export MEMOS_PASSWORD_REQUIRE_SYMBOLS=true
+### User Registration
 
-# Password history
-export MEMOS_PASSWORD_HISTORY_COUNT=5
-export MEMOS_PASSWORD_MIN_AGE_DAYS=1
-
-# Account lockout
-export MEMOS_MAX_LOGIN_ATTEMPTS=5
-export MEMOS_LOCKOUT_DURATION=900  # 15 minutes
-```
-
-### Email Configuration
-
-Set up email services for verification and notifications.
-
-```bash
-# SMTP configuration
-export MEMOS_SMTP_HOST=smtp.gmail.com
-export MEMOS_SMTP_PORT=587
-export MEMOS_SMTP_USERNAME=your-email@gmail.com
-export MEMOS_SMTP_PASSWORD=your-app-password
-export MEMOS_SMTP_FROM=noreply@yourdomain.com
-
-# Email templates
-export MEMOS_EMAIL_VERIFICATION_TEMPLATE=custom
-export MEMOS_EMAIL_RESET_PASSWORD_TEMPLATE=custom
-```
-
-## OAuth Providers
-
-Integrate with popular OAuth 2.0 providers for seamless authentication.
-
-### Google OAuth
-
-Enable Google authentication for your users.
-
-#### Prerequisites
-
-1. **Create Google OAuth App**:
-   - Go to [Google Cloud Console](https://console.cloud.google.com/)
-   - Create a new project or select existing
-   - Enable Google+ API
-   - Create OAuth 2.0 credentials
-
-2. **Configure OAuth Consent Screen**:
-   - Set application name and logo
-   - Add authorized domains
-   - Configure scopes: email, profile
-
-#### Configuration
-
-```bash
-# Google OAuth settings
-export MEMOS_OAUTH_GOOGLE_ENABLED=true
-export MEMOS_OAUTH_GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
-export MEMOS_OAUTH_GOOGLE_CLIENT_SECRET=your-google-client-secret
-
-# Optional: Restrict to specific domains
-export MEMOS_OAUTH_GOOGLE_ALLOWED_DOMAINS=yourcompany.com,yourdomain.org
-
-# Callback URL: https://your-memos-domain.com/api/v1/auth/callback/google
-```
-
-#### Docker Configuration
+User registration is controlled through workspace settings:
 
 ```yaml
-services:
-  memos:
-    image: neosmemo/memos:stable
-    environment:
-      - MEMOS_OAUTH_GOOGLE_ENABLED=true
-      - MEMOS_OAUTH_GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
-      - MEMOS_OAUTH_GOOGLE_CLIENT_SECRET=your-google-client-secret
-      - MEMOS_OAUTH_GOOGLE_ALLOWED_DOMAINS=yourcompany.com
-    ports:
-      - "5230:5230"
+# Workspace settings (configured via web interface)
+disallow_user_registration: false  # Allow new user signups
+disallow_password_auth: false      # Allow password-based authentication
 ```
 
-### GitHub OAuth
+## OAuth SSO Providers
 
-Enable GitHub authentication for developer-focused teams.
+Memos supports Single Sign-On (SSO) through OAuth 2.0 identity providers. OAuth providers are configured through the web interface as Identity Providers (IdPs).
 
-#### Setup Steps
+### Supported Providers
+
+Memos supports the following OAuth 2.0 providers out of the box:
+
+- **GitHub**: Uses `login` field as identifier
+- **GitLab**: Uses `name` field as identifier  
+- **Google**: Uses `email` field as identifier
+- **Custom OAuth 2.0**: Configurable field mapping
+
+### Configuring Identity Providers
+
+Identity Providers are configured through the Memos web interface:
+
+1. **Access Admin Settings**:
+   - Log in as an administrator
+   - Navigate to Settings → Identity Providers
+
+2. **Create New Identity Provider**:
+   - Click "Add Identity Provider"
+   - Select provider type (GitHub, GitLab, Google, or Custom)
+   - Configure the following settings:
+
+#### Provider Configuration
+
+```yaml
+# Identity Provider Configuration
+name: "GitHub"                    # Display name
+type: "GITHUB"                     # Provider type
+identifier_filter: ""              # Optional regex to restrict users (e.g., "^org-.*")
+
+# OAuth 2.0 Configuration
+config:
+  client_id: "your-client-id"
+  client_secret: "your-client-secret"
+  auth_url: "https://github.com/login/oauth/authorize"
+  token_url: "https://github.com/login/oauth/access_token"
+  user_info_url: "https://api.github.com/user"
+  scopes: ["read:user", "user:email"]
+  
+  # Field mapping for user attributes
+  field_mapping:
+    identifier: "login"           # Username field
+    display_name: "name"          # Display name field
+    email: "email"                # Email field
+    avatar_url: "avatar_url"      # Avatar URL field
+```
+
+#### GitHub Setup
 
 1. **Create GitHub OAuth App**:
    - Go to GitHub Settings → Developer settings → OAuth Apps
    - Click "New OAuth App"
-   - Set Authorization callback URL: `https://your-domain.com/api/v1/auth/callback/github`
+   - Set Authorization callback URL: `https://your-domain.com/api/v1/auth/callback`
 
-#### Configuration
+2. **Configuration in Memos**:
+   ```yaml
+   name: "GitHub"
+   type: "GITHUB"
+   config:
+     client_id: "your-github-client-id"
+     client_secret: "your-github-client-secret"
+     scopes: ["read:user", "user:email"]
+     field_mapping:
+       identifier: "login"
+       display_name: "name"
+       email: "email"
+       avatar_url: "avatar_url"
+   ```
 
-```bash
-# GitHub OAuth settings
-export MEMOS_OAUTH_GITHUB_ENABLED=true
-export MEMOS_OAUTH_GITHUB_CLIENT_ID=your-github-client-id
-export MEMOS_OAUTH_GITHUB_CLIENT_SECRET=your-github-client-secret
+#### GitLab Setup
 
-# Optional: Restrict to organization members
-export MEMOS_OAUTH_GITHUB_ALLOWED_ORGS=your-org,another-org
+```yaml
+name: "GitLab"
+type: "GITLAB"
+config:
+  client_id: "your-gitlab-client-id"
+  client_secret: "your-gitlab-client-secret"
+  auth_url: "https://gitlab.com/oauth/authorize"
+  token_url: "https://gitlab.com/oauth/token"
+  user_info_url: "https://gitlab.com/api/v4/user"
+  scopes: ["read_user"]
+  field_mapping:
+    identifier: "name"
+    display_name: "name"
+    email: "email"
+    avatar_url: "avatar_url"
 ```
 
-### Microsoft Azure AD
+#### Google Setup
 
-Integrate with Microsoft Azure Active Directory.
-
-#### Azure AD Setup
-
-1. **Register Application** in Azure Portal
-2. **Configure Authentication**:
-   - Add redirect URI: `https://your-domain.com/api/v1/auth/callback/azure`
-   - Enable ID tokens and access tokens
-
-#### Configuration
-
-```bash
-# Azure AD OAuth settings
-export MEMOS_OAUTH_AZURE_ENABLED=true
-export MEMOS_OAUTH_AZURE_CLIENT_ID=your-azure-client-id
-export MEMOS_OAUTH_AZURE_CLIENT_SECRET=your-azure-client-secret
-export MEMOS_OAUTH_AZURE_TENANT_ID=your-tenant-id
-
-# Optional: Restrict to specific tenant
-export MEMOS_OAUTH_AZURE_ALLOWED_TENANTS=tenant1,tenant2
+```yaml
+name: "Google"
+type: "GOOGLE"
+config:
+  client_id: "your-google-client-id.apps.googleusercontent.com"
+  client_secret: "your-google-client-secret"
+  auth_url: "https://accounts.google.com/o/oauth2/auth"
+  token_url: "https://oauth2.googleapis.com/token"
+  user_info_url: "https://www.googleapis.com/oauth2/v2/userinfo"
+  scopes: ["openid", "profile", "email"]
+  field_mapping:
+    identifier: "email"
+    display_name: "name"
+    email: "email"
+    avatar_url: "picture"
 ```
 
-### Custom OAuth Provider
+#### Custom OAuth Provider
 
-Configure custom OAuth 2.0 providers.
+For custom OAuth 2.0 providers:
 
-```bash
-# Custom OAuth provider
-export MEMOS_OAUTH_CUSTOM_ENABLED=true
-export MEMOS_OAUTH_CUSTOM_NAME="Company SSO"
-export MEMOS_OAUTH_CUSTOM_CLIENT_ID=your-custom-client-id
-export MEMOS_OAUTH_CUSTOM_CLIENT_SECRET=your-custom-client-secret
-
-# OAuth endpoints
-export MEMOS_OAUTH_CUSTOM_AUTH_URL=https://sso.company.com/oauth/authorize
-export MEMOS_OAUTH_CUSTOM_TOKEN_URL=https://sso.company.com/oauth/token
-export MEMOS_OAUTH_CUSTOM_USER_URL=https://sso.company.com/oauth/userinfo
-
-# Attribute mapping
-export MEMOS_OAUTH_CUSTOM_USERNAME_ATTR=preferred_username
-export MEMOS_OAUTH_CUSTOM_EMAIL_ATTR=email
-export MEMOS_OAUTH_CUSTOM_NAME_ATTR=name
+```yaml
+name: "Company SSO"
+type: "CUSTOM"
+config:
+  client_id: "your-custom-client-id"
+  client_secret: "your-custom-client-secret"
+  auth_url: "https://sso.company.com/oauth/authorize"
+  token_url: "https://sso.company.com/oauth/token"
+  user_info_url: "https://sso.company.com/oauth/userinfo"
+  scopes: ["openid", "profile", "email"]
+  field_mapping:
+    identifier: "preferred_username"
+    display_name: "name"
+    email: "email"
+    avatar_url: "picture"
 ```
 
-## LDAP Integration
+### Identifier Filtering
 
-Connect Memos with your LDAP directory service for centralized user management.
+You can restrict access to specific users or organizations using identifier filters:
 
-### Active Directory Configuration
+```yaml
+# Allow only users from specific organization
+identifier_filter: "^org-.*"
 
-```bash
-# LDAP connection settings
-export MEMOS_LDAP_ENABLED=true
-export MEMOS_LDAP_HOST=ldap.company.com
-export MEMOS_LDAP_PORT=389
-export MEMOS_LDAP_USE_TLS=true
-export MEMOS_LDAP_SKIP_VERIFY=false
+# Allow only specific email domains
+identifier_filter: ".*@company\\.com$"
 
-# Bind credentials
-export MEMOS_LDAP_BIND_DN="CN=memos-service,OU=Service Accounts,DC=company,DC=com"
-export MEMOS_LDAP_BIND_PASSWORD=service-account-password
-
-# Search configuration
-export MEMOS_LDAP_BASE_DN="OU=Users,DC=company,DC=com"
-export MEMOS_LDAP_FILTER="(&(objectClass=user)(!(userAccountControl:1.2.840.113556.1.4.803:=2)))"
-export MEMOS_LDAP_USERNAME_ATTR=sAMAccountName
-export MEMOS_LDAP_EMAIL_ATTR=mail
-export MEMOS_LDAP_DISPLAY_NAME_ATTR=displayName
+# Allow specific users
+identifier_filter: "^(user1|user2|user3)$"
 ```
 
-### OpenLDAP Configuration
+### OAuth Flow
 
-```bash
-# OpenLDAP settings
-export MEMOS_LDAP_ENABLED=true
-export MEMOS_LDAP_HOST=openldap.company.com
-export MEMOS_LDAP_PORT=389
-export MEMOS_LDAP_USE_TLS=true
+The OAuth 2.0 flow works as follows:
 
-# Bind configuration
-export MEMOS_LDAP_BIND_DN="cn=memos,ou=services,dc=company,dc=com"
-export MEMOS_LDAP_BIND_PASSWORD=ldap-service-password
+1. **Authorization Request**: User clicks SSO button, redirected to provider's auth URL
+2. **Callback Handling**: Provider redirects back with authorization code
+3. **Token Exchange**: Memos exchanges code for access token
+4. **User Info Retrieval**: Fetch user details using access token
+5. **User Creation/Login**: Create new user account or authenticate existing user
 
-# User search
-export MEMOS_LDAP_BASE_DN="ou=people,dc=company,dc=com"
-export MEMOS_LDAP_FILTER="(&(objectClass=inetOrgPerson)(uid=%s))"
-export MEMOS_LDAP_USERNAME_ATTR=uid
-export MEMOS_LDAP_EMAIL_ATTR=mail
-export MEMOS_LDAP_DISPLAY_NAME_ATTR=cn
+### User Provisioning
 
-# Group mapping (optional)
-export MEMOS_LDAP_GROUP_BASE_DN="ou=groups,dc=company,dc=com"
-export MEMOS_LDAP_GROUP_FILTER="(&(objectClass=groupOfNames)(member=%s))"
-export MEMOS_LDAP_ADMIN_GROUP="cn=memos-admins,ou=groups,dc=company,dc=com"
-```
+When a user signs in via OAuth for the first time:
 
-### LDAP Testing
-
-```bash
-# Test LDAP connection
-ldapsearch -x -H ldap://ldap.company.com:389 \
-  -D "CN=memos-service,OU=Service Accounts,DC=company,DC=com" \
-  -w service-account-password \
-  -b "OU=Users,DC=company,DC=com" \
-  "(&(objectClass=user)(sAMAccountName=testuser))"
-```
-
-## SAML SSO
-
-Configure SAML 2.0 Single Sign-On for enterprise authentication.
-
-### SAML Configuration
-
-```bash
-# SAML SSO settings
-export MEMOS_SAML_ENABLED=true
-export MEMOS_SAML_ENTITY_ID=https://your-memos-domain.com/saml/metadata
-export MEMOS_SAML_SSO_URL=https://sso.company.com/saml/sso
-export MEMOS_SAML_SLO_URL=https://sso.company.com/saml/slo
-
-# Certificates
-export MEMOS_SAML_CERT_PATH=/etc/memos/saml.crt
-export MEMOS_SAML_KEY_PATH=/etc/memos/saml.key
-export MEMOS_SAML_IDP_CERT_PATH=/etc/memos/idp.crt
-
-# Attribute mapping
-export MEMOS_SAML_USERNAME_ATTR=NameID
-export MEMOS_SAML_EMAIL_ATTR=http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress
-export MEMOS_SAML_DISPLAY_NAME_ATTR=http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name
-export MEMOS_SAML_ROLE_ATTR=http://schemas.microsoft.com/ws/2008/06/identity/claims/role
-```
-
-### Identity Provider Examples
-
-#### Okta SAML
-
-```bash
-# Okta-specific configuration
-export MEMOS_SAML_ENTITY_ID=http://www.okta.com/your-app-id
-export MEMOS_SAML_SSO_URL=https://your-org.okta.com/app/your-app-id/sso/saml
-export MEMOS_SAML_ISSUER=http://www.okta.com/your-app-id
-
-# Okta attribute mapping
-export MEMOS_SAML_USERNAME_ATTR=user.login
-export MEMOS_SAML_EMAIL_ATTR=user.email
-export MEMOS_SAML_DISPLAY_NAME_ATTR=user.displayName
-```
-
-#### Azure AD SAML
-
-```bash
-# Azure AD SAML configuration
-export MEMOS_SAML_ENTITY_ID=https://sts.windows.net/your-tenant-id/
-export MEMOS_SAML_SSO_URL=https://login.microsoftonline.com/your-tenant-id/saml2
-export MEMOS_SAML_ISSUER=https://sts.windows.net/your-tenant-id/
-
-# Azure AD attributes
-export MEMOS_SAML_USERNAME_ATTR=http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name
-export MEMOS_SAML_EMAIL_ATTR=http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress
-export MEMOS_SAML_DISPLAY_NAME_ATTR=http://schemas.microsoft.com/identity/claims/displayname
-```
-
-## Multi-Factor Authentication
-
-Add an extra layer of security with MFA support.
-
-### TOTP (Time-based One-Time Password)
-
-```bash
-# Enable TOTP MFA
-export MEMOS_MFA_TOTP_ENABLED=true
-export MEMOS_MFA_TOTP_ISSUER="Memos"
-export MEMOS_MFA_TOTP_PERIOD=30
-export MEMOS_MFA_TOTP_DIGITS=6
-
-# MFA enforcement
-export MEMOS_MFA_REQUIRED_FOR_ADMINS=true
-export MEMOS_MFA_GRACE_PERIOD=86400  # 24 hours
-```
-
-### SMS MFA (Optional)
-
-```bash
-# SMS provider configuration (Twilio example)
-export MEMOS_MFA_SMS_ENABLED=true
-export MEMOS_MFA_SMS_PROVIDER=twilio
-export MEMOS_MFA_SMS_ACCOUNT_SID=your-twilio-sid
-export MEMOS_MFA_SMS_AUTH_TOKEN=your-twilio-token
-export MEMOS_MFA_SMS_FROM_NUMBER=+1234567890
-```
-
-### Email MFA
-
-```bash
-# Email-based MFA
-export MEMOS_MFA_EMAIL_ENABLED=true
-export MEMOS_MFA_EMAIL_CODE_LENGTH=6
-export MEMOS_MFA_EMAIL_CODE_EXPIRY=300  # 5 minutes
-export MEMOS_MFA_EMAIL_RATE_LIMIT=3    # Max 3 codes per hour
-```
-
-## Advanced Authentication Features
-
-### Just-In-Time (JIT) Provisioning
-
-Automatically create user accounts from external authentication sources.
-
-```bash
-# JIT provisioning
-export MEMOS_AUTH_JIT_ENABLED=true
-export MEMOS_AUTH_JIT_DEFAULT_ROLE=user
-export MEMOS_AUTH_JIT_AUTO_APPROVE=true
-
-# Role mapping from external attributes
-export MEMOS_AUTH_JIT_ADMIN_GROUPS=memos-admins,it-admins
-export MEMOS_AUTH_JIT_MODERATOR_GROUPS=memos-moderators
-```
+- A new user account is automatically created
+- User attributes are mapped from the OAuth provider
+- The user is assigned the default role (typically "USER")
+- Profile information is populated from the provider
 
 ### Session Management
 
-Configure session behavior and security.
+OAuth-authenticated users receive the same session management as local users:
+
+- Sessions expire after 14 days of inactivity
+- Session information includes client details (IP, User-Agent, etc.)
+- Secure cookies with HttpOnly and SameSite flags
+
+## Multi-Factor Authentication
+
+<Callout type="info">
+**Note**: Multi-Factor Authentication (MFA) is planned for a future release but is not currently available in Memos.
+</Callout>
+
+When implemented, MFA will provide an additional layer of security by requiring users to provide a second form of authentication beyond their password or OAuth login.
+
+### Planned MFA Features
+
+- **TOTP (Time-based One-Time Password)**: Support for authenticator apps like Google Authenticator
+- **SMS MFA**: SMS-based verification codes
+- **Email MFA**: Email-based verification codes
+- **MFA Enforcement**: Require MFA for administrative accounts
+
+## Advanced Authentication Features
+
+### Session Management
+
+Memos implements secure session management with the following characteristics:
+
+#### Session Expiration
+
+- **Sliding Expiration**: Sessions remain valid as long as the user is active
+- **Inactivity Timeout**: Sessions expire after 14 days of inactivity
+- **Absolute Timeout**: No absolute session duration limit is enforced
+
+#### Session Security
 
 ```bash
-# Session settings
-export MEMOS_SESSION_TIMEOUT=3600      # 1 hour idle timeout
-export MEMOS_SESSION_MAX_DURATION=28800 # 8 hour absolute timeout
-export MEMOS_SESSION_REMEMBER_ME=true
-export MEMOS_SESSION_REMEMBER_DURATION=2592000 # 30 days
-
-# Session security
-export MEMOS_SESSION_COOKIE_SECURE=true
-export MEMOS_SESSION_COOKIE_HTTP_ONLY=true
-export MEMOS_SESSION_COOKIE_SAME_SITE=strict
-
-# Concurrent sessions
-export MEMOS_MAX_CONCURRENT_SESSIONS=5
-export MEMOS_SESSION_INVALIDATE_ON_PASSWORD_CHANGE=true
+# Session cookies are configured with security flags
+# HttpOnly: Prevents JavaScript access to session cookies
+# SameSite: Strict or None depending on HTTPS configuration
+# Secure: Set when using HTTPS
 ```
 
-### Account Management
+#### Session Tracking
 
-Configure user account lifecycle and management.
+Memos tracks session information including:
+
+- **Client Information**: IP address, User-Agent, device type, OS, browser
+- **Creation Time**: When the session was established
+- **Last Access Time**: Last activity timestamp
+- **Session ID**: Unique identifier for each session
+
+#### Managing Sessions
+
+Users can view and manage their active sessions through the web interface:
+
+1. **Access Session Management**:
+   - Navigate to Settings → Sessions
+   - View all active sessions
+   - See session details (device, location, last access)
+
+2. **Terminate Sessions**:
+   - Click "Revoke" next to unwanted sessions
+   - Option to terminate all other sessions
+
+### User Provisioning
+
+#### OAuth User Creation
+
+When users authenticate via OAuth SSO for the first time:
+
+- **Automatic Account Creation**: New user accounts are created automatically
+- **Attribute Mapping**: User profile information is populated from OAuth provider
+- **Default Role Assignment**: New users receive the "USER" role by default
+- **Profile Completion**: Avatar, display name, and email are set from provider
+
+#### Local User Registration
+
+Local user registration can be controlled through workspace settings:
 
 ```bash
-# Account policies
-export MEMOS_ACCOUNT_ACTIVATION_REQUIRED=true
-export MEMOS_ACCOUNT_ADMIN_APPROVAL=false
-export MEMOS_ACCOUNT_EMAIL_VERIFICATION=true
-
-# Account cleanup
-export MEMOS_INACTIVE_ACCOUNT_CLEANUP=true
-export MEMOS_INACTIVE_ACCOUNT_DAYS=90
-export MEMOS_ACCOUNT_DELETION_GRACE_PERIOD=30
+# Workspace settings (configured via web interface)
+disallow_user_registration: false  # Allow new user signups
+disallow_password_auth: false      # Allow password-based authentication
 ```
+
+### Account Security
+
+#### Password Security (Local Authentication)
+
+Memos uses bcrypt hashing for password storage with default cost settings for secure password verification.
+
+#### Role-Based Access Control
+
+Memos implements three user roles:
+
+- **HOST**: Full system access, can manage all users and settings
+- **ADMIN**: Administrative access with user management capabilities
+- **USER**: Standard user access with personal memo management
+
+#### Access Control
+
+- **API Authentication**: JWT tokens for programmatic access
+- **Session Validation**: Automatic session validation on each request
+- **Request Interceptor**: ACL middleware validates authentication on protected endpoints
 
 ## Authentication Testing
 
@@ -433,32 +342,92 @@ curl -X POST "$MEMOS_URL/api/v1/auth/signin" \
 
 # Test OAuth endpoints
 echo "2. Testing OAuth endpoints..."
-curl -I "$MEMOS_URL/api/v1/auth/oauth/google" -w "HTTP Status: %{http_code}\n"
 curl -I "$MEMOS_URL/api/v1/auth/oauth/github" -w "HTTP Status: %{http_code}\n"
+curl -I "$MEMOS_URL/api/v1/auth/oauth/gitlab" -w "HTTP Status: %{http_code}\n"
+curl -I "$MEMOS_URL/api/v1/auth/oauth/google" -w "HTTP Status: %{http_code}\n"
 
-# Test SAML endpoints
-echo "3. Testing SAML endpoints..."
-curl -I "$MEMOS_URL/api/v1/auth/saml/login" -w "HTTP Status: %{http_code}\n"
-curl -I "$MEMOS_URL/saml/metadata" -w "HTTP Status: %{http_code}\n"
+# Test callback endpoints
+echo "3. Testing OAuth callback endpoints..."
+curl -I "$MEMOS_URL/api/v1/auth/callback/github" -w "HTTP Status: %{http_code}\n"
+curl -I "$MEMOS_URL/api/v1/auth/callback/gitlab" -w "HTTP Status: %{http_code}\n"
+curl -I "$MEMOS_URL/api/v1/auth/callback/google" -w "HTTP Status: %{http_code}\n"
 ```
 
-### LDAP Testing
+### API Authentication Testing
+
+Test JWT token-based API authentication:
 
 ```bash
 #!/bin/bash
-# test-ldap.sh
+# test-api-auth.sh
 
-# Test LDAP connectivity
-echo "Testing LDAP connection..."
-ldapsearch -x -H ldap://$MEMOS_LDAP_HOST:$MEMOS_LDAP_PORT \
-  -D "$MEMOS_LDAP_BIND_DN" \
-  -w "$MEMOS_LDAP_BIND_PASSWORD" \
-  -b "$MEMOS_LDAP_BASE_DN" \
-  -s sub \
-  "$MEMOS_LDAP_FILTER" \
-  $MEMOS_LDAP_USERNAME_ATTR $MEMOS_LDAP_EMAIL_ATTR
+MEMOS_URL="https://your-memos-domain.com"
 
-echo "LDAP test completed."
+# 1. Obtain access token
+echo "Getting access token..."
+TOKEN_RESPONSE=$(curl -X POST "$MEMOS_URL/api/v1/auth/signin" \
+  -H "Content-Type: application/json" \
+  -d '{"username":"testuser","password":"testpass"}')
+
+ACCESS_TOKEN=$(echo $TOKEN_RESPONSE | jq -r '.access_token')
+
+# 2. Test API access with token
+echo "Testing API access with token..."
+curl -X GET "$MEMOS_URL/api/v1/memos" \
+  -H "Authorization: Bearer $ACCESS_TOKEN" \
+  -w "HTTP Status: %{http_code}\n"
+```
+
+### Session Testing
+
+Verify session management:
+
+```bash
+#!/bin/bash
+# test-session.sh
+
+MEMOS_URL="https://your-memos-domain.com"
+
+# 1. Login and capture session cookie
+echo "Testing session creation..."
+LOGIN_RESPONSE=$(curl -X POST "$MEMOS_URL/api/v1/auth/signin" \
+  -H "Content-Type: application/json" \
+  -d '{"username":"testuser","password":"testpass"}' \
+  -c cookies.txt)
+
+# 2. Test session validation
+echo "Testing session validation..."
+curl -X GET "$MEMOS_URL/api/v1/auth/me" \
+  -b cookies.txt \
+  -w "HTTP Status: %{http_code}\n"
+
+# 3. Test session logout
+echo "Testing session termination..."
+curl -X POST "$MEMOS_URL/api/v1/auth/signout" \
+  -b cookies.txt \
+  -w "HTTP Status: %{http_code}\n"
+```
+
+### Identity Provider Testing
+
+Test OAuth identity provider configuration:
+
+```bash
+#!/bin/bash
+# test-idp.sh
+
+MEMOS_URL="https://your-memos-domain.com"
+
+# Test identity provider endpoints
+echo "Testing identity provider endpoints..."
+curl -X GET "$MEMOS_URL/api/v1/idp" \
+  -H "Authorization: Bearer YOUR_ADMIN_TOKEN" \
+  -w "HTTP Status: %{http_code}\n"
+
+# Test OAuth authorization URL generation
+echo "Testing OAuth authorization flow..."
+curl -X GET "$MEMOS_URL/api/v1/auth/oauth/github" \
+  -w "HTTP Status: %{http_code}\n"
 ```
 
 ## Troubleshooting
@@ -470,44 +439,41 @@ echo "LDAP test completed."
 ```bash
 # Check OAuth callback URLs
 echo "Verify callback URLs:"
-echo "Google: https://your-domain.com/api/v1/auth/callback/google"
 echo "GitHub: https://your-domain.com/api/v1/auth/callback/github"
-echo "Azure: https://your-domain.com/api/v1/auth/callback/azure"
+echo "GitLab: https://your-domain.com/api/v1/auth/callback/gitlab"
+echo "Google: https://your-domain.com/api/v1/auth/callback/google"
 
 # Test OAuth endpoints
+curl -I https://your-domain.com/api/v1/auth/oauth/github
+curl -I https://your-domain.com/api/v1/auth/oauth/gitlab
 curl -I https://your-domain.com/api/v1/auth/oauth/google
 ```
 
-#### LDAP Connection Issues
+#### Session Issues
 
 ```bash
-# Test LDAP connectivity
-telnet ldap.company.com 389
+# Check session cookie settings
+echo "Session troubleshooting:"
+echo "- Ensure HTTPS is enabled for secure cookies"
+echo "- Check SameSite cookie settings"
+echo "- Verify session expiration (14 days inactivity)"
 
-# Test bind authentication
-ldapwhoami -x -H ldap://ldap.company.com:389 \
-  -D "CN=service-account,DC=company,DC=com" \
-  -w password
-
-# Test user search
-ldapsearch -x -H ldap://ldap.company.com:389 \
-  -D "CN=service-account,DC=company,DC=com" \
-  -w password \
-  -b "OU=Users,DC=company,DC=com" \
-  "(sAMAccountName=testuser)"
+# Test session validation
+curl -X GET "https://your-domain.com/api/v1/auth/me" \
+  -H "Cookie: user_session=YOUR_SESSION_COOKIE"
 ```
 
-#### SAML Debugging
+#### Identity Provider Configuration
 
 ```bash
-# Validate SAML metadata
-xmllint --format /path/to/saml-metadata.xml
+# Validate identity provider configuration
+curl -X GET "https://your-domain.com/api/v1/idp" \
+  -H "Authorization: Bearer YOUR_ADMIN_TOKEN"
 
-# Check certificate validity
-openssl x509 -in /etc/memos/saml.crt -text -noout
-
-# Verify SAML response
-# Use browser developer tools to inspect SAML responses
+# Test OAuth flow manually
+# 1. Visit: https://your-domain.com/api/v1/auth/oauth/github
+# 2. Check browser network tab for errors
+# 3. Verify callback URL in provider settings
 ```
 
 ### Log Analysis
@@ -516,44 +482,20 @@ Monitor authentication logs for troubleshooting.
 
 ```bash
 # Memos authentication logs
-tail -f /var/log/memos/auth.log | grep -E "(login|oauth|ldap|saml)"
+tail -f /var/log/memos/auth.log | grep -E "(login|oauth|session)"
 
 # System authentication logs
 tail -f /var/log/auth.log | grep memos
 
 # Filter failed attempts
 grep "authentication failed" /var/log/memos/auth.log
+
+# OAuth-specific errors
+grep "oauth" /var/log/memos/auth.log
+
+# Session-related events
+grep "session" /var/log/memos/auth.log
 ```
-
-## Security Best Practices
-
-### Authentication Security
-
-<Callout type="warning">
-**Security Reminder**: Always use HTTPS in production to protect authentication credentials and session tokens.
-</Callout>
-
-- **Use strong passwords** and enforce password policies
-- **Enable MFA** for administrative accounts
-- **Regularly rotate** service account passwords
-- **Monitor authentication logs** for suspicious activity
-- **Implement account lockout** policies
-- **Use secure session configurations**
-
-### External Integration Security
-
-- **Validate SSL certificates** for external authentication providers
-- **Use service accounts** with minimal required permissions
-- **Regularly update** OAuth application secrets
-- **Monitor external service** availability and security
-- **Implement fallback** authentication methods
-
-### Compliance Considerations
-
-- **GDPR**: Ensure user consent for data processing
-- **HIPAA**: Use appropriate authentication for healthcare data
-- **SOX**: Implement proper access controls and audit logging
-- **ISO 27001**: Follow security management best practices
 
 ## Next Steps
 
@@ -561,7 +503,4 @@ grep "authentication failed" /var/log/memos/auth.log
 - [Set up API authentication](https://memos.apidocumentation.com) for programmatic access
 - [Monitor your instance](/docs/configuration) for authentication issues
 - [Plan user management](/docs/guides/user-management) workflows
-
----
-
-Need help with authentication configuration? Ask in [GitHub Discussions](https://github.com/usememos/memos/discussions) or check [GitHub Issues](https://github.com/usememos/memos/issues) for troubleshooting help.
+- Configure Identity Providers through the web interface for OAuth SSO

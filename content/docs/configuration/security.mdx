@@ -125,7 +125,7 @@ server {
 
 ### HTTPS Configuration
 
-Always use HTTPS in production. See the [HTTPS Setup guide](/docs/deployment/https) for detailed configuration.
+Always use HTTPS in production to protect data in transit. Configure your reverse proxy or load balancer to handle SSL/TLS termination.
 
 ```bash
 # Force HTTPS
@@ -593,10 +593,8 @@ sudo systemctl status memos
 
 ## Next Steps
 
-- [Set up HTTPS](/docs/deployment/https) for secure connections
 - [Configure authentication](/docs/configuration/authentication) options
 - [Monitor your instance](/docs/configuration) for security events
-- [Plan incident response](/docs/deployment/monitoring) procedures
 
 ---
 

@@ -6,7 +6,7 @@ export const docs = defineDocs({
   docs: {
     schema: frontmatterSchema.extend({
       category: z
-        .enum(["installation", "guides", "configuration", "integrations", "api", "deployment", "troubleshooting", "contributing", "faq"])
+        .enum(["installation", "guides", "configuration", "integrations", "api", "troubleshooting", "contributing", "faq"])
         .optional(),
       tags: z.array(z.string()).optional(),
       difficulty: z.enum(["beginner", "intermediate", "advanced"]).optional(),
