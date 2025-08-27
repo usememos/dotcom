@@ -30,6 +30,7 @@ import {
   ActivityIcon,
   CookieIcon,
   WebhookIcon,
+  FilterIcon,
   LucideIcon,
 } from "lucide-react";
 
@@ -37,6 +38,7 @@ import {
 const iconMap: Record<string, LucideIcon> = {
   Play: PlayIcon,
   FileText: FileTextIcon,
+  Filter: FilterIcon,
   Keyboard: KeyboardIcon,
   Tag: TagIcon,
   BookOpen: BookOpenIcon,
@@ -103,11 +105,7 @@ export function Card({ title, href, icon, children }: CardProps) {
             </h3>
             <ArrowRightIcon className="w-5 h-5 text-gray-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 group-hover:translate-x-1 transition-all flex-shrink-0" />
           </div>
-          {children && (
-            <div className="text-gray-600 dark:text-gray-300 leading-relaxed">
-              {children}
-            </div>
-          )}
+          {children && <div className="text-gray-600 dark:text-gray-300 leading-relaxed">{children}</div>}
         </div>
       </div>
     </Link>
