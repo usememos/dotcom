@@ -28,7 +28,7 @@ export default async function ChangelogEntryPage({ params }: ChangelogPageProps)
   return (
     <HomeLayout {...baseOptions}>
       <main className="flex flex-1 flex-col">
-        <section className="py-12 px-4 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50">
+        <section className="pt-12 px-4 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50">
           <div className="max-w-4xl mx-auto">
             {/* Back to Changelog */}
             <Link
@@ -40,15 +40,17 @@ export default async function ChangelogEntryPage({ params }: ChangelogPageProps)
             </Link>
 
             {/* Release Header */}
-            <header className="mb-16">
+            <header>
               <div className="flex items-center gap-4 mb-6">
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 rounded-xl">
                   <TagIcon className="w-6 h-6" />
                 </div>
                 <span className="px-4 py-2 bg-teal-600 text-white text-sm font-semibold rounded-full">Latest Release</span>
               </div>
-              
-              <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-6xl mb-8 leading-tight">{version}</h1>
+
+              <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-6xl mb-8 leading-tight">
+                {version}
+              </h1>
 
               <div className="flex flex-wrap items-center gap-6 text-gray-600 dark:text-gray-300 mb-8">
                 {data.date && (
@@ -66,11 +68,6 @@ export default async function ChangelogEntryPage({ params }: ChangelogPageProps)
                   </div>
                 )}
               </div>
-
-              {/* Description */}
-              {data.description && (
-                <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-8 shadow-sm mb-8">{data.description}</p>
-              )}
 
               {/* Breaking Changes Warning */}
               {data.breaking && (
@@ -102,7 +99,9 @@ export default async function ChangelogEntryPage({ params }: ChangelogPageProps)
                         <TagIcon className="w-5 h-5" />
                       </div>
                       New Features
-                      <span className="ml-auto bg-green-600 text-white text-sm px-3 py-1 rounded-full font-semibold">{data.features.length}</span>
+                      <span className="ml-auto bg-green-600 text-white text-sm px-3 py-1 rounded-full font-semibold">
+                        {data.features.length}
+                      </span>
                     </h3>
                     <ul className="space-y-3 text-green-700 dark:text-green-300">
                       {data.features.slice(0, 3).map((feature, idx) => (
@@ -112,7 +111,9 @@ export default async function ChangelogEntryPage({ params }: ChangelogPageProps)
                         </li>
                       ))}
                       {data.features.length > 3 && (
-                        <li className="text-green-600 dark:text-green-400 font-medium text-sm">+{data.features.length - 3} more features</li>
+                        <li className="text-green-600 dark:text-green-400 font-medium text-sm">
+                          +{data.features.length - 3} more features
+                        </li>
                       )}
                     </ul>
                   </div>
@@ -125,7 +126,9 @@ export default async function ChangelogEntryPage({ params }: ChangelogPageProps)
                         <TagIcon className="w-5 h-5" />
                       </div>
                       Bug Fixes
-                      <span className="ml-auto bg-blue-600 text-white text-sm px-3 py-1 rounded-full font-semibold">{data.fixes.length}</span>
+                      <span className="ml-auto bg-blue-600 text-white text-sm px-3 py-1 rounded-full font-semibold">
+                        {data.fixes.length}
+                      </span>
                     </h3>
                     <ul className="space-y-3 text-blue-700 dark:text-blue-300">
                       {data.fixes.slice(0, 3).map((fix, idx) => (
@@ -148,7 +151,9 @@ export default async function ChangelogEntryPage({ params }: ChangelogPageProps)
                         <UsersIcon className="w-5 h-5" />
                       </div>
                       Contributors
-                      <span className="ml-auto bg-purple-600 text-white text-sm px-3 py-1 rounded-full font-semibold">{data.contributors.length}</span>
+                      <span className="ml-auto bg-purple-600 text-white text-sm px-3 py-1 rounded-full font-semibold">
+                        {data.contributors.length}
+                      </span>
                     </h3>
                     <div className="flex flex-wrap gap-2">
                       {data.contributors.slice(0, 6).map((contributor) => (

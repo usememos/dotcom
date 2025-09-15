@@ -1,0 +1,93 @@
+---
+title: v0.25.1
+description: Bug fixes, performance improvements, and enhanced user experience
+---
+
+This release focuses on bug fixes, performance optimizations, and several quality-of-life improvements based on community feedback.
+
+## 🎉 New Features
+
+### Editor Enhancements
+- **Text-based autocompleting commands** - New command system for faster memo creation
+- **Editor button tooltips** - Helpful tooltips to guide new users
+- **Auto-expand subtags in tree mode** - Option to automatically expand nested tags for better navigation
+
+### Inbox Improvements
+- **Better error handling** - Improved error messages when fetching inbox items
+- **Delete inbox items** - Added ability to remove items from inbox
+
+### Enhanced Filtering
+- **More filter factors** - Extended filtering capabilities for better memo discovery
+- **Reaction filtering** - Filter memos by reaction content
+- **Calendar filter fixes** - Improved date-based filtering
+
+## 🔧 Improvements
+
+### User Experience
+- **Memo comments enabled by default** - Comments are now enabled out of the box
+- **Unified visibility selector** - Merged visibility options into the save button for cleaner UI
+- **Dark theme improvements** - Enhanced dark mode appearance
+- **Mobile reaction selector** - Always visible reaction buttons on mobile devices
+
+### Performance & Security
+- **HTML content sanitization** - Added DOMPurify for safer code block rendering
+- **Optimized reactions queries** - Only fetch reactions when memos actually exist
+- **Production profiler disabled** - Better performance in production environments
+- **Stacktrace logging option** - New `LOG_STACKTRACES` configuration option
+
+### Configuration
+- **Instance URL for "Copy Link"** - Uses `MEMOS_INSTANCE_URL` for generating shareable links
+- **Better MIME type checking** - Enhanced file type validation for uploads
+
+## 🐛 Bug Fixes
+
+### Core Functionality
+- **Theme saving issues** - Fixed theme preferences not being saved properly
+- **Preference overwrites** - Resolved preferences being reset unexpectedly
+- **Boolean filters** - Fixed filtering with boolean values
+- **Pinned shortcut operators** - Corrected comparison operators for shortcuts
+
+### API & Integration
+- **OpenAPI parameter conflicts** - Resolved DeleteMemoTag endpoint parameter issues
+- **SSO redirect encoding** - Fixed SSO login flow with proper URL encoding
+- **gRPC Gateway connections** - Resolved connection issues when server address is empty
+- **SQL query formatting** - Fixed JSON array elements in tag queries
+
+### User Interface
+- **Sheet focus behavior** - Prevented unwanted focus changes when opening/closing sheets
+- **Syntax highlighting** - Added missing CSS imports for proper code highlighting
+
+## 🔗 Links & Resources
+
+- **Installation Guide** - Updated documentation links
+- **Docker README** - Enhanced Docker setup documentation
+
+## 🙏 New Contributors
+
+Welcome to our new contributors who made their first contributions in this release:
+
+- @clnhlzmn - Instance URL improvements
+- @einho - Database optimizations
+- @varsnotwars - Performance enhancements
+- @chaoliu719 - gRPC fixes
+- @aarohee-he - UI improvements
+- @bcspragu - Logging enhancements
+- @twaslowski - Editor features
+- @SaraVieira - File validation
+- @chojs23 - Shortcut fixes
+- @amazingca - SSO improvements
+- @giacomocerquone - Mobile UX
+
+## 📥 Download
+
+Download the latest release from [GitHub](https://github.com/usememos/memos/releases/tag/v0.25.1) or pull the Docker image:
+
+```bash
+docker pull neosmemo/memos:0.25.1
+# or
+docker pull neosmemo/memos:latest
+```
+
+---
+
+**Full Changelog**: [v0.25.0...v0.25.1](https://github.com/usememos/memos/compare/v0.25.0...v0.25.1)
