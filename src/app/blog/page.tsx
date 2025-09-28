@@ -6,6 +6,9 @@ import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { baseOptions } from "@/app/layout.config";
 import { Footer } from "@/components/footer";
 
+export const dynamic = "force-static";
+export const revalidate = 1800;
+
 export const metadata: Metadata = {
   title: "Blog - Memos",
   description: "Read about the latest updates, insights, and stories from the Memos team about our open-source note-taking platform.",

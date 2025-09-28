@@ -13,6 +13,9 @@ import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { baseOptions } from "@/app/layout.config";
 import { Footer } from "@/components/footer";
 
+export const dynamic = "force-static";
+export const revalidate = 86400;
+
 export const metadata: Metadata = {
   title: "Features - Memos",
   description: "Discover all the powerful features that make Memos the perfect privacy-first, self-hosted note-taking platform for individuals and teams.",

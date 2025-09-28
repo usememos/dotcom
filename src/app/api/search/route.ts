@@ -13,6 +13,8 @@ const RATE_LIMIT_CONFIG = {
 const MAX_TAGS = 5;
 const MAX_TAG_LENGTH = 24;
 const MAX_LOCALE_LENGTH = 16;
+const MAX_RESULTS = 20;
+const MAX_CONTENT_LENGTH = 480;
 
 const baseSearchHandlers = createFromSource(source, {
   // https://docs.orama.com/docs/orama-js/supported-languages
@@ -44,6 +46,29 @@ function appendVary(headers: Headers, value: string) {
   );
   values.add(value);
   headers.set("Vary", Array.from(values).join(", "));
+}
+
+function sanitizeSearchEntry(entry: unknown) {
+  if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
+    return entry;
+  }
+
+  const record = entry as Record<string, unknown>;
+  const sanitized: Record<string, unknown> = { ...record };
+
+  if (typeof sanitized.content === "string" && sanitized.content.length > MAX_CONTENT_LENGTH) {
+    sanitized.content = `${sanitized.content.slice(0, MAX_CONTENT_LENGTH)}…`;
+  }
+
+  return sanitized;
+}
+
+function sanitizeSearchPayload(payload: unknown) {
+  if (!Array.isArray(payload)) {
+    return payload;
+  }
+
+  return payload.slice(0, MAX_RESULTS).map((entry) => sanitizeSearchEntry(entry));
 }
 
 export async function GET(request: Request) {
@@ -121,11 +146,32 @@ export async function GET(request: Request) {
 
   const baseResponse = await baseGET(normalizedRequest);
 
+  let processedBody: string | null = null;
+  const contentType = baseResponse.headers.get("content-type") ?? "";
+  if (contentType.includes("application/json")) {
+    try {
+      const payload = await baseResponse.clone().json();
+      const sanitizedPayload = sanitizeSearchPayload(payload);
+      processedBody = JSON.stringify(sanitizedPayload);
+    } catch {
+      processedBody = null;
+    }
+  }
+
   const headers = new Headers(baseResponse.headers);
   applyRateLimitHeaders(headers, rateLimitState);
   headers.set("Cache-Control", CACHE_CONTROL_VALUE);
   appendVary(headers, "Accept-Encoding");
   appendVary(headers, "Authorization");
+
+  if (processedBody !== null) {
+    headers.set("Content-Type", "application/json; charset=utf-8");
+    return new Response(processedBody, {
+      status: baseResponse.status,
+      statusText: baseResponse.statusText,
+      headers,
+    });
+  }
 
   return new Response(baseResponse.body, {
     status: baseResponse.status,
@@ -133,5 +179,3 @@ export async function GET(request: Request) {
     headers,
   });
 }
-
-export const { staticGET } = baseSearchHandlers;

@@ -14,6 +14,9 @@ interface BlogPageProps {
   params: Promise<{ slug: string }>;
 }
 
+export const dynamic = "force-static";
+export const revalidate = 1800;
+
 export default async function BlogPostPage({ params }: BlogPageProps) {
   const { slug } = await params;
   const page = blogSource.getPage([slug]);

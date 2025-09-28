@@ -5,6 +5,9 @@ import { notFound } from "next/navigation";
 import { createRelativeLink } from "fumadocs-ui/mdx";
 import { getMDXComponents } from "@/mdx-components";
 
+export const dynamic = "force-static";
+export const revalidate = 3600;
+
 export default async function Page(props: { params: Promise<{ slug?: string[] }> }) {
   const params = await props.params;
   const page = source.getPage(params.slug);

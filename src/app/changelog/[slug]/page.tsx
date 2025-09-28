@@ -13,6 +13,9 @@ interface ChangelogPageProps {
   params: Promise<{ slug: string }>;
 }
 
+export const dynamic = "force-static";
+export const revalidate = 1800;
+
 export default async function ChangelogEntryPage({ params }: ChangelogPageProps) {
   const { slug } = await params;
   const page = changelogSource.getPage([slug]);
