@@ -2,6 +2,7 @@ import "@/app/global.css";
 import { RootProvider } from "fumadocs-ui/provider";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://usememos.com"),
@@ -62,6 +63,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       </head>
       <body className="flex flex-col min-h-screen antialiased">
         <RootProvider>{children}</RootProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
