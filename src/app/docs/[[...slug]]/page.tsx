@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { createRelativeLink } from "fumadocs-ui/mdx";
 import { getMDXComponents } from "@/mdx-components";
+import { DocsSponsorCard } from "@/components/docs-sponsor-card";
 
 export const dynamic = "force-static";
 export const revalidate = 3600;
@@ -16,7 +17,16 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
   const MDXContent = page.data.body;
 
   return (
-    <DocsPage toc={page.data.toc} full={page.data.full}>
+    <DocsPage
+      toc={page.data.toc}
+      full={page.data.full}
+      tableOfContent={{
+        footer: <DocsSponsorCard className="mt-6" />,
+      }}
+      tableOfContentPopover={{
+        footer: <DocsSponsorCard className="mt-6" />,
+      }}
+    >
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
