@@ -1,61 +1,71 @@
 import { cn } from "@/lib/utils";
 
-type DocsSponsorCardVariant = "default" | "compact";
-
 interface DocsSponsorCardProps {
   className?: string;
-  variant?: DocsSponsorCardVariant;
 }
 
-const SPONSOR_URL = "https://go.warp.dev/memos";
-const SPONSOR_IMAGE = "https://raw.githubusercontent.com/warpdotdev/brand-assets/main/Github/Sponsor/Warp-Github-LG-02.png";
+interface Sponsor {
+  name: string;
+  url: string;
+  logo: string;
+  logoDark: string;
+}
 
-export function DocsSponsorCard({ className, variant = "default" }: DocsSponsorCardProps) {
-  const isCompact = variant === "compact";
+const SPONSORS: Sponsor[] = [
+  {
+    name: "Warp",
+    url: "https://go.warp.dev/memos",
+    logo: "https://raw.githubusercontent.com/warpdotdev/brand-assets/refs/heads/main/Logos/Warp-Wordmark-Black.png",
+    logoDark: "https://raw.githubusercontent.com/warpdotdev/brand-assets/refs/heads/main/Logos/Warp-Wordmark-White.png",
+  },
+];
 
+const SPONSOR_CTA = {
+  label: "Become a Sponsor",
+  url: "https://github.com/sponsors/usememos",
+};
+
+export function DocsSponsorCard({ className }: DocsSponsorCardProps) {
   return (
-    <a
-      href={SPONSOR_URL}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Special thanks to our sponsor Warp"
-      className={cn(
-        "group block rounded-xl border border-border bg-muted/30 shadow-sm transition-transform",
-        "focus-visible:outline-offset-2 focus-visible:outline-primary",
-        isCompact
-          ? "flex items-center gap-3 p-3 text-left hover:-translate-y-0 hover:shadow"
-          : "p-4 text-center hover:-translate-y-0.5 hover:shadow-md",
-        "dark:bg-muted/10",
-        className
-      )}
-    >
-      {isCompact ? (
-        <>
-          <span className="flex-shrink-0">
-            <img src={SPONSOR_IMAGE} alt="Warp" className="h-14 w-auto rounded" loading="lazy" />
-          </span>
-          <span className="flex flex-col gap-1">
-            <span className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground transition-colors group-hover:text-foreground">
-              Special thanks to our sponsor
+    <div className={cn("rounded-xl border border-border bg-muted/30 p-4 shadow-sm transition", "dark:bg-muted/10", className)}>
+      <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Featured sponsors</p>
+
+      <div className="mt-2 w-full flex flex-col gap-2">
+        {SPONSORS.map((sponsor) => (
+          <a
+            key={sponsor.url}
+            href={sponsor.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={sponsor.name}
+            className="group flex items-center gap-3 text-left rounded-lg border hover:opacity-80"
+          >
+            <span className="flex h-12 w-full p-2 shrink-0 items-center justify-center">
+              <img
+                src={sponsor.logo}
+                alt={sponsor.name}
+                loading="lazy"
+                className={cn("h-full w-auto max-w-full object-cover dark:hidden mx-auto")}
+              />
+              <img
+                src={sponsor.logoDark}
+                alt={`${sponsor.name} logo`}
+                loading="lazy"
+                className={cn("hidden h-full w-auto max-w-full object-cover dark:block mx-auto")}
+              />
             </span>
-            <span className="text-sm font-medium text-primary transition-colors group-hover:text-primary/80">
-              Warp is built for coding with multiple AI agents
-            </span>
-          </span>
-        </>
-      ) : (
-        <>
-          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground transition-colors group-hover:text-foreground">
-            Special thanks to our sponsor
-          </p>
-          <span className="mt-2 block">
-            <img src={SPONSOR_IMAGE} alt="Warp" className="mx-auto w-full h-auto rounded-lg" loading="lazy" />
-          </span>
-          <span className="mt-2 inline-flex items-center justify-center text-sm font-medium text-primary transition-colors group-hover:text-primary/80">
-            Warp is built for coding with multiple AI agents
-          </span>
-        </>
-      )}
-    </a>
+            <span className="sr-only">{sponsor.name}</span>
+          </a>
+        ))}
+        <a
+          href={SPONSOR_CTA.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex h-12 items-center justify-center rounded-lg border border-dashed border-border/70 bg-muted/20 px-3 text-sm font-semibold text-muted-foreground transition hover:opacity-80"
+        >
+          {SPONSOR_CTA.label}
+        </a>
+      </div>
+    </div>
   );
 }

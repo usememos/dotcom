@@ -24,7 +24,7 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
         footer: <DocsSponsorCard className="mt-6" />,
       }}
       tableOfContentPopover={{
-        footer: <DocsSponsorCard className="mt-2 mb-2" variant="compact" />,
+        footer: <DocsSponsorCard className="mt-2 mb-2" />,
       }}
     >
       <DocsTitle>{page.data.title}</DocsTitle>
