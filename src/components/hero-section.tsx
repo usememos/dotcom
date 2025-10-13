@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import type { ReactNode } from "react";
 
@@ -77,10 +78,28 @@ export function HeroSection({
       {(demoImageLight || demoImageDark) && (
         <div className="mt-8 sm:mt-12 w-full max-w-6xl overflow-auto">
           {demoImageLight && (
-            <img src={demoImageLight.src} alt={demoImageLight.alt} className="w-[200vw] max-w-none sm:w-full h-auto block dark:hidden" />
+            <Image
+              src={demoImageLight.src}
+              alt={demoImageLight.alt}
+              width={2546}
+              height={1576}
+              priority
+              quality={85}
+              sizes="(max-width: 640px) 200vw, 1280px"
+              className="w-[200vw] max-w-none sm:w-full h-auto block dark:hidden"
+            />
           )}
           {demoImageDark && (
-            <img src={demoImageDark.src} alt={demoImageDark.alt} className="w-[200vw] max-w-none sm:w-full h-auto hidden dark:block" />
+            <Image
+              src={demoImageDark.src}
+              alt={demoImageDark.alt}
+              width={2546}
+              height={1576}
+              priority
+              quality={85}
+              sizes="(max-width: 640px) 200vw, 1280px"
+              className="w-[200vw] max-w-none sm:w-full h-auto hidden dark:block"
+            />
           )}
         </div>
       )}
