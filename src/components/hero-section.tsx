@@ -46,7 +46,7 @@ export function HeroSection({
             className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium text-orange-800 dark:text-orange-200 bg-orange-100 dark:bg-orange-900/30 border border-orange-200 dark:border-orange-700 rounded-full hover:bg-orange-200 dark:hover:bg-orange-900/50 hover:shadow-sm transition-all"
           >
             <span>🎉</span>
-            <span className="hidden xs:inline">Released </span>
+            <span className="opacity-80">Released </span>
             {version}
             <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
           </Link>
