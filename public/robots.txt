@@ -1,0 +1,36 @@
+# Allow major search engines
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: Slurp
+User-agent: DuckDuckBot
+User-agent: Baiduspider
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 1
+
+# Block aggressive AI training crawlers
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: CCBot
+User-agent: anthropic-ai
+User-agent: Claude-Web
+User-agent: Google-Extended
+Disallow: /
+
+# Block common scrapers and aggressive bots
+User-agent: AhrefsBot
+User-agent: SemrushBot
+User-agent: MJ12bot
+User-agent: DotBot
+User-agent: PetalBot
+Crawl-delay: 10
+Disallow: /
+
+# Default for all other bots - allow but be gentle
+User-agent: *
+Allow: /
+Crawl-delay: 2
+Disallow: /_next/static/
+Disallow: /api/
+
+Sitemap: https://usememos.com/sitemap.xml

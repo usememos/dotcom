@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 
 /**
@@ -11,7 +12,7 @@ export const baseOptions: BaseLayoutProps = {
   nav: {
     title: (
       <>
-        <img src="/logo.png" alt="Memos" width="24" height="24" className="rounded" />
+        <Image src="/logo.png" alt="Memos" width={24} height={24} className="rounded" priority />
         Memos
       </>
     ),
