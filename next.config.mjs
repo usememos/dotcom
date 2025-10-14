@@ -11,6 +11,7 @@ const config = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 31536000, // 1 year cache for optimized images
     remotePatterns: [], // Prevent external image loading
+    unoptimized: true, // Disable built-in image optimization
   },
   // Security and caching headers
   async headers() {
