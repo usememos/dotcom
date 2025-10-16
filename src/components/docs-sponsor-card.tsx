@@ -27,7 +27,7 @@ const SPONSOR_CTA = {
 
 export function DocsSponsorCard({ className }: DocsSponsorCardProps) {
   return (
-    <div className={cn("rounded-xl border border-border bg-muted/30 p-4 shadow-sm transition", "dark:bg-muted/10", className)}>
+    <div className={cn("rounded-xl border border-border bg-muted/30 p-3 shadow-sm transition", "dark:bg-muted/10")}>
       <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Featured sponsors</p>
 
       <div className="mt-2 w-full flex flex-col gap-2">
@@ -57,14 +57,6 @@ export function DocsSponsorCard({ className }: DocsSponsorCardProps) {
             <span className="sr-only">{sponsor.name}</span>
           </a>
         ))}
-        <a
-          href={SPONSOR_CTA.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex h-12 items-center justify-center rounded-lg border border-dashed border-border/70 bg-muted/20 px-3 text-sm font-semibold text-muted-foreground transition hover:opacity-80"
-        >
-          {SPONSOR_CTA.label}
-        </a>
       </div>
     </div>
   );
