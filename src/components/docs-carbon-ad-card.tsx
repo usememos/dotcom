@@ -45,6 +45,14 @@ export function DocsCarbonAdCard() {
     observer.observe(container, { childList: true, subtree: true });
 
     let cleanupScriptListeners: (() => void) | undefined;
+    const handleScriptLoad = () => {
+      if (container.querySelector("#carbonads")) {
+        markLoaded();
+      }
+    };
+    const handleScriptError = () => {
+      markFailed();
+    };
 
     const existingAd = document.getElementById("carbonads");
     if (existingAd) {
@@ -53,11 +61,11 @@ export function DocsCarbonAdCard() {
     } else {
       const existingScript = document.getElementById(CARBON_SCRIPT_ID) as HTMLScriptElement | null;
       if (existingScript) {
-        existingScript.addEventListener("load", markLoaded);
-        existingScript.addEventListener("error", markFailed);
+        existingScript.addEventListener("load", handleScriptLoad);
+        existingScript.addEventListener("error", handleScriptError);
         cleanupScriptListeners = () => {
-          existingScript.removeEventListener("load", markLoaded);
-          existingScript.removeEventListener("error", markFailed);
+          existingScript.removeEventListener("load", handleScriptLoad);
+          existingScript.removeEventListener("error", handleScriptError);
         };
       } else {
         const script = document.createElement("script");
@@ -65,13 +73,13 @@ export function DocsCarbonAdCard() {
         script.async = true;
         script.id = CARBON_SCRIPT_ID;
         script.type = "text/javascript";
-        script.addEventListener("load", markLoaded);
-        script.addEventListener("error", markFailed);
+        script.addEventListener("load", handleScriptLoad);
+        script.addEventListener("error", handleScriptError);
         container.appendChild(script);
 
         cleanupScriptListeners = () => {
-          script.removeEventListener("load", markLoaded);
-          script.removeEventListener("error", markFailed);
+          script.removeEventListener("load", handleScriptLoad);
+          script.removeEventListener("error", handleScriptError);
         };
       }
     }
