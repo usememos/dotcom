@@ -56,5 +56,9 @@ export default defineConfig({
   mdxOptions: {
     remarkPlugins: [],
     rehypePlugins: [],
+    remarkImageOptions: {
+      // Ignore errors when fetching remote image sizes to avoid timeout issues
+      onError: 'ignore',
+    },
   },
 });

@@ -4,9 +4,8 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { createRelativeLink } from "fumadocs-ui/mdx";
 import { getMDXComponents } from "@/mdx-components";
-import { DocsSponsorCard } from "@/components/docs-sponsor-card";
-import { DocsCarbonAdCard } from "@/components/docs-carbon-ad-card";
 import { DocsCarbonAdCardMobile } from "@/components/docs-carbon-ad-card-mobile";
+import { tocConfig } from "@/lib/toc-config";
 
 export const dynamic = "force-static";
 export const revalidate = 3600;
@@ -19,25 +18,7 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
   const MDXContent = page.data.body;
 
   return (
-    <DocsPage
-      toc={page.data.toc}
-      full={page.data.full}
-      tableOfContent={{
-        footer: (
-          <div className="flex flex-col gap-3 mt-2 mb-2">
-            <DocsSponsorCard />
-            <DocsCarbonAdCard />
-          </div>
-        ),
-      }}
-      tableOfContentPopover={{
-        footer: (
-          <div className="flex flex-col gap-3 mt-2 mb-2">
-            <DocsSponsorCard />
-          </div>
-        ),
-      }}
-    >
+    <DocsPage toc={page.data.toc} full={page.data.full} {...tocConfig}>
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
