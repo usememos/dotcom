@@ -9,6 +9,8 @@ import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { baseOptions } from "@/app/layout.config";
 import { Footer } from "@/components/footer";
 import { getMDXComponents } from "@/mdx-components";
+import { DocsSponsorCard } from "@/components/docs-sponsor-card";
+import { DocsCarbonAdCard } from "@/components/docs-carbon-ad-card";
 
 interface BlogPageProps {
   params: Promise<{ slug: string }>;
@@ -109,6 +111,12 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                 </DocsBody>
               </article>
 
+              {/* Mobile Ads - Show after content, before footer */}
+              <div className="xl:hidden mt-8 space-y-4">
+                <DocsSponsorCard />
+                <DocsCarbonAdCard />
+              </div>
+
               {/* Footer */}
               <footer className="mt-8 sm:mt-12">
                 <div className="bg-gradient-to-br from-gray-50 to-teal-50/30 dark:from-gray-800 dark:to-gray-700 border border-gray-100 dark:border-gray-700 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 shadow-sm">
@@ -149,32 +157,27 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
               </footer>
             </div>
 
-            {/* Table of Contents Sidebar */}
+            {/* Table of Contents Sidebar - Desktop Only */}
             {page.data.toc && page.data.toc.length > 0 && (
               <div className="xl:block xl:w-64 xl:flex-shrink-0">
-                {/* Mobile TOC - Collapsible */}
-                <div className="xl:hidden mb-6">
-                  <details className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl p-4 shadow-sm">
-                    <summary className="text-base font-bold text-gray-900 dark:text-gray-100 cursor-pointer">Table of Contents</summary>
-                    <div className="mt-4">
+                {/* Desktop TOC - Fixed Sidebar */}
+                <div className="hidden xl:block">
+                  {/* Sticky container with all cards */}
+                  <div className="sticky top-24 space-y-4">
+                    {/* TOC Card - Scrollable */}
+                    <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-6 shadow-sm max-h-[calc(100vh-20rem)] overflow-y-auto">
+                      <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">Table of Contents</h3>
                       <TOCProvider toc={page.data.toc}>
                         <TOCScrollArea>
                           <TOCItems />
                         </TOCScrollArea>
                       </TOCProvider>
                     </div>
-                  </details>
-                </div>
-
-                {/* Desktop TOC - Fixed Sidebar */}
-                <div className="hidden xl:block">
-                  <div className="sticky top-24 max-h-[calc(100vh-6rem)] overflow-y-auto bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-6 shadow-sm">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">Table of Contents</h3>
-                    <TOCProvider toc={page.data.toc}>
-                      <TOCScrollArea>
-                        <TOCItems />
-                      </TOCScrollArea>
-                    </TOCProvider>
+                    {/* Sponsor & Ads - Also sticky with TOC */}
+                    <div className="flex flex-col gap-3">
+                      <DocsSponsorCard />
+                      <DocsCarbonAdCard />
+                    </div>
                   </div>
                 </div>
               </div>
