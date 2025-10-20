@@ -56,14 +56,15 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
             )}
 
             {/* Article Header */}
-            <header>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-6 sm:mb-8 leading-tight px-2 sm:px-0">
+            <header className="px-2 sm:px-0">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-6 sm:mb-8 leading-tight">
                 {data.title}
               </h1>
 
-              <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-0 sm:gap-6 text-gray-600 dark:text-gray-300">
-                <div className="flex items-center gap-3">
-                  <CalendarIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+                {/* Date */}
+                <div className="flex items-center gap-2 sm:gap-3 text-gray-600 dark:text-gray-300">
+                  <CalendarIcon className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
                   <span className="text-sm sm:text-base">
                     {new Date(data.published_at).toLocaleDateString("en-US", {
                       year: "numeric",
@@ -72,20 +73,22 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                     })}
                   </span>
                 </div>
+                
+                {/* Tags */}
                 {data.tags && data.tags.length > 0 && (
-                  <div className="flex items-start gap-3 sm:items-center">
-                    <span className="text-gray-400 hidden sm:inline">•</span>
+                  <>
+                    <span className="hidden sm:inline text-gray-400">•</span>
                     <div className="flex flex-wrap gap-2">
                       {data.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="px-2 sm:px-3 py-1 bg-teal-50 dark:bg-teal-950 text-teal-700 dark:text-teal-300 rounded-full text-xs sm:text-sm font-medium"
+                          className="px-2.5 sm:px-3 py-1 bg-teal-50 dark:bg-teal-950 text-teal-700 dark:text-teal-300 rounded-full text-xs sm:text-sm font-medium"
                         >
                           {tag}
                         </span>
                       ))}
                     </div>
-                  </div>
+                  </>
                 )}
               </div>
             </header>

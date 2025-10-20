@@ -53,10 +53,11 @@ export default function BlogPage() {
                       </p>
 
                       {/* Meta Information */}
-                      <div className="flex flex-col gap-3">
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-gray-500 dark:text-gray-400">
-                          <div className="flex items-center gap-2">
-                            <CalendarIcon className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <div className="flex flex-col gap-3 sm:gap-4">
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                          {/* Date */}
+                          <div className="flex items-center gap-2 text-sm sm:text-base text-gray-500 dark:text-gray-400">
+                            <CalendarIcon className="w-4 h-4 flex-shrink-0" />
                             <span className="whitespace-nowrap">
                               {new Date(post.data.published_at).toLocaleDateString("en-US", {
                                 year: "numeric",
@@ -65,13 +66,15 @@ export default function BlogPage() {
                               })}
                             </span>
                           </div>
+                          
+                          {/* Tags */}
                           {post.data.tags && post.data.tags.length > 0 && (
                             <>
-                              <span className="text-gray-400 hidden sm:inline">•</span>
+                              <span className="text-gray-400">•</span>
                               {post.data.tags.map((tag) => (
                                 <span
                                   key={tag}
-                                  className="px-2 sm:px-3 py-1 bg-teal-50 dark:bg-teal-950 text-teal-700 dark:text-teal-300 rounded-full text-xs font-medium"
+                                  className="px-2.5 sm:px-3 py-1 bg-teal-50 dark:bg-teal-950 text-teal-700 dark:text-teal-300 rounded-full text-xs sm:text-sm font-medium"
                                 >
                                   {tag}
                                 </span>
@@ -79,10 +82,11 @@ export default function BlogPage() {
                             </>
                           )}
                         </div>
+                        
                         {/* Read More - Only on desktop */}
                         <div className="hidden sm:flex items-center gap-2 text-sm font-medium text-teal-600 dark:text-teal-400 group-hover:gap-3 transition-all">
                           <span>Read more</span>
-                          <ArrowRightIcon className="w-4 sm:w-4 h-4" />
+                          <ArrowRightIcon className="w-4 h-4" />
                         </div>
                       </div>
                     </div>
