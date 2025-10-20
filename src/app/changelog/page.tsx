@@ -10,8 +10,8 @@ export const dynamic = "force-static";
 export const revalidate = 1800;
 
 export const metadata: Metadata = {
-  title: "Changelog - Memos",
-  description: "Stay up to date with the latest features, improvements, and bug fixes in Memos.",
+  title: "Changelogs",
+  description: "Stay up to date with new features, improvements, and bug fixes in Memos.",
 };
 
 export default function ChangelogPage() {
@@ -40,11 +40,11 @@ export default function ChangelogPage() {
         <section className="py-12 sm:py-16 lg:py-24 px-4 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50">
           <div className="max-w-4xl mx-auto">
             {/* Hero Section */}
-            <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+            <div className="mb-12 sm:mb-16 lg:mb-20">
               <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight mb-4 sm:mb-6 leading-tight">
-                Changelog
+                Changelogs
               </h1>
-              <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed px-4">
+              <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
                 Stay up to date with new features, improvements, and bug fixes in Memos.
               </p>
             </div>
