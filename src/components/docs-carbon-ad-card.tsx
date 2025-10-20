@@ -103,10 +103,7 @@ export function DocsCarbonAdCard() {
   return (
     <div
       ref={containerRef}
-      className={cn(
-        "w-full max-h-80 rounded-xl border border-border bg-muted/30 p-3 shadow-sm transition overflow-auto",
-        "dark:bg-muted/10"
-      )}
+      className={cn("w-full max-h-80 rounded-xl border border-border bg-muted/30 p-3 transition overflow-auto", "dark:bg-muted/10")}
       aria-label="Sponsored by Carbon"
     >
       <span className="sr-only">Carbon Ads</span>

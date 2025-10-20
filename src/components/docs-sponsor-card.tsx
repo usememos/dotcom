@@ -20,14 +20,9 @@ const SPONSORS: Sponsor[] = [
   },
 ];
 
-const SPONSOR_CTA = {
-  label: "Become a Sponsor",
-  url: "https://github.com/sponsors/usememos",
-};
-
-export function DocsSponsorCard({ className }: DocsSponsorCardProps) {
+export function DocsSponsorCard({}: DocsSponsorCardProps) {
   return (
-    <div className={cn("rounded-xl border border-border bg-muted/30 p-3 shadow-sm transition", "dark:bg-muted/10")}>
+    <div className={cn("rounded-xl border border-border bg-muted/30 p-3 transition", "dark:bg-muted/10")}>
       <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Featured sponsors</p>
 
       <div className="mt-2 w-full flex flex-col gap-2">

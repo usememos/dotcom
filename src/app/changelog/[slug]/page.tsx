@@ -81,8 +81,8 @@ export default async function ChangelogEntryPage({ params }: ChangelogPageProps)
                   {/* Sticky container with all cards */}
                   <div className="sticky top-24 space-y-4">
                     {/* TOC Card - Scrollable */}
-                    <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl p-6 shadow-sm max-h-[calc(100vh-20rem)] overflow-y-auto">
-                      <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">Table of Contents</h3>
+                    <div className="p-1">
+                      <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Table of Contents</h3>
                       <TOCProvider toc={page.data.toc}>
                         <TOCScrollArea>
                           <TOCItems />
@@ -90,7 +90,7 @@ export default async function ChangelogEntryPage({ params }: ChangelogPageProps)
                       </TOCProvider>
                     </div>
                     {/* Sponsor & Ads - Also sticky with TOC */}
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-2">
                       <DocsSponsorCard />
                       <DocsCarbonAdCard />
                     </div>

@@ -102,7 +102,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 
         {/* Article Content with TOC */}
         <section className="py-4 sm:py-6 lg:py-8 px-4">
-          <div className="max-w-6xl mx-auto flex flex-col xl:flex-row gap-8 xl:gap-12">
+          <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8 lg:gap-12">
             {/* Main Content */}
             <div className="flex-1 min-w-0">
               <article className="max-w-none bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 xl:p-12 shadow-sm">
@@ -112,7 +112,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
               </article>
 
               {/* Mobile Ads - Show after content, before footer */}
-              <div className="xl:hidden mt-8 space-y-4">
+              <div className="lg:hidden mt-8 space-y-4">
                 <DocsSponsorCard />
                 <DocsCarbonAdCard />
               </div>
@@ -159,14 +159,14 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 
             {/* Table of Contents Sidebar - Desktop Only */}
             {page.data.toc && page.data.toc.length > 0 && (
-              <div className="xl:block xl:w-64 xl:flex-shrink-0">
+              <div className="lg:block lg:w-64 lg:flex-shrink-0">
                 {/* Desktop TOC - Fixed Sidebar */}
-                <div className="hidden xl:block">
+                <div className="hidden lg:block">
                   {/* Sticky container with all cards */}
                   <div className="sticky top-24 space-y-4">
                     {/* TOC Card - Scrollable */}
-                    <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-6 shadow-sm max-h-[calc(100vh-20rem)] overflow-y-auto">
-                      <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">Table of Contents</h3>
+                    <div className="p-1">
+                      <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Table of Contents</h3>
                       <TOCProvider toc={page.data.toc}>
                         <TOCScrollArea>
                           <TOCItems />
@@ -174,7 +174,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                       </TOCProvider>
                     </div>
                     {/* Sponsor & Ads - Also sticky with TOC */}
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-2">
                       <DocsSponsorCard />
                       <DocsCarbonAdCard />
                     </div>

@@ -44,17 +44,6 @@ export default function BlogPage() {
                   className="group bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 hover:shadow-xl hover:border-teal-200 dark:hover:border-teal-600 hover:-translate-y-1 transition-all duration-300 shadow-sm"
                 >
                   <Link href={post.url} className="block">
-                    {/* Feature Image */}
-                    {post.data.feature_image && (
-                      <div className="mb-4 sm:mb-6 lg:mb-8 overflow-hidden rounded-lg sm:rounded-xl">
-                        <img
-                          src={post.data.feature_image}
-                          alt={post.data.title}
-                          className="w-full h-48 sm:h-56 lg:h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                    )}
-
                     {/* Content */}
                     <div>
                       <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3 sm:mb-4 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors tracking-tight">
@@ -66,57 +55,54 @@ export default function BlogPage() {
                       </p>
 
                       {/* Meta Information */}
-                      <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                        <div className="flex items-center gap-2">
-                          <UserIcon className="w-3 h-3 sm:w-4 sm:h-4" />
-                          <span>{post.data.author}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <CalendarIcon className="w-3 h-3 sm:w-4 sm:h-4" />
-                          <span>
-                            {new Date(post.data.published_at).toLocaleDateString("en-US", {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            })}
-                          </span>
-                        </div>
-                        {post.data.tags && post.data.tags.length > 0 && (
-                          <>
-                            <div className="hidden sm:flex items-center gap-2">
-                              <span className="text-gray-400">•</span>
-                              <div className="flex gap-2">
-                                {post.data.tags.map((tag) => (
-                                  <span
-                                    key={tag}
-                                    className="px-2 sm:px-3 py-1 bg-teal-50 dark:bg-teal-950 text-teal-700 dark:text-teal-300 rounded-full text-xs font-medium"
-                                  >
-                                    {tag}
-                                  </span>
-                                ))}
+                      <div className="flex flex-wrap justify-between items-center">
+                        <div className="flex flex-row gap-3 sm:gap-4 text-sm text-gray-500 dark:text-gray-400">
+                          <div className="flex items-center gap-2">
+                            <CalendarIcon className="w-3 h-3 sm:w-4 sm:h-4" />
+                            <span>
+                              {new Date(post.data.published_at).toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                              })}
+                            </span>
+                          </div>
+                          {post.data.tags && post.data.tags.length > 0 && (
+                            <>
+                              <div className="hidden sm:flex items-center gap-2">
+                                <span className="text-gray-400">•</span>
+                                <div className="flex gap-2">
+                                  {post.data.tags.map((tag) => (
+                                    <span
+                                      key={tag}
+                                      className="px-2 sm:px-3 py-1 bg-teal-50 dark:bg-teal-950 text-teal-700 dark:text-teal-300 rounded-full text-xs font-medium"
+                                    >
+                                      {tag}
+                                    </span>
+                                  ))}
+                                </div>
                               </div>
-                            </div>
-                            {/* Mobile tags - show below on mobile */}
-                            <div className="sm:hidden w-full mt-2">
-                              <div className="flex flex-wrap gap-2">
-                                {post.data.tags.map((tag) => (
-                                  <span
-                                    key={tag}
-                                    className="px-2 py-1 bg-teal-50 dark:bg-teal-950 text-teal-700 dark:text-teal-300 rounded-full text-xs font-medium"
-                                  >
-                                    {tag}
-                                  </span>
-                                ))}
+                              {/* Mobile tags - show below on mobile */}
+                              <div className="sm:hidden w-full mt-2">
+                                <div className="flex flex-wrap gap-2">
+                                  {post.data.tags.map((tag) => (
+                                    <span
+                                      key={tag}
+                                      className="px-2 py-1 bg-teal-50 dark:bg-teal-950 text-teal-700 dark:text-teal-300 rounded-full text-xs font-medium"
+                                    >
+                                      {tag}
+                                    </span>
+                                  ))}
+                                </div>
                               </div>
-                            </div>
-                          </>
-                        )}
-                      </div>
-
-                      {/* Read More */}
-                      <div className="mt-4 sm:mt-6 flex items-center gap-2 text-teal-600 dark:text-teal-400 font-semibold group-hover:gap-3 transition-all">
-                        <span>Read more</span>
-                        <ArrowRightIcon className="w-3 h-3 sm:w-4 sm:h-4" />
+                            </>
+                          )}
+                        </div>
+                        {/* Read More */}
+                        <div className="flex items-center gap-2 text-sm text-teal-600 dark:text-teal-400 group-hover:gap-3 transition-all">
+                          <span>Read more</span>
+                          <ArrowRightIcon className="w-3 h-3 sm:w-4 sm:h-4" />
+                        </div>
                       </div>
                     </div>
                   </Link>
