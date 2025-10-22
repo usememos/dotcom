@@ -12,6 +12,7 @@ const config = {
     minimumCacheTTL: 31536000, // 1 year cache for optimized images
     remotePatterns: [], // Prevent external image loading
     unoptimized: true, // Disable built-in image optimization
+    qualities: [75, 85], // Support both default (75) and higher quality (85)
   },
 };
 

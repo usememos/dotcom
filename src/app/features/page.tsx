@@ -341,7 +341,7 @@ export default function FeaturesPage() {
                 href="/docs"
                 className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-200 font-semibold border border-gray-200 dark:border-gray-600 rounded-2xl hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 backdrop-blur-sm"
               >
-                Read Documentation
+                Read Docs
               </Link>
             </div>
           </div>
