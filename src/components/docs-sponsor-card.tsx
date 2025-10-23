@@ -33,9 +33,9 @@ export function DocsSponsorCard({}: DocsSponsorCardProps) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={sponsor.name}
-            className="group flex items-center gap-3 text-left rounded-lg border hover:opacity-80"
+            className="group bg-zinc-50 flex items-center gap-3 text-left border rounded hover:opacity-80"
           >
-            <span className="flex h-12 w-full p-2 shrink-0 items-center justify-center">
+            <span className="flex h-10 w-full p-2 shrink-0 items-center justify-center">
               <img
                 src={sponsor.logo}
                 alt={sponsor.name}

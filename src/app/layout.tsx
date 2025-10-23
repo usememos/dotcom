@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   metadataBase: new URL("https://usememos.com"),
   title: {
-    default: "Memos - Open Source, Self-hosted Note Taking",
+    default: "Memos - Open Source, Self-Hosted Note Taking",
     template: "%s - Memos",
   },
   description:
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://usememos.com",
     siteName: "Memos",
-    title: "Memos - Open Source, Self-hosted Note Taking",
+    title: "Memos - Open Source, Self-Hosted Note Taking",
     description:
       "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
     images: [
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Memos - Open Source, Self-hosted Note Taking",
+    title: "Memos - Open Source, Self-Hosted Note Taking",
     description:
       "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
     images: ["/demo.png"],

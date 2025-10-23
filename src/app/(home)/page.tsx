@@ -20,12 +20,12 @@ import { Footer } from "@/components/footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Memos - Open Source, Self-hosted Note Taking",
+  title: "Memos - Open Source, Self-Hosted Note Taking",
   description:
     "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
   keywords: ["note taking", "self-hosted", "open source", "privacy", "markdown", "memos"],
   openGraph: {
-    title: "Memos - Open Source, Self-hosted Note Taking",
+    title: "Memos - Open Source, Self-Hosted Note Taking",
     description:
       "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
     url: "https://usememos.com",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Memos - Open Source, Self-hosted Note Taking",
+    title: "Memos - Open Source, Self-Hosted Note Taking",
     description:
       "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
     images: ["/demo.png"],
@@ -57,7 +57,7 @@ export default function HomePage() {
       <HeroSection
         title={
           <>
-            Open Source, <span className="block sm:inline">Self-hosted</span>
+            Open Source, <span className="block sm:inline">Self-Hosted</span>
             <span className="block text-teal-600">Your Notes, Your Way</span>
           </>
         }
