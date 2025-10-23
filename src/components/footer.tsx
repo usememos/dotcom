@@ -63,6 +63,17 @@ export function Footer() {
                 </a>
               </li>
               <li>
+                <a
+                  href="https://discord.gg/tfPJa4UmAv"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-fd-muted-foreground hover:text-fd-foreground transition-colors"
+                >
+                  Discord
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </li>
+              <li>
                 <Link href="/supporters" className="text-fd-muted-foreground hover:text-fd-foreground transition-colors">
                   Supporters
                 </Link>

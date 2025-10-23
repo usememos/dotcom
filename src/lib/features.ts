@@ -118,16 +118,17 @@ export const FEATURES = {
   },
   "react-frontend": {
     title: "Modern React Frontend",
-    description: "Responsive, intuitive user interface built with modern React, TypeScript, and cutting-edge web technologies.",
+    description: "Responsive, intuitive user interface built with modern React, TypeScript, and cutting-edge web technologies with dark mode support.",
     hero: {
       title: "Beautiful & Responsive",
-      subtitle: "Modern React interface that works seamlessly across all devices and screen sizes.",
+      subtitle: "Modern React interface with dark mode that works seamlessly across all devices and screen sizes.",
     },
     benefits: [
       "Responsive design optimized for mobile and desktop",
+      "Dark mode support for comfortable viewing",
       "TypeScript for enhanced developer experience and reliability",
       "Fast page loads with optimized bundle splitting",
-      "Real-time updates without page refreshes",
+      "Real-time updates and synchronization without page refreshes",
       "Accessible design following WCAG guidelines",
     ],
     useCases: [
@@ -141,13 +142,14 @@ export const FEATURES = {
       },
       {
         title: "Cross-Device Sync",
-        description: "Seamless experience across phones, tablets, and computers.",
+        description: "Real-time synchronization across phones, tablets, and computers.",
       },
     ],
     techDetails: [
       "React 18 with concurrent features",
       "TypeScript for type safety",
       "Tailwind CSS for consistent styling",
+      "Dark mode with system preference detection",
       "PWA support for offline access",
     ],
   },
@@ -223,13 +225,14 @@ export const FEATURES = {
   },
   "api-first": {
     title: "API-First Design",
-    description: "Comprehensive RESTful API enables seamless integrations, custom applications, and automation workflows.",
+    description: "Comprehensive RESTful and gRPC APIs enable seamless integrations, custom applications, and automation workflows.",
     hero: {
       title: "Built for Integration",
-      subtitle: "Comprehensive REST API opens unlimited possibilities for custom integrations and workflows.",
+      subtitle: "Comprehensive REST and gRPC APIs open unlimited possibilities for custom integrations and workflows.",
     },
     benefits: [
-      "Complete REST API covering all functionality",
+      "Complete RESTful API covering all functionality",
+      "gRPC API for high-performance integrations",
       "OpenAPI specification for easy integration",
       "Authentication and authorization controls",
       "Webhook support for real-time notifications",
@@ -249,7 +252,7 @@ export const FEATURES = {
         description: "Import and export data from other systems using the API.",
       },
     ],
-    techDetails: ["OpenAPI 3.0 specification", "JWT-based authentication", "Rate limiting and throttling", "Comprehensive error handling"],
+    techDetails: ["RESTful and gRPC API support", "OpenAPI 3.0 specification", "JWT-based authentication", "Rate limiting and throttling", "Comprehensive error handling"],
   },
   "database-support": {
     title: "Multi-Database Support",

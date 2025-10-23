@@ -1,0 +1,523 @@
+---
+title: Kubernetes Deployment
+description: Deploy Memos on Kubernetes for production-grade orchestration and scalability.
+---
+
+Kubernetes provides robust orchestration for Memos deployments, offering automatic scaling, self-healing, and declarative configuration management.
+
+## Prerequisites
+
+- Kubernetes cluster (1.19+)
+- `kubectl` configured to access your cluster
+- Storage class configured for persistent volumes
+- (Optional) Ingress controller for external access
+
+## Basic Deployment
+
+### Using Deployment and Service
+
+Create a basic deployment with a SQLite database:
+
+```yaml title="memos-deployment.yaml"
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: memos
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: memos-data
+  namespace: memos
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memos
+  namespace: memos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memos
+  template:
+    metadata:
+      labels:
+        app: memos
+    spec:
+      containers:
+      - name: memos
+        image: neosmemo/memos:stable
+        ports:
+        - containerPort: 5230
+          name: http
+        env:
+        - name: MEMOS_MODE
+          value: "prod"
+        - name: MEMOS_PORT
+          value: "5230"
+        volumeMounts:
+        - name: data
+          mountPath: /var/opt/memos
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 5230
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 5230
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: memos-data
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memos
+  namespace: memos
+spec:
+  selector:
+    app: memos
+  ports:
+  - name: http
+    port: 5230
+    targetPort: 5230
+  type: ClusterIP
+```
+
+Apply the configuration:
+
+```bash
+kubectl apply -f memos-deployment.yaml
+```
+
+## Production Deployment with PostgreSQL
+
+For production environments, use an external database:
+
+```yaml title="memos-production.yaml"
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: memos
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: memos-db-secret
+  namespace: memos
+type: Opaque
+stringData:
+  POSTGRES_PASSWORD: "your-secure-password"
+  MEMOS_DSN: "postgresql://memos:your-secure-password@postgres:5432/memos?sslmode=disable"
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-data
+  namespace: memos
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: memos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: "memos"
+        - name: POSTGRES_USER
+          value: "memos"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: memos-db-secret
+              key: POSTGRES_PASSWORD
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: postgres-data
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: memos
+spec:
+  selector:
+    app: postgres
+  ports:
+  - port: 5432
+    targetPort: 5432
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memos
+  namespace: memos
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: memos
+  template:
+    metadata:
+      labels:
+        app: memos
+    spec:
+      containers:
+      - name: memos
+        image: neosmemo/memos:stable
+        ports:
+        - containerPort: 5230
+          name: http
+        env:
+        - name: MEMOS_MODE
+          value: "prod"
+        - name: MEMOS_PORT
+          value: "5230"
+        - name: MEMOS_DRIVER
+          value: "postgres"
+        - name: MEMOS_DSN
+          valueFrom:
+            secretKeyRef:
+              name: memos-db-secret
+              key: MEMOS_DSN
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 5230
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 5230
+          initialDelaySeconds: 5
+          periodSeconds: 5
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memos
+  namespace: memos
+spec:
+  selector:
+    app: memos
+  ports:
+  - name: http
+    port: 5230
+    targetPort: 5230
+  type: ClusterIP
+```
+
+Apply the production configuration:
+
+```bash
+kubectl apply -f memos-production.yaml
+```
+
+## Ingress Configuration
+
+Expose Memos using an Ingress controller:
+
+```yaml title="memos-ingress.yaml"
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: memos
+  namespace: memos
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - memos.example.com
+    secretName: memos-tls
+  rules:
+  - host: memos.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: memos
+            port:
+              number: 5230
+```
+
+Apply the ingress:
+
+```bash
+kubectl apply -f memos-ingress.yaml
+```
+
+## Helm Chart (Community)
+
+A community-maintained Helm chart is available for easier deployment:
+
+```bash
+# Add the Helm repository
+helm repo add memos https://usememos.github.io/helm-charts
+helm repo update
+
+# Install Memos
+helm install memos memos/memos \
+  --namespace memos \
+  --create-namespace \
+  --set ingress.enabled=true \
+  --set ingress.host=memos.example.com
+```
+
+## Configuration Options
+
+### Environment Variables
+
+Configure Memos using environment variables in the deployment:
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `MEMOS_MODE` | Server mode (`dev` or `prod`) | `dev` |
+| `MEMOS_PORT` | Server port | `5230` |
+| `MEMOS_DRIVER` | Database driver (`sqlite`, `postgres`, `mysql`) | `sqlite` |
+| `MEMOS_DSN` | Database connection string | - |
+
+### Resource Limits
+
+Recommended resource allocations:
+
+**Development/Small Team:**
+```yaml
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "100m"
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+```
+
+**Production:**
+```yaml
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "250m"
+  limits:
+    memory: "1Gi"
+    cpu: "1000m"
+```
+
+## Scaling
+
+### Horizontal Pod Autoscaler
+
+Automatically scale based on CPU usage:
+
+```yaml title="memos-hpa.yaml"
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: memos
+  namespace: memos
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: memos
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+```
+
+Apply the HPA:
+
+```bash
+kubectl apply -f memos-hpa.yaml
+```
+
+## Monitoring
+
+Check deployment status:
+
+```bash
+# Get pods
+kubectl get pods -n memos
+
+# View logs
+kubectl logs -n memos -l app=memos -f
+
+# Describe deployment
+kubectl describe deployment memos -n memos
+
+# Check service
+kubectl get svc -n memos
+```
+
+## Backup Strategy
+
+### Database Backups
+
+Create a CronJob for automated backups:
+
+```yaml title="memos-backup.yaml"
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: memos-backup
+  namespace: memos
+spec:
+  schedule: "0 2 * * *"  # Daily at 2 AM
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: backup
+            image: postgres:15
+            command:
+            - /bin/sh
+            - -c
+            - pg_dump $MEMOS_DSN > /backup/memos-$(date +%Y%m%d-%H%M%S).sql
+            env:
+            - name: MEMOS_DSN
+              valueFrom:
+                secretKeyRef:
+                  name: memos-db-secret
+                  key: MEMOS_DSN
+            volumeMounts:
+            - name: backup
+              mountPath: /backup
+          restartPolicy: OnFailure
+          volumes:
+          - name: backup
+            persistentVolumeClaim:
+              claimName: backup-storage
+```
+
+## Troubleshooting
+
+### Pod Not Starting
+
+```bash
+# Check pod status
+kubectl get pods -n memos
+
+# View pod events
+kubectl describe pod <pod-name> -n memos
+
+# Check logs
+kubectl logs <pod-name> -n memos
+```
+
+### Database Connection Issues
+
+```bash
+# Verify database service
+kubectl get svc postgres -n memos
+
+# Test connection from memos pod
+kubectl exec -it <memos-pod> -n memos -- nc -zv postgres 5432
+```
+
+### Storage Issues
+
+```bash
+# Check PVC status
+kubectl get pvc -n memos
+
+# Describe PVC
+kubectl describe pvc memos-data -n memos
+```
+
+## Next Steps
+
+After deployment:
+
+1. **[Configure authentication](/docs/configuration/authentication)** - Set up user access
+2. **[Database configuration](/docs/configuration/database)** - Optimize database settings
+3. **[Security hardening](/docs/configuration/security)** - Implement security best practices
+4. **[API Documentation](https://memos.apidocumentation.com)** - Explore the API
+
+<Callout type="info">
+**Production Tip**: Always use specific version tags (e.g., `neosmemo/memos:0.24.0`) instead of `stable` in production to ensure predictable deployments and easier rollbacks.
+</Callout>
+
+<Callout type="warning">
+**Security Note**: Store sensitive information like database passwords in Kubernetes Secrets. Consider using external secret management tools like HashiCorp Vault or sealed-secrets for enhanced security.
+</Callout>
