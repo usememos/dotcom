@@ -1,0 +1,68 @@
+---
+title: v0.25.2
+description: Enhanced UX with masonry layout, theme detection, and improved image handling
+date: "2025-10-24"
+---
+
+This release brings significant user experience improvements with automatic thumbnail generation, masonry layout for memos, system theme detection, and numerous quality-of-life enhancements.
+
+## New Features
+
+### Visual Enhancements
+- **Automatic thumbnail generation** - S3-stored images now generate thumbnails automatically for faster loading
+- **Masonry layout** - Beautiful responsive column layout adapts to different screen sizes
+- **System theme detection** - Automatic dark/light mode switching based on your system preferences
+- **Theme-aware syntax highlighting** - Code blocks now properly adapt to your selected theme
+
+### Location & Tagging
+- **Manual latitude/longitude input** - Add precise location coordinates manually for location tagging (#5152)
+- **Improved geolocation handling** - Enhanced LocationSelector with better accuracy and reliability
+
+### User Experience
+- **Copy memo content** - Quickly copy memo text directly from the action menu
+- **Enhanced reaction selector** - Improved hover effects and mobile-friendly scrolling for reactions
+- **Accessible confirmation dialogs** - Better accessibility with markdown support (#5111)
+
+## Improvements
+
+### Performance & Architecture
+- **Enhanced store architecture** - Improved state management for better performance
+- **Streamlined memo filtering** - Refactored filtering logic for faster memo discovery
+- **Simplified concurrent operations** - Better handling of simultaneous actions (#5162)
+
+### Localization
+- **Improved Traditional Chinese translations** - Enhanced language support (#5159)
+
+## Bug Fixes
+
+### Security
+- **User authentication checks** - Added security checks to prevent unauthorized access
+
+### User Interface
+- **Theme colors in calendar** - Fixed incorrect theme colors in calendar cells
+- **Dialog state management** - Prevented dialog state from leaking between sessions
+- **Markdown parser compatibility** - Improved markdown parsing for better content rendering
+
+## Sponsors
+
+### 💎 Featured Sponsor
+
+[**Warp - The terminal reimagined with AI and collaborative tools for developers**](https://go.warp.dev/memos)
+
+<a href="https://go.warp.dev/memos" target="_blank" rel="noopener">
+  <img src="https://raw.githubusercontent.com/warpdotdev/brand-assets/main/Github/Sponsor/Warp-Github-LG-02.png" alt="Warp - The terminal for the 21st century" height="256" />
+</a>
+
+## New Contributors
+
+Welcome to our new contributors who made their first contributions in this release:
+
+- @nicolasluckie - Accessible confirmation dialogs (#5111)
+- @asttool - Concurrent operations improvements (#5162)
+- @bmitchinson - Manual location input (#5152)
+- @simoncarrignon - Bug fixes and improvements
+- @FloDwld - Enhancement contributions
+
+---
+
+**Full Changelog**: [v0.25.1...v0.25.2](https://github.com/usememos/memos/compare/v0.25.1...v0.25.2)
