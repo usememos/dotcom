@@ -118,7 +118,8 @@ export const FEATURES = {
   },
   "react-frontend": {
     title: "Modern React Frontend",
-    description: "Responsive, intuitive user interface built with modern React, TypeScript, and cutting-edge web technologies with dark mode support.",
+    description:
+      "Responsive, intuitive user interface built with modern React, TypeScript, and cutting-edge web technologies with dark mode support.",
     hero: {
       title: "Beautiful & Responsive",
       subtitle: "Modern React interface with dark mode that works seamlessly across all devices and screen sizes.",
@@ -252,7 +253,7 @@ export const FEATURES = {
         description: "Import and export data from other systems using the API.",
       },
     ],
-    techDetails: ["RESTful and gRPC API support", "OpenAPI 3.0 specification", "JWT-based authentication", "Rate limiting and throttling", "Comprehensive error handling"],
+    techDetails: ["RESTful and gRPC API support", "OpenAPI 3.0 specification", "JWT-based authentication", "Comprehensive error handling"],
   },
   "database-support": {
     title: "Multi-Database Support",
