@@ -37,20 +37,17 @@ When using mobile apps, scripts, or integrations, you'll use **access tokens**:
 
 When you first access Memos, you'll create your account:
 
-<Steps>
+1. **Access Your Instance**
+   Navigate to your Memos URL (e.g., `https://memos.example.com`)
 
-#### Access Your Instance
-Navigate to your Memos URL (e.g., `https://memos.example.com`)
+2. **Create Account**
+   - Enter a **username** (permanent, cannot be changed)
+   - Choose a **strong password**
+   - Optionally set a **display name**
 
-#### Create Account
-- Enter a **username** (permanent, cannot be changed)
-- Choose a **strong password**
-- Optionally set a **display name**
+3. **First Login**
+   You're automatically logged in after account creation
 
-#### First Login
-You're automatically logged in after account creation
-
-</Steps>
 
 <Callout type="warning">
 **Important**: The first user created becomes the administrator with full system access.
@@ -77,18 +74,15 @@ Sessions represent each place where you're logged in. You might have sessions fo
 
 ### Viewing Active Sessions
 
-<Steps>
+1. **Open Settings**
+   Click your profile icon → **Settings**
 
-#### Open Settings
-Click your profile icon → **Settings**
+2. **Go to Sessions**
+   Navigate to the **Sessions** tab
 
-#### Go to Sessions
-Navigate to the **Sessions** tab
+3. **Review Sessions**
+   You'll see all places where you're currently logged in
 
-#### Review Sessions
-You'll see all places where you're currently logged in
-
-</Steps>
 
 Each session shows:
 
@@ -149,31 +143,28 @@ Use access tokens for:
 
 ### Creating an Access Token
 
-<Steps>
+1. **Open Token Settings**
+   Go to **Settings → Access Tokens**
 
-#### Open Token Settings
-Go to **Settings → Access Tokens**
+2. **Create New Token**
+   Click **"Create New Token"** button
 
-#### Create New Token
-Click **"Create New Token"** button
+3. **Name Your Token**
+   Enter a descriptive name:
+   - **Good examples**: "My iPhone", "Backup Script", "Home Laptop App"
+   - **Bad examples**: "token1", "test", "new"
 
-#### Name Your Token
-Enter a descriptive name:
-- ✅ Good: "My iPhone", "Backup Script", "Home Laptop App"
-- ❌ Bad: "token1", "test", "new"
+4. **Set Expiration (Optional)**
+   Choose when the token should expire:
+   - **7 days**: Good for testing
+   - **30 days**: Good for mobile apps
+   - **90 days**: Good for personal tools
+   - **1 year**: Good for stable integrations
+   - **Never**: Use with caution for critical systems only
 
-#### Set Expiration (Optional)
-Choose when the token should expire:
-- **7 days**: Good for testing
-- **30 days**: Good for mobile apps
-- **90 days**: Good for personal tools
-- **1 year**: Good for stable integrations
-- **Never**: Use with caution for critical systems only
+5. **Copy Token Immediately**
+   The token is shown **only once**! Copy it now and store it securely.
 
-#### Copy Token Immediately
-The token is shown **only once**! Copy it now and store it securely.
-
-</Steps>
 
 <Callout type="error">
 **Critical**: The token is only shown during creation. If you lose it, you must create a new one.
@@ -232,61 +223,37 @@ To delete a token:
 
 Revoke tokens immediately if:
 
-- ✅ You lost a device (phone, laptop)
-- ✅ You're no longer using an app or tool
-- ✅ You suspect a token was exposed or compromised
-- ✅ You're rotating credentials as part of security maintenance
-- ✅ You see suspicious activity in your account
+- You lost a device (phone, laptop)
+- You're no longer using an app or tool
+- You suspect a token was exposed or compromised
+- You're rotating credentials as part of security maintenance
+- You see suspicious activity in your account
 
 ## Security Best Practices
 
 ### Session Security
 
-<Cards>
-  <Card title="Review Regularly" icon="Eye">
-    Check active sessions weekly for unknown devices
-  </Card>
-  <Card title="Public Computers" icon="Monitor">
-    Always log out from public or shared computers
-  </Card>
-  <Card title="Unknown Sessions" icon="AlertTriangle">
-    Revoke immediately if you see a session you don't recognize
-  </Card>
-  <Card title="Use HTTPS" icon="Lock">
-    Always access Memos over HTTPS in production
-  </Card>
-</Cards>
+- **Review Regularly**: Check active sessions weekly for unknown devices
+- **Public Computers**: Always log out from public or shared computers
+- **Unknown Sessions**: Revoke immediately if you see a session you don't recognize
+- **Use HTTPS**: Always access Memos over HTTPS in production
 
 ### Token Security
 
-<Cards>
-  <Card title="One Per Device" icon="Smartphone">
-    Create separate tokens for each app or device
-  </Card>
-  <Card title="Descriptive Names" icon="Tag">
-    Use clear names to identify what each token is for
-  </Card>
-  <Card title="Set Expiration" icon="Calendar">
-    Use expiration dates when possible
-  </Card>
-  <Card title="Rotate Regularly" icon="RefreshCw">
-    Create new tokens and delete old ones periodically
-  </Card>
-  <Card title="Store Securely" icon="Shield">
-    Use password managers, keychains, or secure vaults
-  </Card>
-  <Card title="Never Share" icon="XCircle">
-    Don't commit tokens to git or share publicly
-  </Card>
-</Cards>
+- **One Per Device**: Create separate tokens for each app or device
+- **Descriptive Names**: Use clear names to identify what each token is for
+- **Set Expiration**: Use expiration dates when possible
+- **Rotate Regularly**: Create new tokens and delete old ones periodically
+- **Store Securely**: Use password managers, keychains, or secure vaults
+- **Never Share**: Don't commit tokens to git or share publicly
 
 ### Password Security
 
-- ✅ Use a **strong, unique password** (12+ characters)
-- ✅ Use a **password manager** to generate and store it
-- ✅ **Never reuse** passwords from other services
-- ✅ **Change your password** if you suspect compromise
-- ✅ Consider using **OAuth SSO** instead of passwords (if available)
+- Use a **strong, unique password** (12+ characters)
+- Use a **password manager** to generate and store it
+- **Never reuse** passwords from other services
+- **Change your password** if you suspect compromise
+- Consider using **OAuth SSO** instead of passwords (if available)
 
 ## Account Recovery
 
@@ -335,10 +302,10 @@ If your administrator has enabled OAuth SSO, you can log in with:
 
 ### OAuth Benefits
 
-- ✅ No additional password to remember
-- ✅ Leverage your provider's security (2FA, etc.)
-- ✅ Faster login process
-- ✅ Centralized account management
+- No additional password to remember
+- Leverage your provider's security (2FA, etc.)
+- Faster login process
+- Centralized account management
 
 <Callout type="tip">
 **Pro Tip**: Even with OAuth, you can still create access tokens for mobile apps and API access!
@@ -389,60 +356,54 @@ Here's how to set up Memos across all your devices:
 
 Perform these checks monthly:
 
-<Steps>
+1. **Review Active Sessions**
+   - Check Settings → Sessions
+   - Verify all devices are yours
+   - Revoke any unknown or old sessions
 
-#### Review Active Sessions
-- Check Settings → Sessions
-- Verify all devices are yours
-- Revoke any unknown or old sessions
+2. **Review Access Tokens**
+   - Check Settings → Access Tokens
+   - Remove unused tokens
+   - Rotate tokens for critical systems
 
-#### Review Access Tokens
-- Check Settings → Access Tokens
-- Remove unused tokens
-- Rotate tokens for critical systems
+3. **Check Recent Activity**
+   - Review your recent memos
+   - Look for any unexpected content
+   - Check for unfamiliar API activity
 
-#### Check Recent Activity
-- Review your recent memos
-- Look for any unexpected content
-- Check for unfamiliar API activity
-
-</Steps>
 
 ### Signs of Compromised Account
 
 Contact your administrator immediately if you notice:
 
-- ❌ Unknown sessions from unfamiliar locations
-- ❌ Memos you didn't create
-- ❌ Changed settings you didn't modify
-- ❌ Deleted or modified content
-- ❌ New access tokens you didn't create
+- Unknown sessions from unfamiliar locations
+- Memos you didn't create
+- Changed settings you didn't modify
+- Deleted or modified content
+- New access tokens you didn't create
 
 ### Recovery Steps
 
 If you suspect your account is compromised:
 
-<Steps>
+1. **Revoke All Sessions**
+   Go to Settings → Sessions and revoke all sessions
 
-#### Revoke All Sessions
-Go to Settings → Sessions and revoke all sessions
+2. **Change Password**
+   Update your password immediately
 
-#### Change Password
-Update your password immediately
+3. **Revoke All Tokens**
+   Go to Settings → Access Tokens and delete all tokens
 
-#### Revoke All Tokens
-Go to Settings → Access Tokens and delete all tokens
+4. **Create New Tokens**
+   Create new tokens only for apps you trust
 
-#### Create New Tokens
-Create new tokens only for apps you trust
+5. **Contact Administrator**
+   Report the incident to your administrator
 
-#### Contact Administrator
-Report the incident to your administrator
+6. **Review Activity**
+   Check your memos and activity for unauthorized changes
 
-#### Review Activity
-Check your memos and activity for unauthorized changes
-
-</Steps>
 
 ## API Authentication
 

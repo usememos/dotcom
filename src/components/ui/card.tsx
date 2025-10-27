@@ -32,6 +32,13 @@ import {
   WebhookIcon,
   FilterIcon,
   LucideIcon,
+  SmartphoneIcon,
+  CalendarIcon,
+  RefreshCwIcon,
+  TrashIcon,
+  HelpCircleIcon,
+  GithubIcon,
+  MessageSquareIcon,
 } from "lucide-react";
 
 // Icon mapping for string-based icon names
@@ -66,6 +73,13 @@ const iconMap: Record<string, LucideIcon> = {
   Activity: ActivityIcon,
   Cookie: CookieIcon,
   Webhook: WebhookIcon,
+  Smartphone: SmartphoneIcon,
+  Calendar: CalendarIcon,
+  RefreshCw: RefreshCwIcon,
+  Trash: TrashIcon,
+  HelpCircle: HelpCircleIcon,
+  Github: GithubIcon,
+  MessageSquare: MessageSquareIcon,
 };
 
 interface CardsProps {
@@ -94,7 +108,7 @@ export function Card({ title, href, icon, children }: CardProps) {
     >
       <div className="flex items-start space-x-4">
         {IconComponent && (
-          <div className="flex-shrink-0 inline-flex items-center justify-center w-12 h-12 bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 rounded-xl group-hover:scale-110 transition-transform">
+          <div className="shrink-0 inline-flex items-center justify-center w-12 h-12 bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 rounded-xl group-hover:scale-110 transition-transform">
             <IconComponent className="w-6 h-6" />
           </div>
         )}
@@ -103,7 +117,7 @@ export function Card({ title, href, icon, children }: CardProps) {
             <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors tracking-tight">
               {title}
             </h3>
-            <ArrowRightIcon className="w-5 h-5 text-gray-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 group-hover:translate-x-1 transition-all flex-shrink-0" />
+            <ArrowRightIcon className="w-5 h-5 text-gray-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 group-hover:translate-x-1 transition-all shrink-0" />
           </div>
           {children && <div className="text-gray-600 dark:text-gray-300 leading-relaxed">{children}</div>}
         </div>

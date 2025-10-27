@@ -9,17 +9,9 @@ Memos implements a dual authentication system designed for both human users and 
 
 Memos supports two distinct authentication methods:
 
-<Cards>
-  <Card title="Session-Based Auth" href="#session-based-authentication" icon="Key">
-    Cookie-based authentication for web browsers with automatic session management
-  </Card>
-  <Card title="Token-Based Auth" href="#personal-access-tokens" icon="Code">
-    JWT tokens for mobile apps, CLI tools, and API integrations
-  </Card>
-  <Card title="OAuth SSO" href="#oauth-providers" icon="Users">
-    Single Sign-On with Google, GitHub, GitLab, and custom providers
-  </Card>
-</Cards>
+- **[Session-Based Auth](#session-based-authentication)**: Cookie-based authentication for web browsers with automatic session management
+- **[Token-Based Auth](#personal-access-tokens)**: JWT tokens for mobile apps, CLI tools, and API integrations  
+- **[OAuth SSO](#oauth-providers)**: Single Sign-On with Google, GitHub, GitLab, and custom providers
 
 ## Authentication Priority
 
@@ -117,27 +109,26 @@ Unlike session cookies, access tokens:
 
 ### Creating an Access Token
 
-<Steps>
+1. **Navigate to Settings**
+   
+   Go to **Settings → Access Tokens** in the web interface
 
-#### Navigate to Settings
-Go to **Settings → Access Tokens** in the web interface
+2. **Create New Token**
+   
+   Click **"Create New Token"** button
 
-#### Create New Token
-Click **"Create New Token"** button
+3. **Configure Token**
+   - **Description**: Give it a meaningful name (e.g., "My iPhone", "Backup Script")
+   - **Expiration**: Choose when it expires (optional):
+     - 7 days
+     - 30 days (recommended for mobile)
+     - 90 days (recommended for desktop)
+     - 1 year
+     - Never (use with caution)
 
-#### Configure Token
-- **Description**: Give it a meaningful name (e.g., "My iPhone", "Backup Script")
-- **Expiration**: Choose when it expires (optional):
-  - 7 days
-  - 30 days (recommended for mobile)
-  - 90 days (recommended for desktop)
-  - 1 year
-  - Never (use with caution)
-
-#### Copy Token
-The token is shown **only once**. Copy it immediately and store it securely!
-
-</Steps>
+4. **Copy Token**
+   
+   The token is shown **only once**. Copy it immediately and store it securely!
 
 <Callout type="error">
 **Important**: The token is only displayed once during creation. If you lose it, you'll need to create a new one.
@@ -154,8 +145,7 @@ curl -H "Authorization: Bearer YOUR_TOKEN_HERE" \
 
 **Examples for different platforms:**
 
-<Tabs>
-<Tab value="curl" label="cURL">
+**cURL:**
 ```bash
 # List all memos
 curl -H "Authorization: Bearer eyJhbGci..." \
@@ -168,9 +158,8 @@ curl -X POST \
   -d '{"content": "My memo from API"}' \
   https://memos.example.com/api/v1/memos
 ```
-</Tab>
 
-<Tab value="python" label="Python">
+**Python:**
 ```python
 import requests
 
@@ -191,9 +180,8 @@ response = requests.post(
     json={"content": "My memo from Python"}
 )
 ```
-</Tab>
 
-<Tab value="javascript" label="JavaScript">
+**JavaScript:**
 ```javascript
 const token = "eyJhbGci...";
 
@@ -220,9 +208,8 @@ await fetch("https://memos.example.com/api/v1/memos", {
   })
 });
 ```
-</Tab>
 
-<Tab value="swift" label="Swift (iOS)">
+**Swift (iOS):**
 ```swift
 let token = "eyJhbGci..."
 
@@ -234,8 +221,6 @@ request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 let (data, _) = try await URLSession.shared.data(for: request)
 let memos = try JSONDecoder().decode([Memo].self, from: data)
 ```
-</Tab>
-</Tabs>
 
 ### Managing Access Tokens
 
@@ -285,26 +270,12 @@ To revoke a token:
 
 ### Token Security Best Practices
 
-<Cards>
-  <Card title="One Token Per App" icon="Smartphone">
-    Create separate tokens for each device or application
-  </Card>
-  <Card title="Use Descriptive Names" icon="Tag">
-    Name tokens clearly: "iPhone", "Backup Script", "CI Pipeline"
-  </Card>
-  <Card title="Set Expiration Dates" icon="Calendar">
-    Use expiration dates whenever possible for better security
-  </Card>
-  <Card title="Rotate Regularly" icon="RefreshCw">
-    Periodically create new tokens and revoke old ones
-  </Card>
-  <Card title="Store Securely" icon="Lock">
-    Never commit tokens to git, use environment variables or secure vaults
-  </Card>
-  <Card title="Revoke When Done" icon="Trash">
-    Delete tokens immediately when no longer needed
-  </Card>
-</Cards>
+- **One Token Per App**: Create separate tokens for each device or application
+- **Use Descriptive Names**: Name tokens clearly: "iPhone", "Backup Script", "CI Pipeline"
+- **Set Expiration Dates**: Use expiration dates whenever possible for better security
+- **Rotate Regularly**: Periodically create new tokens and revoke old ones
+- **Store Securely**: Never commit tokens to git, use environment variables or secure vaults
+- **Revoke When Done**: Delete tokens immediately when no longer needed
 
 ### Storing Tokens Securely
 
@@ -383,55 +354,58 @@ Memos supports these OAuth 2.0 providers:
 **Administrator Access Required**: Only administrators can configure OAuth providers.
 </Callout>
 
-<Steps>
+OAuth providers are configured through the Memos web interface. Follow these steps:
 
-#### Access Identity Provider Settings
-1. Log in as an administrator
-2. Navigate to **Settings → Identity Providers**
+1. **Access Identity Provider Settings**
+   - Log in as an administrator
+   - Navigate to **Settings → Identity Providers**
 
-#### Create New Provider
-Click **"Add Identity Provider"**
+2. **Create New Provider**
 
-#### Select Provider Type
-Choose from GitHub, GitLab, Google, or Custom OAuth 2.0
+   Click **"Add Identity Provider"**
 
-#### Configure OAuth Application
-You'll need to create an OAuth app in your provider first
+3. **Select Provider Type**
 
-#### Enter Credentials
-Add the Client ID and Client Secret from your OAuth app
+   Choose from GitHub, GitLab, Google, or Custom OAuth 2.0
 
-#### Set Callback URL
-Use: `https://your-domain.com/api/v1/auth/callback`
+4. **Configure OAuth Application**
 
-#### Test Configuration
-Click "Test" to verify the setup works correctly
+   You'll need to create an OAuth app in your provider first
 
-</Steps>
+5. **Enter Credentials**
 
-#### Provider Configuration
+   Add the Client ID and Client Secret from your OAuth app
 
-```yaml
-# Identity Provider Configuration
-name: "GitHub"                    # Display name
-type: "GITHUB"                     # Provider type
-identifier_filter: ""              # Optional regex to restrict users (e.g., "^org-.*")
+6. **Set Callback URL**
 
-# OAuth 2.0 Configuration
-config:
-  client_id: "your-client-id"
-  client_secret: "your-client-secret"
-  auth_url: "https://github.com/login/oauth/authorize"
-  token_url: "https://github.com/login/oauth/access_token"
-  user_info_url: "https://api.github.com/user"
-  scopes: ["read:user", "user:email"]
-  
-  # Field mapping for user attributes
-  field_mapping:
-    identifier: "login"           # Username field
-    display_name: "name"          # Display name field
-    email: "email"                # Email field
-    avatar_url: "avatar_url"      # Avatar URL field
+   Use: `https://your-domain.com/api/v1/auth/callback`
+
+7. **Test Configuration**
+
+   Click "Test" to verify the setup works correctly
+
+#### Provider Configuration Structure
+
+When configuring a provider, you'll need to provide the following information through the web interface:
+
+```
+Name: "GitHub"                    # Display name shown to users
+Type: "GITHUB"                    # Provider type (GITHUB, GITLAB, GOOGLE, CUSTOM)
+Identifier Filter: ""             # Optional regex to restrict users (e.g., "^org-.*")
+
+OAuth 2.0 Configuration:
+  Client ID: "your-client-id"
+  Client Secret: "your-client-secret"
+  Auth URL: "https://github.com/login/oauth/authorize"
+  Token URL: "https://github.com/login/oauth/access_token"
+  User Info URL: "https://api.github.com/user"
+  Scopes: ["read:user", "user:email"]
+
+  Field Mapping (for user attributes):
+    Identifier: "login"           # Username field from provider
+    Display Name: "name"          # Display name field
+    Email: "email"                # Email field
+    Avatar URL: "avatar_url"      # Avatar URL field
 ```
 
 #### GitHub Setup
@@ -442,92 +416,88 @@ config:
    - Set Authorization callback URL: `https://your-domain.com/api/v1/auth/callback`
 
 2. **Configuration in Memos**:
-   ```yaml
-   name: "GitHub"
-   type: "GITHUB"
-   config:
-     client_id: "your-github-client-id"
-     client_secret: "your-github-client-secret"
-     scopes: ["read:user", "user:email"]
-     field_mapping:
-       identifier: "login"
-       display_name: "name"
-       email: "email"
-       avatar_url: "avatar_url"
+   ```
+   Name: "GitHub"
+   Type: "GITHUB"
+   Client ID: "your-github-client-id"
+   Client Secret: "your-github-client-secret"
+   Scopes: ["read:user", "user:email"]
+   Field Mapping:
+     Identifier: "login"
+     Display Name: "name"
+     Email: "email"
+     Avatar URL: "avatar_url"
    ```
 
 #### GitLab Setup
 
-```yaml
-name: "GitLab"
-type: "GITLAB"
-config:
-  client_id: "your-gitlab-client-id"
-  client_secret: "your-gitlab-client-secret"
-  auth_url: "https://gitlab.com/oauth/authorize"
-  token_url: "https://gitlab.com/oauth/token"
-  user_info_url: "https://gitlab.com/api/v4/user"
-  scopes: ["read_user"]
-  field_mapping:
-    identifier: "name"
-    display_name: "name"
-    email: "email"
-    avatar_url: "avatar_url"
+```
+Name: "GitLab"
+Type: "GITLAB"
+Client ID: "your-gitlab-client-id"
+Client Secret: "your-gitlab-client-secret"
+Auth URL: "https://gitlab.com/oauth/authorize"
+Token URL: "https://gitlab.com/oauth/token"
+User Info URL: "https://gitlab.com/api/v4/user"
+Scopes: ["read_user"]
+Field Mapping:
+  Identifier: "name"
+  Display Name: "name"
+  Email: "email"
+  Avatar URL: "avatar_url"
 ```
 
 #### Google Setup
 
-```yaml
-name: "Google"
-type: "GOOGLE"
-config:
-  client_id: "your-google-client-id.apps.googleusercontent.com"
-  client_secret: "your-google-client-secret"
-  auth_url: "https://accounts.google.com/o/oauth2/auth"
-  token_url: "https://oauth2.googleapis.com/token"
-  user_info_url: "https://www.googleapis.com/oauth2/v2/userinfo"
-  scopes: ["openid", "profile", "email"]
-  field_mapping:
-    identifier: "email"
-    display_name: "name"
-    email: "email"
-    avatar_url: "picture"
+```
+Name: "Google"
+Type: "GOOGLE"
+Client ID: "your-google-client-id.apps.googleusercontent.com"
+Client Secret: "your-google-client-secret"
+Auth URL: "https://accounts.google.com/o/oauth2/auth"
+Token URL: "https://oauth2.googleapis.com/token"
+User Info URL: "https://www.googleapis.com/oauth2/v2/userinfo"
+Scopes: ["openid", "profile", "email"]
+Field Mapping:
+  Identifier: "email"
+  Display Name: "name"
+  Email: "email"
+  Avatar URL: "picture"
 ```
 
 #### Custom OAuth Provider
 
 For custom OAuth 2.0 providers:
 
-```yaml
-name: "Company SSO"
-type: "CUSTOM"
-config:
-  client_id: "your-custom-client-id"
-  client_secret: "your-custom-client-secret"
-  auth_url: "https://sso.company.com/oauth/authorize"
-  token_url: "https://sso.company.com/oauth/token"
-  user_info_url: "https://sso.company.com/oauth/userinfo"
-  scopes: ["openid", "profile", "email"]
-  field_mapping:
-    identifier: "preferred_username"
-    display_name: "name"
-    email: "email"
-    avatar_url: "picture"
+```
+Name: "Company SSO"
+Type: "CUSTOM"
+Client ID: "your-custom-client-id"
+Client Secret: "your-custom-client-secret"
+Auth URL: "https://sso.company.com/oauth/authorize"
+Token URL: "https://sso.company.com/oauth/token"
+User Info URL: "https://sso.company.com/oauth/userinfo"
+Scopes: ["openid", "profile", "email"]
+Field Mapping:
+  Identifier: "preferred_username"
+  Display Name: "name"
+  Email: "email"
+  Avatar URL: "picture"
 ```
 
 ### Identifier Filtering
 
-You can restrict access to specific users or organizations using identifier filters:
+You can restrict access to specific users or organizations using identifier filters (regex patterns):
 
-```yaml
+```
 # Allow only users from specific organization
-identifier_filter: "^org-.*"
+Identifier Filter: "^org-.*"
 
 # Allow only specific email domains
-identifier_filter: ".*@company\\.com$"
+Identifier Filter: ".*@company\\.com$"
 
 # Allow specific users
-identifier_filter: "^(user1|user2|user3)$"
+Identifier Filter: "^(user1|user2|user3)$"
 ```
 
 ### OAuth Flow
@@ -586,12 +556,11 @@ Memos implements secure session management with the following characteristics:
 
 #### Session Security
 
-```bash
-# Session cookies are configured with security flags
-# HttpOnly: Prevents JavaScript access to session cookies
-# SameSite: Strict or None depending on HTTPS configuration
-# Secure: Set when using HTTPS
-```
+Session cookies are configured with security flags:
+
+- **HttpOnly**: Prevents JavaScript access to session cookies
+- **SameSite**: Strict or None depending on HTTPS configuration
+- **Secure**: Set when using HTTPS
 
 #### Session Tracking
 
@@ -628,13 +597,10 @@ When users authenticate via OAuth SSO for the first time:
 
 #### Local User Registration
 
-Local user registration can be controlled through workspace settings:
+Local user registration can be controlled through workspace settings in the web interface:
 
-```bash
-# Workspace settings (configured via web interface)
-disallow_user_registration: false  # Allow new user signups
-disallow_password_auth: false      # Allow password-based authentication
-```
+- **Allow User Registration**: Enable/disable public signups
+- **Disable Password Auth**: Force OAuth-only authentication
 
 ### Account Security
 
@@ -773,14 +739,14 @@ curl -X GET "$MEMOS_URL/api/v1/auth/oauth/github" \
 
 **Problem: "Session expired" error**
 
-✅ **Solution:**
+**Solutions:**
 - Sessions expire after 14 days of inactivity
 - Simply log in again to create a new session
 - Consider using access tokens for automated tools
 
 **Problem: Can't stay logged in**
 
-✅ **Solutions:**
+**Solutions:**
 - Check if cookies are enabled in your browser
 - Verify you're not in private/incognito mode
 - Ensure your browser isn't blocking third-party cookies
@@ -788,7 +754,7 @@ curl -X GET "$MEMOS_URL/api/v1/auth/oauth/github" \
 
 **Problem: Logged out unexpectedly**
 
-✅ **Solutions:**
+**Solutions:**
 - Check active sessions in Settings → Sessions
 - Look for duplicate sessions that might indicate session conflicts
 - Clear browser cache and cookies, then log in again
@@ -798,7 +764,7 @@ curl -X GET "$MEMOS_URL/api/v1/auth/oauth/github" \
 
 **Problem: "401 Unauthenticated" with token**
 
-✅ **Solutions:**
+**Solutions:**
 - Verify token hasn't expired (check Settings → Access Tokens)
 - Ensure you're using the correct format: `Authorization: Bearer YOUR_TOKEN`
 - Check that token wasn't revoked
@@ -806,14 +772,14 @@ curl -X GET "$MEMOS_URL/api/v1/auth/oauth/github" \
 
 **Problem: Lost my access token**
 
-✅ **Solution:**
+**Solutions:**
 - Tokens are only shown once during creation
 - Create a new token and revoke the old one
 - Store new tokens securely (password manager, keychain)
 
 **Problem: Token not working in mobile app**
 
-✅ **Solutions:**
+**Solutions:**
 - Verify the app is configured with correct server URL
 - Check network connectivity
 - Ensure token hasn't expired
@@ -823,7 +789,7 @@ curl -X GET "$MEMOS_URL/api/v1/auth/oauth/github" \
 
 **Problem: "OAuth login failed"**
 
-✅ **Solutions:**
+**Solutions:**
 - Verify OAuth app credentials are correct
 - Check callback URL matches exactly: `https://your-domain.com/api/v1/auth/callback`
 - Ensure OAuth app is not in dev/test mode (for production use)
@@ -831,7 +797,7 @@ curl -X GET "$MEMOS_URL/api/v1/auth/oauth/github" \
 
 **Problem: "Identifier filter" blocking access**
 
-✅ **Solution:**
+**Solutions:**
 - Contact your administrator - they've restricted access
 - Verify your username/email matches the filter pattern
 - Administrator can adjust filter in Identity Provider settings
@@ -840,7 +806,7 @@ curl -X GET "$MEMOS_URL/api/v1/auth/oauth/github" \
 
 **Problem: Different data on different devices**
 
-✅ **Solutions:**
+**Solutions:**
 - Verify all devices are connected to same server
 - Check you're logged in to the same account on all devices
 - Try force-refreshing (Ctrl/Cmd + Shift + R) on each device
@@ -849,7 +815,7 @@ curl -X GET "$MEMOS_URL/api/v1/auth/oauth/github" \
 
 **Problem: Unknown session appears**
 
-✅ **Immediate action:**
+**Immediate actions:**
 1. Go to Settings → Sessions
 2. Review all active sessions
 3. Revoke any unrecognized sessions
@@ -858,7 +824,7 @@ curl -X GET "$MEMOS_URL/api/v1/auth/oauth/github" \
 
 **Problem: Suspect token compromise**
 
-✅ **Immediate action:**
+**Immediate actions:**
 1. Go to Settings → Access Tokens
 2. Revoke all tokens immediately
 3. Create new tokens for legitimate apps
@@ -869,17 +835,9 @@ curl -X GET "$MEMOS_URL/api/v1/auth/oauth/github" \
 
 If you're still experiencing issues:
 
-<Cards>
-  <Card title="Check FAQ" href="/docs/faq" icon="HelpCircle">
-    Common questions and answers about Memos
-  </Card>
-  <Card title="GitHub Issues" href="https://github.com/usememos/memos/issues" icon="Github">
-    Report bugs or request features
-  </Card>
-  <Card title="Community Discussions" href="https://github.com/usememos/memos/discussions" icon="MessageSquare">
-    Ask questions and share experiences
-  </Card>
-</Cards>
+- **[Check FAQ](/docs/faq)**: Common questions and answers about Memos
+- **[GitHub Issues](https://github.com/usememos/memos/issues)**: Report bugs or request features
+- **[Community Discussions](https://github.com/usememos/memos/discussions)**: Ask questions and share experiences
 
 ## Next Steps
 
