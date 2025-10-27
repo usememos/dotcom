@@ -1,0 +1,542 @@
+---
+title: Authentication & Security
+description: Learn how to manage your account security, sessions, and access tokens in Memos.
+---
+
+This guide covers how to secure your Memos account and manage access across different devices and applications.
+
+## Understanding Authentication
+
+Memos uses two types of authentication depending on how you access it:
+
+### For Web Browsers: Sessions
+
+When you log in through a web browser, Memos creates a **session** that keeps you logged in:
+
+- Sessions last 14 days from your last activity
+- They automatically extend each time you use Memos
+- Perfect for daily use in web browsers
+- Secure cookies protect your session
+
+### For Apps & APIs: Access Tokens
+
+When using mobile apps, scripts, or integrations, you'll use **access tokens**:
+
+- Long-lived tokens that don't expire from inactivity
+- Can be set to expire on a specific date (or never)
+- Perfect for automated tools and mobile apps
+- Each app gets its own token
+
+<Callout type="info">
+**Quick Tip**: Use sessions for browsing, use tokens for everything else!
+</Callout>
+
+## Logging In
+
+### First-Time Setup
+
+When you first access Memos, you'll create your account:
+
+<Steps>
+
+#### Access Your Instance
+Navigate to your Memos URL (e.g., `https://memos.example.com`)
+
+#### Create Account
+- Enter a **username** (permanent, cannot be changed)
+- Choose a **strong password**
+- Optionally set a **display name**
+
+#### First Login
+You're automatically logged in after account creation
+
+</Steps>
+
+<Callout type="warning">
+**Important**: The first user created becomes the administrator with full system access.
+</Callout>
+
+### Regular Login
+
+To log in to an existing account:
+
+1. Navigate to your Memos instance
+2. Enter your username and password
+3. Click "Sign In"
+
+**Forgot Password?**: Contact your administrator to reset your password.
+
+## Managing Sessions
+
+Sessions represent each place where you're logged in. You might have sessions for:
+
+- Home laptop
+- Work computer
+- Tablet
+- Phone browser
+
+### Viewing Active Sessions
+
+<Steps>
+
+#### Open Settings
+Click your profile icon → **Settings**
+
+#### Go to Sessions
+Navigate to the **Sessions** tab
+
+#### Review Sessions
+You'll see all places where you're currently logged in
+
+</Steps>
+
+Each session shows:
+
+- **Device Type**: Desktop, mobile, or tablet
+- **Browser**: Chrome, Safari, Firefox, etc.
+- **Operating System**: macOS, Windows, iOS, Android, etc.
+- **IP Address**: Network location
+- **Last Activity**: When you last used Memos from this device
+- **Created**: When you logged in on this device
+
+### Session Details Example
+
+```
+Desktop Computer
+Chrome 120.0 on macOS 14.2
+IP: 192.168.1.100
+Last active: 2 minutes ago
+Created: January 20, 2025
+```
+
+### Revoking Sessions
+
+To log out from a specific device:
+
+1. Find the session in your Sessions list
+2. Click **"Revoke"** or **"Delete"**
+3. That device is immediately logged out
+
+<Callout type="tip">
+**Pro Tip**: Revoke old sessions regularly to keep your account secure. If you see a session you don't recognize, revoke it immediately!
+</Callout>
+
+### Logging Out
+
+**To log out from current device:**
+- Click your profile icon → **Logout**
+- Or revoke the current session from Settings → Sessions
+
+**To log out everywhere:**
+1. Go to Settings → Sessions
+2. Revoke all sessions except your current one
+3. Your other devices will need to log in again
+
+## Managing Access Tokens
+
+Access tokens are for apps and automated tools that need to access your Memos.
+
+### When to Use Access Tokens
+
+Use access tokens for:
+
+- **Mobile apps**: iPhone or Android apps that sync with Memos
+- **Desktop apps**: Electron or native desktop applications
+- **CLI tools**: Command-line scripts for automation
+- **Integrations**: Zapier, IFTTT, or custom webhooks
+- **Backup scripts**: Automated backup or sync tools
+- **API development**: Testing and development
+
+### Creating an Access Token
+
+<Steps>
+
+#### Open Token Settings
+Go to **Settings → Access Tokens**
+
+#### Create New Token
+Click **"Create New Token"** button
+
+#### Name Your Token
+Enter a descriptive name:
+- ✅ Good: "My iPhone", "Backup Script", "Home Laptop App"
+- ❌ Bad: "token1", "test", "new"
+
+#### Set Expiration (Optional)
+Choose when the token should expire:
+- **7 days**: Good for testing
+- **30 days**: Good for mobile apps
+- **90 days**: Good for personal tools
+- **1 year**: Good for stable integrations
+- **Never**: Use with caution for critical systems only
+
+#### Copy Token Immediately
+The token is shown **only once**! Copy it now and store it securely.
+
+</Steps>
+
+<Callout type="error">
+**Critical**: The token is only shown during creation. If you lose it, you must create a new one.
+</Callout>
+
+### Using Your Token
+
+After creating a token, configure your app or tool to use it:
+
+**For Mobile Apps:**
+1. Open the app's settings
+2. Find "Server" or "Authentication" section
+3. Paste your token
+4. Save and test the connection
+
+**For CLI Tools:**
+```bash
+# Store token in environment variable
+export MEMOS_TOKEN="your_token_here"
+
+# Or store in secure config file
+echo "your_token_here" > ~/.memos/token
+chmod 600 ~/.memos/token
+```
+
+**For Scripts:**
+```bash
+# Using the token in API calls
+curl -H "Authorization: Bearer YOUR_TOKEN" \
+  https://memos.example.com/api/v1/memos
+```
+
+### Viewing Your Tokens
+
+In **Settings → Access Tokens**, you can see:
+
+- Token name/description
+- When it was created
+- When it expires (if set)
+- The token value (for reference)
+
+### Revoking Tokens
+
+To delete a token:
+
+1. Go to **Settings → Access Tokens**
+2. Find the token you want to remove
+3. Click **"Delete"** or **"Revoke"**
+4. Confirm the deletion
+
+<Callout type="warning">
+**The token stops working immediately** - apps using it will lose access until you create a new token.
+</Callout>
+
+### When to Revoke Tokens
+
+Revoke tokens immediately if:
+
+- ✅ You lost a device (phone, laptop)
+- ✅ You're no longer using an app or tool
+- ✅ You suspect a token was exposed or compromised
+- ✅ You're rotating credentials as part of security maintenance
+- ✅ You see suspicious activity in your account
+
+## Security Best Practices
+
+### Session Security
+
+<Cards>
+  <Card title="Review Regularly" icon="Eye">
+    Check active sessions weekly for unknown devices
+  </Card>
+  <Card title="Public Computers" icon="Monitor">
+    Always log out from public or shared computers
+  </Card>
+  <Card title="Unknown Sessions" icon="AlertTriangle">
+    Revoke immediately if you see a session you don't recognize
+  </Card>
+  <Card title="Use HTTPS" icon="Lock">
+    Always access Memos over HTTPS in production
+  </Card>
+</Cards>
+
+### Token Security
+
+<Cards>
+  <Card title="One Per Device" icon="Smartphone">
+    Create separate tokens for each app or device
+  </Card>
+  <Card title="Descriptive Names" icon="Tag">
+    Use clear names to identify what each token is for
+  </Card>
+  <Card title="Set Expiration" icon="Calendar">
+    Use expiration dates when possible
+  </Card>
+  <Card title="Rotate Regularly" icon="RefreshCw">
+    Create new tokens and delete old ones periodically
+  </Card>
+  <Card title="Store Securely" icon="Shield">
+    Use password managers, keychains, or secure vaults
+  </Card>
+  <Card title="Never Share" icon="XCircle">
+    Don't commit tokens to git or share publicly
+  </Card>
+</Cards>
+
+### Password Security
+
+- ✅ Use a **strong, unique password** (12+ characters)
+- ✅ Use a **password manager** to generate and store it
+- ✅ **Never reuse** passwords from other services
+- ✅ **Change your password** if you suspect compromise
+- ✅ Consider using **OAuth SSO** instead of passwords (if available)
+
+## Account Recovery
+
+### Forgot Password
+
+If you forget your password:
+
+1. Contact your Memos administrator
+2. They can reset your password through admin settings
+3. You'll receive a temporary password or reset link
+
+<Callout type="info">
+**Self-Hosted?** If you're the administrator, you can reset passwords through the admin panel or database access.
+</Callout>
+
+### Locked Out of Account
+
+If you're locked out:
+
+**Multiple sessions active:**
+- Wait 14 days for old sessions to expire naturally
+- Or contact your administrator to clear sessions
+
+**Lost all access tokens:**
+- Log in through web browser with password
+- Create new tokens from Settings
+
+**Forgot password and lost tokens:**
+- Contact your administrator
+- They can reset your password
+
+## OAuth / Single Sign-On
+
+If your administrator has enabled OAuth SSO, you can log in with:
+
+- **GitHub**: Use your GitHub account
+- **Google**: Use your Google account
+- **GitLab**: Use your GitLab account
+- **Custom**: Other OAuth providers your admin has configured
+
+### Using OAuth
+
+1. On the login page, click the OAuth provider button (e.g., "Sign in with GitHub")
+2. Authorize Memos to access your account
+3. You're automatically logged in
+
+### OAuth Benefits
+
+- ✅ No additional password to remember
+- ✅ Leverage your provider's security (2FA, etc.)
+- ✅ Faster login process
+- ✅ Centralized account management
+
+<Callout type="tip">
+**Pro Tip**: Even with OAuth, you can still create access tokens for mobile apps and API access!
+</Callout>
+
+## Multi-Device Setup
+
+Here's how to set up Memos across all your devices:
+
+### Primary Computer (Web Browser)
+
+1. Log in with username and password
+2. Your session stays active for 14 days
+3. Just keep the browser window open
+
+### Secondary Computer
+
+1. Log in again with username and password
+2. Each computer gets its own session
+3. Both can be active simultaneously
+
+### Mobile Phone
+
+1. Create an access token on your computer
+2. Name it "My iPhone" or "My Android"
+3. Set expiration to 90 days
+4. Enter token in mobile app settings
+
+### Tablet
+
+1. **Web browser**: Just log in like a computer
+2. **Tablet app**: Create a separate access token named "My iPad"
+
+### Backup Script or CLI Tool
+
+1. Create an access token named "Backup Script"
+2. Set expiration to 1 year (or never)
+3. Store token in environment variable or config file
+4. Script uses token to access API
+
+<Callout type="tip">
+**Organization Tip**: Use clear naming for tokens so you know which device or app uses each token.
+</Callout>
+
+## Monitoring Account Activity
+
+### Regular Security Checks
+
+Perform these checks monthly:
+
+<Steps>
+
+#### Review Active Sessions
+- Check Settings → Sessions
+- Verify all devices are yours
+- Revoke any unknown or old sessions
+
+#### Review Access Tokens
+- Check Settings → Access Tokens
+- Remove unused tokens
+- Rotate tokens for critical systems
+
+#### Check Recent Activity
+- Review your recent memos
+- Look for any unexpected content
+- Check for unfamiliar API activity
+
+</Steps>
+
+### Signs of Compromised Account
+
+Contact your administrator immediately if you notice:
+
+- ❌ Unknown sessions from unfamiliar locations
+- ❌ Memos you didn't create
+- ❌ Changed settings you didn't modify
+- ❌ Deleted or modified content
+- ❌ New access tokens you didn't create
+
+### Recovery Steps
+
+If you suspect your account is compromised:
+
+<Steps>
+
+#### Revoke All Sessions
+Go to Settings → Sessions and revoke all sessions
+
+#### Change Password
+Update your password immediately
+
+#### Revoke All Tokens
+Go to Settings → Access Tokens and delete all tokens
+
+#### Create New Tokens
+Create new tokens only for apps you trust
+
+#### Contact Administrator
+Report the incident to your administrator
+
+#### Review Activity
+Check your memos and activity for unauthorized changes
+
+</Steps>
+
+## API Authentication
+
+For developers building integrations:
+
+### Using Sessions (Web Apps)
+
+```javascript
+// Login to get session cookie
+const response = await fetch('/api/v1/auth/sessions', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    password_credentials: {
+      username: 'your_username',
+      password: 'your_password'
+    }
+  }),
+  credentials: 'include' // Important: include cookies
+});
+
+// Make authenticated requests
+const memos = await fetch('/api/v1/memos', {
+  credentials: 'include' // Include session cookie
+});
+```
+
+### Using Tokens (Apps & Scripts)
+
+```javascript
+// Use access token in Authorization header
+const token = "your_access_token";
+
+const memos = await fetch('https://memos.example.com/api/v1/memos', {
+  headers: {
+    'Authorization': `Bearer ${token}`
+  }
+});
+```
+
+### Error Handling
+
+Handle authentication errors properly:
+
+```javascript
+const response = await fetch(url, { headers });
+
+if (response.status === 401) {
+  // Token expired or invalid
+  console.error('Authentication failed - token may be expired');
+  // Prompt user to create new token
+}
+```
+
+## Common Questions
+
+**Q: How long do sessions last?**
+
+A: Sessions last 14 days from your last activity. Each time you use Memos, the expiration extends by another 14 days. If you're inactive for 14 days, you'll need to log in again.
+
+**Q: Can I use Memos on multiple devices simultaneously?**
+
+A: Yes! You can be logged in on multiple devices at once. Each device gets its own session (for browsers) or uses its own token (for apps).
+
+**Q: What happens if I revoke a token?**
+
+A: The token stops working immediately. Any app or tool using that token will lose access and need a new token to reconnect.
+
+**Q: Should I use sessions or tokens for my mobile app?**
+
+A: Use access tokens for mobile apps. They're designed for long-term use and won't expire from inactivity like sessions do.
+
+**Q: Are my sessions and tokens secure?**
+
+A: Yes! Sessions use secure, HTTP-only cookies that can't be accessed by JavaScript. Tokens are JWT-signed and validated on each request. Always use HTTPS in production for maximum security.
+
+**Q: Can I see which API calls a token made?**
+
+A: Currently, Memos doesn't track individual token usage history. You can only see when the token was created and when it expires.
+
+**Q: What if I accidentally expose my token?**
+
+A: Revoke it immediately in Settings → Access Tokens, then create a new one. The old token stops working instantly.
+
+## Next Steps
+
+<Cards>
+  <Card title="Configuration Guide" href="/docs/configuration/authentication" icon="Settings">
+    Learn about authentication configuration for administrators
+  </Card>
+  <Card title="Security Settings" href="/docs/configuration/security" icon="Shield">
+    Additional security options for your instance
+  </Card>
+  <Card title="API Documentation" href="https://memos.apidocumentation.com" icon="Code">
+    Full API reference for developers
+  </Card>
+</Cards>

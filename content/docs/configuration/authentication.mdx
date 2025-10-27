@@ -1,76 +1,413 @@
 ---
 title: Authentication Configuration
-description: Configure authentication methods including local authentication and OAuth SSO providers for your Memos instance.
+description: Configure authentication methods for your Memos instance, including session-based and token-based authentication for web and API access.
 ---
 
-Memos supports multiple authentication methods to fit different organizational needs. This comprehensive guide covers local authentication and OAuth SSO integration.
+Memos implements a dual authentication system designed for both human users and programmatic access. This guide covers how authentication works and how to configure it for your needs.
 
 ## Authentication Methods Overview
 
+Memos supports two distinct authentication methods:
+
 <Cards>
-  <Card title="Local Authentication" href="#local-authentication" icon="Key">
-    Built-in username/password authentication with security features
+  <Card title="Session-Based Auth" href="#session-based-authentication" icon="Key">
+    Cookie-based authentication for web browsers with automatic session management
   </Card>
-  <Card title="OAuth Providers" href="#oauth-providers" icon="Users">
-    Google, GitHub, Microsoft, and other OAuth 2.0 providers
+  <Card title="Token-Based Auth" href="#personal-access-tokens" icon="Code">
+    JWT tokens for mobile apps, CLI tools, and API integrations
+  </Card>
+  <Card title="OAuth SSO" href="#oauth-providers" icon="Users">
+    Single Sign-On with Google, GitHub, GitLab, and custom providers
   </Card>
 </Cards>
 
+## Authentication Priority
+
+When you make a request to Memos, the system checks for authentication in this order:
+
+1. **Session Cookie** (`user_session` cookie)
+2. **JWT Access Token** (`Authorization: Bearer` header)
+3. **Public Endpoint** (if the endpoint allows unauthenticated access)
+4. **Reject** (401 Unauthenticated error)
+
+This means you can use either cookies (for browsers) or tokens (for apps) - whichever is more convenient for your use case.
+
+## Session-Based Authentication
+
+Session-based authentication uses HTTP cookies to maintain your login state. It's the default method when you log in through a web browser.
+
+### How It Works
+
+When you log in with your username and password:
+
+1. **Login**: Submit credentials via the login form
+2. **Session Created**: Server creates a secure session and sets a cookie
+3. **Automatic Auth**: Your browser automatically sends this cookie with each request
+4. **Sliding Expiration**: Sessions stay active as long as you use them
+
+### Session Features
+
+#### Sliding Expiration Window
+
+Sessions use a **14-day sliding expiration**:
+
+- Sessions remain valid as long as you're active
+- Each request extends expiration by 14 days
+- After 14 days of inactivity, you'll need to log in again
+
+**Example:**
+```
+Day 0:  Login → Session expires Day 14
+Day 10: Open Memos → Session extends to Day 24
+Day 20: Create a memo → Session extends to Day 34
+Day 35: Try to access → Session expired (no activity since Day 20)
+```
+
+#### Session Information
+
+Each session tracks:
+
+- **Session ID**: Unique identifier for this login
+- **Create Time**: When you logged in
+- **Last Accessed**: Your most recent activity
+- **Client Info**: Device type, browser, OS, IP address
+
+### Managing Your Sessions
+
+You can view and manage all active sessions from your settings:
+
+1. Navigate to **Settings → Sessions**
+2. See all devices where you're logged in
+3. Review session details (device, location, last activity)
+4. Revoke any suspicious or old sessions
+
+<Callout type="info">
+**Pro Tip**: Regularly review your active sessions. If you see an unknown device, revoke it immediately!
+</Callout>
+
+### Session Security
+
+Memos uses secure cookies with modern security features:
+
+- **HttpOnly**: Prevents JavaScript from accessing your session (XSS protection)
+- **Secure**: Cookies only sent over HTTPS in production
+- **SameSite**: Protection against cross-site request forgery (CSRF)
+
+<Callout type="warning">
+**Security Best Practice**: Always log out from public or shared computers to prevent unauthorized access.
+</Callout>
+
+## Personal Access Tokens
+
+Personal Access Tokens (PATs) are JWT-based credentials for programmatic API access. They're perfect for:
+
+- **Mobile apps**: iPhone, Android apps that sync with your Memos
+- **CLI tools**: Command-line scripts for automation
+- **Integrations**: Third-party tools like Zapier, IFTTT
+- **Desktop apps**: Electron or native apps
+
+### Why Use Access Tokens?
+
+Unlike session cookies, access tokens:
+
+- Work from any device or application
+- Don't expire from inactivity (optional expiration only)
+- Can be individually revoked without affecting other sessions
+- Are perfect for headless or automated tools
+
+### Creating an Access Token
+
+<Steps>
+
+#### Navigate to Settings
+Go to **Settings → Access Tokens** in the web interface
+
+#### Create New Token
+Click **"Create New Token"** button
+
+#### Configure Token
+- **Description**: Give it a meaningful name (e.g., "My iPhone", "Backup Script")
+- **Expiration**: Choose when it expires (optional):
+  - 7 days
+  - 30 days (recommended for mobile)
+  - 90 days (recommended for desktop)
+  - 1 year
+  - Never (use with caution)
+
+#### Copy Token
+The token is shown **only once**. Copy it immediately and store it securely!
+
+</Steps>
+
+<Callout type="error">
+**Important**: The token is only displayed once during creation. If you lose it, you'll need to create a new one.
+</Callout>
+
+### Using Access Tokens
+
+Include your token in the `Authorization` header of API requests:
+
+```bash
+curl -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+  https://memos.example.com/api/v1/memos
+```
+
+**Examples for different platforms:**
+
+<Tabs>
+<Tab value="curl" label="cURL">
+```bash
+# List all memos
+curl -H "Authorization: Bearer eyJhbGci..." \
+  https://memos.example.com/api/v1/memos
+
+# Create a new memo
+curl -X POST \
+  -H "Authorization: Bearer eyJhbGci..." \
+  -H "Content-Type: application/json" \
+  -d '{"content": "My memo from API"}' \
+  https://memos.example.com/api/v1/memos
+```
+</Tab>
+
+<Tab value="python" label="Python">
+```python
+import requests
+
+token = "eyJhbGci..."
+headers = {"Authorization": f"Bearer {token}"}
+
+# List all memos
+response = requests.get(
+    "https://memos.example.com/api/v1/memos",
+    headers=headers
+)
+memos = response.json()
+
+# Create a new memo
+response = requests.post(
+    "https://memos.example.com/api/v1/memos",
+    headers=headers,
+    json={"content": "My memo from Python"}
+)
+```
+</Tab>
+
+<Tab value="javascript" label="JavaScript">
+```javascript
+const token = "eyJhbGci...";
+
+// List all memos
+const response = await fetch(
+  "https://memos.example.com/api/v1/memos",
+  {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  }
+);
+const memos = await response.json();
+
+// Create a new memo
+await fetch("https://memos.example.com/api/v1/memos", {
+  method: "POST",
+  headers: {
+    "Authorization": `Bearer ${token}`,
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    content: "My memo from JavaScript"
+  })
+});
+```
+</Tab>
+
+<Tab value="swift" label="Swift (iOS)">
+```swift
+let token = "eyJhbGci..."
+
+var request = URLRequest(
+  url: URL(string: "https://memos.example.com/api/v1/memos")!
+)
+request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+let (data, _) = try await URLSession.shared.data(for: request)
+let memos = try JSONDecoder().decode([Memo].self, from: data)
+```
+</Tab>
+</Tabs>
+
+### Managing Access Tokens
+
+#### Viewing Your Tokens
+
+In **Settings → Access Tokens**, you can see:
+
+- Token description (what you named it)
+- When it was created
+- When it expires (if set)
+- The full token value (for reference)
+
+#### Revoking Tokens
+
+To revoke a token:
+
+1. Go to **Settings → Access Tokens**
+2. Find the token you want to remove
+3. Click **"Delete"** or **"Revoke"**
+4. The token stops working immediately
+
+<Callout type="warning">
+**When to Revoke**: Always revoke tokens when:
+- You lose a device
+- An app is no longer used
+- You suspect a token was compromised
+- You're rotating credentials
+</Callout>
+
+### Token Expiration
+
+**Expired tokens are automatically rejected** and must be recreated.
+
+**Recommended expiration settings:**
+
+| Use Case | Recommended Expiration |
+|----------|----------------------|
+| Mobile apps | 30-90 days |
+| Desktop apps | 90-365 days |
+| CI/CD scripts | 90-365 days |
+| Testing/Development | 7-30 days |
+| Long-term integrations | User preference (or never) |
+
+<Callout type="tip">
+**Best Practice**: Use shorter expiration times for better security. Set calendar reminders to rotate tokens before they expire.
+</Callout>
+
+### Token Security Best Practices
+
+<Cards>
+  <Card title="One Token Per App" icon="Smartphone">
+    Create separate tokens for each device or application
+  </Card>
+  <Card title="Use Descriptive Names" icon="Tag">
+    Name tokens clearly: "iPhone", "Backup Script", "CI Pipeline"
+  </Card>
+  <Card title="Set Expiration Dates" icon="Calendar">
+    Use expiration dates whenever possible for better security
+  </Card>
+  <Card title="Rotate Regularly" icon="RefreshCw">
+    Periodically create new tokens and revoke old ones
+  </Card>
+  <Card title="Store Securely" icon="Lock">
+    Never commit tokens to git, use environment variables or secure vaults
+  </Card>
+  <Card title="Revoke When Done" icon="Trash">
+    Delete tokens immediately when no longer needed
+  </Card>
+</Cards>
+
+### Storing Tokens Securely
+
+**For Mobile Apps:**
+- iOS: Use Keychain Services
+- Android: Use Android Keystore System
+
+**For Desktop Apps:**
+- macOS: Use macOS Keychain
+- Windows: Use Windows Credential Manager
+- Linux: Use Secret Service API or gnome-keyring
+
+**For CLI Tools:**
+```bash
+# Store in secure config file with restricted permissions
+mkdir -p ~/.memos
+echo "YOUR_TOKEN" > ~/.memos/token
+chmod 600 ~/.memos/token
+
+# Read in scripts
+TOKEN=$(cat ~/.memos/token)
+```
+
+**For Scripts and CI/CD:**
+- Use environment variables
+- Never hardcode in source code
+- Use secret management tools (GitHub Secrets, AWS Secrets Manager, etc.)
+
 ## Local Authentication
 
-Local authentication is enabled by default and provides a secure foundation for user management. Passwords are securely hashed using bcrypt for storage.
-
-### Basic Configuration
-
-Local authentication settings are configured through the Memos web interface:
-
-1. **Access Workspace Settings**:
-   - Log in as an administrator
-   - Navigate to Settings → Workspace
-
-2. **Authentication Settings**:
-   - **Allow User Registration**: Control whether new users can sign up
-   - **Disable Password Authentication**: Option to disable password-based login when using SSO
+Local authentication is the traditional username/password login method, enabled by default.
 
 ### Password Security
 
-Memos uses bcrypt hashing with default cost settings for secure password storage. Password policies are not currently configurable through environment variables.
+Memos uses **bcrypt hashing** to securely store passwords:
+
+- Industry-standard one-way hashing algorithm
+- Passwords are never stored in plain text
+- Resistant to rainbow table attacks
+- Each password has a unique salt
 
 ### User Registration
 
-User registration is controlled through workspace settings:
+Control who can create accounts in **Settings → Workspace**:
 
-```yaml
-# Workspace settings (configured via web interface)
-disallow_user_registration: false  # Allow new user signups
-disallow_password_auth: false      # Allow password-based authentication
-```
+- **Allow User Registration**: Enable/disable public signups
+- **Disable Password Auth**: Force OAuth-only authentication
+
+<Callout type="info">
+When you disable password authentication, existing users can still use their passwords until they set up OAuth.
+</Callout>
 
 ## OAuth SSO Providers
 
-Memos supports Single Sign-On (SSO) through OAuth 2.0 identity providers. OAuth providers are configured through the web interface as Identity Providers (IdPs).
+Single Sign-On (SSO) allows users to log in using their existing accounts from other platforms.
 
 ### Supported Providers
 
-Memos supports the following OAuth 2.0 providers out of the box:
+Memos supports these OAuth 2.0 providers:
 
-- **GitHub**: Uses `login` field as identifier
-- **GitLab**: Uses `name` field as identifier  
-- **Google**: Uses `email` field as identifier
-- **Custom OAuth 2.0**: Configurable field mapping
+- **GitHub**: Log in with your GitHub account
+- **GitLab**: Log in with your GitLab account
+- **Google**: Log in with your Google account
+- **Custom OAuth 2.0**: Any OAuth 2.0-compliant provider
 
-### Configuring Identity Providers
+### Benefits of OAuth SSO
 
-Identity Providers are configured through the Memos web interface:
+- **Simplified login**: Users don't need another password
+- **Centralized management**: User accounts managed in your identity provider
+- **Enhanced security**: Leverage provider's security features (2FA, etc.)
+- **Faster onboarding**: New users can sign up instantly
 
-1. **Access Admin Settings**:
-   - Log in as an administrator
-   - Navigate to Settings → Identity Providers
+### Configuring OAuth Providers
 
-2. **Create New Identity Provider**:
-   - Click "Add Identity Provider"
-   - Select provider type (GitHub, GitLab, Google, or Custom)
-   - Configure the following settings:
+<Callout type="warning">
+**Administrator Access Required**: Only administrators can configure OAuth providers.
+</Callout>
+
+<Steps>
+
+#### Access Identity Provider Settings
+1. Log in as an administrator
+2. Navigate to **Settings → Identity Providers**
+
+#### Create New Provider
+Click **"Add Identity Provider"**
+
+#### Select Provider Type
+Choose from GitHub, GitLab, Google, or Custom OAuth 2.0
+
+#### Configure OAuth Application
+You'll need to create an OAuth app in your provider first
+
+#### Enter Credentials
+Add the Client ID and Client Secret from your OAuth app
+
+#### Set Callback URL
+Use: `https://your-domain.com/api/v1/auth/callback`
+
+#### Test Configuration
+Click "Test" to verify the setup works correctly
+
+</Steps>
 
 #### Provider Configuration
 
@@ -432,70 +769,117 @@ curl -X GET "$MEMOS_URL/api/v1/auth/oauth/github" \
 
 ## Troubleshooting
 
-### Common Issues
+### Session Issues
 
-#### OAuth Configuration Problems
+**Problem: "Session expired" error**
 
-```bash
-# Check OAuth callback URLs
-echo "Verify callback URLs:"
-echo "GitHub: https://your-domain.com/api/v1/auth/callback/github"
-echo "GitLab: https://your-domain.com/api/v1/auth/callback/gitlab"
-echo "Google: https://your-domain.com/api/v1/auth/callback/google"
+✅ **Solution:**
+- Sessions expire after 14 days of inactivity
+- Simply log in again to create a new session
+- Consider using access tokens for automated tools
 
-# Test OAuth endpoints
-curl -I https://your-domain.com/api/v1/auth/oauth/github
-curl -I https://your-domain.com/api/v1/auth/oauth/gitlab
-curl -I https://your-domain.com/api/v1/auth/oauth/google
-```
+**Problem: Can't stay logged in**
 
-#### Session Issues
+✅ **Solutions:**
+- Check if cookies are enabled in your browser
+- Verify you're not in private/incognito mode
+- Ensure your browser isn't blocking third-party cookies
+- Check that time/date on your device is correct
 
-```bash
-# Check session cookie settings
-echo "Session troubleshooting:"
-echo "- Ensure HTTPS is enabled for secure cookies"
-echo "- Check SameSite cookie settings"
-echo "- Verify session expiration (14 days inactivity)"
+**Problem: Logged out unexpectedly**
 
-# Test session validation
-curl -X GET "https://your-domain.com/api/v1/auth/me" \
-  -H "Cookie: user_session=YOUR_SESSION_COOKIE"
-```
+✅ **Solutions:**
+- Check active sessions in Settings → Sessions
+- Look for duplicate sessions that might indicate session conflicts
+- Clear browser cache and cookies, then log in again
+- If using HTTPS, verify SSL certificate is valid
 
-#### Identity Provider Configuration
+### Access Token Issues
 
-```bash
-# Validate identity provider configuration
-curl -X GET "https://your-domain.com/api/v1/idp" \
-  -H "Authorization: Bearer YOUR_ADMIN_TOKEN"
+**Problem: "401 Unauthenticated" with token**
 
-# Test OAuth flow manually
-# 1. Visit: https://your-domain.com/api/v1/auth/oauth/github
-# 2. Check browser network tab for errors
-# 3. Verify callback URL in provider settings
-```
+✅ **Solutions:**
+- Verify token hasn't expired (check Settings → Access Tokens)
+- Ensure you're using the correct format: `Authorization: Bearer YOUR_TOKEN`
+- Check that token wasn't revoked
+- Confirm token is copied completely (no spaces or line breaks)
 
-### Log Analysis
+**Problem: Lost my access token**
 
-Monitor authentication logs for troubleshooting.
+✅ **Solution:**
+- Tokens are only shown once during creation
+- Create a new token and revoke the old one
+- Store new tokens securely (password manager, keychain)
 
-```bash
-# Memos authentication logs
-tail -f /var/log/memos/auth.log | grep -E "(login|oauth|session)"
+**Problem: Token not working in mobile app**
 
-# System authentication logs
-tail -f /var/log/auth.log | grep memos
+✅ **Solutions:**
+- Verify the app is configured with correct server URL
+- Check network connectivity
+- Ensure token hasn't expired
+- Try creating a new token with longer expiration
 
-# Filter failed attempts
-grep "authentication failed" /var/log/memos/auth.log
+### OAuth Issues
 
-# OAuth-specific errors
-grep "oauth" /var/log/memos/auth.log
+**Problem: "OAuth login failed"**
 
-# Session-related events
-grep "session" /var/log/memos/auth.log
-```
+✅ **Solutions:**
+- Verify OAuth app credentials are correct
+- Check callback URL matches exactly: `https://your-domain.com/api/v1/auth/callback`
+- Ensure OAuth app is not in dev/test mode (for production use)
+- Verify your account is authorized in the OAuth provider
+
+**Problem: "Identifier filter" blocking access**
+
+✅ **Solution:**
+- Contact your administrator - they've restricted access
+- Verify your username/email matches the filter pattern
+- Administrator can adjust filter in Identity Provider settings
+
+### Multi-Device Issues
+
+**Problem: Different data on different devices**
+
+✅ **Solutions:**
+- Verify all devices are connected to same server
+- Check you're logged in to the same account on all devices
+- Try force-refreshing (Ctrl/Cmd + Shift + R) on each device
+
+### Security Concerns
+
+**Problem: Unknown session appears**
+
+✅ **Immediate action:**
+1. Go to Settings → Sessions
+2. Review all active sessions
+3. Revoke any unrecognized sessions
+4. Change your password immediately
+5. Enable OAuth for additional security
+
+**Problem: Suspect token compromise**
+
+✅ **Immediate action:**
+1. Go to Settings → Access Tokens
+2. Revoke all tokens immediately
+3. Create new tokens for legitimate apps
+4. Review recent activity for suspicious behavior
+5. Consider changing your password
+
+## Getting Help
+
+If you're still experiencing issues:
+
+<Cards>
+  <Card title="Check FAQ" href="/docs/faq" icon="HelpCircle">
+    Common questions and answers about Memos
+  </Card>
+  <Card title="GitHub Issues" href="https://github.com/usememos/memos/issues" icon="Github">
+    Report bugs or request features
+  </Card>
+  <Card title="Community Discussions" href="https://github.com/usememos/memos/discussions" icon="MessageSquare">
+    Ask questions and share experiences
+  </Card>
+</Cards>
 
 ## Next Steps
 
