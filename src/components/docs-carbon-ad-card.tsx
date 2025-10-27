@@ -37,66 +37,55 @@ export function DocsCarbonAdCard() {
       setStatus((prev) => (prev === "loaded" ? prev : "failed"));
     };
 
-    const observer = new MutationObserver(() => {
-      if (container.querySelector("#carbonads")) {
-        markLoaded();
-      }
-    });
-    observer.observe(container, { childList: true, subtree: true });
-
-    let cleanupScriptListeners: (() => void) | undefined;
-    const handleScriptLoad = () => {
-      if (container.querySelector("#carbonads")) {
-        markLoaded();
-      }
-    };
-    const handleScriptError = () => {
-      markFailed();
-    };
-
+    // Check if ad already exists and move it to our container
     const existingAd = document.getElementById("carbonads");
     if (existingAd) {
       container.appendChild(existingAd);
       markLoaded();
-    } else {
-      const existingScript = document.getElementById(CARBON_SCRIPT_ID) as HTMLScriptElement | null;
-      if (existingScript) {
-        existingScript.addEventListener("load", handleScriptLoad);
-        existingScript.addEventListener("error", handleScriptError);
-        cleanupScriptListeners = () => {
-          existingScript.removeEventListener("load", handleScriptLoad);
-          existingScript.removeEventListener("error", handleScriptError);
-        };
-      } else {
-        const script = document.createElement("script");
-        script.src = CARBON_SCRIPT_SRC;
-        script.async = true;
-        script.id = CARBON_SCRIPT_ID;
-        script.type = "text/javascript";
-        script.addEventListener("load", handleScriptLoad);
-        script.addEventListener("error", handleScriptError);
-        container.appendChild(script);
+      return;
+    }
 
-        cleanupScriptListeners = () => {
-          script.removeEventListener("load", handleScriptLoad);
-          script.removeEventListener("error", handleScriptError);
-        };
+    // Set up observer to watch for ad creation
+    const observer = new MutationObserver(() => {
+      const carbonAd = document.getElementById("carbonads");
+      if (carbonAd && !container.contains(carbonAd)) {
+        container.appendChild(carbonAd);
+        markLoaded();
       }
+    });
+
+    // Watch document body for Carbon ad creation
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Load script if not already present
+    const existingScript = document.getElementById(CARBON_SCRIPT_ID) as HTMLScriptElement | null;
+    if (!existingScript) {
+      const script = document.createElement("script");
+      script.src = CARBON_SCRIPT_SRC;
+      script.async = true;
+      script.id = CARBON_SCRIPT_ID;
+      script.type = "text/javascript";
+
+      // Append to body (not container) so Carbon can find it
+      document.body.appendChild(script);
+
+      script.addEventListener("error", () => {
+        if (isMounted) {
+          markFailed();
+        }
+      });
     }
 
     const timeoutId = window.setTimeout(() => {
-      if (container.querySelector("#carbonads")) {
-        markLoaded();
-      } else {
+      if (!container.querySelector("#carbonads")) {
         markFailed();
       }
-    }, 3000);
+    }, 5000);
 
     return () => {
       isMounted = false;
       observer.disconnect();
       window.clearTimeout(timeoutId);
-      cleanupScriptListeners?.();
     };
   }, []);
 

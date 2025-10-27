@@ -2,20 +2,16 @@
 
 import { useEffect, useState } from "react";
 
-function getMatch(query: string) {
-  if (typeof window === "undefined") {
-    return false;
-  }
-  return window.matchMedia(query).matches;
-}
-
 export function useMediaQuery(query: string) {
-  const [matches, setMatches] = useState(() => getMatch(query));
+  // Always initialize with false to avoid hydration mismatch
+  // The correct value will be set after mount in useEffect
+  const [matches, setMatches] = useState(false);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia(query);
     const listener = (event: MediaQueryListEvent) => setMatches(event.matches);
 
+    // Set initial value after mount
     setMatches(mediaQuery.matches);
     mediaQuery.addEventListener("change", listener);
 
