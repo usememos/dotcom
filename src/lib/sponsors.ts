@@ -15,6 +15,12 @@ export const FEATURED_SPONSORS: Sponsor[] = [
     logoDark: "https://raw.githubusercontent.com/warpdotdev/brand-assets/refs/heads/main/Logos/Warp-Wordmark-White.png",
     description: "Warp is a modern, Rust-based terminal with AI built in so you and your team can build great software, faster.",
   },
+  {
+    name: "LambdaTest",
+    url: "https://www.lambdatest.com/?utm_source=memos&utm_medium=sponsor",
+    logo: "https://www.lambdatest.com/blue-logo.png",
+    description: "Cross-browser testing cloud",
+  },
 ];
 
 // Additional sponsors shown on sponsors page
