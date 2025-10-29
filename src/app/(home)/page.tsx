@@ -130,9 +130,9 @@ export default function HomePage() {
             </div>
             <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:gap-8 sm:grid-cols-4">
               {[
-                { icon: <StarIcon className="w-6 h-6 sm:w-8 sm:h-8" />, value: "43K+", label: "GitHub Stars" },
-                { icon: <UsersIcon className="w-6 h-6 sm:w-8 sm:h-8" />, value: "330+", label: "Contributors" },
-                { icon: <TrendingUpIcon className="w-6 h-6 sm:w-8 sm:h-8" />, value: "6.1M+", label: "Docker Pulls" },
+                { icon: <StarIcon className="w-6 h-6 sm:w-8 sm:h-8" />, value: "45K+", label: "GitHub Stars" },
+                { icon: <UsersIcon className="w-6 h-6 sm:w-8 sm:h-8" />, value: "340+", label: "Contributors" },
+                { icon: <TrendingUpIcon className="w-6 h-6 sm:w-8 sm:h-8" />, value: "7.1M+", label: "Docker Pulls" },
                 { icon: <PackageIcon className="w-6 h-6 sm:w-8 sm:h-8" />, value: "80+", label: "Releases" },
               ].map((stat) => (
                 <StatsCard key={stat.label} {...stat} />
