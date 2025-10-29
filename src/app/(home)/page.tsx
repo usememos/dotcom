@@ -16,6 +16,7 @@ import {
 import { HeroSection } from "@/components/hero-section";
 import { FeatureCard } from "@/components/feature-card";
 import { StatsCard } from "@/components/stats-card";
+import { SponsorsSection } from "@/components/sponsors-section";
 import { Footer } from "@/components/footer";
 import type { Metadata } from "next";
 
@@ -69,7 +70,7 @@ export default function HomePage() {
       />
 
       {/* Features Section */}
-      <section className="py-12 sm:py-16 lg:py-24 px-4 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50">
+      <section className="py-12 sm:py-16 lg:py-24 px-4 bg-linear-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12 sm:mb-16 lg:mb-20">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4 leading-tight text-balance px-2">
@@ -122,7 +123,7 @@ export default function HomePage() {
           </div>
 
           {/* Stats Section */}
-          <div className="bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-gray-800 dark:to-gray-700 border border-teal-100 dark:border-gray-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg">
+          <div className="bg-linear-to-br from-teal-50 to-cyan-50 dark:from-gray-800 dark:to-gray-700 border border-teal-100 dark:border-gray-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg">
             <div className="text-center mb-6 sm:mb-8">
               <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Trusted by developers worldwide</h3>
               <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">Join our growing community</p>
@@ -141,8 +142,11 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Sponsors Section */}
+      <SponsorsSection />
+
       {/* CTA Section */}
-      <section className="py-12 sm:py-16 lg:py-24 px-4 bg-gradient-to-br from-gray-50 via-white to-teal-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700">
+      <section className="py-12 sm:py-16 lg:py-24 px-4 bg-linear-to-br from-gray-50 via-white to-teal-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4 sm:mb-6 leading-tight px-2">
             Ready to take control of your notes?

@@ -1,24 +1,9 @@
 import { cn } from "@/lib/utils";
+import { FEATURED_SPONSORS } from "@/lib/sponsors";
 
 interface DocsSponsorCardProps {
   className?: string;
 }
-
-interface Sponsor {
-  name: string;
-  url: string;
-  logo: string;
-  logoDark: string;
-}
-
-const SPONSORS: Sponsor[] = [
-  {
-    name: "Warp",
-    url: "https://go.warp.dev/memos",
-    logo: "https://raw.githubusercontent.com/warpdotdev/brand-assets/refs/heads/main/Logos/Warp-Wordmark-Black.png",
-    logoDark: "https://raw.githubusercontent.com/warpdotdev/brand-assets/refs/heads/main/Logos/Warp-Wordmark-White.png",
-  },
-];
 
 export function DocsSponsorCard({}: DocsSponsorCardProps) {
   return (
@@ -26,7 +11,7 @@ export function DocsSponsorCard({}: DocsSponsorCardProps) {
       <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Featured sponsors</p>
 
       <div className="mt-2 w-full flex flex-col gap-2">
-        {SPONSORS.map((sponsor) => (
+        {FEATURED_SPONSORS.map((sponsor) => (
           <a
             key={sponsor.url}
             href={sponsor.url}
@@ -40,14 +25,16 @@ export function DocsSponsorCard({}: DocsSponsorCardProps) {
                 src={sponsor.logo}
                 alt={sponsor.name}
                 loading="lazy"
-                className={cn("h-full w-auto max-w-full object-cover dark:hidden mx-auto")}
+                className={cn("h-full w-auto max-w-full object-cover", sponsor.logoDark && "dark:hidden", "mx-auto")}
               />
-              <img
-                src={sponsor.logoDark}
-                alt={`${sponsor.name} logo`}
-                loading="lazy"
-                className={cn("hidden h-full w-auto max-w-full object-cover dark:block mx-auto")}
-              />
+              {sponsor.logoDark && (
+                <img
+                  src={sponsor.logoDark}
+                  alt={`${sponsor.name} logo`}
+                  loading="lazy"
+                  className={cn("hidden h-full w-auto max-w-full object-cover dark:block mx-auto")}
+                />
+              )}
             </span>
             <span className="sr-only">{sponsor.name}</span>
           </a>

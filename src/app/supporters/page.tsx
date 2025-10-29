@@ -3,19 +3,13 @@ import { HeartIcon, ExternalLinkIcon, UsersIcon, HandshakeIcon } from "lucide-re
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { baseOptions } from "@/app/layout.config";
 import { Footer } from "@/components/footer";
+import { FEATURED_SPONSORS, COMMUNITY_SPONSORS } from "@/lib/sponsors";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Supporters - Memos",
   description: "Thank you to all our sponsors and backers who support the development of Memos, the open-source note-taking platform.",
 };
-
-const SPONSORS = [
-  {
-    title: "yourselfhosted",
-    logo: "https://www.yourselfhosted.com/sea-otter.svg",
-    url: "https://yourselfhosted.com",
-  },
-];
 
 const GITHUB_USER_SPONSORS = [
   {
@@ -55,29 +49,65 @@ export default function SupportersPage() {
               </p>
             </div>
 
-            {/* Sponsors Section */}
+            {/* Featured Sponsors Section */}
             <section className="mb-20">
               <div className="flex items-center justify-center gap-4 mb-12">
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded-xl">
                   <span className="text-2xl">🦄</span>
                 </div>
-                <h2 className="text-3xl font-bold tracking-tight">Sponsors</h2>
+                <h2 className="text-3xl font-bold tracking-tight">Featured Sponsors</h2>
               </div>
 
-              <div className="flex flex-wrap gap-4">
-                {SPONSORS.map((sponsor) => (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                {FEATURED_SPONSORS.map((sponsor) => (
                   <a
-                    key={sponsor.title}
+                    key={sponsor.name}
+                    href={sponsor.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group p-8 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-800/50 border border-gray-100 dark:border-gray-700 rounded-2xl hover:shadow-xl hover:border-teal-200 dark:hover:border-teal-600 hover:-translate-y-1 transition-all duration-300 shadow-sm"
+                  >
+                    <div className="flex items-center mb-4 h-16">
+                      <img
+                        src={sponsor.logo}
+                        alt={`${sponsor.name} logo`}
+                        className={cn("h-full w-auto max-w-full object-contain", sponsor.logoDark && "dark:hidden")}
+                      />
+                      {sponsor.logoDark && (
+                        <img
+                          src={sponsor.logoDark}
+                          alt={`${sponsor.name} logo`}
+                          className="hidden dark:block h-full w-auto max-w-full object-contain"
+                        />
+                      )}
+                    </div>
+                    {sponsor.description && (
+                      <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{sponsor.description}</p>
+                    )}
+                  </a>
+                ))}
+              </div>
+
+              <h3 className="text-xl font-bold tracking-tight mb-6 text-center">Community Sponsors</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {COMMUNITY_SPONSORS.map((sponsor) => (
+                  <a
+                    key={sponsor.name}
                     href={sponsor.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group px-8 py-6 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl hover:shadow-xl hover:border-teal-200 dark:hover:border-teal-600 hover:-translate-y-1 transition-all duration-300 shadow-sm"
                   >
                     <div className="flex items-center gap-6">
-                      <img src={sponsor.logo} alt={`${sponsor.title} logo`} className="w-16 h-16 rounded-2xl object-contain" />
-                      <span className="text-2xl font-bold group-hover:text-teal-600 dark:text-gray-100 transition-colors tracking-tight">
-                        {sponsor.title}
-                      </span>
+                      <img src={sponsor.logo} alt={`${sponsor.name} logo`} className="w-16 h-16 rounded-2xl object-contain flex-shrink-0" />
+                      <div>
+                        <span className="text-2xl font-bold group-hover:text-teal-600 dark:text-gray-100 transition-colors tracking-tight block">
+                          {sponsor.name}
+                        </span>
+                        {sponsor.description && (
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{sponsor.description}</p>
+                        )}
+                      </div>
                     </div>
                   </a>
                 ))}
@@ -89,10 +119,10 @@ export default function SupportersPage() {
                   className="group px-8 py-6 border-2 border-dashed border-gray-200 dark:border-gray-600 rounded-2xl hover:border-teal-300 dark:hover:border-teal-600 hover:bg-teal-50 dark:hover:bg-teal-950 transition-all duration-300"
                 >
                   <div className="flex items-center gap-6 opacity-60 group-hover:opacity-80 transition-opacity">
-                    <HandshakeIcon strokeWidth={"1px"} className="w-16 h-16 text-gray-400 dark:text-gray-500" />
+                    <HandshakeIcon strokeWidth={"1px"} className="w-16 h-16 text-gray-400 dark:text-gray-500 flex-shrink-0" />
                     <div>
                       <div className="text-2xl font-bold dark:text-gray-200 tracking-tight">Your logo</div>
-                      <p className="text-gray-500 dark:text-gray-400 mt-1">Become a sponsor</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Become a sponsor</p>
                     </div>
                   </div>
                 </a>
