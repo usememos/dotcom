@@ -17,14 +17,14 @@ export function SponsorsSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-8 max-w-4xl mx-auto">
+        <div className="flex flex-wrap justify-center gap-6 sm:gap-8 mb-8 max-w-4xl mx-auto">
           {FEATURED_SPONSORS.map((sponsor) => (
             <a
               key={sponsor.name}
               href={sponsor.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col gap-4 p-6 sm:p-8 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-2xl hover:shadow-xl hover:border-teal-200 dark:hover:border-teal-600 hover:-translate-y-1 transition-all duration-300"
+              className="group flex flex-col gap-4 p-6 sm:p-8 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-2xl hover:shadow-xl hover:border-teal-200 dark:hover:border-teal-600 hover:-translate-y-1 transition-all duration-300 w-full md:w-[calc(50%-1rem)]"
             >
               <div className="h-12 sm:h-14 flex items-center">
                 <img
