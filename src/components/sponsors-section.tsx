@@ -51,7 +51,7 @@ export function SponsorsSection() {
 
         <div className="text-center">
           <Link
-            href="/supporters"
+            href="/sponsors"
             className="inline-flex items-center gap-2 text-sm sm:text-base text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 font-medium hover:underline transition-colors"
           >
             View all sponsors and backers

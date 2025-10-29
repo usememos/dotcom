@@ -74,8 +74,8 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <Link href="/supporters" className="text-fd-muted-foreground hover:text-fd-foreground transition-colors">
-                  Supporters
+                <Link href="/sponsors" className="text-fd-muted-foreground hover:text-fd-foreground transition-colors">
+                  Sponsors
                 </Link>
               </li>
               <li>

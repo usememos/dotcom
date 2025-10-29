@@ -41,7 +41,7 @@ pnpm postinstall
 - `app/blog/` - Blog posts from `/content/blog/`
 - `app/changelog/` - Release notes from `/content/changelog/`  
 - `app/features/` - SEO feature pages with individual `/features/[slug]` routes
-- `app/brand/`, `app/privacy/`, `app/supporters/` - Static marketing pages
+- `app/brand/`, `app/privacy/`, `app/sponsors/` - Static marketing pages
 
 ### Content Management
 - **Documentation**: MDX files in `/content/docs/` with frontmatter schemas

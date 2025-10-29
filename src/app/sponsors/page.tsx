@@ -7,11 +7,11 @@ import { FEATURED_SPONSORS, COMMUNITY_SPONSORS } from "@/lib/sponsors";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Supporters - Memos",
+  title: "Sponsors - Memos",
   description: "Thank you to all our sponsors and backers who support the development of Memos, the open-source note-taking platform.",
 };
 
-const GITHUB_USER_SPONSORS = [
+const GITHUB_USER_BACKERS = [
   {
     title: "fixermark",
     logo: "https://avatars.githubusercontent.com/u/169982?v=4",
@@ -29,7 +29,7 @@ const GITHUB_USER_SPONSORS = [
   },
 ];
 
-export default function SupportersPage() {
+export default function SponsorsPage() {
   return (
     <HomeLayout {...baseOptions}>
       <main className="flex flex-1 flex-col">
@@ -139,7 +139,7 @@ export default function SupportersPage() {
               </div>
 
               <div className="flex flex-wrap gap-3">
-                {GITHUB_USER_SPONSORS.map((sponsor) => (
+                {GITHUB_USER_BACKERS.map((sponsor) => (
                   <a
                     key={sponsor.title}
                     href={sponsor.url}

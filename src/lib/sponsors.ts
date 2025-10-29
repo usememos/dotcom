@@ -17,7 +17,7 @@ export const FEATURED_SPONSORS: Sponsor[] = [
   },
 ];
 
-// Additional sponsors shown on supporters page
+// Additional sponsors shown on sponsors page
 export const COMMUNITY_SPONSORS: Sponsor[] = [
   {
     name: "yourselfhosted",
