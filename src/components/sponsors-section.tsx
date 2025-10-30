@@ -24,9 +24,9 @@ export function SponsorsSection() {
               href={sponsor.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col gap-3 sm:gap-4 p-6 sm:p-8 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-2xl hover:shadow-xl hover:border-teal-200 dark:hover:border-teal-600 hover:-translate-y-1 transition-all duration-300 shadow-sm"
+              className="group flex flex-col gap-2 sm:gap-4 p-5 sm:p-8 bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-2xl hover:shadow-xl hover:border-teal-200 dark:hover:border-teal-600 hover:-translate-y-1 transition-all duration-300 shadow-sm"
             >
-              <div className="h-12 sm:h-14 flex items-center justify-start">
+              <div className="h-10 sm:h-12 flex items-center justify-start">
                 <img
                   src={sponsor.logo}
                   alt={`${sponsor.name} logo`}

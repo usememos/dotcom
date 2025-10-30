@@ -99,7 +99,11 @@ export default function SponsorsPage() {
                     className="group px-5 py-5 sm:px-8 sm:py-6 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl hover:shadow-xl hover:border-teal-200 dark:hover:border-teal-600 hover:-translate-y-1 transition-all duration-300 shadow-sm"
                   >
                     <div className="flex items-center gap-4 sm:gap-6">
-                      <img src={sponsor.logo} alt={`${sponsor.name} logo`} className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl object-contain flex-shrink-0" />
+                      <img
+                        src={sponsor.logo}
+                        alt={`${sponsor.name} logo`}
+                        className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl object-contain flex-shrink-0"
+                      />
                       <div className="min-w-0 flex-1">
                         <span className="text-xl sm:text-2xl font-bold group-hover:text-teal-600 dark:text-gray-100 transition-colors tracking-tight block">
                           {sponsor.name}
@@ -119,7 +123,10 @@ export default function SponsorsPage() {
                   className="group px-5 py-5 sm:px-8 sm:py-6 border-2 border-dashed border-gray-200 dark:border-gray-600 rounded-2xl hover:border-teal-300 dark:hover:border-teal-600 hover:bg-teal-50 dark:hover:bg-teal-950 transition-all duration-300"
                 >
                   <div className="flex items-center gap-4 sm:gap-6 opacity-60 group-hover:opacity-80 transition-opacity">
-                    <HandshakeIcon strokeWidth={"1px"} className="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 dark:text-gray-500 flex-shrink-0" />
+                    <HandshakeIcon
+                      strokeWidth={"1px"}
+                      className="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 dark:text-gray-500 flex-shrink-0"
+                    />
                     <div className="min-w-0 flex-1">
                       <div className="text-xl sm:text-2xl font-bold dark:text-gray-200 tracking-tight">Your logo</div>
                       <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">Become a sponsor</p>
@@ -148,7 +155,11 @@ export default function SponsorsPage() {
                     className="group p-3 sm:p-4 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl hover:shadow-lg hover:border-teal-200 dark:hover:border-teal-600 hover:-translate-y-0.5 transition-all duration-300 shadow-sm"
                   >
                     <div className="flex items-center gap-2 sm:gap-3">
-                      <img src={sponsor.logo} alt={`${sponsor.title} avatar`} className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover flex-shrink-0" />
+                      <img
+                        src={sponsor.logo}
+                        alt={`${sponsor.title} avatar`}
+                        className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover flex-shrink-0"
+                      />
                       <span className="text-sm sm:text-base font-semibold group-hover:text-teal-600 dark:text-gray-100 transition-colors">
                         {sponsor.title}
                       </span>
@@ -175,7 +186,7 @@ export default function SponsorsPage() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 mt-6 sm:mt-8 text-sm sm:text-base text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 hover:underline transition-colors font-semibold"
                 >
-                  And more than 40+ sponsors on GitHub
+                  And more than 70+ sponsors on GitHub
                   <ExternalLinkIcon className="w-4 h-4" />
                 </a>
               </div>
