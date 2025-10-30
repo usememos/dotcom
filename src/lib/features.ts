@@ -48,13 +48,14 @@ export const FEATURES = {
   "data-ownership": {
     title: "Complete Data Ownership",
     description:
-      "Take full control of your notes and data with Memos' privacy-first architecture that ensures your information never leaves your control.",
+      "Take full control of your notes and data with Memos' privacy-first architecture featuring zero telemetry, no tracking, ads, or subscription fees.",
     hero: {
       title: "Your Data, Your Rules",
-      subtitle: "Complete ownership and control over every note, file, and piece of information in your Memos instance.",
+      subtitle: "Complete ownership and control with zero telemetry - your data never leaves your control.",
     },
     benefits: [
       "All data stored locally in your chosen database",
+      "Zero telemetry - no tracking, ads, or analytics collection",
       "Zero external cloud dependencies or third-party services",
       "Full GDPR and privacy compliance by design",
       "Complete audit trail of all data access and modifications",
@@ -83,12 +84,13 @@ export const FEATURES = {
   },
   performance: {
     title: "High-Performance Backend",
-    description: "Built with Go for optimal resource utilization, lightning-fast response times, and minimal server requirements.",
+    description: "Built with Go for lightning-fast performance, instant loading with no cloud latency dependency, and minimal server requirements.",
     hero: {
       title: "Built for Speed",
-      subtitle: "Go-powered backend delivers exceptional performance with minimal resource consumption.",
+      subtitle: "Go-powered backend delivers instant loading and exceptional performance with no cloud latency dependency.",
     },
     benefits: [
+      "Instant loading with no latency dependency on cloud services",
       "Lightning-fast response times under high load",
       "Minimal memory footprint and CPU usage",
       "Efficient concurrent request handling",
@@ -119,12 +121,13 @@ export const FEATURES = {
   "react-frontend": {
     title: "Modern React Frontend",
     description:
-      "Responsive, intuitive user interface built with modern React, TypeScript, and cutting-edge web technologies with dark mode support.",
+      "Clean, minimal design with responsive interface built with modern React, TypeScript, and cutting-edge web technologies featuring dark mode support.",
     hero: {
       title: "Beautiful & Responsive",
-      subtitle: "Modern React interface with dark mode that works seamlessly across all devices and screen sizes.",
+      subtitle: "Clean, minimal design with modern React interface and dark mode that works seamlessly across all devices.",
     },
     benefits: [
+      "Clean, minimal design focused on simplicity and usability",
       "Responsive design optimized for mobile and desktop",
       "Dark mode support for comfortable viewing",
       "TypeScript for enhanced developer experience and reliability",
@@ -156,15 +159,15 @@ export const FEATURES = {
   },
   "cross-platform": {
     title: "Cross-Platform Support",
-    description: "Deploy anywhere with native support for Linux, macOS, Windows, Docker, and Kubernetes environments.",
+    description: "Deploy anywhere with Docker containerization, pre-built binaries for Linux, macOS, Windows, and Kubernetes support with Helm charts.",
     hero: {
       title: "Deploy Anywhere",
-      subtitle: "Universal compatibility across all major platforms and deployment methods.",
+      subtitle: "Universal compatibility with Docker, pre-built binaries, and Kubernetes support for any deployment scenario.",
     },
     benefits: [
-      "Native binaries for Linux, macOS, and Windows",
-      "Docker images for containerized deployments",
-      "Kubernetes manifests for orchestrated environments",
+      "Docker containerization (recommended deployment method)",
+      "Pre-built binaries for Linux, macOS, and Windows",
+      "Kubernetes support with Helm charts for orchestrated environments",
       "ARM and x86 architecture support",
       "Multiple installation methods to suit any workflow",
     ],
@@ -226,14 +229,15 @@ export const FEATURES = {
   },
   "api-first": {
     title: "API-First Design",
-    description: "Comprehensive RESTful and gRPC APIs enable seamless integrations, custom applications, and automation workflows.",
+    description: "Full REST and gRPC APIs with unrestricted access enable seamless integrations, custom applications, and automation workflows.",
     hero: {
       title: "Built for Integration",
-      subtitle: "Comprehensive REST and gRPC APIs open unlimited possibilities for custom integrations and workflows.",
+      subtitle: "Full REST and gRPC APIs with unrestricted access open unlimited possibilities for custom integrations.",
     },
     benefits: [
+      "Full REST and gRPC APIs with unrestricted access",
       "Complete RESTful API covering all functionality",
-      "gRPC API for high-performance integrations",
+      "High-performance gRPC API for advanced integrations",
       "OpenAPI specification for easy integration",
       "Authentication and authorization controls",
       "Webhook support for real-time notifications",
@@ -327,16 +331,17 @@ export const FEATURES = {
   },
   "no-fees": {
     title: "Zero Subscription Fees",
-    description: "Use all features forever with no usage limits, premium tiers, or hidden costs - completely free and open.",
+    description: "Use all features forever with no subscription fees, no tracking, no ads - completely free and open with unlimited usage.",
     hero: {
       title: "Free Forever",
-      subtitle: "All features available at no cost with no usage limits or premium restrictions.",
+      subtitle: "No subscription fees, no tracking, no ads - all features available at no cost with unlimited usage.",
     },
     benefits: [
+      "No subscription fees - completely free forever",
+      "No tracking or ads - privacy-first approach",
       "All features included with no premium tiers",
       "No user limits or storage restrictions",
-      "No time-limited trials or subscriptions",
-      "No hidden costs or surprise fees",
+      "No time-limited trials or hidden costs",
       "Community support at no charge",
     ],
     useCases: [
@@ -397,17 +402,19 @@ export const FEATURES = {
   },
   "self-hosted": {
     title: "Self-Hosted Architecture",
-    description: "Deploy Memos on your own infrastructure with complete control over access, security, and performance.",
+    description: "Deploy Memos on your own infrastructure with complete control over your data, ensuring privacy and ownership without vendor lock-in.",
     hero: {
       title: "Your Server, Your Control",
-      subtitle: "Deploy anywhere from a Raspberry Pi to enterprise Kubernetes clusters with full infrastructure control.",
+      subtitle: "Complete control with self-hosted deployment - from Raspberry Pi to enterprise Kubernetes clusters.",
     },
     benefits: [
+      "Complete data ownership - your data never leaves your infrastructure",
       "Deploy on any server, VPS, or cloud provider of your choice",
       "Full control over user access and authentication policies",
       "Customize security measures to meet your exact requirements",
       "Scale resources based on your specific usage patterns",
       "Integrate with existing corporate infrastructure and SSO systems",
+      "No vendor lock-in - deploy and manage on your terms",
     ],
     useCases: [
       {
@@ -432,12 +439,13 @@ export const FEATURES = {
   },
   "no-dependencies": {
     title: "No External Dependencies",
-    description: "Work completely offline with zero external API calls, third-party services, or cloud dependencies.",
+    description: "Work completely offline with zero telemetry, zero external API calls, and no third-party services or cloud dependencies.",
     hero: {
       title: "Truly Independent",
-      subtitle: "No internet connection required after installation - your notes work anywhere, anytime.",
+      subtitle: "Zero telemetry and no internet connection required after installation - your notes work anywhere, anytime.",
     },
     benefits: [
+      "Zero telemetry - no tracking, analytics, or data collection",
       "Zero external API calls or third-party service dependencies",
       "Works completely offline after initial installation",
       "No CDN dependencies for fonts, icons, or other assets",
@@ -502,12 +510,13 @@ export const FEATURES = {
   },
   "markdown-support": {
     title: "Rich Markdown Support",
-    description: "Full GitHub Flavored Markdown with syntax highlighting, tables, and advanced formatting options.",
+    description: "Full Markdown support with plain text storage for maximum portability, featuring syntax highlighting, tables, and advanced formatting.",
     hero: {
       title: "Write with Power",
-      subtitle: "Express your ideas with full Markdown support including syntax highlighting, tables, and rich formatting.",
+      subtitle: "Full Markdown support with plain text storage ensures portability and future-proof content.",
     },
     benefits: [
+      "Plain text storage for maximum portability and future-proofing",
       "Complete GitHub Flavored Markdown (GFM) compatibility",
       "Syntax highlighting for 100+ programming languages",
       "Tables, task lists, and advanced formatting options",

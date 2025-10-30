@@ -23,12 +23,12 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Memos - Open Source, Self-Hosted Note Taking",
   description:
-    "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
-  keywords: ["note taking", "self-hosted", "open source", "privacy", "markdown", "memos"],
+    "An open-source, self-hosted note-taking service with zero telemetry. Privacy-first, lightweight solution with no tracking, ads, or subscription fees.",
+  keywords: ["note taking", "self-hosted", "open source", "privacy", "markdown", "memos", "zero telemetry"],
   openGraph: {
     title: "Memos - Open Source, Self-Hosted Note Taking",
     description:
-      "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
+      "An open-source, self-hosted note-taking service with zero telemetry. Privacy-first, lightweight solution with no tracking, ads, or subscription fees.",
     url: "https://usememos.com",
     siteName: "Memos",
     images: [
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Memos - Open Source, Self-Hosted Note Taking",
     description:
-      "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
+      "An open-source, self-hosted note-taking service with zero telemetry. Privacy-first, lightweight solution with no tracking, ads, or subscription fees.",
     images: ["/demo.png"],
   },
 };
@@ -62,7 +62,7 @@ export default function HomePage() {
             <span className="block text-teal-600">Your Notes, Your Way</span>
           </>
         }
-        subtitle="Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution"
+        subtitle="Privacy-first note-taking service with zero telemetry. No tracking, no ads, no subscription fees."
         primaryCta={{ text: "Get Started", href: "/docs" }}
         secondaryCta={{ text: "Live Demo", href: "https://demo.usememos.com/", external: true }}
         demoImageLight={{ src: "/demo.png", alt: "Memos Dashboard Screenshot (Light Mode)" }}
@@ -87,18 +87,18 @@ export default function HomePage() {
               {
                 icon: <ShieldIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
                 title: "Privacy First",
-                description: "Take control of your data. All runtime data is securely stored in your local database.",
+                description: "Zero telemetry with complete data ownership. All data is securely stored in your local database with no tracking or ads.",
               },
               {
                 icon: <PenToolIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
                 title: "Create at Speed",
-                description: "Save content as plain text for quick access, with Markdown support for fast formatting and easy sharing.",
+                description: "Plain text storage for maximum portability with full Markdown support for fast formatting and easy sharing.",
               },
               {
                 icon: <ZapIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
                 title: "Lightweight but Powerful",
                 description:
-                  "Built with Go, React.js, and a compact architecture, our service delivers powerful performance in a lightweight package.",
+                  "Built with Go and React with clean, minimal design. Lightning-fast performance with dark mode support in a lightweight package.",
               },
               {
                 icon: <PuzzleIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
@@ -115,7 +115,7 @@ export default function HomePage() {
               {
                 icon: <DollarSignIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
                 title: "Free to Use",
-                description: "Enjoy all features completely free, with no charges ever for any content.",
+                description: "All features completely free with no subscription fees, no ads, and no hidden costs - forever.",
               },
             ].map((feature) => (
               <FeatureCard key={feature.title} {...feature} />
