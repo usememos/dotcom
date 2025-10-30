@@ -5,26 +5,26 @@ import { cn } from "@/lib/utils";
 
 export function SponsorsSection() {
   return (
-    <section className="py-12 sm:py-16 lg:py-20 px-4 bg-white dark:bg-gray-900">
+    <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 bg-white dark:bg-gray-900">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-8 sm:mb-10">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <HeartIcon className="w-6 h-6 sm:w-7 sm:h-7 text-red-500 fill-current" />
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Supported by</h2>
+        <div className="text-center mb-8 sm:mb-10 lg:mb-12">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+            <HeartIcon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-red-500 fill-current flex-shrink-0" />
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Supported by</h2>
           </div>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 px-4">
             Thank you to our amazing sponsors who make this project possible
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-6 sm:gap-8 mb-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8 max-w-4xl mx-auto">
           {FEATURED_SPONSORS.map((sponsor) => (
             <a
               key={sponsor.name}
               href={sponsor.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col gap-4 p-6 sm:p-8 bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-2xl hover:shadow-xl hover:border-teal-200 dark:hover:border-teal-600 hover:-translate-y-1 transition-all duration-300 w-full md:w-[calc(50%-1rem)]"
+              className="group flex flex-col gap-3 sm:gap-4 p-6 sm:p-8 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-2xl hover:shadow-xl hover:border-teal-200 dark:hover:border-teal-600 hover:-translate-y-1 transition-all duration-300 shadow-sm"
             >
               <div className="h-12 sm:h-14 flex items-center justify-start">
                 <img
