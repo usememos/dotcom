@@ -1,67 +1,115 @@
 import Link from "next/link";
-import { ExternalLink, ArrowRightIcon } from "lucide-react";
+import {
+  BookOpenIcon,
+  SparklesIcon,
+  NewspaperIcon,
+  HistoryIcon,
+  ExternalLinkIcon,
+  GithubIcon,
+  MessageCircleIcon,
+  HeartIcon,
+  MessageSquareIcon,
+  ScaleIcon,
+  ShieldCheckIcon,
+  PaletteIcon,
+  LockIcon,
+  ZapIcon,
+  ServerIcon,
+  CodeIcon,
+  DatabaseIcon,
+  FileTextIcon,
+  ImageIcon,
+  DollarSignIcon,
+  MonitorSmartphoneIcon,
+  CloudOffIcon,
+  SaveIcon,
+} from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="border-t bg-gradient-to-b from-fd-background/50 to-gray-50/50 dark:to-gray-900/50 mt-auto">
-      <div className="mx-auto max-w-fd-container px-4 py-8 sm:py-12 lg:py-16">
-        {/* CTA Section */}
-        <div className="mb-10 sm:mb-12 lg:mb-16 text-center">
-          <h3 className="text-xl sm:text-2xl font-bold text-fd-foreground mb-3 sm:mb-4">Start using Memos today</h3>
-          <p className="text-sm sm:text-base text-fd-muted-foreground mb-5 sm:mb-6 max-w-2xl mx-auto">
-            Self-hosted, open source, and privacy-first note-taking for everyone
-          </p>
-          <Link
-            href="/docs/installation"
-            className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-gradient-to-r from-teal-600 to-cyan-600 text-white font-semibold rounded-xl hover:from-teal-700 hover:to-cyan-700 hover:shadow-lg hover:shadow-teal-500/25 hover:-translate-y-0.5 transition-all duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
-          >
-            Get Started
-            <ArrowRightIcon className="w-4 h-4" />
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-4">
-          {/* About */}
-          <div className="col-span-2 lg:col-span-1">
-            <h3 className="font-semibold text-fd-foreground mb-3 sm:mb-4 text-base sm:text-lg">Memos</h3>
-            <p className="text-sm text-fd-muted-foreground leading-relaxed">
-              Open source, self-hosted note-taking platform that puts your privacy first.
-            </p>
-          </div>
-
-          {/* Product */}
-          <div>
-            <h3 className="font-semibold text-fd-foreground mb-3 sm:mb-4 text-sm sm:text-base">Product</h3>
-            <ul className="space-y-2 sm:space-y-2.5 text-sm">
+    <footer className="border-t bg-fd-background mt-auto">
+      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-20">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4 lg:gap-16">
+          {/* Features Column */}
+          <div className="col-span-1">
+            <h3 className="font-semibold text-fd-foreground mb-6 text-sm uppercase tracking-wider">Features</h3>
+            <ul className="space-y-4 text-sm">
               <li>
                 <Link
-                  href="/features"
-                  className="text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 hover:underline hover:underline-offset-4 transition-all"
+                  href="/features/data-ownership"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
                 >
-                  Features
+                  <LockIcon className="w-4 h-4" />
+                  Data Ownership
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/docs"
-                  className="text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 hover:underline hover:underline-offset-4 transition-all"
+                  href="/features/self-hosted"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
                 >
-                  Docs
+                  <ServerIcon className="w-4 h-4" />
+                  Self-Hosted
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/features/markdown-support"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                >
+                  <FileTextIcon className="w-4 h-4" />
+                  Markdown
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/features/api-first"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                >
+                  <CodeIcon className="w-4 h-4" />
+                  API First
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/features"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors font-medium"
+                >
+                  <SparklesIcon className="w-4 h-4" />
+                  View all features →
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Product Column */}
+          <div className="col-span-1">
+            <h3 className="font-semibold text-fd-foreground mb-6 text-sm uppercase tracking-wider">Product</h3>
+            <ul className="space-y-4 text-sm">
+              <li>
+                <Link
+                  href="/docs"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                >
+                  <BookOpenIcon className="w-4 h-4" />
+                  Documentation
                 </Link>
               </li>
               <li>
                 <Link
                   href="/blog"
-                  className="text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 hover:underline hover:underline-offset-4 transition-all"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
                 >
+                  <NewspaperIcon className="w-4 h-4" />
                   Blog
                 </Link>
               </li>
               <li>
                 <Link
                   href="/changelog"
-                  className="text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 hover:underline hover:underline-offset-4 transition-all"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
                 >
+                  <HistoryIcon className="w-4 h-4" />
                   Changelog
                 </Link>
               </li>
@@ -70,28 +118,28 @@ export function Footer() {
                   href="https://demo.usememos.com/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 hover:underline hover:underline-offset-4 transition-all"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
                 >
+                  <ExternalLinkIcon className="w-4 h-4" />
                   Live Demo
-                  <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
             </ul>
           </div>
 
-          {/* Community */}
-          <div>
-            <h3 className="font-semibold text-fd-foreground mb-3 sm:mb-4 text-sm sm:text-base">Community</h3>
-            <ul className="space-y-2 sm:space-y-2.5 text-sm">
+          {/* Community Column */}
+          <div className="col-span-1">
+            <h3 className="font-semibold text-fd-foreground mb-6 text-sm uppercase tracking-wider">Community</h3>
+            <ul className="space-y-4 text-sm">
               <li>
                 <a
                   href="https://github.com/usememos/memos"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 hover:underline hover:underline-offset-4 transition-all"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
                 >
+                  <GithubIcon className="w-4 h-4" />
                   GitHub
-                  <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
               <li>
@@ -99,62 +147,65 @@ export function Footer() {
                   href="https://discord.gg/tfPJa4UmAv"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 hover:underline hover:underline-offset-4 transition-all"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
                 >
+                  <MessageCircleIcon className="w-4 h-4" />
                   Discord
-                  <ExternalLink className="w-3 h-3" />
                 </a>
-              </li>
-              <li>
-                <Link
-                  href="/sponsors"
-                  className="text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 hover:underline hover:underline-offset-4 transition-all"
-                >
-                  Sponsors
-                </Link>
               </li>
               <li>
                 <a
                   href="https://github.com/usememos/memos/discussions"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 hover:underline hover:underline-offset-4 transition-all"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
                 >
+                  <MessageSquareIcon className="w-4 h-4" />
                   Discussions
-                  <ExternalLink className="w-3 h-3" />
                 </a>
+              </li>
+              <li>
+                <Link
+                  href="/sponsors"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                >
+                  <HeartIcon className="w-4 h-4" />
+                  Sponsors
+                </Link>
               </li>
             </ul>
           </div>
 
-          {/* Legal */}
-          <div>
-            <h3 className="font-semibold text-fd-foreground mb-3 sm:mb-4 text-sm sm:text-base">Legal</h3>
-            <ul className="space-y-2 sm:space-y-2.5 text-sm">
+          {/* Resources Column */}
+          <div className="col-span-1">
+            <h3 className="font-semibold text-fd-foreground mb-6 text-sm uppercase tracking-wider">Resources</h3>
+            <ul className="space-y-4 text-sm">
               <li>
                 <a
                   href="https://github.com/usememos/memos/blob/main/LICENSE"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 hover:underline hover:underline-offset-4 transition-all"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
                 >
+                  <ScaleIcon className="w-4 h-4" />
                   MIT License
-                  <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
               <li>
                 <Link
                   href="/privacy"
-                  className="text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 hover:underline hover:underline-offset-4 transition-all"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
                 >
+                  <ShieldCheckIcon className="w-4 h-4" />
                   Privacy Policy
                 </Link>
               </li>
               <li>
                 <Link
                   href="/brand"
-                  className="text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 hover:underline hover:underline-offset-4 transition-all"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
                 >
+                  <PaletteIcon className="w-4 h-4" />
                   Brand Guidelines
                 </Link>
               </li>

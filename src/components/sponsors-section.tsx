@@ -8,11 +8,11 @@ export function SponsorsSection() {
     <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 bg-white dark:bg-gray-900">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8 sm:mb-10 lg:mb-12">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-            <HeartIcon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-red-500 fill-current flex-shrink-0" />
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Supported by</h2>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-4">
+            <HeartIcon className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-red-500 fill-current shrink-0" />
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Supported by</h2>
           </div>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 px-4">
+          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             Thank you to our amazing sponsors who make this project possible
           </p>
         </div>

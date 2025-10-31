@@ -1,13 +1,31 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { 
-  ShieldIcon, 
-  ZapIcon, 
-  PaletteIcon, 
-  DollarSignIcon,
-  PenToolIcon,
+import {
   ServerIcon,
-  ArrowRightIcon
+  ArrowRightIcon,
+  LockIcon,
+  SaveIcon,
+  FileTextIcon,
+  ImageIcon,
+  MonitorSmartphoneIcon,
+  CodeIcon,
+  DatabaseIcon,
+  GitBranchIcon,
+  HeartIcon,
+  ZapIcon,
+  PaletteIcon,
+  DollarSignIcon,
+  LayersIcon,
+  CloudOffIcon,
+  SearchIcon,
+  TagIcon,
+  DownloadIcon,
+  UploadIcon,
+  KeyboardIcon,
+  MoonIcon,
+  ShieldCheckIcon,
+  RefreshCwIcon,
+  GlobeIcon,
 } from "lucide-react";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { baseOptions } from "@/app/layout.config";
@@ -18,11 +36,23 @@ export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Features - Memos",
-  description: "Discover all the powerful features that make Memos the perfect privacy-first, self-hosted note-taking platform for individuals and teams.",
-  keywords: ["note taking features", "self-hosted", "privacy", "markdown", "knowledge management"],
+  description:
+    "Discover all the powerful features that make Memos the perfect privacy-first, self-hosted note-taking platform. From instant save to multi-language support.",
+  keywords: [
+    "note taking features",
+    "self-hosted",
+    "privacy",
+    "markdown",
+    "knowledge management",
+    "tags",
+    "search",
+    "export",
+    "keyboard shortcuts",
+  ],
   openGraph: {
     title: "Memos Features - Privacy-First Note Taking",
-    description: "Explore the comprehensive feature set of Memos - from advanced privacy controls to powerful customization options.",
+    description:
+      "Explore all the comprehensive features of Memos - from advanced privacy controls to powerful customization options and seamless offline support.",
     url: "https://usememos.com/features",
     siteName: "Memos",
     images: [
@@ -37,177 +67,6 @@ export const metadata: Metadata = {
   },
 };
 
-const featureCategories = [
-  {
-    title: "Privacy & Security",
-    description: "Complete control over your data with enterprise-grade privacy features",
-    icon: ShieldIcon,
-    color: "teal",
-    features: [
-      {
-        title: "Complete Data Ownership",
-        slug: "data-ownership",
-        description: "All your notes and data are stored locally in your chosen database with zero external dependencies.",
-        highlight: "100% Private"
-      },
-      {
-        title: "Self-Hosted Architecture", 
-        slug: "self-hosted",
-        description: "Deploy on your own infrastructure with full control over access policies and security measures.",
-        highlight: "Your Server"
-      },
-      {
-        title: "No External Dependencies",
-        slug: "no-dependencies", 
-        description: "Zero third-party services, cloud connections, or external API calls required.",
-        highlight: "Offline Ready"
-      }
-    ]
-  },
-  {
-    title: "Content Creation",
-    description: "Powerful tools for capturing and organizing your thoughts",
-    icon: PenToolIcon,
-    color: "blue",
-    features: [
-      {
-        title: "Instant Save",
-        slug: "instant-save",
-        description: "Streamlined plain text input with automatic persistence - never lose a thought again.",
-        highlight: "Auto-Save"
-      },
-      {
-        title: "Rich Markdown Support",
-        slug: "markdown-support",
-        description: "Full Markdown rendering with syntax highlighting, tables, and advanced formatting.",
-        highlight: "GitHub Flavored"
-      },
-      {
-        title: "Media Integration",
-        slug: "media-integration", 
-        description: "Native support for images, links, file attachments, and embedded content.",
-        highlight: "Drag & Drop"
-      }
-    ]
-  },
-  {
-    title: "Performance & Technology",
-    description: "Built for speed, efficiency, and reliability",
-    icon: ZapIcon,
-    color: "green",
-    features: [
-      {
-        title: "High-Performance Backend",
-        slug: "performance",
-        description: "Built with Go for optimal resource utilization and lightning-fast response times.",
-        highlight: "Go Powered"
-      },
-      {
-        title: "Modern React Frontend",
-        slug: "react-frontend",
-        description: "Responsive, intuitive user interface built with modern React and TypeScript.",
-        highlight: "TypeScript"
-      },
-      {
-        title: "Cross-Platform Support",
-        slug: "cross-platform",
-        description: "Linux, macOS, Windows, Docker, and Kubernetes deployment options.",
-        highlight: "Universal"
-      }
-    ]
-  },
-  {
-    title: "Customization",
-    description: "Tailor Memos to fit your exact needs and preferences",
-    icon: PaletteIcon,
-    color: "purple",
-    features: [
-      {
-        title: "Configurable Interface",
-        slug: "customizable-ui",
-        description: "Custom branding, themes, server names, and UI elements to match your style.",
-        highlight: "Your Brand"
-      },
-      {
-        title: "API-First Design", 
-        slug: "api-first",
-        description: "RESTful API for seamless third-party integrations and custom applications.",
-        highlight: "REST API"
-      },
-      {
-        title: "Multi-Database Support",
-        slug: "database-support",
-        description: "Compatible with SQLite, PostgreSQL, and MySQL databases.",
-        highlight: "3 Databases"
-      }
-    ]
-  },
-  {
-    title: "Cost-Effective",
-    description: "Open source with no hidden costs or subscription fees",
-    icon: DollarSignIcon,
-    color: "emerald",
-    features: [
-      {
-        title: "Open Source License",
-        slug: "open-source",
-        description: "MIT licensed with full source code availability and permissive usage terms.",
-        highlight: "MIT License"
-      },
-      {
-        title: "Zero Subscription Fees",
-        slug: "no-fees",
-        description: "No usage limits, premium tiers, or hidden costs - use all features forever.",
-        highlight: "Free Forever"
-      },
-      {
-        title: "Community-Driven",
-        slug: "community",
-        description: "Transparent development with active community support and contributions.",
-        highlight: "40K+ Stars"
-      }
-    ]
-  }
-];
-
-const colorVariants = {
-  teal: {
-    bg: "bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-teal-950 dark:to-cyan-950",
-    border: "border-teal-200 dark:border-teal-800",
-    icon: "bg-teal-100 dark:bg-teal-900 text-teal-600 dark:text-teal-400",
-    text: "text-teal-900 dark:text-teal-100",
-    highlight: "bg-teal-600 text-white"
-  },
-  blue: {
-    bg: "bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950 dark:to-cyan-950", 
-    border: "border-blue-200 dark:border-blue-800",
-    icon: "bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400",
-    text: "text-blue-900 dark:text-blue-100",
-    highlight: "bg-blue-600 text-white"
-  },
-  green: {
-    bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950",
-    border: "border-green-200 dark:border-green-800", 
-    icon: "bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400",
-    text: "text-green-900 dark:text-green-100",
-    highlight: "bg-green-600 text-white"
-  },
-  purple: {
-    bg: "bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950",
-    border: "border-purple-200 dark:border-purple-800",
-    icon: "bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-400", 
-    text: "text-purple-900 dark:text-purple-100",
-    highlight: "bg-purple-600 text-white"
-  },
-  emerald: {
-    bg: "bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950 dark:to-green-950",
-    border: "border-emerald-200 dark:border-emerald-800",
-    icon: "bg-emerald-100 dark:bg-emerald-900 text-emerald-600 dark:text-emerald-400",
-    text: "text-emerald-900 dark:text-emerald-100", 
-    highlight: "bg-emerald-600 text-white"
-  }
-};
-
 export default function FeaturesPage() {
   return (
     <HomeLayout {...baseOptions}>
@@ -220,10 +79,10 @@ export default function FeaturesPage() {
               <span className="block text-teal-600 dark:text-teal-400">Modern Note-Taking</span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed mb-12">
-              Discover all the features that make Memos the perfect privacy-first, self-hosted note-taking platform
-              for individuals, teams, and organizations.
+              Discover all the features that make Memos the perfect privacy-first, self-hosted note-taking platform for individuals, teams,
+              and organizations.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
               <Link
                 href="/docs/installation"
@@ -244,79 +103,336 @@ export default function FeaturesPage() {
             </div>
 
             {/* Feature stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">15+</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Core Features</div>
-              </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-2xl mx-auto">
               <div className="text-center">
                 <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">100%</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">Open Source</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">5M+</div>
+                <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">7M+</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">Docker Pulls</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">0$</div>
+                <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">$0</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">Forever</div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Feature Categories */}
-        <section className="py-24 px-4">
+        {/* All Features Grid */}
+        <section className="py-24 px-4 bg-white dark:bg-gray-900">
           <div className="max-w-7xl mx-auto">
-            {featureCategories.map((category, categoryIndex) => {
-              const IconComponent = category.icon;
-              const colors = colorVariants[category.color as keyof typeof colorVariants];
-              
-              return (
-                <div key={category.title} className="mb-32 last:mb-0">
-                  {/* Category Header */}
-                  <div className="text-center mb-16">
-                    <div className="flex items-center justify-center gap-4 mb-6">
-                      <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl ${colors.icon}`}>
-                        <IconComponent className="w-8 h-8" />
-                      </div>
-                    </div>
-                    <h2 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
-                      {category.title}
-                    </h2>
-                    <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
-                      {category.description}
-                    </p>
-                  </div>
-
-                  {/* Features Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {category.features.map((feature) => (
-                      <Link
-                        key={feature.slug}
-                        href={`/features/${feature.slug}`}
-                        className={`group block p-8 ${colors.bg} border ${colors.border} rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300 shadow-sm`}
-                      >
-                        <div className="flex items-start justify-between mb-4">
-                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${colors.highlight}`}>
-                            {feature.highlight}
-                          </span>
-                          <ArrowRightIcon className="w-5 h-5 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 group-hover:translate-x-1 transition-all" />
-                        </div>
-                        
-                        <h3 className={`text-xl font-bold mb-3 tracking-tight ${colors.text} group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors`}>
-                          {feature.title}
-                        </h3>
-                        
-                        <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                          {feature.description}
-                        </p>
-                      </Link>
-                    ))}
-                  </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Data Ownership */}
+              <Link
+                href="/features/data-ownership"
+                className="group block p-8 bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-teal-950/30 dark:to-cyan-950/30 border border-teal-100 dark:border-teal-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-teal-100 dark:bg-teal-900 text-teal-600 dark:text-teal-400 rounded-xl mb-4">
+                  <LockIcon className="w-6 h-6" />
                 </div>
-              );
-            })}
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Data Ownership</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  Complete control over your notes with zero telemetry. All data stored locally in your chosen database.
+                </p>
+              </Link>
+
+              {/* Self-Hosted */}
+              <Link
+                href="/features/self-hosted"
+                className="group block p-8 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 border border-purple-100 dark:border-purple-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-400 rounded-xl mb-4">
+                  <ServerIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Self-Hosted</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  Deploy on your own infrastructure from Raspberry Pi to enterprise Kubernetes clusters.
+                </p>
+              </Link>
+
+              {/* Offline First */}
+              <Link
+                href="/features/no-dependencies"
+                className="group block p-8 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30 border border-blue-100 dark:border-blue-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 rounded-xl mb-4">
+                  <CloudOffIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Seamless Offline</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  Works completely offline with zero external dependencies or cloud connections required.
+                </p>
+              </Link>
+
+              {/* Instant Save */}
+              <Link
+                href="/features/instant-save"
+                className="group block p-8 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 border border-green-100 dark:border-green-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400 rounded-xl mb-4">
+                  <SaveIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Instant Save</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  Automatic persistence as you type - never lose a thought with streamlined plaintext input.
+                </p>
+              </Link>
+
+              {/* Markdown Support */}
+              <Link
+                href="/features/markdown-support"
+                className="group block p-8 bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-950/30 dark:to-red-950/30 border border-orange-100 dark:border-orange-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-orange-100 dark:bg-orange-900 text-orange-600 dark:text-orange-400 rounded-xl mb-4">
+                  <FileTextIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Rich Markdown</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  GitHub Flavored Markdown with syntax highlighting, tables, and LaTeX math expressions.
+                </p>
+              </Link>
+
+              {/* Media Integration */}
+              <Link
+                href="/features/media-integration"
+                className="group block p-8 bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-950/30 dark:to-rose-950/30 border border-pink-100 dark:border-pink-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-pink-100 dark:bg-pink-900 text-pink-600 dark:text-pink-400 rounded-xl mb-4">
+                  <ImageIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Media Support</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  Drag-and-drop support for images, videos, audio files, and document attachments.
+                </p>
+              </Link>
+
+              {/* Cross-Platform */}
+              <Link
+                href="/features/cross-platform"
+                className="group block p-8 bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/30 dark:to-blue-950/30 border border-indigo-100 dark:border-indigo-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400 rounded-xl mb-4">
+                  <MonitorSmartphoneIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">On All Your Devices</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  Linux, macOS, Windows, Docker, and Kubernetes - deploy anywhere with universal compatibility.
+                </p>
+              </Link>
+
+              {/* Performance */}
+              <Link
+                href="/features/performance"
+                className="group block p-8 bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-950/30 dark:to-amber-950/30 border border-yellow-100 dark:border-yellow-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-400 rounded-xl mb-4">
+                  <ZapIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Super-fast</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  Go-powered backend with instant loading and minimal resource usage for peak performance.
+                </p>
+              </Link>
+
+              {/* API First */}
+              <Link
+                href="/features/api-first"
+                className="group block p-8 bg-gradient-to-br from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30 border border-violet-100 dark:border-violet-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-violet-100 dark:bg-violet-900 text-violet-600 dark:text-violet-400 rounded-xl mb-4">
+                  <CodeIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">API & Integrations</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  Full REST and gRPC APIs with unrestricted access for custom integrations and automation.
+                </p>
+              </Link>
+
+              {/* Multi-Database */}
+              <Link
+                href="/features/database-support"
+                className="group block p-8 bg-gradient-to-br from-slate-50 to-gray-50 dark:from-slate-950/30 dark:to-gray-950/30 border border-slate-100 dark:border-slate-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 rounded-xl mb-4">
+                  <DatabaseIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Multi-Database</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  Choose between SQLite, PostgreSQL, or MySQL to match your infrastructure needs.
+                </p>
+              </Link>
+
+              {/* Customizable */}
+              <Link
+                href="/features/customizable-ui"
+                className="group block p-8 bg-gradient-to-br from-fuchsia-50 to-pink-50 dark:from-fuchsia-950/30 dark:to-pink-950/30 border border-fuchsia-100 dark:border-fuchsia-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-fuchsia-100 dark:bg-fuchsia-900 text-fuchsia-600 dark:text-fuchsia-400 rounded-xl mb-4">
+                  <PaletteIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Customizable</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  Custom branding, themes, colors, and UI elements to create your perfect note-taking environment.
+                </p>
+              </Link>
+
+              {/* Open Source */}
+              <Link
+                href="/features/open-source"
+                className="group block p-8 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30 border border-emerald-100 dark:border-emerald-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-emerald-100 dark:bg-emerald-900 text-emerald-600 dark:text-emerald-400 rounded-xl mb-4">
+                  <GitBranchIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Open Source</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  MIT licensed with full source code transparency - freedom to use, modify, and distribute.
+                </p>
+              </Link>
+
+              {/* Free Forever */}
+              <Link
+                href="/features/no-fees"
+                className="group block p-8 bg-gradient-to-br from-lime-50 to-green-50 dark:from-lime-950/30 dark:to-green-950/30 border border-lime-100 dark:border-lime-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-lime-100 dark:bg-lime-900 text-lime-600 dark:text-lime-400 rounded-xl mb-4">
+                  <DollarSignIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Always Free</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  All features free forever - no premium tiers, usage limits, or hidden costs. Ever.
+                </p>
+              </Link>
+
+              {/* React Frontend */}
+              <Link
+                href="/features/react-frontend"
+                className="group block p-8 bg-gradient-to-br from-sky-50 to-blue-50 dark:from-sky-950/30 dark:to-blue-950/30 border border-sky-100 dark:border-sky-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-sky-100 dark:bg-sky-900 text-sky-600 dark:text-sky-400 rounded-xl mb-4">
+                  <LayersIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Beautiful Design</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  Modern React and TypeScript interface with dark mode and responsive design for all devices.
+                </p>
+              </Link>
+
+              {/* Community */}
+              <Link
+                href="/features/community"
+                className="group block p-8 bg-gradient-to-br from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30 border border-rose-100 dark:border-rose-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-rose-100 dark:bg-rose-900 text-rose-600 dark:text-rose-400 rounded-xl mb-4">
+                  <HeartIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Community-Driven</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  Active development with 45,000+ GitHub stars, transparent roadmap, and engaged community.
+                </p>
+              </Link>
+
+              {/* Universal Search */}
+              <div className="group block p-8 bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950/30 dark:to-blue-950/30 border border-cyan-100 dark:border-cyan-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-cyan-100 dark:bg-cyan-900 text-cyan-600 dark:text-cyan-400 rounded-xl mb-4">
+                  <SearchIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Universal Search</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  Find any note instantly with powerful full-text search across all your memos and content.
+                </p>
+              </div>
+
+              {/* Tags */}
+              <div className="group block p-8 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 border border-amber-100 dark:border-amber-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-amber-100 dark:bg-amber-900 text-amber-600 dark:text-amber-400 rounded-xl mb-4">
+                  <TagIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Tags</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  Organize your notes with flexible tagging system for quick categorization and filtering.
+                </p>
+              </div>
+
+              {/* Import */}
+              <div className="group block p-8 bg-gradient-to-br from-teal-50 to-green-50 dark:from-teal-950/30 dark:to-green-950/30 border border-teal-100 dark:border-teal-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-teal-100 dark:bg-teal-900 text-teal-600 dark:text-teal-400 rounded-xl mb-4">
+                  <UploadIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Import</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  Migrate from other platforms with easy import from Markdown files and popular note apps.
+                </p>
+              </div>
+
+              {/* Export */}
+              <div className="group block p-8 bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-950/30 dark:to-violet-950/30 border border-purple-100 dark:border-purple-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-400 rounded-xl mb-4">
+                  <DownloadIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Print & Export</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  Export your notes to Markdown, JSON, or CSV - your data is always portable and accessible.
+                </p>
+              </div>
+
+              {/* Keyboard Controls */}
+              <div className="group block p-8 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border border-blue-100 dark:border-blue-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 rounded-xl mb-4">
+                  <KeyboardIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Keyboard Shortcuts</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  Boost productivity with comprehensive keyboard shortcuts for power users and fast navigation.
+                </p>
+              </div>
+
+              {/* Night Mode */}
+              <div className="group block p-8 bg-gradient-to-br from-gray-50 to-slate-50 dark:from-gray-950/30 dark:to-slate-950/30 border border-gray-200 dark:border-gray-800 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 rounded-xl mb-4">
+                  <MoonIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Night Mode</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  Built-in dark theme for comfortable viewing in low-light conditions with automatic detection.
+                </p>
+              </div>
+
+              {/* Private & Secure */}
+              <div className="group block p-8 bg-gradient-to-br from-red-50 to-pink-50 dark:from-red-950/30 dark:to-pink-950/30 border border-red-100 dark:border-red-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400 rounded-xl mb-4">
+                  <ShieldCheckIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Private & Secure</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  End-to-end encrypted storage ensures your personal notes remain private and secure always.
+                </p>
+              </div>
+
+              {/* Always Up to Date */}
+              <div className="group block p-8 bg-gradient-to-br from-green-50 to-lime-50 dark:from-green-950/30 dark:to-lime-950/30 border border-green-100 dark:border-green-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400 rounded-xl mb-4">
+                  <RefreshCwIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Always Up to Date</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  Regular updates with new features, improvements, and security patches from active development.
+                </p>
+              </div>
+
+              {/* Internationalization */}
+              <div className="group block p-8 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 border border-indigo-100 dark:border-indigo-900 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400 rounded-xl mb-4">
+                  <GlobeIcon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">Multi-Language Support</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  Available in multiple languages with community-contributed translations for global accessibility.
+                </p>
+              </div>
+            </div>
           </div>
         </section>
 
