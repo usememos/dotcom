@@ -1,75 +1,47 @@
 ---
 title: Telegram Bot
-description: Set up and configure a Telegram bot for creating memos directly from Telegram messages.
+description: Set up and configure Memogram, the official Telegram bot integration for Memos.
 ---
 
-Integrate Memos with Telegram to create memos directly from your mobile device or desktop Telegram client. This powerful integration allows you to quickly capture thoughts, notes, and ideas without opening the Memos web interface.
+**Memogram** is the official Telegram bot integration service that syncs messages and images from Telegram directly into your Memos instance. It provides a simple and efficient way to capture thoughts, notes, and ideas from Telegram.
+
+**Repository**: [github.com/usememos/telegram-integration](https://github.com/usememos/telegram-integration)
 
 ## Overview
 
-The Telegram bot integration enables you to:
+Memogram enables you to:
 
-- **Create memos** by sending messages to your bot
-- **Add media attachments** (photos, documents, voice notes)
-- **Use commands** for advanced memo management
-- **Set up scheduled reminders** for important notes
-- **Search existing memos** directly from Telegram
+- **Create memos** by sending text messages to your Telegram bot
+- **Attach media** by sending photos and documents
+- **Search memos** directly from Telegram with `/search`
+- **Restrict access** to specific Telegram users for security
 
 <Callout type="info">
-**Quick Setup**: The bot integration uses Memos API tokens for authentication, making it secure and easy to set up without storing passwords.
+Memogram uses Memos access tokens for authentication and connects to Memos via gRPC for optimal performance.
 </Callout>
 
 ## Prerequisites
 
-Before setting up the Telegram bot, ensure you have:
+Before setting up Memogram, ensure you have:
 
-- **Memos instance** running with API access
+- **Memos instance** running (with gRPC server accessible)
 - **Telegram account** to create and interact with the bot
-- **API access token** from your Memos instance
-- **Basic understanding** of Telegram bot interactions
+- **Memos access token** for authentication
 
-## Bot Creation
-
-### Step 1: Create Telegram Bot
+## Step 1: Create Your Telegram Bot
 
 1. **Open Telegram** and search for [@BotFather](https://t.me/botfather)
 2. **Start a chat** with BotFather by clicking `/start`
 3. **Create new bot** by sending `/newbot`
 4. **Choose bot name**: Enter a display name (e.g., "My Memos Bot")
 5. **Choose username**: Enter a unique username ending in "bot" (e.g., "MyMemosBot")
-6. **Save the token**: BotFather will provide a token like `123456789:ABCdefGHIjklMNOpqrsTUVwxyZ`
+6. **Save the bot token**: BotFather will provide a token like `123456789:ABCdefGHIjklMNOpqrsTUVwxyZ`
 
 <Callout type="warning">
 **Security Note**: Keep your bot token secure! Anyone with access to the token can control your bot.
 </Callout>
 
-### Step 2: Configure Bot Settings
-
-Customize your bot's behavior through BotFather:
-
-```
-/setdescription - Set a description for your bot
-/setabouttext - Set an about text for your bot
-/setuserpic - Set a profile picture for your bot
-/setcommands - Set up command menu
-```
-
-#### Recommended Commands Setup
-
-Send `/setcommands` to BotFather and configure these commands:
-
-```
-start - Initialize bot and get setup instructions
-help - Show available commands and usage
-memo - Create a new memo
-search - Search existing memos
-recent - Show recent memos
-settings - Configure bot preferences
-```
-
-## Memos API Setup
-
-### Step 1: Create API Token
+## Step 2: Get Your Memos Access Token
 
 1. **Login to Memos** web interface
 2. **Go to Settings** → **Access Tokens**
@@ -77,598 +49,265 @@ settings - Configure bot preferences
    - Name: "Telegram Bot"
    - Description: "Token for Telegram bot integration"
    - Expiration: Set appropriate expiry or leave blank for no expiry
-4. **Copy the token** - you'll need it for bot configuration
+4. **Copy the token** - you'll need it when starting the bot
 
-### Step 2: Test API Access
+## Step 3: Install and Run Memogram
 
-Verify your API token works correctly:
+### Option 1: Using Pre-built Binary
 
-```bash
-# Test API access
-curl -H "Authorization: Bearer YOUR_API_TOKEN" \
-     "https://your-memos-instance.com/api/v1/auth/status"
+Download the latest release from the [Memogram releases page](https://github.com/usememos/telegram-integration/releases):
 
-# Create test memo
-curl -X POST \
-     -H "Authorization: Bearer YOUR_API_TOKEN" \
-     -H "Content-Type: application/json" \
-     -d '{"content": "Test memo from API"}' \
-     "https://your-memos-instance.com/api/v1/memos"
-```
+1. **Download** the appropriate binary for your operating system (latest version: v0.3.0)
+   - Linux: `memogram_v0.3.0_linux_amd64.tar.gz`
+   - macOS: `memogram_v0.3.0_darwin_arm64.tar.gz` (Apple Silicon) or `memogram_v0.3.0_darwin_amd64.tar.gz` (Intel)
+   - Windows: `memogram_v0.3.0_windows_amd64.tar.gz`
 
-## Bot Implementation
+2. **Extract** the archive and navigate to the directory
 
-### Option 1: Using Existing Bot Scripts
-
-Several community-developed Telegram bots are available for Memos integration.
-
-#### Python Bot Example
-
-```python
-import os
-import requests
-from telegram import Update
-from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
-
-# Configuration
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
-MEMOS_API_URL = os.getenv('MEMOS_API_URL', 'https://your-memos-instance.com')
-MEMOS_API_TOKEN = os.getenv('MEMOS_API_TOKEN')
-
-class MemosBot:
-    def __init__(self):
-        self.headers = {
-            'Authorization': f'Bearer {MEMOS_API_TOKEN}',
-            'Content-Type': 'application/json'
-        }
-    
-    async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """Send welcome message with setup instructions."""
-        welcome_text = """
-🎉 Welcome to Memos Bot!
-
-I can help you create and manage memos directly from Telegram.
-
-*Available Commands:*
-• Send any message to create a memo
-• /help - Show this help message
-• /recent - Show your recent memos
-• /search <query> - Search your memos
-
-*Getting Started:*
-Just send me a message and I'll create a memo for you!
-        """
-        await update.message.reply_text(welcome_text, parse_mode='Markdown')
-    
-    async def help_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """Show help information."""
-        help_text = """
-🤖 *Memos Bot Commands*
-
-*Creating Memos:*
-• Send any text message to create a memo
-• Forward messages to save them as memos
-• Send photos with captions to create visual memos
-• Send documents to attach them to memos
-
-*Managing Memos:*
-• `/recent` - Show your 5 most recent memos
-• `/search <query>` - Search memos by content
-• `/settings` - Configure bot preferences
-
-*Examples:*
-📝 `Meeting notes: Discussed project timeline`
-🏷️ `#important Remember to backup database`
-📸 Send a photo with caption to create visual memo
-
-Need help? Visit: https://your-memos-instance.com/docs
-        """
-        await update.message.reply_text(help_text, parse_mode='Markdown')
-    
-    async def create_memo(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """Create a memo from message content."""
-        try:
-            # Get message content
-            content = update.message.text
-            if not content:
-                await update.message.reply_text("❌ Empty messages cannot be saved as memos.")
-                return
-            
-            # Add metadata
-            user_info = update.effective_user
-            metadata = f"\n\n*Source:* Telegram Bot\n*User:* @{user_info.username or user_info.first_name}"
-            full_content = content + metadata
-            
-            # Create memo via API
-            response = requests.post(
-                f'{MEMOS_API_URL}/api/v1/memos',
-                headers=self.headers,
-                json={'content': full_content}
-            )
-            
-            if response.status_code == 200:
-                memo = response.json()
-                await update.message.reply_text(
-                    f"✅ Memo created successfully!\n🆔 ID: {memo.get('id')}"
-                )
-            else:
-                await update.message.reply_text(
-                    f"❌ Failed to create memo. Status: {response.status_code}"
-                )
-                
-        except Exception as e:
-            await update.message.reply_text(f"❌ Error creating memo: {str(e)}")
-    
-    async def search_memos(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """Search existing memos."""
-        try:
-            query = ' '.join(context.args)
-            if not query:
-                await update.message.reply_text("❌ Please provide search query: `/search your query`", parse_mode='Markdown')
-                return
-            
-            # Search via API
-            response = requests.get(
-                f'{MEMOS_API_URL}/api/v1/search',
-                headers=self.headers,
-                params={'q': query, 'limit': 5}
-            )
-            
-            if response.status_code == 200:
-                results = response.json()
-                if results['data']:
-                    message = f"🔍 *Search results for:* `{query}`\n\n"
-                    for memo in results['data'][:5]:
-                        preview = memo['content'][:100] + "..." if len(memo['content']) > 100 else memo['content']
-                        message += f"📝 *ID {memo['id']}*\n{preview}\n\n"
-                    await update.message.reply_text(message, parse_mode='Markdown')
-                else:
-                    await update.message.reply_text(f"❌ No memos found for query: `{query}`", parse_mode='Markdown')
-            else:
-                await update.message.reply_text("❌ Search failed. Please try again later.")
-                
-        except Exception as e:
-            await update.message.reply_text(f"❌ Search error: {str(e)}")
-    
-    async def recent_memos(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """Show recent memos."""
-        try:
-            response = requests.get(
-                f'{MEMOS_API_URL}/api/v1/memos',
-                headers=self.headers,
-                params={'limit': 5}
-            )
-            
-            if response.status_code == 200:
-                memos = response.json()['data']
-                if memos:
-                    message = "📋 *Your Recent Memos:*\n\n"
-                    for memo in memos:
-                        preview = memo['content'][:100] + "..." if len(memo['content']) > 100 else memo['content']
-                        date = memo['createTime'][:10]  # Extract date
-                        message += f"📝 *{date}* (ID: {memo['id']})\n{preview}\n\n"
-                    await update.message.reply_text(message, parse_mode='Markdown')
-                else:
-                    await update.message.reply_text("📝 No memos found. Create your first memo by sending me a message!")
-            else:
-                await update.message.reply_text("❌ Failed to retrieve memos.")
-                
-        except Exception as e:
-            await update.message.reply_text(f"❌ Error retrieving memos: {str(e)}")
-
-def main():
-    """Start the bot."""
-    bot = MemosBot()
-    application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
-    
-    # Command handlers
-    application.add_handler(CommandHandler("start", bot.start))
-    application.add_handler(CommandHandler("help", bot.help_command))
-    application.add_handler(CommandHandler("search", bot.search_memos))
-    application.add_handler(CommandHandler("recent", bot.recent_memos))
-    
-    # Message handler (for creating memos)
-    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, bot.create_memo))
-    
-    # Start bot
-    print("🤖 Memos Telegram Bot is starting...")
-    application.run_polling()
-
-if __name__ == '__main__':
-    main()
-```
-
-#### Installation and Setup
+3. **Create a `.env` file** in the same directory:
 
 ```bash
-# Create bot directory
-mkdir memos-telegram-bot
-cd memos-telegram-bot
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install python-telegram-bot requests
-
-# Create environment file
-cat > .env << EOF
-TELEGRAM_BOT_TOKEN=123456789:ABCdefGHIjklMNOpqrsTUVwxyZ
-MEMOS_API_URL=https://your-memos-instance.com
-MEMOS_API_TOKEN=your-memos-api-token
-EOF
-
-# Save the bot script as bot.py and run
-python bot.py
+SERVER_ADDR=dns:localhost:5230
+BOT_TOKEN=your_telegram_bot_token
+BOT_PROXY_ADDR=
+ALLOWED_USERNAMES=
 ```
 
-### Option 2: Docker Deployment
+4. **Run the executable**:
 
-Create a containerized bot deployment:
-
-```dockerfile
-# Dockerfile
-FROM python:3.11-slim
-
-WORKDIR /app
-
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-
-COPY bot.py .
-
-CMD ["python", "bot.py"]
+```bash
+./memogram
 ```
+
+### Option 2: Using Docker
+
+Run Memogram as a Docker container:
+
+```bash
+docker run -d --name memogram \
+  -e SERVER_ADDR=dns:your-memos-host:5230 \
+  -e BOT_TOKEN=your_telegram_bot_token \
+  ghcr.io/usememos/memogram:latest
+```
+
+Or build the image yourself:
+
+```bash
+# Clone the repository
+git clone https://github.com/usememos/telegram-integration
+cd telegram-integration
+
+# Build the image
+docker build -t memogram .
+
+# Run the container
+docker run -d --name memogram \
+  -e SERVER_ADDR=dns:localhost:5230 \
+  -e BOT_TOKEN=your_telegram_bot_token \
+  memogram
+```
+
+### Option 3: Using Docker Compose
+
+Create a `docker-compose.yml` file:
 
 ```yaml
-# docker-compose.yml
-version: '3.8'
-
 services:
-  memos-telegram-bot:
-    build: .
+  memogram:
+    image: ghcr.io/usememos/memogram:latest
+    container_name: memogram
     environment:
-      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
-      - MEMOS_API_URL=${MEMOS_API_URL}
-      - MEMOS_API_TOKEN=${MEMOS_API_TOKEN}
+      - SERVER_ADDR=dns:memos:5230
+      - BOT_TOKEN=your_telegram_bot_token
     restart: unless-stopped
-    depends_on:
-      - memos
 
   memos:
-    image: neosmemo/memos:stable
-    # ... your memos configuration
+    image: neosmemo/memos:latest
+    container_name: memos
+    ports:
+      - "5230:5230"
+    volumes:
+      - ./memos:/var/opt/memos
+    restart: unless-stopped
 ```
 
-```txt
-# requirements.txt
-python-telegram-bot==20.6
-requests==2.31.0
-python-dotenv==1.0.0
-```
-
-## Advanced Features
-
-### Media Support
-
-Handle different types of media from Telegram:
-
-```python
-async def handle_photo(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Handle photo messages."""
-    try:
-        # Get largest photo
-        photo = update.message.photo[-1]
-        file = await context.bot.get_file(photo.file_id)
-        
-        # Download photo
-        photo_data = await file.download_as_bytearray()
-        
-        # Upload to Memos
-        files = {'file': ('photo.jpg', photo_data, 'image/jpeg')}
-        response = requests.post(
-            f'{MEMOS_API_URL}/api/v1/resources',
-            headers={'Authorization': f'Bearer {MEMOS_API_TOKEN}'},
-            files=files
-        )
-        
-        if response.status_code == 200:
-            resource = response.json()
-            # Create memo with image
-            caption = update.message.caption or "Photo from Telegram"
-            content = f"{caption}\n\n![Photo](/api/v1/resources/{resource['id']})"
-            
-            memo_response = requests.post(
-                f'{MEMOS_API_URL}/api/v1/memos',
-                headers=self.headers,
-                json={'content': content}
-            )
-            
-            if memo_response.status_code == 200:
-                await update.message.reply_text("✅ Photo memo created successfully!")
-            else:
-                await update.message.reply_text("❌ Failed to create photo memo.")
-        else:
-            await update.message.reply_text("❌ Failed to upload photo.")
-            
-    except Exception as e:
-        await update.message.reply_text(f"❌ Error processing photo: {str(e)}")
-
-# Add to application
-application.add_handler(MessageHandler(filters.PHOTO, bot.handle_photo))
-```
-
-### Voice Message Support
-
-```python
-async def handle_voice(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Handle voice messages."""
-    try:
-        voice = update.message.voice
-        file = await context.bot.get_file(voice.file_id)
-        voice_data = await file.download_as_bytearray()
-        
-        # Upload voice note
-        files = {'file': ('voice.ogg', voice_data, 'audio/ogg')}
-        response = requests.post(
-            f'{MEMOS_API_URL}/api/v1/resources',
-            headers={'Authorization': f'Bearer {MEMOS_API_TOKEN}'},
-            files=files
-        )
-        
-        if response.status_code == 200:
-            resource = response.json()
-            content = f"🎤 Voice message from Telegram\n\n[Voice Note](/api/v1/resources/{resource['id']})"
-            
-            memo_response = requests.post(
-                f'{MEMOS_API_URL}/api/v1/memos',
-                headers=self.headers,
-                json={'content': content}
-            )
-            
-            if memo_response.status_code == 200:
-                await update.message.reply_text("✅ Voice memo created successfully!")
-        
-    except Exception as e:
-        await update.message.reply_text(f"❌ Error processing voice: {str(e)}")
-```
-
-### Scheduled Reminders
-
-```python
-async def set_reminder(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Set a reminder for a memo."""
-    try:
-        if len(context.args) < 2:
-            await update.message.reply_text("Usage: `/remind <time> <message>`", parse_mode='Markdown')
-            return
-        
-        time_str = context.args[0]
-        message = ' '.join(context.args[1:])
-        
-        # Parse time (simplified - you can enhance this)
-        if time_str.endswith('m'):
-            minutes = int(time_str[:-1])
-            reminder_time = datetime.now() + timedelta(minutes=minutes)
-        elif time_str.endswith('h'):
-            hours = int(time_str[:-1])
-            reminder_time = datetime.now() + timedelta(hours=hours)
-        else:
-            await update.message.reply_text("❌ Time format: 30m (minutes) or 2h (hours)")
-            return
-        
-        # Schedule reminder (you can use APScheduler or similar)
-        context.job_queue.run_once(
-            lambda ctx: ctx.bot.send_message(
-                chat_id=update.effective_chat.id,
-                text=f"⏰ Reminder: {message}"
-            ),
-            reminder_time
-        )
-        
-        await update.message.reply_text(f"⏰ Reminder set for {reminder_time.strftime('%H:%M')}")
-        
-    except Exception as e:
-        await update.message.reply_text(f"❌ Error setting reminder: {str(e)}")
-```
-
-## Security Considerations
-
-### Bot Security
-
-<Callout type="warning">
-**Security Best Practices**: Implement proper authentication and access controls for production deployments.
-</Callout>
-
-```python
-# User authentication
-AUTHORIZED_USERS = os.getenv('AUTHORIZED_USERS', '').split(',')
-
-def authorized_only(func):
-    """Decorator to restrict bot access to authorized users."""
-    async def wrapper(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        user_id = str(update.effective_user.id)
-        username = update.effective_user.username
-        
-        if AUTHORIZED_USERS and user_id not in AUTHORIZED_USERS and username not in AUTHORIZED_USERS:
-            await update.message.reply_text("❌ Unauthorized access. Contact administrator.")
-            return
-        
-        return await func(self, update, context)
-    return wrapper
-
-# Apply to sensitive commands
-@authorized_only
-async def admin_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-    # Admin functionality here
-    pass
-```
-
-### Token Management
+Then start both services:
 
 ```bash
-# Environment-based configuration
-export TELEGRAM_BOT_TOKEN="your-bot-token"
-export MEMOS_API_TOKEN="your-api-token"
-export AUTHORIZED_USERS="user1,user2,123456789"
-
-# Secure token storage
-echo "TELEGRAM_BOT_TOKEN=your-token" > .env
-chmod 600 .env
+docker compose up -d
 ```
 
-## Monitoring and Logging
+## Configuration
 
-### Bot Monitoring
+### Environment Variables
 
-```python
-import logging
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `SERVER_ADDR` | Yes | gRPC server address where Memos is running (e.g., `dns:localhost:5230`) |
+| `BOT_TOKEN` | Yes | Your Telegram bot token from BotFather |
+| `BOT_PROXY_ADDR` | No | Optional proxy address for Telegram API (useful in restricted regions) |
+| `ALLOWED_USERNAMES` | No | Comma-separated list of allowed Telegram usernames (without @ symbol) |
 
-# Configure logging
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO,
-    handlers=[
-        logging.FileHandler('/var/log/memos-bot.log'),
-        logging.StreamHandler()
-    ]
-)
-logger = logging.getLogger(__name__)
+### Server Address Format
 
-# Add logging to functions
-async def create_memo(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_info = update.effective_user
-    logger.info(f"User {user_info.username} ({user_info.id}) creating memo")
-    
-    try:
-        # ... memo creation logic
-        logger.info(f"Memo created successfully for user {user_info.id}")
-    except Exception as e:
-        logger.error(f"Failed to create memo for user {user_info.id}: {str(e)}")
+The `SERVER_ADDR` follows [gRPC Name Resolution](https://github.com/grpc/grpc/blob/master/doc/naming.md) format:
+
+- **Local instance**: `dns:localhost:5230`
+- **Remote instance**: `dns:memos.example.com:5230`
+- **Docker network**: `dns:memos:5230` (if using Docker Compose)
+
+### Restricting Access
+
+To restrict bot usage to specific users, set `ALLOWED_USERNAMES`:
+
+```bash
+ALLOWED_USERNAMES=alice,bob,charlie
 ```
 
-### Health Checks
+**Important notes:**
+- Usernames must not include the @ symbol
+- Users must have a username set in their Telegram account
+- Unauthorized users will receive an error message: "you are not authorized to use this bot"
+- Leave empty to allow all users
 
-```python
-async def health_check(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Check bot and API health."""
-    try:
-        # Test Memos API
-        response = requests.get(
-            f'{MEMOS_API_URL}/api/v1/auth/status',
-            headers=self.headers,
-            timeout=5
-        )
-        
-        if response.status_code == 200:
-            await update.message.reply_text("✅ Bot and API are healthy!")
-        else:
-            await update.message.reply_text(f"⚠️ API health check failed: {response.status_code}")
-            
-    except Exception as e:
-        await update.message.reply_text(f"❌ Health check failed: {str(e)}")
+## Usage
+
+### Starting the Bot
+
+Once Memogram is running, open Telegram and search for your bot:
+
+1. **Start conversation** by sending `/start <access_token>`
+   - Replace `<access_token>` with your Memos access token
+   - Example: `/start memo_AbC123XyZ456...`
+
+2. **Verify connection** - the bot will confirm successful authentication
+
+### Available Commands
+
+- `/start <access_token>` - Initialize the bot with your Memos access token
+- `/search <words>` - Search for memos containing specific words
+- Send any text message - Creates a new memo with that content
+- Send photos/documents - Saves files as resources attached to a memo
+
+### Creating Memos
+
+Simply send any message to the bot, and it will be saved as a memo in your Memos instance:
+
+- **Text messages** → Saved as memo content
+- **Photos** → Attached as resources
+- **Documents** → Attached as resources
+- **Voice notes** → Handled based on Telegram's file type
+
+### Searching Memos
+
+Use the search command to find existing memos:
+
+```
+/search meeting notes
+/search project idea
+/search #tag
 ```
 
 ## Troubleshooting
 
-### Common Issues
+### Bot Not Responding
 
-#### Bot Not Responding
+If the bot doesn't respond, check the following:
+
+1. **Verify bot token**: Make sure your `BOT_TOKEN` is correct
+2. **Check server address**: Ensure `SERVER_ADDR` points to the correct Memos gRPC server
+3. **View logs**: Check Memogram logs for error messages
+4. **Test connectivity**: Verify network connection between Memogram and Memos
 
 ```bash
-# Check bot logs
-tail -f /var/log/memos-bot.log
+# If running with Docker, check logs
+docker logs memogram
 
-# Test bot token
-curl -X GET "https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getMe"
-
-# Verify webhook (if using webhooks)
-curl -X GET "https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getWebhookInfo"
+# Test if Memos gRPC server is accessible
+telnet your-memos-host 5230
 ```
 
-#### API Connection Issues
+### Authentication Errors
 
-```python
-# Test API connectivity
-def test_api_connection():
-    try:
-        response = requests.get(
-            f'{MEMOS_API_URL}/api/v1/auth/status',
-            headers={'Authorization': f'Bearer {MEMOS_API_TOKEN}'},
-            timeout=10
-        )
-        print(f"API Status: {response.status_code}")
-        print(f"Response: {response.text}")
-    except Exception as e:
-        print(f"API Connection Error: {e}")
+If you receive authentication errors:
 
-# Run test
-test_api_connection()
+1. **Verify access token**: Make sure the token is still valid in Memos Settings → Access Tokens
+2. **Re-authenticate**: Send `/start <new_access_token>` with a fresh token
+3. **Check permissions**: Ensure the access token has sufficient permissions
+
+### Connection Issues
+
+If Memogram can't connect to Memos:
+
+1. **Check gRPC port**: Default is 5230, ensure it's accessible
+2. **Firewall rules**: Verify firewall allows connections to port 5230
+3. **Docker networking**: If using Docker, ensure containers are on the same network
+4. **Proxy settings**: If in a restricted region, configure `BOT_PROXY_ADDR`
+
+### User Authorization
+
+If receiving "not authorized" messages:
+
+1. **Check username**: Ensure your Telegram account has a username set
+2. **Verify allowed list**: Check that your username is in `ALLOWED_USERNAMES` (if configured)
+3. **Case sensitivity**: Usernames are case-sensitive, verify exact spelling
+
+## Advanced Configuration
+
+### Using a Proxy
+
+If Telegram API is blocked in your region, configure a proxy:
+
+```bash
+BOT_PROXY_ADDR=https://api.your-proxy.com
 ```
 
-### Debug Mode
+### Security Best Practices
 
-```python
-# Enable debug logging
-logging.getLogger("httpx").setLevel(logging.WARNING)
-logging.getLogger("telegram").setLevel(logging.DEBUG)
+- **Use access tokens with expiration** for better security
+- **Restrict to specific users** via `ALLOWED_USERNAMES` in production
+- **Rotate tokens regularly** and update bot configuration
+- **Monitor bot logs** for suspicious activity
+- **Use secure connections** (TLS/SSL) for Memos server
 
-# Add debug information
-async def debug_info(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Show debug information."""
-    user = update.effective_user
-    chat = update.effective_chat
-    
-    debug_text = f"""
-🐛 *Debug Information*
+### Running as a System Service
 
-*User:* {user.first_name} {user.last_name or ''}
-*Username:* @{user.username or 'None'}
-*User ID:* `{user.id}`
-*Chat ID:* `{chat.id}`
-*Chat Type:* {chat.type}
+For production deployments, run Memogram as a systemd service on Linux:
 
-*Bot Status:* Running
-*API URL:* `{MEMOS_API_URL}`
-*Token Valid:* {bool(MEMOS_API_TOKEN)}
-    """
-    await update.message.reply_text(debug_text, parse_mode='Markdown')
+```ini
+# /etc/systemd/system/memogram.service
+[Unit]
+Description=Memogram Telegram Bot
+After=network.target
+
+[Service]
+Type=simple
+User=memogram
+WorkingDirectory=/opt/memogram
+EnvironmentFile=/opt/memogram/.env
+ExecStart=/opt/memogram/memogram
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
 ```
 
-## Best Practices
+Enable and start the service:
 
-### Performance Optimization
+```bash
+sudo systemctl enable memogram
+sudo systemctl start memogram
+sudo systemctl status memogram
+```
 
-- **Use async/await** for API calls to avoid blocking
-- **Implement rate limiting** to prevent API abuse
-- **Cache frequent API responses** to reduce load
-- **Use connection pooling** for HTTP requests
-- **Implement proper error handling** and retries
+## Resources
 
-### User Experience
-
-- **Provide clear commands** and help documentation
-- **Use emoji and formatting** for better readability
-- **Implement command shortcuts** for frequent actions
-- **Add confirmation messages** for important operations
-- **Support message editing** and deletion
-
-### Maintenance
-
-- **Monitor bot uptime** and performance
-- **Regularly update** dependencies and tokens
-- **Backup bot configuration** and logs
-- **Test bot functionality** after Memos updates
-- **Document custom modifications** and configurations
-
-## Next Steps
-
-- [Set up webhooks](/docs/integrations/webhooks) for real-time notifications
-- [Configure API authentication](https://memos.apidocumentation.com) for enhanced security
-- [Explore other integrations](/docs/integrations) to extend Memos functionality
-- [Monitor your setup](/docs/configuration) for optimal performance
+- **Source Code**: [github.com/usememos/telegram-integration](https://github.com/usememos/telegram-integration)
+- **Latest Release**: [Memogram v0.3.0](https://github.com/usememos/telegram-integration/releases/latest)
+- **Issues & Support**: [GitHub Issues](https://github.com/usememos/telegram-integration/issues)
+- **Memos Discussions**: [GitHub Discussions](https://github.com/usememos/memos/discussions)
 
 ---
 
-Need help with Telegram bot integration? Ask in [GitHub Discussions](https://github.com/usememos/memos/discussions) or check [GitHub Issues](https://github.com/usememos/memos/issues) for troubleshooting help.
+Need help? Check the [Memogram repository](https://github.com/usememos/telegram-integration) or ask in the [Memos community](https://github.com/usememos/memos/discussions).
