@@ -14,13 +14,13 @@ import {
   PackageIcon,
   CheckIcon,
   XIcon,
-  TerminalIcon,
   Rocket,
 } from "lucide-react";
 import { HeroSection } from "@/components/hero-section";
 import { FeatureCard } from "@/components/feature-card";
 import { StatsCard } from "@/components/stats-card";
 import { SponsorsSection } from "@/components/sponsors-section";
+import { DockerCommand } from "@/components/docker-command";
 import { Footer } from "@/components/footer";
 import type { Metadata } from "next";
 
@@ -254,22 +254,7 @@ export default function HomePage() {
           </div>
 
           <div className="max-w-3xl mx-auto">
-            <div className="group bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl sm:rounded-2xl overflow-hidden hover:border-teal-200 dark:hover:border-teal-600 hover:shadow-xl transition-all duration-300">
-              <div className="p-6 sm:p-8 border-b border-gray-100 dark:border-gray-800">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="inline-flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20 text-teal-600 dark:text-teal-400 rounded-lg group-hover:scale-110 transition-transform duration-300">
-                    <TerminalIcon className="w-5 h-5 sm:w-6 sm:h-6" />
-                  </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100">Docker</h3>
-                </div>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">One command to start your Memos instance</p>
-              </div>
-              <div className="bg-gray-900 dark:bg-black p-6 sm:p-8">
-                <pre className="text-xs sm:text-sm text-gray-100 overflow-x-auto">
-                  <code>docker run -d --name memos \{"\n"}  -p 5230:5230 \{"\n"}  -v ~/.memos/:/var/opt/memos \{"\n"}  ghcr.io/usememos/memos:stable</code>
-                </pre>
-              </div>
-            </div>
+            <DockerCommand />
           </div>
 
           <div className="mt-8 sm:mt-10 text-center">
