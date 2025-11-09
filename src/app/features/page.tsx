@@ -49,6 +49,9 @@ export const metadata: Metadata = {
     "export",
     "keyboard shortcuts",
   ],
+  alternates: {
+    canonical: "https://usememos.com/features",
+  },
   openGraph: {
     title: "Memos Features - Privacy-First Note Taking",
     description:
@@ -57,7 +60,7 @@ export const metadata: Metadata = {
     siteName: "Memos",
     images: [
       {
-        url: "/demo.png",
+        url: "https://usememos.com/demo.png",
         width: 1200,
         height: 630,
         alt: "Memos Features Overview",

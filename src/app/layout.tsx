@@ -21,6 +21,9 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "https://usememos.com",
+    types: {
+      "application/rss+xml": "https://usememos.com/blog/feed.xml",
+    },
   },
   openGraph: {
     type: "website",

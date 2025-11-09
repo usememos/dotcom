@@ -7,6 +7,9 @@ import { Footer } from "@/components/footer";
 export const metadata: Metadata = {
   title: "Privacy Policy - Memos",
   description: "Memos privacy policy - We collect nothing. Zero tracking, zero analytics. Your data stays on your server.",
+  alternates: {
+    canonical: "https://usememos.com/privacy",
+  },
 };
 
 export default function PrivacyPage() {

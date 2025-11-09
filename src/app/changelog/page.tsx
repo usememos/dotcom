@@ -12,6 +12,24 @@ export const revalidate = 1800;
 export const metadata: Metadata = {
   title: "Changelogs",
   description: "Stay up to date with new features, improvements, and bug fixes in Memos.",
+  alternates: {
+    canonical: "https://usememos.com/changelog",
+  },
+  openGraph: {
+    title: "Memos Changelog - Release Notes & Updates",
+    description: "Stay up to date with new features, improvements, and bug fixes in Memos.",
+    url: "https://usememos.com/changelog",
+    siteName: "Memos",
+    images: [
+      {
+        url: "https://usememos.com/demo.png",
+        width: 1200,
+        height: 630,
+        alt: "Memos Changelog",
+      },
+    ],
+    type: "website",
+  },
 };
 
 export default function ChangelogPage() {
