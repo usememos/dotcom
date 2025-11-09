@@ -1,13 +1,13 @@
 ---
 title: Content Syntax
-description: Master Markdown and Memos-specific syntax for rich, formatted content.
+description: Master Markdown syntax for rich, formatted content in Memos.
 ---
 
-Memos supports rich content formatting through GitHub-flavored Markdown with additional enhancements. This guide covers everything from basic formatting to advanced features.
+Memos supports rich content formatting through **CommonMark** and **GitHub Flavored Markdown (GFM)** with a custom tag syntax. This guide covers all supported formatting options.
 
-## Basic Markdown
+## Basic Text Formatting
 
-### Text Formatting
+### Emphasis and Styling
 
 ```markdown
 **Bold text** or __Bold text__
@@ -16,17 +16,23 @@ Memos supports rich content formatting through GitHub-flavored Markdown with add
 ~~Strikethrough text~~
 `Inline code`
 
-This is a paragraph with **bold**, *italic*, and `code` text.
+Combine formatting: **bold with *nested italic* text**
 ```
 
 **Result:**
 **Bold text**, *Italic text*, ***Bold and italic***, ~~Strikethrough text~~, `Inline code`
 
-### Headers
+<Callout type="info">
+Strikethrough (`~~text~~`) is part of GitHub Flavored Markdown (GFM).
+</Callout>
+
+## Headers
+
+Headers create structure and improve readability:
 
 ```markdown
 # Header 1
-## Header 2  
+## Header 2
 ### Header 3
 #### Header 4
 ##### Header 5
@@ -34,46 +40,63 @@ This is a paragraph with **bold**, *italic*, and `code` text.
 ```
 
 <Callout type="tip">
-Headers automatically generate anchor links for easy linking and navigation.
+Use headers to organize your content hierarchically. Headers automatically generate anchor links for navigation.
 </Callout>
 
-### Lists
+## Lists
 
-#### Unordered Lists
+### Unordered Lists
+
+Create bullet lists using `-`, `*`, or `+`:
 
 ```markdown
-- Item 1
-- Item 2
+- First item
+- Second item
   - Nested item
   - Another nested item
-- Item 3
+    - Deeply nested
+- Third item
 
-* Alternative syntax
-+ Another alternative
+* Alternative syntax with asterisks
++ Alternative syntax with plus signs
 ```
 
-#### Ordered Lists
+**Result:**
+- First item
+- Second item
+  - Nested item
+  - Another nested item
+- Third item
+
+### Ordered Lists
 
 ```markdown
 1. First item
 2. Second item
-   1. Nested item
+   1. Nested ordered item
    2. Another nested item
 3. Third item
 
-1. Lists can start with any number
-5. The numbers don't need to be sequential
-2. Markdown will auto-number them
+1. Numbers auto-increment
+1. So you can use 1 for all
+1. And markdown handles numbering
 ```
 
-#### Task Lists
+**Result:**
+1. First item
+2. Second item
+3. Third item
+
+### Task Lists (GFM)
+
+Create checkable task lists:
 
 ```markdown
 - [x] Completed task
 - [ ] Incomplete task
 - [x] Another completed task
-  - [ ] Nested task
-  - [x] Completed nested task
+  - [ ] Nested incomplete task
+  - [x] Nested completed task
 ```
 
 **Result:**
@@ -81,74 +104,84 @@ Headers automatically generate anchor links for easy linking and navigation.
 - [ ] Incomplete task
 - [x] Another completed task
 
-### Links and References
+<Callout type="success">
+Task lists are great for tracking progress in project notes, meeting agendas, and to-do items.
+</Callout>
 
-#### Basic Links
+## Links
+
+### Basic Links
 
 ```markdown
 [Link text](https://example.com)
-[Link with title](https://example.com "Tooltip text")
+[Link with title](https://example.com "Tooltip on hover")
 
-Auto-links: https://example.com
-Email links: <email@example.com>
+Autolinks: https://usememos.com
+Email: <contact@example.com>
 ```
 
-#### Reference Links
+**Result:**
+[Link text](https://example.com), https://usememos.com
+
+### Reference-Style Links
+
+For cleaner markdown when using the same link multiple times:
 
 ```markdown
-[Link text][reference-id]
-[Another link][1]
+[Memos documentation][docs]
+[Another reference to docs][docs]
 
-[reference-id]: https://example.com
-[1]: https://example.com "Optional title"
+[docs]: https://usememos.com/docs "Memos Docs"
 ```
 
-#### Internal Links
+### Internal Links
+
+Link to other sections or pages:
 
 ```markdown
-[Other memo](/docs/guides/getting-started)
-[Specific section](/docs/guides/content-syntax#headers)
+[Getting Started Guide](/docs/guides/getting-started)
+[Link to specific section](#headers)
 ```
 
-### Images
+## Images
 
-#### Basic Images
+### Basic Image Syntax
 
 ```markdown
 ![Alt text](https://example.com/image.png)
-![Alt text](https://example.com/image.png "Optional title")
+![Image with title](https://example.com/image.png "Image tooltip")
 ```
 
-#### Image with Link
+### Linked Images
+
+Make images clickable:
 
 ```markdown
-[![Alt text](image.png)](https://example.com)
+[![Screenshot](image.png)](https://example.com)
 ```
 
 <Callout type="info">
-**Image Storage**: Upload images directly to your Memos instance or reference external URLs.
+**Image Storage**: Upload images directly to your Memos instance. Supported formats include PNG, JPG, GIF, and WebP.
 </Callout>
 
-## Code and Syntax Highlighting
+## Code
 
 ### Inline Code
 
+Use backticks for inline code:
+
 ```markdown
-Use `const` for constant values.
-File paths like `/etc/hosts` are formatted as code.
+Use `const` instead of `var` in JavaScript.
+Configuration file: `/etc/memos/config.yaml`
+Press `Ctrl+S` to save.
 ```
+
+**Result:**
+Use `const` instead of `var` in JavaScript.
 
 ### Code Blocks
 
-#### Basic Code Blocks
-
-````markdown
-```
-Plain code block without syntax highlighting
-```
-````
-
-#### With Syntax Highlighting
+Create multi-line code blocks with syntax highlighting:
 
 ````markdown
 ```javascript
@@ -161,14 +194,25 @@ console.log(message);
 ```
 ````
 
-#### Supported Languages
+**Result:**
 
-Popular languages supported:
+```javascript
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+
+const message = greet('World');
+console.log(message);
+```
+
+### Supported Languages
+
+Common syntax highlighting languages:
 
 ````markdown
 ```bash
 #!/bin/bash
-echo "Shell script"
+echo "Shell script example"
 ```
 
 ```python
@@ -177,7 +221,7 @@ def hello_world():
 ```
 
 ```sql
-SELECT * FROM users WHERE active = true;
+SELECT * FROM memos WHERE visibility = 'public';
 ```
 
 ```yaml
@@ -185,49 +229,58 @@ version: '3.8'
 services:
   memos:
     image: neosmemo/memos:stable
+    ports:
+      - "5230:5230"
 ```
 
 ```json
 {
   "name": "memos",
-  "version": "1.0.0"
+  "version": "0.23.0",
+  "description": "Privacy-first note-taking service"
+}
+```
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello, Memos!")
+}
+```
+
+```typescript
+interface Memo {
+  id: string;
+  content: string;
+  createdAt: Date;
 }
 ```
 
 ```dockerfile
 FROM alpine:latest
-RUN apk add --no-cache ca-certificates
+RUN apk add --no-cache ca-certificates tzdata
+COPY memos /usr/local/bin/
+CMD ["memos"]
 ```
 ````
 
-#### Code Block Features
+<Callout type="tip">
+Specify the language after the opening backticks for automatic syntax highlighting.
+</Callout>
 
-````markdown
-```javascript title="example.js"
-// Code with title
-const greeting = "Hello World";
-```
+## Tables (GFM)
 
-```bash showLineNumbers
-# Code with line numbers
-npm install
-npm start
-```
-````
-
-## Advanced Formatting
-
-### Tables
+Create tables using pipes and hyphens:
 
 ```markdown
 | Column 1 | Column 2 | Column 3 |
 |----------|----------|----------|
 | Row 1    | Data     | More data |
 | Row 2    | Data     | More data |
-
-| Left | Center | Right |
-|:-----|:------:|------:|
-| L    |   C    |     R |
+| Row 3    | Data     | More data |
 ```
 
 **Result:**
@@ -237,26 +290,57 @@ npm start
 | Row 1    | Data     | More data |
 | Row 2    | Data     | More data |
 
-### Blockquotes
+### Column Alignment
+
+Control text alignment with colons:
+
+```markdown
+| Left Aligned | Center Aligned | Right Aligned |
+|:-------------|:--------------:|--------------:|
+| Left         | Center         | Right         |
+| Text         | Text           | Text          |
+```
+
+**Result:**
+
+| Left Aligned | Center Aligned | Right Aligned |
+|:-------------|:--------------:|--------------:|
+| Left         | Center         | Right         |
+| Text         | Text           | Text          |
+
+## Blockquotes
+
+Create quoted text blocks:
 
 ```markdown
 > This is a blockquote.
-> 
-> It can span multiple lines.
+>
+> It can span multiple paragraphs.
 
-> **Note:** You can use other markdown inside blockquotes.
-> 
+> **Pro Tip:** You can use other markdown inside blockquotes.
+>
 > - Including lists
-> - And other elements
+> - And other formatting
+> - Like **bold** and *italic*
 ```
 
 **Result:**
 
 > This is a blockquote.
-> 
-> It can span multiple lines.
+>
+> It can span multiple paragraphs.
 
-### Horizontal Rules
+### Nested Blockquotes
+
+```markdown
+> Level 1 quote
+>> Level 2 nested quote
+>>> Level 3 nested quote
+```
+
+## Horizontal Rules
+
+Create visual dividers:
 
 ```markdown
 Three or more hyphens:
@@ -269,210 +353,221 @@ Three or more underscores:
 ___
 ```
 
-## Memos-Specific Features
+All produce the same result:
 
-### Tags
+---
 
-Tags help organize and categorize your memos:
+## Tags (Memos Custom Syntax)
+
+Tags are Memos' primary organizational feature. Use the `#` symbol followed by tag name:
 
 ```markdown
 #work #project #urgent
-#personal #ideas
-#tech #programming #javascript
+#personal #ideas #journal
+#tech #programming #golang
+#meeting #2025 #q1
 ```
 
-#### Tag Best Practices
+### Tag Syntax Rules
 
+- Tags start with `#` followed by alphanumeric characters
+- No spaces allowed (use hyphens or underscores instead)
+- Case-sensitive (though lowercase is recommended)
+- Can include numbers: `#2025`, `#project-1`
+
+### Tag Organization Strategies
+
+**Flat structure:**
+```markdown
+#work #home #shopping #ideas
+```
+
+**Category-based:**
+```markdown
+#category-work #category-personal
+#type-task #type-note #type-reference
+```
+
+**Project-based:**
+```markdown
+#project-website #project-api #project-docs
+```
+
+**Time-based:**
+```markdown
+#2025 #2025-q1 #january #week-02
+```
+
+<Callout type="success" title="Tag Best Practices">
 - Use lowercase for consistency
-- Separate words with hyphens: `#project-alpha`
-- Create hierarchies: `#work/project/alpha`
-- Be specific but not overly granular
-
-### Mentions
-
-Reference other users or memos:
-
-```markdown
-@username mentioned in this memo
-Reference another memo: [[memo-title]]
-```
-
-### Special Syntax
-
-#### Timestamps
-
-```markdown
-Current time: {{NOW}}
-Specific date: {{2025-08-19}}
-```
-
-#### Variables
-
-```markdown
-{{VARIABLE_NAME}} will be replaced with defined values
-```
-
-## Mathematical Expressions
-
-Memos supports LaTeX-style mathematical notation:
-
-### Inline Math
-
-```markdown
-The quadratic formula is $x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}$.
-```
-
-### Block Math
-
-```markdown
-$$
-\begin{aligned}
-\nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} &= \frac{4\pi}{c}\vec{\mathbf{j}} \\
-\nabla \cdot \vec{\mathbf{E}} &= 4 \pi \rho \\
-\nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} &= \vec{\mathbf{0}} \\
-\nabla \cdot \vec{\mathbf{B}} &= 0
-\end{aligned}
-$$
-```
-
-## Diagrams with Mermaid
-
-Create diagrams using Mermaid syntax:
-
-### Flowcharts
-
-````markdown
-```mermaid
-graph TD
-    A[Start] --> B{Is it working?}
-    B -->|Yes| C[Great!]
-    B -->|No| D[Debug]
-    D --> B
-    C --> E[End]
-```
-````
-
-### Sequence Diagrams
-
-````markdown
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant M as Memos
-    participant D as Database
-    
-    U->>M: Create memo
-    M->>D: Save data
-    D-->>M: Confirm
-    M-->>U: Success response
-```
-````
-
-### Git Graphs
-
-````markdown
-```mermaid
-gitgraph
-    commit id: "Initial"
-    branch develop
-    checkout develop
-    commit id: "Feature A"
-    checkout main
-    commit id: "Hotfix"
-    checkout develop
-    commit id: "Feature B"
-    checkout main
-    merge develop
-```
-````
-
-## Embeds and Media
-
-### YouTube Videos
-
-```markdown
-![YouTube Video](https://www.youtube.com/watch?v=VIDEO_ID)
-```
-
-### External Content
-
-```markdown
-[Embed: Website Title](https://example.com)
-```
+- Create a tagging convention and stick to it
+- Avoid creating too many similar tags
+- Review and consolidate tags periodically
+- Use multi-word tags with hyphens: `#project-alpha`, `#team-meeting`
+</Callout>
 
 ## HTML Support
 
-Limited HTML is supported for advanced formatting:
+Memos supports safe HTML elements through GFM:
+
+### Collapsible Sections
 
 ```html
 <details>
 <summary>Click to expand</summary>
 
-This content is hidden by default.
+Hidden content goes here.
+
+You can use **Markdown** inside!
+
+</details>
+```
+
+**Result:**
+
+<details>
+<summary>Click to expand</summary>
+
+Hidden content goes here.
+
+You can use **Markdown** inside!
 
 </details>
 
-<kbd>Ctrl</kbd> + <kbd>C</kbd> for copy
+### Keyboard Keys
 
-<mark>Highlighted text</mark>
-
-<sub>Subscript</sub> and <sup>Superscript</sup>
+```html
+Press <kbd>Ctrl</kbd> + <kbd>S</kbd> to save
+Use <kbd>Cmd</kbd> + <kbd>K</kbd> for search
 ```
+
+**Result:**
+Press <kbd>Ctrl</kbd> + <kbd>S</kbd> to save
+
+### Text Formatting
+
+```html
+<mark>Highlighted text</mark>
+H<sub>2</sub>O (subscript)
+x<sup>2</sup> (superscript)
+```
+
+**Result:**
+<mark>Highlighted text</mark>, H<sub>2</sub>O, x<sup>2</sup>
+
+<Callout type="warn">
+Only safe HTML elements are allowed. Scripts and potentially dangerous tags are sanitized for security.
+</Callout>
+
+## Line Breaks
+
+### Hard Line Breaks
+
+End a line with two spaces or a backslash:
+
+```markdown
+Line one··
+Line two (two trailing spaces above)
+
+Line one\
+Line two (backslash above)
+```
+
+### Paragraph Breaks
+
+Leave a blank line between paragraphs:
+
+```markdown
+First paragraph.
+
+Second paragraph.
+```
+
+## Escaping Characters
+
+Escape special markdown characters with backslash:
+
+```markdown
+\*Not italic\*
+\#Not a tag
+\[Not a link\](url)
+\`Not code\`
+
+Use backslash before: \ ` * _ { } [ ] ( ) # + - . !
+```
+
+**Result:**
+\*Not italic\*, \#Not a tag
+
+## Quick Reference
+
+### Text Formatting
+
+| Element | Syntax | Example |
+|---------|--------|---------|
+| Bold | `**text**` | **bold** |
+| Italic | `*text*` | *italic* |
+| Strikethrough | `~~text~~` | ~~strikethrough~~ |
+| Inline Code | `` `text` `` | `code` |
+| Link | `[text](url)` | [link](#) |
+| Image | `![alt](url)` | ![image](#) |
+
+### Structure
+
+| Element | Syntax |
+|---------|--------|
+| Header 1 | `# text` |
+| Header 2 | `## text` |
+| Header 3 | `### text` |
+| Unordered List | `- item` |
+| Ordered List | `1. item` |
+| Task List | `- [ ] task` |
+| Blockquote | `> quote` |
+| Horizontal Rule | `---` |
+| Tag | `#tagname` |
+
+### Advanced
+
+| Element | Syntax |
+|---------|--------|
+| Table | `\| col \| col \|` |
+| Code Block | ```` ```lang ```` |
+| Details | `<details><summary>` |
+| Keyboard | `<kbd>key</kbd>` |
 
 ## Tips and Best Practices
 
 ### Writing Effective Memos
 
-1. **Use descriptive titles** - Make memos easy to find
-2. **Structure with headers** - Break up long content  
-3. **Tag consistently** - Develop a tagging strategy
-4. **Link related content** - Create connections between memos
+1. **Start with a clear first line** - This appears in previews and search results
+2. **Use headers for structure** - Break up longer content into scannable sections
+3. **Tag consistently** - Develop and maintain a tagging system
+4. **Format code properly** - Use code blocks with language specification
+5. **Link related memos** - Create connections for better knowledge management
 
-### Performance Tips
+### Formatting Tips
 
-1. **Optimize images** - Use appropriate file sizes
-2. **Limit large tables** - Break into smaller sections
-3. **Moderate math expressions** - Complex formulas can slow rendering
+1. **Keep it simple** - Don't over-format; focus on content
+2. **Use task lists for actionable items** - Track progress directly in memos
+3. **Tables for structured data** - Better than trying to format with spaces
+4. **Blockquotes for highlights** - Draw attention to important information
+5. **Horizontal rules sparingly** - Use to separate major sections
 
-### Accessibility
+### Performance and Readability
 
-1. **Use alt text for images** - Describe images for screen readers
-2. **Meaningful link text** - Avoid "click here" links
-3. **Proper heading hierarchy** - Use h1, h2, h3 logically
-4. **High contrast** - Ensure text is readable
+1. **Optimize images** - Compress images before uploading
+2. **Break up large tables** - Consider splitting very wide or long tables
+3. **Use meaningful alt text** - Helps with accessibility and context
+4. **Proper heading hierarchy** - Don't skip heading levels (h1 → h2 → h3)
+5. **Limit line length** - Shorter lines are easier to read
 
-<Callout type="success" title="Pro Tip">
-Use the preview mode while editing to see how your content will render before saving!
+<Callout type="success" title="Ready to Create?">
+Now that you know the syntax, start creating memos! Remember to use tags for organization and experiment with different formatting to find what works best for you.
 </Callout>
-
-## Quick Reference
-
-### Common Shortcuts
-
-| Element | Syntax |
-|---------|--------|
-| Bold | `**text**` |
-| Italic | `*text*` |
-| Code | `` `text` `` |
-| Link | `[text](url)` |
-| Image | `![alt](url)` |
-| Header | `# text` |
-| List | `- item` |
-| Task | `- [x] done` |
-| Tag | `#tag` |
-| Quote | `> text` |
-
-### Advanced Features
-
-| Feature | Syntax |
-|---------|--------|
-| Table | `\| col \| col \|` |
-| Code block | ```` ```lang ```` |
-| Math inline | `$formula$` |
-| Math block | `$$formula$$` |
-| Mermaid | ```` ```mermaid ```` |
-| HTML | `<tag>content</tag>` |
 
 ---
 
-Ready to put your formatting skills to practice? Create a new memo and experiment with different syntax elements. Check out the [keyboard shortcuts guide](/docs/guides/shortcuts) to speed up your writing workflow!
+**Related Guides:**
+- [Getting Started](/docs/guides/getting-started) - Set up Memos and create your first memo
+- [Keyboard Shortcuts](/docs/guides/shortcuts) - Speed up your workflow with shortcuts
+- [Organization Tips](/docs/guides/organization) - Learn effective tagging and linking strategies
