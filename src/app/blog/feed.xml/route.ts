@@ -41,7 +41,6 @@ export async function GET() {
       <guid isPermaLink="true">${postUrl}</guid>
       <pubDate>${pubDate}</pubDate>
       <description>${escapeXml(post.data.description || "")}</description>
-      ${post.data.feature_image ? `<enclosure url="${post.data.feature_image.startsWith("http") ? post.data.feature_image : `${BASE_URL}${post.data.feature_image}`}" type="image/jpeg" />` : ""}
       ${post.data.tags ? post.data.tags.map((tag) => `<category>${escapeXml(tag)}</category>`).join("\n      ") : ""}
     </item>`;
       })
