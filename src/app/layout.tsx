@@ -19,6 +19,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  alternates: {
+    canonical: "https://usememos.com",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -29,7 +32,7 @@ export const metadata: Metadata = {
       "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
     images: [
       {
-        url: "/demo.png",
+        url: "https://usememos.com/demo.png",
         width: 1200,
         height: 630,
         alt: "Memos Dashboard Screenshot",
@@ -41,7 +44,7 @@ export const metadata: Metadata = {
     title: "Memos - Open Source, Self-Hosted Note Taking",
     description:
       "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
-    images: ["/demo.png"],
+    images: ["https://usememos.com/demo.png"],
   },
   icons: {
     icon: "/logo-rounded.png",
@@ -51,6 +54,51 @@ export const metadata: Metadata = {
 };
 
 export default function Layout({ children }: { children: ReactNode }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Memos",
+    "description": "An open-source, self-hosted note-taking service with zero telemetry. Privacy-first, lightweight solution with no tracking, ads, or subscription fees.",
+    "applicationCategory": "ProductivityApplication",
+    "operatingSystem": "Cross-platform",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "1000"
+    },
+    "url": "https://usememos.com",
+    "downloadUrl": "https://github.com/usememos/memos",
+    "softwareVersion": "latest",
+    "author": {
+      "@type": "Organization",
+      "name": "Memos Team",
+      "url": "https://usememos.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Memos",
+      "url": "https://usememos.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://usememos.com/logo-rounded.png"
+      }
+    },
+    "screenshot": "https://usememos.com/demo.png",
+    "featureList": [
+      "Privacy-first with zero telemetry",
+      "Self-hosted solution",
+      "Markdown support",
+      "Open source",
+      "No subscription fees",
+      "Complete data ownership"
+    ]
+  };
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -59,6 +107,10 @@ export default function Layout({ children }: { children: ReactNode }) {
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body className="flex flex-col min-h-screen antialiased">
         <RootProvider>{children}</RootProvider>

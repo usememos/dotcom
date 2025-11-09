@@ -199,22 +199,35 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
   }
 
   const { data } = page;
+  const pageUrl = `https://usememos.com/blog/${slug}`;
+
+  // Ensure image URLs are absolute
+  const getAbsoluteImageUrl = (url: string | undefined) => {
+    if (!url) return undefined;
+    return url.startsWith('http') ? url : `https://usememos.com${url.startsWith('/') ? url : '/' + url}`;
+  };
+
+  const absoluteImageUrl = getAbsoluteImageUrl(data.feature_image);
 
   return {
     title: `${data.title} - Memos Blog`,
     description: data.description,
+    alternates: {
+      canonical: pageUrl,
+    },
     openGraph: {
       title: data.title,
       description: data.description,
       type: "article",
       publishedTime: data.published_at,
-      images: data.feature_image ? [data.feature_image] : undefined,
+      url: pageUrl,
+      images: absoluteImageUrl ? [absoluteImageUrl] : undefined,
     },
     twitter: {
       card: "summary_large_image",
       title: data.title,
       description: data.description,
-      images: data.feature_image ? [data.feature_image] : undefined,
+      images: absoluteImageUrl ? [absoluteImageUrl] : undefined,
     },
   };
 }

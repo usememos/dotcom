@@ -170,18 +170,23 @@ export async function generateMetadata({ params }: FeaturePageProps): Promise<Me
     };
   }
 
+  const pageUrl = `https://usememos.com/features/${slug}`;
+
   return {
     title: `${feature.title} - Memos Features`,
     description: feature.description,
     keywords: [`memos ${feature.title.toLowerCase()}`, "self-hosted", "privacy", "note taking", "open source"],
+    alternates: {
+      canonical: pageUrl,
+    },
     openGraph: {
       title: `${feature.title} - Memos`,
       description: feature.description,
-      url: `https://usememos.com/features/${slug}`,
+      url: pageUrl,
       siteName: "Memos",
       images: [
         {
-          url: "/demo.png",
+          url: "https://usememos.com/demo.png",
           width: 1200,
           height: 630,
           alt: `Memos ${feature.title}`,
@@ -193,7 +198,7 @@ export async function generateMetadata({ params }: FeaturePageProps): Promise<Me
       card: "summary_large_image",
       title: `${feature.title} - Memos`,
       description: feature.description,
-      images: ["/demo.png"],
+      images: ["https://usememos.com/demo.png"],
     },
   };
 }

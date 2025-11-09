@@ -127,15 +127,20 @@ export async function generateMetadata({ params }: ChangelogPageProps): Promise<
 
   const { data } = page;
   const version = data.title.replace("Release ", "");
+  const pageUrl = `https://usememos.com/changelog/${slug}`;
 
   return {
     title: `${version} Release Notes - Memos`,
     description: data.description || `Release notes for Memos ${version}`,
+    alternates: {
+      canonical: pageUrl,
+    },
     openGraph: {
       title: `${version} Release Notes`,
       description: data.description || `Release notes for Memos ${version}`,
       type: "article",
       publishedTime: data.date,
+      url: pageUrl,
     },
     twitter: {
       card: "summary",
