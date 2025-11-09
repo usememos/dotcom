@@ -9,6 +9,9 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Sponsors - Memos",
   description: "Thank you to all our sponsors and backers who support the development of Memos, the open-source note-taking platform.",
+  alternates: {
+    canonical: "https://usememos.com/sponsors",
+  },
 };
 
 const GITHUB_USER_BACKERS = [

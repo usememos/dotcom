@@ -12,6 +12,24 @@ export const revalidate = 1800;
 export const metadata: Metadata = {
   title: "Blogs",
   description: "Insights, updates, and stories from our journey building the best open-source note-taking platform.",
+  alternates: {
+    canonical: "https://usememos.com/blog",
+  },
+  openGraph: {
+    title: "Memos Blog - Insights & Updates",
+    description: "Insights, updates, and stories from our journey building the best open-source note-taking platform.",
+    url: "https://usememos.com/blog",
+    siteName: "Memos",
+    images: [
+      {
+        url: "https://usememos.com/demo.png",
+        width: 1200,
+        height: 630,
+        alt: "Memos Blog",
+      },
+    ],
+    type: "website",
+  },
 };
 
 export default function BlogPage() {

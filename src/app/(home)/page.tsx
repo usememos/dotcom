@@ -29,6 +29,9 @@ export const metadata: Metadata = {
   description:
     "An open-source, self-hosted note-taking service with zero telemetry. Privacy-first, lightweight solution with no tracking, ads, or subscription fees.",
   keywords: ["note taking", "self-hosted", "open source", "privacy", "markdown", "memos", "zero telemetry"],
+  alternates: {
+    canonical: "https://usememos.com",
+  },
   openGraph: {
     title: "Memos - Open Source, Self-Hosted Note Taking",
     description:
@@ -37,7 +40,7 @@ export const metadata: Metadata = {
     siteName: "Memos",
     images: [
       {
-        url: "/demo.png",
+        url: "https://usememos.com/demo.png",
         width: 1200,
         height: 630,
         alt: "Memos Dashboard Screenshot",
@@ -51,7 +54,7 @@ export const metadata: Metadata = {
     title: "Memos - Open Source, Self-Hosted Note Taking",
     description:
       "An open-source, self-hosted note-taking service with zero telemetry. Privacy-first, lightweight solution with no tracking, ads, or subscription fees.",
-    images: ["/demo.png"],
+    images: ["https://usememos.com/demo.png"],
   },
 };
 

@@ -7,6 +7,9 @@ import { Footer } from "@/components/footer";
 export const metadata: Metadata = {
   title: "Brand - Memos",
   description: "Official Memos brand assets, logos, and usage guidelines for the open-source note-taking platform.",
+  alternates: {
+    canonical: "https://usememos.com/brand",
+  },
 };
 
 export default function BrandPage() {

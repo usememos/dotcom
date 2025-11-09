@@ -30,8 +30,40 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
   const { data } = page;
   const MDXContent = page.data.body;
 
+  // JSON-LD structured data for blog post
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": data.title,
+    "description": data.description,
+    "image": data.feature_image ? (data.feature_image.startsWith('http') ? data.feature_image : `https://usememos.com${data.feature_image}`) : "https://usememos.com/demo.png",
+    "datePublished": data.published_at,
+    "author": {
+      "@type": "Organization",
+      "name": "Memos Team",
+      "url": "https://usememos.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Memos",
+      "url": "https://usememos.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://usememos.com/logo-rounded.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://usememos.com/blog/${slug}`
+    }
+  };
+
   return (
     <HomeLayout {...baseOptions}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <main className="flex flex-1 flex-col">
         <section className="pt-8 sm:pt-12 pb-4 px-4">
           <div className="max-w-6xl mx-auto">
@@ -199,22 +231,35 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
   }
 
   const { data } = page;
+  const pageUrl = `https://usememos.com/blog/${slug}`;
+
+  // Ensure image URLs are absolute
+  const getAbsoluteImageUrl = (url: string | undefined) => {
+    if (!url) return undefined;
+    return url.startsWith('http') ? url : `https://usememos.com${url.startsWith('/') ? url : '/' + url}`;
+  };
+
+  const absoluteImageUrl = getAbsoluteImageUrl(data.feature_image);
 
   return {
     title: `${data.title} - Memos Blog`,
     description: data.description,
+    alternates: {
+      canonical: pageUrl,
+    },
     openGraph: {
       title: data.title,
       description: data.description,
       type: "article",
       publishedTime: data.published_at,
-      images: data.feature_image ? [data.feature_image] : undefined,
+      url: pageUrl,
+      images: absoluteImageUrl ? [absoluteImageUrl] : undefined,
     },
     twitter: {
       card: "summary_large_image",
       title: data.title,
       description: data.description,
-      images: data.feature_image ? [data.feature_image] : undefined,
+      images: absoluteImageUrl ? [absoluteImageUrl] : undefined,
     },
   };
 }
