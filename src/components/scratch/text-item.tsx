@@ -52,9 +52,14 @@ export function TextItem({ item, onUpdate, onDelete, onSave, isDragging }: TextI
     }
   };
 
+  const handleCardClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent canvas click
+  };
+
   return (
     <div
-      className={`absolute bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden ${
+      onClick={handleCardClick}
+      className={`absolute bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-shadow ${
         isDragging ? 'opacity-50' : ''
       }`}
       style={{
