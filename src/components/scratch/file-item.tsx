@@ -9,10 +9,11 @@ interface FileItemProps {
   item: ScratchpadItem;
   onDelete: (id: string) => void;
   onSave: (id: string) => void;
+  onMouseDown: (e: React.MouseEvent) => void;
   isDragging?: boolean;
 }
 
-export function FileItem({ item, onDelete, onSave, isDragging }: FileItemProps) {
+export function FileItem({ item, onDelete, onSave, onMouseDown, isDragging }: FileItemProps) {
   const [fileData, setFileData] = useState<FileData | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -31,7 +32,7 @@ export function FileItem({ item, onDelete, onSave, isDragging }: FileItemProps) 
     }
   }, [item.fileRef]);
 
-  const handleCardClick = (e: React.MouseEvent) => {
+  const handleContainerClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent canvas click
   };
 
@@ -52,12 +53,13 @@ export function FileItem({ item, onDelete, onSave, isDragging }: FileItemProps) 
 
   return (
     <div
-      onClick={handleCardClick}
+      onClick={handleContainerClick}
       onDoubleClick={handleDoubleClick}
+      onMouseDown={onMouseDown}
       onKeyDown={handleKeyDown}
       tabIndex={0}
-      className={`absolute bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow focus:outline-none ${
-        isDragging ? 'opacity-50' : ''
+      className={`absolute bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow focus:outline-none cursor-move ${
+        isDragging ? 'opacity-50 cursor-grabbing' : ''
       } ${item.savedToInstance ? 'ring-2 ring-green-400 dark:ring-green-600' : ''}`}
       style={{
         left: item.x,
@@ -68,7 +70,7 @@ export function FileItem({ item, onDelete, onSave, isDragging }: FileItemProps) 
       title={item.savedToInstance ? 'Saved to Memos' : 'Double-click to save'}
     >
       {isImage && previewUrl ? (
-        <div className="w-full h-full flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="w-full h-full flex items-center justify-center bg-gray-50 dark:bg-gray-900 pointer-events-none">
           <img
             src={previewUrl}
             alt={item.fileRef?.name}
@@ -76,7 +78,7 @@ export function FileItem({ item, onDelete, onSave, isDragging }: FileItemProps) 
           />
         </div>
       ) : (
-        <div className="w-full h-full min-h-[200px] flex flex-col items-center justify-center p-6 bg-gray-50 dark:bg-gray-900">
+        <div className="w-full h-full min-h-[200px] flex flex-col items-center justify-center p-6 bg-gray-50 dark:bg-gray-900 pointer-events-none">
           <FileIcon className="w-16 h-16 text-gray-400 dark:text-gray-600 mb-3" />
           <div className="text-sm text-center text-gray-700 dark:text-gray-300 font-medium truncate w-full px-2">
             {item.fileRef?.name}

@@ -8,10 +8,11 @@ interface TextItemProps {
   onUpdate: (id: string, updates: Partial<ScratchpadItem>) => void;
   onDelete: (id: string) => void;
   onSave: (id: string) => void;
+  onMouseDown: (e: React.MouseEvent) => void;
   isDragging?: boolean;
 }
 
-export function TextItem({ item, onUpdate, onDelete, onSave, isDragging }: TextItemProps) {
+export function TextItem({ item, onUpdate, onDelete, onSave, onMouseDown, isDragging }: TextItemProps) {
   const [localContent, setLocalContent] = useState(item.content || '');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -33,7 +34,7 @@ export function TextItem({ item, onUpdate, onDelete, onSave, isDragging }: TextI
     e.target.style.height = e.target.scrollHeight + 'px';
   };
 
-  const handleCardClick = (e: React.MouseEvent) => {
+  const handleContainerClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent canvas click
   };
 
@@ -50,12 +51,17 @@ export function TextItem({ item, onUpdate, onDelete, onSave, isDragging }: TextI
     }
   };
 
+  const handleTextareaMouseDown = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Don't start dragging when clicking textarea
+  };
+
   return (
     <div
-      onClick={handleCardClick}
+      onClick={handleContainerClick}
       onDoubleClick={handleDoubleClick}
-      className={`absolute bg-amber-50 dark:bg-amber-900/20 rounded-lg shadow-md border border-amber-200 dark:border-amber-800 overflow-hidden hover:shadow-lg transition-shadow ${
-        isDragging ? 'opacity-50' : ''
+      onMouseDown={onMouseDown}
+      className={`absolute bg-amber-50 dark:bg-amber-900/20 rounded-lg shadow-md border border-amber-200 dark:border-amber-800 overflow-hidden hover:shadow-lg transition-shadow cursor-move ${
+        isDragging ? 'opacity-50 cursor-grabbing' : ''
       } ${item.savedToInstance ? 'ring-2 ring-green-400 dark:ring-green-600' : ''}`}
       style={{
         left: item.x,
@@ -70,8 +76,9 @@ export function TextItem({ item, onUpdate, onDelete, onSave, isDragging }: TextI
         value={localContent}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
+        onMouseDown={handleTextareaMouseDown}
         placeholder="Type here..."
-        className="w-full h-full min-h-[160px] p-4 resize-none bg-transparent border-none outline-none text-gray-900 dark:text-gray-100 font-mono text-sm leading-relaxed"
+        className="w-full h-full min-h-[160px] p-4 resize-none bg-transparent border-none outline-none text-gray-900 dark:text-gray-100 font-mono text-sm leading-relaxed cursor-text"
       />
     </div>
   );

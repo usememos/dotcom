@@ -71,19 +71,20 @@ export function Canvas({
 
   const handleItemMouseDown = (e: React.MouseEvent, itemId: string) => {
     e.stopPropagation();
-    e.preventDefault();
+
     const item = items.find((i) => i.id === itemId);
     if (!item) return;
 
-    // Get the position of the item itself, not the target element
-    const itemElement = (e.currentTarget as HTMLElement);
-    const rect = itemElement.getBoundingClientRect();
     const canvasRect = canvasRef.current?.getBoundingClientRect();
     if (!canvasRect) return;
 
+    // Calculate offset from item's top-left corner to mouse position
+    const mouseXOnCanvas = e.clientX - canvasRect.left + canvasRef.current!.scrollLeft;
+    const mouseYOnCanvas = e.clientY - canvasRect.top + canvasRef.current!.scrollTop;
+
     setDragOffset({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
+      x: mouseXOnCanvas - item.x,
+      y: mouseYOnCanvas - item.y,
     });
     setDraggingItemId(itemId);
   };
@@ -168,30 +169,30 @@ export function Canvas({
         )}
 
         {/* Render items */}
-        {items.map((item) => (
-          <div
-            key={item.id}
-            onMouseDown={(e) => handleItemMouseDown(e, item.id)}
-            className="cursor-move"
-          >
-            {item.type === 'text' ? (
-              <TextItem
-                item={item}
-                onUpdate={onUpdateItem}
-                onDelete={onDeleteItem}
-                onSave={onSaveItem}
-                isDragging={draggingItemId === item.id}
-              />
-            ) : (
-              <FileItem
-                item={item}
-                onDelete={onDeleteItem}
-                onSave={onSaveItem}
-                isDragging={draggingItemId === item.id}
-              />
-            )}
-          </div>
-        ))}
+        {items.map((item) => {
+          const handleMouseDownForItem = (e: React.MouseEvent) => handleItemMouseDown(e, item.id);
+
+          return item.type === 'text' ? (
+            <TextItem
+              key={item.id}
+              item={item}
+              onUpdate={onUpdateItem}
+              onDelete={onDeleteItem}
+              onSave={onSaveItem}
+              onMouseDown={handleMouseDownForItem}
+              isDragging={draggingItemId === item.id}
+            />
+          ) : (
+            <FileItem
+              key={item.id}
+              item={item}
+              onDelete={onDeleteItem}
+              onSave={onSaveItem}
+              onMouseDown={handleMouseDownForItem}
+              isDragging={draggingItemId === item.id}
+            />
+          );
+        })}
       </div>
     </div>
   );
