@@ -12,6 +12,8 @@ interface CanvasProps {
   onSaveItem: (id: string) => void;
   onCreateTextItem: (x: number, y: number) => void;
   onFileUpload: (files: FileList, x: number, y: number) => void;
+  selectedItemId: string | null;
+  onSelectItem: (id: string | null) => void;
 }
 
 export function Canvas({
@@ -21,6 +23,8 @@ export function Canvas({
   onSaveItem,
   onCreateTextItem,
   onFileUpload,
+  selectedItemId,
+  onSelectItem,
 }: CanvasProps) {
   const canvasRef = useRef<HTMLDivElement>(null);
   const [draggingItemId, setDraggingItemId] = useState<string | null>(null);
@@ -58,6 +62,24 @@ export function Canvas({
     window.addEventListener('paste', handlePaste);
     return () => window.removeEventListener('paste', handlePaste);
   }, [lastMousePos, onFileUpload]);
+
+  const handleCanvasClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Deselect when clicking on empty canvas
+    const target = e.target as HTMLElement;
+
+    // Check if click is on or within a scratchpad item
+    let element: HTMLElement | null = target;
+    while (element && element !== canvasRef.current) {
+      if (element.dataset.scratchpadItem === 'true') {
+        // Clicked on an item, don't deselect
+        return;
+      }
+      element = element.parentElement;
+    }
+
+    // Clicked on empty canvas, deselect all
+    onSelectItem(null);
+  };
 
   const handleCanvasDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     // Only create text item if double-clicking on empty canvas area (not on a card)
@@ -143,6 +165,7 @@ export function Canvas({
   return (
     <div
       ref={canvasRef}
+      onClick={handleCanvasClick}
       onDoubleClick={handleCanvasDoubleClick}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
@@ -192,6 +215,8 @@ export function Canvas({
               onSave={onSaveItem}
               onMouseDown={handleMouseDownForItem}
               isDragging={draggingItemId === item.id}
+              isSelected={selectedItemId === item.id}
+              onSelect={() => onSelectItem(item.id)}
             />
           ) : (
             <FileItem
@@ -201,6 +226,8 @@ export function Canvas({
               onSave={onSaveItem}
               onMouseDown={handleMouseDownForItem}
               isDragging={draggingItemId === item.id}
+              isSelected={selectedItemId === item.id}
+              onSelect={() => onSelectItem(item.id)}
             />
           );
         })}

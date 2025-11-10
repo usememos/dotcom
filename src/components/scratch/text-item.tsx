@@ -10,9 +10,11 @@ interface TextItemProps {
   onSave: (id: string) => void;
   onMouseDown: (e: React.MouseEvent) => void;
   isDragging?: boolean;
+  isSelected?: boolean;
+  onSelect: () => void;
 }
 
-export function TextItem({ item, onUpdate, onDelete, onSave, onMouseDown, isDragging }: TextItemProps) {
+export function TextItem({ item, onUpdate, onDelete, onSave, onMouseDown, isDragging, isSelected, onSelect }: TextItemProps) {
   const [localContent, setLocalContent] = useState(item.content || '');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -36,6 +38,7 @@ export function TextItem({ item, onUpdate, onDelete, onSave, onMouseDown, isDrag
 
   const handleContainerClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent canvas click
+    onSelect(); // Select this item
   };
 
   const handleDoubleClick = (e: React.MouseEvent) => {
@@ -63,7 +66,13 @@ export function TextItem({ item, onUpdate, onDelete, onSave, onMouseDown, isDrag
       onMouseDown={onMouseDown}
       className={`absolute bg-amber-50 dark:bg-amber-900/20 rounded-lg shadow-md border border-amber-200 dark:border-amber-800 overflow-hidden hover:shadow-lg transition-shadow cursor-move ${
         isDragging ? 'opacity-50 cursor-grabbing' : ''
-      } ${item.savedToInstance ? 'ring-2 ring-green-400 dark:ring-green-600' : ''}`}
+      } ${
+        isSelected
+          ? 'ring-2 ring-blue-500 dark:ring-blue-400'
+          : item.savedToInstance
+          ? 'ring-2 ring-green-400 dark:ring-green-600'
+          : ''
+      }`}
       style={{
         left: item.x,
         top: item.y,

@@ -11,9 +11,11 @@ interface FileItemProps {
   onSave: (id: string) => void;
   onMouseDown: (e: React.MouseEvent) => void;
   isDragging?: boolean;
+  isSelected?: boolean;
+  onSelect: () => void;
 }
 
-export function FileItem({ item, onDelete, onSave, onMouseDown, isDragging }: FileItemProps) {
+export function FileItem({ item, onDelete, onSave, onMouseDown, isDragging, isSelected, onSelect }: FileItemProps) {
   const [fileData, setFileData] = useState<FileData | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -34,6 +36,7 @@ export function FileItem({ item, onDelete, onSave, onMouseDown, isDragging }: Fi
 
   const handleContainerClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent canvas click
+    onSelect(); // Select this item
   };
 
   const handleDoubleClick = (e: React.MouseEvent) => {
@@ -61,7 +64,13 @@ export function FileItem({ item, onDelete, onSave, onMouseDown, isDragging }: Fi
       tabIndex={0}
       className={`absolute bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow focus:outline-none cursor-move ${
         isDragging ? 'opacity-50 cursor-grabbing' : ''
-      } ${item.savedToInstance ? 'ring-2 ring-green-400 dark:ring-green-600' : ''}`}
+      } ${
+        isSelected
+          ? 'ring-2 ring-blue-500 dark:ring-blue-400'
+          : item.savedToInstance
+          ? 'ring-2 ring-green-400 dark:ring-green-600'
+          : ''
+      }`}
       style={{
         left: item.x,
         top: item.y,

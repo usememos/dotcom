@@ -18,6 +18,7 @@ export default function ScratchPage() {
   const [items, setItems] = useState<ScratchpadItem[]>([]);
   const [instances, setInstances] = useState<MemoInstance[]>([]);
   const [showInstanceForm, setShowInstanceForm] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Initialize on client side only
@@ -25,6 +26,31 @@ export default function ScratchPage() {
     setIsClient(true);
     loadData();
   }, []);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Delete selected item with Delete or Backspace key
+      if ((e.key === 'Delete' || e.key === 'Backspace') && selectedItemId) {
+        // Don't delete if user is typing in an input or textarea
+        const target = e.target as HTMLElement;
+        if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+          return;
+        }
+        e.preventDefault();
+        handleDeleteItem(selectedItemId);
+        setSelectedItemId(null);
+      }
+
+      // Deselect all with ESC key
+      if (e.key === 'Escape') {
+        setSelectedItemId(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedItemId]);
 
   const loadData = async () => {
     const loadedItems = itemStorage.getAll();
@@ -226,6 +252,8 @@ export default function ScratchPage() {
           onSaveItem={handleSaveItem}
           onCreateTextItem={handleCreateTextItem}
           onFileUpload={handleFileUpload}
+          selectedItemId={selectedItemId}
+          onSelectItem={setSelectedItemId}
         />
       </div>
 
