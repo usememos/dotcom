@@ -60,11 +60,14 @@ export function Canvas({
   }, [lastMousePos, onFileUpload]);
 
   const handleCanvasClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Only create text item if clicking on the canvas itself
-    if (e.target === canvasRef.current) {
-      const rect = canvasRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left + canvasRef.current.scrollLeft;
-      const y = e.clientY - rect.top + canvasRef.current.scrollTop;
+    // Only create text item if clicking on empty canvas area (not on a card)
+    const target = e.target as HTMLElement;
+
+    // Check if click is directly on canvas or canvas-content div
+    if (target === canvasRef.current || target.classList.contains('canvas-content')) {
+      const rect = canvasRef.current!.getBoundingClientRect();
+      const x = e.clientX - rect.left + canvasRef.current!.scrollLeft;
+      const y = e.clientY - rect.top + canvasRef.current!.scrollTop;
       onCreateTextItem(x, y);
     }
   };
@@ -144,7 +147,7 @@ export function Canvas({
       style={{ minHeight: '100%' }}
     >
       {/* Canvas content area */}
-      <div className="relative" style={{ minWidth: '100%', minHeight: '100%', width: '5000px', height: '5000px' }}>
+      <div className="relative canvas-content" style={{ minWidth: '100%', minHeight: '100%', width: '5000px', height: '5000px' }}>
         {items.length === 0 && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="text-center">
