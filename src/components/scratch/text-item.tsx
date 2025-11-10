@@ -11,7 +11,7 @@ interface TextItemProps {
   onMouseDown: (e: React.MouseEvent) => void;
   isDragging?: boolean;
   isSelected?: boolean;
-  onSelect: () => void;
+  onSelect: (ctrlKey: boolean) => void;
 }
 
 export function TextItem({ item, onUpdate, onDelete, onSave, onMouseDown, isDragging, isSelected, onSelect }: TextItemProps) {
@@ -38,7 +38,7 @@ export function TextItem({ item, onUpdate, onDelete, onSave, onMouseDown, isDrag
 
   const handleContainerClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent canvas click
-    onSelect(); // Select this item
+    onSelect(e.ctrlKey || e.metaKey); // Pass Ctrl/Cmd key state for multi-selection
   };
 
   const handleDoubleClick = (e: React.MouseEvent) => {

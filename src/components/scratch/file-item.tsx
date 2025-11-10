@@ -12,7 +12,7 @@ interface FileItemProps {
   onMouseDown: (e: React.MouseEvent) => void;
   isDragging?: boolean;
   isSelected?: boolean;
-  onSelect: () => void;
+  onSelect: (ctrlKey: boolean) => void;
 }
 
 export function FileItem({ item, onDelete, onSave, onMouseDown, isDragging, isSelected, onSelect }: FileItemProps) {
@@ -36,7 +36,7 @@ export function FileItem({ item, onDelete, onSave, onMouseDown, isDragging, isSe
 
   const handleContainerClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent canvas click
-    onSelect(); // Select this item
+    onSelect(e.ctrlKey || e.metaKey); // Pass Ctrl/Cmd key state for multi-selection
   };
 
   const handleDoubleClick = (e: React.MouseEvent) => {

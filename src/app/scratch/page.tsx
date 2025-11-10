@@ -18,7 +18,7 @@ export default function ScratchPage() {
   const [items, setItems] = useState<ScratchpadItem[]>([]);
   const [instances, setInstances] = useState<MemoInstance[]>([]);
   const [showInstanceForm, setShowInstanceForm] = useState(false);
-  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const [selectedItemIds, setSelectedItemIds] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Initialize on client side only
@@ -30,27 +30,28 @@ export default function ScratchPage() {
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Delete selected item with Delete or Backspace key
-      if ((e.key === 'Delete' || e.key === 'Backspace') && selectedItemId) {
+      // Delete selected items with Delete or Backspace key
+      if ((e.key === 'Delete' || e.key === 'Backspace') && selectedItemIds.length > 0) {
         // Don't delete if user is typing in an input or textarea
         const target = e.target as HTMLElement;
         if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
           return;
         }
         e.preventDefault();
-        handleDeleteItem(selectedItemId);
-        setSelectedItemId(null);
+        // Delete all selected items
+        selectedItemIds.forEach((id) => handleDeleteItem(id));
+        setSelectedItemIds([]);
       }
 
       // Deselect all with ESC key
       if (e.key === 'Escape') {
-        setSelectedItemId(null);
+        setSelectedItemIds([]);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedItemId]);
+  }, [selectedItemIds]);
 
   const loadData = async () => {
     const loadedItems = itemStorage.getAll();
@@ -191,6 +192,30 @@ export default function ScratchPage() {
     }
   };
 
+  const handleSelectItem = (id: string | null, ctrlKey: boolean = false) => {
+    if (id === null) {
+      // Deselect all
+      setSelectedItemIds([]);
+      return;
+    }
+
+    if (ctrlKey) {
+      // Ctrl+click: toggle selection
+      setSelectedItemIds((prev) => {
+        if (prev.includes(id)) {
+          // Remove from selection
+          return prev.filter((itemId) => itemId !== id);
+        } else {
+          // Add to selection
+          return [...prev, id];
+        }
+      });
+    } else {
+      // Regular click: select only this item
+      setSelectedItemIds([id]);
+    }
+  };
+
   // Don't render until client-side
   if (!isClient) {
     return null;
@@ -252,8 +277,8 @@ export default function ScratchPage() {
           onSaveItem={handleSaveItem}
           onCreateTextItem={handleCreateTextItem}
           onFileUpload={handleFileUpload}
-          selectedItemId={selectedItemId}
-          onSelectItem={setSelectedItemId}
+          selectedItemIds={selectedItemIds}
+          onSelectItem={handleSelectItem}
         />
       </div>
 

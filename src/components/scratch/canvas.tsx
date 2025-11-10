@@ -12,8 +12,8 @@ interface CanvasProps {
   onSaveItem: (id: string) => void;
   onCreateTextItem: (x: number, y: number) => void;
   onFileUpload: (files: FileList, x: number, y: number) => void;
-  selectedItemId: string | null;
-  onSelectItem: (id: string | null) => void;
+  selectedItemIds: string[];
+  onSelectItem: (id: string | null, ctrlKey?: boolean) => void;
 }
 
 export function Canvas({
@@ -23,7 +23,7 @@ export function Canvas({
   onSaveItem,
   onCreateTextItem,
   onFileUpload,
-  selectedItemId,
+  selectedItemIds,
   onSelectItem,
 }: CanvasProps) {
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -215,8 +215,8 @@ export function Canvas({
               onSave={onSaveItem}
               onMouseDown={handleMouseDownForItem}
               isDragging={draggingItemId === item.id}
-              isSelected={selectedItemId === item.id}
-              onSelect={() => onSelectItem(item.id)}
+              isSelected={selectedItemIds.includes(item.id)}
+              onSelect={(ctrlKey) => onSelectItem(item.id, ctrlKey)}
             />
           ) : (
             <FileItem
@@ -226,8 +226,8 @@ export function Canvas({
               onSave={onSaveItem}
               onMouseDown={handleMouseDownForItem}
               isDragging={draggingItemId === item.id}
-              isSelected={selectedItemId === item.id}
-              onSelect={() => onSelectItem(item.id)}
+              isSelected={selectedItemIds.includes(item.id)}
+              onSelect={(ctrlKey) => onSelectItem(item.id, ctrlKey)}
             />
           );
         })}
