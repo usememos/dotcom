@@ -72,8 +72,8 @@ export default function ScratchPage() {
       type: 'text',
       x,
       y,
-      width: 300,
-      height: 200,
+      width: 280,
+      height: 180,
       content: '',
       createdAt: new Date(),
     };

@@ -16,7 +16,12 @@ interface TextItemProps {
 
 export function TextItem({ item, onUpdate, onDelete, onSave, onMouseDown, isDragging, isSelected, onSelect }: TextItemProps) {
   const [localContent, setLocalContent] = useState(item.content || '');
+  const [isResizing, setIsResizing] = useState(false);
+  const [resizeStart, setResizeStart] = useState({ x: 0, y: 0, width: 0, height: 0 });
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const MIN_WIDTH = 200;
+  const MIN_HEIGHT = 150;
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -58,6 +63,44 @@ export function TextItem({ item, onUpdate, onDelete, onSave, onMouseDown, isDrag
     e.stopPropagation(); // Don't start dragging when clicking textarea
   };
 
+  const handleResizeMouseDown = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent dragging and selection
+    e.preventDefault();
+    setIsResizing(true);
+    setResizeStart({
+      x: e.clientX,
+      y: e.clientY,
+      width: item.width,
+      height: item.height,
+    });
+  };
+
+  useEffect(() => {
+    if (!isResizing) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const deltaX = e.clientX - resizeStart.x;
+      const deltaY = e.clientY - resizeStart.y;
+
+      const newWidth = Math.max(MIN_WIDTH, resizeStart.width + deltaX);
+      const newHeight = Math.max(MIN_HEIGHT, resizeStart.height + deltaY);
+
+      onUpdate(item.id, { width: newWidth, height: newHeight });
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isResizing, resizeStart, item.id, onUpdate]);
+
   return (
     <div
       data-scratchpad-item="true"
@@ -90,6 +133,14 @@ export function TextItem({ item, onUpdate, onDelete, onSave, onMouseDown, isDrag
         placeholder="Type here..."
         className="w-full h-full min-h-[160px] p-4 resize-none bg-transparent border-none outline-none text-gray-900 dark:text-gray-100 font-mono text-sm leading-relaxed cursor-text"
       />
+      {/* Resize handle */}
+      <div
+        onMouseDown={handleResizeMouseDown}
+        className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize group"
+        title="Drag to resize"
+      >
+        <div className="absolute bottom-1 right-1 w-3 h-3 border-r-2 border-b-2 border-amber-300 dark:border-amber-600 opacity-40 group-hover:opacity-100 transition-opacity" />
+      </div>
     </div>
   );
 }
