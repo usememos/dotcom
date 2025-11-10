@@ -59,27 +59,25 @@ export function Canvas({
     return () => window.removeEventListener('paste', handlePaste);
   }, [lastMousePos, onFileUpload]);
 
-  const handleCanvasClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Only create text item if clicking on empty canvas area (not on a card)
+  const handleCanvasDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Only create text item if double-clicking on empty canvas area (not on a card)
     const target = e.target as HTMLElement;
 
-    // Check if click is on or within a scratchpad item
+    // Check if double-click is on or within a scratchpad item
     let element: HTMLElement | null = target;
     while (element && element !== canvasRef.current) {
       if (element.dataset.scratchpadItem === 'true') {
-        // Clicked on an existing item, don't create a new one
+        // Double-clicked on an existing item, don't create a new one
         return;
       }
       element = element.parentElement;
     }
 
-    // Check if click is directly on canvas or canvas-content div
-    if (target === canvasRef.current || target.classList.contains('canvas-content')) {
-      const rect = canvasRef.current!.getBoundingClientRect();
-      const x = e.clientX - rect.left + canvasRef.current!.scrollLeft;
-      const y = e.clientY - rect.top + canvasRef.current!.scrollTop;
-      onCreateTextItem(x, y);
-    }
+    // Create card at double-click location
+    const rect = canvasRef.current!.getBoundingClientRect();
+    const x = e.clientX - rect.left + canvasRef.current!.scrollLeft;
+    const y = e.clientY - rect.top + canvasRef.current!.scrollTop;
+    onCreateTextItem(x, y);
   };
 
   const handleItemMouseDown = (e: React.MouseEvent, itemId: string) => {
@@ -145,13 +143,13 @@ export function Canvas({
   return (
     <div
       ref={canvasRef}
-      onClick={handleCanvasClick}
+      onDoubleClick={handleCanvasDoubleClick}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      className={`relative w-full h-full overflow-auto bg-white dark:bg-gray-900 cursor-crosshair ${
+      className={`relative w-full h-full overflow-auto bg-white dark:bg-gray-900 cursor-default ${
         isDraggingOver ? 'ring-4 ring-teal-400 ring-inset' : ''
       }`}
       style={{ minHeight: '100%' }}
@@ -162,7 +160,7 @@ export function Canvas({
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="text-center">
               <p className="text-gray-400 dark:text-gray-600 text-2xl mb-4">
-                Click anywhere to create a card
+                Double-click anywhere to create a card
               </p>
               <p className="text-gray-400 dark:text-gray-600 text-lg">
                 Paste (Ctrl+V) to add files
