@@ -4,16 +4,12 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import {
   TrashIcon,
-  SettingsIcon,
   CloudIcon,
 } from 'lucide-react';
-import { WelcomeScreen } from '@/components/scratch/welcome-screen';
 import { InstanceSetupForm } from '@/components/scratch/instance-setup-form';
 import { Canvas } from '@/components/scratch/canvas';
-import { SaveDialog } from '@/components/scratch/save-dialog';
-import { SettingsPanel } from '@/components/scratch/settings-panel';
-import type { ScratchpadItem, MemoInstance, SaveToMemosOptions } from '@/lib/scratch/types';
-import { itemStorage, instanceStorage, settingsStorage } from '@/lib/scratch/storage';
+import type { ScratchpadItem, MemoInstance } from '@/lib/scratch/types';
+import { itemStorage, instanceStorage } from '@/lib/scratch/storage';
 import { saveFile, createFileData, getFile, deleteFile } from '@/lib/scratch/indexeddb';
 import { saveScratchpadItemToMemos } from '@/lib/scratch/api';
 
@@ -21,22 +17,13 @@ export default function ScratchPage() {
   const [isClient, setIsClient] = useState(false);
   const [items, setItems] = useState<ScratchpadItem[]>([]);
   const [instances, setInstances] = useState<MemoInstance[]>([]);
-  const [showWelcome, setShowWelcome] = useState(false);
   const [showInstanceForm, setShowInstanceForm] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
-  const [savingItemId, setSavingItemId] = useState<string | null>(null);
-  const [isDemoMode, setIsDemoMode] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Initialize on client side only
   useEffect(() => {
     setIsClient(true);
     loadData();
-
-    // Check first visit
-    if (settingsStorage.isFirstVisit()) {
-      setShowWelcome(true);
-    }
   }, []);
 
   const loadData = async () => {
@@ -44,18 +31,6 @@ export default function ScratchPage() {
     const loadedInstances = await instanceStorage.getAll();
     setItems(loadedItems);
     setInstances(loadedInstances);
-  };
-
-  const handleWelcomeConnect = () => {
-    setShowWelcome(false);
-    setShowInstanceForm(true);
-    settingsStorage.setNotFirstVisit();
-  };
-
-  const handleWelcomeDemo = () => {
-    setShowWelcome(false);
-    setIsDemoMode(true);
-    settingsStorage.setNotFirstVisit();
   };
 
   const handleInstanceSave = async (instance: MemoInstance) => {
@@ -132,30 +107,17 @@ export default function ScratchPage() {
     setItems(itemStorage.getAll());
   };
 
-  const handleSaveItem = (id: string) => {
-    if (instances.length === 0 && !isDemoMode) {
+  const handleSaveItem = async (id: string) => {
+    if (instances.length === 0) {
       setShowInstanceForm(true);
       return;
     }
 
-    if (isDemoMode) {
-      alert('Demo mode: Saving is disabled. Connect an instance to save items.');
-      return;
-    }
-
-    setSavingItemId(id);
-  };
-
-  const handleSaveToMemos = async (instanceId: string, options: SaveToMemosOptions) => {
-    if (!savingItemId) return;
-
-    const item = items.find((i) => i.id === savingItemId);
+    const item = items.find((i) => i.id === id);
     if (!item) return;
 
-    const instance = instances.find((i) => i.id === instanceId);
-    if (!instance) {
-      throw new Error('Instance not found');
-    }
+    const defaultInstance = instances.find((i) => i.isDefault) || instances[0];
+    if (!defaultInstance) return;
 
     try {
       let content = '';
@@ -171,31 +133,28 @@ export default function ScratchPage() {
         }
       }
 
-      // Add tags to content if provided
-      if (options.tags && options.tags.length > 0) {
-        content += '\n\n' + options.tags.map((tag) => `#${tag}`).join(' ');
-      }
-
-      const memo = await saveScratchpadItemToMemos(instance, content, files, options);
+      const memo = await saveScratchpadItemToMemos(defaultInstance, content, files, {
+        instanceId: defaultInstance.id,
+        visibility: 'PRIVATE',
+      });
 
       // Update item as saved
-      itemStorage.update(savingItemId, {
-        savedToInstance: instanceId,
+      itemStorage.update(id, {
+        savedToInstance: defaultInstance.id,
         savedMemoId: memo.id,
       });
 
       setItems(itemStorage.getAll());
-      setSavingItemId(null);
 
       // Update instance last connected
-      await instanceStorage.update(instanceId, {
+      await instanceStorage.update(defaultInstance.id, {
         lastConnected: new Date(),
         status: 'connected',
       });
       await loadData();
     } catch (error) {
       console.error('Failed to save:', error);
-      throw error;
+      alert('Failed to save to Memos. Please check your instance connection.');
     }
   };
 
@@ -204,10 +163,6 @@ export default function ScratchPage() {
       itemStorage.clear();
       setItems([]);
     }
-  };
-
-  const handleInstancesChange = async () => {
-    await loadData();
   };
 
   // Don't render until client-side
@@ -235,12 +190,7 @@ export default function ScratchPage() {
 
       {/* Minimal Toolbar */}
       <div className="absolute top-4 right-4 z-10 flex items-center space-x-2">
-        {isDemoMode && (
-          <span className="px-3 py-1.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 text-sm rounded-lg shadow-sm">
-            Demo Mode
-          </span>
-        )}
-        {!hasInstances && !isDemoMode && (
+        {!hasInstances && (
           <button
             onClick={() => setShowInstanceForm(true)}
             className="flex items-center space-x-2 px-3 py-1.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition shadow-sm"
@@ -258,13 +208,6 @@ export default function ScratchPage() {
             <TrashIcon className="w-4 h-4" />
           </button>
         )}
-        <button
-          onClick={() => setShowSettings(true)}
-          className="p-2 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition shadow-sm"
-          title="Settings"
-        >
-          <SettingsIcon className="w-4 h-4" />
-        </button>
       </div>
       <input
         ref={fileInputRef}
@@ -308,30 +251,11 @@ export default function ScratchPage() {
         </div>
       )}
 
-      {/* Modals */}
-      {showWelcome && (
-        <WelcomeScreen onConnect={handleWelcomeConnect} onDemo={handleWelcomeDemo} />
-      )}
-
+      {/* Instance Setup Modal */}
       {showInstanceForm && (
         <InstanceSetupForm
           onSave={handleInstanceSave}
           onCancel={() => setShowInstanceForm(false)}
-        />
-      )}
-
-      {savingItemId && (
-        <SaveDialog
-          item={items.find((i) => i.id === savingItemId)!}
-          onSave={handleSaveToMemos}
-          onCancel={() => setSavingItemId(null)}
-        />
-      )}
-
-      {showSettings && (
-        <SettingsPanel
-          onClose={() => setShowSettings(false)}
-          onInstancesChange={handleInstancesChange}
         />
       )}
     </div>
