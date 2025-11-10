@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { SaveIcon, TrashIcon, CheckCircleIcon } from 'lucide-react';
 import type { ScratchpadItem } from '@/lib/scratch/types';
 
 interface TextItemProps {
@@ -13,110 +12,67 @@ interface TextItemProps {
 }
 
 export function TextItem({ item, onUpdate, onDelete, onSave, isDragging }: TextItemProps) {
-  const [isEditing, setIsEditing] = useState(!item.content);
   const [localContent, setLocalContent] = useState(item.content || '');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    if (isEditing && textareaRef.current) {
-      textareaRef.current.focus();
+    if (textareaRef.current) {
       // Auto-resize textarea
       textareaRef.current.style.height = 'auto';
       textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
     }
-  }, [isEditing]);
-
-  const handleBlur = () => {
-    if (localContent.trim() !== item.content) {
-      onUpdate(item.id, { content: localContent });
-    }
-    setIsEditing(false);
-  };
+  }, [localContent]);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setLocalContent(e.target.value);
+    const newContent = e.target.value;
+    setLocalContent(newContent);
+    onUpdate(item.id, { content: newContent });
+
     // Auto-resize
     e.target.style.height = 'auto';
     e.target.style.height = e.target.scrollHeight + 'px';
-  };
-
-  const handleSave = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onSave(item.id);
-  };
-
-  const handleDelete = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (confirm('Delete this item?')) {
-      onDelete(item.id);
-    }
   };
 
   const handleCardClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent canvas click
   };
 
+  const handleDoubleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onSave(item.id);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    // Delete with Backspace when empty
+    if (e.key === 'Backspace' && localContent === '') {
+      e.preventDefault();
+      onDelete(item.id);
+    }
+  };
+
   return (
     <div
       onClick={handleCardClick}
-      className={`absolute bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-shadow ${
+      onDoubleClick={handleDoubleClick}
+      className={`absolute bg-amber-50 dark:bg-amber-900/20 rounded-lg shadow-md border border-amber-200 dark:border-amber-800 overflow-hidden hover:shadow-lg transition-shadow ${
         isDragging ? 'opacity-50' : ''
-      }`}
+      } ${item.savedToInstance ? 'ring-2 ring-green-400 dark:ring-green-600' : ''}`}
       style={{
         left: item.x,
         top: item.y,
         width: item.width,
         minHeight: item.height,
       }}
+      title={item.savedToInstance ? 'Saved to Memos' : 'Double-click to save'}
     >
-      <div className="p-4">
-        {isEditing ? (
-          <textarea
-            ref={textareaRef}
-            value={localContent}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            placeholder="Type your note here... (Markdown supported)"
-            className="w-full min-h-[120px] resize-none bg-transparent border-none outline-none text-gray-900 dark:text-gray-100 font-mono text-sm"
-          />
-        ) : (
-          <div
-            onClick={() => setIsEditing(true)}
-            className="min-h-[120px] cursor-text text-gray-900 dark:text-gray-100 whitespace-pre-wrap break-words"
-          >
-            {item.content || 'Click to edit...'}
-          </div>
-        )}
-      </div>
-
-      <div className="flex items-center justify-between px-4 py-2 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
-        <div className="flex items-center space-x-2">
-          {item.savedToInstance && (
-            <div className="flex items-center text-xs text-green-600 dark:text-green-400">
-              <CheckCircleIcon className="w-3 h-3 mr-1" />
-              Saved
-            </div>
-          )}
-        </div>
-
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={handleSave}
-            disabled={!!item.savedToInstance}
-            className="p-2 text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
-            title="Save to Memos"
-          >
-            <SaveIcon className="w-4 h-4" />
-          </button>
-          <button
-            onClick={handleDelete}
-            className="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition"
-            title="Delete"
-          >
-            <TrashIcon className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
+      <textarea
+        ref={textareaRef}
+        value={localContent}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        placeholder="Type here..."
+        className="w-full h-full min-h-[160px] p-4 resize-none bg-transparent border-none outline-none text-gray-900 dark:text-gray-100 font-mono text-sm leading-relaxed"
+      />
     </div>
   );
 }
