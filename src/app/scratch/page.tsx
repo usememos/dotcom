@@ -3,12 +3,8 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import {
-  PlusIcon,
-  UploadIcon,
   TrashIcon,
   SettingsIcon,
-  AlertCircleIcon,
-  UserIcon,
   CloudIcon,
 } from 'lucide-react';
 import { WelcomeScreen } from '@/components/scratch/welcome-screen';
@@ -17,7 +13,7 @@ import { Canvas } from '@/components/scratch/canvas';
 import { SaveDialog } from '@/components/scratch/save-dialog';
 import { SettingsPanel } from '@/components/scratch/settings-panel';
 import type { ScratchpadItem, MemoInstance, SaveToMemosOptions } from '@/lib/scratch/types';
-import { itemStorage, instanceStorage, settingsStorage, getStorageQuota, formatBytes } from '@/lib/scratch/storage';
+import { itemStorage, instanceStorage, settingsStorage } from '@/lib/scratch/storage';
 import { saveFile, createFileData, getFile, deleteFile } from '@/lib/scratch/indexeddb';
 import { saveScratchpadItemToMemos } from '@/lib/scratch/api';
 
@@ -29,7 +25,6 @@ export default function ScratchPage() {
   const [showInstanceForm, setShowInstanceForm] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [savingItemId, setSavingItemId] = useState<string | null>(null);
-  const [storageQuota, setStorageQuota] = useState({ usage: 0, quota: 0, percentage: 0 });
   const [isDemoMode, setIsDemoMode] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -37,7 +32,6 @@ export default function ScratchPage() {
   useEffect(() => {
     setIsClient(true);
     loadData();
-    updateStorageQuota();
 
     // Check first visit
     if (settingsStorage.isFirstVisit()) {
@@ -50,11 +44,6 @@ export default function ScratchPage() {
     const loadedInstances = await instanceStorage.getAll();
     setItems(loadedItems);
     setInstances(loadedInstances);
-  };
-
-  const updateStorageQuota = async () => {
-    const quota = await getStorageQuota();
-    setStorageQuota(quota);
   };
 
   const handleWelcomeConnect = () => {
@@ -91,21 +80,8 @@ export default function ScratchPage() {
   };
 
   const handleFileUpload = async (files: FileList, x: number, y: number) => {
-    // Check storage quota
-    if (storageQuota.percentage > 95) {
-      alert('Storage quota exceeded! Please clear some items.');
-      return;
-    }
-
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-
-      // Check file size limits
-      const maxSize = file.type.startsWith('image/') ? 10 * 1024 * 1024 : 50 * 1024 * 1024;
-      if (file.size > maxSize) {
-        alert(`File too large: ${file.name}. Max size: ${formatBytes(maxSize)}`);
-        continue;
-      }
 
       const fileData = createFileData(file);
       await saveFile(fileData);
@@ -129,7 +105,6 @@ export default function ScratchPage() {
     }
 
     setItems(itemStorage.getAll());
-    await updateStorageQuota();
   };
 
   const handleFileButtonClick = () => {
@@ -152,7 +127,6 @@ export default function ScratchPage() {
     const item = items.find((i) => i.id === id);
     if (item && item.fileRef) {
       await deleteFile(item.fileRef.id);
-      await updateStorageQuota();
     }
     itemStorage.remove(id);
     setItems(itemStorage.getAll());
@@ -313,36 +287,26 @@ export default function ScratchPage() {
       </div>
 
       {/* Bottom Status Bar */}
-      <div className="absolute bottom-4 left-4 z-10">
-        <div className="flex items-center space-x-3 px-3 py-1.5 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm text-sm">
-          <div className="text-gray-600 dark:text-gray-400">
-            <span className="font-semibold text-gray-900 dark:text-gray-100">{items.length}</span> items
-          </div>
-          {storageQuota.percentage > 0 && (
-            <>
-              <div className="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
-              <div className="text-gray-600 dark:text-gray-400 flex items-center space-x-1">
-                <span>
-                  {formatBytes(storageQuota.usage)}
-                  {storageQuota.quota > 0 && ` / ${formatBytes(storageQuota.quota)}`}
-                </span>
-                {storageQuota.percentage > 80 && (
-                  <AlertCircleIcon className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                )}
+      {(items.length > 0 || hasInstances) && (
+        <div className="absolute bottom-4 left-4 z-10">
+          <div className="flex items-center space-x-3 px-3 py-1.5 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm text-sm">
+            {items.length > 0 && (
+              <div className="text-gray-600 dark:text-gray-400">
+                <span className="font-semibold text-gray-900 dark:text-gray-100">{items.length}</span> {items.length === 1 ? 'item' : 'items'}
               </div>
-            </>
-          )}
-          {hasInstances && defaultInstance && (
-            <>
+            )}
+            {items.length > 0 && hasInstances && defaultInstance && (
               <div className="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
+            )}
+            {hasInstances && defaultInstance && (
               <div className="flex items-center space-x-1 text-gray-600 dark:text-gray-400">
                 <CloudIcon className="w-3 h-3" />
                 <span>{defaultInstance.name}</span>
               </div>
-            </>
-          )}
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Modals */}
       {showWelcome && (
