@@ -1,17 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import { LoaderIcon, CheckCircleIcon, XCircleIcon, HelpCircleIcon } from 'lucide-react';
+import * as Dialog from '@radix-ui/react-dialog';
+import { LoaderIcon, CheckCircleIcon, XCircleIcon, HelpCircleIcon, XIcon } from 'lucide-react';
 import { testConnection } from '@/lib/scratch/api';
 import type { MemoInstance } from '@/lib/scratch/types';
 
 interface InstanceSetupFormProps {
+  open: boolean;
   onSave: (instance: MemoInstance) => void;
   onCancel: () => void;
   existingInstance?: MemoInstance;
 }
 
-export function InstanceSetupForm({ onSave, onCancel, existingInstance }: InstanceSetupFormProps) {
+export function InstanceSetupForm({ open, onSave, onCancel, existingInstance }: InstanceSetupFormProps) {
   const [name, setName] = useState(existingInstance?.name || '');
   const [url, setUrl] = useState(existingInstance?.url || '');
   const [token, setToken] = useState(existingInstance?.accessToken || '');
@@ -71,15 +73,19 @@ export function InstanceSetupForm({ onSave, onCancel, existingInstance }: Instan
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-8">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+    <Dialog.Root open={open} onOpenChange={(open) => !open && onCancel()}>
+      <Dialog.Portal>
+        <Dialog.Overlay className="fixed inset-0 bg-black/50 z-50" />
+        <Dialog.Content className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto z-50 p-8">
+          <Dialog.Title className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
             {existingInstance ? 'Edit Instance' : 'Connect Memos Instance'}
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-8">
+          </Dialog.Title>
+          <Dialog.Description className="text-gray-600 dark:text-gray-400 mb-8">
             Enter your self-hosted Memos instance details to enable saving.
-          </p>
+          </Dialog.Description>
+          <Dialog.Close className="absolute top-6 right-6 p-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+            <XIcon className="w-5 h-5" />
+          </Dialog.Close>
 
           <div className="space-y-6">
             {/* Instance Name */}
@@ -204,8 +210,8 @@ export function InstanceSetupForm({ onSave, onCancel, existingInstance }: Instan
               Save & Connect
             </button>
           </div>
-        </div>
-      </div>
-    </div>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }

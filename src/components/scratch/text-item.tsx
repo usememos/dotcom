@@ -57,6 +57,7 @@ export function TextItem({ item, onUpdate, onDelete, onSave, onMouseDown, isDrag
 
   return (
     <div
+      data-scratchpad-item="true"
       onClick={handleContainerClick}
       onDoubleClick={handleDoubleClick}
       onMouseDown={onMouseDown}

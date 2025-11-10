@@ -252,12 +252,11 @@ export default function ScratchPage() {
       )}
 
       {/* Instance Setup Modal */}
-      {showInstanceForm && (
-        <InstanceSetupForm
-          onSave={handleInstanceSave}
-          onCancel={() => setShowInstanceForm(false)}
-        />
-      )}
+      <InstanceSetupForm
+        open={showInstanceForm}
+        onSave={handleInstanceSave}
+        onCancel={() => setShowInstanceForm(false)}
+      />
     </div>
   );
 }

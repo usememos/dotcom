@@ -63,6 +63,16 @@ export function Canvas({
     // Only create text item if clicking on empty canvas area (not on a card)
     const target = e.target as HTMLElement;
 
+    // Check if click is on or within a scratchpad item
+    let element: HTMLElement | null = target;
+    while (element && element !== canvasRef.current) {
+      if (element.dataset.scratchpadItem === 'true') {
+        // Clicked on an existing item, don't create a new one
+        return;
+      }
+      element = element.parentElement;
+    }
+
     // Check if click is directly on canvas or canvas-content div
     if (target === canvasRef.current || target.classList.contains('canvas-content')) {
       const rect = canvasRef.current!.getBoundingClientRect();

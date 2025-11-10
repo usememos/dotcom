@@ -53,6 +53,7 @@ export function FileItem({ item, onDelete, onSave, onMouseDown, isDragging }: Fi
 
   return (
     <div
+      data-scratchpad-item="true"
       onClick={handleContainerClick}
       onDoubleClick={handleDoubleClick}
       onMouseDown={onMouseDown}
