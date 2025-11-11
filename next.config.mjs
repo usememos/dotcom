@@ -14,6 +14,15 @@ const config = {
     unoptimized: true, // Disable built-in image optimization
     qualities: [75, 85], // Support both default (75) and higher quality (85)
   },
+  async redirects() {
+    return [
+      {
+        source: "/scratch",
+        destination: "/scratchpad",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default withMDX(config);
