@@ -162,6 +162,34 @@ export function Canvas({
     }
   };
 
+  // Calculate dynamic canvas size based on items
+  const calculateCanvasSize = () => {
+    if (items.length === 0) {
+      // Default size when no items
+      return { width: '100%', height: '100%' };
+    }
+
+    const PADDING = 500; // Extra padding for scrolling space
+
+    let maxRight = 0;
+    let maxBottom = 0;
+
+    items.forEach((item) => {
+      const right = item.x + item.width;
+      const bottom = item.y + item.height;
+
+      if (right > maxRight) maxRight = right;
+      if (bottom > maxBottom) maxBottom = bottom;
+    });
+
+    return {
+      width: `${maxRight + PADDING}px`,
+      height: `${maxBottom + PADDING}px`,
+    };
+  };
+
+  const canvasSize = calculateCanvasSize();
+
   return (
     <div
       ref={canvasRef}
@@ -178,7 +206,7 @@ export function Canvas({
       style={{ minHeight: '100%' }}
     >
       {/* Canvas content area */}
-      <div className="relative canvas-content" style={{ minWidth: '100%', minHeight: '100%', width: '5000px', height: '5000px' }}>
+      <div className="relative canvas-content" style={{ minWidth: '100%', minHeight: '100%', width: canvasSize.width, height: canvasSize.height }}>
         {items.length === 0 && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="text-center">
