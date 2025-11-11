@@ -15,6 +15,8 @@ import {
   CheckIcon,
   XIcon,
   Rocket,
+  NotebookIcon,
+  ArrowRightIcon,
 } from "lucide-react";
 import { HeroSection } from "@/components/hero-section";
 import { FeatureCard } from "@/components/feature-card";
@@ -271,6 +273,91 @@ export default function HomePage() {
 
       {/* Sponsors Section */}
       <SponsorsSection />
+
+      {/* Scratchpad Section */}
+      <section className="py-12 sm:py-16 lg:py-24 px-4 bg-white dark:bg-gray-900">
+        <div className="max-w-6xl mx-auto">
+          <div className="relative bg-gradient-to-br from-teal-50 via-cyan-50/50 to-gray-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-700 border border-teal-100 dark:border-gray-600 rounded-2xl sm:rounded-3xl p-8 sm:p-12 lg:p-16 shadow-xl overflow-hidden">
+            <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-teal-400/20 to-cyan-400/20 dark:from-teal-600/10 dark:to-cyan-600/10 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-cyan-400/20 to-teal-400/20 dark:from-cyan-600/10 dark:to-teal-600/10 rounded-full blur-3xl"></div>
+
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              <div>
+                <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-teal-100 to-cyan-100 dark:from-teal-900/30 dark:to-cyan-900/30 text-teal-600 dark:text-teal-400 rounded-2xl mb-6">
+                  <NotebookIcon className="w-7 h-7 sm:w-9 sm:h-9" />
+                </div>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4 leading-tight">
+                  Try Our Scratchpad
+                </h2>
+                <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
+                  A free, browser-local workspace for quick brainstorming and temporary notes. Work locally, save to your Memos instance when ready.
+                </p>
+                <ul className="space-y-3 mb-8">
+                  {[
+                    "100% browser-local - your data never leaves your device",
+                    "Drag-and-drop interface for flexible organization",
+                    "Support for text notes and file attachments",
+                    "Optional sync to your self-hosted Memos instance",
+                  ].map((feature) => (
+                    <li key={feature} className="flex items-start gap-3 text-sm sm:text-base text-gray-700 dark:text-gray-300">
+                      <CheckIcon className="w-5 h-5 text-teal-600 dark:text-teal-400 flex-shrink-0 mt-0.5" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href="/scratchpad"
+                  className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold text-white bg-gradient-to-r from-teal-600 to-cyan-600 rounded-xl sm:rounded-2xl shadow-lg hover:from-teal-700 hover:to-cyan-700 hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-300"
+                >
+                  Launch Scratchpad
+                  <ArrowRightIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                </Link>
+              </div>
+
+              <div className="relative">
+                <div className="bg-white dark:bg-gray-900 rounded-xl sm:rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+                  <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
+                    <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                    <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                    <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20 p-4 rounded-lg border border-teal-100 dark:border-teal-800">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-2 h-2 rounded-full bg-teal-600 dark:bg-teal-400"></div>
+                        <span className="text-xs font-semibold text-gray-600 dark:text-gray-400">Text Note</span>
+                      </div>
+                      <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded w-full mb-1"></div>
+                      <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded w-4/5"></div>
+                    </div>
+                    <div className="bg-gradient-to-r from-cyan-50 to-teal-50 dark:from-cyan-900/20 dark:to-teal-900/20 p-4 rounded-lg border border-cyan-100 dark:border-cyan-800">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-2 h-2 rounded-full bg-cyan-600 dark:bg-cyan-400"></div>
+                        <span className="text-xs font-semibold text-gray-600 dark:text-gray-400">Quick Idea</span>
+                      </div>
+                      <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded w-full mb-1"></div>
+                      <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+                    </div>
+                    <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-4 rounded-lg border border-purple-100 dark:border-purple-800">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-2 h-2 rounded-full bg-purple-600 dark:bg-purple-400"></div>
+                        <span className="text-xs font-semibold text-gray-600 dark:text-gray-400">Attachment</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                        <div className="flex-1">
+                          <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded w-2/3 mb-1"></div>
+                          <div className="h-1.5 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* CTA Section */}
       <section className="py-12 sm:py-16 lg:py-24 px-4 bg-linear-to-br from-gray-50 via-white to-teal-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700">

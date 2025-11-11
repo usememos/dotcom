@@ -30,6 +30,10 @@ export const baseOptions: BaseLayoutProps = {
       text: "Changelog",
       url: "/changelog",
     },
+    {
+      text: "Scratchpad",
+      url: "/scratchpad",
+    },
   ],
   githubUrl: "https://github.com/usememos/memos",
 };
