@@ -7,14 +7,13 @@ interface TextItemProps {
   item: ScratchpadItem;
   onUpdate: (id: string, updates: Partial<ScratchpadItem>) => void;
   onDelete: (id: string) => void;
-  onSave: (id: string) => void;
   onMouseDown: (e: React.MouseEvent) => void;
   isDragging?: boolean;
   isSelected?: boolean;
   onSelect: (ctrlKey: boolean) => void;
 }
 
-export function TextItem({ item, onUpdate, onDelete, onSave, onMouseDown, isDragging, isSelected, onSelect }: TextItemProps) {
+export function TextItem({ item, onUpdate, onDelete, onMouseDown, isDragging, isSelected, onSelect }: TextItemProps) {
   const [localContent, setLocalContent] = useState(item.content || '');
   const [isResizing, setIsResizing] = useState(false);
   const [resizeStart, setResizeStart] = useState({ x: 0, y: 0, width: 0, height: 0 });
@@ -44,11 +43,6 @@ export function TextItem({ item, onUpdate, onDelete, onSave, onMouseDown, isDrag
   const handleContainerClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent canvas click
     onSelect(e.ctrlKey || e.metaKey); // Pass Ctrl/Cmd key state for multi-selection
-  };
-
-  const handleDoubleClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onSave(item.id);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -105,7 +99,6 @@ export function TextItem({ item, onUpdate, onDelete, onSave, onMouseDown, isDrag
     <div
       data-scratchpad-item="true"
       onClick={handleContainerClick}
-      onDoubleClick={handleDoubleClick}
       onMouseDown={onMouseDown}
       className={`absolute bg-amber-50 dark:bg-amber-900/20 rounded-lg shadow-md border border-amber-200 dark:border-amber-800 overflow-hidden hover:shadow-lg transition-shadow cursor-move ${
         isDragging ? 'opacity-50 cursor-grabbing' : ''
@@ -122,7 +115,7 @@ export function TextItem({ item, onUpdate, onDelete, onSave, onMouseDown, isDrag
         width: item.width,
         minHeight: item.height,
       }}
-      title={item.savedToInstance ? 'Saved to Memos' : 'Double-click to save'}
+      title={item.savedToInstance ? 'Saved to Memos' : 'Select and click save to save to Memos'}
     >
       <textarea
         ref={textareaRef}

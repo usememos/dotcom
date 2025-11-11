@@ -9,7 +9,6 @@ interface CanvasProps {
   items: ScratchpadItem[];
   onUpdateItem: (id: string, updates: Partial<ScratchpadItem>) => void;
   onDeleteItem: (id: string) => void;
-  onSaveItem: (id: string) => void;
   onCreateTextItem: (x: number, y: number) => void;
   onFileUpload: (files: FileList, x: number, y: number) => void;
   selectedItemIds: string[];
@@ -20,7 +19,6 @@ export function Canvas({
   items,
   onUpdateItem,
   onDeleteItem,
-  onSaveItem,
   onCreateTextItem,
   onFileUpload,
   selectedItemIds,
@@ -240,7 +238,6 @@ export function Canvas({
               item={item}
               onUpdate={onUpdateItem}
               onDelete={onDeleteItem}
-              onSave={onSaveItem}
               onMouseDown={handleMouseDownForItem}
               isDragging={draggingItemId === item.id}
               isSelected={selectedItemIds.includes(item.id)}
@@ -251,7 +248,6 @@ export function Canvas({
               key={item.id}
               item={item}
               onDelete={onDeleteItem}
-              onSave={onSaveItem}
               onMouseDown={handleMouseDownForItem}
               isDragging={draggingItemId === item.id}
               isSelected={selectedItemIds.includes(item.id)}

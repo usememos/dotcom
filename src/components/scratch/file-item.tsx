@@ -8,14 +8,13 @@ import { getFile } from '@/lib/scratch/indexeddb';
 interface FileItemProps {
   item: ScratchpadItem;
   onDelete: (id: string) => void;
-  onSave: (id: string) => void;
   onMouseDown: (e: React.MouseEvent) => void;
   isDragging?: boolean;
   isSelected?: boolean;
   onSelect: (ctrlKey: boolean) => void;
 }
 
-export function FileItem({ item, onDelete, onSave, onMouseDown, isDragging, isSelected, onSelect }: FileItemProps) {
+export function FileItem({ item, onDelete, onMouseDown, isDragging, isSelected, onSelect }: FileItemProps) {
   const [fileData, setFileData] = useState<FileData | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -39,11 +38,6 @@ export function FileItem({ item, onDelete, onSave, onMouseDown, isDragging, isSe
     onSelect(e.ctrlKey || e.metaKey); // Pass Ctrl/Cmd key state for multi-selection
   };
 
-  const handleDoubleClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onSave(item.id);
-  };
-
   const handleKeyDown = (e: React.KeyboardEvent) => {
     // Delete with Backspace
     if (e.key === 'Backspace' || e.key === 'Delete') {
@@ -58,7 +52,6 @@ export function FileItem({ item, onDelete, onSave, onMouseDown, isDragging, isSe
     <div
       data-scratchpad-item="true"
       onClick={handleContainerClick}
-      onDoubleClick={handleDoubleClick}
       onMouseDown={onMouseDown}
       onKeyDown={handleKeyDown}
       tabIndex={0}
@@ -77,7 +70,7 @@ export function FileItem({ item, onDelete, onSave, onMouseDown, isDragging, isSe
         width: item.width,
         minHeight: item.height,
       }}
-      title={item.savedToInstance ? 'Saved to Memos' : 'Double-click to save'}
+      title={item.savedToInstance ? 'Saved to Memos' : 'Select and click save to save to Memos'}
     >
       {isImage && previewUrl ? (
         <div className="w-full h-full flex items-center justify-center bg-gray-50 dark:bg-gray-900 pointer-events-none">
