@@ -7,7 +7,7 @@ import Image from "next/image";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { TrashIcon, SettingsIcon, SaveIcon, HomeIcon, SunIcon, MoonIcon, MonitorIcon } from "lucide-react";
 import { InstanceSetupForm } from "@/components/scratch/instance-setup-form";
-import { Canvas } from "@/components/scratch/canvas";
+import { Workspace } from "@/components/scratch/workspace";
 import type { ScratchpadItem, MemoInstance } from "@/lib/scratch/types";
 import { itemStorage, instanceStorage } from "@/lib/scratch/storage";
 import { saveFile, createFileData, getFile, deleteFile } from "@/lib/scratch/indexeddb";
@@ -418,9 +418,9 @@ export default function ScratchPage() {
       </div>
       <input ref={fileInputRef} type="file" multiple onChange={handleFileInputChange} className="hidden" />
 
-      {/* Canvas - Full Screen */}
+      {/* Workspace - Full Screen */}
       <div className="h-screen">
-        <Canvas
+        <Workspace
           items={items}
           onUpdateItem={handleUpdateItem}
           onDeleteItem={handleDeleteItem}
