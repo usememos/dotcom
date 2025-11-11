@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import Image from "next/image";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { TrashIcon, SettingsIcon, SaveIcon, HomeIcon } from "lucide-react";
+import { TrashIcon, SettingsIcon, SaveIcon, HomeIcon, SunIcon, MoonIcon, MonitorIcon } from "lucide-react";
 import { InstanceSetupForm } from "@/components/scratch/instance-setup-form";
 import { Canvas } from "@/components/scratch/canvas";
 import type { ScratchpadItem, MemoInstance } from "@/lib/scratch/types";
@@ -20,10 +21,13 @@ export default function ScratchPage() {
   const [showInstanceForm, setShowInstanceForm] = useState(false);
   const [selectedItemIds, setSelectedItemIds] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   // Initialize on client side only
   useEffect(() => {
     setIsClient(true);
+    setMounted(true);
     loadData();
   }, []);
 
@@ -258,7 +262,7 @@ export default function ScratchPage() {
   const hasInstances = instances.length > 0;
 
   return (
-    <div className="relative h-screen bg-white dark:bg-gray-900">
+    <div className="relative h-screen bg-gray-50 dark:bg-gray-900">
       {/* Top Right Actions */}
       <div className="absolute top-4 right-4 z-10 flex items-center space-x-2">
         {/* Selection Actions - Show when items are selected */}
@@ -307,6 +311,43 @@ export default function ScratchPage() {
                 <SettingsIcon className="w-4 h-4" />
                 <span>Instance Settings</span>
               </DropdownMenu.Item>
+
+              <DropdownMenu.Separator className="h-px bg-gray-200 dark:bg-gray-700 my-1" />
+
+              <DropdownMenu.Sub>
+                <DropdownMenu.SubTrigger className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer outline-none">
+                  {mounted && theme === "light" && <SunIcon className="w-4 h-4" />}
+                  {mounted && theme === "dark" && <MoonIcon className="w-4 h-4" />}
+                  {mounted && theme === "system" && <MonitorIcon className="w-4 h-4" />}
+                  {!mounted && <MonitorIcon className="w-4 h-4" />}
+                  <span>Theme</span>
+                </DropdownMenu.SubTrigger>
+                <DropdownMenu.Portal>
+                  <DropdownMenu.SubContent className="min-w-[160px] bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg p-1 z-50">
+                    <DropdownMenu.Item
+                      className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer outline-none"
+                      onSelect={() => setTheme("light")}
+                    >
+                      <SunIcon className="w-4 h-4" />
+                      <span>Light</span>
+                    </DropdownMenu.Item>
+                    <DropdownMenu.Item
+                      className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer outline-none"
+                      onSelect={() => setTheme("dark")}
+                    >
+                      <MoonIcon className="w-4 h-4" />
+                      <span>Dark</span>
+                    </DropdownMenu.Item>
+                    <DropdownMenu.Item
+                      className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer outline-none"
+                      onSelect={() => setTheme("system")}
+                    >
+                      <MonitorIcon className="w-4 h-4" />
+                      <span>System</span>
+                    </DropdownMenu.Item>
+                  </DropdownMenu.SubContent>
+                </DropdownMenu.Portal>
+              </DropdownMenu.Sub>
 
               <DropdownMenu.Separator className="h-px bg-gray-200 dark:bg-gray-700 my-1" />
 

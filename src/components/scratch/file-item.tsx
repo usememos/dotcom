@@ -55,13 +55,13 @@ export function FileItem({ item, onDelete, onMouseDown, isDragging, isSelected, 
       onMouseDown={onMouseDown}
       onKeyDown={handleKeyDown}
       tabIndex={0}
-      className={`absolute bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow focus:outline-none cursor-move ${
+      className={`absolute bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-all focus:outline-none cursor-move ${
         isDragging ? 'opacity-50 cursor-grabbing' : ''
       } ${
         isSelected
-          ? 'ring-2 ring-blue-500 dark:ring-blue-400'
+          ? 'ring-2 ring-blue-500 dark:ring-blue-400 shadow-md'
           : item.savedToInstance
-          ? 'ring-2 ring-green-400 dark:ring-green-600'
+          ? 'ring-2 ring-green-500 dark:ring-green-500 shadow-md'
           : ''
       }`}
       style={{

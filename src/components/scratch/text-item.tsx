@@ -100,13 +100,13 @@ export function TextItem({ item, onUpdate, onDelete, onMouseDown, isDragging, is
       data-scratchpad-item="true"
       onClick={handleContainerClick}
       onMouseDown={onMouseDown}
-      className={`absolute bg-amber-50 dark:bg-amber-900/20 rounded-lg shadow-md border border-amber-200 dark:border-amber-800 overflow-hidden hover:shadow-lg transition-shadow cursor-move ${
+      className={`absolute bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-all cursor-move ${
         isDragging ? 'opacity-50 cursor-grabbing' : ''
       } ${
         isSelected
-          ? 'ring-2 ring-blue-500 dark:ring-blue-400'
+          ? 'ring-2 ring-blue-500 dark:ring-blue-400 shadow-md'
           : item.savedToInstance
-          ? 'ring-2 ring-green-400 dark:ring-green-600'
+          ? 'ring-2 ring-green-500 dark:ring-green-500 shadow-md'
           : ''
       }`}
       style={{
@@ -132,7 +132,7 @@ export function TextItem({ item, onUpdate, onDelete, onMouseDown, isDragging, is
         className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize group"
         title="Drag to resize"
       >
-        <div className="absolute bottom-1 right-1 w-3 h-3 border-r-2 border-b-2 border-amber-300 dark:border-amber-600 opacity-40 group-hover:opacity-100 transition-opacity" />
+        <div className="absolute bottom-1 right-1 w-3 h-3 border-r-2 border-b-2 border-gray-400 dark:border-gray-500 opacity-30 group-hover:opacity-70 transition-opacity" />
       </div>
     </div>
   );

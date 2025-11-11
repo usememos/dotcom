@@ -198,7 +198,7 @@ export function Canvas({
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      className={`relative w-full h-full overflow-auto bg-white dark:bg-gray-900 cursor-default ${
+      className={`relative w-full h-full overflow-auto bg-gray-50 dark:bg-gray-900 cursor-default ${
         isDraggingOver ? 'ring-4 ring-teal-400 ring-inset' : ''
       }`}
       style={{ minHeight: '100%' }}
