@@ -7,6 +7,7 @@ import { getFile } from '@/lib/scratch/indexeddb';
 
 interface FileItemProps {
   item: ScratchpadItem;
+  onUpdate: (id: string, updates: Partial<ScratchpadItem>) => void;
   onDelete: (id: string) => void;
   onMouseDown: (e: React.MouseEvent) => void;
   isDragging?: boolean;
@@ -14,7 +15,7 @@ interface FileItemProps {
   onSelect: (ctrlKey: boolean) => void;
 }
 
-export function FileItem({ item, onDelete, onMouseDown, isDragging, isSelected, onSelect }: FileItemProps) {
+export function FileItem({ item, onUpdate, onDelete, onMouseDown, isDragging, isSelected, onSelect }: FileItemProps) {
   const [fileData, setFileData] = useState<FileData | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -36,6 +37,18 @@ export function FileItem({ item, onDelete, onMouseDown, isDragging, isSelected, 
   const handleContainerClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent canvas click
     onSelect(e.ctrlKey || e.metaKey); // Pass Ctrl/Cmd key state for multi-selection
+
+    // Bring clicked card to front (sticky-notes pattern)
+    const maxZIndex = Math.max(...Array.from(document.querySelectorAll('[data-scratchpad-item]')).map(
+      el => parseInt((el as HTMLElement).style.zIndex || '1', 10)
+    ), 0);
+    onUpdate(item.id, { zIndex: maxZIndex + 1 });
+  };
+
+  const handleDoubleClick = (e: React.MouseEvent) => {
+    // Prevent text selection during drag initiation (sticky-notes pattern)
+    e.preventDefault();
+    e.stopPropagation();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -52,6 +65,7 @@ export function FileItem({ item, onDelete, onMouseDown, isDragging, isSelected, 
     <div
       data-scratchpad-item="true"
       onClick={handleContainerClick}
+      onDoubleClick={handleDoubleClick}
       onMouseDown={onMouseDown}
       onKeyDown={handleKeyDown}
       tabIndex={0}

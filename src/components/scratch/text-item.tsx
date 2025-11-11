@@ -46,6 +46,12 @@ export function TextItem({ item, onUpdate, onDelete, onMouseDown, isDragging, is
     onSelect(e.ctrlKey || e.metaKey); // Pass Ctrl/Cmd key state for multi-selection
   };
 
+  const handleDoubleClick = (e: React.MouseEvent) => {
+    // Prevent text selection during drag initiation (sticky-notes pattern)
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     // Delete with Backspace when empty
     if (e.key === 'Backspace' && localContent === '') {
@@ -56,6 +62,15 @@ export function TextItem({ item, onUpdate, onDelete, onMouseDown, isDragging, is
 
   const handleTextareaMouseDown = (e: React.MouseEvent) => {
     e.stopPropagation(); // Don't start dragging when clicking textarea
+  };
+
+  const handleTextareaClick = (e: React.MouseEvent) => {
+    // Update timestamp to bring card to front (sticky-notes pattern)
+    // This ensures clicked cards come to the top
+    const maxZIndex = Math.max(...Array.from(document.querySelectorAll('[data-scratchpad-item]')).map(
+      el => parseInt((el as HTMLElement).style.zIndex || '1', 10)
+    ), 0);
+    onUpdate(item.id, { zIndex: maxZIndex + 1 });
   };
 
   const handleResizeMouseDown = (e: React.MouseEvent) => {
@@ -103,6 +118,7 @@ export function TextItem({ item, onUpdate, onDelete, onMouseDown, isDragging, is
     <div
       data-scratchpad-item="true"
       onClick={handleContainerClick}
+      onDoubleClick={handleDoubleClick}
       onMouseDown={onMouseDown}
       className={`absolute bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-all cursor-move ${
         isDragging ? 'opacity-50 cursor-grabbing' : ''
@@ -128,6 +144,7 @@ export function TextItem({ item, onUpdate, onDelete, onMouseDown, isDragging, is
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         onMouseDown={handleTextareaMouseDown}
+        onClick={handleTextareaClick}
         placeholder="Type here..."
         className="w-full h-full min-h-[160px] p-4 resize-none bg-transparent border-none outline-none text-gray-900 dark:text-gray-100 font-mono text-sm leading-relaxed cursor-text"
       />
