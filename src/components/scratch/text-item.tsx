@@ -11,9 +11,10 @@ interface TextItemProps {
   isDragging?: boolean;
   isSelected?: boolean;
   onSelect: (ctrlKey: boolean) => void;
+  onResizeComplete?: () => void;
 }
 
-export function TextItem({ item, onUpdate, onDelete, onMouseDown, isDragging, isSelected, onSelect }: TextItemProps) {
+export function TextItem({ item, onUpdate, onDelete, onMouseDown, isDragging, isSelected, onSelect, onResizeComplete }: TextItemProps) {
   const [localContent, setLocalContent] = useState(item.content || '');
   const [isResizing, setIsResizing] = useState(false);
   const [resizeStart, setResizeStart] = useState({ x: 0, y: 0, width: 0, height: 0 });
@@ -84,6 +85,9 @@ export function TextItem({ item, onUpdate, onDelete, onMouseDown, isDragging, is
 
     const handleMouseUp = () => {
       setIsResizing(false);
+      if (onResizeComplete) {
+        onResizeComplete();
+      }
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -93,7 +97,7 @@ export function TextItem({ item, onUpdate, onDelete, onMouseDown, isDragging, is
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isResizing, resizeStart, item.id, onUpdate]);
+  }, [isResizing, resizeStart, item.id, onUpdate, onResizeComplete]);
 
   return (
     <div

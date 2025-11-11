@@ -31,6 +31,17 @@ export default function ScratchPage() {
     loadData();
   }, []);
 
+  // Debounced save to storage when items change
+  useEffect(() => {
+    if (!isClient) return;
+
+    const timeoutId = setTimeout(() => {
+      itemStorage.save(items);
+    }, 500); // Save 500ms after last change
+
+    return () => clearTimeout(timeoutId);
+  }, [items, isClient]);
+
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -127,8 +138,13 @@ export default function ScratchPage() {
 
   // Item operations
   const handleUpdateItem = (id: string, updates: Partial<ScratchpadItem>) => {
-    itemStorage.update(id, updates);
-    setItems(itemStorage.getAll());
+    // Update state immediately for smooth UI
+    setItems((prevItems) => prevItems.map((item) => (item.id === id ? { ...item, ...updates } : item)));
+  };
+
+  const saveItemsToStorage = () => {
+    // Persist current state to localStorage
+    itemStorage.save(items);
   };
 
   const handleDeleteItem = async (id: string) => {
@@ -372,11 +388,11 @@ export default function ScratchPage() {
           items={items}
           onUpdateItem={handleUpdateItem}
           onDeleteItem={handleDeleteItem}
-          onSaveItem={handleSaveItem}
           onCreateTextItem={handleCreateTextItem}
           onFileUpload={handleFileUpload}
           selectedItemIds={selectedItemIds}
           onSelectItem={handleSelectItem}
+          onDragComplete={saveItemsToStorage}
         />
       </div>
 

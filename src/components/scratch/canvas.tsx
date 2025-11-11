@@ -13,6 +13,7 @@ interface CanvasProps {
   onFileUpload: (files: FileList, x: number, y: number) => void;
   selectedItemIds: string[];
   onSelectItem: (id: string | null, ctrlKey?: boolean) => void;
+  onDragComplete?: () => void;
 }
 
 export function Canvas({
@@ -23,6 +24,7 @@ export function Canvas({
   onFileUpload,
   selectedItemIds,
   onSelectItem,
+  onDragComplete,
 }: CanvasProps) {
   const canvasRef = useRef<HTMLDivElement>(null);
   const [draggingItemId, setDraggingItemId] = useState<string | null>(null);
@@ -131,6 +133,9 @@ export function Canvas({
   };
 
   const handleMouseUp = () => {
+    if (draggingItemId && onDragComplete) {
+      onDragComplete();
+    }
     setDraggingItemId(null);
   };
 
@@ -242,6 +247,7 @@ export function Canvas({
               isDragging={draggingItemId === item.id}
               isSelected={selectedItemIds.includes(item.id)}
               onSelect={(ctrlKey) => onSelectItem(item.id, ctrlKey)}
+              onResizeComplete={onDragComplete}
             />
           ) : (
             <FileItem
