@@ -1,12 +1,14 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import {
   TrashIcon,
   CloudIcon,
   SettingsIcon,
   SaveIcon,
+  HomeIcon,
 } from 'lucide-react';
 import { InstanceSetupForm } from '@/components/scratch/instance-setup-form';
 import { Canvas } from '@/components/scratch/canvas';
@@ -283,10 +285,10 @@ export default function ScratchPage() {
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <button
-              className="p-2 bg-white dark:bg-gray-800 text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded-lg border border-gray-200 dark:border-gray-700 transition shadow-sm"
-              title="Memos settings"
+              className="flex items-center justify-center w-9 h-9 bg-white dark:bg-gray-800 text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded-lg border border-gray-200 dark:border-gray-700 transition shadow-sm font-bold text-lg"
+              title="Memos menu"
             >
-              <CloudIcon className="w-5 h-5" />
+              M
             </button>
           </DropdownMenu.Trigger>
 
@@ -296,6 +298,18 @@ export default function ScratchPage() {
               sideOffset={5}
               align="end"
             >
+              <DropdownMenu.Item
+                className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer outline-none"
+                asChild
+              >
+                <Link href="/">
+                  <HomeIcon className="w-4 h-4" />
+                  <span>Back to Main Site</span>
+                </Link>
+              </DropdownMenu.Item>
+
+              <DropdownMenu.Separator className="h-px bg-gray-200 dark:bg-gray-700 my-1" />
+
               <DropdownMenu.Item
                 className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer outline-none"
                 onSelect={() => setShowInstanceForm(true)}
