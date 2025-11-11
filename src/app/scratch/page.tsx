@@ -13,6 +13,7 @@ import { saveFile, createFileData, getFile, deleteFile } from "@/lib/scratch/ind
 import { saveScratchpadItemToMemos } from "@/lib/scratch/api";
 
 export default function ScratchPage() {
+  // State management
   const [isClient, setIsClient] = useState(false);
   const [items, setItems] = useState<ScratchpadItem[]>([]);
   const [instances, setInstances] = useState<MemoInstance[]>([]);
@@ -29,15 +30,13 @@ export default function ScratchPage() {
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't trigger shortcuts if user is typing in an input or textarea
+      const target = e.target as HTMLElement;
+      const isTyping = target.tagName === "INPUT" || target.tagName === "TEXTAREA";
+
       // Delete selected items with Delete or Backspace key
-      if ((e.key === "Delete" || e.key === "Backspace") && selectedItemIds.length > 0) {
-        // Don't delete if user is typing in an input or textarea
-        const target = e.target as HTMLElement;
-        if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") {
-          return;
-        }
+      if ((e.key === "Delete" || e.key === "Backspace") && selectedItemIds.length > 0 && !isTyping) {
         e.preventDefault();
-        // Delete all selected items
         selectedItemIds.forEach((id) => handleDeleteItem(id));
         setSelectedItemIds([]);
       }
@@ -52,6 +51,7 @@ export default function ScratchPage() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedItemIds]);
 
+  // Data loading
   const loadData = async () => {
     const loadedItems = itemStorage.getAll();
     const loadedInstances = await instanceStorage.getAll();
@@ -59,12 +59,14 @@ export default function ScratchPage() {
     setInstances(loadedInstances);
   };
 
+  // Instance management
   const handleInstanceSave = async (instance: MemoInstance) => {
     await instanceStorage.add(instance);
     setShowInstanceForm(false);
     await loadData();
   };
 
+  // Item creation
   const handleCreateTextItem = (x: number, y: number) => {
     const newItem: ScratchpadItem = {
       id: `item-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -119,6 +121,7 @@ export default function ScratchPage() {
     }
   };
 
+  // Item operations
   const handleUpdateItem = (id: string, updates: Partial<ScratchpadItem>) => {
     itemStorage.update(id, updates);
     setItems(itemStorage.getAll());
@@ -184,6 +187,7 @@ export default function ScratchPage() {
     }
   };
 
+  // Bulk operations
   const handleClearAll = () => {
     if (confirm("Clear all items? This cannot be undone.")) {
       itemStorage.clear();
@@ -192,16 +196,19 @@ export default function ScratchPage() {
     }
   };
 
-  const handleDeleteSelected = () => {
+  // Batch delete selected items
+  const handleDeleteSelected = async () => {
     if (selectedItemIds.length === 0) return;
 
     const count = selectedItemIds.length;
     if (confirm(`Delete ${count} selected ${count === 1 ? "item" : "items"}?`)) {
-      selectedItemIds.forEach((id) => handleDeleteItem(id));
+      // Delete all selected items
+      await Promise.all(selectedItemIds.map((id) => handleDeleteItem(id)));
       setSelectedItemIds([]);
     }
   };
 
+  // Batch save selected items to Memos
   const handleSaveSelected = async () => {
     if (selectedItemIds.length === 0) return;
 
@@ -210,12 +217,14 @@ export default function ScratchPage() {
       return;
     }
 
+    // Save all selected items sequentially
     for (const id of selectedItemIds) {
       await handleSaveItem(id);
     }
     setSelectedItemIds([]);
   };
 
+  // Selection management
   const handleSelectItem = (id: string | null, ctrlKey: boolean = false) => {
     if (id === null) {
       // Deselect all
