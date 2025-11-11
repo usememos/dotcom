@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import { ThemeProvider } from '@/components/scratch/theme-provider';
 
 export const metadata: Metadata = {
   title: 'Scratch - Memos',
@@ -13,5 +14,5 @@ export const metadata: Metadata = {
 };
 
 export default function ScratchLayout({ children }: { children: ReactNode }) {
-  return children;
+  return <ThemeProvider>{children}</ThemeProvider>;
 }
