@@ -5,7 +5,7 @@ import type { ScratchpadItem } from '@/lib/scratch/types';
 import { TextItem } from './text-item';
 import { FileItem } from './file-item';
 
-interface CanvasProps {
+interface WorkspaceProps {
   items: ScratchpadItem[];
   onUpdateItem: (id: string, updates: Partial<ScratchpadItem>) => void;
   onDeleteItem: (id: string) => void;
@@ -16,7 +16,7 @@ interface CanvasProps {
   onDragComplete?: () => void;
 }
 
-export function Canvas({
+export function Workspace({
   items,
   onUpdateItem,
   onDeleteItem,
@@ -25,21 +25,25 @@ export function Canvas({
   selectedItemIds,
   onSelectItem,
   onDragComplete,
-}: CanvasProps) {
-  const canvasRef = useRef<HTMLDivElement>(null);
+}: WorkspaceProps) {
+  const workspaceRef = useRef<HTMLDivElement>(null);
   const [draggingItemId, setDraggingItemId] = useState<string | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [lastMousePos, setLastMousePos] = useState({ x: 0, y: 0 });
 
+  // Use refs to track drag state without causing re-renders
+  const dragStateRef = useRef<{ itemId: string; x: number; y: number } | null>(null);
+  const rafIdRef = useRef<number | null>(null);
+
   // Track mouse position for paste operation
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (canvasRef.current) {
-        const rect = canvasRef.current.getBoundingClientRect();
+      if (workspaceRef.current) {
+        const rect = workspaceRef.current.getBoundingClientRect();
         setLastMousePos({
-          x: e.clientX - rect.left + canvasRef.current.scrollLeft,
-          y: e.clientY - rect.top + canvasRef.current.scrollTop,
+          x: e.clientX - rect.left + workspaceRef.current.scrollLeft,
+          y: e.clientY - rect.top + workspaceRef.current.scrollTop,
         });
       }
     };
@@ -63,13 +67,13 @@ export function Canvas({
     return () => window.removeEventListener('paste', handlePaste);
   }, [lastMousePos, onFileUpload]);
 
-  const handleCanvasClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Deselect when clicking on empty canvas
+  const handleWorkspaceClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Deselect when clicking on empty workspace
     const target = e.target as HTMLElement;
 
     // Check if click is on or within a scratchpad item
     let element: HTMLElement | null = target;
-    while (element && element !== canvasRef.current) {
+    while (element && element !== workspaceRef.current) {
       if (element.dataset.scratchpadItem === 'true') {
         // Clicked on an item, don't deselect
         return;
@@ -77,17 +81,17 @@ export function Canvas({
       element = element.parentElement;
     }
 
-    // Clicked on empty canvas, deselect all
+    // Clicked on empty workspace, deselect all
     onSelectItem(null);
   };
 
-  const handleCanvasDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Only create text item if double-clicking on empty canvas area (not on a card)
+  const handleWorkspaceDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Only create text item if double-clicking on empty workspace area (not on a card)
     const target = e.target as HTMLElement;
 
     // Check if double-click is on or within a scratchpad item
     let element: HTMLElement | null = target;
-    while (element && element !== canvasRef.current) {
+    while (element && element !== workspaceRef.current) {
       if (element.dataset.scratchpadItem === 'true') {
         // Double-clicked on an existing item, don't create a new one
         return;
@@ -96,9 +100,9 @@ export function Canvas({
     }
 
     // Create card at double-click location
-    const rect = canvasRef.current!.getBoundingClientRect();
-    const x = e.clientX - rect.left + canvasRef.current!.scrollLeft;
-    const y = e.clientY - rect.top + canvasRef.current!.scrollTop;
+    const rect = workspaceRef.current!.getBoundingClientRect();
+    const x = e.clientX - rect.left + workspaceRef.current!.scrollLeft;
+    const y = e.clientY - rect.top + workspaceRef.current!.scrollTop;
     onCreateTextItem(x, y);
   };
 
@@ -108,31 +112,60 @@ export function Canvas({
     const item = items.find((i) => i.id === itemId);
     if (!item) return;
 
-    const canvasRect = canvasRef.current?.getBoundingClientRect();
-    if (!canvasRect) return;
+    const workspaceRect = workspaceRef.current?.getBoundingClientRect();
+    if (!workspaceRect) return;
 
     // Calculate offset from item's top-left corner to mouse position
-    const mouseXOnCanvas = e.clientX - canvasRect.left + canvasRef.current!.scrollLeft;
-    const mouseYOnCanvas = e.clientY - canvasRect.top + canvasRef.current!.scrollTop;
+    const mouseXOnWorkspace = e.clientX - workspaceRect.left + workspaceRef.current!.scrollLeft;
+    const mouseYOnWorkspace = e.clientY - workspaceRect.top + workspaceRef.current!.scrollTop;
 
     setDragOffset({
-      x: mouseXOnCanvas - item.x,
-      y: mouseYOnCanvas - item.y,
+      x: mouseXOnWorkspace - item.x,
+      y: mouseYOnWorkspace - item.y,
     });
     setDraggingItemId(itemId);
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (draggingItemId && canvasRef.current) {
-      const rect = canvasRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left - dragOffset.x + canvasRef.current.scrollLeft;
-      const y = e.clientY - rect.top - dragOffset.y + canvasRef.current.scrollTop;
+    if (draggingItemId && workspaceRef.current) {
+      const rect = workspaceRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left - dragOffset.x + workspaceRef.current.scrollLeft;
+      const y = e.clientY - rect.top - dragOffset.y + workspaceRef.current.scrollTop;
 
-      onUpdateItem(draggingItemId, { x, y });
+      // Store position in ref to avoid causing re-renders
+      dragStateRef.current = { itemId: draggingItemId, x, y };
+
+      // Use requestAnimationFrame to throttle updates for smooth dragging
+      if (rafIdRef.current === null) {
+        rafIdRef.current = requestAnimationFrame(() => {
+          if (dragStateRef.current) {
+            onUpdateItem(dragStateRef.current.itemId, {
+              x: dragStateRef.current.x,
+              y: dragStateRef.current.y,
+            });
+          }
+          rafIdRef.current = null;
+        });
+      }
     }
   };
 
   const handleMouseUp = () => {
+    // Cancel any pending animation frame
+    if (rafIdRef.current !== null) {
+      cancelAnimationFrame(rafIdRef.current);
+      rafIdRef.current = null;
+    }
+
+    // Commit final position
+    if (dragStateRef.current) {
+      onUpdateItem(dragStateRef.current.itemId, {
+        x: dragStateRef.current.x,
+        y: dragStateRef.current.y,
+      });
+      dragStateRef.current = null;
+    }
+
     if (draggingItemId && onDragComplete) {
       onDragComplete();
     }
@@ -157,16 +190,16 @@ export function Canvas({
     e.stopPropagation();
     setIsDraggingOver(false);
 
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0 && canvasRef.current) {
-      const rect = canvasRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left + canvasRef.current.scrollLeft;
-      const y = e.clientY - rect.top + canvasRef.current.scrollTop;
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0 && workspaceRef.current) {
+      const rect = workspaceRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left + workspaceRef.current.scrollLeft;
+      const y = e.clientY - rect.top + workspaceRef.current.scrollTop;
       onFileUpload(e.dataTransfer.files, x, y);
     }
   };
 
-  // Calculate dynamic canvas size based on items
-  const calculateCanvasSize = () => {
+  // Calculate dynamic workspace size based on items
+  const calculateWorkspaceSize = () => {
     if (items.length === 0) {
       // When no items, don't set explicit dimensions to prevent unnecessary scrolling
       return { width: undefined, height: undefined };
@@ -197,13 +230,13 @@ export function Canvas({
     };
   };
 
-  const canvasSize = calculateCanvasSize();
+  const workspaceSize = calculateWorkspaceSize();
 
   return (
     <div
-      ref={canvasRef}
-      onClick={handleCanvasClick}
-      onDoubleClick={handleCanvasDoubleClick}
+      ref={workspaceRef}
+      onClick={handleWorkspaceClick}
+      onDoubleClick={handleWorkspaceDoubleClick}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onDragOver={handleDragOver}
@@ -214,14 +247,14 @@ export function Canvas({
       }`}
       style={{ minHeight: '100%' }}
     >
-      {/* Canvas content area */}
+      {/* Workspace content area */}
       <div
-        className="relative canvas-content"
+        className="relative workspace-content"
         style={{
           minWidth: '100%',
           minHeight: '100%',
-          width: canvasSize.width || '100%',
-          height: canvasSize.height || '100%',
+          width: workspaceSize.width || '100%',
+          height: workspaceSize.height || '100%',
         }}
       >
         {items.length === 0 && (
