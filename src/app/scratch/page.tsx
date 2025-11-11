@@ -70,8 +70,37 @@ export default function ScratchPage() {
   const loadData = async () => {
     const loadedItems = itemStorage.getAll();
     const loadedInstances = await instanceStorage.getAll();
-    setItems(loadedItems);
+
+    // Migrate items to have zIndex if they don't have one
+    const migratedItems = loadedItems.map((item, index) => ({
+      ...item,
+      zIndex: item.zIndex ?? index + 1,
+    }));
+
+    setItems(migratedItems);
     setInstances(loadedInstances);
+
+    // Save migrated items if any were updated
+    if (migratedItems.some((item, index) => item.zIndex !== loadedItems[index].zIndex)) {
+      itemStorage.save(migratedItems);
+    }
+  };
+
+  // Get next z-index for new items (max + 1)
+  const getNextZIndex = (): number => {
+    if (items.length === 0) return 1;
+    return Math.max(...items.map((item) => item.zIndex || 0)) + 1;
+  };
+
+  // Bring item to front by giving it highest z-index
+  const bringToFront = (id: string) => {
+    const item = items.find((i) => i.id === id);
+    if (!item) return;
+
+    const maxZ = Math.max(...items.map((i) => i.zIndex || 0));
+    if (item.zIndex >= maxZ) return; // Already on top
+
+    handleUpdateItem(id, { zIndex: maxZ + 1 });
   };
 
   // Instance management
@@ -90,6 +119,7 @@ export default function ScratchPage() {
       y,
       width: 280,
       height: 180,
+      zIndex: getNextZIndex(),
       content: "",
       createdAt: new Date(),
     };
@@ -98,6 +128,8 @@ export default function ScratchPage() {
   };
 
   const handleFileUpload = async (files: FileList, x: number, y: number) => {
+    let baseZIndex = getNextZIndex();
+
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
 
@@ -111,6 +143,7 @@ export default function ScratchPage() {
         y: y + i * 20,
         width: 250,
         height: 280,
+        zIndex: baseZIndex + i,
         fileRef: {
           id: fileData.id,
           name: fileData.name,
@@ -251,6 +284,9 @@ export default function ScratchPage() {
       setSelectedItemIds([]);
       return;
     }
+
+    // Bring item to front when interacted with
+    bringToFront(id);
 
     if (ctrlKey) {
       // Ctrl+click: toggle selection

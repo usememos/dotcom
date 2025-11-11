@@ -19,6 +19,7 @@ export interface ScratchpadItem {
   y: number;
   width: number;
   height: number;
+  zIndex: number;            // Stacking order (higher = on top)
 
   content?: string;          // For text items (markdown)
 

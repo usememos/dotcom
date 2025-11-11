@@ -118,6 +118,7 @@ export function TextItem({ item, onUpdate, onDelete, onMouseDown, isDragging, is
         top: item.y,
         width: item.width,
         minHeight: item.height,
+        zIndex: item.zIndex || 1,
       }}
       title={item.savedToInstance ? 'Saved to Memos' : 'Select and click save to save to Memos'}
     >
