@@ -1,21 +1,16 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import {
-  TrashIcon,
-  CloudIcon,
-  SettingsIcon,
-  SaveIcon,
-  HomeIcon,
-} from 'lucide-react';
-import { InstanceSetupForm } from '@/components/scratch/instance-setup-form';
-import { Canvas } from '@/components/scratch/canvas';
-import type { ScratchpadItem, MemoInstance } from '@/lib/scratch/types';
-import { itemStorage, instanceStorage } from '@/lib/scratch/storage';
-import { saveFile, createFileData, getFile, deleteFile } from '@/lib/scratch/indexeddb';
-import { saveScratchpadItemToMemos } from '@/lib/scratch/api';
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { TrashIcon, SettingsIcon, SaveIcon, HomeIcon } from "lucide-react";
+import { InstanceSetupForm } from "@/components/scratch/instance-setup-form";
+import { Canvas } from "@/components/scratch/canvas";
+import type { ScratchpadItem, MemoInstance } from "@/lib/scratch/types";
+import { itemStorage, instanceStorage } from "@/lib/scratch/storage";
+import { saveFile, createFileData, getFile, deleteFile } from "@/lib/scratch/indexeddb";
+import { saveScratchpadItemToMemos } from "@/lib/scratch/api";
 
 export default function ScratchPage() {
   const [isClient, setIsClient] = useState(false);
@@ -35,10 +30,10 @@ export default function ScratchPage() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Delete selected items with Delete or Backspace key
-      if ((e.key === 'Delete' || e.key === 'Backspace') && selectedItemIds.length > 0) {
+      if ((e.key === "Delete" || e.key === "Backspace") && selectedItemIds.length > 0) {
         // Don't delete if user is typing in an input or textarea
         const target = e.target as HTMLElement;
-        if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+        if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") {
           return;
         }
         e.preventDefault();
@@ -48,13 +43,13 @@ export default function ScratchPage() {
       }
 
       // Deselect all with ESC key
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         setSelectedItemIds([]);
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedItemIds]);
 
   const loadData = async () => {
@@ -73,12 +68,12 @@ export default function ScratchPage() {
   const handleCreateTextItem = (x: number, y: number) => {
     const newItem: ScratchpadItem = {
       id: `item-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      type: 'text',
+      type: "text",
       x,
       y,
       width: 280,
       height: 180,
-      content: '',
+      content: "",
       createdAt: new Date(),
     };
     itemStorage.add(newItem);
@@ -94,7 +89,7 @@ export default function ScratchPage() {
 
       const newItem: ScratchpadItem = {
         id: `item-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        type: 'file',
+        type: "file",
         x: x + i * 20,
         y: y + i * 20,
         width: 250,
@@ -120,7 +115,7 @@ export default function ScratchPage() {
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       handleFileUpload(e.target.files, 100, 100);
-      e.target.value = ''; // Reset input
+      e.target.value = ""; // Reset input
     }
   };
 
@@ -151,12 +146,12 @@ export default function ScratchPage() {
     if (!defaultInstance) return;
 
     try {
-      let content = '';
+      let content = "";
       const files: { blob: Blob; name: string }[] = [];
 
-      if (item.type === 'text') {
-        content = item.content || '';
-      } else if (item.type === 'file' && item.fileRef) {
+      if (item.type === "text") {
+        content = item.content || "";
+      } else if (item.type === "file" && item.fileRef) {
         const fileData = await getFile(item.fileRef.id);
         if (fileData) {
           content = `File: ${item.fileRef.name}`;
@@ -166,7 +161,7 @@ export default function ScratchPage() {
 
       const memo = await saveScratchpadItemToMemos(defaultInstance, content, files, {
         instanceId: defaultInstance.id,
-        visibility: 'PRIVATE',
+        visibility: "PRIVATE",
       });
 
       // Update item as saved
@@ -180,17 +175,17 @@ export default function ScratchPage() {
       // Update instance last connected
       await instanceStorage.update(defaultInstance.id, {
         lastConnected: new Date(),
-        status: 'connected',
+        status: "connected",
       });
       await loadData();
     } catch (error) {
-      console.error('Failed to save:', error);
-      alert('Failed to save to Memos. Please check your instance connection.');
+      console.error("Failed to save:", error);
+      alert("Failed to save to Memos. Please check your instance connection.");
     }
   };
 
   const handleClearAll = () => {
-    if (confirm('Clear all items? This cannot be undone.')) {
+    if (confirm("Clear all items? This cannot be undone.")) {
       itemStorage.clear();
       setItems([]);
       setSelectedItemIds([]);
@@ -201,7 +196,7 @@ export default function ScratchPage() {
     if (selectedItemIds.length === 0) return;
 
     const count = selectedItemIds.length;
-    if (confirm(`Delete ${count} selected ${count === 1 ? 'item' : 'items'}?`)) {
+    if (confirm(`Delete ${count} selected ${count === 1 ? "item" : "items"}?`)) {
       selectedItemIds.forEach((id) => handleDeleteItem(id));
       setSelectedItemIds([]);
     }
@@ -260,9 +255,7 @@ export default function ScratchPage() {
         {/* Selection Actions - Show when items are selected */}
         {selectedItemIds.length > 0 && (
           <div className="flex items-center space-x-2 px-3 py-1.5 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-            <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">
-              {selectedItemIds.length} selected
-            </span>
+            <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">{selectedItemIds.length} selected</span>
             <div className="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
             <button
               onClick={handleSaveSelected}
@@ -285,10 +278,10 @@ export default function ScratchPage() {
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <button
-              className="flex items-center justify-center w-9 h-9 bg-white dark:bg-gray-800 text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded-lg border border-gray-200 dark:border-gray-700 transition shadow-sm font-bold text-lg"
+              className="flex items-center justify-center w-8 h-8 bg-white dark:bg-gray-800 text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded-lg border border-gray-200 contain-content dark:border-gray-700 transition shadow-sm"
               title="Memos menu"
             >
-              M
+              <Image src="/logo.png" alt="Memos" width={32} height={32} />
             </button>
           </DropdownMenu.Trigger>
 
@@ -300,6 +293,16 @@ export default function ScratchPage() {
             >
               <DropdownMenu.Item
                 className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer outline-none"
+                onSelect={() => setShowInstanceForm(true)}
+              >
+                <SettingsIcon className="w-4 h-4" />
+                <span>Instance Settings</span>
+              </DropdownMenu.Item>
+
+              <DropdownMenu.Separator className="h-px bg-gray-200 dark:bg-gray-700 my-1" />
+
+              <DropdownMenu.Item
+                className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer outline-none"
                 asChild
               >
                 <Link href="/">
@@ -307,40 +310,11 @@ export default function ScratchPage() {
                   <span>Back to Main Site</span>
                 </Link>
               </DropdownMenu.Item>
-
-              <DropdownMenu.Separator className="h-px bg-gray-200 dark:bg-gray-700 my-1" />
-
-              <DropdownMenu.Item
-                className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer outline-none"
-                onSelect={() => setShowInstanceForm(true)}
-              >
-                <SettingsIcon className="w-4 h-4" />
-                <span>Instance Settings</span>
-              </DropdownMenu.Item>
-
-              {items.length > 0 && (
-                <>
-                  <DropdownMenu.Separator className="h-px bg-gray-200 dark:bg-gray-700 my-1" />
-                  <DropdownMenu.Item
-                    className="flex items-center space-x-2 px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded cursor-pointer outline-none"
-                    onSelect={handleClearAll}
-                  >
-                    <TrashIcon className="w-4 h-4" />
-                    <span>Clear All Items</span>
-                  </DropdownMenu.Item>
-                </>
-              )}
             </DropdownMenu.Content>
           </DropdownMenu.Portal>
         </DropdownMenu.Root>
       </div>
-      <input
-        ref={fileInputRef}
-        type="file"
-        multiple
-        onChange={handleFileInputChange}
-        className="hidden"
-      />
+      <input ref={fileInputRef} type="file" multiple onChange={handleFileInputChange} className="hidden" />
 
       {/* Canvas - Full Screen */}
       <div className="h-screen">
@@ -357,11 +331,7 @@ export default function ScratchPage() {
       </div>
 
       {/* Instance Setup Modal */}
-      <InstanceSetupForm
-        open={showInstanceForm}
-        onSave={handleInstanceSave}
-        onCancel={() => setShowInstanceForm(false)}
-      />
+      <InstanceSetupForm open={showInstanceForm} onSave={handleInstanceSave} onCancel={() => setShowInstanceForm(false)} />
     </div>
   );
 }
