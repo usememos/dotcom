@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import {
   TrashIcon,
@@ -254,19 +253,6 @@ export default function ScratchPage() {
 
   return (
     <div className="relative h-screen bg-white dark:bg-gray-900">
-      {/* Top Left Branding */}
-      <div className="absolute top-4 left-4 z-10">
-        <Link
-          href="/"
-          className="flex items-center space-x-2 px-3 py-1.5 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-teal-300 dark:hover:border-teal-600 transition shadow-sm group"
-        >
-          <span className="text-lg font-bold text-teal-600 dark:text-teal-400 group-hover:text-teal-700 dark:group-hover:text-teal-300">
-            Memos
-          </span>
-          <span className="text-sm text-gray-500 dark:text-gray-400">Scratch</span>
-        </Link>
-      </div>
-
       {/* Top Right Actions */}
       <div className="absolute top-4 right-4 z-10 flex items-center space-x-2">
         {/* Selection Actions - Show when items are selected */}
@@ -355,28 +341,6 @@ export default function ScratchPage() {
           onSelectItem={handleSelectItem}
         />
       </div>
-
-      {/* Bottom Status Bar */}
-      {(items.length > 0 || hasInstances) && (
-        <div className="absolute bottom-4 left-4 z-10">
-          <div className="flex items-center space-x-3 px-3 py-1.5 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm text-sm">
-            {items.length > 0 && (
-              <div className="text-gray-600 dark:text-gray-400">
-                <span className="font-semibold text-gray-900 dark:text-gray-100">{items.length}</span> {items.length === 1 ? 'item' : 'items'}
-              </div>
-            )}
-            {items.length > 0 && hasInstances && defaultInstance && (
-              <div className="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
-            )}
-            {hasInstances && defaultInstance && (
-              <div className="flex items-center space-x-1 text-gray-600 dark:text-gray-400">
-                <CloudIcon className="w-3 h-3" />
-                <span>{defaultInstance.name}</span>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* Instance Setup Modal */}
       <InstanceSetupForm
