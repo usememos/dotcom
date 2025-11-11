@@ -12,7 +12,7 @@ export async function testConnection(url: string, accessToken: string): Promise<
     // Normalize URL
     const normalizedUrl = url.replace(/\/$/, '');
 
-    const response = await fetch(`${normalizedUrl}/api/v1/user/me`, {
+    const response = await fetch(`${normalizedUrl}/api/v1/auth/sessions/current`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${accessToken}`,
