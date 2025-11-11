@@ -168,11 +168,12 @@ export function Canvas({
   // Calculate dynamic canvas size based on items
   const calculateCanvasSize = () => {
     if (items.length === 0) {
-      // Default size when no items
-      return { width: '100%', height: '100%' };
+      // When no items, don't set explicit dimensions to prevent unnecessary scrolling
+      return { width: undefined, height: undefined };
     }
 
-    const PADDING = 500; // Extra padding for scrolling space
+    // Padding around the furthest card to allow comfortable scrolling
+    const PADDING = 400;
 
     let maxRight = 0;
     let maxBottom = 0;
@@ -209,7 +210,15 @@ export function Canvas({
       style={{ minHeight: '100%' }}
     >
       {/* Canvas content area */}
-      <div className="relative canvas-content" style={{ minWidth: '100%', minHeight: '100%', width: canvasSize.width, height: canvasSize.height }}>
+      <div
+        className="relative canvas-content"
+        style={{
+          minWidth: '100%',
+          minHeight: '100%',
+          ...(canvasSize.width && { width: canvasSize.width }),
+          ...(canvasSize.height && { height: canvasSize.height })
+        }}
+      >
         {items.length === 0 && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="text-center">
