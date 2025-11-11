@@ -27,14 +27,8 @@ export function Workspace({
   onDragComplete,
 }: WorkspaceProps) {
   const workspaceRef = useRef<HTMLDivElement>(null);
-  const [draggingItemId, setDraggingItemId] = useState<string | null>(null);
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [lastMousePos, setLastMousePos] = useState({ x: 0, y: 0 });
-
-  // Use refs to track drag state without causing re-renders
-  const dragStateRef = useRef<{ itemId: string; x: number; y: number } | null>(null);
-  const rafIdRef = useRef<number | null>(null);
 
   // Track mouse position for paste operation
   useEffect(() => {
@@ -106,72 +100,6 @@ export function Workspace({
     onCreateTextItem(x, y);
   };
 
-  const handleItemMouseDown = (e: React.MouseEvent, itemId: string) => {
-    e.stopPropagation();
-
-    const item = items.find((i) => i.id === itemId);
-    if (!item) return;
-
-    const workspaceRect = workspaceRef.current?.getBoundingClientRect();
-    if (!workspaceRect) return;
-
-    // Calculate offset from item's top-left corner to mouse position
-    const mouseXOnWorkspace = e.clientX - workspaceRect.left + workspaceRef.current!.scrollLeft;
-    const mouseYOnWorkspace = e.clientY - workspaceRect.top + workspaceRef.current!.scrollTop;
-
-    setDragOffset({
-      x: mouseXOnWorkspace - item.x,
-      y: mouseYOnWorkspace - item.y,
-    });
-    setDraggingItemId(itemId);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (draggingItemId && workspaceRef.current) {
-      const rect = workspaceRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left - dragOffset.x + workspaceRef.current.scrollLeft;
-      const y = e.clientY - rect.top - dragOffset.y + workspaceRef.current.scrollTop;
-
-      // Store position in ref to avoid causing re-renders
-      dragStateRef.current = { itemId: draggingItemId, x, y };
-
-      // Use requestAnimationFrame to throttle updates for smooth dragging
-      if (rafIdRef.current === null) {
-        rafIdRef.current = requestAnimationFrame(() => {
-          if (dragStateRef.current) {
-            onUpdateItem(dragStateRef.current.itemId, {
-              x: dragStateRef.current.x,
-              y: dragStateRef.current.y,
-            });
-          }
-          rafIdRef.current = null;
-        });
-      }
-    }
-  };
-
-  const handleMouseUp = () => {
-    // Cancel any pending animation frame
-    if (rafIdRef.current !== null) {
-      cancelAnimationFrame(rafIdRef.current);
-      rafIdRef.current = null;
-    }
-
-    // Commit final position
-    if (dragStateRef.current) {
-      onUpdateItem(dragStateRef.current.itemId, {
-        x: dragStateRef.current.x,
-        y: dragStateRef.current.y,
-      });
-      dragStateRef.current = null;
-    }
-
-    if (draggingItemId && onDragComplete) {
-      onDragComplete();
-    }
-    setDraggingItemId(null);
-  };
-
   // File drag and drop
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -237,8 +165,6 @@ export function Workspace({
       ref={workspaceRef}
       onClick={handleWorkspaceClick}
       onDoubleClick={handleWorkspaceDoubleClick}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
@@ -282,29 +208,25 @@ export function Workspace({
 
         {/* Render items */}
         {items.map((item) => {
-          const handleMouseDownForItem = (e: React.MouseEvent) => handleItemMouseDown(e, item.id);
-
           return item.type === 'text' ? (
             <TextItem
               key={item.id}
               item={item}
               onUpdate={onUpdateItem}
               onDelete={onDeleteItem}
-              onMouseDown={handleMouseDownForItem}
-              isDragging={draggingItemId === item.id}
               isSelected={selectedItemIds.includes(item.id)}
               onSelect={(ctrlKey) => onSelectItem(item.id, ctrlKey)}
-              onResizeComplete={onDragComplete}
+              onDragComplete={onDragComplete}
             />
           ) : (
             <FileItem
               key={item.id}
               item={item}
+              onUpdate={onUpdateItem}
               onDelete={onDeleteItem}
-              onMouseDown={handleMouseDownForItem}
-              isDragging={draggingItemId === item.id}
               isSelected={selectedItemIds.includes(item.id)}
               onSelect={(ctrlKey) => onSelectItem(item.id, ctrlKey)}
+              onDragComplete={onDragComplete}
             />
           );
         })}
