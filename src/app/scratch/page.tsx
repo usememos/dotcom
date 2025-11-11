@@ -2,9 +2,12 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import {
   TrashIcon,
   CloudIcon,
+  SettingsIcon,
+  SaveIcon,
 } from 'lucide-react';
 import { InstanceSetupForm } from '@/components/scratch/instance-setup-form';
 import { Canvas } from '@/components/scratch/canvas';
@@ -189,7 +192,32 @@ export default function ScratchPage() {
     if (confirm('Clear all items? This cannot be undone.')) {
       itemStorage.clear();
       setItems([]);
+      setSelectedItemIds([]);
     }
+  };
+
+  const handleDeleteSelected = () => {
+    if (selectedItemIds.length === 0) return;
+
+    const count = selectedItemIds.length;
+    if (confirm(`Delete ${count} selected ${count === 1 ? 'item' : 'items'}?`)) {
+      selectedItemIds.forEach((id) => handleDeleteItem(id));
+      setSelectedItemIds([]);
+    }
+  };
+
+  const handleSaveSelected = async () => {
+    if (selectedItemIds.length === 0) return;
+
+    if (instances.length === 0) {
+      setShowInstanceForm(true);
+      return;
+    }
+
+    for (const id of selectedItemIds) {
+      await handleSaveItem(id);
+    }
+    setSelectedItemIds([]);
   };
 
   const handleSelectItem = (id: string | null, ctrlKey: boolean = false) => {
@@ -239,26 +267,72 @@ export default function ScratchPage() {
         </Link>
       </div>
 
-      {/* Minimal Toolbar */}
+      {/* Top Right Actions */}
       <div className="absolute top-4 right-4 z-10 flex items-center space-x-2">
-        {!hasInstances && (
-          <button
-            onClick={() => setShowInstanceForm(true)}
-            className="flex items-center space-x-2 px-3 py-1.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition shadow-sm"
-          >
-            <CloudIcon className="w-4 h-4" />
-            <span>Connect Instance</span>
-          </button>
+        {/* Selection Actions - Show when items are selected */}
+        {selectedItemIds.length > 0 && (
+          <div className="flex items-center space-x-2 px-3 py-1.5 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+            <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+              {selectedItemIds.length} selected
+            </span>
+            <div className="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
+            <button
+              onClick={handleSaveSelected}
+              className="p-1.5 text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded transition"
+              title="Save selected to Memos"
+            >
+              <SaveIcon className="w-4 h-4" />
+            </button>
+            <button
+              onClick={handleDeleteSelected}
+              className="p-1.5 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition"
+              title="Delete selected"
+            >
+              <TrashIcon className="w-4 h-4" />
+            </button>
+          </div>
         )}
-        {items.length > 0 && (
-          <button
-            onClick={handleClearAll}
-            className="p-2 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-red-300 dark:hover:border-red-700 transition shadow-sm"
-            title="Clear all items"
-          >
-            <TrashIcon className="w-4 h-4" />
-          </button>
-        )}
+
+        {/* Memos Dropdown Menu */}
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger asChild>
+            <button
+              className="p-2 bg-white dark:bg-gray-800 text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded-lg border border-gray-200 dark:border-gray-700 transition shadow-sm"
+              title="Memos settings"
+            >
+              <CloudIcon className="w-5 h-5" />
+            </button>
+          </DropdownMenu.Trigger>
+
+          <DropdownMenu.Portal>
+            <DropdownMenu.Content
+              className="min-w-[200px] bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg p-1 z-50"
+              sideOffset={5}
+              align="end"
+            >
+              <DropdownMenu.Item
+                className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer outline-none"
+                onSelect={() => setShowInstanceForm(true)}
+              >
+                <SettingsIcon className="w-4 h-4" />
+                <span>Instance Settings</span>
+              </DropdownMenu.Item>
+
+              {items.length > 0 && (
+                <>
+                  <DropdownMenu.Separator className="h-px bg-gray-200 dark:bg-gray-700 my-1" />
+                  <DropdownMenu.Item
+                    className="flex items-center space-x-2 px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded cursor-pointer outline-none"
+                    onSelect={handleClearAll}
+                  >
+                    <TrashIcon className="w-4 h-4" />
+                    <span>Clear All Items</span>
+                  </DropdownMenu.Item>
+                </>
+              )}
+            </DropdownMenu.Content>
+          </DropdownMenu.Portal>
+        </DropdownMenu.Root>
       </div>
       <input
         ref={fileInputRef}
