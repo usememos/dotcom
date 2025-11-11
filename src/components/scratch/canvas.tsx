@@ -175,6 +175,7 @@ export function Canvas({
     // Padding around the furthest card to allow comfortable scrolling
     const PADDING = 400;
 
+    // Find the maximum extents of all cards
     let maxRight = 0;
     let maxBottom = 0;
 
@@ -182,13 +183,17 @@ export function Canvas({
       const right = item.x + item.width;
       const bottom = item.y + item.height;
 
-      if (right > maxRight) maxRight = right;
-      if (bottom > maxBottom) maxBottom = bottom;
+      maxRight = Math.max(maxRight, right);
+      maxBottom = Math.max(maxBottom, bottom);
     });
 
+    // Calculate final dimensions with consistent padding
+    const width = maxRight + PADDING;
+    const height = maxBottom + PADDING;
+
     return {
-      width: `${maxRight + PADDING}px`,
-      height: `${maxBottom + PADDING}px`,
+      width: `${width}px`,
+      height: `${height}px`,
     };
   };
 
@@ -215,8 +220,8 @@ export function Canvas({
         style={{
           minWidth: '100%',
           minHeight: '100%',
-          ...(canvasSize.width && { width: canvasSize.width }),
-          ...(canvasSize.height && { height: canvasSize.height })
+          width: canvasSize.width || '100%',
+          height: canvasSize.height || '100%',
         }}
       >
         {items.length === 0 && (
