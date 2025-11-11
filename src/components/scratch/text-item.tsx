@@ -1,20 +1,19 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import type { ScratchpadItem } from '@/lib/scratch/types';
 
 interface TextItemProps {
   item: ScratchpadItem;
   onUpdate: (id: string, updates: Partial<ScratchpadItem>) => void;
   onDelete: (id: string) => void;
-  onMouseDown: (e: React.MouseEvent) => void;
-  isDragging?: boolean;
   isSelected?: boolean;
   onSelect: (ctrlKey: boolean) => void;
-  onResizeComplete?: () => void;
+  onDragComplete?: () => void;
 }
 
-export function TextItem({ item, onUpdate, onDelete, onMouseDown, isDragging, isSelected, onSelect, onResizeComplete }: TextItemProps) {
+export function TextItem({ item, onUpdate, onDelete, isSelected, onSelect, onDragComplete }: TextItemProps) {
   const [localContent, setLocalContent] = useState(item.content || '');
   const [isResizing, setIsResizing] = useState(false);
   const [resizeStart, setResizeStart] = useState({ x: 0, y: 0, width: 0, height: 0 });
@@ -100,8 +99,8 @@ export function TextItem({ item, onUpdate, onDelete, onMouseDown, isDragging, is
 
     const handleMouseUp = () => {
       setIsResizing(false);
-      if (onResizeComplete) {
-        onResizeComplete();
+      if (onDragComplete) {
+        onDragComplete();
       }
     };
 
@@ -112,17 +111,32 @@ export function TextItem({ item, onUpdate, onDelete, onMouseDown, isDragging, is
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isResizing, resizeStart, item.id, onUpdate, onResizeComplete]);
+  }, [isResizing, resizeStart, item.id, onUpdate, onDragComplete]);
 
   return (
-    <div
+    <motion.div
       data-scratchpad-item="true"
+      drag={!isResizing}
+      dragMomentum={false}
+      dragElastic={0}
+      onDragStart={(e) => {
+        e.stopPropagation();
+      }}
+      onDrag={(_, info) => {
+        // Update position in real-time during drag
+        onUpdate(item.id, {
+          x: item.x + info.delta.x,
+          y: item.y + info.delta.y,
+        });
+      }}
+      onDragEnd={() => {
+        if (onDragComplete) {
+          onDragComplete();
+        }
+      }}
       onClick={handleContainerClick}
       onDoubleClick={handleDoubleClick}
-      onMouseDown={onMouseDown}
-      className={`absolute bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-all cursor-move ${
-        isDragging ? 'opacity-50 cursor-grabbing' : ''
-      } ${
+      className={`absolute bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow cursor-move ${
         isSelected
           ? 'ring-2 ring-blue-500 dark:ring-blue-400 shadow-md'
           : item.savedToInstance
@@ -135,7 +149,10 @@ export function TextItem({ item, onUpdate, onDelete, onMouseDown, isDragging, is
         width: item.width,
         minHeight: item.height,
         zIndex: item.zIndex || 1,
+        x: 0, // Reset motion transform
+        y: 0,
       }}
+      whileDrag={{ opacity: 0.5, cursor: 'grabbing' }}
       title={item.savedToInstance ? 'Saved to Memos' : 'Select and click save to save to Memos'}
     >
       <textarea
@@ -156,6 +173,6 @@ export function TextItem({ item, onUpdate, onDelete, onMouseDown, isDragging, is
       >
         <div className="absolute bottom-1 right-1 w-3 h-3 border-r-2 border-b-2 border-gray-400 dark:border-gray-500 opacity-30 group-hover:opacity-70 transition-opacity" />
       </div>
-    </div>
+    </motion.div>
   );
 }

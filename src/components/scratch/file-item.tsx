@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { FileIcon } from 'lucide-react';
 import type { ScratchpadItem, FileData } from '@/lib/scratch/types';
 import { getFile } from '@/lib/scratch/indexeddb';
@@ -9,13 +10,12 @@ interface FileItemProps {
   item: ScratchpadItem;
   onUpdate: (id: string, updates: Partial<ScratchpadItem>) => void;
   onDelete: (id: string) => void;
-  onMouseDown: (e: React.MouseEvent) => void;
-  isDragging?: boolean;
   isSelected?: boolean;
   onSelect: (ctrlKey: boolean) => void;
+  onDragComplete?: () => void;
 }
 
-export function FileItem({ item, onUpdate, onDelete, onMouseDown, isDragging, isSelected, onSelect }: FileItemProps) {
+export function FileItem({ item, onUpdate, onDelete, isSelected, onSelect, onDragComplete }: FileItemProps) {
   const [fileData, setFileData] = useState<FileData | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -62,16 +62,31 @@ export function FileItem({ item, onUpdate, onDelete, onMouseDown, isDragging, is
   const isImage = item.fileRef?.type.startsWith('image/');
 
   return (
-    <div
+    <motion.div
       data-scratchpad-item="true"
+      drag
+      dragMomentum={false}
+      dragElastic={0}
+      onDragStart={(e) => {
+        e.stopPropagation();
+      }}
+      onDrag={(_, info) => {
+        // Update position in real-time during drag
+        onUpdate(item.id, {
+          x: item.x + info.delta.x,
+          y: item.y + info.delta.y,
+        });
+      }}
+      onDragEnd={() => {
+        if (onDragComplete) {
+          onDragComplete();
+        }
+      }}
       onClick={handleContainerClick}
       onDoubleClick={handleDoubleClick}
-      onMouseDown={onMouseDown}
       onKeyDown={handleKeyDown}
       tabIndex={0}
-      className={`absolute bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-all focus:outline-none cursor-move ${
-        isDragging ? 'opacity-50 cursor-grabbing' : ''
-      } ${
+      className={`absolute bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow focus:outline-none cursor-move ${
         isSelected
           ? 'ring-2 ring-blue-500 dark:ring-blue-400 shadow-md'
           : item.savedToInstance
@@ -84,7 +99,10 @@ export function FileItem({ item, onUpdate, onDelete, onMouseDown, isDragging, is
         width: item.width,
         minHeight: item.height,
         zIndex: item.zIndex || 1,
+        x: 0, // Reset motion transform
+        y: 0,
       }}
+      whileDrag={{ opacity: 0.5, cursor: 'grabbing' }}
       title={item.savedToInstance ? 'Saved to Memos' : 'Select and click save to save to Memos'}
     >
       {isImage && previewUrl ? (
@@ -103,6 +121,6 @@ export function FileItem({ item, onUpdate, onDelete, onMouseDown, isDragging, is
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }
