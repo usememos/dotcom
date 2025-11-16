@@ -1,11 +1,11 @@
+import { HomeLayout } from "fumadocs-ui/layouts/home";
+import { CheckCircleIcon, StarIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CheckCircleIcon, StarIcon } from "lucide-react";
-import { HomeLayout } from "fumadocs-ui/layouts/home";
+import { notFound } from "next/navigation";
 import { baseOptions } from "@/app/layout.config";
 import { Footer } from "@/components/footer";
-import { notFound } from "next/navigation";
-import { getFeature, getAllFeatureSlugs } from "@/lib/features";
+import { getAllFeatureSlugs, getFeature } from "@/lib/features";
 
 interface FeaturePageProps {
   params: Promise<{ slug: string }>;

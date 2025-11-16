@@ -1,10 +1,5 @@
 {
   "title": "Installation",
   "description": "Learn how to install Memos using different methods",
-  "pages": [
-    "index",
-    "docker",
-    "binary",
-    "development"
-  ]
+  "pages": ["index", "docker", "binary", "development"]
 }

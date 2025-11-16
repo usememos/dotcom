@@ -2,19 +2,19 @@
  * IndexedDB utilities for storing file blobs
  */
 
-import type { FileData } from './types';
+import type { FileData } from "./types";
 
-const DB_NAME = 'memos-scratch';
+const DB_NAME = "memos-scratch";
 const DB_VERSION = 1;
-const STORE_NAME = 'files';
+const STORE_NAME = "files";
 
 /**
  * Open IndexedDB connection
  */
 function openDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
-    if (typeof window === 'undefined') {
-      reject(new Error('IndexedDB not available'));
+    if (typeof window === "undefined") {
+      reject(new Error("IndexedDB not available"));
       return;
     }
 
@@ -28,8 +28,8 @@ function openDB(): Promise<IDBDatabase> {
 
       // Create object store if it doesn't exist
       if (!db.objectStoreNames.contains(STORE_NAME)) {
-        const store = db.createObjectStore(STORE_NAME, { keyPath: 'id' });
-        store.createIndex('uploadedAt', 'uploadedAt', { unique: false });
+        const store = db.createObjectStore(STORE_NAME, { keyPath: "id" });
+        store.createIndex("uploadedAt", "uploadedAt", { unique: false });
       }
     };
   });
@@ -42,7 +42,7 @@ export async function saveFile(file: FileData): Promise<void> {
   const db = await openDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction([STORE_NAME], 'readwrite');
+    const transaction = db.transaction([STORE_NAME], "readwrite");
     const store = transaction.objectStore(STORE_NAME);
     const request = store.put(file);
 
@@ -60,7 +60,7 @@ export async function getFile(id: string): Promise<FileData | null> {
   const db = await openDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction([STORE_NAME], 'readonly');
+    const transaction = db.transaction([STORE_NAME], "readonly");
     const store = transaction.objectStore(STORE_NAME);
     const request = store.get(id);
 
@@ -81,7 +81,7 @@ export async function getAllFiles(): Promise<FileData[]> {
   const db = await openDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction([STORE_NAME], 'readonly');
+    const transaction = db.transaction([STORE_NAME], "readonly");
     const store = transaction.objectStore(STORE_NAME);
     const request = store.getAll();
 
@@ -92,7 +92,7 @@ export async function getAllFiles(): Promise<FileData[]> {
         results.map((file: FileData) => ({
           ...file,
           uploadedAt: new Date(file.uploadedAt),
-        }))
+        })),
       );
     };
 
@@ -107,7 +107,7 @@ export async function deleteFile(id: string): Promise<void> {
   const db = await openDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction([STORE_NAME], 'readwrite');
+    const transaction = db.transaction([STORE_NAME], "readwrite");
     const store = transaction.objectStore(STORE_NAME);
     const request = store.delete(id);
 
@@ -125,7 +125,7 @@ export async function clearAllFiles(): Promise<void> {
   const db = await openDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction([STORE_NAME], 'readwrite');
+    const transaction = db.transaction([STORE_NAME], "readwrite");
     const store = transaction.objectStore(STORE_NAME);
     const request = store.clear();
 
@@ -171,8 +171,8 @@ export function createFileData(file: File | Blob, name?: string): FileData {
 
   return {
     id,
-    name: name || (file instanceof File ? file.name : 'untitled'),
-    type: file.type || 'application/octet-stream',
+    name: name || (file instanceof File ? file.name : "untitled"),
+    type: file.type || "application/octet-stream",
     size: file.size,
     blob: file,
     uploadedAt: new Date(),

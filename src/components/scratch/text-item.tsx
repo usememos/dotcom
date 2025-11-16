@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import type { ScratchpadItem } from '@/lib/scratch/types';
+import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import type { ScratchpadItem } from "@/lib/scratch/types";
 
 interface TextItemProps {
   item: ScratchpadItem;
@@ -14,9 +14,14 @@ interface TextItemProps {
 }
 
 export function TextItem({ item, onUpdate, onDelete, isSelected, onSelect, onDragComplete }: TextItemProps) {
-  const [localContent, setLocalContent] = useState(item.content || '');
+  const [localContent, setLocalContent] = useState(item.content || "");
   const [isResizing, setIsResizing] = useState(false);
-  const [resizeStart, setResizeStart] = useState({ x: 0, y: 0, width: 0, height: 0 });
+  const [resizeStart, setResizeStart] = useState({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+  });
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const MIN_WIDTH = 200;
@@ -25,10 +30,10 @@ export function TextItem({ item, onUpdate, onDelete, isSelected, onSelect, onDra
   useEffect(() => {
     if (textareaRef.current) {
       // Auto-resize textarea
-      textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
-  }, [localContent]);
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newContent = e.target.value;
@@ -36,8 +41,8 @@ export function TextItem({ item, onUpdate, onDelete, isSelected, onSelect, onDra
     onUpdate(item.id, { content: newContent });
 
     // Auto-resize
-    e.target.style.height = 'auto';
-    e.target.style.height = e.target.scrollHeight + 'px';
+    e.target.style.height = "auto";
+    e.target.style.height = `${e.target.scrollHeight}px`;
   };
 
   const handleContainerClick = (e: React.MouseEvent) => {
@@ -53,7 +58,7 @@ export function TextItem({ item, onUpdate, onDelete, isSelected, onSelect, onDra
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     // Delete with Backspace when empty
-    if (e.key === 'Backspace' && localContent === '') {
+    if (e.key === "Backspace" && localContent === "") {
       e.preventDefault();
       onDelete(item.id);
     }
@@ -63,12 +68,13 @@ export function TextItem({ item, onUpdate, onDelete, isSelected, onSelect, onDra
     e.stopPropagation(); // Don't start dragging when clicking textarea
   };
 
-  const handleTextareaClick = (e: React.MouseEvent) => {
+  const handleTextareaClick = (_e: React.MouseEvent) => {
     // Update timestamp to bring card to front (sticky-notes pattern)
     // This ensures clicked cards come to the top
-    const maxZIndex = Math.max(...Array.from(document.querySelectorAll('[data-scratchpad-item]')).map(
-      el => parseInt((el as HTMLElement).style.zIndex || '1', 10)
-    ), 0);
+    const maxZIndex = Math.max(
+      ...Array.from(document.querySelectorAll("[data-scratchpad-item]")).map((el) => parseInt((el as HTMLElement).style.zIndex || "1", 10)),
+      0,
+    );
     onUpdate(item.id, { zIndex: maxZIndex + 1 });
   };
 
@@ -104,12 +110,12 @@ export function TextItem({ item, onUpdate, onDelete, isSelected, onSelect, onDra
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
     };
   }, [isResizing, resizeStart, item.id, onUpdate, onDragComplete]);
 
@@ -138,10 +144,10 @@ export function TextItem({ item, onUpdate, onDelete, isSelected, onSelect, onDra
       onDoubleClick={handleDoubleClick}
       className={`absolute bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow cursor-move ${
         isSelected
-          ? 'ring-2 ring-blue-500 dark:ring-blue-400 shadow-md'
+          ? "ring-2 ring-blue-500 dark:ring-blue-400 shadow-md"
           : item.savedToInstance
-          ? 'ring-2 ring-green-500 dark:ring-green-500 shadow-md'
-          : ''
+            ? "ring-2 ring-green-500 dark:ring-green-500 shadow-md"
+            : ""
       }`}
       style={{
         left: item.x,
@@ -152,8 +158,8 @@ export function TextItem({ item, onUpdate, onDelete, isSelected, onSelect, onDra
         x: 0, // Reset motion transform
         y: 0,
       }}
-      whileDrag={{ opacity: 0.5, cursor: 'grabbing' }}
-      title={item.savedToInstance ? 'Saved to Memos' : 'Select and click save to save to Memos'}
+      whileDrag={{ opacity: 0.5, cursor: "grabbing" }}
+      title={item.savedToInstance ? "Saved to Memos" : "Select and click save to save to Memos"}
     >
       <textarea
         ref={textareaRef}
@@ -166,11 +172,7 @@ export function TextItem({ item, onUpdate, onDelete, isSelected, onSelect, onDra
         className="w-full h-full min-h-[160px] p-4 resize-none bg-transparent border-none outline-none text-gray-900 dark:text-gray-100 font-mono text-sm leading-relaxed cursor-text"
       />
       {/* Resize handle */}
-      <div
-        onMouseDown={handleResizeMouseDown}
-        className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize group"
-        title="Drag to resize"
-      >
+      <div onMouseDown={handleResizeMouseDown} className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize group" title="Drag to resize">
         <div className="absolute bottom-1 right-1 w-3 h-3 border-r-2 border-b-2 border-gray-400 dark:border-gray-500 opacity-30 group-hover:opacity-70 transition-opacity" />
       </div>
     </motion.div>

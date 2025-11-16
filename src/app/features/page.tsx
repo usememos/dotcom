@@ -1,33 +1,33 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import { HomeLayout } from "fumadocs-ui/layouts/home";
 import {
-  ServerIcon,
   ArrowRightIcon,
-  LockIcon,
-  SaveIcon,
-  FileTextIcon,
-  ImageIcon,
-  MonitorSmartphoneIcon,
+  CloudOffIcon,
   CodeIcon,
   DatabaseIcon,
-  GitBranchIcon,
-  HeartIcon,
-  ZapIcon,
-  PaletteIcon,
   DollarSignIcon,
-  LayersIcon,
-  CloudOffIcon,
-  SearchIcon,
-  TagIcon,
   DownloadIcon,
-  UploadIcon,
-  KeyboardIcon,
-  MoonIcon,
-  ShieldCheckIcon,
-  RefreshCwIcon,
+  FileTextIcon,
+  GitBranchIcon,
   GlobeIcon,
+  HeartIcon,
+  ImageIcon,
+  KeyboardIcon,
+  LayersIcon,
+  LockIcon,
+  MonitorSmartphoneIcon,
+  MoonIcon,
+  PaletteIcon,
+  RefreshCwIcon,
+  SaveIcon,
+  SearchIcon,
+  ServerIcon,
+  ShieldCheckIcon,
+  TagIcon,
+  UploadIcon,
+  ZapIcon,
 } from "lucide-react";
-import { HomeLayout } from "fumadocs-ui/layouts/home";
+import type { Metadata } from "next";
+import Link from "next/link";
 import { baseOptions } from "@/app/layout.config";
 import { Footer } from "@/components/footer";
 

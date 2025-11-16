@@ -84,7 +84,8 @@ export const FEATURES = {
   },
   performance: {
     title: "High-Performance Backend",
-    description: "Built with Go for lightning-fast performance, instant loading with no cloud latency dependency, and minimal server requirements.",
+    description:
+      "Built with Go for lightning-fast performance, instant loading with no cloud latency dependency, and minimal server requirements.",
     hero: {
       title: "Built for Speed",
       subtitle: "Go-powered backend delivers instant loading and exceptional performance with no cloud latency dependency.",
@@ -159,7 +160,8 @@ export const FEATURES = {
   },
   "cross-platform": {
     title: "Cross-Platform Support",
-    description: "Deploy anywhere with Docker containerization, pre-built binaries for Linux, macOS, Windows, and Kubernetes support with Helm charts.",
+    description:
+      "Deploy anywhere with Docker containerization, pre-built binaries for Linux, macOS, Windows, and Kubernetes support with Helm charts.",
     hero: {
       title: "Deploy Anywhere",
       subtitle: "Universal compatibility with Docker, pre-built binaries, and Kubernetes support for any deployment scenario.",
@@ -229,7 +231,8 @@ export const FEATURES = {
   },
   "api-first": {
     title: "API-First Design",
-    description: "Full REST and gRPC APIs with unrestricted access enable seamless integrations, custom applications, and automation workflows.",
+    description:
+      "Full REST and gRPC APIs with unrestricted access enable seamless integrations, custom applications, and automation workflows.",
     hero: {
       title: "Built for Integration",
       subtitle: "Full REST and gRPC APIs with unrestricted access open unlimited possibilities for custom integrations.",
@@ -402,7 +405,8 @@ export const FEATURES = {
   },
   "self-hosted": {
     title: "Self-Hosted Architecture",
-    description: "Deploy Memos on your own infrastructure with complete control over your data, ensuring privacy and ownership without vendor lock-in.",
+    description:
+      "Deploy Memos on your own infrastructure with complete control over your data, ensuring privacy and ownership without vendor lock-in.",
     hero: {
       title: "Your Server, Your Control",
       subtitle: "Complete control with self-hosted deployment - from Raspberry Pi to enterprise Kubernetes clusters.",
@@ -510,7 +514,8 @@ export const FEATURES = {
   },
   "markdown-support": {
     title: "Rich Markdown Support",
-    description: "Full Markdown support with plain text storage for maximum portability, featuring syntax highlighting, tables, and advanced formatting.",
+    description:
+      "Full Markdown support with plain text storage for maximum portability, featuring syntax highlighting, tables, and advanced formatting.",
     hero: {
       title: "Write with Power",
       subtitle: "Full Markdown support with plain text storage ensures portability and future-proof content.",

@@ -30,7 +30,7 @@ export function DocsCarbonAdCard() {
           observer.disconnect();
         }
       },
-      { rootMargin: "200px" } // Start loading 200px before visible
+      { rootMargin: "200px" }, // Start loading 200px before visible
     );
 
     observer.observe(container);
@@ -129,6 +129,7 @@ export function DocsCarbonAdCard() {
     <div
       ref={containerRef}
       className={cn("w-full max-h-80 rounded-xl border border-border bg-muted/30 p-3 transition overflow-auto", "dark:bg-muted/10")}
+      role="region"
       aria-label="Sponsored by Carbon"
     >
       <span className="sr-only">Carbon Ads</span>

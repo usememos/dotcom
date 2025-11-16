@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { FileIcon } from 'lucide-react';
-import type { ScratchpadItem, FileData } from '@/lib/scratch/types';
-import { getFile } from '@/lib/scratch/indexeddb';
+import { motion } from "framer-motion";
+import { FileIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+import { getFile } from "@/lib/scratch/indexeddb";
+import type { FileData, ScratchpadItem } from "@/lib/scratch/types";
 
 interface FileItemProps {
   item: ScratchpadItem;
@@ -16,7 +16,7 @@ interface FileItemProps {
 }
 
 export function FileItem({ item, onUpdate, onDelete, isSelected, onSelect, onDragComplete }: FileItemProps) {
-  const [fileData, setFileData] = useState<FileData | null>(null);
+  const [_fileData, setFileData] = useState<FileData | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export function FileItem({ item, onUpdate, onDelete, isSelected, onSelect, onDra
       getFile(item.fileRef.id).then((data) => {
         setFileData(data);
         // Create preview for images
-        if (data && data.type.startsWith('image/')) {
+        if (data?.type.startsWith("image/")) {
           const url = URL.createObjectURL(data.blob);
           setPreviewUrl(url);
 
@@ -39,9 +39,10 @@ export function FileItem({ item, onUpdate, onDelete, isSelected, onSelect, onDra
     onSelect(e.ctrlKey || e.metaKey); // Pass Ctrl/Cmd key state for multi-selection
 
     // Bring clicked card to front (sticky-notes pattern)
-    const maxZIndex = Math.max(...Array.from(document.querySelectorAll('[data-scratchpad-item]')).map(
-      el => parseInt((el as HTMLElement).style.zIndex || '1', 10)
-    ), 0);
+    const maxZIndex = Math.max(
+      ...Array.from(document.querySelectorAll("[data-scratchpad-item]")).map((el) => parseInt((el as HTMLElement).style.zIndex || "1", 10)),
+      0,
+    );
     onUpdate(item.id, { zIndex: maxZIndex + 1 });
   };
 
@@ -53,13 +54,13 @@ export function FileItem({ item, onUpdate, onDelete, isSelected, onSelect, onDra
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     // Delete with Backspace
-    if (e.key === 'Backspace' || e.key === 'Delete') {
+    if (e.key === "Backspace" || e.key === "Delete") {
       e.preventDefault();
       onDelete(item.id);
     }
   };
 
-  const isImage = item.fileRef?.type.startsWith('image/');
+  const isImage = item.fileRef?.type.startsWith("image/");
 
   return (
     <motion.div
@@ -88,10 +89,10 @@ export function FileItem({ item, onUpdate, onDelete, isSelected, onSelect, onDra
       tabIndex={0}
       className={`absolute bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow focus:outline-none cursor-move ${
         isSelected
-          ? 'ring-2 ring-blue-500 dark:ring-blue-400 shadow-md'
+          ? "ring-2 ring-blue-500 dark:ring-blue-400 shadow-md"
           : item.savedToInstance
-          ? 'ring-2 ring-green-500 dark:ring-green-500 shadow-md'
-          : ''
+            ? "ring-2 ring-green-500 dark:ring-green-500 shadow-md"
+            : ""
       }`}
       style={{
         left: item.x,
@@ -102,23 +103,17 @@ export function FileItem({ item, onUpdate, onDelete, isSelected, onSelect, onDra
         x: 0, // Reset motion transform
         y: 0,
       }}
-      whileDrag={{ opacity: 0.5, cursor: 'grabbing' }}
-      title={item.savedToInstance ? 'Saved to Memos' : 'Select and click save to save to Memos'}
+      whileDrag={{ opacity: 0.5, cursor: "grabbing" }}
+      title={item.savedToInstance ? "Saved to Memos" : "Select and click save to save to Memos"}
     >
       {isImage && previewUrl ? (
         <div className="w-full h-full flex items-center justify-center bg-gray-50 dark:bg-gray-900 pointer-events-none">
-          <img
-            src={previewUrl}
-            alt={item.fileRef?.name}
-            className="w-full h-full object-cover"
-          />
+          <img src={previewUrl} alt={item.fileRef?.name} className="w-full h-full object-cover" />
         </div>
       ) : (
         <div className="w-full h-full min-h-[200px] flex flex-col items-center justify-center p-6 bg-gray-50 dark:bg-gray-900 pointer-events-none">
           <FileIcon className="w-16 h-16 text-gray-400 dark:text-gray-600 mb-3" />
-          <div className="text-sm text-center text-gray-700 dark:text-gray-300 font-medium truncate w-full px-2">
-            {item.fileRef?.name}
-          </div>
+          <div className="text-sm text-center text-gray-700 dark:text-gray-300 font-medium truncate w-full px-2">{item.fileRef?.name}</div>
         </div>
       )}
     </motion.div>

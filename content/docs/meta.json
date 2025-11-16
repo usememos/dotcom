@@ -1,11 +1,4 @@
 {
   "title": "Docs",
-  "pages": [
-    "index",
-    "installation",
-    "guides",
-    "configuration",
-    "integrations",
-    "faq"
-  ]
+  "pages": ["index", "installation", "guides", "configuration", "integrations", "faq"]
 }

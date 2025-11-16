@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { ExternalLinkIcon } from "lucide-react";
+import Link from "next/link";
 
 interface ChangelogFooterProps {
   version: string;

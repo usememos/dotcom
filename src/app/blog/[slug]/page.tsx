@@ -1,16 +1,16 @@
+import { TOCItems, TOCProvider, TOCScrollArea } from "fumadocs-ui/components/layout/toc";
+import { HomeLayout } from "fumadocs-ui/layouts/home";
+import { DocsBody } from "fumadocs-ui/page";
+import { ArrowLeftIcon, CalendarIcon, ExternalLinkIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CalendarIcon, ArrowLeftIcon, ExternalLinkIcon } from "lucide-react";
-import { blogSource } from "@/lib/source";
-import { DocsBody } from "fumadocs-ui/page";
-import { TOCProvider, TOCScrollArea, TOCItems } from "fumadocs-ui/components/layout/toc";
 import { notFound } from "next/navigation";
-import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { baseOptions } from "@/app/layout.config";
-import { Footer } from "@/components/footer";
-import { getMDXComponents } from "@/mdx-components";
-import { DocsSponsorCard } from "@/components/docs-sponsor-card";
 import { DocsCarbonAdCard } from "@/components/docs-carbon-ad-card";
+import { DocsSponsorCard } from "@/components/docs-sponsor-card";
+import { Footer } from "@/components/footer";
+import { blogSource } from "@/lib/source";
+import { getMDXComponents } from "@/mdx-components";
 
 interface BlogPageProps {
   params: Promise<{ slug: string }>;
@@ -34,36 +34,37 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": data.title,
-    "description": data.description,
-    "image": data.feature_image ? (data.feature_image.startsWith('http') ? data.feature_image : `https://usememos.com${data.feature_image}`) : "https://usememos.com/demo.png",
-    "datePublished": data.published_at,
-    "author": {
+    headline: data.title,
+    description: data.description,
+    image: data.feature_image
+      ? data.feature_image.startsWith("http")
+        ? data.feature_image
+        : `https://usememos.com${data.feature_image}`
+      : "https://usememos.com/demo.png",
+    datePublished: data.published_at,
+    author: {
       "@type": "Organization",
-      "name": "Memos Team",
-      "url": "https://usememos.com"
+      name: "Memos Team",
+      url: "https://usememos.com",
     },
-    "publisher": {
+    publisher: {
       "@type": "Organization",
-      "name": "Memos",
-      "url": "https://usememos.com",
-      "logo": {
+      name: "Memos",
+      url: "https://usememos.com",
+      logo: {
         "@type": "ImageObject",
-        "url": "https://usememos.com/logo-rounded.png"
-      }
+        url: "https://usememos.com/logo-rounded.png",
+      },
     },
-    "mainEntityOfPage": {
+    mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://usememos.com/blog/${slug}`
-    }
+      "@id": `https://usememos.com/blog/${slug}`,
+    },
   };
 
   return (
     <HomeLayout {...baseOptions}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <main className="flex flex-1 flex-col">
         <section className="pt-8 sm:pt-12 pb-4 px-4">
           <div className="max-w-6xl mx-auto">
@@ -105,7 +106,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                     })}
                   </span>
                 </div>
-                
+
                 {/* Tags */}
                 {data.tags && data.tags.length > 0 && (
                   <>
@@ -236,7 +237,7 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
   // Ensure image URLs are absolute
   const getAbsoluteImageUrl = (url: string | undefined) => {
     if (!url) return undefined;
-    return url.startsWith('http') ? url : `https://usememos.com${url.startsWith('/') ? url : '/' + url}`;
+    return url.startsWith("http") ? url : `https://usememos.com${url.startsWith("/") ? url : `/${url}`}`;
   };
 
   const absoluteImageUrl = getAbsoluteImageUrl(data.feature_image);

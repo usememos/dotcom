@@ -2,7 +2,7 @@
  * API integration for connecting to Memos instances
  */
 
-import type { MemoInstance, UserInfo, ConnectionTestResult, Memo, MemoResource, SaveToMemosOptions } from './types';
+import type { ConnectionTestResult, Memo, MemoInstance, MemoResource, SaveToMemosOptions, UserInfo } from "./types";
 
 /**
  * Test connection to a Memos instance
@@ -10,24 +10,24 @@ import type { MemoInstance, UserInfo, ConnectionTestResult, Memo, MemoResource, 
 export async function testConnection(url: string, accessToken: string): Promise<ConnectionTestResult> {
   try {
     // Normalize URL
-    const normalizedUrl = url.replace(/\/$/, '');
+    const normalizedUrl = url.replace(/\/$/, "");
 
     const response = await fetch(`${normalizedUrl}/api/v1/auth/sessions/current`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
       },
     });
 
     if (!response.ok) {
       if (response.status === 401) {
-        return { success: false, error: 'Invalid token or unauthorized' };
+        return { success: false, error: "Invalid token or unauthorized" };
       }
       return { success: false, error: `Server error: ${response.status}` };
     }
 
-    const data = await response.json() as UserInfo;
+    const data = (await response.json()) as UserInfo;
 
     return {
       success: true,
@@ -35,29 +35,31 @@ export async function testConnection(url: string, accessToken: string): Promise<
     };
   } catch (error) {
     if (error instanceof TypeError) {
-      return { success: false, error: 'Cannot connect. Check URL and network. CORS may need to be enabled on your instance.' };
+      return {
+        success: false,
+        error: "Cannot connect. Check URL and network. CORS may need to be enabled on your instance.",
+      };
     }
-    return { success: false, error: 'Connection failed. Please check your instance URL.' };
+    return {
+      success: false,
+      error: "Connection failed. Please check your instance URL.",
+    };
   }
 }
 
 /**
  * Upload a file/resource to Memos instance
  */
-export async function uploadResource(
-  instance: MemoInstance,
-  file: Blob,
-  filename: string
-): Promise<MemoResource> {
-  const normalizedUrl = instance.url.replace(/\/$/, '');
+export async function uploadResource(instance: MemoInstance, file: Blob, filename: string): Promise<MemoResource> {
+  const normalizedUrl = instance.url.replace(/\/$/, "");
 
   const formData = new FormData();
-  formData.append('file', file, filename);
+  formData.append("file", file, filename);
 
   const response = await fetch(`${normalizedUrl}/api/v1/resources`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Authorization': `Bearer ${instance.accessToken}`,
+      Authorization: `Bearer ${instance.accessToken}`,
     },
     body: formData,
   });
@@ -73,12 +75,8 @@ export async function uploadResource(
 /**
  * Create a memo in Memos instance
  */
-export async function createMemo(
-  instance: MemoInstance,
-  content: string,
-  options?: SaveToMemosOptions
-): Promise<Memo> {
-  const normalizedUrl = instance.url.replace(/\/$/, '');
+export async function createMemo(instance: MemoInstance, content: string, options?: SaveToMemosOptions): Promise<Memo> {
+  const normalizedUrl = instance.url.replace(/\/$/, "");
 
   const body: {
     content: string;
@@ -93,10 +91,10 @@ export async function createMemo(
   }
 
   const response = await fetch(`${normalizedUrl}/api/v1/memos`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Authorization': `Bearer ${instance.accessToken}`,
-      'Content-Type': 'application/json',
+      Authorization: `Bearer ${instance.accessToken}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
   });
@@ -116,9 +114,9 @@ export async function createMemoWithResources(
   instance: MemoInstance,
   content: string,
   resourceIds: string[],
-  options?: SaveToMemosOptions
+  options?: SaveToMemosOptions,
 ): Promise<Memo> {
-  const normalizedUrl = instance.url.replace(/\/$/, '');
+  const normalizedUrl = instance.url.replace(/\/$/, "");
 
   const body: {
     content: string;
@@ -134,10 +132,10 @@ export async function createMemoWithResources(
   }
 
   const response = await fetch(`${normalizedUrl}/api/v1/memos`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Authorization': `Bearer ${instance.accessToken}`,
-      'Content-Type': 'application/json',
+      Authorization: `Bearer ${instance.accessToken}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
   });
@@ -157,7 +155,7 @@ export async function saveScratchpadItemToMemos(
   instance: MemoInstance,
   content: string,
   files: { blob: Blob; name: string }[],
-  options?: SaveToMemosOptions
+  options?: SaveToMemosOptions,
 ): Promise<Memo> {
   try {
     // Upload files first if any
@@ -176,7 +174,7 @@ export async function saveScratchpadItemToMemos(
       return await createMemo(instance, content, options);
     }
   } catch (error) {
-    console.error('Failed to save to Memos:', error);
+    console.error("Failed to save to Memos:", error);
     throw error;
   }
 }

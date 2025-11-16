@@ -1,10 +1,10 @@
+import { HomeLayout } from "fumadocs-ui/layouts/home";
+import { ArrowRightIcon, CalendarIcon, UserIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CalendarIcon, UserIcon, ArrowRightIcon } from "lucide-react";
-import { blogSource } from "@/lib/source";
-import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { baseOptions } from "@/app/layout.config";
 import { Footer } from "@/components/footer";
+import { blogSource } from "@/lib/source";
 
 export const dynamic = "force-static";
 export const revalidate = 1800;
@@ -84,7 +84,7 @@ export default function BlogPage() {
                               })}
                             </span>
                           </div>
-                          
+
                           {/* Tags */}
                           {post.data.tags && post.data.tags.length > 0 && (
                             <>
@@ -100,7 +100,7 @@ export default function BlogPage() {
                             </>
                           )}
                         </div>
-                        
+
                         {/* Read More - Only on desktop */}
                         <div className="hidden sm:flex items-center gap-2 text-sm font-medium text-teal-600 dark:text-teal-400 group-hover:gap-3 transition-all">
                           <span>Read more</span>

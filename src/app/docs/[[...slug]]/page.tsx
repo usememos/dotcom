@@ -1,11 +1,11 @@
-import { source } from "@/lib/source";
-import { DocsPage, DocsBody, DocsDescription, DocsTitle } from "fumadocs-ui/page";
-import { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { createRelativeLink } from "fumadocs-ui/mdx";
-import { getMDXComponents } from "@/mdx-components";
+import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/page";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { DocsCarbonAdCardMobile } from "@/components/docs-carbon-ad-card-mobile";
+import { source } from "@/lib/source";
 import { tocConfig } from "@/lib/toc-config";
+import { getMDXComponents } from "@/mdx-components";
 
 export const dynamic = "force-static";
 export const revalidate = 3600;

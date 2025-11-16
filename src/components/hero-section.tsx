@@ -1,6 +1,6 @@
-import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, SparklesIcon } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import type { ReactNode } from "react";
 
 interface HeroSectionProps {
@@ -53,27 +53,27 @@ export function HeroSection({
           </div>
         )}
 
-      <h1 className="max-w-4xl text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight px-2">{title}</h1>
+        <h1 className="max-w-4xl text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight px-2">{title}</h1>
 
-      <p className="mt-4 sm:mt-6 max-w-2xl text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-200 px-4">{subtitle}</p>
+        <p className="mt-4 sm:mt-6 max-w-2xl text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-200 px-4">{subtitle}</p>
 
-      <div className="mt-6 sm:mt-8 flex flex-row gap-2 sm:gap-4 w-auto mx-auto px-4 sm:px-0">
-        <Link
-          href={primaryCta.href}
-          className="group inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 py-3 sm:px-8 sm:py-4 text-sm sm:text-base font-semibold text-white bg-gradient-to-r from-teal-600 to-cyan-600 border border-transparent rounded-xl sm:rounded-2xl shadow-lg hover:from-teal-700 hover:to-cyan-700 hover:shadow-xl hover:shadow-teal-500/25 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-300"
-        >
-          {primaryCta.text}
-        </Link>
-        <Link
-          href={secondaryCta.href}
-          target={secondaryCta.external ? "_blank" : undefined}
-          rel={secondaryCta.external ? "noopener noreferrer" : undefined}
-          className="group inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 py-3 sm:px-8 sm:py-4 text-sm sm:text-base font-semibold text-gray-700 dark:text-gray-200 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-600 rounded-xl sm:rounded-2xl hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-300"
-        >
-          {secondaryCta.text}
-          <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-0.5 transition-transform" />
-        </Link>
-      </div>
+        <div className="mt-6 sm:mt-8 flex flex-row gap-2 sm:gap-4 w-auto mx-auto px-4 sm:px-0">
+          <Link
+            href={primaryCta.href}
+            className="group inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 py-3 sm:px-8 sm:py-4 text-sm sm:text-base font-semibold text-white bg-gradient-to-r from-teal-600 to-cyan-600 border border-transparent rounded-xl sm:rounded-2xl shadow-lg hover:from-teal-700 hover:to-cyan-700 hover:shadow-xl hover:shadow-teal-500/25 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-300"
+          >
+            {primaryCta.text}
+          </Link>
+          <Link
+            href={secondaryCta.href}
+            target={secondaryCta.external ? "_blank" : undefined}
+            rel={secondaryCta.external ? "noopener noreferrer" : undefined}
+            className="group inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 py-3 sm:px-8 sm:py-4 text-sm sm:text-base font-semibold text-gray-700 dark:text-gray-200 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-600 rounded-xl sm:rounded-2xl hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-300"
+          >
+            {secondaryCta.text}
+            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-0.5 transition-transform" />
+          </Link>
+        </div>
 
         {(demoImageLight || demoImageDark) && (
           <div className="mt-8 sm:mt-12 w-full max-w-6xl overflow-auto">

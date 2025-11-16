@@ -1,11 +1,7 @@
-import { cn } from "@/lib/utils";
 import { FEATURED_SPONSORS } from "@/lib/sponsors";
+import { cn } from "@/lib/utils";
 
-interface DocsSponsorCardProps {
-  className?: string;
-}
-
-export function DocsSponsorCard({}: DocsSponsorCardProps) {
+export function DocsSponsorCard() {
   return (
     <div className={cn("rounded-xl border border-border bg-muted/30 p-3 transition", "dark:bg-muted/10")}>
       <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Featured sponsors</p>

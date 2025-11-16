@@ -1,6 +1,6 @@
+import { HomeLayout } from "fumadocs-ui/layouts/home";
 import type { Metadata } from "next";
 import Image from "next/image";
-import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { baseOptions } from "@/app/layout.config";
 import { Footer } from "@/components/footer";
 
@@ -61,7 +61,13 @@ export default function BrandPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                   <div className="lg:col-span-2 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-10 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 shadow-sm">
                     <div className="flex justify-center items-center h-24 mb-4">
-                      <Image src="/full-logo-landscape.png" alt="Memos Landscape Logo" width={300} height={96} className="max-h-full max-w-full" />
+                      <Image
+                        src="/full-logo-landscape.png"
+                        alt="Memos Landscape Logo"
+                        width={300}
+                        height={96}
+                        className="max-h-full max-w-full"
+                      />
                     </div>
                     <div className="text-center">
                       <p className="font-bold text-lg dark:text-gray-100">Landscape Logo</p>

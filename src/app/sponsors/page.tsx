@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
-import { HeartIcon, ExternalLinkIcon, UsersIcon, HandshakeIcon } from "lucide-react";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
+import { ExternalLinkIcon, HandshakeIcon, HeartIcon, UsersIcon } from "lucide-react";
+import type { Metadata } from "next";
 import { baseOptions } from "@/app/layout.config";
 import { Footer } from "@/components/footer";
-import { FEATURED_SPONSORS, COMMUNITY_SPONSORS } from "@/lib/sponsors";
+import { COMMUNITY_SPONSORS, FEATURED_SPONSORS } from "@/lib/sponsors";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {

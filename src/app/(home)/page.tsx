@@ -1,30 +1,30 @@
-import Link from "next/link";
 import {
-  GithubIcon,
-  DownloadIcon,
-  ShieldIcon,
-  PenToolIcon,
-  ZapIcon,
-  PuzzleIcon,
+  ArrowRightIcon,
+  CheckIcon,
   CodeIcon,
   DollarSignIcon,
-  StarIcon,
-  UsersIcon,
-  TrendingUpIcon,
-  PackageIcon,
-  CheckIcon,
-  XIcon,
-  Rocket,
+  DownloadIcon,
+  GithubIcon,
   NotebookIcon,
-  ArrowRightIcon,
+  PackageIcon,
+  PenToolIcon,
+  PuzzleIcon,
+  Rocket,
+  ShieldIcon,
+  StarIcon,
+  TrendingUpIcon,
+  UsersIcon,
+  XIcon,
+  ZapIcon,
 } from "lucide-react";
-import { HeroSection } from "@/components/hero-section";
-import { FeatureCard } from "@/components/feature-card";
-import { StatsCard } from "@/components/stats-card";
-import { SponsorsSection } from "@/components/sponsors-section";
-import { DockerCommand } from "@/components/docker-command";
-import { Footer } from "@/components/footer";
 import type { Metadata } from "next";
+import Link from "next/link";
+import { DockerCommand } from "@/components/docker-command";
+import { FeatureCard } from "@/components/feature-card";
+import { Footer } from "@/components/footer";
+import { HeroSection } from "@/components/hero-section";
+import { SponsorsSection } from "@/components/sponsors-section";
+import { StatsCard } from "@/components/stats-card";
 
 export const metadata: Metadata = {
   title: "Memos - Open Source, Self-Hosted Note Taking",
@@ -73,9 +73,19 @@ export default function HomePage() {
         }
         subtitle="Privacy-first note-taking service with zero telemetry. No tracking, no ads, no subscription fees."
         primaryCta={{ text: "Get Started", href: "/docs/installation" }}
-        secondaryCta={{ text: "Live Demo", href: "https://demo.usememos.com/", external: true }}
-        demoImageLight={{ src: "/demo.png", alt: "Memos Dashboard Screenshot (Light Mode)" }}
-        demoImageDark={{ src: "/demo-dark.png", alt: "Memos Dashboard Screenshot (Dark Mode)" }}
+        secondaryCta={{
+          text: "Live Demo",
+          href: "https://demo.usememos.com/",
+          external: true,
+        }}
+        demoImageLight={{
+          src: "/demo.png",
+          alt: "Memos Dashboard Screenshot (Light Mode)",
+        }}
+        demoImageDark={{
+          src: "/demo-dark.png",
+          alt: "Memos Dashboard Screenshot (Dark Mode)",
+        }}
       />
 
       {/* Features Section */}
@@ -96,7 +106,8 @@ export default function HomePage() {
               {
                 icon: <ShieldIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
                 title: "Privacy First",
-                description: "Zero telemetry with complete data ownership. All data is securely stored in your local database with no tracking or ads.",
+                description:
+                  "Zero telemetry with complete data ownership. All data is securely stored in your local database with no tracking or ads.",
               },
               {
                 icon: <PenToolIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
@@ -137,15 +148,33 @@ export default function HomePage() {
             <div className="absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-cyan-400/20 to-teal-400/20 dark:from-cyan-600/10 dark:to-teal-600/10 rounded-full blur-3xl"></div>
             <div className="relative z-10">
               <div className="text-center mb-6 sm:mb-8">
-                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Trusted by developers worldwide</h3>
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                  Trusted by developers worldwide
+                </h3>
                 <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">Join our growing community</p>
               </div>
               <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:gap-8 sm:grid-cols-4">
                 {[
-                  { icon: <StarIcon className="w-6 h-6 sm:w-8 sm:h-8" />, value: "45K+", label: "GitHub Stars" },
-                  { icon: <UsersIcon className="w-6 h-6 sm:w-8 sm:h-8" />, value: "340+", label: "Contributors" },
-                  { icon: <TrendingUpIcon className="w-6 h-6 sm:w-8 sm:h-8" />, value: "7.1M+", label: "Docker Pulls" },
-                  { icon: <PackageIcon className="w-6 h-6 sm:w-8 sm:h-8" />, value: "80+", label: "Releases" },
+                  {
+                    icon: <StarIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
+                    value: "45K+",
+                    label: "GitHub Stars",
+                  },
+                  {
+                    icon: <UsersIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
+                    value: "340+",
+                    label: "Contributors",
+                  },
+                  {
+                    icon: <TrendingUpIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
+                    value: "7.1M+",
+                    label: "Docker Pulls",
+                  },
+                  {
+                    icon: <PackageIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
+                    value: "80+",
+                    label: "Releases",
+                  },
                 ].map((stat) => (
                   <StatsCard key={stat.label} {...stat} />
                 ))}
@@ -290,7 +319,8 @@ export default function HomePage() {
                   Try Our Scratchpad
                 </h2>
                 <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                  A free, browser-local workspace for quick brainstorming and temporary notes. Work locally, save to your Memos instance when ready.
+                  A free, browser-local workspace for quick brainstorming and temporary notes. Work locally, save to your Memos instance
+                  when ready.
                 </p>
                 <ul className="space-y-3 mb-8">
                   {[

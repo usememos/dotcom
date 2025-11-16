@@ -1,7 +1,7 @@
 import "@/app/global.css";
 import { RootProvider } from "fumadocs-ui/provider/next";
-import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://usememos.com"),
@@ -60,46 +60,47 @@ export default function Layout({ children }: { children: ReactNode }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "Memos",
-    "description": "An open-source, self-hosted note-taking service with zero telemetry. Privacy-first, lightweight solution with no tracking, ads, or subscription fees.",
-    "applicationCategory": "ProductivityApplication",
-    "operatingSystem": "Cross-platform",
-    "offers": {
+    name: "Memos",
+    description:
+      "An open-source, self-hosted note-taking service with zero telemetry. Privacy-first, lightweight solution with no tracking, ads, or subscription fees.",
+    applicationCategory: "ProductivityApplication",
+    operatingSystem: "Cross-platform",
+    offers: {
       "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
+      price: "0",
+      priceCurrency: "USD",
     },
-    "aggregateRating": {
+    aggregateRating: {
       "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1000"
+      ratingValue: "4.8",
+      ratingCount: "1000",
     },
-    "url": "https://usememos.com",
-    "downloadUrl": "https://github.com/usememos/memos",
-    "softwareVersion": "latest",
-    "author": {
+    url: "https://usememos.com",
+    downloadUrl: "https://github.com/usememos/memos",
+    softwareVersion: "latest",
+    author: {
       "@type": "Organization",
-      "name": "Memos Team",
-      "url": "https://usememos.com"
+      name: "Memos Team",
+      url: "https://usememos.com",
     },
-    "publisher": {
+    publisher: {
       "@type": "Organization",
-      "name": "Memos",
-      "url": "https://usememos.com",
-      "logo": {
+      name: "Memos",
+      url: "https://usememos.com",
+      logo: {
         "@type": "ImageObject",
-        "url": "https://usememos.com/logo-rounded.png"
-      }
+        url: "https://usememos.com/logo-rounded.png",
+      },
     },
-    "screenshot": "https://usememos.com/demo.png",
-    "featureList": [
+    screenshot: "https://usememos.com/demo.png",
+    featureList: [
       "Privacy-first with zero telemetry",
       "Self-hosted solution",
       "Markdown support",
       "Open source",
       "No subscription fees",
-      "Complete data ownership"
-    ]
+      "Complete data ownership",
+    ],
   };
 
   return (
@@ -110,10 +111,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body className="flex flex-col min-h-screen antialiased">
         <RootProvider>{children}</RootProvider>

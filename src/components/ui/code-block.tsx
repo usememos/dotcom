@@ -1,7 +1,7 @@
 "use client";
 
-import { ReactNode, useState } from "react";
-import { CopyIcon, CheckIcon } from "lucide-react";
+import { CheckIcon, CopyIcon } from "lucide-react";
+import { type ReactNode, useState } from "react";
 
 interface CodeBlockProps {
   children: ReactNode;
@@ -31,6 +31,7 @@ export function CodeBlock({ children, language, title, showLineNumbers = false }
             {language && <span className="text-xs text-gray-400 bg-gray-700 dark:bg-gray-800 px-2 py-1 rounded-full">{language}</span>}
           </div>
           <button
+            type="button"
             onClick={copyCode}
             className="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-gray-700 dark:hover:bg-gray-800 rounded-lg"
             title="Copy code"
@@ -49,6 +50,7 @@ export function CodeBlock({ children, language, title, showLineNumbers = false }
         {/* Copy button when no header */}
         {!title && !language && (
           <button
+            type="button"
             onClick={copyCode}
             className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-gray-800 dark:hover:bg-gray-700 rounded-lg"
             title="Copy code"

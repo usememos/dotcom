@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect, DragEvent } from 'react';
-import type { ScratchpadItem } from '@/lib/scratch/types';
-import { TextItem } from './text-item';
-import { FileItem } from './file-item';
+import { type DragEvent, useEffect, useRef, useState } from "react";
+import type { ScratchpadItem } from "@/lib/scratch/types";
+import { FileItem } from "./file-item";
+import { TextItem } from "./text-item";
 
 interface WorkspaceProps {
   items: ScratchpadItem[];
@@ -42,8 +42,8 @@ export function Workspace({
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   // Handle paste event for files
@@ -57,8 +57,8 @@ export function Workspace({
       }
     };
 
-    window.addEventListener('paste', handlePaste);
-    return () => window.removeEventListener('paste', handlePaste);
+    window.addEventListener("paste", handlePaste);
+    return () => window.removeEventListener("paste", handlePaste);
   }, [lastMousePos, onFileUpload]);
 
   const handleWorkspaceClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -68,7 +68,7 @@ export function Workspace({
     // Check if click is on or within a scratchpad item
     let element: HTMLElement | null = target;
     while (element && element !== workspaceRef.current) {
-      if (element.dataset.scratchpadItem === 'true') {
+      if (element.dataset.scratchpadItem === "true") {
         // Clicked on an item, don't deselect
         return;
       }
@@ -86,7 +86,7 @@ export function Workspace({
     // Check if double-click is on or within a scratchpad item
     let element: HTMLElement | null = target;
     while (element && element !== workspaceRef.current) {
-      if (element.dataset.scratchpadItem === 'true') {
+      if (element.dataset.scratchpadItem === "true") {
         // Double-clicked on an existing item, don't create a new one
         return;
       }
@@ -94,9 +94,10 @@ export function Workspace({
     }
 
     // Create card at double-click location
-    const rect = workspaceRef.current!.getBoundingClientRect();
-    const x = e.clientX - rect.left + workspaceRef.current!.scrollLeft;
-    const y = e.clientY - rect.top + workspaceRef.current!.scrollTop;
+    const rect = workspaceRef.current?.getBoundingClientRect();
+    if (!rect || !workspaceRef.current) return;
+    const x = e.clientX - rect.left + workspaceRef.current.scrollLeft;
+    const y = e.clientY - rect.top + workspaceRef.current.scrollTop;
     onCreateTextItem(x, y);
   };
 
@@ -169,29 +170,25 @@ export function Workspace({
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
       className={`relative w-full h-full overflow-auto bg-gray-50 dark:bg-gray-900 cursor-default ${
-        isDraggingOver ? 'ring-4 ring-teal-400 ring-inset' : ''
+        isDraggingOver ? "ring-4 ring-teal-400 ring-inset" : ""
       }`}
-      style={{ minHeight: '100%' }}
+      style={{ minHeight: "100%" }}
     >
       {/* Workspace content area */}
       <div
         className="relative workspace-content"
         style={{
-          minWidth: '100%',
-          minHeight: '100%',
-          width: workspaceSize.width || '100%',
-          height: workspaceSize.height || '100%',
+          minWidth: "100%",
+          minHeight: "100%",
+          width: workspaceSize.width || "100%",
+          height: workspaceSize.height || "100%",
         }}
       >
         {items.length === 0 && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="text-center">
-              <p className="text-gray-400 dark:text-gray-600 text-2xl mb-4">
-                Double-click anywhere to create a card
-              </p>
-              <p className="text-gray-400 dark:text-gray-600 text-lg">
-                Paste (Ctrl+V) to add files
-              </p>
+              <p className="text-gray-400 dark:text-gray-600 text-2xl mb-4">Double-click anywhere to create a card</p>
+              <p className="text-gray-400 dark:text-gray-600 text-lg">Paste (Ctrl+V) to add files</p>
             </div>
           </div>
         )}
@@ -199,16 +196,14 @@ export function Workspace({
         {isDraggingOver && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none bg-teal-500/10">
             <div className="text-center">
-              <p className="text-teal-600 dark:text-teal-400 text-2xl font-bold">
-                Drop files here
-              </p>
+              <p className="text-teal-600 dark:text-teal-400 text-2xl font-bold">Drop files here</p>
             </div>
           </div>
         )}
 
         {/* Render items */}
         {items.map((item) => {
-          return item.type === 'text' ? (
+          return item.type === "text" ? (
             <TextItem
               key={item.id}
               item={item}

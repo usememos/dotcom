@@ -2,14 +2,14 @@
  * LocalStorage utilities for managing instances and scratchpad items
  */
 
-import type { MemoInstance, ScratchpadItem } from './types';
-import { encryptToken, decryptToken } from './encryption';
+import { decryptToken, encryptToken } from "./encryption";
+import type { MemoInstance, ScratchpadItem } from "./types";
 
 const STORAGE_KEYS = {
-  INSTANCES: 'memos-scratch-instances',
-  ITEMS: 'memos-scratch-items',
-  FIRST_VISIT: 'memos-scratch-first-visit',
-  SETTINGS: 'memos-scratch-settings',
+  INSTANCES: "memos-scratch-instances",
+  ITEMS: "memos-scratch-items",
+  FIRST_VISIT: "memos-scratch-first-visit",
+  SETTINGS: "memos-scratch-settings",
 } as const;
 
 /**
@@ -17,7 +17,7 @@ const STORAGE_KEYS = {
  */
 export const instanceStorage = {
   async getAll(): Promise<MemoInstance[]> {
-    if (typeof window === 'undefined') return [];
+    if (typeof window === "undefined") return [];
 
     const data = localStorage.getItem(STORAGE_KEYS.INSTANCES);
     if (!data) return [];
@@ -30,16 +30,16 @@ export const instanceStorage = {
           ...instance,
           lastConnected: instance.lastConnected ? new Date(instance.lastConnected) : null,
           accessToken: await decryptToken(instance.accessToken),
-        }))
+        })),
       );
     } catch (error) {
-      console.error('Failed to load instances:', error);
+      console.error("Failed to load instances:", error);
       return [];
     }
   },
 
   async save(instances: MemoInstance[]): Promise<void> {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     try {
       // Encrypt tokens before saving
@@ -47,12 +47,12 @@ export const instanceStorage = {
         instances.map(async (instance) => ({
           ...instance,
           accessToken: await encryptToken(instance.accessToken),
-        }))
+        })),
       );
       localStorage.setItem(STORAGE_KEYS.INSTANCES, JSON.stringify(encrypted));
     } catch (error) {
-      console.error('Failed to save instances:', error);
-      throw new Error('Failed to save instances');
+      console.error("Failed to save instances:", error);
+      throw new Error("Failed to save instances");
     }
   },
 
@@ -65,7 +65,7 @@ export const instanceStorage = {
   async update(id: string, updates: Partial<MemoInstance>): Promise<void> {
     const instances = await this.getAll();
     const index = instances.findIndex((i) => i.id === id);
-    if (index === -1) throw new Error('Instance not found');
+    if (index === -1) throw new Error("Instance not found");
 
     instances[index] = { ...instances[index], ...updates };
     await this.save(instances);
@@ -96,7 +96,7 @@ export const instanceStorage = {
  */
 export const itemStorage = {
   getAll(): ScratchpadItem[] {
-    if (typeof window === 'undefined') return [];
+    if (typeof window === "undefined") return [];
 
     const data = localStorage.getItem(STORAGE_KEYS.ITEMS);
     if (!data) return [];
@@ -109,13 +109,13 @@ export const itemStorage = {
         createdAt: new Date(item.createdAt),
       }));
     } catch (error) {
-      console.error('Failed to load items:', error);
+      console.error("Failed to load items:", error);
       return [];
     }
   },
 
   save(items: ScratchpadItem[]): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     localStorage.setItem(STORAGE_KEYS.ITEMS, JSON.stringify(items));
   },
 
@@ -128,7 +128,7 @@ export const itemStorage = {
   update(id: string, updates: Partial<ScratchpadItem>): void {
     const items = this.getAll();
     const index = items.findIndex((i) => i.id === id);
-    if (index === -1) throw new Error('Item not found');
+    if (index === -1) throw new Error("Item not found");
 
     items[index] = { ...items[index], ...updates };
     this.save(items);
@@ -141,7 +141,7 @@ export const itemStorage = {
   },
 
   clear(): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     localStorage.setItem(STORAGE_KEYS.ITEMS, JSON.stringify([]));
   },
 
@@ -166,17 +166,17 @@ export const itemStorage = {
  */
 export const settingsStorage = {
   isFirstVisit(): boolean {
-    if (typeof window === 'undefined') return true;
-    return localStorage.getItem(STORAGE_KEYS.FIRST_VISIT) !== 'false';
+    if (typeof window === "undefined") return true;
+    return localStorage.getItem(STORAGE_KEYS.FIRST_VISIT) !== "false";
   },
 
   setNotFirstVisit(): void {
-    if (typeof window === 'undefined') return;
-    localStorage.setItem(STORAGE_KEYS.FIRST_VISIT, 'false');
+    if (typeof window === "undefined") return;
+    localStorage.setItem(STORAGE_KEYS.FIRST_VISIT, "false");
   },
 
   getSetting<T>(key: string, defaultValue: T): T {
-    if (typeof window === 'undefined') return defaultValue;
+    if (typeof window === "undefined") return defaultValue;
 
     const data = localStorage.getItem(`${STORAGE_KEYS.SETTINGS}-${key}`);
     if (!data) return defaultValue;
@@ -189,7 +189,7 @@ export const settingsStorage = {
   },
 
   setSetting<T>(key: string, value: T): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     localStorage.setItem(`${STORAGE_KEYS.SETTINGS}-${key}`, JSON.stringify(value));
   },
 };
@@ -198,7 +198,7 @@ export const settingsStorage = {
  * Check storage quota
  */
 export async function getStorageQuota() {
-  if (typeof navigator === 'undefined' || !navigator.storage) {
+  if (typeof navigator === "undefined" || !navigator.storage) {
     return { usage: 0, quota: 0, percentage: 0 };
   }
 
@@ -210,7 +210,7 @@ export async function getStorageQuota() {
 
     return { usage, quota, percentage };
   } catch (error) {
-    console.error('Failed to get storage quota:', error);
+    console.error("Failed to get storage quota:", error);
     return { usage: 0, quota: 0, percentage: 0 };
   }
 }
@@ -219,11 +219,11 @@ export async function getStorageQuota() {
  * Format bytes to human-readable string
  */
 export function formatBytes(bytes: number): string {
-  if (bytes === 0) return '0 B';
+  if (bytes === 0) return "0 B";
 
   const k = 1024;
-  const sizes = ['B', 'KB', 'MB', 'GB'];
+  const sizes = ["B", "KB", "MB", "GB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
+  return `${parseFloat((bytes / k ** i).toFixed(2))} ${sizes[i]}`;
 }

@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
-import { ShieldIcon, EyeOffIcon, LockIcon, GithubIcon, ServerIcon, UsersIcon } from "lucide-react";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
+import { EyeOffIcon, GithubIcon, ServerIcon, ShieldIcon, UsersIcon } from "lucide-react";
+import type { Metadata } from "next";
 import { baseOptions } from "@/app/layout.config";
 import { Footer } from "@/components/footer";
 
@@ -60,12 +60,30 @@ export default function PrivacyPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[
-                  { item: "Personal Information", detail: "Names, emails, phone numbers—nothing" },
-                  { item: "Usage Data", detail: "No tracking of how you use Memos" },
-                  { item: "Your Content", detail: "Your notes never touch our servers" },
-                  { item: "Technical Data", detail: "No IP addresses, device info, or fingerprints" },
-                  { item: "Cookies & Trackers", detail: "No tracking scripts or third-party analytics" },
-                  { item: "Behavioral Analytics", detail: "No profiling or usage patterns" },
+                  {
+                    item: "Personal Information",
+                    detail: "Names, emails, phone numbers—nothing",
+                  },
+                  {
+                    item: "Usage Data",
+                    detail: "No tracking of how you use Memos",
+                  },
+                  {
+                    item: "Your Content",
+                    detail: "Your notes never touch our servers",
+                  },
+                  {
+                    item: "Technical Data",
+                    detail: "No IP addresses, device info, or fingerprints",
+                  },
+                  {
+                    item: "Cookies & Trackers",
+                    detail: "No tracking scripts or third-party analytics",
+                  },
+                  {
+                    item: "Behavioral Analytics",
+                    detail: "No profiling or usage patterns",
+                  },
                 ].map((entry, index) => (
                   <div
                     key={index}
@@ -157,7 +175,8 @@ export default function PrivacyPage() {
 
               <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-3xl p-12 shadow-lg">
                 <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 text-center leading-relaxed">
-                  Don't just take our word for it—<strong>verify it yourself</strong>. Our code is publicly available for anyone to inspect.
+                  Don't just take our word for it—
+                  <strong>verify it yourself</strong>. Our code is publicly available for anyone to inspect.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">

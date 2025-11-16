@@ -1,5 +1,5 @@
-import { source } from "@/lib/source";
 import { createFromSource } from "fumadocs-core/search/server";
+import { source } from "@/lib/source";
 
 const MIN_QUERY_LENGTH = 2;
 const MAX_QUERY_LENGTH = 64;
@@ -30,7 +30,7 @@ function appendVary(headers: Headers, value: string) {
     existing
       .split(",")
       .map((item) => item.trim())
-      .filter(Boolean)
+      .filter(Boolean),
   );
   values.add(value);
   headers.set("Vary", Array.from(values).join(", "));

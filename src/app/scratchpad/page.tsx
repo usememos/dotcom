@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { useTheme } from "next-themes";
-import Link from "next/link";
-import Image from "next/image";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { TrashIcon, SettingsIcon, SaveIcon, HomeIcon, SunIcon, MoonIcon, MonitorIcon } from "lucide-react";
+import { HomeIcon, MonitorIcon, MoonIcon, SaveIcon, SettingsIcon, SunIcon, TrashIcon } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useTheme } from "next-themes";
+import { useEffect, useRef, useState } from "react";
 import { InstanceSetupForm } from "@/components/scratch/instance-setup-form";
 import { Workspace } from "@/components/scratch/workspace";
-import type { ScratchpadItem, MemoInstance } from "@/lib/scratch/types";
-import { itemStorage, instanceStorage } from "@/lib/scratch/storage";
-import { saveFile, createFileData, getFile, deleteFile } from "@/lib/scratch/indexeddb";
 import { saveScratchpadItemToMemos } from "@/lib/scratch/api";
+import { createFileData, deleteFile, getFile, saveFile } from "@/lib/scratch/indexeddb";
+import { instanceStorage, itemStorage } from "@/lib/scratch/storage";
+import type { MemoInstance, ScratchpadItem } from "@/lib/scratch/types";
 
 export default function ScratchPage() {
   // State management
@@ -23,48 +23,6 @@ export default function ScratchPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-
-  // Initialize on client side only
-  useEffect(() => {
-    setIsClient(true);
-    setMounted(true);
-    loadData();
-  }, []);
-
-  // Debounced save to storage when items change
-  useEffect(() => {
-    if (!isClient) return;
-
-    const timeoutId = setTimeout(() => {
-      itemStorage.save(items);
-    }, 500); // Save 500ms after last change
-
-    return () => clearTimeout(timeoutId);
-  }, [items, isClient]);
-
-  // Keyboard shortcuts
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't trigger shortcuts if user is typing in an input or textarea
-      const target = e.target as HTMLElement;
-      const isTyping = target.tagName === "INPUT" || target.tagName === "TEXTAREA";
-
-      // Delete selected items with Delete or Backspace key
-      if ((e.key === "Delete" || e.key === "Backspace") && selectedItemIds.length > 0 && !isTyping) {
-        e.preventDefault();
-        selectedItemIds.forEach((id) => handleDeleteItem(id));
-        setSelectedItemIds([]);
-      }
-
-      // Deselect all with ESC key
-      if (e.key === "Escape") {
-        setSelectedItemIds([]);
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedItemIds]);
 
   // Data loading
   const loadData = async () => {
@@ -128,7 +86,7 @@ export default function ScratchPage() {
   };
 
   const handleFileUpload = async (files: FileList, x: number, y: number) => {
-    let baseZIndex = getNextZIndex();
+    const baseZIndex = getNextZIndex();
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
@@ -158,7 +116,7 @@ export default function ScratchPage() {
     setItems(itemStorage.getAll());
   };
 
-  const handleFileButtonClick = () => {
+  const _handleFileButtonClick = () => {
     fileInputRef.current?.click();
   };
 
@@ -182,7 +140,7 @@ export default function ScratchPage() {
 
   const handleDeleteItem = async (id: string) => {
     const item = items.find((i) => i.id === id);
-    if (item && item.fileRef) {
+    if (item?.fileRef) {
       await deleteFile(item.fileRef.id);
     }
     itemStorage.remove(id);
@@ -241,7 +199,7 @@ export default function ScratchPage() {
   };
 
   // Bulk operations
-  const handleClearAll = () => {
+  const _handleClearAll = () => {
     if (confirm("Clear all items? This cannot be undone.")) {
       itemStorage.clear();
       setItems([]);
@@ -305,13 +263,55 @@ export default function ScratchPage() {
     }
   };
 
+  // Initialize on client side only
+  useEffect(() => {
+    setIsClient(true);
+    setMounted(true);
+    loadData();
+  }, []);
+
+  // Debounced save to storage when items change
+  useEffect(() => {
+    if (!isClient) return;
+
+    const timeoutId = setTimeout(() => {
+      itemStorage.save(items);
+    }, 500); // Save 500ms after last change
+
+    return () => clearTimeout(timeoutId);
+  }, [items, isClient]);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't trigger shortcuts if user is typing in an input or textarea
+      const target = e.target as HTMLElement;
+      const isTyping = target.tagName === "INPUT" || target.tagName === "TEXTAREA";
+
+      // Delete selected items with Delete or Backspace key
+      if ((e.key === "Delete" || e.key === "Backspace") && selectedItemIds.length > 0 && !isTyping) {
+        e.preventDefault();
+        selectedItemIds.forEach((id) => handleDeleteItem(id));
+        setSelectedItemIds([]);
+      }
+
+      // Deselect all with ESC key
+      if (e.key === "Escape") {
+        setSelectedItemIds([]);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedItemIds]);
+
   // Don't render until client-side
   if (!isClient) {
     return null;
   }
 
-  const defaultInstance = instances.find((i) => i.isDefault) || instances[0];
-  const hasInstances = instances.length > 0;
+  const _defaultInstance = instances.find((i) => i.isDefault) || instances[0];
+  const _hasInstances = instances.length > 0;
 
   return (
     <div className="relative h-screen bg-gray-50 dark:bg-gray-900">
@@ -323,6 +323,7 @@ export default function ScratchPage() {
             <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">{selectedItemIds.length} selected</span>
             <div className="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
             <button
+              type="button"
               onClick={handleSaveSelected}
               className="p-1.5 text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded transition"
               title="Save selected to Memos"
@@ -330,6 +331,7 @@ export default function ScratchPage() {
               <SaveIcon className="w-4 h-4" />
             </button>
             <button
+              type="button"
               onClick={handleDeleteSelected}
               className="p-1.5 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition"
               title="Delete selected"
@@ -343,6 +345,7 @@ export default function ScratchPage() {
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <button
+              type="button"
               className="flex items-center justify-center w-8 h-8 bg-white dark:bg-gray-800 text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20 rounded-lg border border-gray-200 contain-content dark:border-gray-700 transition shadow-sm"
               title="Memos menu"
             >

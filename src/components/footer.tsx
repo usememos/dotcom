@@ -1,29 +1,22 @@
-import Link from "next/link";
 import {
   BookOpenIcon,
-  SparklesIcon,
-  NewspaperIcon,
-  HistoryIcon,
-  ExternalLinkIcon,
-  GithubIcon,
-  MessageCircleIcon,
-  HeartIcon,
-  MessageSquareIcon,
-  ScaleIcon,
-  ShieldCheckIcon,
-  PaletteIcon,
-  LockIcon,
-  ZapIcon,
-  ServerIcon,
   CodeIcon,
-  DatabaseIcon,
+  ExternalLinkIcon,
   FileTextIcon,
-  ImageIcon,
-  DollarSignIcon,
-  MonitorSmartphoneIcon,
-  CloudOffIcon,
-  SaveIcon,
+  GithubIcon,
+  HeartIcon,
+  HistoryIcon,
+  LockIcon,
+  MessageCircleIcon,
+  MessageSquareIcon,
+  NewspaperIcon,
+  PaletteIcon,
+  ScaleIcon,
+  ServerIcon,
+  ShieldCheckIcon,
+  SparklesIcon,
 } from "lucide-react";
+import Link from "next/link";
 
 export function Footer() {
   return (

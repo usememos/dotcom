@@ -1,18 +1,18 @@
+import { TOCItems, TOCProvider, TOCScrollArea } from "fumadocs-ui/components/layout/toc";
+import { HomeLayout } from "fumadocs-ui/layouts/home";
+import { DocsBody } from "fumadocs-ui/page";
+import { ArrowLeftIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeftIcon } from "lucide-react";
-import { changelogSource } from "@/lib/source";
-import { DocsBody } from "fumadocs-ui/page";
-import { TOCProvider, TOCScrollArea, TOCItems } from "fumadocs-ui/components/layout/toc";
 import { notFound } from "next/navigation";
-import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { baseOptions } from "@/app/layout.config";
-import { Footer } from "@/components/footer";
-import { getMDXComponents } from "@/mdx-components";
-import { ChangelogHeader } from "@/components/changelog-header";
 import { ChangelogFooter } from "@/components/changelog-footer";
-import { DocsSponsorCard } from "@/components/docs-sponsor-card";
+import { ChangelogHeader } from "@/components/changelog-header";
 import { DocsCarbonAdCard } from "@/components/docs-carbon-ad-card";
+import { DocsSponsorCard } from "@/components/docs-sponsor-card";
+import { Footer } from "@/components/footer";
+import { changelogSource } from "@/lib/source";
+import { getMDXComponents } from "@/mdx-components";
 
 interface ChangelogPageProps {
   params: Promise<{ slug: string }>;

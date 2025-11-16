@@ -1,5 +1,5 @@
-import { DocsSponsorCard } from "@/components/docs-sponsor-card";
 import { DocsCarbonAdCard } from "@/components/docs-carbon-ad-card";
+import { DocsSponsorCard } from "@/components/docs-sponsor-card";
 
 /**
  * TOC footer component with sponsor card and carbon ads for desktop sidebar

@@ -1,7 +1,7 @@
 "use client";
 
+import { CheckIcon, CopyIcon, TerminalIcon } from "lucide-react";
 import { useState } from "react";
-import { CopyIcon, CheckIcon, TerminalIcon } from "lucide-react";
 
 export function DockerCommand() {
   const [copied, setCopied] = useState(false);
@@ -32,6 +32,7 @@ export function DockerCommand() {
           <code>{dockerCommand}</code>
         </pre>
         <button
+          type="button"
           onClick={copyToClipboard}
           className="absolute top-4 right-4 p-2 rounded-lg bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 transition-all duration-200 opacity-0 group-hover:opacity-100"
           title={copied ? "Copied!" : "Copy to clipboard"}

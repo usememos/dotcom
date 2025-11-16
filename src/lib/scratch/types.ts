@@ -4,34 +4,35 @@
 
 export interface MemoInstance {
   id: string;
-  name: string;              // e.g., "Personal Notes"
-  url: string;               // https://memo.example.com
-  accessToken: string;       // Encrypted
+  name: string; // e.g., "Personal Notes"
+  url: string; // https://memo.example.com
+  accessToken: string; // Encrypted
   isDefault: boolean;
   lastConnected: Date | null;
-  status: 'connected' | 'error' | 'untested';
+  status: "connected" | "error" | "untested";
 }
 
 export interface ScratchpadItem {
   id: string;
-  type: 'text' | 'file';
+  type: "text" | "file";
   x: number;
   y: number;
   width: number;
   height: number;
-  zIndex: number;            // Stacking order (higher = on top)
+  zIndex: number; // Stacking order (higher = on top)
 
-  content?: string;          // For text items (markdown)
+  content?: string; // For text items (markdown)
 
-  fileRef?: {                // For file items
-    id: string;              // IndexedDB key
+  fileRef?: {
+    // For file items
+    id: string; // IndexedDB key
     name: string;
-    type: string;            // MIME type
+    type: string; // MIME type
     size: number;
   };
 
-  savedToInstance?: string;  // Instance ID if saved
-  savedMemoId?: string;      // Remote memo ID
+  savedToInstance?: string; // Instance ID if saved
+  savedMemoId?: string; // Remote memo ID
 
   createdAt: Date;
 }
@@ -54,7 +55,7 @@ export interface StorageQuota {
 export interface SaveToMemosOptions {
   instanceId: string;
   tags?: string[];
-  visibility?: 'PRIVATE' | 'PUBLIC' | 'PROTECTED';
+  visibility?: "PRIVATE" | "PUBLIC" | "PROTECTED";
 }
 
 export interface MemoResource {

@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { HeartIcon } from "lucide-react";
+import Link from "next/link";
 import { FEATURED_SPONSORS } from "@/lib/sponsors";
 import { cn } from "@/lib/utils";
 

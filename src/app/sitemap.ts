@@ -1,6 +1,6 @@
-import { source, blogSource, changelogSource } from "@/lib/source";
-import { getAllFeatureSlugs } from "@/lib/features";
 import type { MetadataRoute } from "next";
+import { getAllFeatureSlugs } from "@/lib/features";
+import { blogSource, changelogSource, source } from "@/lib/source";
 
 export const dynamic = "force-static";
 export const revalidate = 3600; // regenerate once per hour

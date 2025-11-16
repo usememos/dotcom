@@ -1,10 +1,10 @@
+import { HomeLayout } from "fumadocs-ui/layouts/home";
+import { ArrowRightIcon, CalendarIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CalendarIcon, TagIcon, UsersIcon, ArrowRightIcon } from "lucide-react";
-import { changelogSource } from "@/lib/source";
-import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { baseOptions } from "@/app/layout.config";
 import { Footer } from "@/components/footer";
+import { changelogSource } from "@/lib/source";
 
 export const dynamic = "force-static";
 export const revalidate = 1800;
@@ -37,7 +37,7 @@ export default function ChangelogPage() {
     // Extract version numbers for sorting (v0.25.0 -> [0, 25, 0])
     const getVersionParts = (title: string) => {
       const match = title.match(/v?(\d+)\.(\d+)\.(\d+)/);
-      return match ? [parseInt(match[1]), parseInt(match[2]), parseInt(match[3])] : [0, 0, 0];
+      return match ? [parseInt(match[1], 10), parseInt(match[2], 10), parseInt(match[3], 10)] : [0, 0, 0];
     };
 
     const versionA = getVersionParts(a.data.title);
