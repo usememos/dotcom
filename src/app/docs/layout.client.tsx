@@ -3,7 +3,7 @@
 import type * as PageTree from "fumadocs-core/page-tree";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
-import { BookTextIcon, CodeIcon } from "lucide-react";
+import { BookOpenIcon, CodeIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
@@ -29,11 +29,11 @@ export function ClientLayout({
       sidebar={{
         tabs: [
           {
-            title: "Docs",
+            title: "Documentation",
             url: "/docs",
             icon: (
               <div className="w-full h-full flex justify-center items-center">
-                <BookTextIcon size={16} />
+                <BookOpenIcon size={16} />
               </div>
             ),
           },

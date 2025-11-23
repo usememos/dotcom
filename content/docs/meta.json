@@ -1,4 +1,4 @@
 {
-  "title": "Docs",
+  "title": "Documentation",
   "pages": ["index", "installation", "guides", "configuration", "integrations", "api", "faq"]
 }

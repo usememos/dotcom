@@ -90,6 +90,15 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  href="/docs/api"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                >
+                  <CodeIcon className="w-4 h-4" />
+                  API Reference
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/blog"
                   className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
                 >
