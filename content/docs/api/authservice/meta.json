@@ -1,3 +1,4 @@
 {
-  "title": "Auth Service"
+  "title": "Auth Service",
+  "pages": ["AuthService_CreateSession", "AuthService_DeleteSession", "AuthService_GetCurrentSession"]
 }

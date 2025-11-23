@@ -38,7 +38,7 @@ export function ClientLayout({
             ),
           },
           {
-            title: "API References",
+            title: "API Reference",
             url: "/docs/api",
             icon: (
               <div className="w-full h-full flex justify-center items-center">

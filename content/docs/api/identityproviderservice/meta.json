@@ -1,3 +1,10 @@
 {
-  "title": "Identityprovider Service"
+  "title": "Identityprovider Service",
+  "pages": [
+    "IdentityProviderService_CreateIdentityProvider",
+    "IdentityProviderService_DeleteIdentityProvider",
+    "IdentityProviderService_GetIdentityProvider",
+    "IdentityProviderService_ListIdentityProviders",
+    "IdentityProviderService_UpdateIdentityProvider"
+  ]
 }

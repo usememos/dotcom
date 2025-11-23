@@ -1,3 +1,28 @@
 {
-  "title": "User Service"
+  "title": "User Service",
+  "pages": [
+    "UserService_CreateUser",
+    "UserService_CreateUserAccessToken",
+    "UserService_CreateUserWebhook",
+    "UserService_DeleteUser",
+    "UserService_DeleteUserAccessToken",
+    "UserService_DeleteUserNotification",
+    "UserService_DeleteUserWebhook",
+    "UserService_GetUser",
+    "UserService_GetUserAvatar",
+    "UserService_GetUserSetting",
+    "UserService_GetUserStats",
+    "UserService_ListAllUserStats",
+    "UserService_ListUserAccessTokens",
+    "UserService_ListUserNotifications",
+    "UserService_ListUserSessions",
+    "UserService_ListUserSettings",
+    "UserService_ListUserWebhooks",
+    "UserService_ListUsers",
+    "UserService_RevokeUserSession",
+    "UserService_UpdateUser",
+    "UserService_UpdateUserNotification",
+    "UserService_UpdateUserSetting",
+    "UserService_UpdateUserWebhook"
+  ]
 }

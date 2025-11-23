@@ -1,3 +1,11 @@
 {
-  "title": "Attachment Service"
+  "title": "Attachment Service",
+  "pages": [
+    "AttachmentService_CreateAttachment",
+    "AttachmentService_DeleteAttachment",
+    "AttachmentService_GetAttachment",
+    "AttachmentService_GetAttachmentBinary",
+    "AttachmentService_ListAttachments",
+    "AttachmentService_UpdateAttachment"
+  ]
 }

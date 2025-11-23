@@ -7,11 +7,11 @@ import { ClientLayout } from "./layout.client";
 export default function Layout({ children }: { children: ReactNode }) {
   const root = source.pageTree;
 
-  const apiNode = root.children.find((node) => node.$id === "api" && node.type === "folder");
+  const apiNode = root.children.find((node) => node.name === "API Reference" && node.type === "folder");
 
   const mainTree = {
     ...root,
-    children: root.children.filter((node) => node.$id !== "api"),
+    children: root.children.filter((node) => node.name !== "API Reference"),
   };
 
   const apiTree = {
