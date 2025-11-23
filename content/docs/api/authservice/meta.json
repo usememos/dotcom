@@ -1,4 +1,8 @@
 {
   "title": "Auth Service",
-  "pages": ["AuthService_CreateSession", "AuthService_DeleteSession", "AuthService_GetCurrentSession"]
+  "pages": [
+    "AuthService_CreateSession",
+    "AuthService_DeleteSession",
+    "AuthService_GetCurrentSession"
+  ]
 }

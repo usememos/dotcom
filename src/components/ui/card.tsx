@@ -110,7 +110,7 @@ export function Cards({ children }: CardsProps) {
 export function Card({ title, href, icon, children }: CardProps) {
   // Get the icon component from the icon map
   const IconComponent = icon && iconMap[icon] ? iconMap[icon] : null;
-  
+
   // Log warning if icon is specified but not found
   if (icon && !iconMap[icon]) {
     console.warn(`Icon "${icon}" not found in iconMap`);

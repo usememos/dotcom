@@ -18,6 +18,11 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
   const MDXContent = page.data.body;
   const isApi = page.url.startsWith("/docs/api");
 
+  // For API pages, don't pass empty TOC - let fumadocs-openapi generate it
+  // Also don't use full-width layout for API pages to show TOC
+  const tocProps = isApi && (!page.data.toc || page.data.toc.length === 0) ? {} : { toc: page.data.toc };
+  const fullProp = isApi ? {} : { full: page.data.full };
+
   const jsonLd = isApi
     ? {
         "@context": "https://schema.org",
@@ -41,7 +46,7 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
       };
 
   return (
-    <DocsPage toc={page.data.toc} full={page.data.full} {...tocConfig}>
+    <DocsPage {...fullProp} {...tocProps} {...tocConfig}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>

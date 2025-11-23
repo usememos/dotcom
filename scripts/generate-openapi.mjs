@@ -47,11 +47,13 @@ for (const dir of dirs) {
   // Find first MDX file to link to
   const files = fs.readdirSync(path.join(OUTPUT_DIR, dir)).filter((f) => f.endsWith(".mdx"));
 
-  // Update titles in MDX files
+  // Update titles in MDX files and remove 'full: true' to enable TOC
   for (const file of files) {
     const filePath = path.join(OUTPUT_DIR, dir, file);
     let content = fs.readFileSync(filePath, "utf-8");
     content = content.replace(/^title: .*? Service_ (.*)$/m, "title: $1");
+    // Remove 'full: true' line from frontmatter to enable TOC
+    content = content.replace(/\nfull: true\n/, "\n");
     fs.writeFileSync(filePath, content);
   }
 
