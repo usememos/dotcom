@@ -19,7 +19,7 @@ console.log(`Saved OpenAPI spec to ${LOCAL_PATH}`);
 if (fs.existsSync(OUTPUT_DIR)) {
   const files = fs.readdirSync(OUTPUT_DIR);
   for (const file of files) {
-    if (file !== "meta.json") {
+    if (file !== "meta.json" && file !== "index.mdx") {
       fs.rmSync(path.join(OUTPUT_DIR, file), { recursive: true, force: true });
     }
   }
@@ -36,7 +36,6 @@ await generateFiles({
 
 // Generate meta.json for each service directory
 const dirs = fs.readdirSync(OUTPUT_DIR).filter((f) => fs.statSync(path.join(OUTPUT_DIR, f)).isDirectory());
-const cards = [];
 
 // Sort directories to ensure consistent order
 dirs.sort();
@@ -44,16 +43,23 @@ dirs.sort();
 for (const dir of dirs) {
   // Format: "activityservice" -> "Activity Service"
   const title = dir.replace(/service$/, " Service").replace(/^[a-z]/, (c) => c.toUpperCase());
-  const metaPath = path.join(OUTPUT_DIR, dir, "meta.json");
-  fs.writeFileSync(metaPath, JSON.stringify({ title }, null, 2));
-  console.log(`Generated meta.json for ${dir}`);
 
   // Find first MDX file to link to
   const files = fs.readdirSync(path.join(OUTPUT_DIR, dir)).filter((f) => f.endsWith(".mdx"));
-  if (files.length > 0) {
-    const href = `/docs/api/${dir}/${files[0].replace(/\.mdx$/, "")}`;
-    cards.push(`  <Card title="${title}" href="${href}" />`);
+
+  // Update titles in MDX files
+  for (const file of files) {
+    const filePath = path.join(OUTPUT_DIR, dir, file);
+    let content = fs.readFileSync(filePath, "utf-8");
+    content = content.replace(/^title: .*? Service_ (.*)$/m, "title: $1");
+    fs.writeFileSync(filePath, content);
   }
+
+  // Generate meta.json with pages
+  const pages = files.map((f) => f.replace(/\.mdx$/, ""));
+  const metaPath = path.join(OUTPUT_DIR, dir, "meta.json");
+  fs.writeFileSync(metaPath, JSON.stringify({ title, pages }, null, 2));
+  console.log(`Generated meta.json for ${dir}`);
 }
 
 // Generate meta.json for API root to ensure sidebar navigation
@@ -69,20 +75,3 @@ fs.writeFileSync(
   ),
 );
 console.log("Generated meta.json for API root");
-
-// Generate api/index.mdx
-fs.writeFileSync(
-  path.join(OUTPUT_DIR, "index.mdx"),
-  `---
-title: API Reference
-description: Memos API Reference
----
-
-Welcome to the Memos API Reference.
-
-<Cards>
-${cards.join("\n")}
-</Cards>
-`,
-);
-console.log("Generated api/index.mdx");
