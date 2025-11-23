@@ -7,19 +7,7 @@ Webhooks allow Memos to automatically notify external services when events occur
 
 ## Overview
 
-Webhooks are HTTP callbacks that Memos sends to external URLs when specific events happen in your instance. They enable real-time integrations with:
-
-<Cards>
-  <Card title="Communication Tools" href="#communication-integrations" icon="MessageCircle">
-    Slack, Discord, Microsoft Teams, and other chat platforms
-  </Card>
-  <Card title="Automation Services" href="#automation-integrations" icon="Zap">
-    Zapier, IFTTT, Microsoft Power Automate, and custom workflows
-  </Card>
-  <Card title="Development Tools" href="#development-integrations" icon="Code">
-    GitHub, GitLab, Jira, and project management platforms
-  </Card>
-</Cards>
+Webhooks are HTTP callbacks that Memos sends to external URLs when specific events happen in your instance. They enable real-time integrations with communication tools (Slack, Discord), automation services (Zapier, IFTTT), and development platforms (GitHub, Jira).
 
 ## Webhook Configuration
 
@@ -35,7 +23,6 @@ Webhooks can be configured through the web interface or API.
    - **Name**: Descriptive name for the webhook
    - **URL**: Endpoint that will receive the webhook calls
    - **Events**: Select which events trigger the webhook
-   - **Secret**: Optional secret for payload verification
 4. **Test & Save**: Test the webhook and save configuration
 
 #### API Configuration
@@ -49,7 +36,6 @@ curl -X POST \
     "name": "Slack Notifications",
     "url": "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK",
     "events": ["memo.created", "memo.updated", "memo.deleted"],
-    "secret": "your-webhook-secret",
     "active": true
   }' \
   "https://your-memos-instance.com/api/v1/webhooks"
@@ -72,149 +58,66 @@ Memos supports various event types that can trigger webhooks:
 
 ### Webhook Payload Format
 
-All webhooks receive a standardized JSON payload:
+All webhooks receive a JSON payload with the following structure:
 
 ```json
 {
-  "event": "memo.created",
-  "timestamp": "2025-08-19T12:00:00Z",
-  "instance": "https://your-memos-instance.com",
-  "data": {
-    "memo": {
-      "id": 123,
-      "content": "This is a new memo #important",
-      "creator": "users/1",
-      "createTime": "2025-08-19T12:00:00Z",
-      "updateTime": "2025-08-19T12:00:00Z",
-      "visibility": "PRIVATE",
-      "tags": ["important"]
-    },
-    "user": {
-      "id": 1,
-      "username": "johndoe",
-      "nickname": "John Doe",
-      "email": "john@example.com"
-    }
+  "url": "https://your-webhook-endpoint.com/webhook",
+  "activityType": "memo.created",
+  "creator": "users/1",
+  "memo": {
+    "id": 123,
+    "name": "memos/123",
+    "content": "This is a new memo #important",
+    "createTime": "2025-08-19T12:00:00Z",
+    "updateTime": "2025-08-19T12:00:00Z",
+    "visibility": "PRIVATE"
   }
 }
 ```
 
-## Communication Integrations
+<Callout type="info">
+  The `activityType` field indicates what triggered the webhook (e.g., `memo.created`, `memo.updated`, `memo.deleted`). The `memo` field contains the full memo object when applicable.
+</Callout>
 
-### Slack Integration
+## Integration Examples
 
-Send memo notifications to Slack channels.
+### Basic Webhook Handler
 
-#### Slack Webhook Setup
-
-1. **Create Slack App**: Go to [Slack API](https://api.slack.com/apps)
-2. **Enable Incoming Webhooks**: In your app settings
-3. **Add to Workspace**: Install app to your workspace  
-4. **Copy Webhook URL**: Use this URL in Memos webhook configuration
-
-#### Slack Webhook Handler
+Here's a simple example of receiving and processing Memos webhooks:
 
 ```javascript
-// Slack webhook handler (Node.js/Express)
+// Basic webhook handler (Node.js/Express)
 const express = require('express');
-const crypto = require('crypto');
 const app = express();
 
 app.use(express.json());
 
-// Slack webhook endpoint
-app.post('/webhooks/slack', (req, res) => {
+app.post('/webhooks/memos', (req, res) => {
   const payload = req.body;
   
-  // Verify webhook signature (optional but recommended)
-  if (req.headers['x-memos-signature']) {
-    const signature = req.headers['x-memos-signature'];
-    const body = JSON.stringify(req.body);
-    const hash = crypto.createHmac('sha256', process.env.WEBHOOK_SECRET)
-                     .update(body)
-                     .digest('hex');
-    
-    if (signature !== `sha256=${hash}`) {
-      return res.status(401).json({ error: 'Invalid signature' });
-    }
+  console.log(`Received webhook: ${payload.activityType}`);
+  console.log(`Creator: ${payload.creator}`);
+  
+  if (payload.memo) {
+    console.log(`Memo ID: ${payload.memo.id}`);
+    console.log(`Content: ${payload.memo.content}`);
   }
   
-  // Format message for Slack
-  let slackMessage = {};
-  
-  switch (payload.event) {
+  // Process the webhook based on activity type
+  switch (payload.activityType) {
     case 'memo.created':
-      slackMessage = {
-        text: `📝 New memo created by ${payload.data.user.nickname}`,
-        blocks: [
-          {
-            type: "section",
-            text: {
-              type: "mrkdwn",
-              text: `*New memo created*\n*Author:* ${payload.data.user.nickname}\n*Content:* ${payload.data.memo.content.substring(0, 200)}${payload.data.memo.content.length > 200 ? '...' : ''}`
-            }
-          },
-          {
-            type: "actions",
-            elements: [
-              {
-                type: "button",
-                text: {
-                  type: "plain_text",
-                  text: "View Memo"
-                },
-                url: `${payload.instance}/memos/${payload.data.memo.id}`,
-                action_id: "view_memo"
-              }
-            ]
-          }
-        ]
-      };
+      // Handle new memo
       break;
-      
     case 'memo.updated':
-      slackMessage = {
-        text: `✏️ Memo updated by ${payload.data.user.nickname}`,
-        blocks: [
-          {
-            type: "section",
-            text: {
-              type: "mrkdwn",
-              text: `*Memo updated*\n*Author:* ${payload.data.user.nickname}\n*Memo ID:* ${payload.data.memo.id}`
-            }
-          }
-        ]
-      };
+      // Handle memo update
       break;
-      
     case 'memo.deleted':
-      slackMessage = {
-        text: `🗑️ Memo deleted by ${payload.data.user.nickname}`,
-        blocks: [
-          {
-            type: "section",
-            text: {
-              type: "mrkdwn",
-              text: `*Memo deleted*\n*Author:* ${payload.data.user.nickname}\n*Memo ID:* ${payload.data.memo.id}`
-            }
-          }
-        ]
-      };
+      // Handle memo deletion
       break;
   }
   
-  // Send to Slack
-  if (Object.keys(slackMessage).length > 0) {
-    fetch(process.env.SLACK_WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(slackMessage)
-    })
-    .then(() => res.status(200).json({ status: 'sent' }))
-    .catch(err => res.status(500).json({ error: err.message }));
-  } else {
-    res.status(200).json({ status: 'ignored' });
-  }
+  res.status(200).json({ status: 'received' });
 });
 
 app.listen(3000, () => {
@@ -222,438 +125,56 @@ app.listen(3000, () => {
 });
 ```
 
-### Discord Integration
+### Forwarding to Slack
 
-Send notifications to Discord channels.
-
-```python
-import json
-import requests
-from flask import Flask, request, jsonify
-
-app = Flask(__name__)
-
-DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/YOUR/DISCORD/WEBHOOK"
-
-@app.route('/webhooks/discord', methods=['POST'])
-def discord_webhook():
-    payload = request.json
-    
-    # Format Discord message
-    embed = {}
-    
-    if payload['event'] == 'memo.created':
-        embed = {
-            "title": "📝 New Memo Created",
-            "description": payload['data']['memo']['content'][:2000],
-            "color": 0x00ff00,  # Green
-            "author": {
-                "name": payload['data']['user']['nickname'],
-                "icon_url": f"{payload['instance']}/api/v1/users/{payload['data']['user']['id']}/avatar"
-            },
-            "timestamp": payload['timestamp'],
-            "footer": {
-                "text": f"Memo ID: {payload['data']['memo']['id']}"
-            }
-        }
-    
-    elif payload['event'] == 'memo.updated':
-        embed = {
-            "title": "✏️ Memo Updated",
-            "description": f"Memo {payload['data']['memo']['id']} has been updated",
-            "color": 0xffff00,  # Yellow
-            "author": {
-                "name": payload['data']['user']['nickname']
-            },
-            "timestamp": payload['timestamp']
-        }
-    
-    elif payload['event'] == 'memo.deleted':
-        embed = {
-            "title": "🗑️ Memo Deleted",
-            "description": f"Memo {payload['data']['memo']['id']} has been deleted",
-            "color": 0xff0000,  # Red
-            "author": {
-                "name": payload['data']['user']['nickname']
-            },
-            "timestamp": payload['timestamp']
-        }
-    
-    # Send to Discord
-    if embed:
-        discord_payload = {"embeds": [embed]}
-        response = requests.post(DISCORD_WEBHOOK_URL, json=discord_payload)
-        
-        if response.status_code == 204:
-            return jsonify({"status": "sent"})
-        else:
-            return jsonify({"error": "Failed to send to Discord"}), 500
-    
-    return jsonify({"status": "ignored"})
-
-if __name__ == '__main__':
-    app.run(port=3001)
-```
-
-## Automation Integrations
-
-### Zapier Integration
-
-Connect Memos with thousands of apps through Zapier webhooks.
-
-#### Zapier Setup
-
-1. **Create Zap**: Go to [Zapier](https://zapier.com) and create new Zap
-2. **Trigger**: Choose "Webhooks by Zapier" → "Catch Hook"
-3. **Copy Webhook URL**: Use this in Memos webhook configuration
-4. **Test**: Send a test webhook from Memos
-5. **Action**: Choose your desired action (Gmail, Trello, etc.)
-
-#### Example: Memo to Trello Card
-
-```json
-{
-  "name": "Memo to Trello",
-  "url": "https://hooks.zapier.com/hooks/catch/123456/abcdef/",
-  "events": ["memo.created"],
-  "filters": {
-    "tags": ["todo", "task"]
-  }
-}
-```
-
-### IFTTT Integration
-
-Create simple automation rules with IFTTT.
-
-```bash
-# IFTTT webhook configuration
-WEBHOOK_URL="https://maker.ifttt.com/trigger/memo_created/with/key/YOUR_IFTTT_KEY"
-
-# In your webhook handler
-curl -X POST "$WEBHOOK_URL" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "value1": "New memo created",
-    "value2": "'${memo_content}'",
-    "value3": "'${author_name}'"
-  }'
-```
-
-## Development Integrations
-
-### GitHub Integration
-
-Create GitHub issues from memos with specific tags.
-
-```python
-import requests
-from flask import Flask, request, jsonify
-
-app = Flask(__name__)
-
-GITHUB_TOKEN = "your-github-token"
-GITHUB_REPO = "owner/repository"
-
-@app.route('/webhooks/github', methods=['POST'])
-def github_webhook():
-    payload = request.json
-    
-    if payload['event'] == 'memo.created':
-        memo = payload['data']['memo']
-        
-        # Check if memo has bug or feature tags
-        if any(tag in ['bug', 'feature', 'enhancement'] for tag in memo.get('tags', [])):
-            # Extract title from first line
-            lines = memo['content'].split('\n')
-            title = lines[0].replace('#', '').strip()
-            body = '\n'.join(lines[1:]) if len(lines) > 1 else ''
-            
-            # Determine labels based on tags
-            labels = []
-            for tag in memo.get('tags', []):
-                if tag in ['bug', 'feature', 'enhancement']:
-                    labels.append(tag)
-            
-            # Create GitHub issue
-            issue_data = {
-                "title": title,
-                "body": f"{body}\n\n---\n*Created from Memos by {payload['data']['user']['nickname']}*",
-                "labels": labels
-            }
-            
-            response = requests.post(
-                f"https://api.github.com/repos/{GITHUB_REPO}/issues",
-                headers={
-                    "Authorization": f"token {GITHUB_TOKEN}",
-                    "Accept": "application/vnd.github.v3+json"
-                },
-                json=issue_data
-            )
-            
-            if response.status_code == 201:
-                issue = response.json()
-                return jsonify({
-                    "status": "created",
-                    "issue_url": issue['html_url']
-                })
-    
-    return jsonify({"status": "ignored"})
-```
-
-### Jira Integration
-
-Create Jira tickets from memos.
-
+To send notifications to Slack, forward the webhook payload:
+  
 ```javascript
-// Jira webhook handler
-const express = require('express');
-const axios = require('axios');
-
-const app = express();
-app.use(express.json());
-
-const JIRA_CONFIG = {
-  host: 'your-company.atlassian.net',
-  username: 'your-email@company.com',
-  token: 'your-jira-api-token',
-  project: 'PROJECT_KEY'
-};
-
-app.post('/webhooks/jira', async (req, res) => {
+app.post('/webhooks/to-slack', (req, res) => {
   const payload = req.body;
   
-  if (payload.event === 'memo.created') {
-    const memo = payload.data.memo;
-    
-    // Check for Jira-related tags
-    if (memo.tags && memo.tags.includes('jira')) {
-      try {
-        const auth = Buffer.from(`${JIRA_CONFIG.username}:${JIRA_CONFIG.token}`).toString('base64');
-        
-        const issueData = {
-          fields: {
-            project: { key: JIRA_CONFIG.project },
-            summary: memo.content.split('\n')[0].substring(0, 100),
-            description: memo.content,
-            issuetype: { name: 'Task' },
-            reporter: { emailAddress: payload.data.user.email }
-          }
-        };
-        
-        const response = await axios.post(
-          `https://${JIRA_CONFIG.host}/rest/api/3/issue`,
-          issueData,
-          {
-            headers: {
-              'Authorization': `Basic ${auth}`,
-              'Content-Type': 'application/json'
-            }
-          }
-        );
-        
-        res.json({ 
-          status: 'created', 
-          ticket: response.data.key,
-          url: `https://${JIRA_CONFIG.host}/browse/${response.data.key}`
-        });
-        
-      } catch (error) {
-        res.status(500).json({ error: error.message });
-      }
-    } else {
-      res.json({ status: 'ignored' });
-    }
-  } else {
-    res.json({ status: 'ignored' });
-  }
-});
-
-app.listen(3002, () => {
-  console.log('Jira webhook handler running on port 3002');
+  // Format message for Slack
+  let slackMessage = {
+    text: `📝 ${payload.activityType}: ${payload.memo?.content?.substring(0, 100) || 'N/A'}`
+  };
+  
+  // Send to Slack
+  fetch(process.env.SLACK_WEBHOOK_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(slackMessage)
+  })
+  .then(() => res.status(200).json({ status: 'sent' }))
+  .catch(err => res.status(500).json({ error: err.message }));
 });
 ```
 
-## Security and Verification
+## Security and Best Practices
 
-### Webhook Signature Verification
+<Callout type="warning">
+  **Important**: Memos currently does not send cryptographic signatures with webhook requests. If you need to secure your webhook endpoints, consider implementing IP allowlisting, using HTTPS with authentication tokens in the URL, or placing webhooks behind an authentication proxy.
+</Callout>
 
-Verify webhook authenticity using HMAC signatures.
+### Security Best Practices
 
-```python
-import hmac
-import hashlib
-from flask import Flask, request, abort
+- **Use HTTPS endpoints** for webhook URLs to encrypt data in transit
+- **Implement IP allowlisting** if your webhook receiver has a fixed IP address
+- **Use authentication tokens in URLs** for additional security (e.g., `https://your-server.com/webhook?token=secret`)
+- **Log webhook activities** for security auditing and debugging
+- **Place webhooks behind authentication** using reverse proxy or API gateway
 
-def verify_webhook_signature(payload_body, signature, secret):
-    """Verify webhook signature."""
-    expected_signature = hmac.new(
-        secret.encode('utf-8'),
-        payload_body,
-        hashlib.sha256
-    ).hexdigest()
-    
-    return hmac.compare_digest(f"sha256={expected_signature}", signature)
+### Performance Tips
 
-@app.route('/webhooks/secure', methods=['POST'])
-def secure_webhook():
-    signature = request.headers.get('X-Memos-Signature')
-    payload_body = request.get_data()
-    
-    if not verify_webhook_signature(payload_body, signature, WEBHOOK_SECRET):
-        abort(401, 'Invalid signature')
-    
-    # Process webhook
-    payload = request.json
-    # ... webhook logic here
-    
-    return jsonify({"status": "processed"})
-```
-
-### Rate Limiting and Retry Logic
-
-Implement proper error handling and retries.
-
-```python
-import time
-import requests
-from functools import wraps
-
-def retry_webhook(max_retries=3, backoff_factor=2):
-    """Retry decorator for webhook calls."""
-    def decorator(func):
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            for attempt in range(max_retries):
-                try:
-                    return func(*args, **kwargs)
-                except requests.exceptions.RequestException as e:
-                    if attempt == max_retries - 1:
-                        raise e
-                    time.sleep(backoff_factor ** attempt)
-            return None
-        return wrapper
-    return decorator
-
-@retry_webhook(max_retries=3)
-def send_webhook(url, payload):
-    """Send webhook with retry logic."""
-    response = requests.post(
-        url,
-        json=payload,
-        timeout=30,
-        headers={'Content-Type': 'application/json'}
-    )
-    response.raise_for_status()
-    return response
-```
-
-## Monitoring and Debugging
-
-### Webhook Logging
-
-```python
-import logging
-from datetime import datetime
-
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('/var/log/webhooks.log'),
-        logging.StreamHandler()
-    ]
-)
-
-logger = logging.getLogger(__name__)
-
-@app.route('/webhooks/logged', methods=['POST'])
-def logged_webhook():
-    payload = request.json
-    
-    # Log webhook received
-    logger.info(f"Webhook received: {payload['event']} from {request.remote_addr}")
-    
-    try:
-        # Process webhook
-        result = process_webhook(payload)
-        logger.info(f"Webhook processed successfully: {result}")
-        return jsonify({"status": "success", "result": result})
-        
-    except Exception as e:
-        logger.error(f"Webhook processing failed: {str(e)}")
-        return jsonify({"status": "error", "message": str(e)}), 500
-
-def process_webhook(payload):
-    """Process webhook payload."""
-    # Your webhook logic here
-    return {"processed": True}
-```
-
-### Health Check Endpoint
-
-```python
-@app.route('/health', methods=['GET'])
-def health_check():
-    """Health check endpoint for monitoring."""
-    return jsonify({
-        "status": "healthy",
-        "timestamp": datetime.utcnow().isoformat(),
-        "version": "1.0.0"
-    })
-```
+- **Process webhooks asynchronously** for better performance
+- **Implement proper retry logic** with exponential backoff
+- **Set appropriate timeouts** to prevent hanging requests
+- **Monitor webhook endpoint** health and response times
 
 ## Troubleshooting
 
-### Common Issues
-
-#### Webhook Not Triggered
-
-```bash
-# Check webhook configuration
-curl -H "Authorization: Bearer YOUR_TOKEN" \
-     "https://your-memos-instance.com/api/v1/webhooks"
-
-# Test webhook manually
-curl -X POST \
-     -H "Content-Type: application/json" \
-     -d '{"test": true}' \
-     "https://your-webhook-endpoint.com/webhook"
-```
-
-#### Timeout Issues
-
-```python
-# Increase timeout values
-requests.post(
-    webhook_url,
-    json=payload,
-    timeout=60  # Increase timeout
-)
-
-# Use async processing for slow webhooks
-import asyncio
-import aiohttp
-
-async def async_webhook(url, payload):
-    async with aiohttp.ClientSession() as session:
-        async with session.post(url, json=payload) as response:
-            return await response.text()
-```
-
-#### SSL Certificate Issues
-
-```python
-# For testing only - disable SSL verification
-requests.post(webhook_url, json=payload, verify=False)
-
-# Better: Use proper certificate bundle
-import certifi
-requests.post(webhook_url, json=payload, verify=certifi.where())
-```
-
 ### Testing Webhooks
+
+Test your webhook endpoint with a sample payload:
 
 ```bash
 #!/bin/bash
@@ -661,20 +182,16 @@ requests.post(webhook_url, json=payload, verify=certifi.where())
 
 WEBHOOK_URL="https://your-webhook-endpoint.com/webhook"
 TEST_PAYLOAD='{
-  "event": "memo.created",
-  "timestamp": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'",
-  "instance": "https://your-memos-instance.com",
-  "data": {
-    "memo": {
-      "id": 123,
-      "content": "Test memo for webhook",
-      "creator": "users/1"
-    },
-    "user": {
-      "id": 1,
-      "username": "testuser",
-      "nickname": "Test User"
-    }
+  "url": "https://your-webhook-endpoint.com/webhook",
+  "activityType": "memo.created",
+  "creator": "users/1",
+  "memo": {
+    "id": 123,
+    "name": "memos/123",
+    "content": "Test memo for webhook",
+    "createTime": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'",
+    "updateTime": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'",
+    "visibility": "PRIVATE"
   }
 }'
 
@@ -686,35 +203,27 @@ curl -X POST \
      -w "HTTP Status: %{http_code}\nResponse Time: %{time_total}s\n"
 ```
 
-## Best Practices
+### Common Issues
 
-### Security
-- **Always verify webhook signatures** in production
-- **Use HTTPS endpoints** for webhook URLs
-- **Implement rate limiting** to prevent abuse
-- **Log webhook activities** for security auditing
-- **Rotate webhook secrets** regularly
+**Webhook Not Triggered**
+- Check webhook configuration in Settings → Webhooks
+- Verify the URL is accessible from your Memos instance
+- Check logs for error messages
 
-### Performance
-- **Process webhooks asynchronously** for better performance
-- **Implement proper retry logic** with exponential backoff
-- **Use connection pooling** for HTTP requests
-- **Monitor webhook endpoint** health and response times
-- **Set appropriate timeouts** to prevent hanging requests
+**Timeout Issues**
+- Increase timeout values in your webhook handler
+- Process webhooks asynchronously to avoid blocking
+- Return HTTP 200 quickly and process in background
 
-### Reliability
-- **Handle all webhook events** gracefully, even unknown ones
-- **Implement idempotency** to handle duplicate webhooks
-- **Use dead letter queues** for failed webhook deliveries
-- **Monitor webhook success rates** and investigate failures
-- **Have fallback mechanisms** for critical integrations
+**SSL Certificate Issues**
+- Ensure your webhook endpoint has a valid SSL certificate
+- For development, consider using services like ngrok
 
 ## Next Steps
 
 - [API Documentation](https://memos.apidocumentation.com) for complete webhook API reference
-- [Configure monitoring](/docs/configuration/security) for webhook health
-- [Explore Telegram bot integration](/docs/integrations/telegram-bot) for mobile notifications
 - [Review security settings](/docs/configuration/security) for webhook endpoints
+- [Explore Telegram bot integration](/docs/integrations/telegram-bot) for mobile notifications
 
 ---
 
