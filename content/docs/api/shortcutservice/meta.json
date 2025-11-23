@@ -1,10 +1,4 @@
 {
   "title": "Shortcut Service",
-  "pages": [
-    "ShortcutService_CreateShortcut",
-    "ShortcutService_DeleteShortcut",
-    "ShortcutService_GetShortcut",
-    "ShortcutService_ListShortcuts",
-    "ShortcutService_UpdateShortcut"
-  ]
+  "pages": ["CreateShortcut", "DeleteShortcut", "GetShortcut", "ListShortcuts", "UpdateShortcut"]
 }

@@ -21,5 +21,9 @@ export function DocsCarbonAdCardMobile() {
     return null;
   }
 
-  return <DocsCarbonAdCard />;
+  return (
+    <div className="w-full mt-4">
+      <DocsCarbonAdCard />
+    </div>
+  );
 }
