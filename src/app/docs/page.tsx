@@ -10,9 +10,8 @@ import { getMDXComponents } from "@/mdx-components";
 export const dynamic = "force-static";
 export const revalidate = 3600;
 
-export default async function Page(props: { params: Promise<{ slug?: string[] }> }) {
-  const params = await props.params;
-  const page = source.getPage(params.slug);
+export default async function Page() {
+  const page = source.getPage([]);
   if (!page) notFound();
 
   const MDXContent = page.data.body;
@@ -58,13 +57,8 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
   );
 }
 
-export async function generateStaticParams() {
-  return source.generateParams();
-}
-
-export async function generateMetadata(props: { params: Promise<{ slug?: string[] }> }): Promise<Metadata> {
-  const params = await props.params;
-  const page = source.getPage(params.slug);
+export async function generateMetadata(): Promise<Metadata> {
+  const page = source.getPage([]);
   if (!page) notFound();
 
   const isApi = page.url.startsWith("/docs/api");

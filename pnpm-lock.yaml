@@ -47,6 +47,9 @@ importers:
       react-dom:
         specifier: ^19.2.0
         version: 19.2.0(react@19.2.0)
+      shiki:
+        specifier: ^3.15.0
+        version: 3.15.0
       tailwind-merge:
         specifier: ^3.3.1
         version: 3.3.1
@@ -3428,7 +3431,7 @@ snapshots:
       remark-gfm: 4.0.1
       remark-rehype: 11.1.2
       scroll-into-view-if-needed: 3.1.0
-      shiki: 3.13.0
+      shiki: 3.15.0
       unist-util-visit: 5.0.0
     optionalDependencies:
       '@types/react': 19.2.2
