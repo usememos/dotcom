@@ -1,8 +1,6 @@
 import { getFeature } from "@/lib/features";
 import { generateOGImage } from "@/lib/og";
 
-export const runtime = "edge";
-
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const feature = getFeature(slug);
