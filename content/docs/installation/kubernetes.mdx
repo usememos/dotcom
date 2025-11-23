@@ -327,20 +327,28 @@ kubectl apply -f memos-ingress.yaml
 
 ## Helm Chart (Community)
 
-A community-maintained Helm chart is available for easier deployment:
+A community-maintained Helm chart is available in the [usememos/helm](https://github.com/usememos/helm) repository. To use it:
 
 ```bash
-# Add the Helm repository
-helm repo add memos https://usememos.github.io/helm-charts
-helm repo update
+# Clone the Helm chart repository
+git clone https://github.com/usememos/helm.git
+cd helm
 
 # Install Memos
-helm install memos memos/memos \
+helm install memos . \
+  --namespace memos \
+  --create-namespace
+
+# Or with custom values
+helm install memos . \
   --namespace memos \
   --create-namespace \
-  --set ingress.enabled=true \
-  --set ingress.host=memos.example.com
+  --set persistence.enabled=true \
+  --set persistence.storageClass=local \
+  --set persistence.size=10Gi
 ```
+
+For more configuration options, review the `values.yaml` file in the repository.
 
 ## Configuration Options
 
