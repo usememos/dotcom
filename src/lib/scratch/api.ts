@@ -2,7 +2,7 @@
  * API integration for connecting to Memos instances
  */
 
-import type { ConnectionTestResult, Memo, MemoInstance, MemoResource, SaveToMemosOptions, UserInfo } from "./types";
+import type { Attachment, ConnectionTestResult, Memo, MemoInstance, SaveToMemosOptions, UserInfo } from "./types";
 
 /**
  * Test connection to a Memos instance
@@ -48,15 +48,15 @@ export async function testConnection(url: string, accessToken: string): Promise<
 }
 
 /**
- * Upload a file/resource to Memos instance
+ * Upload an attachment to Memos instance
  */
-export async function uploadResource(instance: MemoInstance, file: Blob, filename: string): Promise<MemoResource> {
+export async function uploadAttachment(instance: MemoInstance, file: Blob, filename: string): Promise<Attachment> {
   const normalizedUrl = instance.url.replace(/\/$/, "");
 
   const formData = new FormData();
   formData.append("file", file, filename);
 
-  const response = await fetch(`${normalizedUrl}/api/v1/resources`, {
+  const response = await fetch(`${normalizedUrl}/api/v1/attachments`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${instance.accessToken}`,
@@ -69,7 +69,7 @@ export async function uploadResource(instance: MemoInstance, file: Blob, filenam
   }
 
   const data = await response.json();
-  return data as MemoResource;
+  return data as Attachment;
 }
 
 /**
@@ -81,7 +81,7 @@ export async function createMemo(instance: MemoInstance, content: string, option
   const body: {
     content: string;
     visibility?: string;
-    resourceIdList?: string[];
+    attachmentIdList?: string[];
   } = {
     content,
   };
@@ -108,12 +108,12 @@ export async function createMemo(instance: MemoInstance, content: string, option
 }
 
 /**
- * Create a memo with resources
+ * Create a memo with attachments
  */
-export async function createMemoWithResources(
+export async function createMemoWithAttachments(
   instance: MemoInstance,
   content: string,
-  resourceIds: string[],
+  attachmentIds: string[],
   options?: SaveToMemosOptions,
 ): Promise<Memo> {
   const normalizedUrl = instance.url.replace(/\/$/, "");
@@ -121,10 +121,10 @@ export async function createMemoWithResources(
   const body: {
     content: string;
     visibility?: string;
-    resourceIdList?: string[];
+    attachmentIdList?: string[];
   } = {
     content,
-    resourceIdList: resourceIds,
+    attachmentIdList: attachmentIds,
   };
 
   if (options?.visibility) {
@@ -159,17 +159,17 @@ export async function saveScratchpadItemToMemos(
 ): Promise<Memo> {
   try {
     // Upload files first if any
-    const resourceIds: string[] = [];
+    const attachmentIds: string[] = [];
     if (files.length > 0) {
       for (const file of files) {
-        const resource = await uploadResource(instance, file.blob, file.name);
-        resourceIds.push(resource.id);
+        const attachment = await uploadAttachment(instance, file.blob, file.name);
+        attachmentIds.push(attachment.id);
       }
     }
 
-    // Create memo with or without resources
-    if (resourceIds.length > 0) {
-      return await createMemoWithResources(instance, content, resourceIds, options);
+    // Create memo with or without attachments
+    if (attachmentIds.length > 0) {
+      return await createMemoWithAttachments(instance, content, attachmentIds, options);
     } else {
       return await createMemo(instance, content, options);
     }

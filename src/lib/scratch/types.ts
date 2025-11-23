@@ -58,7 +58,7 @@ export interface SaveToMemosOptions {
   visibility?: "PRIVATE" | "PUBLIC" | "PROTECTED";
 }
 
-export interface MemoResource {
+export interface Attachment {
   id: string;
   name: string;
   filename: string;
@@ -73,7 +73,7 @@ export interface Memo {
   visibility: string;
   createdTs: number;
   updatedTs: number;
-  resourceList?: MemoResource[];
+  attachments?: Attachment[];
 }
 
 export interface UserInfo {
