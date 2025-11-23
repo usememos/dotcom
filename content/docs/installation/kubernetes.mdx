@@ -62,6 +62,8 @@ spec:
         env:
         - name: MEMOS_MODE
           value: "prod"
+        - name: MEMOS_ADDR
+          value: "0.0.0.0"
         - name: MEMOS_PORT
           value: "5230"
         volumeMounts:
@@ -232,6 +234,8 @@ spec:
         env:
         - name: MEMOS_MODE
           value: "prod"
+        - name: MEMOS_ADDR
+          value: "0.0.0.0"
         - name: MEMOS_PORT
           value: "5230"
         - name: MEMOS_DRIVER
@@ -344,12 +348,20 @@ helm install memos memos/memos \
 
 Configure Memos using environment variables in the deployment:
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `MEMOS_MODE` | Server mode (`dev` or `prod`) | `dev` |
-| `MEMOS_PORT` | Server port | `5230` |
-| `MEMOS_DRIVER` | Database driver (`sqlite`, `postgres`, `mysql`) | `sqlite` |
-| `MEMOS_DSN` | Database connection string | - |
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MEMOS_MODE` | `dev` | Server mode: `dev`, `prod`, or `demo` |
+| `MEMOS_ADDR` | `` | Server address (e.g., `0.0.0.0`) |
+| `MEMOS_PORT` | `8081` | Server port (Docker images typically use `5230`) |
+| `MEMOS_UNIX_SOCK` | - | Unix socket path (overrides addr/port) |
+| `MEMOS_DATA` | - | Data directory path |
+| `MEMOS_DRIVER` | `sqlite` | Database driver: `sqlite`, `postgres`, or `mysql` |
+| `MEMOS_DSN` | - | Database connection string (DSN) |
+| `MEMOS_INSTANCE_URL` | - | Public URL of your Memos instance |
+
+<Callout type="info">
+**Note**: These are the only configuration environment variables supported by Memos. Other settings (storage, security, etc.) are managed through the web UI.
+</Callout>
 
 ### Resource Limits
 

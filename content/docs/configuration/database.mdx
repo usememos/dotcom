@@ -19,25 +19,53 @@ Memos supports multiple database backends. This guide covers basic setup for eac
   </Card>
 </Cards>
 
+## Configuration Overview
+
+Memos supports three database backends through two environment variables:
+
+- `MEMOS_DRIVER`: Database type (`sqlite`, `postgres`, or `mysql`)
+- `MEMOS_DSN`: Database connection string (Data Source Name)
+
+<Callout type="info">
+**Note**: Storage configuration (S3, local file paths, etc.) is managed through the web UI in Settings → Storage, not via environment variables.
+</Callout>
+
 ## SQLite Configuration
 
 SQLite works out of the box with zero configuration:
 
 ```bash
-# Database file created automatically at: data/memos_prod.db
+# Default configuration (SQLite)
 memos
+
+# Database file created automatically at: {DATA_DIR}/memos_prod.db
+# In dev mode: {DATA_DIR}/memos_dev.db
+# In demo mode: {DATA_DIR}/memos_demo.db
 ```
 
-### Custom SQLite Location
+### Custom Data Location
+
+Use the `MEMOS_DATA` variable to set a custom data directory:
 
 ```bash
 # Environment variable
 export MEMOS_DATA="/custom/path/to/data"
 memos
 
+# Command-line flag
+memos --data /custom/path/to/data
+
 # Docker
-docker run -v /host/path:/var/opt/memos neosmemo/memos:stable
+docker run -d \
+  --name memos \
+  -v /host/path:/var/opt/memos \
+  -e MEMOS_DATA=/var/opt/memos \
+  neosmemo/memos:stable
 ```
+
+<Callout type="info">
+**SQLite Limitations**: SQLite is perfect for personal use and small teams, but for high-concurrency production deployments, consider PostgreSQL or MySQL.
+</Callout>
 
 ## PostgreSQL Configuration
 
@@ -53,8 +81,12 @@ GRANT ALL PRIVILEGES ON DATABASE memos TO memos;
 ### Connection Configuration
 
 ```bash
+# Set database driver and connection string
 export MEMOS_DRIVER=postgres
 export MEMOS_DSN="postgresql://memos:password@localhost:5432/memos?sslmode=disable"
+
+# Start Memos
+memos
 ```
 
 #### Docker Setup
@@ -67,12 +99,22 @@ services:
       POSTGRES_DB: memos
       POSTGRES_USER: memos
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   memos:
     image: neosmemo/memos:stable
+    depends_on:
+      - postgres
     environment:
+      - MEMOS_MODE=prod
       - MEMOS_DRIVER=postgres
       - MEMOS_DSN=postgresql://memos:${DB_PASSWORD}@postgres:5432/memos?sslmode=disable
+    ports:
+      - "5230:5230"
+
+volumes:
+  postgres_data:
 ```
 
 ## MySQL Configuration
@@ -90,8 +132,12 @@ FLUSH PRIVILEGES;
 ### Connection Configuration
 
 ```bash
+# Set database driver and connection string
 export MEMOS_DRIVER=mysql
 export MEMOS_DSN="memos:password@tcp(localhost:3306)/memos?charset=utf8mb4&parseTime=True&loc=Local"
+
+# Start Memos
+memos
 ```
 
 #### Docker Setup
@@ -106,29 +152,98 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - mysql_data:/var/lib/mysql
 
   memos:
     image: neosmemo/memos:stable
+    depends_on:
+      - mysql
     environment:
+      - MEMOS_MODE=prod
       - MEMOS_DRIVER=mysql
       - MEMOS_DSN=memos:${DB_PASSWORD}@tcp(mysql:3306)/memos?charset=utf8mb4&parseTime=True&loc=Local
+    ports:
+      - "5230:5230"
+
+volumes:
+  mysql_data:
 ```
 
 ## Connection String Format
 
-### PostgreSQL DSN Examples
+### PostgreSQL DSN
 
 ```bash
+# Basic format
+postgresql://[user[:password]@][host][:port][/dbname][?param1=value1&...]
+
+# Examples
 postgresql://username:password@host:port/database?sslmode=disable
+postgresql://memos:pass@localhost:5432/memos?sslmode=require
+postgres://user:pass@db.example.com/memos?sslmode=verify-full
 ```
 
-### MySQL DSN Examples
+### MySQL DSN
 
 ```bash
-username:password@tcp(host:port)/database?charset=utf8mb4&parseTime=True&loc=Local
+# Basic format
+[username[:password]@][protocol[(address)]]/dbname[?param1=value1&...]
+
+# Examples
+username:password@tcp(host:port)/database?charset=utf8mb4&parseTime=True
+memos:pass@tcp(localhost:3306)/memos?charset=utf8mb4&parseTime=True&loc=Local
+root:pass@unix(/tmp/mysql.sock)/memos?charset=utf8mb4
 ```
+
+## Troubleshooting
+
+### Connection Issues
+
+**PostgreSQL:**
+```bash
+# Test connection
+psql -h localhost -U memos -d memos
+
+# Check PostgreSQL is running
+systemctl status postgresql
+
+# Verify connection settings
+pg_isready -h localhost -p 5432
+```
+
+**MySQL:**
+```bash
+# Test connection
+mysql -h localhost -u memos -p memos
+
+# Check MySQL is running
+systemctl status mysql
+
+# Verify connection
+mysqladmin -h localhost -u memos -p ping
+```
+
+### Permission Errors
+
+Ensure the database user has proper permissions:
+
+```sql
+-- PostgreSQL
+GRANT ALL PRIVILEGES ON DATABASE memos TO memos;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO memos;
+
+-- MySQL
+GRANT ALL PRIVILEGES ON memos.* TO 'memos'@'%';
+FLUSH PRIVILEGES;
+```
+
+<Callout type="warning">
+**Security**: Always use strong passwords for database users and restrict access to trusted hosts only. Never expose database ports directly to the internet.
+</Callout>
 
 ## Next Steps
 
-- [Configure storage options](/docs/configuration/storage)
-- [Set up authentication](/docs/configuration/authentication)
+- [Configure storage options](/docs/configuration/storage) for file attachments (managed via web UI)
+- [Set up authentication](/docs/configuration/authentication) for user access
+- Configure regular database backups for data protection

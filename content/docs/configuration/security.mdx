@@ -1,9 +1,9 @@
 ---
 title: Security Configuration
-description: Comprehensive security settings and best practices for protecting your Memos instance.
+description: Security best practices and configuration for protecting your Memos instance.
 ---
 
-Security is paramount when deploying Memos in production environments. This guide covers comprehensive security configuration, best practices, and hardening techniques.
+Security is paramount when deploying Memos in production environments. This guide covers security best practices, configuration, and hardening techniques using the tools available in Memos.
 
 ## Security Overview
 
@@ -22,120 +22,128 @@ Security is paramount when deploying Memos in production environments. This guid
   </Card>
 </Cards>
 
+<Callout type="warning">
+**Important**: Memos does not expose security-related environment variables for password policies, MFA, rate limiting, etc. Security features are managed through the web UI (Settings) and infrastructure-level controls (reverse proxy, firewall).
+</Callout>
+
 ## Authentication Security
 
-### Password Policies
+### Password Security
 
-Configure strong password requirements to protect user accounts.
+Memos implements secure password handling:
 
-#### Environment Configuration
-
-```bash
-# Password complexity requirements
-export MEMOS_PASSWORD_MIN_LENGTH=12
-export MEMOS_PASSWORD_REQUIRE_UPPERCASE=true
-export MEMOS_PASSWORD_REQUIRE_LOWERCASE=true
-export MEMOS_PASSWORD_REQUIRE_NUMBERS=true
-export MEMOS_PASSWORD_REQUIRE_SYMBOLS=true
-
-# Account lockout policies
-export MEMOS_MAX_LOGIN_ATTEMPTS=5
-export MEMOS_LOCKOUT_DURATION=900  # 15 minutes in seconds
-
-# Session security
-export MEMOS_SESSION_TIMEOUT=3600  # 1 hour
-export MEMOS_SESSION_ABSOLUTE_TIMEOUT=28800  # 8 hours
-```
-
-#### Docker Configuration
-
-```yaml
-services:
-  memos:
-    image: neosmemo/memos:stable
-    environment:
-      # Password policies
-      - MEMOS_PASSWORD_MIN_LENGTH=12
-      - MEMOS_PASSWORD_REQUIRE_UPPERCASE=true
-      - MEMOS_PASSWORD_REQUIRE_LOWERCASE=true
-      - MEMOS_PASSWORD_REQUIRE_NUMBERS=true
-      - MEMOS_PASSWORD_REQUIRE_SYMBOLS=true
-      
-      # Account security
-      - MEMOS_MAX_LOGIN_ATTEMPTS=5
-      - MEMOS_LOCKOUT_DURATION=900
-      - MEMOS_SESSION_TIMEOUT=3600
-      - MEMOS_ENABLE_MFA=true
-    volumes:
-      - memos_data:/var/opt/memos
-    ports:
-      - "5230:5230"
-```
-
-### Multi-Factor Authentication (MFA)
-
-Enable MFA for enhanced account security.
-
-```bash
-# Enable MFA
-export MEMOS_ENABLE_MFA=true
-
-# MFA methods
-export MEMOS_MFA_METHODS=totp,email
-
-# MFA enforcement
-export MEMOS_MFA_REQUIRED_FOR_ADMINS=true
-export MEMOS_MFA_GRACE_PERIOD=86400  # 24 hours
-```
+- **bcrypt hashing**: Passwords are hashed using bcrypt with unique salts
+- **No plaintext storage**: Passwords are never stored in plain text
+- **Rainbow table resistance**: Unique salts per password prevent rainbow table attacks
 
 ### Session Management
 
-#### Secure Session Configuration
+Memos uses secure session management:
 
-```bash
-# Session cookie settings
-export MEMOS_SESSION_COOKIE_NAME=memos_session
-export MEMOS_SESSION_COOKIE_SECURE=true
-export MEMOS_SESSION_COOKIE_HTTP_ONLY=true
-export MEMOS_SESSION_COOKIE_SAME_SITE=strict
+- **Session cookies**: HttpOnly cookies prevent JavaScript access (XSS protection)
+- **Secure flag**: HTTPS-only in production mode
+- **SameSite attribute**: CSRF protection
+- **14-day expiration**: Sliding window extends with activity
+- **Device tracking**: Monitor active sessions in Settings → Sessions
 
-# Session storage
-export MEMOS_SESSION_STORE=database  # or redis
-export MEMOS_SESSION_CLEANUP_INTERVAL=3600
-```
+### User Management
 
-#### Session Security Headers
+Configure user access through the web UI:
+
+1. **Access Settings → Workspace**
+2. **User Registration**: Enable/disable public signups
+3. **Password Auth**: Option to disable password auth (OAuth-only)
+4. **User Roles**: Assign roles (HOST, ADMIN, USER)
+
+## Network Security
+
+### HTTPS Configuration
+
+Always use HTTPS in production. Configure your reverse proxy or load balancer to handle SSL/TLS termination.
+
+#### Nginx Configuration
 
 ```nginx
-# Nginx security headers
 server {
-    # ... other configuration
+    listen 443 ssl http2;
+    server_name memos.example.com;
     
+    # SSL certificates
+    ssl_certificate /etc/letsencrypt/live/memos.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/memos.example.com/privkey.pem;
+    
+    # SSL configuration
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers on;
+    
+    # Security headers
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
     add_header X-Frame-Options "SAMEORIGIN" always;
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-XSS-Protection "1; mode=block" always;
     add_header Referrer-Policy "strict-origin-when-cross-origin" always;
     add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self';" always;
-    add_header Permissions-Policy "camera=(), microphone=(), geolocation=(), interest-cohort=()" always;
+    
+    # Proxy to Memos
+    location / {
+        proxy_pass http://127.0.0.1:5230;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        
+        # WebSocket support
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
+
+# Redirect HTTP to HTTPS
+server {
+    listen 80;
+    server_name memos.example.com;
+    return 301 https://$server_name$request_uri;
 }
 ```
 
-## Network Security
+#### Apache Configuration
 
-### HTTPS Configuration
+```apache
+<VirtualHost *:443>
+    ServerName memos.example.com
+    
+    # SSL configuration
+    SSLEngine on
+    SSLCertificateFile /etc/letsencrypt/live/memos.example.com/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/memos.example.com/privkey.pem
+    
+    SSLProtocol all -SSLv3 -TLSv1 -TLSv1.1
+    SSLCipherSuite HIGH:!aNULL:!MD5
+    
+    # Security headers
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # Proxy configuration
+    ProxyPreserveHost On
+    ProxyPass / http://127.0.0.1:5230/
+    ProxyPassReverse / http://127.0.0.1:5230/
+    
+    # WebSocket support
+    RewriteEngine on
+    RewriteCond %{HTTP:UPGRADE} websocket [NC]
+    RewriteCond %{HTTP:CONNECTION} upgrade [NC]
+    RewriteRule ^/?(.*) "ws://127.0.0.1:5230/$1" [P,L]
+</VirtualHost>
 
-Always use HTTPS in production to protect data in transit. Configure your reverse proxy or load balancer to handle SSL/TLS termination.
-
-```bash
-# Force HTTPS
-export MEMOS_FORCE_HTTPS=true
-export MEMOS_HTTPS_PORT=443
-
-# HSTS configuration
-export MEMOS_HSTS_MAX_AGE=31536000
-export MEMOS_HSTS_INCLUDE_SUBDOMAINS=true
-export MEMOS_HSTS_PRELOAD=true
+<VirtualHost *:80>
+    ServerName memos.example.com
+    Redirect permanent / https://memos.example.com/
+</VirtualHost>
 ```
 
 ### Firewall Configuration
@@ -147,18 +155,19 @@ export MEMOS_HSTS_PRELOAD=true
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 
-# SSH access (change port if needed)
+# SSH access
 sudo ufw allow 22/tcp
 
-# HTTP/HTTPS
+# HTTP/HTTPS (if using reverse proxy)
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
 
-# Memos (only if not using reverse proxy)
+# Memos direct access (only if NOT using reverse proxy)
 # sudo ufw allow 5230/tcp
 
 # Enable firewall
 sudo ufw enable
+sudo ufw status
 ```
 
 #### iptables
@@ -191,411 +200,430 @@ sudo iptables-save > /etc/iptables/rules.v4
 
 ### Rate Limiting
 
-Implement rate limiting to prevent abuse and DDoS attacks.
-
-#### Application Level
-
-```bash
-# General rate limiting
-export MEMOS_RATE_LIMIT_ENABLED=true
-export MEMOS_RATE_LIMIT_REQUESTS_PER_MINUTE=100
-export MEMOS_RATE_LIMIT_BURST=20
-
-# API-specific limits
-export MEMOS_API_RATE_LIMIT_RPM=60
-export MEMOS_LOGIN_RATE_LIMIT_RPM=10
-export MEMOS_UPLOAD_RATE_LIMIT_RPM=20
-```
+Implement rate limiting at the reverse proxy level to prevent abuse.
 
 #### Nginx Rate Limiting
 
 ```nginx
-# Rate limiting zones
+# Define rate limiting zones
 limit_req_zone $binary_remote_addr zone=general:10m rate=10r/s;
 limit_req_zone $binary_remote_addr zone=login:10m rate=1r/s;
 limit_req_zone $binary_remote_addr zone=api:10m rate=5r/s;
-limit_req_zone $binary_remote_addr zone=upload:10m rate=2r/s;
 
 server {
+    listen 443 ssl http2;
+    server_name memos.example.com;
+    
     # General pages
     location / {
         limit_req zone=general burst=10 nodelay;
         proxy_pass http://127.0.0.1:5230;
-        # ... proxy headers
     }
     
     # Login endpoints
     location /api/v1/auth/ {
         limit_req zone=login burst=3 nodelay;
         proxy_pass http://127.0.0.1:5230;
-        # ... proxy headers
     }
     
     # API endpoints
     location /api/ {
         limit_req zone=api burst=10 nodelay;
         proxy_pass http://127.0.0.1:5230;
-        # ... proxy headers
-    }
-    
-    # Upload endpoints
-    location /api/v1/resources {
-        limit_req zone=upload burst=5 nodelay;
-        client_max_body_size 50M;
-        proxy_pass http://127.0.0.1:5230;
-        # ... proxy headers
     }
 }
 ```
 
 ## Data Protection
 
-### Encryption at Rest
+### Database Security
 
-Encrypt sensitive data stored in your database and file system.
-
-#### Database Encryption
-
-**SQLite with SQLCipher:**
+#### SQLite
 
 ```bash
-# Enable SQLite encryption
-export MEMOS_DB_ENCRYPTION=true
-export MEMOS_DB_ENCRYPTION_KEY=your-encryption-key
+# Set proper file permissions
+chmod 600 /var/lib/memos/memos_prod.db
+chown memos:memos /var/lib/memos/memos_prod.db
 
-# Key management
-export MEMOS_DB_KEY_ROTATION_ENABLED=true
-export MEMOS_DB_KEY_ROTATION_INTERVAL=2592000  # 30 days
+# Backup with encryption (using gpg)
+sqlite3 /var/lib/memos/memos_prod.db ".backup /tmp/backup.db"
+gpg --symmetric --cipher-algo AES256 /tmp/backup.db
+rm /tmp/backup.db
 ```
 
-**PostgreSQL with Transparent Data Encryption:**
+#### PostgreSQL
 
 ```sql
--- Enable TDE (PostgreSQL 13+)
-CREATE EXTENSION IF NOT EXISTS pg_tde;
+-- Enable SSL connections
+ALTER SYSTEM SET ssl = on;
+SELECT pg_reload_conf();
 
--- Encrypt specific columns
-ALTER TABLE memos_user 
-ADD COLUMN encrypted_email TEXT ENCRYPTED WITH (key_id = 'user_data_key');
+-- Restrict connections
+-- Edit pg_hba.conf:
+-- hostssl all all 0.0.0.0/0 md5
 ```
 
-#### File System Encryption
+#### MySQL
 
-```bash
-# LUKS encryption for data directories
-sudo cryptsetup luksFormat /dev/sdb1
-sudo cryptsetup luksOpen /dev/sdb1 encrypted_data
-sudo mkfs.ext4 /dev/mapper/encrypted_data
-
-# Mount encrypted filesystem
-echo 'encrypted_data /mnt/memos-data ext4 defaults 0 2' >> /etc/fstab
+```sql
+-- Enable SSL connections
+ALTER USER 'memos'@'%' REQUIRE SSL;
+FLUSH PRIVILEGES;
 ```
 
 ### Backup Security
 
-Secure your backup processes and storage.
-
 ```bash
-# Encrypted backups
-export MEMOS_BACKUP_ENCRYPTION=true
-export MEMOS_BACKUP_ENCRYPTION_KEY=backup-encryption-key
+# Encrypted database backup script
+#!/bin/bash
+set -e
 
-# Backup retention and rotation
-export MEMOS_BACKUP_RETENTION_DAYS=90
-export MEMOS_BACKUP_ROTATION_ENABLED=true
+BACKUP_DIR="/backup/memos"
+DATE=$(date +%Y%m%d-%H%M%S)
+DB_FILE="/var/lib/memos/memos_prod.db"
+BACKUP_FILE="$BACKUP_DIR/memos-$DATE.db"
+ENCRYPTED_FILE="$BACKUP_FILE.gpg"
 
-# Secure backup storage
-export MEMOS_BACKUP_STORAGE_TYPE=s3
-export MEMOS_BACKUP_S3_ENCRYPTION=AES256
-export MEMOS_BACKUP_S3_BUCKET=secure-memos-backups
+# Create backup directory
+mkdir -p "$BACKUP_DIR"
+
+# Backup SQLite database
+sqlite3 "$DB_FILE" ".backup '$BACKUP_FILE'"
+
+# Encrypt backup
+gpg --symmetric --cipher-algo AES256 --batch --yes \
+    --passphrase-file /etc/memos/backup-key.txt \
+    --output "$ENCRYPTED_FILE" \
+    "$BACKUP_FILE"
+
+# Remove unencrypted backup
+rm "$BACKUP_FILE"
+
+# Remove backups older than 30 days
+find "$BACKUP_DIR" -name "memos-*.db.gpg" -mtime +30 -delete
+
+echo "Backup completed: $ENCRYPTED_FILE"
 ```
 
-### Data Privacy
+### File System Encryption
 
-#### GDPR Compliance
+For sensitive deployments, consider full disk encryption:
 
 ```bash
-# Data retention policies
-export MEMOS_DATA_RETENTION_ENABLED=true
-export MEMOS_DATA_RETENTION_PERIOD=2592000000  # 30 days in milliseconds
-
-# User data export
-export MEMOS_ENABLE_DATA_EXPORT=true
-export MEMOS_DATA_EXPORT_FORMAT=json
-
-# Data anonymization
-export MEMOS_ENABLE_DATA_ANONYMIZATION=true
-export MEMOS_ANONYMIZATION_RETENTION=86400  # 1 day
+# LUKS encryption for data directories (Linux)
+sudo cryptsetup luksFormat /dev/sdb1
+sudo cryptsetup luksOpen /dev/sdb1 encrypted_data
+sudo mkfs.ext4 /dev/mapper/encrypted_data
+sudo mount /dev/mapper/encrypted_data /var/lib/memos
 ```
 
 ## Access Control
 
-### Role-Based Access Control (RBAC)
+### User Roles
 
-Configure user roles and permissions.
-
-```bash
-# Enable RBAC
-export MEMOS_RBAC_ENABLED=true
-
-# Default roles
-export MEMOS_DEFAULT_USER_ROLE=user
-export MEMOS_ADMIN_REGISTRATION_ENABLED=false
-
-# Permission granularity
-export MEMOS_ENABLE_GRANULAR_PERMISSIONS=true
-```
-
-#### User Roles and Permissions
+Memos implements role-based access control (RBAC):
 
 | Role | Description | Permissions |
 |------|-------------|-------------|
-| **Admin** | Full system access | All permissions |
-| **Moderator** | Content moderation | Read, write, moderate content |
-| **User** | Standard user | Read, write own content |
-| **Viewer** | Read-only access | Read public content only |
+| **HOST** | System owner | Full system access, all settings |
+| **ADMIN** | Administrator | User management, most settings |
+| **USER** | Standard user | Personal memo management |
 
 ### API Security
 
-#### API Token Management
+#### Access Tokens
+
+Manage API access tokens in Settings → Access Tokens:
+
+1. **Create tokens** with descriptive names
+2. **Set expiration dates** (7/30/90/365 days or never)
+3. **Revoke unused tokens** regularly
+4. **One token per application**
+
+#### Token Security Best Practices
 
 ```bash
-# Token security
-export MEMOS_API_TOKEN_EXPIRY=86400  # 24 hours
-export MEMOS_API_TOKEN_REFRESH_ENABLED=true
-export MEMOS_API_TOKEN_ROTATION_ENABLED=true
+# Store tokens securely (never in git)
+export MEMOS_TOKEN="your-token-here"
 
-# API versioning and deprecation
-export MEMOS_API_VERSION_ENFORCEMENT=true
-export MEMOS_API_DEPRECATED_VERSIONS=v0.1,v0.2
+# Use tokens in requests
+curl -H "Authorization: Bearer $MEMOS_TOKEN" \
+  https://memos.example.com/api/v1/memos
+
+# Rotate tokens regularly
+# 1. Create new token in web UI
+# 2. Update applications with new token
+# 3. Revoke old token after verification
 ```
 
-#### OAuth 2.0 Configuration
+### OAuth Security
 
-```bash
-# OAuth providers
-export MEMOS_OAUTH_GOOGLE_ENABLED=true
-export MEMOS_OAUTH_GOOGLE_CLIENT_ID=your-client-id
-export MEMOS_OAUTH_GOOGLE_CLIENT_SECRET=your-client-secret
+Configure OAuth providers in Settings → Identity Providers:
 
-export MEMOS_OAUTH_GITHUB_ENABLED=true
-export MEMOS_OAUTH_GITHUB_CLIENT_ID=your-github-client-id
-export MEMOS_OAUTH_GITHUB_CLIENT_SECRET=your-github-client-secret
-
-# OAuth security
-export MEMOS_OAUTH_STATE_VERIFICATION=true
-export MEMOS_OAUTH_PKCE_ENABLED=true
-```
+1. **Use HTTPS** for callback URLs
+2. **Validate redirect URIs** to prevent phishing
+3. **Implement identifier filtering** to restrict access
+4. **Regular credential rotation**
 
 ## Security Monitoring
 
 ### Audit Logging
 
-Enable comprehensive audit logging for security events.
+Monitor user activity through Memos logs:
 
 ```bash
-# Audit logging
-export MEMOS_AUDIT_LOG_ENABLED=true
-export MEMOS_AUDIT_LOG_LEVEL=info
-export MEMOS_AUDIT_LOG_FILE=/var/log/memos/audit.log
+# View application logs
+journalctl -u memos -f
 
-# Log retention
-export MEMOS_AUDIT_LOG_RETENTION_DAYS=90
-export MEMOS_AUDIT_LOG_ROTATION_SIZE=100MB
+# For Docker deployments
+docker logs -f memos
+
+# Filter for authentication events
+journalctl -u memos | grep -i "auth"
+
+# Filter for errors
+journalctl -u memos | grep -i "error"
 ```
 
-#### Events to Log
+### Session Monitoring
 
-- User authentication (success/failure)
-- Password changes
-- Account lockouts
-- Administrative actions
-- Data access and modifications
-- API token creation/revocation
-- Configuration changes
+Users can monitor their own sessions:
 
-### Intrusion Detection
+1. **Access Settings → Sessions**
+2. **Review active sessions** (devices, locations, last access)
+3. **Revoke suspicious sessions**
+4. **Logout from all devices** if compromised
 
-#### File Integrity Monitoring
+### Failed Login Monitoring
 
-```bash
-# Install AIDE (Advanced Intrusion Detection Environment)
-sudo apt install aide
-
-# Configure AIDE
-sudo nano /etc/aide/aide.conf
-
-# Key directories to monitor
-/var/opt/memos f+p+u+g+s+m+c+md5+sha256
-/etc/memos f+p+u+g+s+m+c+md5+sha256
-
-# Initialize database
-sudo aide --init
-sudo mv /var/lib/aide/aide.db.new /var/lib/aide/aide.db
-
-# Daily checks
-echo '0 2 * * * root /usr/bin/aide --check' >> /etc/crontab
-```
-
-#### Log Monitoring
+Monitor failed login attempts at the reverse proxy level:
 
 ```bash
 # Install fail2ban
 sudo apt install fail2ban
 
 # Configure fail2ban for Memos
-sudo nano /etc/fail2ban/jail.local
-```
-
-```ini
+sudo tee /etc/fail2ban/jail.d/memos.conf << 'EOF'
 [memos-auth]
 enabled = true
 port = http,https
 filter = memos-auth
-logpath = /var/log/memos/access.log
+logpath = /var/log/nginx/access.log
 maxretry = 5
 bantime = 3600
 findtime = 600
+EOF
+
+# Create filter
+sudo tee /etc/fail2ban/filter.d/memos-auth.conf << 'EOF'
+[Definition]
+failregex = ^<HOST> .* "POST /api/v1/auth/signin HTTP.*" (401|403)
+ignoreregex =
+EOF
+
+# Restart fail2ban
+sudo systemctl restart fail2ban
 ```
 
-### Security Scanning
+## Security Hardening
 
-#### Vulnerability Scanning
+### Operating System Level
 
 ```bash
-# Nmap security scan
-nmap -sV -sC -O target_ip
+# Keep system updated
+sudo apt update && sudo apt upgrade -y
 
-# OpenVAS vulnerability scan
-openvas-cli -h target_ip
+# Enable automatic security updates
+sudo apt install unattended-upgrades
+sudo dpkg-reconfigure -plow unattended-upgrades
 
-# Docker security scanning
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
-  --name Anchore anchore/grype:latest \
-  neosmemo/memos:stable
+# Configure SSH security
+sudo nano /etc/ssh/sshd_config
+# Set: PermitRootLogin no
+# Set: PasswordAuthentication no
+# Set: PubkeyAuthentication yes
+
+# Restart SSH
+sudo systemctl restart sshd
 ```
 
-#### Dependency Scanning
+### Docker Security
 
-```bash
-# Check for known vulnerabilities
-npm audit
-go mod verify
-
-# OWASP Dependency Check
-dependency-check --project memos --scan /path/to/memos
+```yaml
+services:
+  memos:
+    image: neosmemo/memos:stable
+    
+    # Run as non-root user
+    user: "1001:1001"
+    
+    # Read-only root filesystem
+    read_only: true
+    
+    # Temporary directories
+    tmpfs:
+      - /tmp
+    
+    # Security options
+    security_opt:
+      - no-new-privileges:true
+    
+    # Resource limits
+    mem_limit: 512m
+    cpus: 0.5
+    
+    # Capabilities
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
 ```
 
-## Incident Response
+### Network Isolation
 
-### Security Incident Procedures
+```yaml
+# Docker Compose with network isolation
+version: '3.8'
 
-#### Immediate Response
+services:
+  memos:
+    image: neosmemo/memos:stable
+    networks:
+      - internal
+    environment:
+      - MEMOS_MODE=prod
+      - MEMOS_DRIVER=postgres
+      - MEMOS_DSN=postgresql://memos:pass@postgres:5432/memos
+    
+  postgres:
+    image: postgres:15
+    networks:
+      - internal
+    environment:
+      - POSTGRES_DB=memos
+      - POSTGRES_USER=memos
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
+    secrets:
+      - db_password
+    
+  nginx:
+    image: nginx:alpine
+    networks:
+      - internal
+      - external
+    ports:
+      - "443:443"
+    depends_on:
+      - memos
 
-1. **Identify the incident** scope and impact
-2. **Isolate affected systems** to prevent spread
-3. **Preserve evidence** for forensic analysis
-4. **Notify stakeholders** according to policy
-5. **Begin containment** and remediation
+networks:
+  internal:
+    internal: true
+  external:
 
-#### Evidence Collection
-
-```bash
-# System snapshots
-sudo dd if=/dev/sda of=/backup/system_snapshot.img
-
-# Memory dump
-sudo cat /proc/kcore > /backup/memory_dump.img
-
-# Network logs
-sudo tcpdump -w /backup/network_capture.pcap
-
-# Application logs
-cp /var/log/memos/* /backup/incident_logs/
-```
-
-### Recovery Procedures
-
-```bash
-# Backup current state
-sudo systemctl stop memos
-tar -czf /backup/pre_recovery_$(date +%Y%m%d).tar.gz /var/opt/memos
-
-# Restore from clean backup
-sudo rm -rf /var/opt/memos/*
-sudo tar -xzf /backup/clean_backup.tar.gz -C /var/opt/memos
-
-# Update and restart
-sudo systemctl start memos
-sudo systemctl status memos
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt
 ```
 
 ## Security Best Practices Checklist
 
 ### Pre-Deployment
 
-- [ ] **Security requirements** defined and documented
-- [ ] **Threat modeling** completed
-- [ ] **Security architecture** reviewed
-- [ ] **Penetration testing** performed
-- [ ] **Compliance requirements** verified
+- [ ] Security requirements defined and documented
+- [ ] Threat modeling completed
+- [ ] Security architecture reviewed
+- [ ] SSL/TLS certificates obtained
+- [ ] Secrets management strategy implemented
 
 ### Deployment
 
-- [ ] **HTTPS/TLS** properly configured
-- [ ] **Strong passwords** enforced
-- [ ] **MFA** enabled for administrators
-- [ ] **Firewall rules** configured
-- [ ] **Rate limiting** implemented
-- [ ] **Security headers** configured
-- [ ] **Database encryption** enabled
-- [ ] **Backup encryption** configured
+- [ ] HTTPS/TLS properly configured
+- [ ] Strong password enforcement enabled
+- [ ] OAuth providers configured (if applicable)
+- [ ] Firewall rules configured
+- [ ] Rate limiting implemented at reverse proxy
+- [ ] Security headers configured
+- [ ] Database access restricted
+- [ ] Backup encryption configured
 
 ### Post-Deployment
 
-- [ ] **Security monitoring** active
-- [ ] **Audit logging** enabled
-- [ ] **Vulnerability scanning** scheduled
-- [ ] **Incident response** plan tested
-- [ ] **Security updates** automated
-- [ ] **Regular security reviews** scheduled
+- [ ] Security monitoring active
+- [ ] Log aggregation configured
+- [ ] Access tokens reviewed
+- [ ] User sessions monitored
+- [ ] Incident response plan documented
+- [ ] Security update process established
 
 ### Ongoing Maintenance
 
-- [ ] **Regular security audits**
-- [ ] **Dependency updates**
-- [ ] **Configuration reviews**
-- [ ] **Access reviews**
-- [ ] **Log analysis**
-- [ ] **Backup testing**
-
-<Callout type="warning">
-**Security Notice**: Security is an ongoing process, not a one-time configuration. Regularly review and update your security posture as threats evolve.
-</Callout>
+- [ ] Regular security audits
+- [ ] Dependency updates
+- [ ] Configuration reviews
+- [ ] Access reviews (revoke unused accounts/tokens)
+- [ ] Log analysis
+- [ ] Backup testing
+- [ ] Security patch management
 
 ## Compliance Considerations
 
 ### GDPR Compliance
 
-- **Data minimization**: Only collect necessary data
-- **Consent management**: Explicit user consent
-- **Right to be forgotten**: Data deletion capabilities
-- **Data portability**: Export user data
-- **Privacy by design**: Built-in privacy controls
+Memos provides features to help with GDPR compliance:
 
-### SOC 2 Compliance
+- **Data export**: Users can export their data
+- **Data deletion**: Users can delete their accounts
+- **Access logs**: Monitor who accesses data
+- **Consent management**: Configure registration settings
 
-- **Access controls**: Role-based permissions
-- **Encryption**: Data at rest and in transit
-- **Monitoring**: Comprehensive audit logs
-- **Incident response**: Documented procedures
-- **Vendor management**: Third-party security reviews
+### Data Privacy
+
+- **Minimal data collection**: Memos collects minimal user data
+- **User control**: Users control their own data
+- **Transparency**: Clear documentation of data handling
+- **Security**: Strong encryption and access controls
+
+<Callout type="info">
+**Compliance Note**: While Memos provides security features, compliance is a shared responsibility. Consult with legal counsel to ensure your deployment meets regulatory requirements.
+</Callout>
+
+## Incident Response
+
+### Security Incident Procedures
+
+1. **Identify** the incident scope and impact
+2. **Isolate** affected systems to prevent spread
+3. **Preserve** evidence for forensic analysis
+4. **Notify** stakeholders according to policy
+5. **Contain** and begin remediation
+6. **Recover** systems from clean backups
+7. **Review** and improve security posture
+
+### Evidence Collection
+
+```bash
+# System snapshots (use with caution in production)
+sudo dd if=/dev/sda of=/backup/system_snapshot.img bs=4M status=progress
+
+# Application logs
+cp -r /var/log/memos/ /backup/incident_logs/
+journalctl -u memos > /backup/incident_logs/memos-journal.log
+
+# Database backup
+sqlite3 /var/lib/memos/memos_prod.db ".backup /backup/incident_logs/memos.db"
+
+# Network capture (if needed)
+sudo tcpdump -w /backup/incident_logs/network_capture.pcap -i eth0
+```
 
 ## Next Steps
 
 - [Configure authentication](/docs/configuration/authentication) options
-- [Monitor your instance](/docs/configuration) for security events
+- [Set up database](/docs/configuration/database) with proper security
+- Configure regular backups with encryption
+- Implement monitoring and alerting
 
 ---
 
-Need help with security configuration? Consult with security professionals and check [GitHub Issues](https://github.com/usememos/memos/issues) for common security questions.
+Need help with security configuration? Consult with security professionals and check [GitHub Issues](https://github.com/usememos/memos/issues) for security-related discussions.

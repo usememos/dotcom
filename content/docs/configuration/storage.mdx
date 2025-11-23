@@ -3,7 +3,13 @@ title: Storage Configuration
 description: Configure file storage options for attachments and media in your Memos instance.
 ---
 
-Memos supports multiple storage backends for file attachments and media. This guide covers configuration options for local storage, cloud storage, and best practices for each option.
+Memos supports multiple storage backends for file attachments and media. Storage configuration is managed through the **web interface** in Settings → Storage (administrator access required).
+
+## Storage Configuration Method
+
+<Callout type="warning">
+**Important**: Unlike database settings, storage options are **NOT configured via environment variables**. All storage settings are managed through the web UI in Settings → Storage.
+</Callout>
 
 ## Storage Options Overview
 
@@ -23,15 +29,23 @@ Memos supports multiple storage backends for file attachments and media. This gu
 
 Local storage saves files directly to your server's filesystem. This is the default option and works well for most deployments.
 
-### Basic Configuration
+### Configuration via Web UI
 
-Local storage is enabled by default with no additional configuration required. Files are stored relative to your data directory.
+1. **Access Settings**: Navigate to Settings → Storage (administrator only)
+2. **Select Local Storage**: Choose "Local" as your storage type
+3. **Configure Path**: Set your preferred path template
+4. **Save Changes**: Apply the configuration
 
-#### Default Settings
+### Default Settings
+
+Files are stored relative to your data directory:
 
 ```bash
-# Files stored in: {DATA_DIR}/assets/
-# Default path template: assets/{timestamp}_{filename}
+# Default storage location
+{DATA_DIR}/assets/
+
+# Default path template
+assets/{timestamp}_{filename}
 ```
 
 ### Path Templates
@@ -41,12 +55,12 @@ Customize where and how files are organized using path templates with dynamic va
 | Variable | Description | Example |
 |----------|-------------|---------|
 | `{year}` | Current year (4 digits) | `2025` |
-| `{month}` | Current month (2 digits) | `08` |
-| `{day}` | Current day (2 digits) | `19` |
+| `{month}` | Current month (2 digits) | `11` |
+| `{day}` | Current day (2 digits) | `23` |
 | `{hour}` | Current hour (2 digits, 24h) | `14` |
 | `{minute}` | Current minute (2 digits) | `30` |
 | `{second}` | Current second (2 digits) | `45` |
-| `{timestamp}` | Unix timestamp | `1692448800` |
+| `{timestamp}` | Unix timestamp | `1700742000` |
 | `{filename}` | Original filename | `screenshot.png` |
 | `{uuid}` | Generated UUID | `a1b2c3d4-e5f6-7890` |
 
@@ -55,85 +69,45 @@ Customize where and how files are organized using path templates with dynamic va
 ```bash
 # Organize by date
 assets/{year}/{month}/{day}/{timestamp}_{filename}
-# Result: assets/2025/08/19/1692448800_screenshot.png
+# Result: assets/2025/11/23/1700742000_screenshot.png
 
 # Simple timestamped storage
 files/{timestamp}_{filename}
-# Result: files/1692448800_screenshot.png
+# Result: files/1700742000_screenshot.png
 
 # UUID-based storage (avoids filename conflicts)
 uploads/{uuid}
 # Result: uploads/a1b2c3d4-e5f6-7890-abcd-ef1234567890
 
-# Organize by type and date
+# Organize by year and month
 media/{year}-{month}/{filename}
-# Result: media/2025-08/screenshot.png
+# Result: media/2025-11/screenshot.png
 ```
-
-### Configuration Methods
-
-#### Environment Variables
-
-```bash
-# Enable local storage (default)
-export MEMOS_STORAGE_TYPE=local
-
-# Set custom path template
-export MEMOS_STORAGE_PATH=assets/{year}/{month}/{timestamp}_{filename}
-
-# Set maximum file size (in bytes)
-export MEMOS_MAX_FILE_SIZE=10485760  # 10MB
-```
-
-#### Docker Configuration
-
-```yaml
-services:
-  memos:
-    image: neosmemo/memos:stable
-    environment:
-      - MEMOS_STORAGE_TYPE=local
-      - MEMOS_STORAGE_PATH=assets/{year}/{month}/{timestamp}_{filename}
-      - MEMOS_MAX_FILE_SIZE=10485760
-    volumes:
-      - ./memos-data:/var/opt/memos
-    ports:
-      - "5230:5230"
-```
-
-#### Web Interface
-
-1. **Access Settings**: Go to Settings → Storage in the web interface
-2. **Select Local Storage**: Choose "Local Storage" as your storage type
-3. **Configure Path**: Set your preferred path template
-4. **Save Changes**: Apply the configuration
 
 <Callout type="tip">
 **Recommended Pattern**: Use `assets/{year}/{month}/{day}/{timestamp}_{filename}` for organized, date-based storage that's easy to navigate and backup.
 </Callout>
 
-### File Management
-
-#### Directory Structure
+### Directory Structure
 
 ```
 memos-data/
-├── memos.db              # Database file
+├── memos_prod.db         # Database file
 └── assets/               # File storage (configurable)
     ├── 2025/
-    │   ├── 08/
-    │   │   ├── 19/
-    │   │   │   ├── 1692448800_image.png
-    │   │   │   └── 1692448801_document.pdf
-    │   │   └── 20/
-    │   └── 09/
-    └── thumbnails/         # Generated thumbnails
+    │   ├── 11/
+    │   │   ├── 23/
+    │   │   │   ├── 1700742000_image.png
+    │   │   │   └── 1700742001_document.pdf
+    │   │   └── 24/
+    │   └── 12/
+    └── thumbnails/       # Generated thumbnails (if enabled)
 ```
 
-#### File Permissions
+### File Permissions
 
 ```bash
-# Set proper permissions for file storage
+# Set proper permissions for file storage (Linux)
 chmod 755 /path/to/memos/assets
 chown -R memos:memos /path/to/memos/assets
 
@@ -143,7 +117,7 @@ docker exec memos chown -R 1001:1001 /var/opt/memos/assets
 
 ## S3 Storage
 
-Configure S3-compatible storage for scalable, cloud-based file storage.
+Configure S3-compatible storage for scalable, cloud-based file storage through the web UI.
 
 ### Supported Services
 
@@ -151,84 +125,68 @@ Configure S3-compatible storage for scalable, cloud-based file storage.
 - **MinIO**: Self-hosted S3-compatible storage  
 - **DigitalOcean Spaces**: DigitalOcean's object storage
 - **Backblaze B2**: Cost-effective cloud storage
+- **Cloudflare R2**: High-performance object storage
 - **Any S3-compatible service**
 
-### Configuration
+### Configuration via Web UI
 
-#### Environment Variables
+1. **Access Settings**: Navigate to Settings → Storage (administrator only)
+2. **Select S3 Storage**: Choose "S3" as your storage type
+3. **Configure Settings**:
+   - **Endpoint**: S3 service endpoint URL
+   - **Region**: S3 region (e.g., `us-east-1`)
+   - **Bucket**: Bucket name
+   - **Access Key**: Your access key ID
+   - **Secret Key**: Your secret access key
+   - **Path Prefix**: Optional path prefix within bucket
+   - **URL Prefix**: Optional CDN or custom URL prefix
+4. **Test Connection**: Verify settings work correctly
+5. **Save Changes**: Apply the configuration
 
-```bash
-# Storage configuration
-export MEMOS_STORAGE_TYPE=s3
-export MEMOS_S3_ENDPOINT=https://s3.amazonaws.com
-export MEMOS_S3_REGION=us-east-1
-export MEMOS_S3_BUCKET=my-memos-bucket
-
-# Authentication
-export MEMOS_S3_ACCESS_KEY=your-access-key
-export MEMOS_S3_SECRET_KEY=your-secret-key
-
-# Optional settings
-export MEMOS_S3_PATH_PREFIX=memos/
-export MEMOS_S3_URL_PREFIX=https://cdn.example.com/
-```
-
-#### Docker Compose Example
-
-```yaml
-services:
-  memos:
-    image: neosmemo/memos:stable
-    environment:
-      # S3 Configuration
-      - MEMOS_STORAGE_TYPE=s3
-      - MEMOS_S3_ENDPOINT=https://s3.amazonaws.com
-      - MEMOS_S3_REGION=us-east-1
-      - MEMOS_S3_BUCKET=my-memos-bucket
-      - MEMOS_S3_ACCESS_KEY=your-access-key
-      - MEMOS_S3_SECRET_KEY=your-secret-key
-      - MEMOS_S3_PATH_PREFIX=memos/attachments/
-    ports:
-      - "5230:5230"
-```
-
-### Provider-Specific Examples
+### Provider-Specific Configurations
 
 #### Amazon S3
 
-```bash
-export MEMOS_STORAGE_TYPE=s3
-export MEMOS_S3_ENDPOINT=https://s3.amazonaws.com
-export MEMOS_S3_REGION=us-east-1
-export MEMOS_S3_BUCKET=my-memos-files
-export MEMOS_S3_ACCESS_KEY=AKIA...
-export MEMOS_S3_SECRET_KEY=abc123...
+```
+Endpoint: https://s3.amazonaws.com
+Region: us-east-1
+Bucket: my-memos-files
+Access Key: AKIA...
+Secret Key: abc123...
 ```
 
 #### MinIO
 
-```bash
-export MEMOS_STORAGE_TYPE=s3
-export MEMOS_S3_ENDPOINT=https://minio.example.com
-export MEMOS_S3_REGION=us-east-1
-export MEMOS_S3_BUCKET=memos
-export MEMOS_S3_ACCESS_KEY=minio-access-key
-export MEMOS_S3_SECRET_KEY=minio-secret-key
-export MEMOS_S3_FORCE_PATH_STYLE=true
+```
+Endpoint: https://minio.example.com
+Region: us-east-1
+Bucket: memos
+Access Key: minio-access-key
+Secret Key: minio-secret-key
+Force Path Style: true
 ```
 
 #### DigitalOcean Spaces
 
-```bash
-export MEMOS_STORAGE_TYPE=s3
-export MEMOS_S3_ENDPOINT=https://nyc3.digitaloceanspaces.com
-export MEMOS_S3_REGION=nyc3
-export MEMOS_S3_BUCKET=my-space-name
-export MEMOS_S3_ACCESS_KEY=do-access-key
-export MEMOS_S3_SECRET_KEY=do-secret-key
+```
+Endpoint: https://nyc3.digitaloceanspaces.com
+Region: nyc3
+Bucket: my-space-name
+Access Key: do-access-key
+Secret Key: do-secret-key
 ```
 
-### S3 Security Configuration
+#### Cloudflare R2
+
+```
+Endpoint: https://account-id.r2.cloudflarestorage.com
+Region: auto
+Bucket: memos-files
+Access Key: r2-access-key
+Secret Key: r2-secret-key
+```
+
+### S3 Security Best Practices
 
 #### Bucket Policy Example
 
@@ -278,74 +236,22 @@ export MEMOS_S3_SECRET_KEY=do-secret-key
 
 ## External Storage
 
-Configure external storage services for specialized use cases.
+Additional storage backends can be configured through the web UI, including:
 
-### Supported Services
+- **Database**: Store files directly in the database (not recommended for large files)
+- **Custom**: Configure custom storage backends via API
 
-- **Cloudflare R2**: High-performance object storage
-- **Google Cloud Storage**: Google's cloud storage service
-- **Azure Blob Storage**: Microsoft's cloud storage
+## File Upload Management
 
-### Cloudflare R2 Example
+File upload settings are configured through the web UI in Settings → System:
 
-```bash
-export MEMOS_STORAGE_TYPE=s3
-export MEMOS_S3_ENDPOINT=https://account-id.r2.cloudflarestorage.com
-export MEMOS_S3_REGION=auto
-export MEMOS_S3_BUCKET=memos-files
-export MEMOS_S3_ACCESS_KEY=r2-access-key
-export MEMOS_S3_SECRET_KEY=r2-secret-key
-```
+- **Maximum file size**: Set upload size limits per file
+- **Allowed file types**: Configure permitted file extensions
+- **Storage quota**: Set storage limits per user (if applicable)
 
-## File Upload Limits
-
-### Size Limits
-
-```bash
-# Set maximum file size (in bytes)
-export MEMOS_MAX_FILE_SIZE=52428800  # 50MB
-
-# Set maximum total storage per user (optional)
-export MEMOS_MAX_USER_STORAGE=1073741824  # 1GB
-```
-
-### File Type Restrictions
-
-```bash
-# Allowed file extensions (comma-separated)
-export MEMOS_ALLOWED_EXTENSIONS=png,jpg,jpeg,gif,webp,pdf,txt,md
-
-# Blocked file extensions (security)
-export MEMOS_BLOCKED_EXTENSIONS=exe,bat,sh,js
-```
-
-## Performance Optimization
-
-### Caching Strategy
-
-```bash
-# Enable file caching
-export MEMOS_ENABLE_FILE_CACHE=true
-
-# Cache duration (in seconds)  
-export MEMOS_FILE_CACHE_TTL=3600  # 1 hour
-
-# Maximum cache size (in bytes)
-export MEMOS_FILE_CACHE_SIZE=1073741824  # 1GB
-```
-
-### Thumbnails
-
-```bash
-# Enable thumbnail generation
-export MEMOS_ENABLE_THUMBNAILS=true
-
-# Thumbnail sizes
-export MEMOS_THUMBNAIL_SIZES=150x150,300x300,600x600
-
-# Thumbnail quality (1-100)
-export MEMOS_THUMBNAIL_QUALITY=80
-```
+<Callout type="info">
+**Note**: File type restrictions and upload limits are managed through the web interface, not environment variables.
+</Callout>
 
 ## Backup and Migration
 
@@ -367,38 +273,41 @@ rsync -av --progress /path/to/memos/assets/ /backup/location/assets/
 #### S3 Storage Backup
 
 ```bash
-# AWS CLI backup
-aws s3 sync s3://my-memos-bucket/memos/ ./backup/files/
+# AWS CLI backup (to another bucket)
+aws s3 sync s3://my-memos-bucket/memos/ s3://backup-bucket/memos/
 
-# Cross-region replication (configure in S3 console)
-# Automated backups with lifecycle policies
+# Download S3 files locally
+aws s3 sync s3://my-memos-bucket/memos/ ./backup/files/
 ```
 
 ### Migration Between Storage Types
 
 #### Local to S3 Migration
 
-```bash
-#!/bin/bash
-# migrate-to-s3.sh
+1. **Configure S3 storage** in web UI (Settings → Storage)
+2. **Upload existing files** to S3:
+   ```bash
+   aws s3 sync /path/to/memos/assets/ s3://my-memos-bucket/memos/
+   ```
+3. **Update storage settings** in web UI to use S3
+4. **Verify** files are accessible
+5. **(Optional)** Remove local files after verification
 
-# 1. Upload existing files to S3
-aws s3 sync /path/to/memos/assets/ s3://my-memos-bucket/memos/
+#### S3 to Local Migration
 
-# 2. Update Memos configuration
-export MEMOS_STORAGE_TYPE=s3
-export MEMOS_S3_BUCKET=my-memos-bucket
-# ... other S3 config
-
-# 3. Restart Memos
-systemctl restart memos
-```
+1. **Download S3 files** to local directory:
+   ```bash
+   aws s3 sync s3://my-memos-bucket/memos/ /path/to/memos/assets/
+   ```
+2. **Configure local storage** in web UI (Settings → Storage)
+3. **Verify** files are accessible
+4. **(Optional)** Keep S3 as backup
 
 ## Troubleshooting
 
 ### Common Issues
 
-#### Permission Errors
+#### Permission Errors (Local Storage)
 
 ```bash
 # Check file permissions
@@ -409,26 +318,30 @@ chmod 755 /path/to/memos/assets/
 chown -R memos:memos /path/to/memos/assets/
 ```
 
-#### Storage Full
+#### Storage Full (Local Storage)
 
 ```bash
 # Check disk usage
 df -h /path/to/memos/
 
-# Clean up old files (be careful!)
-find /path/to/memos/assets/ -type f -mtime +30 -exec ls -la {} \;
+# Check assets directory size
+du -sh /path/to/memos/assets/
+
+# Find large files
+find /path/to/memos/assets/ -type f -size +10M -exec ls -lh {} \;
 ```
 
 #### S3 Connection Issues
 
 ```bash
-# Test S3 connection
+# Test S3 connection with AWS CLI
 aws s3 ls s3://my-memos-bucket/ --endpoint-url=https://s3.amazonaws.com
 
 # Check credentials
 aws configure list
 
-# Verify bucket policy and permissions
+# Test bucket access
+aws s3 cp test.txt s3://my-memos-bucket/test.txt
 ```
 
 ### Monitoring
@@ -438,40 +351,41 @@ aws configure list
 ```bash
 # Monitor local storage usage
 du -sh /path/to/memos/assets/
+df -h /path/to/memos/
 
-# S3 storage monitoring (use CloudWatch or provider tools)
-aws cloudwatch get-metric-statistics --namespace AWS/S3 --metric-name BucketSizeBytes
+# S3 storage monitoring
+aws s3 ls s3://my-memos-bucket/memos/ --recursive --summarize
 ```
 
 <Callout type="warning">
-**Production Reminder**: Always test storage configuration in a non-production environment first, and ensure proper backups are in place before making changes.
+**Production Reminder**: Always test storage configuration changes in a non-production environment first, and ensure proper backups are in place.
 </Callout>
 
 ## Best Practices
 
 ### Security
 - **Use dedicated storage credentials** with minimal required permissions
-- **Enable encryption at rest** for sensitive files
+- **Enable encryption at rest** for sensitive files (S3: server-side encryption)
 - **Implement access logging** for audit trails
 - **Regular security audits** of storage permissions
 
 ### Performance
 - **Choose storage location** close to your users
-- **Enable CDN** for frequently accessed files
+- **Enable CDN** for frequently accessed files (S3: CloudFront)
 - **Optimize file sizes** before upload
 - **Monitor storage performance** metrics
 
 ### Cost Optimization
-- **Implement lifecycle policies** to archive old files
-- **Use appropriate storage classes** (Standard, IA, Glacier)
+- **Implement lifecycle policies** to archive old files (S3)
+- **Use appropriate storage classes** (S3: Standard, IA, Glacier)
 - **Monitor storage costs** regularly
-- **Clean up unused files** periodically
+- **Clean up unused files** periodically through the web UI
 
 ## Next Steps
 
-- [Configure authentication](/docs/configuration/authentication)
-- Configure HTTPS for secure access using your preferred reverse proxy
-- [Monitor your instance](/docs/configuration)
+- [Configure database](/docs/configuration/database) for your Memos instance
+- [Set up authentication](/docs/configuration/authentication) for user access
+- Configure HTTPS with a reverse proxy for secure access
 - Plan backup strategies for data protection
 
 ---

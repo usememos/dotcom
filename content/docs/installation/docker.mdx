@@ -36,7 +36,9 @@ services:
       - ./memos:/var/opt/memos
     environment:
       - MEMOS_MODE=prod
+      - MEMOS_ADDR=0.0.0.0
       - MEMOS_PORT=5230
+      - MEMOS_DATA=/var/opt/memos
     restart: unless-stopped
 ```
 
@@ -50,15 +52,22 @@ docker compose up -d
 
 ### Environment Variables
 
-Common environment variables for Docker:
+Supported environment variables for Docker:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `MEMOS_MODE` | `dev` | Server mode (`dev` or `prod`) |
-| `MEMOS_PORT` | `5230` | Server port |
-| `MEMOS_DATA` | `/var/opt/memos` | Data directory |
-| `MEMOS_DRIVER` | `sqlite` | Database driver |
-| `MEMOS_DSN` | - | Database connection string |
+| `MEMOS_MODE` | `dev` | Server mode: `dev`, `prod`, or `demo` |
+| `MEMOS_ADDR` | `` | Server address (e.g., `0.0.0.0`) |
+| `MEMOS_PORT` | `8081` | Server port |
+| `MEMOS_UNIX_SOCK` | - | Unix socket path (overrides addr/port) |
+| `MEMOS_DATA` | `/var/opt/memos` | Data directory path |
+| `MEMOS_DRIVER` | `sqlite` | Database driver: `sqlite`, `postgres`, or `mysql` |
+| `MEMOS_DSN` | - | Database connection string (DSN) |
+| `MEMOS_INSTANCE_URL` | - | Public URL of your Memos instance |
+
+<Callout type="info">
+**Note**: The default port is `8081`, but the Docker image is configured to use `5230`. Map your host port accordingly.
+</Callout>
 
 ### Volume Mounts
 
@@ -110,20 +119,18 @@ volumes:
 ### Update Container
 
 ```bash
-# Stop current container
-docker stop memos
-
-# Remove container (data is preserved in volume)
-docker rm memos
-
 # Pull latest image
 docker pull neosmemo/memos:stable
 
-# Start new container
+# Stop and remove current container (data is preserved in volume)
+docker stop memos && docker rm memos
+
+# Start new container with updated image
 docker run -d \
   --name memos \
   --publish 5230:5230 \
   --volume ~/.memos/:/var/opt/memos \
+  --env MEMOS_MODE=prod \
   neosmemo/memos:stable
 ```
 

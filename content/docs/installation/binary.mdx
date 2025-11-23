@@ -54,12 +54,29 @@ sudo mkdir -p /etc/memos
 # Create environment file
 sudo tee /etc/memos/memos.env << EOF
 MEMOS_MODE=prod
+MEMOS_ADDR=0.0.0.0
 MEMOS_PORT=5230
 MEMOS_DATA=/var/lib/memos
 MEMOS_DRIVER=sqlite
-# MEMOS_DSN=postgresql://user:pass@localhost/memos
+# For PostgreSQL: MEMOS_DRIVER=postgres
+# For PostgreSQL: MEMOS_DSN=postgresql://user:pass@localhost/memos
+# For MySQL: MEMOS_DRIVER=mysql
+# For MySQL: MEMOS_DSN=user:pass@tcp(localhost:3306)/memos
 EOF
 ```
+
+### Supported Configuration Options
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MEMOS_MODE` | `dev` | Server mode: `dev`, `prod`, or `demo` |
+| `MEMOS_ADDR` | `` | Server address (e.g., `0.0.0.0`) |
+| `MEMOS_PORT` | `8081` | Server port |
+| `MEMOS_UNIX_SOCK` | - | Unix socket path (overrides addr/port) |
+| `MEMOS_DATA` | - | Data directory path |
+| `MEMOS_DRIVER` | `sqlite` | Database driver: `sqlite`, `postgres`, or `mysql` |
+| `MEMOS_DSN` | - | Database connection string (DSN) |
+| `MEMOS_INSTANCE_URL` | - | Public URL of your Memos instance |
 
 ### Data Directory
 
@@ -84,6 +101,25 @@ sudo chown -R memos:memos /var/lib/memos
 # Load environment and start
 export $(cat /etc/memos/memos.env | xargs)
 memos
+
+# Or use command-line flags
+memos --mode prod --port 5230 --data /var/lib/memos
+```
+
+### Command-Line Flags
+
+```bash
+memos --help
+
+Available flags:
+  --mode string          Server mode: dev, prod, or demo (default "dev")
+  --addr string          Server address
+  --port int             Server port (default 8081)
+  --unix-sock string     Unix socket path (overrides --addr and --port)
+  --data string          Data directory
+  --driver string        Database driver: sqlite, postgres, or mysql (default "sqlite")
+  --dsn string           Database connection string (DSN)
+  --instance-url string  Public URL of your Memos instance
 ```
 
 ### As a Service (systemd)
@@ -175,6 +211,7 @@ GRANT ALL PRIVILEGES ON DATABASE memos TO memos;
 3. Update configuration:
 
 ```bash
+# Update environment file
 sudo tee -a /etc/memos/memos.env << EOF
 MEMOS_DRIVER=postgres
 MEMOS_DSN=postgresql://memos:your-secure-password@localhost:5432/memos
