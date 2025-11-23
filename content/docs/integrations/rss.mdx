@@ -1,0 +1,154 @@
+---
+title: RSS Feeds
+description: Subscribe to public memos using RSS feeds for your favorite RSS reader.
+---
+
+Memos provides RSS 2.0 feeds that allow you to subscribe to public memos using any RSS reader application. The feeds automatically update with new public content and support rich formatting with attachments.
+
+## Available Feeds
+
+### Explore Feed
+
+Subscribe to all public memos across your Memos instance:
+
+```
+https://your-memos-instance.com/explore/rss.xml
+```
+
+This feed aggregates the most recent public memos from all users, making it perfect for discovering content across your community.
+
+### User Feed
+
+Subscribe to public memos from a specific user:
+
+```
+https://your-memos-instance.com/u/username/rss.xml
+```
+
+Replace `username` with the actual username of the user whose public memos you want to follow.
+
+## Feed Features
+
+### Rich Content
+
+- **HTML Rendering**: Markdown content is automatically converted to HTML for proper display in RSS readers
+- **Attachments**: The first attachment in each memo is included as an RSS enclosure, allowing RSS readers to display images, audio, or video inline
+- **Permalinks**: Each item links directly to the memo on your Memos instance
+- **Timestamps**: Full creation date/time for each memo
+
+### Privacy & Filtering
+
+- Only memos with **PUBLIC** visibility are included in RSS feeds
+- No authentication required - feeds are publicly accessible
+- Each feed displays up to 100 most recent items
+- Archived or deleted memos are automatically excluded
+
+## Using RSS Feeds
+
+### In RSS Readers
+
+Popular RSS readers that work with Memos feeds:
+
+- **Desktop**: NetNewsWire, Feedly, Inoreader, The Old Reader
+- **Mobile**: Reeder, NetNewsWire (iOS), Feeder (Android), Read You (Android)
+- **Web-based**: Feedly, Inoreader, NewsBlur, FreshRSS
+
+Simply copy the feed URL and add it to your RSS reader's subscriptions.
+
+### Feed Discovery
+
+Many RSS readers can auto-discover feeds when you provide your Memos instance URL. The feed URLs follow standard RSS conventions for easy discovery.
+
+## Feed Customization
+
+### Instance Settings
+
+Feed metadata is pulled from your instance configuration:
+
+- **Feed Title**: Uses your instance's custom profile name, or defaults to "Memos"
+- **Feed Description**: Uses your instance's tagline/description
+- **Base URL**: Automatically derived from your instance's configured domain
+
+Administrators can customize these values in the instance settings to provide better context for RSS subscribers.
+
+## Technical Details
+
+### Feed Format
+
+Memos generates standard RSS 2.0 XML feeds compatible with all RSS readers. Each feed item includes:
+
+- `<title>` - Memo excerpt or content preview
+- `<link>` - Permanent link to the memo
+- `<description>` - Full HTML-rendered content
+- `<pubDate>` - Creation timestamp in RFC822 format
+- `<enclosure>` - First attachment (if present) with MIME type and size
+
+### Attachment Support
+
+When a memo contains attachments, the first attachment is included as an RSS enclosure:
+
+- **Local Storage**: Served from your Memos instance
+- **External URLs**: Linked directly to the external resource
+- **S3 Storage**: Pre-signed URLs for secure access
+
+RSS readers use enclosures to display media inline within the feed item.
+
+### Update Frequency
+
+RSS feeds are generated on-demand when requested. Most RSS readers check for updates every 15-60 minutes by default, though this can be configured in the reader's settings.
+
+## Use Cases
+
+### Personal Knowledge Base
+
+Subscribe to your own user feed to:
+- Review your public memos in your RSS reader
+- Archive content to read-it-later services
+- Cross-post to other platforms via RSS-to-X integrations
+
+### Team Collaboration
+
+Subscribe to team members' feeds to:
+- Stay updated on shared knowledge and insights
+- Aggregate team updates in a central RSS reader
+- Monitor public announcements and documentation
+
+### Content Aggregation
+
+Use the explore feed to:
+- Monitor all public activity on your instance
+- Curate and filter content with RSS reader rules
+- Build custom dashboards combining multiple feeds
+
+## Troubleshooting
+
+### Feed Not Found (404)
+
+- Verify the username is correct (case-sensitive)
+- Ensure the user account exists on your instance
+- Check that the user has at least one public memo
+
+### Empty Feed
+
+If a feed appears empty:
+- The user may not have any memos set to PUBLIC visibility
+- All memos may be archived or deleted
+- Check visibility settings in the memo editor
+
+### Attachment Not Displaying
+
+If attachments don't appear in your RSS reader:
+- Ensure your reader supports RSS enclosures
+- Check that the attachment URL is accessible (not blocked by firewall)
+- Verify storage configuration if using S3 or external storage
+
+## API Reference
+
+RSS endpoints are part of the public API and require no authentication:
+
+```
+GET /explore/rss.xml          # All public memos
+GET /u/:username/rss.xml      # User-specific public memos
+```
+
+Both endpoints return `Content-Type: application/xml` with standard RSS 2.0 XML format.

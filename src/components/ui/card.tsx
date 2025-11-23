@@ -2,6 +2,7 @@ import {
   ActivityIcon,
   ArrowRightIcon,
   ArrowUpIcon,
+  BookmarkIcon,
   BookOpenIcon,
   CalendarIcon,
   CloudIcon,
@@ -21,11 +22,14 @@ import {
   LightbulbIcon,
   LockIcon,
   type LucideIcon,
+  MapIcon,
   MessageCircleIcon,
   MessageSquareIcon,
   NetworkIcon,
   PlayIcon,
+  PuzzleIcon,
   RefreshCwIcon,
+  RssIcon,
   SearchIcon,
   SettingsIcon,
   ShareIcon,
@@ -33,6 +37,7 @@ import {
   SmartphoneIcon,
   StarIcon,
   TagIcon,
+  TerminalIcon,
   TrashIcon,
   UsersIcon,
   WebhookIcon,
@@ -49,6 +54,7 @@ const iconMap: Record<string, LucideIcon> = {
   Keyboard: KeyboardIcon,
   Tag: TagIcon,
   BookOpen: BookOpenIcon,
+  Bookmark: BookmarkIcon,
   Settings: SettingsIcon,
   Users: UsersIcon,
   Code: CodeIcon,
@@ -80,6 +86,10 @@ const iconMap: Record<string, LucideIcon> = {
   HelpCircle: HelpCircleIcon,
   Github: GithubIcon,
   MessageSquare: MessageSquareIcon,
+  Map: MapIcon,
+  Puzzle: PuzzleIcon,
+  Terminal: TerminalIcon,
+  Rss: RssIcon,
 };
 
 interface CardsProps {
@@ -99,7 +109,12 @@ export function Cards({ children }: CardsProps) {
 
 export function Card({ title, href, icon, children }: CardProps) {
   // Get the icon component from the icon map
-  const IconComponent = icon ? iconMap[icon] : null;
+  const IconComponent = icon && iconMap[icon] ? iconMap[icon] : null;
+  
+  // Log warning if icon is specified but not found
+  if (icon && !iconMap[icon]) {
+    console.warn(`Icon "${icon}" not found in iconMap`);
+  }
 
   return (
     <Link
