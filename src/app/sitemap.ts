@@ -92,7 +92,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         url: `${BASE_URL}${page.url}`,
         lastModified,
         changeFrequency: "weekly" as const,
-        priority: page.url === "/docs" ? 0.9 : 0.7,
+        priority: page.url === "/docs" ? 0.9 : page.url.startsWith("/docs/api") ? 0.8 : 0.7,
       };
     });
 

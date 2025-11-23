@@ -16,9 +16,33 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
   if (!page) notFound();
 
   const MDXContent = page.data.body;
+  const isApi = page.url.startsWith("/docs/api");
+
+  const jsonLd = isApi
+    ? {
+        "@context": "https://schema.org",
+        "@type": "APIReference",
+        name: page.data.title,
+        description: page.data.description,
+        url: `https://usememos.com${page.url}`,
+        assemblyVersion: "latest",
+        executableLibraryName: "Memos API",
+      }
+    : {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        headline: page.data.title,
+        description: page.data.description,
+        url: `https://usememos.com${page.url}`,
+        author: {
+          "@type": "Organization",
+          name: "Memos Team",
+        },
+      };
 
   return (
     <DocsPage toc={page.data.toc} full={page.data.full} {...tocConfig}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
@@ -43,11 +67,24 @@ export async function generateMetadata(props: { params: Promise<{ slug?: string[
   const page = source.getPage(params.slug);
   if (!page) notFound();
 
+  const isApi = page.url.startsWith("/docs/api");
+
   return {
     title: page.data.title,
     description: page.data.description,
     alternates: {
       canonical: `https://usememos.com${page.url}`,
+    },
+    openGraph: {
+      title: isApi ? `${page.data.title} - Memos API Reference` : page.data.title,
+      description: page.data.description,
+      type: "article",
+      url: `https://usememos.com${page.url}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: isApi ? `${page.data.title} - Memos API Reference` : page.data.title,
+      description: page.data.description,
     },
   };
 }

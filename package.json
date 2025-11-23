@@ -9,7 +9,7 @@
     "build": "next build",
     "dev": "next dev --turbo",
     "start": "next start",
-    "postinstall": "fumadocs-mdx",
+    "postinstall": "node scripts/generate-openapi.mjs && fumadocs-mdx",
     "lint": "biome check",
     "format": "biome format --write",
     "check": "biome check --write"
@@ -21,6 +21,7 @@
     "framer-motion": "^12.23.24",
     "fumadocs-core": "^16.0.1",
     "fumadocs-mdx": "^13.0.0",
+    "fumadocs-openapi": "^10.0.11",
     "fumadocs-ui": "^16.0.1",
     "lucide-react": "^0.540.0",
     "next": "^16.0.0",

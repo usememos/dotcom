@@ -1,0 +1,14 @@
+{
+  "title": "API Reference",
+  "pages": [
+    "index",
+    "activityservice",
+    "attachmentservice",
+    "authservice",
+    "identityproviderservice",
+    "instanceservice",
+    "memoservice",
+    "shortcutservice",
+    "userservice"
+  ]
+}
