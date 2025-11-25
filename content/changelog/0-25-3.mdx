@@ -1,0 +1,36 @@
+---
+title: v0.25.3
+description: Focus mode, attachment management, and markdown improvements
+date: "2024-11-25"
+---
+
+This release introduces a distraction-free focus mode for writing, enhanced attachment management capabilities, and improved markdown parsing with CommonMark/GFM compliance.
+
+## New Features
+
+### Writing Experience
+- **Focus mode** - New writing mode that minimizes distractions for focused memo creation
+- **Improved markdown list auto-completion** - Fixed auto-completion to properly create new lines (#5238)
+
+### Attachment Management
+- **Delete unused attachments** - Ability to delete unused attachments to reclaim storage space (#5272)
+- **Attachments page pagination** - Load more button and pagination added for better navigation (#5258)
+
+### Theme System
+- **System theme sync** - Theme now syncs with system preferences automatically (#5231)
+
+## Improvements
+
+### Technical Enhancements
+- **CommonMark and GFM compliance** - Markdown parser/renderer now adheres to CommonMark and GFM specifications for enhanced compatibility
+- **Memory optimization** - Prevented memory exhaustion during thumbnail generation processes
+
+## Bug Fixes
+
+### User Interface
+- **Tag sidebar improvements** - Resolved tag sidebar filtering and reactivity issues for proper sidebar categorization
+- **Markdown list formatting** - Corrected markdown list auto-completion behavior
+
+---
+
+**Full Changelog**: [v0.25.2...v0.25.3](https://github.com/usememos/memos/compare/v0.25.2...v0.25.3)
