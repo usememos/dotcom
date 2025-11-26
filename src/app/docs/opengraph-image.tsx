@@ -1,7 +1,6 @@
 import { generateOGImage } from "@/lib/og";
 import { source } from "@/lib/source";
 
-export const runtime = "edge";
 export const alt = "Memos Documentation";
 export const size = {
   width: 1200,

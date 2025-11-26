@@ -1,7 +1,6 @@
 import { generateOGImage } from "@/lib/og";
 import { changelogSource } from "@/lib/source";
 
-export const runtime = "edge";
 export const size = {
   width: 1200,
   height: 630,
