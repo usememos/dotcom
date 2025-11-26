@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 export const metadata: Metadata = {
   metadataBase: new URL("https://usememos.com"),
   title: {
-    default: "Memos - Open Source, Self-Hosted Note Taking",
+    default: "Memos - Open Source, Self-Hosted Note Taking Solution",
     template: "%s - Memos",
   },
   description:
@@ -30,24 +30,15 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://usememos.com",
     siteName: "Memos",
-    title: "Memos - Open Source, Self-Hosted Note Taking",
+    title: "Memos - Open Source, Self-Hosted Note Taking Solution",
     description:
       "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
-    images: [
-      {
-        url: "https://usememos.com/demo.png",
-        width: 1200,
-        height: 630,
-        alt: "Memos Dashboard Screenshot",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Memos - Open Source, Self-Hosted Note Taking",
+    title: "Memos - Open Source, Self-Hosted Note Taking Solution",
     description:
       "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
-    images: ["https://usememos.com/demo.png"],
   },
   icons: {
     icon: "/logo-rounded.png",

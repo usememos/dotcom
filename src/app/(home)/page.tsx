@@ -27,7 +27,7 @@ import { SponsorsSection } from "@/components/sponsors-section";
 import { StatsCard } from "@/components/stats-card";
 
 export const metadata: Metadata = {
-  title: "Memos - Open Source, Self-Hosted Note Taking",
+  title: "Memos - Open Source, Self-Hosted Note Taking Solution",
   description:
     "An open-source, self-hosted note-taking service with zero telemetry. Privacy-first, lightweight solution with no tracking, ads, or subscription fees.",
   keywords: ["note taking", "self-hosted", "open source", "privacy", "markdown", "memos", "zero telemetry"],
@@ -35,19 +35,11 @@ export const metadata: Metadata = {
     canonical: "https://usememos.com",
   },
   openGraph: {
-    title: "Memos - Open Source, Self-Hosted Note Taking",
+    title: "Memos - Open Source, Self-Hosted Note Taking Solution",
     description:
       "An open-source, self-hosted note-taking service with zero telemetry. Privacy-first, lightweight solution with no tracking, ads, or subscription fees.",
     url: "https://usememos.com",
     siteName: "Memos",
-    images: [
-      {
-        url: "https://usememos.com/demo.png",
-        width: 1200,
-        height: 630,
-        alt: "Memos Dashboard Screenshot",
-      },
-    ],
     locale: "en_US",
     type: "website",
   },
@@ -56,7 +48,6 @@ export const metadata: Metadata = {
     title: "Memos - Open Source, Self-Hosted Note Taking",
     description:
       "An open-source, self-hosted note-taking service with zero telemetry. Privacy-first, lightweight solution with no tracking, ads, or subscription fees.",
-    images: ["https://usememos.com/demo.png"],
   },
 };
 
