@@ -33,12 +33,21 @@ export const metadata: Metadata = {
     title: "Memos - Open Source, Self-Hosted Note Taking Solution",
     description:
       "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
+    images: [
+      {
+        url: "/demo.png",
+        width: 1200,
+        height: 630,
+        alt: "Memos - Open Source, Self-Hosted Note Taking Solution",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Memos - Open Source, Self-Hosted Note Taking Solution",
     description:
       "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
+    images: ["/demo.png"],
   },
   icons: {
     icon: "/logo-rounded.png",
