@@ -23,6 +23,25 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
   const tocProps = isApi && (!page.data.toc || page.data.toc.length === 0) ? {} : { toc: page.data.toc };
   const fullProp = isApi ? {} : { full: page.data.full };
 
+  // Build breadcrumb items from URL path
+  const pathParts = page.url.split("/").filter(Boolean);
+  const breadcrumbItems = pathParts.map((part, index) => {
+    const path = `/${pathParts.slice(0, index + 1).join("/")}`;
+    const name = index === pathParts.length - 1 ? page.data.title : part.charAt(0).toUpperCase() + part.slice(1);
+    return {
+      "@type": "ListItem",
+      position: index + 1,
+      name,
+      item: `https://usememos.com${path}`,
+    };
+  });
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: breadcrumbItems,
+  };
+
   const jsonLd = isApi
     ? {
         "@context": "https://schema.org",
@@ -48,6 +67,7 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
   return (
     <DocsPage {...fullProp} {...tocProps} {...tocConfig}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>

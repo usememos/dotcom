@@ -11,7 +11,18 @@ export const metadata: Metadata = {
   },
   description:
     "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
-  keywords: ["note taking", "self-hosted", "open source", "privacy", "markdown", "memos"],
+  keywords: [
+    "note taking app",
+    "self-hosted notes",
+    "open source note taking",
+    "privacy-first notes",
+    "markdown notes",
+    "memos app",
+    "personal knowledge base",
+    "self-hosted memo",
+    "private note taking",
+    "docker notes app",
+  ],
   authors: [{ name: "Memos Team" }],
   creator: "Memos Team",
   publisher: "Memos",
@@ -57,7 +68,7 @@ export const metadata: Metadata = {
 };
 
 export default function Layout({ children }: { children: ReactNode }) {
-  const jsonLd = {
+  const softwareJsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "Memos",
@@ -103,6 +114,32 @@ export default function Layout({ children }: { children: ReactNode }) {
     ],
   };
 
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Memos",
+    url: "https://usememos.com",
+    logo: "https://usememos.com/logo-rounded.png",
+    sameAs: ["https://github.com/usememos/memos", "https://twitter.com/usaboringmemos", "https://discord.gg/tfPJa4UmAv"],
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "customer support",
+      url: "https://github.com/usememos/memos/issues",
+    },
+  };
+
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Memos",
+    url: "https://usememos.com",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: "https://usememos.com/docs?q={search_term_string}",
+      "query-input": "required name=search_term_string",
+    },
+  };
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -111,7 +148,9 @@ export default function Layout({ children }: { children: ReactNode }) {
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
       </head>
       <body className="flex flex-col min-h-screen antialiased">
         <RootProvider>{children}</RootProvider>
