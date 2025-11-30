@@ -6,8 +6,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { baseOptions } from "@/app/layout.config";
-import { DocsCarbonAdCard } from "@/components/docs-carbon-ad-card";
-import { DocsSponsorCard } from "@/components/docs-sponsor-card";
+import { AdsSectionDesktop, AdsSectionMobile } from "@/components/ads-section";
 import { Footer } from "@/components/footer";
 import { blogSource } from "@/lib/source";
 import { getMDXComponents } from "@/mdx-components";
@@ -140,10 +139,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
               </article>
 
               {/* Mobile Ads - Show after content, before footer */}
-              <div className="lg:hidden mt-8 space-y-4">
-                <DocsSponsorCard />
-                <DocsCarbonAdCard />
-              </div>
+              <AdsSectionMobile />
 
               {/* Footer */}
               <footer className="mt-8 sm:mt-12">
@@ -199,10 +195,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                       </TOCProvider>
                     </div>
                     {/* Sponsor & Ads - Also sticky with TOC */}
-                    <div className="flex flex-col gap-2">
-                      <DocsSponsorCard />
-                      <DocsCarbonAdCard />
-                    </div>
+                    <AdsSectionDesktop />
                   </div>
                 </div>
               </div>

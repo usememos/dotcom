@@ -1,25 +1,25 @@
-import { DocsCarbonAdCard } from "@/components/docs-carbon-ad-card";
-import { DocsSponsorCard } from "@/components/docs-sponsor-card";
+import { AdsSectionDesktop } from "@/components/ads-section";
 
 /**
  * TOC footer component with sponsor card and carbon ads for desktop sidebar
+ * Uses shared AdsSectionDesktop component for consistency
  */
 export function TocFooter() {
   return (
-    <div className="flex flex-col gap-3 mt-2 mb-2">
-      <DocsSponsorCard />
-      <DocsCarbonAdCard />
+    <div className="mt-2 mb-2">
+      <AdsSectionDesktop />
     </div>
   );
 }
 
 /**
- * TOC footer component with only sponsor card for mobile popover
+ * TOC footer component with sponsor card and carbon ads for mobile popover
+ * Uses shared AdsSectionDesktop component for consistency
  */
 export function TocFooterMobile() {
   return (
-    <div className="flex flex-col gap-3 mt-2 mb-2">
-      <DocsSponsorCard />
+    <div className="mt-2 mb-2">
+      <AdsSectionDesktop />
     </div>
   );
 }

@@ -111,22 +111,22 @@ export function DocsCarbonAdCard() {
         role="region"
         aria-label="Sponsored by Carbon"
       >
-      <span className="sr-only">Carbon Ads</span>
-      {status === "loading" ? (
-        <div className="flex w-full items-center justify-center px-3 py-1 text-sm text-muted-foreground" aria-hidden="true">
-          Loading…
-        </div>
-      ) : null}
-      {status === "failed" ? (
-        <a
-          href={SPONSOR_CTA.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex w-full items-center justify-center px-3 py-1 text-sm font-semibold text-muted-foreground transition hover:opacity-80"
-        >
-          {SPONSOR_CTA.label}
-        </a>
-      ) : null}
+        <span className="sr-only">Carbon Ads</span>
+        {status === "loading" ? (
+          <div className="flex w-full items-center justify-center px-3 py-1 text-sm text-muted-foreground" aria-hidden="true">
+            Loading…
+          </div>
+        ) : null}
+        {status === "failed" ? (
+          <a
+            href={SPONSOR_CTA.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex w-full items-center justify-center px-3 py-1 text-sm font-semibold text-muted-foreground transition hover:opacity-80"
+          >
+            {SPONSOR_CTA.label}
+          </a>
+        ) : null}
       </div>
     </>
   );

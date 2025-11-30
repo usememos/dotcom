@@ -6,10 +6,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { baseOptions } from "@/app/layout.config";
+import { AdsSectionDesktop, AdsSectionMobile } from "@/components/ads-section";
 import { ChangelogFooter } from "@/components/changelog-footer";
 import { ChangelogHeader } from "@/components/changelog-header";
-import { DocsCarbonAdCard } from "@/components/docs-carbon-ad-card";
-import { DocsSponsorCard } from "@/components/docs-sponsor-card";
 import { Footer } from "@/components/footer";
 import { changelogSource } from "@/lib/source";
 import { getMDXComponents } from "@/mdx-components";
@@ -64,10 +63,7 @@ export default async function ChangelogEntryPage({ params }: ChangelogPageProps)
               </article>
 
               {/* Mobile Ads - Show after content, before footer */}
-              <div className="xl:hidden mt-8 space-y-4">
-                <DocsSponsorCard />
-                <DocsCarbonAdCard />
-              </div>
+              <AdsSectionMobile />
 
               {/* Footer */}
               <ChangelogFooter version={version} date={data.date} />
@@ -75,9 +71,9 @@ export default async function ChangelogEntryPage({ params }: ChangelogPageProps)
 
             {/* Table of Contents Sidebar - Desktop Only */}
             {page.data.toc && page.data.toc.length > 0 && (
-              <div className="xl:block xl:w-64 xl:flex-shrink-0">
+              <div className="lg:block lg:w-64 lg:flex-shrink-0">
                 {/* Desktop TOC - Fixed Sidebar */}
-                <div className="hidden xl:block">
+                <div className="hidden lg:block">
                   {/* Sticky container with all cards */}
                   <div className="sticky top-24 space-y-4">
                     {/* TOC Card - Scrollable */}
@@ -90,10 +86,7 @@ export default async function ChangelogEntryPage({ params }: ChangelogPageProps)
                       </TOCProvider>
                     </div>
                     {/* Sponsor & Ads - Also sticky with TOC */}
-                    <div className="flex flex-col gap-2">
-                      <DocsSponsorCard />
-                      <DocsCarbonAdCard />
-                    </div>
+                    <AdsSectionDesktop />
                   </div>
                 </div>
               </div>

@@ -2,7 +2,7 @@ import { createRelativeLink } from "fumadocs-ui/mdx";
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/page";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { DocsCarbonAdCardMobile } from "@/components/docs-carbon-ad-card-mobile";
+import { AdsSectionMobile } from "@/components/ads-section";
 import { source } from "@/lib/source";
 import { tocConfig } from "@/lib/toc-config";
 import { getMDXComponents } from "@/mdx-components";
@@ -51,7 +51,7 @@ export default async function Page() {
             a: createRelativeLink(source, page),
           })}
         />
-        <DocsCarbonAdCardMobile />
+        <AdsSectionMobile />
       </DocsBody>
     </DocsPage>
   );
