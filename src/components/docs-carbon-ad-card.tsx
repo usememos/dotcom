@@ -14,38 +14,9 @@ const CARBON_SCRIPT_ID = "_carbonads_js";
 export function DocsCarbonAdCard() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [status, setStatus] = useState<"loading" | "loaded" | "failed">("loading");
-  const [isVisible, setIsVisible] = useState(false);
 
-  // Use IntersectionObserver for lazy loading
+  // Load ad script immediately on mount
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) {
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "200px" }, // Start loading 200px before visible
-    );
-
-    observer.observe(container);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
-  // Load ad script only when visible
-  useEffect(() => {
-    if (!isVisible) {
-      return;
-    }
-
     const container = containerRef.current;
     if (!container) {
       return;
@@ -111,27 +82,35 @@ export function DocsCarbonAdCard() {
       });
     }
 
-    // Reduce timeout to 3 seconds for faster fallback
+    // Give ad 8 seconds to load before showing fallback
     const timeoutId = window.setTimeout(() => {
       if (!container.querySelector("#carbonads")) {
         markFailed();
       }
-    }, 3000);
+    }, 8000);
 
     return () => {
       isMounted = false;
       observer?.disconnect();
       window.clearTimeout(timeoutId);
     };
-  }, [isVisible]);
+  }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className={cn("w-full max-h-80 rounded-xl border border-border bg-muted/30 p-3 transition overflow-auto", "dark:bg-muted/10")}
-      role="region"
-      aria-label="Sponsored by Carbon"
-    >
+    <>
+      {/* Preconnect to Carbon CDN and ad server for faster loading */}
+      <link rel="preconnect" href="https://cdn.carbonads.com" />
+      <link rel="preconnect" href="https://srv.carbonads.net" />
+      <link rel="dns-prefetch" href="https://cdn.carbonads.com" />
+      <link rel="dns-prefetch" href="https://srv.carbonads.net" />
+      <link rel="preload" href={CARBON_SCRIPT_SRC} as="script" />
+
+      <div
+        ref={containerRef}
+        className={cn("w-full max-h-80 rounded-xl border border-border bg-muted/30 p-3 transition overflow-auto", "dark:bg-muted/10")}
+        role="region"
+        aria-label="Sponsored by Carbon"
+      >
       <span className="sr-only">Carbon Ads</span>
       {status === "loading" ? (
         <div className="flex w-full items-center justify-center px-3 py-1 text-sm text-muted-foreground" aria-hidden="true">
@@ -148,6 +127,7 @@ export function DocsCarbonAdCard() {
           {SPONSOR_CTA.label}
         </a>
       ) : null}
-    </div>
+      </div>
+    </>
   );
 }
