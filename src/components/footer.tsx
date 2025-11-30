@@ -2,6 +2,7 @@ import {
   BirdIcon,
   BookOpenIcon,
   CodeIcon,
+  DollarSignIcon,
   ExternalLinkIcon,
   FileTextIcon,
   GithubIcon,
@@ -199,6 +200,15 @@ export function Footer() {
                 >
                   <ShieldCheckIcon className="w-4 h-4" />
                   Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/pricing"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                >
+                  <DollarSignIcon className="w-4 h-4" />
+                  Pricing
                 </Link>
               </li>
               <li>
