@@ -1,4 +1,5 @@
 import {
+  BirdIcon,
   BookOpenIcon,
   CodeIcon,
   ExternalLinkIcon,
@@ -8,7 +9,6 @@ import {
   HistoryIcon,
   LockIcon,
   MessageCircleIcon,
-  MessageSquareIcon,
   NewspaperIcon,
   PaletteIcon,
   ScaleIcon,
@@ -157,13 +157,12 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="https://github.com/usememos/memos/discussions"
+                  href="https://x.com/usememos"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
                 >
-                  <MessageSquareIcon className="w-4 h-4" />
-                  Discussions
+                  <BirdIcon className="w-4 h-4" />X / Twitter
                 </a>
               </li>
               <li>
