@@ -40,13 +40,11 @@ const WHY_FREE_REASONS = [
   },
   {
     title: "Community-Driven",
-    description:
-      "Memos is built and maintained by a passionate community of developers and users who contribute code, ideas, and support.",
+    description: "Memos is built and maintained by a passionate community of developers and users who contribute code, ideas, and support.",
   },
   {
     title: "No Vendor Lock-In",
-    description:
-      "Your data belongs to you. No subscriptions means no risk of losing access if you can't pay or if we change our pricing.",
+    description: "Your data belongs to you. No subscriptions means no risk of losing access if you can't pay or if we change our pricing.",
   },
   {
     title: "Sustainable Model",
@@ -111,7 +109,8 @@ const STYLES = {
   icon: "w-5 h-5 sm:w-6 sm:h-6",
   card: "bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl sm:rounded-3xl shadow-lg",
   gradientCard: "rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg",
-  button: "inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold rounded-2xl hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 shadow-lg",
+  button:
+    "inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold rounded-2xl hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 shadow-lg",
   buttonIcon: "w-4 h-4 sm:w-5 sm:h-5",
 } as const;
 
@@ -134,9 +133,7 @@ export default function PricingPage() {
                   <DollarSignIcon className="w-10 h-10 sm:w-12 sm:h-12" />
                 </div>
               </div>
-              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl mb-4 sm:mb-6 leading-tight">
-                Pricing
-              </h1>
+              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl mb-4 sm:mb-6 leading-tight">Pricing</h1>
               <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed px-4">
                 The best price is no price. Memos is completely free and open source.
               </p>
@@ -148,12 +145,8 @@ export default function PricingPage() {
             <section className={STYLES.section}>
               <div className="bg-gradient-to-br from-green-50 via-teal-50 to-cyan-50 dark:from-green-950 dark:via-teal-950 dark:to-cyan-950 border border-green-200 dark:border-green-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg">
                 <div className="text-center mb-6 sm:mb-8">
-                  <div className="text-5xl sm:text-6xl lg:text-7xl font-bold text-green-900 dark:text-green-100 mb-3 sm:mb-4">
-                    $0
-                  </div>
-                  <p className="text-xl sm:text-2xl lg:text-3xl text-green-800 dark:text-green-200 font-semibold mb-2">
-                    Free
-                  </p>
+                  <div className="text-5xl sm:text-6xl lg:text-7xl font-bold text-green-900 dark:text-green-100 mb-3 sm:mb-4">$0</div>
+                  <p className="text-xl sm:text-2xl lg:text-3xl text-green-800 dark:text-green-200 font-semibold mb-2">Free</p>
                   <p className="text-base sm:text-lg text-green-700 dark:text-green-300">
                     No subscriptions. No hidden fees. No credit card required.
                   </p>
@@ -180,8 +173,8 @@ export default function PricingPage() {
                     You run it, you own it, you control it.
                   </h2>
                   <p className="text-base sm:text-lg lg:text-xl text-blue-800 dark:text-blue-200 leading-relaxed max-w-3xl mx-auto">
-                    No subscriptions to manage. No accounts to cancel. No vendor lock-in. Install Memos on your infrastructure
-                    and it's yours—completely and permanently.
+                    No subscriptions to manage. No accounts to cancel. No vendor lock-in. Install Memos on your infrastructure and it's
+                    yours—completely and permanently.
                   </p>
                 </div>
               </div>
@@ -204,12 +197,8 @@ export default function PricingPage() {
                     key={index}
                     className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-lg transition-shadow"
                   >
-                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 mb-3 sm:mb-4">
-                      {item.title}
-                    </h3>
-                    <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
-                      {item.description}
-                    </p>
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 mb-3 sm:mb-4">{item.title}</h3>
+                    <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">{item.description}</p>
                   </div>
                 ))}
               </div>
@@ -294,12 +283,8 @@ export default function PricingPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
                   {SUPPORT_METHODS.map((item, index) => (
                     <div key={index} className="text-center bg-gray-50 dark:bg-gray-700 rounded-2xl p-4 sm:p-6">
-                      <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100 mb-2 sm:mb-3">
-                        {item.title}
-                      </h3>
-                      <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm leading-relaxed">
-                        {item.description}
-                      </p>
+                      <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100 mb-2 sm:mb-3">{item.title}</h3>
+                      <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm leading-relaxed">{item.description}</p>
                     </div>
                   ))}
                 </div>
@@ -338,10 +323,7 @@ export default function PricingPage() {
                 <p className="text-base sm:text-lg lg:text-xl text-teal-800 dark:text-teal-200 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
                   Download Memos today and start taking notes—completely free.
                 </p>
-                <a
-                  href={LINKS.docs}
-                  className={`${STYLES.button} bg-gradient-to-r from-teal-600 to-cyan-600 text-white`}
-                >
+                <a href={LINKS.docs} className={`${STYLES.button} bg-gradient-to-r from-teal-600 to-cyan-600 text-white`}>
                   <span>Get Started Free</span>
                 </a>
               </div>
