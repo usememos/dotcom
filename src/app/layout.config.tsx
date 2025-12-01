@@ -23,8 +23,8 @@ export const baseOptions: BaseLayoutProps = {
       url: "/docs",
     },
     {
-      text: "Blog",
-      url: "/blog",
+      text: "Pricing",
+      url: "/pricing",
     },
     {
       text: "Changelog",

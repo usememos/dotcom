@@ -183,15 +183,13 @@ export function Footer() {
             <h3 className="font-semibold text-fd-foreground mb-6 text-sm uppercase tracking-wider">Resources</h3>
             <ul className="space-y-4 text-sm">
               <li>
-                <a
-                  href="https://github.com/usememos/memos/blob/main/LICENSE"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/pricing"
                   className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
                 >
-                  <ScaleIcon className="w-4 h-4" />
-                  MIT License
-                </a>
+                  <DollarSignIcon className="w-4 h-4" />
+                  Pricing
+                </Link>
               </li>
               <li>
                 <Link
@@ -203,13 +201,15 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/pricing"
+                <a
+                  href="https://github.com/usememos/memos/blob/main/LICENSE"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
                 >
-                  <DollarSignIcon className="w-4 h-4" />
-                  Pricing
-                </Link>
+                  <ScaleIcon className="w-4 h-4" />
+                  MIT License
+                </a>
               </li>
               <li>
                 <Link
