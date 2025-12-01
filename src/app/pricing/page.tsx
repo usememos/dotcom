@@ -2,7 +2,10 @@ import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { CheckCircleIcon, CodeIcon, DollarSignIcon, GithubIcon, HeartIcon, ZapIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { baseOptions } from "@/app/layout.config";
+import { DocsCarbonAdCard } from "@/components/docs-carbon-ad-card";
 import { Footer } from "@/components/footer";
+import { FEATURED_SPONSORS } from "@/lib/sponsors";
+import { cn } from "@/lib/utils";
 
 // ============================================================================
 // METADATA
@@ -276,19 +279,71 @@ export default function PricingPage() {
               </div>
 
               <div className={`${STYLES.card} p-6 sm:p-8 lg:p-12`}>
-                <p className="text-base sm:text-lg lg:text-xl text-gray-700 dark:text-gray-300 mb-6 sm:mb-8 text-center leading-relaxed">
-                  While Memos is free, you can support the project in other ways:
+                <p className="text-base sm:text-lg lg:text-xl text-gray-700 dark:text-gray-300 mb-10 sm:mb-12 text-center leading-relaxed max-w-3xl mx-auto">
+                  While Memos is free and always will be, development and infrastructure depend on community support. Here&apos;s how you can
+                  help keep this project thriving.
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-                  {SUPPORT_METHODS.map((item, index) => (
-                    <div key={index} className="text-center bg-gray-50 dark:bg-gray-700 rounded-2xl p-4 sm:p-6">
-                      <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100 mb-2 sm:mb-3">{item.title}</h3>
-                      <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm leading-relaxed">{item.description}</p>
-                    </div>
-                  ))}
+                {/* Highlighted Sponsors */}
+                <div className="mb-10 sm:mb-12">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 mb-6 sm:mb-8 text-center">
+                    Highlighted Sponsors
+                  </h3>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto mb-6 sm:mb-8">
+                    {FEATURED_SPONSORS.map((sponsor) => (
+                      <a
+                        key={sponsor.name}
+                        href={sponsor.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group p-6 sm:p-8 bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-950/30 dark:to-rose-950/30 border border-pink-200 dark:border-pink-800 rounded-2xl hover:shadow-xl hover:border-pink-300 dark:hover:border-pink-700 hover:-translate-y-1 transition-all duration-300 shadow-sm"
+                      >
+                        <div className="flex items-center mb-4 h-12 sm:h-14">
+                          <img
+                            src={sponsor.logo}
+                            alt={`${sponsor.name} logo`}
+                            className={cn("h-full w-auto max-w-full object-contain", sponsor.logoDark && "dark:hidden")}
+                          />
+                          {sponsor.logoDark && (
+                            <img
+                              src={sponsor.logoDark}
+                              alt={`${sponsor.name} logo`}
+                              className="hidden dark:block h-full w-auto max-w-full object-contain"
+                            />
+                          )}
+                        </div>
+                        {sponsor.description && (
+                          <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed">{sponsor.description}</p>
+                        )}
+                      </a>
+                    ))}
+                  </div>
+
+                  {/* Carbon Ads */}
+                  <div className="w-full mx-auto">
+                    <DocsCarbonAdCard />
+                  </div>
                 </div>
 
+                {/* Support Methods */}
+                <div className="mb-10 sm:mb-12">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 mb-6 sm:mb-8 text-center">
+                    How You Can Help
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto">
+                    {SUPPORT_METHODS.map((item, index) => (
+                      <div
+                        key={index}
+                        className="text-center bg-gradient-to-br from-gray-50 to-white dark:from-gray-700 dark:to-gray-800 border border-gray-200 dark:border-gray-600 rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-lg transition-shadow"
+                      >
+                        <h4 className="text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100 mb-3">{item.title}</h4>
+                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">{item.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <a
                     href={LINKS.github}
@@ -306,7 +361,7 @@ export default function PricingPage() {
                     className={`${STYLES.button} bg-gradient-to-r from-pink-600 to-rose-600 text-white`}
                   >
                     <HeartIcon className={STYLES.buttonIcon} />
-                    <span>Sponsor on GitHub</span>
+                    <span>Become a Sponsor</span>
                   </a>
                 </div>
               </div>
