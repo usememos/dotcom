@@ -280,8 +280,8 @@ export default function PricingPage() {
 
               <div className={`${STYLES.card} p-6 sm:p-8 lg:p-12`}>
                 <p className="text-base sm:text-lg lg:text-xl text-gray-700 dark:text-gray-300 mb-10 sm:mb-12 text-center leading-relaxed max-w-3xl mx-auto">
-                  While Memos is free and always will be, development and infrastructure depend on community support. Here&apos;s how you can
-                  help keep this project thriving.
+                  While Memos is free and always will be, development and infrastructure depend on community support. Here&apos;s how you
+                  can help keep this project thriving.
                 </p>
 
                 {/* Highlighted Sponsors */}
