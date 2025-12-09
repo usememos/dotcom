@@ -39,6 +39,7 @@ export const FEATURE_SLUGS = [
   "instant-save",
   "markdown-support",
   "media-integration",
+  "no-titles",
 ] as const;
 
 /**
@@ -125,16 +126,15 @@ export const FEATURES = {
       "Clean, minimal design with responsive interface built with modern React, TypeScript, and cutting-edge web technologies featuring dark mode support.",
     hero: {
       title: "Beautiful & Responsive",
-      subtitle: "Clean, minimal design with modern React interface and dark mode that works seamlessly across all devices.",
+      subtitle: "Modern React interface with dark mode support - clean design that works seamlessly across all devices.",
     },
     benefits: [
       "Clean, minimal design focused on simplicity and usability",
-      "Responsive design optimized for mobile and desktop",
-      "Dark mode support for comfortable viewing",
-      "TypeScript for enhanced developer experience and reliability",
-      "Fast page loads with optimized bundle splitting",
-      "Real-time updates and synchronization without page refreshes",
-      "Accessible design following WCAG guidelines",
+      "Responsive design optimized for both mobile and desktop experiences",
+      "Dark mode support with system preference detection for comfortable viewing",
+      "TypeScript and React 18 for enhanced reliability and developer experience",
+      "Fast page loads with optimized bundle splitting and lazy loading",
+      "Real-time updates without page refreshes and accessible WCAG-compliant design",
     ],
     useCases: [
       {
@@ -164,14 +164,15 @@ export const FEATURES = {
       "Deploy anywhere with Docker containerization, pre-built binaries for Linux, macOS, Windows, and Kubernetes support with Helm charts.",
     hero: {
       title: "Deploy Anywhere",
-      subtitle: "Universal compatibility with Docker, pre-built binaries, and Kubernetes support for any deployment scenario.",
+      subtitle: "From Raspberry Pi to enterprise Kubernetes clusters - universal compatibility for any deployment scenario.",
     },
     benefits: [
-      "Docker containerization (recommended deployment method)",
-      "Pre-built binaries for Linux, macOS, and Windows",
-      "Kubernetes support with Helm charts for orchestrated environments",
-      "ARM and x86 architecture support",
-      "Multiple installation methods to suit any workflow",
+      "Docker containerization with multi-architecture support (recommended deployment method)",
+      "Pre-built native binaries for Linux, macOS, and Windows",
+      "Kubernetes support with official Helm charts for orchestrated environments",
+      "ARM64 and x86-64 architecture support for diverse hardware",
+      "Multiple installation methods to suit any workflow or preference",
+      "Single binary deployment with zero external dependencies",
     ],
     useCases: [
       {
@@ -188,10 +189,11 @@ export const FEATURES = {
       },
     ],
     techDetails: [
-      "Go cross-compilation for all platforms",
-      "Multi-architecture Docker images",
-      "Systemd service files included",
-      "Automated CI/CD builds",
+      "Go 1.21+ cross-compilation for Linux, macOS, Windows",
+      "Multi-architecture Docker images (linux/amd64, linux/arm64)",
+      "Official Helm charts for Kubernetes deployments",
+      "Systemd service files and installation scripts included",
+      "GitHub Actions automated builds for all platforms",
     ],
   },
   "customizable-ui": {
@@ -199,14 +201,15 @@ export const FEATURES = {
     description: "Customize your Memos instance with personalized branding, themes, and UI elements to match your style.",
     hero: {
       title: "Make It Yours",
-      subtitle: "Customize server name, icon, description, and UI elements to create a personalized experience.",
+      subtitle: "Personalize branding, themes, and UI elements to create a unique experience tailored to your identity.",
     },
     benefits: [
-      "Custom server name and description",
-      "Personalized favicon and branding",
-      "Configurable theme colors and styling",
-      "Custom CSS injection for advanced styling",
-      "Multi-language interface support",
+      "Custom server name, description, and branding elements",
+      "Personalized favicon and logo for brand identity",
+      "Configurable theme colors and styling options",
+      "Custom CSS injection for advanced styling and tweaks",
+      "Multi-language interface support for global teams",
+      "Flexible layout options and visibility controls",
     ],
     useCases: [
       {
@@ -223,10 +226,11 @@ export const FEATURES = {
       },
     ],
     techDetails: [
-      "Environment variable configuration",
-      "CSS custom properties support",
-      "Configurable metadata and titles",
-      "Icon and logo replacement",
+      "Environment variable configuration for all settings",
+      "CSS custom properties and injection support",
+      "Configurable metadata, titles, and OpenGraph tags",
+      "Custom icon and logo replacement via assets folder",
+      "i18n support with multiple language packs",
     ],
   },
   "api-first": {
@@ -235,16 +239,15 @@ export const FEATURES = {
       "Full REST and gRPC APIs with unrestricted access enable seamless integrations, custom applications, and automation workflows.",
     hero: {
       title: "Built for Integration",
-      subtitle: "Full REST and gRPC APIs with unrestricted access open unlimited possibilities for custom integrations.",
+      subtitle: "Comprehensive REST and gRPC APIs unlock unlimited possibilities for custom integrations and automation.",
     },
     benefits: [
-      "Full REST and gRPC APIs with unrestricted access",
-      "Complete RESTful API covering all functionality",
-      "High-performance gRPC API for advanced integrations",
-      "OpenAPI specification for easy integration",
-      "Authentication and authorization controls",
-      "Webhook support for real-time notifications",
-      "Bulk operations for efficient data management",
+      "Complete RESTful API covering all functionality with unrestricted access",
+      "High-performance gRPC API for advanced integrations and real-time operations",
+      "OpenAPI 3.0 specification for automatic client generation and easy integration",
+      "JWT-based authentication with flexible authorization controls",
+      "Webhook support for real-time event notifications and automation",
+      "Bulk operations and batch endpoints for efficient data management",
     ],
     useCases: [
       {
@@ -260,21 +263,28 @@ export const FEATURES = {
         description: "Import and export data from other systems using the API.",
       },
     ],
-    techDetails: ["RESTful and gRPC API support", "OpenAPI 3.0 specification", "JWT-based authentication", "Comprehensive error handling"],
+    techDetails: [
+      "RESTful HTTP API with JSON responses",
+      "gRPC API with Protocol Buffers for high performance",
+      "OpenAPI 3.0 specification with interactive documentation",
+      "JWT-based authentication with refresh token support",
+      "Webhook system for event-driven integrations",
+    ],
   },
   "database-support": {
     title: "Multi-Database Support",
     description: "Choose from SQLite, PostgreSQL, or MySQL databases to match your infrastructure and performance needs.",
     hero: {
       title: "Your Database, Your Choice",
-      subtitle: "Flexible database support allows you to choose the best fit for your infrastructure and requirements.",
+      subtitle: "Flexible support for SQLite, PostgreSQL, and MySQL - choose the best fit for your infrastructure needs.",
     },
     benefits: [
-      "SQLite for simple single-user deployments",
-      "PostgreSQL for enterprise-grade reliability",
-      "MySQL for existing infrastructure integration",
-      "Automatic database migrations and schema updates",
-      "Connection pooling and optimization for each database type",
+      "SQLite for simple single-user deployments with zero configuration",
+      "PostgreSQL for enterprise-grade reliability and advanced features",
+      "MySQL for seamless integration with existing infrastructure",
+      "Automatic database migrations and schema version management",
+      "Connection pooling and query optimization for each database type",
+      "Easy database switching without data loss or downtime",
     ],
     useCases: [
       {
@@ -302,14 +312,15 @@ export const FEATURES = {
     description: "MIT licensed with full source code transparency, permissive usage terms, and community-driven development.",
     hero: {
       title: "Truly Open Source",
-      subtitle: "MIT license ensures complete freedom to use, modify, and distribute Memos for any purpose.",
+      subtitle: "MIT license ensures complete freedom to use, modify, and distribute - transparency you can trust.",
     },
     benefits: [
-      "MIT license with no usage restrictions",
-      "Full source code availability on GitHub",
-      "Community-driven development and contributions",
-      "No vendor lock-in or licensing fees",
-      "Freedom to modify and customize for your needs",
+      "MIT license with no usage restrictions or limitations",
+      "Full source code availability and transparency on GitHub",
+      "Community-driven development with active contributors",
+      "No vendor lock-in, licensing fees, or hidden costs",
+      "Freedom to fork, modify, and customize for your specific needs",
+      "Complete audit trail with full version history and commit logs",
     ],
     useCases: [
       {
@@ -373,14 +384,15 @@ export const FEATURES = {
     description: "Transparent development process with active community contributions, feedback, and collaborative improvement.",
     hero: {
       title: "Built Together",
-      subtitle: "Active community of developers and users collaborating to make Memos better for everyone.",
+      subtitle: "Join 40,000+ community members collaborating to make Memos better through open development.",
     },
     benefits: [
-      "Transparent roadmap and development process",
-      "Active GitHub community with 40,000+ stars",
-      "Regular community feedback integration",
-      "Multiple communication channels for support",
-      "Collaborative feature development and testing",
+      "Transparent roadmap and open development process",
+      "Active GitHub community with 40,000+ stars and growing",
+      "Regular community feedback integration into releases",
+      "Multiple communication channels including Discord and GitHub Discussions",
+      "Collaborative feature development and public testing",
+      "Responsive maintainers and quick issue resolution",
     ],
     useCases: [
       {
@@ -409,16 +421,15 @@ export const FEATURES = {
       "Deploy Memos on your own infrastructure with complete control over your data, ensuring privacy and ownership without vendor lock-in.",
     hero: {
       title: "Your Server, Your Control",
-      subtitle: "Complete control with self-hosted deployment - from Raspberry Pi to enterprise Kubernetes clusters.",
+      subtitle: "Deploy anywhere from Raspberry Pi to enterprise clusters - complete control without vendor lock-in.",
     },
     benefits: [
       "Complete data ownership - your data never leaves your infrastructure",
-      "Deploy on any server, VPS, or cloud provider of your choice",
-      "Full control over user access and authentication policies",
-      "Customize security measures to meet your exact requirements",
-      "Scale resources based on your specific usage patterns",
-      "Integrate with existing corporate infrastructure and SSO systems",
-      "No vendor lock-in - deploy and manage on your terms",
+      "Deploy on any server, VPS, cloud provider, or on-premises hardware",
+      "Full control over user access, authentication policies, and security measures",
+      "Customize and scale resources based on your specific usage patterns",
+      "Integrate seamlessly with existing corporate infrastructure and SSO systems",
+      "No vendor lock-in or dependencies - deploy and manage on your terms",
     ],
     useCases: [
       {
@@ -482,14 +493,15 @@ export const FEATURES = {
     description: "Never lose a thought with automatic persistence and streamlined input that saves as you type.",
     hero: {
       title: "Capture Every Thought",
-      subtitle: "Lightning-fast input with automatic saving ensures you never lose important ideas or information.",
+      subtitle: "Automatic saving as you type ensures zero data loss - never worry about manual saves again.",
     },
     benefits: [
-      "Automatic saving as you type with no manual save button needed",
-      "Draft recovery in case of browser crashes or network issues",
-      "Instant synchronization across multiple browser tabs",
-      "Real-time preview of Markdown formatting",
-      "Optimistic UI updates for immediate feedback",
+      "Automatic saving as you type with no manual save button required",
+      "Draft recovery and persistence in case of browser crashes or network issues",
+      "Instant synchronization across multiple browser tabs and windows",
+      "Real-time preview of Markdown formatting as you write",
+      "Optimistic UI updates for immediate visual feedback",
+      "Conflict resolution for concurrent edits across devices",
     ],
     useCases: [
       {
@@ -506,10 +518,10 @@ export const FEATURES = {
       },
     ],
     techDetails: [
-      "WebSocket-based real-time synchronization",
-      "Debounced auto-save with configurable intervals",
-      "Client-side draft storage for offline resilience",
-      "Optimistic concurrency control",
+      "Debounced auto-save mechanism to reduce server load",
+      "Optimistic UI updates for immediate feedback",
+      "HTTP-based persistence to backend database",
+      "Client-side state management for draft handling",
     ],
   },
   "markdown-support": {
@@ -554,14 +566,15 @@ export const FEATURES = {
     description: "Native support for images, files, and multimedia content with drag-and-drop functionality.",
     hero: {
       title: "Rich Media Support",
-      subtitle: "Seamlessly integrate images, documents, and multimedia content into your notes with drag-and-drop simplicity.",
+      subtitle: "Seamlessly integrate images, videos, and documents with simple drag-and-drop functionality.",
     },
     benefits: [
-      "Drag-and-drop file uploads with progress indicators",
-      "Image resizing and optimization for web display",
-      "Support for documents, images, videos, and audio files",
-      "Automatic link preview generation for URLs",
-      "Embedded content from popular platforms",
+      "Drag-and-drop file uploads with real-time progress indicators",
+      "Automatic image resizing and optimization for fast web display",
+      "Support for documents, images, videos, audio files, and PDFs",
+      "Automatic link preview generation with thumbnails for URLs",
+      "Embedded content support from popular platforms like YouTube and Twitter",
+      "Inline media display with lightbox and gallery views",
     ],
     useCases: [
       {
@@ -582,6 +595,43 @@ export const FEATURES = {
       "Image processing and thumbnail generation",
       "Local file storage with organized directory structure",
       "MIME type validation and security scanning",
+    ],
+  },
+  "no-titles": {
+    title: "No Titles Required",
+    description:
+      "Write faster without the friction of creating titles. Focus on capturing your thoughts instantly without the cognitive overhead of naming each note.",
+    hero: {
+      title: "Just Start Writing",
+      subtitle: "No titles to think about, no friction to slow you down - capture your thoughts instantly and keep your creative flow.",
+    },
+    benefits: [
+      "Zero friction - start writing immediately without thinking of titles",
+      "Natural chronological flow organized by time, not arbitrary names",
+      "Reduced cognitive overhead - no pressure to summarize content upfront",
+      "Faster note-taking - skip the mental block of creating the perfect title",
+      "Content-first approach - your thoughts matter, not what you call them",
+      "Search finds content directly - titles don't add meaningful discoverability",
+    ],
+    useCases: [
+      {
+        title: "Quick Capture",
+        description: "Capture fleeting thoughts and ideas instantly without pausing to think of appropriate titles.",
+      },
+      {
+        title: "Stream of Consciousness",
+        description: "Write naturally without interrupting your flow to create organizational metadata.",
+      },
+      {
+        title: "Meeting Notes",
+        description: "Focus on recording important information rather than deciding how to label each note.",
+      },
+    ],
+    techDetails: [
+      "Chronological timeline-based organization",
+      "Full-text search across all content",
+      "Tag-based categorization without title requirements",
+      "Content preview in search results",
     ],
   },
 } as const satisfies Record<(typeof FEATURE_SLUGS)[number], FeatureDefinition>;
