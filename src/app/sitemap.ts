@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getAllFeatureSlugs } from "@/lib/features";
+import { getAllUseCaseSlugs } from "@/lib/use-cases";
 import { blogSource, changelogSource, source } from "@/lib/source";
 
 export const dynamic = "force-static";
@@ -43,6 +44,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: `${BASE_URL}/use-cases`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
       url: `${BASE_URL}/brand`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
@@ -73,6 +80,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   sitemap.push(...featurePages);
+
+  // Individual use case pages
+  const useCasePages = getAllUseCaseSlugs().map((slug) => ({
+    url: `${BASE_URL}/use-cases/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
+
+  sitemap.push(...useCasePages);
 
   // Documentation pages
   try {

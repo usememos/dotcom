@@ -1,15 +1,21 @@
 import {
   ArrowRightIcon,
+  BookOpenIcon,
+  BriefcaseIcon,
   CheckIcon,
   CodeIcon,
   DollarSignIcon,
   DownloadIcon,
   GithubIcon,
+  GraduationCapIcon,
+  LightbulbIcon,
   NotebookIcon,
   PackageIcon,
   PenToolIcon,
   PuzzleIcon,
   Rocket,
+  ServerIcon,
+  ShieldCheckIcon,
   ShieldIcon,
   StarIcon,
   TrendingUpIcon,
@@ -260,8 +266,99 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Use Cases Section */}
+      <section className="py-12 sm:py-16 lg:py-24 px-4 bg-gradient-to-b from-gray-50/80 to-white dark:from-gray-800 dark:to-gray-900">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12 sm:mb-16">
+            <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-teal-100 to-cyan-100 dark:from-teal-900/30 dark:to-cyan-900/30 text-teal-600 dark:text-teal-400 rounded-2xl mb-6">
+              <LightbulbIcon className="w-7 h-7 sm:w-8 sm:h-8" />
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4 leading-tight">
+              Trusted across industries
+            </h2>
+            <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              See how professionals and teams use Memos for their daily workflows
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 mb-10 sm:mb-12">
+            {[
+              {
+                icon: <CodeIcon className="w-6 h-6 sm:w-7 sm:h-7" />,
+                title: "Developers",
+                description: "Code snippets & technical notes",
+                gradient: "from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20",
+              },
+              {
+                icon: <PenToolIcon className="w-6 h-6 sm:w-7 sm:h-7" />,
+                title: "Writers",
+                description: "Article drafts & research",
+                gradient: "from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20",
+              },
+              {
+                icon: <ShieldCheckIcon className="w-6 h-6 sm:w-7 sm:h-7" />,
+                title: "Privacy Pros",
+                description: "Confidential information",
+                gradient: "from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20",
+              },
+              {
+                icon: <GraduationCapIcon className="w-6 h-6 sm:w-7 sm:h-7" />,
+                title: "Students",
+                description: "Lecture notes & research",
+                gradient: "from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20",
+              },
+              {
+                icon: <BriefcaseIcon className="w-6 h-6 sm:w-7 sm:h-7" />,
+                title: "Businesses",
+                description: "Client notes & documentation",
+                gradient: "from-cyan-50 to-sky-50 dark:from-cyan-900/20 dark:to-sky-900/20",
+              },
+              {
+                icon: <BookOpenIcon className="w-6 h-6 sm:w-7 sm:h-7" />,
+                title: "PKM Users",
+                description: "Personal wikis & journals",
+                gradient: "from-rose-50 to-red-50 dark:from-rose-900/20 dark:to-red-900/20",
+              },
+              {
+                icon: <ServerIcon className="w-6 h-6 sm:w-7 sm:h-7" />,
+                title: "Self-Hosters",
+                description: "Server documentation",
+                gradient: "from-slate-50 to-gray-50 dark:from-slate-900/20 dark:to-gray-900/20",
+              },
+              {
+                icon: <UsersIcon className="w-6 h-6 sm:w-7 sm:h-7" />,
+                title: "Teams",
+                description: "Shared knowledge bases",
+                gradient: "from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20",
+              },
+            ].map((useCase) => (
+              <div
+                key={useCase.title}
+                className={`group p-4 sm:p-6 bg-gradient-to-br ${useCase.gradient} border border-gray-200 dark:border-gray-700 rounded-xl hover:border-teal-200 dark:hover:border-teal-600 hover:shadow-lg hover:-translate-y-1 transition-all duration-300`}
+              >
+                <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm text-gray-900 dark:text-gray-100 rounded-lg mb-3 group-hover:scale-110 transition-transform duration-300">
+                  {useCase.icon}
+                </div>
+                <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">{useCase.title}</h3>
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 leading-tight">{useCase.description}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <Link
+              href="/use-cases"
+              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold text-white bg-gradient-to-r from-teal-600 to-cyan-600 rounded-xl sm:rounded-2xl shadow-lg hover:from-teal-700 hover:to-cyan-700 hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-300"
+            >
+              Explore All Use Cases
+              <ArrowRightIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Quick Deployment Showcase */}
-      <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 bg-gradient-to-b from-gray-50/80 to-white dark:from-gray-800 dark:to-gray-900">
+      <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 bg-white dark:bg-gray-900">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10 sm:mb-12 lg:mb-16">
             <div className="inline-flex items-center justify-center gap-3 sm:gap-4 mb-4">
