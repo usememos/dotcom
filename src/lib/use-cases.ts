@@ -227,52 +227,6 @@ export const USE_CASES = {
       ],
     },
   },
-  "small-business": {
-    title: "Small Businesses & Freelancers",
-    subtitle: "Client notes, project tracking, and business documentation",
-    description:
-      "Small businesses and freelancers use Memos to track client communications, manage projects, store business ideas, and document processes. No per-user fees make it perfect for growing teams.",
-    icon: "BriefcaseIcon",
-    gradient: "from-cyan-50 to-sky-50 dark:from-cyan-900/20 dark:to-sky-900/20",
-    iconBg: "from-cyan-100 to-sky-100 dark:from-cyan-900/30 dark:to-sky-900/30",
-    workflows: [
-      "Log client meeting notes and communication history",
-      "Track project milestones, tasks, and deliverables",
-      "Document standard operating procedures and workflows",
-      "Store business ideas and strategic planning notes",
-      "Maintain vendor contacts and service provider information",
-      "Create knowledge bases for common client questions",
-    ],
-    whyMemos: [
-      "No per-user licensing fees - unlimited team members",
-      "Custom branding to match your business identity",
-      "API access for integrating with business tools",
-      "Self-hosted means no vendor can raise prices or shut down",
-      "Complete data control for client confidentiality",
-    ],
-    features: [
-      { name: "Zero Subscription Fees", slug: "no-fees" },
-      { name: "Customizable Interface", slug: "customizable-ui" },
-      { name: "API-First Design", slug: "api-first" },
-    ],
-    seo: {
-      title: "Memos for Small Business & Freelancers - Client Notes & Project Management",
-      description:
-        "Discover how small businesses and freelancers use Memos for client communications, project tracking, and business documentation. No per-user fees, unlimited team members, self-hosted solution.",
-      keywords: [
-        "small business notes app",
-        "freelancer documentation",
-        "client notes software",
-        "project tracking tool",
-        "business knowledge base",
-        "freelance management",
-        "client communication log",
-        "SMB documentation tool",
-        "solopreneur notes",
-        "business process documentation",
-      ],
-    },
-  },
   "personal-knowledge": {
     title: "Personal Knowledge Management",
     subtitle: "Daily journaling, personal wikis, and life logging",

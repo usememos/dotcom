@@ -54,7 +54,7 @@ export default function ScratchPage() {
       const lostCount = instanceCountBefore - instanceCountAfter;
       alert(
         `⚠️ ${lostCount} Memos ${lostCount === 1 ? "instance" : "instances"} couldn't be loaded due to encryption issues.\n\n` +
-        "This can happen after browser updates or window resizing. Please re-add your Memos instance(s)."
+          "This can happen after browser updates or window resizing. Please re-add your Memos instance(s).",
       );
     }
   };

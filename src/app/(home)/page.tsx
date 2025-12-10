@@ -11,7 +11,6 @@ import {
   NotebookIcon,
   PackageIcon,
   PenToolIcon,
-  PuzzleIcon,
   Rocket,
   ServerIcon,
   ShieldCheckIcon,
@@ -20,7 +19,6 @@ import {
   TrendingUpIcon,
   UsersIcon,
   WrenchIcon,
-  XIcon,
   ZapIcon,
 } from "lucide-react";
 import type { Metadata } from "next";
@@ -106,8 +104,7 @@ export default function HomePage() {
               {
                 icon: <ShieldIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
                 title: "Zero Telemetry",
-                description:
-                  "Complete data ownership with no tracking or analytics. Your notes stay on your infrastructure, period.",
+                description: "Complete data ownership with no tracking or analytics. Your notes stay on your infrastructure, period.",
               },
               {
                 icon: <ZapIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
@@ -250,9 +247,7 @@ export default function HomePage() {
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-cyan-400/20 to-teal-400/20 dark:from-cyan-600/10 dark:to-teal-600/10 rounded-full blur-3xl"></div>
             <div className="relative z-10">
               <div className="text-center mb-8 sm:mb-12">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-                  Join the community
-                </h2>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4">Join the community</h2>
                 <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
                   Thousands of contributors and users building the future of note-taking together
                 </p>

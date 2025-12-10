@@ -16,7 +16,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { baseOptions } from "@/app/layout.config";
 import { Footer } from "@/components/footer";
-import { getAllUseCaseSlugs, getUseCase, type UseCaseDefinition } from "@/lib/use-cases";
+import { getAllUseCaseSlugs, getUseCase } from "@/lib/use-cases";
 
 // Icon mapping
 const iconMap = {
@@ -167,9 +167,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
                     <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
                       {feature.name}
                     </h3>
-                    <span className="text-sm text-teal-600 dark:text-teal-400 font-medium">
-                      Learn more →
-                    </span>
+                    <span className="text-sm text-teal-600 dark:text-teal-400 font-medium">Learn more →</span>
                   </Link>
                 ))}
               </div>

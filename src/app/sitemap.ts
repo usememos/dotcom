@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getAllFeatureSlugs } from "@/lib/features";
-import { getAllUseCaseSlugs } from "@/lib/use-cases";
 import { blogSource, changelogSource, source } from "@/lib/source";
+import { getAllUseCaseSlugs } from "@/lib/use-cases";
 
 export const dynamic = "force-static";
 export const revalidate = 3600; // regenerate once per hour

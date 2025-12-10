@@ -143,20 +143,11 @@ export default function UseCasesPage() {
               How People Use Memos
             </h1>
             <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed mb-8">
-              From software development to personal journaling, discover how people around the world use Memos for
-              secure, self-hosted note-taking and knowledge management.
+              From software development to personal journaling, discover how people around the world use Memos for secure, self-hosted
+              note-taking and knowledge management.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
-              {[
-                "Self-Hosters",
-                "Developers",
-                "Writers",
-                "PKM Users",
-                "Makers",
-                "Students",
-                "Privacy Pros",
-                "Teams",
-              ].map((tag) => (
+              {["Self-Hosters", "Developers", "Writers", "PKM Users", "Makers", "Students", "Privacy Pros", "Teams"].map((tag) => (
                 <span
                   key={tag}
                   className="px-4 py-2 text-sm font-medium text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800 rounded-lg"
@@ -192,16 +183,12 @@ export default function UseCasesPage() {
                         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
                           {useCase.title}
                         </h2>
-                        <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 font-medium">
-                          {useCase.subtitle}
-                        </p>
+                        <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 font-medium">{useCase.subtitle}</p>
                       </div>
                     </div>
 
                     {/* Description */}
-                    <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-                      {useCase.description}
-                    </p>
+                    <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">{useCase.description}</p>
 
                     {/* CTA */}
                     <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-semibold">
@@ -237,9 +224,7 @@ export default function UseCasesPage() {
                   <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm text-gray-900 dark:text-gray-100 rounded-lg mb-3 group-hover:scale-110 transition-transform duration-300">
                     <card.icon className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
-                  <h3 className="text-sm sm:text-base font-bold text-gray-900 dark:text-gray-100 leading-tight mb-1">
-                    {card.title}
-                  </h3>
+                  <h3 className="text-sm sm:text-base font-bold text-gray-900 dark:text-gray-100 leading-tight mb-1">{card.title}</h3>
                   <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{card.description}</p>
                 </Link>
               ))}
@@ -257,8 +242,7 @@ export default function UseCasesPage() {
               Ready to start your own use case?
             </h2>
             <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Join a global community of people who have chosen Memos for their note-taking and knowledge management
-              needs.
+              Join a global community of people who have chosen Memos for their note-taking and knowledge management needs.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center max-w-sm sm:max-w-none mx-auto">
               <Link
