@@ -27,7 +27,13 @@ export default function ScratchPage() {
   // Data loading
   const loadData = async () => {
     const loadedItems = itemStorage.getAll();
+
+    // Get current localStorage data to compare before/after
+    const storedData = localStorage.getItem("memos-scratch-instances");
+    const instanceCountBefore = storedData ? (JSON.parse(storedData) as MemoInstance[]).length : 0;
+
     const loadedInstances = await instanceStorage.getAll();
+    const instanceCountAfter = loadedInstances.length;
 
     // Migrate items to have zIndex if they don't have one
     const migratedItems = loadedItems.map((item, index) => ({
@@ -41,6 +47,15 @@ export default function ScratchPage() {
     // Save migrated items if any were updated
     if (migratedItems.some((item, index) => item.zIndex !== loadedItems[index].zIndex)) {
       itemStorage.save(migratedItems);
+    }
+
+    // Notify user if instances were lost due to decryption failure
+    if (instanceCountBefore > instanceCountAfter) {
+      const lostCount = instanceCountBefore - instanceCountAfter;
+      alert(
+        `⚠️ ${lostCount} Memos ${lostCount === 1 ? "instance" : "instances"} couldn't be loaded due to encryption issues.\n\n` +
+        "This can happen after browser updates or window resizing. Please re-add your Memos instance(s)."
+      );
     }
   };
 

@@ -29,13 +29,13 @@ export type UseCaseSlug = keyof typeof USE_CASES;
  * All available use case slugs - used for static generation and routing
  */
 export const USE_CASE_SLUGS = [
+  "self-hosting",
   "developers",
   "writers",
-  "privacy-professionals",
-  "students-researchers",
-  "small-business",
   "personal-knowledge",
-  "self-hosting",
+  "hobbyists-makers",
+  "students-researchers",
+  "privacy-professionals",
   "teams",
 ] as const;
 
@@ -187,8 +187,8 @@ export const USE_CASES = {
     description:
       "Students and researchers leverage Memos for lecture notes, research organization, thesis development, and collaborative study groups. No subscription fees and unlimited storage make it ideal for academic use.",
     icon: "GraduationCapIcon",
-    gradient: "from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20",
-    iconBg: "from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30",
+    gradient: "from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20",
+    iconBg: "from-yellow-100 to-amber-100 dark:from-yellow-900/30 dark:to-amber-900/30",
     workflows: [
       "Take lecture notes with rich Markdown formatting",
       "Organize research papers, citations, and literature reviews",
@@ -316,6 +316,52 @@ export const USE_CASES = {
         "life logging tool",
         "knowledge base personal",
         "self-hosted journal",
+      ],
+    },
+  },
+  "hobbyists-makers": {
+    title: "Hobbyists & Makers",
+    subtitle: "Project logs, ideas collection, and creative documentation",
+    description:
+      "Makers, DIY enthusiasts, and hobbyists use Memos to document their projects, collect inspiration, track materials and tools, and maintain build logs. The flexible format and media support make it perfect for creative documentation.",
+    icon: "WrenchIcon",
+    gradient: "from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20",
+    iconBg: "from-orange-100 to-amber-100 dark:from-orange-900/30 dark:to-amber-900/30",
+    workflows: [
+      "Document DIY projects with photos, notes, and progress logs",
+      "Collect inspiration and ideas for future creative projects",
+      "Track materials, tools, and equipment for various hobbies",
+      "Maintain build logs for electronics, woodworking, or crafts",
+      "Store recipes, techniques, and tutorials for quick reference",
+      "Create project plans and step-by-step documentation",
+    ],
+    whyMemos: [
+      "Media integration for photos and videos of your work",
+      "Quick capture for ideas that strike during creative flow",
+      "Chronological logs perfect for tracking project evolution",
+      "Self-hosted keeps your creative IP and ideas private",
+      "Tag system for organizing projects by type, status, or material",
+    ],
+    features: [
+      { name: "Media Integration", slug: "media-integration" },
+      { name: "Instant Save", slug: "instant-save" },
+      { name: "Data Ownership", slug: "data-ownership" },
+    ],
+    seo: {
+      title: "Memos for Makers & Hobbyists - DIY Project Logging & Creative Documentation",
+      description:
+        "Discover how makers, DIY enthusiasts, and hobbyists use Memos for project documentation, build logs, and creative idea collection. Self-hosted with media support and quick capture.",
+      keywords: [
+        "DIY project notes",
+        "maker documentation",
+        "hobby project tracker",
+        "build log app",
+        "creative project notes",
+        "woodworking notes",
+        "electronics project log",
+        "crafting documentation",
+        "maker notes app",
+        "DIY knowledge base",
       ],
     },
   },

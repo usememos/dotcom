@@ -24,14 +24,37 @@ export const instanceStorage = {
 
     try {
       const instances = JSON.parse(data) as MemoInstance[];
-      // Decrypt tokens
-      return await Promise.all(
+      // Decrypt tokens, filtering out any that fail
+      const decryptedInstances = await Promise.allSettled(
         instances.map(async (instance) => ({
           ...instance,
           lastConnected: instance.lastConnected ? new Date(instance.lastConnected) : null,
           accessToken: await decryptToken(instance.accessToken),
         })),
       );
+
+      const validInstances: MemoInstance[] = [];
+      const failedCount = decryptedInstances.filter((result) => result.status === "rejected").length;
+
+      for (const result of decryptedInstances) {
+        if (result.status === "fulfilled") {
+          validInstances.push(result.value);
+        }
+      }
+
+      // If some instances failed to decrypt, clean up localStorage
+      if (failedCount > 0) {
+        console.warn(`Failed to decrypt ${failedCount} instance(s). Removing corrupted data.`);
+        // Save only the valid instances back
+        if (validInstances.length > 0) {
+          await this.save(validInstances);
+        } else {
+          // No valid instances, clear the storage
+          localStorage.removeItem(STORAGE_KEYS.INSTANCES);
+        }
+      }
+
+      return validInstances;
     } catch (error) {
       console.error("Failed to load instances:", error);
       return [];

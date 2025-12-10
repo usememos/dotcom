@@ -1,7 +1,6 @@
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import {
   BookOpenIcon,
-  BriefcaseIcon,
   CodeIcon,
   GraduationCapIcon,
   HeartPulseIcon,
@@ -9,6 +8,7 @@ import {
   ServerIcon,
   ShieldCheckIcon,
   UsersIcon,
+  WrenchIcon,
   ZapIcon,
 } from "lucide-react";
 import type { Metadata } from "next";
@@ -24,10 +24,10 @@ const iconMap = {
   PencilIcon: PencilIcon,
   ShieldCheckIcon: ShieldCheckIcon,
   GraduationCapIcon: GraduationCapIcon,
-  BriefcaseIcon: BriefcaseIcon,
   BookOpenIcon: BookOpenIcon,
   ServerIcon: ServerIcon,
   UsersIcon: UsersIcon,
+  WrenchIcon: WrenchIcon,
 } as const;
 
 type IconName = keyof typeof iconMap;
@@ -181,7 +181,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
                 Ready to get started?
               </h2>
               <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
-                Join thousands of users who have chosen Memos for their {useCase.title.toLowerCase()} needs.
+                Join a community of people who use Memos for their {useCase.title.toLowerCase()} needs.
               </p>
               <div className="flex flex-col gap-4 sm:flex-row sm:justify-center max-w-sm sm:max-w-none mx-auto">
                 <Link

@@ -1,7 +1,6 @@
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import {
   BookOpenIcon,
-  BriefcaseIcon,
   CodeIcon,
   GraduationCapIcon,
   LightbulbIcon,
@@ -10,6 +9,7 @@ import {
   ShieldCheckIcon,
   UserIcon,
   UsersIcon,
+  WrenchIcon,
 } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -59,16 +59,23 @@ const iconMap = {
   PencilIcon: PencilIcon,
   ShieldCheckIcon: ShieldCheckIcon,
   GraduationCapIcon: GraduationCapIcon,
-  BriefcaseIcon: BriefcaseIcon,
   BookOpenIcon: BookOpenIcon,
   ServerIcon: ServerIcon,
   UsersIcon: UsersIcon,
+  WrenchIcon: WrenchIcon,
 } as const;
 
 type IconName = keyof typeof iconMap;
 
 // Use case card data for the quick overview grid
 const useCaseCards = [
+  {
+    slug: "self-hosting",
+    icon: ServerIcon,
+    title: "Self-Hosters",
+    description: "Server documentation",
+    gradient: "from-slate-50 to-gray-50 dark:from-slate-900/20 dark:to-gray-900/20",
+  },
   {
     slug: "developers",
     icon: CodeIcon,
@@ -84,27 +91,6 @@ const useCaseCards = [
     gradient: "from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20",
   },
   {
-    slug: "privacy-professionals",
-    icon: ShieldCheckIcon,
-    title: "Privacy Pros",
-    description: "Confidential information",
-    gradient: "from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20",
-  },
-  {
-    slug: "students-researchers",
-    icon: GraduationCapIcon,
-    title: "Students",
-    description: "Lecture notes & research",
-    gradient: "from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20",
-  },
-  {
-    slug: "small-business",
-    icon: BriefcaseIcon,
-    title: "Businesses",
-    description: "Client notes & documentation",
-    gradient: "from-cyan-50 to-sky-50 dark:from-cyan-900/20 dark:to-sky-900/20",
-  },
-  {
     slug: "personal-knowledge",
     icon: BookOpenIcon,
     title: "PKM Users",
@@ -112,11 +98,25 @@ const useCaseCards = [
     gradient: "from-rose-50 to-red-50 dark:from-rose-900/20 dark:to-red-900/20",
   },
   {
-    slug: "self-hosting",
-    icon: ServerIcon,
-    title: "Self-Hosters",
-    description: "Server documentation",
-    gradient: "from-slate-50 to-gray-50 dark:from-slate-900/20 dark:to-gray-900/20",
+    slug: "hobbyists-makers",
+    icon: WrenchIcon,
+    title: "Makers",
+    description: "Project logs & ideas",
+    gradient: "from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20",
+  },
+  {
+    slug: "students-researchers",
+    icon: GraduationCapIcon,
+    title: "Students",
+    description: "Lecture notes & research",
+    gradient: "from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20",
+  },
+  {
+    slug: "privacy-professionals",
+    icon: ShieldCheckIcon,
+    title: "Privacy Pros",
+    description: "Confidential information",
+    gradient: "from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20",
   },
   {
     slug: "teams",
@@ -143,18 +143,18 @@ export default function UseCasesPage() {
               How People Use Memos
             </h1>
             <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed mb-8">
-              From software development to personal journaling, discover how individuals and teams leverage Memos for
+              From software development to personal journaling, discover how people around the world use Memos for
               secure, self-hosted note-taking and knowledge management.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               {[
+                "Self-Hosters",
                 "Developers",
                 "Writers",
-                "Researchers",
-                "Privacy Pros",
+                "PKM Users",
+                "Makers",
                 "Students",
-                "Businesses",
-                "Self-Hosters",
+                "Privacy Pros",
                 "Teams",
               ].map((tag) => (
                 <span
@@ -257,8 +257,8 @@ export default function UseCasesPage() {
               Ready to start your own use case?
             </h2>
             <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Join thousands of developers, writers, researchers, and teams who have chosen Memos for their note-taking
-              and knowledge management needs.
+              Join a global community of people who have chosen Memos for their note-taking and knowledge management
+              needs.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center max-w-sm sm:max-w-none mx-auto">
               <Link

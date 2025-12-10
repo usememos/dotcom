@@ -3,54 +3,27 @@
  * Encrypts tokens before storing in localStorage
  */
 
-const _ENCRYPTION_KEY_NAME = "memos-scratch-key";
+const ENCRYPTION_KEY_NAME = "memos-scratch-key";
 const ENCRYPTION_ALGORITHM = "AES-GCM";
 
 /**
- * Generate a browser-specific fingerprint for key derivation
- */
-async function getBrowserFingerprint(): Promise<string> {
-  const data = [
-    navigator.userAgent,
-    navigator.language,
-    new Date().getTimezoneOffset().toString(),
-    screen.colorDepth.toString(),
-    screen.width.toString(),
-    screen.height.toString(),
-  ].join("|");
-
-  const encoder = new TextEncoder();
-  const dataBuffer = encoder.encode(data);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", dataBuffer);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-}
-
-/**
- * Derive an encryption key from browser fingerprint
+ * Get or create a stable encryption key stored in localStorage
+ * This approach is more robust than browser fingerprinting
  */
 async function getEncryptionKey(): Promise<CryptoKey> {
-  const fingerprint = await getBrowserFingerprint();
-  const encoder = new TextEncoder();
-  const keyMaterial = encoder.encode(fingerprint);
+  // Check if we have a stored key
+  let keyData = localStorage.getItem(ENCRYPTION_KEY_NAME);
 
-  // Import the key material
-  const key = await crypto.subtle.importKey("raw", keyMaterial, { name: "PBKDF2" }, false, ["deriveBits", "deriveKey"]);
+  if (!keyData) {
+    // Generate a new random key
+    const rawKey = crypto.getRandomValues(new Uint8Array(32));
+    keyData = btoa(String.fromCharCode(...rawKey));
+    localStorage.setItem(ENCRYPTION_KEY_NAME, keyData);
+  }
 
-  // Derive a key using PBKDF2
-  const salt = encoder.encode("memos-scratch-salt-v1");
-  return crypto.subtle.deriveKey(
-    {
-      name: "PBKDF2",
-      salt,
-      iterations: 100000,
-      hash: "SHA-256",
-    },
-    key,
-    { name: ENCRYPTION_ALGORITHM, length: 256 },
-    false,
-    ["encrypt", "decrypt"],
-  );
+  // Import the key for use with Web Crypto API
+  const rawKey = Uint8Array.from(atob(keyData), (c) => c.charCodeAt(0));
+  return crypto.subtle.importKey("raw", rawKey, { name: ENCRYPTION_ALGORITHM, length: 256 }, false, ["encrypt", "decrypt"]);
 }
 
 /**
