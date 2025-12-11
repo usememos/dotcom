@@ -1,5 +1,6 @@
 import { HeartIcon } from "lucide-react";
 import Link from "next/link";
+import { DocsCarbonAdCard } from "@/components/docs-carbon-ad-card";
 import { FEATURED_SPONSORS } from "@/lib/sponsors";
 import { cn } from "@/lib/utils";
 
@@ -17,7 +18,7 @@ export function SponsorsSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8 max-w-6xl mx-auto">
           {FEATURED_SPONSORS.map((sponsor) => (
             <a
               key={sponsor.name}
@@ -45,6 +46,8 @@ export function SponsorsSection() {
               )}
             </a>
           ))}
+          {/* Carbon Ads */}
+          <DocsCarbonAdCard variant="sponsor" />
         </div>
 
         <div className="text-center">

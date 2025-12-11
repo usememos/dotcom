@@ -31,17 +31,17 @@ import { SponsorsSection } from "@/components/sponsors-section";
 import { StatsCard } from "@/components/stats-card";
 
 export const metadata: Metadata = {
-  title: "Memos - Open Source, Self-Hosted Note Taking Solution",
+  title: "Memos - Open Source, Self-Hosted Note Taking",
   description:
-    "An open-source, self-hosted note-taking service with zero telemetry. Privacy-first, lightweight solution with no tracking, ads, or subscription fees.",
-  keywords: ["note taking", "self-hosted", "open source", "privacy", "markdown", "memos", "zero telemetry"],
+    "A lightweight, self-hosted memo hub for capturing and sharing your ideas. Open source, privacy-first, and free forever.",
+  keywords: ["note taking", "self-hosted", "open source", "privacy", "markdown", "memos", "memo hub"],
   alternates: {
     canonical: "https://usememos.com",
   },
   openGraph: {
-    title: "Memos - Open Source, Self-Hosted Note Taking Solution",
+    title: "Memos - Open Source, Self-Hosted Note Taking",
     description:
-      "An open-source, self-hosted note-taking service with zero telemetry. Privacy-first, lightweight solution with no tracking, ads, or subscription fees.",
+      "A lightweight, self-hosted memo hub for capturing and sharing your ideas. Open source and free forever.",
     url: "https://usememos.com",
     siteName: "Memos",
     locale: "en_US",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Memos - Open Source, Self-Hosted Note Taking",
     description:
-      "An open-source, self-hosted note-taking service with zero telemetry. Privacy-first, lightweight solution with no tracking, ads, or subscription fees.",
+      "A lightweight, self-hosted memo hub. Open source, privacy-first, and free forever.",
   },
 };
 
@@ -62,11 +62,11 @@ export default function HomePage() {
       <HeroSection
         title={
           <>
-            Open Source, <span className="block sm:inline">Self-Hosted</span>
-            <span className="block text-teal-600">Your Notes, Your Way</span>
+            Self-Hosted Notes
+            <span className="block text-teal-600">Simple & Private</span>
           </>
         }
-        subtitle="Privacy-first note-taking service with zero telemetry. No tracking, no ads, no subscription fees."
+        subtitle="A lightweight, self-hosted memo hub for effortlessly capturing and sharing your ideas. Open source, no tracking, free forever."
         primaryCta={{ text: "Get Started", href: "/docs/installation" }}
         secondaryCta={{
           text: "Live Demo",
@@ -94,7 +94,7 @@ export default function HomePage() {
               Why Memos?
             </h2>
             <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto px-4">
-              Self-hosted, lightning-fast, and built for privacy without compromising on features
+              Self-hosted, fast, and private. Everything you need, nothing you don't.
             </p>
           </div>
 
@@ -103,33 +103,33 @@ export default function HomePage() {
             {[
               {
                 icon: <ShieldIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
-                title: "Zero Telemetry",
-                description: "Complete data ownership with no tracking or analytics. Your notes stay on your infrastructure, period.",
+                title: "100% Private",
+                description: "Your thoughts are yours alone. No tracking, no analytics, no data harvesting. Ever.",
               },
               {
                 icon: <ZapIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
-                title: "Lightning Fast",
-                description: "Built with Go and React for instant performance. Optimized local-first architecture loads instantly.",
+                title: "Blazing Fast",
+                description: "Capture ideas at the speed of thought. Local-first architecture means zero lag, even with thousands of notes.",
               },
               {
                 icon: <PenToolIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
-                title: "Markdown Native",
-                description: "Full Markdown support with syntax highlighting. Plain text storage ensures maximum portability.",
+                title: "Future-Proof Format",
+                description: "Write in Markdown. Own your content forever. No proprietary formats or vendor lock-in, just plain text that lasts.",
               },
               {
                 icon: <ServerIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
-                title: "Easy Self-Hosting",
-                description: "Deploy with Docker in minutes. Supports SQLite, PostgreSQL, MySQL. Runs on Raspberry Pi.",
+                title: "Deploy Anywhere",
+                description: "From a Raspberry Pi to enterprise servers—your home, your cloud, your rules. Up and running in under 5 minutes.",
               },
               {
                 icon: <GithubIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
-                title: "Open Source",
-                description: "Transparent development on GitHub. Join 300+ contributors building the future of note-taking.",
+                title: "Truly Open Source",
+                description: "MIT licensed and transparent. Join 45K+ stars and 340+ contributors building something better, together.",
               },
               {
                 icon: <DollarSignIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
                 title: "Free Forever",
-                description: "All features included. No subscription fees, no premium tiers, no hidden costs.",
+                description: "Every feature. Every update. No paywalls, no premium upsells, no surprise fees. Because good software shouldn't cost a subscription.",
               },
             ].map((feature) => (
               <FeatureCard key={feature.title} {...feature} />
@@ -156,10 +156,10 @@ export default function HomePage() {
               <LightbulbIcon className="w-7 h-7 sm:w-8 sm:h-8" />
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4 leading-tight">
-              Who uses Memos?
+              Who Uses Memos?
             </h2>
             <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              From self-hosters to teams, discover how people use Memos in their daily workflows
+              From developers to students—see how people use Memos in their workflows
             </p>
           </div>
 
@@ -168,25 +168,25 @@ export default function HomePage() {
               {
                 icon: <ServerIcon className="w-6 h-6 sm:w-7 sm:h-7" />,
                 title: "Self-Hosters",
-                description: "Server documentation",
+                description: "Infrastructure docs & configs",
                 gradient: "from-slate-50 to-gray-50 dark:from-slate-900/20 dark:to-gray-900/20",
               },
               {
                 icon: <CodeIcon className="w-6 h-6 sm:w-7 sm:h-7" />,
                 title: "Developers",
-                description: "Code snippets & technical notes",
+                description: "Code snippets & debugging logs",
                 gradient: "from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20",
               },
               {
                 icon: <PenToolIcon className="w-6 h-6 sm:w-7 sm:h-7" />,
                 title: "Writers",
-                description: "Article drafts & research",
+                description: "Draft stories & capture ideas",
                 gradient: "from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20",
               },
               {
                 icon: <BookOpenIcon className="w-6 h-6 sm:w-7 sm:h-7" />,
-                title: "PKM Users",
-                description: "Personal wikis & journals",
+                title: "Knowledge Seekers",
+                description: "Second brains & digital gardens",
                 gradient: "from-rose-50 to-red-50 dark:from-rose-900/20 dark:to-red-900/20",
               },
               {
@@ -247,9 +247,9 @@ export default function HomePage() {
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-cyan-400/20 to-teal-400/20 dark:from-cyan-600/10 dark:to-teal-600/10 rounded-full blur-3xl"></div>
             <div className="relative z-10">
               <div className="text-center mb-8 sm:mb-12">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4">Join the community</h2>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4">Trusted by Thousands</h2>
                 <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                  Thousands of contributors and users building the future of note-taking together
+                  A growing community of developers, writers, and self-hosters
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-6 sm:gap-8 lg:gap-12 sm:grid-cols-4">
@@ -291,10 +291,10 @@ export default function HomePage() {
               <Rocket className="w-7 h-7 sm:w-8 sm:h-8" />
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4 leading-tight">
-              Get started
+              Running in Under 5 Minutes
             </h2>
             <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Deploy in minutes with Docker, or choose from multiple installation methods
+              One Docker command is all it takes. Seriously, it's that easy.
             </p>
           </div>
 
@@ -330,16 +330,16 @@ export default function HomePage() {
                   <NotebookIcon className="w-7 h-7 sm:w-9 sm:h-9" />
                 </div>
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4 leading-tight">
-                  Try it free
+                  Quick Notes, Zero Setup
                 </h2>
                 <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                  Experience Memos instantly with our browser-based scratchpad. No installation required—work locally, sync when ready.
+                  Need a quick place to jot things down? Use our browser-based scratchpad. Works offline, stores locally, and syncs to Memos when you're ready.
                 </p>
                 <ul className="space-y-3 mb-8">
                   {[
-                    "100% browser-local - your data never leaves your device",
-                    "Drag-and-drop interface for flexible organization",
-                    "Support for text notes and file attachments",
+                    "Works entirely in your browser—no account needed",
+                    "Drag-and-drop interface for quick organization",
+                    "Supports text notes and file attachments",
                     "Optional sync to your self-hosted Memos instance",
                   ].map((feature) => (
                     <li key={feature} className="flex items-start gap-3 text-sm sm:text-base text-gray-700 dark:text-gray-300">
@@ -409,10 +409,10 @@ export default function HomePage() {
             <Rocket className="w-7 h-7 sm:w-8 sm:h-8" />
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4 sm:mb-6 leading-tight px-2">
-            Start using Memos
+            Ready to Get Started?
           </h2>
           <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-4">
-            Join thousands who've taken control of their notes with privacy-first, self-hosted note-taking
+            Deploy your own Memos instance in minutes. Keep your notes private, organized, and always accessible.
           </p>
           <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:justify-center max-w-sm sm:max-w-none mx-auto">
             <Link

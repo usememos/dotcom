@@ -321,7 +321,7 @@ export default function PricingPage() {
 
                   {/* Carbon Ads */}
                   <div className="w-full mx-auto">
-                    <DocsCarbonAdCard />
+                    <DocsCarbonAdCard variant="sponsor" />
                   </div>
                 </div>
 
