@@ -9,7 +9,6 @@
     "DeleteUserNotification",
     "DeleteUserWebhook",
     "GetUser",
-    "GetUserAvatar",
     "GetUserSetting",
     "GetUserStats",
     "ListAllUserStats",

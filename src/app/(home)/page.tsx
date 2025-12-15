@@ -32,16 +32,14 @@ import { StatsCard } from "@/components/stats-card";
 
 export const metadata: Metadata = {
   title: "Memos - Open Source, Self-Hosted Note Taking",
-  description:
-    "A lightweight, self-hosted memo hub for capturing and sharing your ideas. Open source, privacy-first, and free forever.",
+  description: "A lightweight, self-hosted memo hub for capturing and sharing your ideas. Open source, privacy-first, and free forever.",
   keywords: ["note taking", "self-hosted", "open source", "privacy", "markdown", "memos", "memo hub"],
   alternates: {
     canonical: "https://usememos.com",
   },
   openGraph: {
     title: "Memos - Open Source, Self-Hosted Note Taking",
-    description:
-      "A lightweight, self-hosted memo hub for capturing and sharing your ideas. Open source and free forever.",
+    description: "A lightweight, self-hosted memo hub for capturing and sharing your ideas. Open source and free forever.",
     url: "https://usememos.com",
     siteName: "Memos",
     locale: "en_US",
@@ -50,8 +48,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Memos - Open Source, Self-Hosted Note Taking",
-    description:
-      "A lightweight, self-hosted memo hub. Open source, privacy-first, and free forever.",
+    description: "A lightweight, self-hosted memo hub. Open source, privacy-first, and free forever.",
   },
 };
 
@@ -109,17 +106,20 @@ export default function HomePage() {
               {
                 icon: <ZapIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
                 title: "Blazing Fast",
-                description: "Capture ideas at the speed of thought. Local-first architecture means zero lag, even with thousands of notes.",
+                description:
+                  "Capture ideas at the speed of thought. Local-first architecture means zero lag, even with thousands of notes.",
               },
               {
                 icon: <PenToolIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
                 title: "Future-Proof Format",
-                description: "Write in Markdown. Own your content forever. No proprietary formats or vendor lock-in, just plain text that lasts.",
+                description:
+                  "Write in Markdown. Own your content forever. No proprietary formats or vendor lock-in, just plain text that lasts.",
               },
               {
                 icon: <ServerIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
                 title: "Deploy Anywhere",
-                description: "From a Raspberry Pi to enterprise servers—your home, your cloud, your rules. Up and running in under 5 minutes.",
+                description:
+                  "From a Raspberry Pi to enterprise servers—your home, your cloud, your rules. Up and running in under 5 minutes.",
               },
               {
                 icon: <GithubIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
@@ -129,7 +129,8 @@ export default function HomePage() {
               {
                 icon: <DollarSignIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
                 title: "Free Forever",
-                description: "Every feature. Every update. No paywalls, no premium upsells, no surprise fees. Because good software shouldn't cost a subscription.",
+                description:
+                  "Every feature. Every update. No paywalls, no premium upsells, no surprise fees. Because good software shouldn't cost a subscription.",
               },
             ].map((feature) => (
               <FeatureCard key={feature.title} {...feature} />
@@ -333,7 +334,8 @@ export default function HomePage() {
                   Quick Notes, Zero Setup
                 </h2>
                 <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                  Need a quick place to jot things down? Use our browser-based scratchpad. Works offline, stores locally, and syncs to Memos when you're ready.
+                  Need a quick place to jot things down? Use our browser-based scratchpad. Works offline, stores locally, and syncs to Memos
+                  when you're ready.
                 </p>
                 <ul className="space-y-3 mb-8">
                   {[
