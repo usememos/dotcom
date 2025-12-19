@@ -4,22 +4,27 @@ import {
   CodeIcon,
   DollarSignIcon,
   ExternalLinkIcon,
-  FileTextIcon,
   GithubIcon,
   HeartIcon,
   HistoryIcon,
-  LockIcon,
   MessageCircleIcon,
   NewspaperIcon,
   PaletteIcon,
   ScaleIcon,
-  ServerIcon,
   ShieldCheckIcon,
   SparklesIcon,
 } from "lucide-react";
 import Link from "next/link";
+import { FEATURES } from "@/lib/features";
 
 export function Footer() {
+  // Select key features to display in footer (top features from each category)
+  const footerFeatures = [
+    { slug: "self-hosted", feature: FEATURES["self-hosted"] },
+    { slug: "open-source", feature: FEATURES["open-source"] },
+    { slug: "markdown-support", feature: FEATURES["markdown-support"] },
+    { slug: "api-first", feature: FEATURES["api-first"] },
+  ];
   return (
     <footer className="border-t bg-fd-background mt-auto">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-20">
@@ -28,42 +33,20 @@ export function Footer() {
           <div className="col-span-1">
             <h3 className="font-semibold text-fd-foreground mb-6 text-sm uppercase tracking-wider">Features</h3>
             <ul className="space-y-4 text-sm">
-              <li>
-                <Link
-                  href="/features/data-ownership"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
-                >
-                  <LockIcon className="w-4 h-4" />
-                  Data Ownership
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/features/self-hosted"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
-                >
-                  <ServerIcon className="w-4 h-4" />
-                  Self-Hosted
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/features/markdown-support"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
-                >
-                  <FileTextIcon className="w-4 h-4" />
-                  Markdown
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/features/api-first"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
-                >
-                  <CodeIcon className="w-4 h-4" />
-                  API First
-                </Link>
-              </li>
+              {footerFeatures.map(({ slug, feature }) => {
+                const Icon = feature.icon;
+                return (
+                  <li key={slug}>
+                    <Link
+                      href={`/features/${slug}`}
+                      className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                    >
+                      <Icon className="w-4 h-4" />
+                      {feature.title}
+                    </Link>
+                  </li>
+                );
+              })}
               <li>
                 <Link
                   href="/features"
