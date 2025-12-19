@@ -3,9 +3,44 @@
  * This serves as the single source of truth for all feature-related data
  */
 
+import type { LucideIcon } from "lucide-react";
+import {
+  ClockIcon,
+  CloudOffIcon,
+  CodeIcon,
+  DatabaseIcon,
+  DollarSignIcon,
+  DownloadIcon,
+  FeatherIcon,
+  FileTextIcon,
+  GitBranchIcon,
+  GlobeIcon,
+  HeartIcon,
+  ImageIcon,
+  KeyboardIcon,
+  LayersIcon,
+  LockIcon,
+  MonitorSmartphoneIcon,
+  PaletteIcon,
+  PlusCircleIcon,
+  SaveIcon,
+  SearchIcon,
+  ServerIcon,
+  Share2Icon,
+  TagIcon,
+  UploadIcon,
+  ZapIcon,
+} from "lucide-react";
+
 export interface FeatureDefinition {
   title: string;
   description: string;
+  icon: LucideIcon;
+  gradient: string;
+  iconBg: string;
+  iconColor: string;
+  border: string;
+  wip?: boolean;
   hero: {
     title: string;
     subtitle: string;
@@ -24,32 +59,88 @@ export type FeatureSlug = keyof typeof FEATURES;
  * All available feature slugs - used for static generation and routing
  */
 export const FEATURE_SLUGS = [
+  "self-hosted",
   "data-ownership",
-  "performance",
-  "react-frontend",
-  "cross-platform",
-  "customizable-ui",
-  "api-first",
-  "database-support",
   "open-source",
   "no-fees",
-  "community",
-  "self-hosted",
   "no-dependencies",
   "instant-save",
+  "quick-capture",
   "markdown-support",
   "media-integration",
-  "no-titles",
+  "universal-search",
+  "tags",
+  "timeline-view",
+  "public-sharing",
+  "beautiful-design",
+  "pwa-support",
+  "customizable-ui",
+  "cross-platform",
+  "performance",
+  "lightweight",
+  "database-support",
+  "api-first",
+  "community",
+  "multi-language",
+  "keyboard-shortcuts",
+  "import",
+  "export",
 ] as const;
 
 /**
  * Complete feature definitions with all metadata
  */
 export const FEATURES = {
+  // Self-hosted & Privacy First
+  "self-hosted": {
+    title: "Self-Hosted",
+    description: "Deploy on your own infrastructure from Raspberry Pi to enterprise Kubernetes clusters.",
+    icon: ServerIcon,
+    gradient: "from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30",
+    iconBg: "bg-purple-100 dark:bg-purple-900",
+    iconColor: "text-purple-600 dark:text-purple-400",
+    border: "border-purple-100 dark:border-purple-900",
+    hero: {
+      title: "Your Server, Your Control",
+      subtitle: "Deploy anywhere from Raspberry Pi to enterprise clusters - complete control without vendor lock-in.",
+    },
+    benefits: [
+      "Complete data ownership - your data never leaves your infrastructure",
+      "Deploy on any server, VPS, cloud provider, or on-premises hardware",
+      "Full control over user access, authentication policies, and security measures",
+      "Customize and scale resources based on your specific usage patterns",
+      "Integrate seamlessly with existing corporate infrastructure and SSO systems",
+      "No vendor lock-in or dependencies - deploy and manage on your terms",
+    ],
+    useCases: [
+      {
+        title: "Home Lab Setup",
+        description: "Run Memos on your home server or NAS for personal and family use with complete privacy.",
+      },
+      {
+        title: "Small Team Deployment",
+        description: "Deploy on a small VPS or cloud instance for team collaboration without external dependencies.",
+      },
+      {
+        title: "Enterprise Infrastructure",
+        description: "Integrate with existing corporate networks, authentication systems, and compliance frameworks.",
+      },
+    ],
+    techDetails: [
+      "Docker and Docker Compose support",
+      "Kubernetes deployment manifests included",
+      "Binary releases for Linux, macOS, and Windows",
+      "Reverse proxy and SSL termination compatible",
+    ],
+  },
   "data-ownership": {
-    title: "Complete Data Ownership",
-    description:
-      "Take full control of your notes and data with Memos' privacy-first architecture featuring zero telemetry, no tracking, ads, or subscription fees.",
+    title: "Data Ownership",
+    description: "Complete control over your notes with zero telemetry. All data stored locally in your chosen database.",
+    icon: LockIcon,
+    gradient: "from-teal-50 to-cyan-50 dark:from-teal-950/30 dark:to-cyan-950/30",
+    iconBg: "bg-teal-100 dark:bg-teal-900",
+    iconColor: "text-teal-600 dark:text-teal-400",
+    border: "border-teal-100 dark:border-teal-900",
     hero: {
       title: "Your Data, Your Rules",
       subtitle: "Complete ownership and control with zero telemetry - your data never leaves your control.",
@@ -83,233 +174,15 @@ export const FEATURES = {
       "Open-source codebase for full transparency",
     ],
   },
-  performance: {
-    title: "High-Performance Backend",
-    description:
-      "Built with Go for lightning-fast performance, instant loading with no cloud latency dependency, and minimal server requirements.",
-    hero: {
-      title: "Built for Speed",
-      subtitle: "Go-powered backend delivers instant loading and exceptional performance with no cloud latency dependency.",
-    },
-    benefits: [
-      "Instant loading with no latency dependency on cloud services",
-      "Lightning-fast response times under high load",
-      "Minimal memory footprint and CPU usage",
-      "Efficient concurrent request handling",
-      "Optimized database queries and caching",
-      "Sub-second search across thousands of notes",
-    ],
-    useCases: [
-      {
-        title: "Large Team Deployments",
-        description: "Support hundreds of concurrent users with minimal server resources.",
-      },
-      {
-        title: "Resource-Constrained Environments",
-        description: "Run efficiently on VPS, Raspberry Pi, or low-power hardware.",
-      },
-      {
-        title: "High-Traffic Scenarios",
-        description: "Handle peak usage periods without performance degradation.",
-      },
-    ],
-    techDetails: [
-      "Go 1.21+ with optimized goroutines",
-      "Connection pooling and query optimization",
-      "In-memory caching layer",
-      "Efficient JSON serialization",
-    ],
-  },
-  "react-frontend": {
-    title: "Modern React Frontend",
-    description:
-      "Clean, minimal design with responsive interface built with modern React, TypeScript, and cutting-edge web technologies featuring dark mode support.",
-    hero: {
-      title: "Beautiful & Responsive",
-      subtitle: "Modern React interface with dark mode support - clean design that works seamlessly across all devices.",
-    },
-    benefits: [
-      "Clean, minimal design focused on simplicity and usability",
-      "Responsive design optimized for both mobile and desktop experiences",
-      "Dark mode support with system preference detection for comfortable viewing",
-      "TypeScript and React 18 for enhanced reliability and developer experience",
-      "Fast page loads with optimized bundle splitting and lazy loading",
-      "Real-time updates without page refreshes and accessible WCAG-compliant design",
-    ],
-    useCases: [
-      {
-        title: "Mobile Note-Taking",
-        description: "Capture thoughts on the go with a mobile-optimized interface.",
-      },
-      {
-        title: "Desktop Productivity",
-        description: "Full-featured desktop experience with keyboard shortcuts and advanced features.",
-      },
-      {
-        title: "Cross-Device Sync",
-        description: "Real-time synchronization across phones, tablets, and computers.",
-      },
-    ],
-    techDetails: [
-      "React 18 with concurrent features",
-      "TypeScript for type safety",
-      "Tailwind CSS for consistent styling",
-      "Dark mode with system preference detection",
-      "PWA support for offline access",
-    ],
-  },
-  "cross-platform": {
-    title: "Cross-Platform Support",
-    description:
-      "Deploy anywhere with Docker containerization, pre-built binaries for Linux, macOS, Windows, and Kubernetes support with Helm charts.",
-    hero: {
-      title: "Deploy Anywhere",
-      subtitle: "From Raspberry Pi to enterprise Kubernetes clusters - universal compatibility for any deployment scenario.",
-    },
-    benefits: [
-      "Docker containerization with multi-architecture support (recommended deployment method)",
-      "Pre-built native binaries for Linux, macOS, and Windows",
-      "Kubernetes support with official Helm charts for orchestrated environments",
-      "ARM64 and x86-64 architecture support for diverse hardware",
-      "Multiple installation methods to suit any workflow or preference",
-      "Single binary deployment with zero external dependencies",
-    ],
-    useCases: [
-      {
-        title: "Home Server Setup",
-        description: "Install directly on your home server or NAS device.",
-      },
-      {
-        title: "Cloud Deployment",
-        description: "Deploy on any cloud provider using Docker or Kubernetes.",
-      },
-      {
-        title: "Development Environment",
-        description: "Run locally for development and testing on any platform.",
-      },
-    ],
-    techDetails: [
-      "Go 1.21+ cross-compilation for Linux, macOS, Windows",
-      "Multi-architecture Docker images (linux/amd64, linux/arm64)",
-      "Official Helm charts for Kubernetes deployments",
-      "Systemd service files and installation scripts included",
-      "GitHub Actions automated builds for all platforms",
-    ],
-  },
-  "customizable-ui": {
-    title: "Configurable Interface",
-    description: "Customize your Memos instance with personalized branding, themes, and UI elements to match your style.",
-    hero: {
-      title: "Make It Yours",
-      subtitle: "Personalize branding, themes, and UI elements to create a unique experience tailored to your identity.",
-    },
-    benefits: [
-      "Custom server name, description, and branding elements",
-      "Personalized favicon and logo for brand identity",
-      "Configurable theme colors and styling options",
-      "Custom CSS injection for advanced styling and tweaks",
-      "Multi-language interface support for global teams",
-      "Flexible layout options and visibility controls",
-    ],
-    useCases: [
-      {
-        title: "Corporate Branding",
-        description: "Match your company's visual identity and branding guidelines.",
-      },
-      {
-        title: "Personal Touch",
-        description: "Create a unique, personalized note-taking environment.",
-      },
-      {
-        title: "Team Identification",
-        description: "Differentiate between multiple Memos instances with custom branding.",
-      },
-    ],
-    techDetails: [
-      "Environment variable configuration for all settings",
-      "CSS custom properties and injection support",
-      "Configurable metadata, titles, and OpenGraph tags",
-      "Custom icon and logo replacement via assets folder",
-      "i18n support with multiple language packs",
-    ],
-  },
-  "api-first": {
-    title: "API-First Design",
-    description:
-      "Full REST and gRPC APIs with unrestricted access enable seamless integrations, custom applications, and automation workflows.",
-    hero: {
-      title: "Built for Integration",
-      subtitle: "Comprehensive REST and gRPC APIs unlock unlimited possibilities for custom integrations and automation.",
-    },
-    benefits: [
-      "Complete RESTful API covering all functionality with unrestricted access",
-      "High-performance gRPC API for advanced integrations and real-time operations",
-      "OpenAPI 3.0 specification for automatic client generation and easy integration",
-      "JWT-based authentication with flexible authorization controls",
-      "Webhook support for real-time event notifications and automation",
-      "Bulk operations and batch endpoints for efficient data management",
-    ],
-    useCases: [
-      {
-        title: "Custom Applications",
-        description: "Build custom frontends or mobile apps using the comprehensive API.",
-      },
-      {
-        title: "Automation Workflows",
-        description: "Integrate with automation tools like Zapier, IFTTT, or custom scripts.",
-      },
-      {
-        title: "Data Migration",
-        description: "Import and export data from other systems using the API.",
-      },
-    ],
-    techDetails: [
-      "RESTful HTTP API with JSON responses",
-      "gRPC API with Protocol Buffers for high performance",
-      "OpenAPI 3.0 specification with interactive documentation",
-      "JWT-based authentication with refresh token support",
-      "Webhook system for event-driven integrations",
-    ],
-  },
-  "database-support": {
-    title: "Multi-Database Support",
-    description: "Choose from SQLite, PostgreSQL, or MySQL databases to match your infrastructure and performance needs.",
-    hero: {
-      title: "Your Database, Your Choice",
-      subtitle: "Flexible support for SQLite, PostgreSQL, and MySQL - choose the best fit for your infrastructure needs.",
-    },
-    benefits: [
-      "SQLite for simple single-user deployments with zero configuration",
-      "PostgreSQL for enterprise-grade reliability and advanced features",
-      "MySQL for seamless integration with existing infrastructure",
-      "Automatic database migrations and schema version management",
-      "Connection pooling and query optimization for each database type",
-      "Easy database switching without data loss or downtime",
-    ],
-    useCases: [
-      {
-        title: "Single-User Setup",
-        description: "Use SQLite for personal instances with minimal configuration.",
-      },
-      {
-        title: "Team Collaboration",
-        description: "PostgreSQL or MySQL for multi-user environments with high concurrency.",
-      },
-      {
-        title: "Enterprise Deployment",
-        description: "Integrate with existing database infrastructure and backup systems.",
-      },
-    ],
-    techDetails: [
-      "GORM for database abstraction",
-      "Automated migrations and versioning",
-      "Connection pooling configuration",
-      "Database-specific optimizations",
-    ],
-  },
+  // Open Source & Freedom
   "open-source": {
-    title: "Open Source License",
-    description: "MIT licensed with full source code transparency, permissive usage terms, and community-driven development.",
+    title: "Open Source",
+    description: "MIT licensed with full source code transparency - freedom to use, modify, and distribute.",
+    icon: GitBranchIcon,
+    gradient: "from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30",
+    iconBg: "bg-emerald-100 dark:bg-emerald-900",
+    iconColor: "text-emerald-600 dark:text-emerald-400",
+    border: "border-emerald-100 dark:border-emerald-900",
     hero: {
       title: "Truly Open Source",
       subtitle: "MIT license ensures complete freedom to use, modify, and distribute - transparency you can trust.",
@@ -344,8 +217,13 @@ export const FEATURES = {
     ],
   },
   "no-fees": {
-    title: "Zero Subscription Fees",
-    description: "Use all features forever with no subscription fees, no tracking, no ads - completely free and open with unlimited usage.",
+    title: "Always Free",
+    description: "All features free forever - no premium tiers, usage limits, or hidden costs. Ever.",
+    icon: DollarSignIcon,
+    gradient: "from-lime-50 to-green-50 dark:from-lime-950/30 dark:to-green-950/30",
+    iconBg: "bg-lime-100 dark:bg-lime-900",
+    iconColor: "text-lime-600 dark:text-lime-400",
+    border: "border-lime-100 dark:border-lime-900",
     hero: {
       title: "Free Forever",
       subtitle: "No subscription fees, no tracking, no ads - all features available at no cost with unlimited usage.",
@@ -379,82 +257,14 @@ export const FEATURES = {
       "Community-driven support model",
     ],
   },
-  community: {
-    title: "Community-Driven Development",
-    description: "Transparent development process with active community contributions, feedback, and collaborative improvement.",
-    hero: {
-      title: "Built Together",
-      subtitle: "Join 40,000+ community members collaborating to make Memos better through open development.",
-    },
-    benefits: [
-      "Transparent roadmap and open development process",
-      "Active GitHub community with 40,000+ stars and growing",
-      "Regular community feedback integration into releases",
-      "Multiple communication channels including Discord and GitHub Discussions",
-      "Collaborative feature development and public testing",
-      "Responsive maintainers and quick issue resolution",
-    ],
-    useCases: [
-      {
-        title: "Feature Requests",
-        description: "Suggest and vote on new features through community discussions.",
-      },
-      {
-        title: "Bug Reporting",
-        description: "Report issues and collaborate on fixes with the development team.",
-      },
-      {
-        title: "Knowledge Sharing",
-        description: "Learn from and share solutions with other Memos users.",
-      },
-    ],
-    techDetails: [
-      "GitHub Discussions for community interaction",
-      "Discord server for real-time chat",
-      "Regular release cycles with community input",
-      "Contributor recognition and acknowledgment",
-    ],
-  },
-  "self-hosted": {
-    title: "Self-Hosted Architecture",
-    description:
-      "Deploy Memos on your own infrastructure with complete control over your data, ensuring privacy and ownership without vendor lock-in.",
-    hero: {
-      title: "Your Server, Your Control",
-      subtitle: "Deploy anywhere from Raspberry Pi to enterprise clusters - complete control without vendor lock-in.",
-    },
-    benefits: [
-      "Complete data ownership - your data never leaves your infrastructure",
-      "Deploy on any server, VPS, cloud provider, or on-premises hardware",
-      "Full control over user access, authentication policies, and security measures",
-      "Customize and scale resources based on your specific usage patterns",
-      "Integrate seamlessly with existing corporate infrastructure and SSO systems",
-      "No vendor lock-in or dependencies - deploy and manage on your terms",
-    ],
-    useCases: [
-      {
-        title: "Home Lab Setup",
-        description: "Run Memos on your home server or NAS for personal and family use with complete privacy.",
-      },
-      {
-        title: "Small Team Deployment",
-        description: "Deploy on a small VPS or cloud instance for team collaboration without external dependencies.",
-      },
-      {
-        title: "Enterprise Infrastructure",
-        description: "Integrate with existing corporate networks, authentication systems, and compliance frameworks.",
-      },
-    ],
-    techDetails: [
-      "Docker and Docker Compose support",
-      "Kubernetes deployment manifests included",
-      "Binary releases for Linux, macOS, and Windows",
-      "Reverse proxy and SSL termination compatible",
-    ],
-  },
   "no-dependencies": {
-    title: "No External Dependencies",
-    description: "Work completely offline with zero telemetry, zero external API calls, and no third-party services or cloud dependencies.",
+    title: "No Dependencies",
+    description: "Works with zero external dependencies or cloud connections required. Fully self-contained.",
+    icon: CloudOffIcon,
+    gradient: "from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30",
+    iconBg: "bg-blue-100 dark:bg-blue-900",
+    iconColor: "text-blue-600 dark:text-blue-400",
+    border: "border-blue-100 dark:border-blue-900",
     hero: {
       title: "Truly Independent",
       subtitle: "Zero telemetry and no internet connection required after installation - your notes work anywhere, anytime.",
@@ -488,9 +298,15 @@ export const FEATURES = {
       "Self-contained Docker image",
     ],
   },
+  // Core Note-Taking Features
   "instant-save": {
     title: "Instant Save",
-    description: "Never lose a thought with automatic persistence and streamlined input that saves as you type.",
+    description: "Automatic persistence as you type - never lose a thought with streamlined plaintext input.",
+    icon: SaveIcon,
+    gradient: "from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30",
+    iconBg: "bg-green-100 dark:bg-green-900",
+    iconColor: "text-green-600 dark:text-green-400",
+    border: "border-green-100 dark:border-green-900",
     hero: {
       title: "Capture Every Thought",
       subtitle: "Automatic saving as you type ensures zero data loss - never worry about manual saves again.",
@@ -524,10 +340,55 @@ export const FEATURES = {
       "Client-side state management for draft handling",
     ],
   },
+  "quick-capture": {
+    title: "Quick Capture",
+    description: "Fast note creation from anywhere - capture thoughts instantly without interrupting your flow.",
+    icon: PlusCircleIcon,
+    gradient: "from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30",
+    iconBg: "bg-emerald-100 dark:bg-emerald-900",
+    iconColor: "text-emerald-600 dark:text-emerald-400",
+    border: "border-emerald-100 dark:border-emerald-900",
+    hero: {
+      title: "Capture Thoughts Instantly",
+      subtitle: "Quick note creation from anywhere - never let a great idea slip away.",
+    },
+    benefits: [
+      "Create notes from anywhere with keyboard shortcut",
+      "Minimal interface for distraction-free quick capture",
+      "Auto-save ensures no thought is lost",
+      "Browser bookmarklet for instant capture from any page",
+      "Mobile-optimized quick add interface",
+      "Timestamped entries for easy recall",
+    ],
+    useCases: [
+      {
+        title: "Fleeting Ideas",
+        description: "Capture sudden inspirations and thoughts before they disappear.",
+      },
+      {
+        title: "Quick Reminders",
+        description: "Jot down tasks and reminders in seconds without switching apps.",
+      },
+      {
+        title: "Web Clipping",
+        description: "Save interesting content from the web with context and source.",
+      },
+    ],
+    techDetails: [
+      "Global keyboard shortcut support",
+      "Bookmarklet for browser integration",
+      "Mobile share sheet integration",
+      "Minimal UI for fast interaction",
+    ],
+  },
   "markdown-support": {
-    title: "Rich Markdown Support",
-    description:
-      "Full Markdown support with plain text storage for maximum portability, featuring syntax highlighting, tables, and advanced formatting.",
+    title: "Rich Markdown",
+    description: "GitHub Flavored Markdown with syntax highlighting, tables, and LaTeX math expressions.",
+    icon: FileTextIcon,
+    gradient: "from-orange-50 to-red-50 dark:from-orange-950/30 dark:to-red-950/30",
+    iconBg: "bg-orange-100 dark:bg-orange-900",
+    iconColor: "text-orange-600 dark:text-orange-400",
+    border: "border-orange-100 dark:border-orange-900",
     hero: {
       title: "Write with Power",
       subtitle: "Full Markdown support with plain text storage ensures portability and future-proof content.",
@@ -562,8 +423,13 @@ export const FEATURES = {
     ],
   },
   "media-integration": {
-    title: "Media Integration",
-    description: "Native support for images, files, and multimedia content with drag-and-drop functionality.",
+    title: "Media Support",
+    description: "Drag-and-drop support for images, videos, audio files, and document attachments.",
+    icon: ImageIcon,
+    gradient: "from-pink-50 to-rose-50 dark:from-pink-950/30 dark:to-rose-950/30",
+    iconBg: "bg-pink-100 dark:bg-pink-900",
+    iconColor: "text-pink-600 dark:text-pink-400",
+    border: "border-pink-100 dark:border-pink-900",
     hero: {
       title: "Rich Media Support",
       subtitle: "Seamlessly integrate images, videos, and documents with simple drag-and-drop functionality.",
@@ -597,41 +463,712 @@ export const FEATURES = {
       "MIME type validation and security scanning",
     ],
   },
-  "no-titles": {
-    title: "No Titles Required",
-    description:
-      "Write faster without the friction of creating titles. Focus on capturing your thoughts instantly without the cognitive overhead of naming each note.",
+  "universal-search": {
+    title: "Universal Search",
+    description: "Find any note instantly with powerful full-text search across all your memos and content.",
+    icon: SearchIcon,
+    gradient: "from-cyan-50 to-blue-50 dark:from-cyan-950/30 dark:to-blue-950/30",
+    iconBg: "bg-cyan-100 dark:bg-cyan-900",
+    iconColor: "text-cyan-600 dark:text-cyan-400",
+    border: "border-cyan-100 dark:border-cyan-900",
     hero: {
-      title: "Just Start Writing",
-      subtitle: "No titles to think about, no friction to slow you down - capture your thoughts instantly and keep your creative flow.",
+      title: "Find Anything Instantly",
+      subtitle: "Powerful full-text search helps you find any note in milliseconds across your entire collection.",
     },
     benefits: [
-      "Zero friction - start writing immediately without thinking of titles",
-      "Natural chronological flow organized by time, not arbitrary names",
-      "Reduced cognitive overhead - no pressure to summarize content upfront",
-      "Faster note-taking - skip the mental block of creating the perfect title",
-      "Content-first approach - your thoughts matter, not what you call them",
-      "Search finds content directly - titles don't add meaningful discoverability",
+      "Instant full-text search across all notes and content",
+      "Search within tags, content, and metadata",
+      "Fuzzy matching to find notes even with typos",
+      "Advanced filters and search operators",
+      "Real-time search results as you type",
+      "Search history and saved searches",
     ],
     useCases: [
       {
-        title: "Quick Capture",
-        description: "Capture fleeting thoughts and ideas instantly without pausing to think of appropriate titles.",
+        title: "Knowledge Retrieval",
+        description: "Quickly find past notes and information when you need them.",
       },
       {
-        title: "Stream of Consciousness",
-        description: "Write naturally without interrupting your flow to create organizational metadata.",
+        title: "Research Organization",
+        description: "Search across extensive research notes to find relevant information.",
       },
       {
-        title: "Meeting Notes",
-        description: "Focus on recording important information rather than deciding how to label each note.",
+        title: "Team Collaboration",
+        description: "Help team members find shared knowledge and documentation.",
       },
     ],
     techDetails: [
-      "Chronological timeline-based organization",
-      "Full-text search across all content",
-      "Tag-based categorization without title requirements",
-      "Content preview in search results",
+      "Database full-text search capabilities",
+      "Optimized indexing for fast queries",
+      "Case-insensitive and accent-insensitive search",
+      "Search result relevance ranking",
+    ],
+  },
+  "tags": {
+    title: "Tags",
+    description: "Organize your notes with flexible tagging system for quick categorization and filtering.",
+    icon: TagIcon,
+    gradient: "from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30",
+    iconBg: "bg-amber-100 dark:bg-amber-900",
+    iconColor: "text-amber-600 dark:text-amber-400",
+    border: "border-amber-100 dark:border-amber-900",
+    hero: {
+      title: "Organize with Tags",
+      subtitle: "Flexible tagging system makes it easy to categorize and filter your notes for quick access.",
+    },
+    benefits: [
+      "Unlimited tags per note for flexible organization",
+      "Auto-complete suggestions based on existing tags",
+      "Tag-based filtering and navigation",
+      "Tag management and renaming capabilities",
+      "Tag statistics and usage analytics",
+      "Nested tags and hierarchical organization",
+    ],
+    useCases: [
+      {
+        title: "Project Organization",
+        description: "Tag notes by project, priority, or status for easy tracking.",
+      },
+      {
+        title: "Topic Categorization",
+        description: "Organize notes by topics, themes, or categories.",
+      },
+      {
+        title: "Workflow Management",
+        description: "Use tags to manage notes through different stages or workflows.",
+      },
+    ],
+    techDetails: [
+      "Hashtag-style tagging (#tag)",
+      "Database-backed tag index",
+      "Tag autocomplete and suggestions",
+      "Tag cloud visualization",
+    ],
+  },
+  "timeline-view": {
+    title: "Timeline View",
+    description: "Chronological feed of all your notes - browse memories and thoughts in time order.",
+    icon: ClockIcon,
+    gradient: "from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30",
+    iconBg: "bg-blue-100 dark:bg-blue-900",
+    iconColor: "text-blue-600 dark:text-blue-400",
+    border: "border-blue-100 dark:border-blue-900",
+    hero: {
+      title: "Your Personal Timeline",
+      subtitle: "Browse notes chronologically - see your thoughts and memories unfold over time.",
+    },
+    benefits: [
+      "Chronological feed showing all notes in time order",
+      "Daily, weekly, and monthly views for different perspectives",
+      "See your activity patterns and note-taking habits",
+      "Infinite scroll for seamless browsing",
+      "Jump to any date to find past notes",
+      "Activity stream shows your knowledge evolution",
+    ],
+    useCases: [
+      {
+        title: "Personal Journal",
+        description: "Browse your daily notes like a journal, see your thoughts over time.",
+      },
+      {
+        title: "Activity Review",
+        description: "Review what you were working on during any time period.",
+      },
+      {
+        title: "Memory Lane",
+        description: "Rediscover old ideas and notes from months or years ago.",
+      },
+    ],
+    techDetails: [
+      "Efficient pagination for large note collections",
+      "Date-based filtering and navigation",
+      "Optimized queries for chronological display",
+      "Responsive timeline UI",
+    ],
+  },
+  "public-sharing": {
+    title: "Public Sharing",
+    description: "Share notes publicly with customizable links - make knowledge accessible to the world.",
+    icon: Share2Icon,
+    gradient: "from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30",
+    iconBg: "bg-violet-100 dark:bg-violet-900",
+    iconColor: "text-violet-600 dark:text-violet-400",
+    border: "border-violet-100 dark:border-violet-900",
+    hero: {
+      title: "Share Your Knowledge",
+      subtitle: "Generate shareable public links for any note - control who sees what.",
+    },
+    benefits: [
+      "Generate public links for any note instantly",
+      "Control visibility - keep some notes private, others public",
+      "No login required for readers to view shared notes",
+      "Shareable URLs that work anywhere",
+      "Embed notes on external websites",
+      "Share your knowledge base with the world",
+    ],
+    useCases: [
+      {
+        title: "Knowledge Sharing",
+        description: "Share tutorials, guides, and documentation with colleagues or the public.",
+      },
+      {
+        title: "Portfolio & Blog",
+        description: "Use public notes as a simple blog or portfolio of your work.",
+      },
+      {
+        title: "Team Collaboration",
+        description: "Share meeting notes and decisions with team members via simple links.",
+      },
+    ],
+    techDetails: [
+      "Public/private visibility toggle per note",
+      "Shareable URL generation",
+      "SEO-friendly public note pages",
+      "Embed support via iframes",
+    ],
+  },
+  // User Experience
+  "beautiful-design": {
+    title: "Beautiful Design",
+    description: "Modern React and TypeScript interface with dark mode and responsive design for all devices.",
+    icon: LayersIcon,
+    gradient: "from-sky-50 to-blue-50 dark:from-sky-950/30 dark:to-blue-950/30",
+    iconBg: "bg-sky-100 dark:bg-sky-900",
+    iconColor: "text-sky-600 dark:text-sky-400",
+    border: "border-sky-100 dark:border-sky-900",
+    hero: {
+      title: "Beautiful & Responsive",
+      subtitle: "Modern React interface with dark mode support - clean design that works seamlessly across all devices.",
+    },
+    benefits: [
+      "Clean, minimal design focused on simplicity and usability",
+      "Responsive design optimized for both mobile and desktop experiences",
+      "Dark mode support with system preference detection for comfortable viewing",
+      "TypeScript and React 18 for enhanced reliability and developer experience",
+      "Fast page loads with optimized bundle splitting and lazy loading",
+      "Real-time updates without page refreshes and accessible WCAG-compliant design",
+    ],
+    useCases: [
+      {
+        title: "Mobile Note-Taking",
+        description: "Capture thoughts on the go with a mobile-optimized interface.",
+      },
+      {
+        title: "Desktop Productivity",
+        description: "Full-featured desktop experience with keyboard shortcuts and advanced features.",
+      },
+      {
+        title: "Cross-Device Sync",
+        description: "Real-time synchronization across phones, tablets, and computers.",
+      },
+    ],
+    techDetails: [
+      "React 18 with concurrent features",
+      "TypeScript for type safety",
+      "Tailwind CSS for consistent styling",
+      "Dark mode with system preference detection",
+      "PWA support for offline access",
+    ],
+  },
+  "pwa-support": {
+    title: "Progressive Web App",
+    description: "Install as a native app on any device - works offline with full functionality.",
+    icon: MonitorSmartphoneIcon,
+    gradient: "from-cyan-50 to-blue-50 dark:from-cyan-950/30 dark:to-blue-950/30",
+    iconBg: "bg-cyan-100 dark:bg-cyan-900",
+    iconColor: "text-cyan-600 dark:text-cyan-400",
+    border: "border-cyan-100 dark:border-cyan-900",
+    hero: {
+      title: "Install Like a Native App",
+      subtitle: "Progressive Web App technology delivers native-like experience on any device.",
+    },
+    benefits: [
+      "Install on desktop and mobile like a native app",
+      "Works fully offline after initial load",
+      "Native-like experience with app icon and standalone window",
+      "Automatic updates without app store approval",
+      "Push notifications for important updates",
+      "Reduced data usage with intelligent caching",
+    ],
+    useCases: [
+      {
+        title: "Offline Note-Taking",
+        description: "Take notes without internet connection - syncs when back online.",
+      },
+      {
+        title: "App-Like Experience",
+        description: "Use Memos like a native desktop or mobile app with full features.",
+      },
+      {
+        title: "Low Bandwidth",
+        description: "Work efficiently even on slow or unreliable connections.",
+      },
+    ],
+    techDetails: [
+      "Service Worker for offline functionality",
+      "Web App Manifest for installability",
+      "IndexedDB for local data storage",
+      "Background sync for offline changes",
+    ],
+  },
+  "keyboard-shortcuts": {
+    title: "Keyboard Shortcuts",
+    description: "Boost productivity with comprehensive keyboard shortcuts for power users and fast navigation.",
+    icon: KeyboardIcon,
+    gradient: "from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30",
+    iconBg: "bg-blue-100 dark:bg-blue-900",
+    iconColor: "text-blue-600 dark:text-blue-400",
+    border: "border-blue-100 dark:border-blue-900",
+    wip: true,
+    hero: {
+      title: "Work at Speed",
+      subtitle: "Comprehensive keyboard shortcuts let you navigate and take notes without reaching for the mouse.",
+    },
+    benefits: [
+      "Extensive keyboard shortcuts for all common actions",
+      "Quick note creation without mouse interaction",
+      "Fast navigation between notes and sections",
+      "Markdown formatting shortcuts",
+      "Search activation with keyboard hotkey",
+      "Customizable shortcut preferences",
+    ],
+    useCases: [
+      {
+        title: "Power User Workflow",
+        description: "Navigate and create notes at lightning speed without using the mouse.",
+      },
+      {
+        title: "Accessibility",
+        description: "Keyboard-first navigation for users who prefer or require keyboard access.",
+      },
+      {
+        title: "Efficiency Focus",
+        description: "Maintain flow state by keeping hands on the keyboard.",
+      },
+    ],
+    techDetails: [
+      "Global keyboard event handlers",
+      "Vim-style navigation support",
+      "Customizable key bindings",
+      "Shortcut reference panel",
+    ],
+  },
+  "customizable-ui": {
+    title: "Customizable",
+    description: "Custom branding, themes, colors, and UI elements to create your perfect note-taking environment.",
+    icon: PaletteIcon,
+    gradient: "from-fuchsia-50 to-pink-50 dark:from-fuchsia-950/30 dark:to-pink-950/30",
+    iconBg: "bg-fuchsia-100 dark:bg-fuchsia-900",
+    iconColor: "text-fuchsia-600 dark:text-fuchsia-400",
+    border: "border-fuchsia-100 dark:border-fuchsia-900",
+    hero: {
+      title: "Make It Yours",
+      subtitle: "Personalize branding, themes, and UI elements to create a unique experience tailored to your identity.",
+    },
+    benefits: [
+      "Custom server name, description, and branding elements",
+      "Personalized favicon and logo for brand identity",
+      "Configurable theme colors and styling options",
+      "Custom CSS injection for advanced styling and tweaks",
+      "Multi-language interface support for global teams",
+      "Flexible layout options and visibility controls",
+    ],
+    useCases: [
+      {
+        title: "Corporate Branding",
+        description: "Match your company's visual identity and branding guidelines.",
+      },
+      {
+        title: "Personal Touch",
+        description: "Create a unique, personalized note-taking environment.",
+      },
+      {
+        title: "Team Identification",
+        description: "Differentiate between multiple Memos instances with custom branding.",
+      },
+    ],
+    techDetails: [
+      "Environment variable configuration for all settings",
+      "CSS custom properties and injection support",
+      "Configurable metadata, titles, and OpenGraph tags",
+      "Custom icon and logo replacement via assets folder",
+      "i18n support with multiple language packs",
+    ],
+  },
+  "cross-platform": {
+    title: "Cross-Platform",
+    description: "Linux, macOS, Windows, Docker, and Kubernetes - deploy anywhere with universal compatibility.",
+    icon: ServerIcon,
+    gradient: "from-indigo-50 to-blue-50 dark:from-indigo-950/30 dark:to-blue-950/30",
+    iconBg: "bg-indigo-100 dark:bg-indigo-900",
+    iconColor: "text-indigo-600 dark:text-indigo-400",
+    border: "border-indigo-100 dark:border-indigo-900",
+    hero: {
+      title: "Deploy Anywhere",
+      subtitle: "From Raspberry Pi to enterprise Kubernetes clusters - universal compatibility for any deployment scenario.",
+    },
+    benefits: [
+      "Docker containerization with multi-architecture support (recommended deployment method)",
+      "Pre-built native binaries for Linux, macOS, and Windows",
+      "Kubernetes support with official Helm charts for orchestrated environments",
+      "ARM64 and x86-64 architecture support for diverse hardware",
+      "Multiple installation methods to suit any workflow or preference",
+      "Single binary deployment with zero external dependencies",
+    ],
+    useCases: [
+      {
+        title: "Home Server Setup",
+        description: "Install directly on your home server or NAS device.",
+      },
+      {
+        title: "Cloud Deployment",
+        description: "Deploy on any cloud provider using Docker or Kubernetes.",
+      },
+      {
+        title: "Development Environment",
+        description: "Run locally for development and testing on any platform.",
+      },
+    ],
+    techDetails: [
+      "Go 1.21+ cross-compilation for Linux, macOS, Windows",
+      "Multi-architecture Docker images (linux/amd64, linux/arm64)",
+      "Official Helm charts for Kubernetes deployments",
+      "Systemd service files and installation scripts included",
+      "GitHub Actions automated builds for all platforms",
+    ],
+  },
+  // Technical Excellence
+  "performance": {
+    title: "Super-fast",
+    description: "Go-powered backend with instant loading and minimal resource usage for peak performance.",
+    icon: ZapIcon,
+    gradient: "from-yellow-50 to-amber-50 dark:from-yellow-950/30 dark:to-amber-950/30",
+    iconBg: "bg-yellow-100 dark:bg-yellow-900",
+    iconColor: "text-yellow-600 dark:text-yellow-400",
+    border: "border-yellow-100 dark:border-yellow-900",
+    hero: {
+      title: "Built for Speed",
+      subtitle: "Go-powered backend delivers instant loading and exceptional performance with no cloud latency dependency.",
+    },
+    benefits: [
+      "Instant loading with no latency dependency on cloud services",
+      "Lightning-fast response times under high load",
+      "Minimal memory footprint and CPU usage",
+      "Efficient concurrent request handling",
+      "Optimized database queries and caching",
+      "Sub-second search across thousands of notes",
+    ],
+    useCases: [
+      {
+        title: "Large Team Deployments",
+        description: "Support hundreds of concurrent users with minimal server resources.",
+      },
+      {
+        title: "Resource-Constrained Environments",
+        description: "Run efficiently on VPS, Raspberry Pi, or low-power hardware.",
+      },
+      {
+        title: "High-Traffic Scenarios",
+        description: "Handle peak usage periods without performance degradation.",
+      },
+    ],
+    techDetails: [
+      "Go 1.21+ with optimized goroutines",
+      "Connection pooling and query optimization",
+      "In-memory caching layer",
+      "Efficient JSON serialization",
+    ],
+  },
+  "lightweight": {
+    title: "Lightweight & Efficient",
+    description: "Minimal footprint - runs smoothly on low-powered devices with minimal resource usage.",
+    icon: FeatherIcon,
+    gradient: "from-sky-50 to-cyan-50 dark:from-sky-950/30 dark:to-cyan-950/30",
+    iconBg: "bg-sky-100 dark:bg-sky-900",
+    iconColor: "text-sky-600 dark:text-sky-400",
+    border: "border-sky-100 dark:border-sky-900",
+    hero: {
+      title: "Light as a Feather",
+      subtitle: "Minimal resource usage means Memos runs smoothly even on low-powered hardware.",
+    },
+    benefits: [
+      "Small binary size - under 50MB total",
+      "Low memory footprint - runs on 256MB RAM",
+      "Minimal CPU usage even under load",
+      "Fast startup time - ready in seconds",
+      "Efficient database usage with minimal disk space",
+      "Perfect for Raspberry Pi, old laptops, and budget VPS",
+    ],
+    useCases: [
+      {
+        title: "Raspberry Pi Hosting",
+        description: "Run a full-featured note server on a Raspberry Pi with room to spare.",
+      },
+      {
+        title: "Budget VPS",
+        description: "Host Memos on the smallest, cheapest VPS tiers available.",
+      },
+      {
+        title: "Old Hardware",
+        description: "Breathe new life into old computers by hosting Memos locally.",
+      },
+    ],
+    techDetails: [
+      "Compiled Go binary with minimal dependencies",
+      "Efficient memory management",
+      "Optimized asset delivery",
+      "Lazy loading and code splitting",
+    ],
+  },
+  "database-support": {
+    title: "Multi-Database",
+    description: "Choose between SQLite, PostgreSQL, or MySQL to match your infrastructure needs.",
+    icon: DatabaseIcon,
+    gradient: "from-slate-50 to-gray-50 dark:from-slate-950/30 dark:to-gray-950/30",
+    iconBg: "bg-slate-100 dark:bg-slate-900",
+    iconColor: "text-slate-600 dark:text-slate-400",
+    border: "border-slate-100 dark:border-slate-900",
+    hero: {
+      title: "Your Database, Your Choice",
+      subtitle: "Flexible support for SQLite, PostgreSQL, and MySQL - choose the best fit for your infrastructure needs.",
+    },
+    benefits: [
+      "SQLite for simple single-user deployments with zero configuration",
+      "PostgreSQL for enterprise-grade reliability and advanced features",
+      "MySQL for seamless integration with existing infrastructure",
+      "Automatic database migrations and schema version management",
+      "Connection pooling and query optimization for each database type",
+      "Easy database switching without data loss or downtime",
+    ],
+    useCases: [
+      {
+        title: "Single-User Setup",
+        description: "Use SQLite for personal instances with minimal configuration.",
+      },
+      {
+        title: "Team Collaboration",
+        description: "PostgreSQL or MySQL for multi-user environments with high concurrency.",
+      },
+      {
+        title: "Enterprise Deployment",
+        description: "Integrate with existing database infrastructure and backup systems.",
+      },
+    ],
+    techDetails: [
+      "GORM for database abstraction",
+      "Automated migrations and versioning",
+      "Connection pooling configuration",
+      "Database-specific optimizations",
+    ],
+  },
+  "api-first": {
+    title: "API & Integrations",
+    description: "Full REST and gRPC APIs with unrestricted access for custom integrations and automation.",
+    icon: CodeIcon,
+    gradient: "from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30",
+    iconBg: "bg-violet-100 dark:bg-violet-900",
+    iconColor: "text-violet-600 dark:text-violet-400",
+    border: "border-violet-100 dark:border-violet-900",
+    hero: {
+      title: "Built for Integration",
+      subtitle: "Comprehensive REST and gRPC APIs unlock unlimited possibilities for custom integrations and automation.",
+    },
+    benefits: [
+      "Complete RESTful API covering all functionality with unrestricted access",
+      "High-performance gRPC API for advanced integrations and real-time operations",
+      "OpenAPI 3.0 specification for automatic client generation and easy integration",
+      "JWT-based authentication with flexible authorization controls",
+      "Webhook support for real-time event notifications and automation",
+      "Bulk operations and batch endpoints for efficient data management",
+    ],
+    useCases: [
+      {
+        title: "Custom Applications",
+        description: "Build custom frontends or mobile apps using the comprehensive API.",
+      },
+      {
+        title: "Automation Workflows",
+        description: "Integrate with automation tools like Zapier, IFTTT, or custom scripts.",
+      },
+      {
+        title: "Data Migration",
+        description: "Import and export data from other systems using the API.",
+      },
+    ],
+    techDetails: [
+      "RESTful HTTP API with JSON responses",
+      "gRPC API with Protocol Buffers for high performance",
+      "OpenAPI 3.0 specification with interactive documentation",
+      "JWT-based authentication with refresh token support",
+      "Webhook system for event-driven integrations",
+    ],
+  },
+  // Community & Ecosystem
+  "community": {
+    title: "Community-Driven",
+    description: "Active development with 45,000+ GitHub stars, transparent roadmap, and engaged community.",
+    icon: HeartIcon,
+    gradient: "from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30",
+    iconBg: "bg-rose-100 dark:bg-rose-900",
+    iconColor: "text-rose-600 dark:text-rose-400",
+    border: "border-rose-100 dark:border-rose-900",
+    hero: {
+      title: "Built Together",
+      subtitle: "Active community with 45,000+ GitHub stars collaborating to make Memos better every day.",
+    },
+    benefits: [
+      "Transparent roadmap and open development process",
+      "Active GitHub community with 45,000+ stars and growing",
+      "Regular community feedback integration into releases",
+      "Multiple communication channels including Discord and GitHub Discussions",
+      "Collaborative feature development and public testing",
+      "Responsive maintainers and quick issue resolution",
+    ],
+    useCases: [
+      {
+        title: "Feature Requests",
+        description: "Suggest and vote on new features through community discussions.",
+      },
+      {
+        title: "Bug Reporting",
+        description: "Report issues and collaborate on fixes with the development team.",
+      },
+      {
+        title: "Knowledge Sharing",
+        description: "Learn from and share solutions with other Memos users.",
+      },
+    ],
+    techDetails: [
+      "GitHub Discussions for community interaction",
+      "Discord server for real-time chat",
+      "Regular release cycles with community input",
+      "Contributor recognition and acknowledgment",
+    ],
+  },
+  "multi-language": {
+    title: "Multi-Language Support",
+    description: "Available in multiple languages with community-contributed translations for global accessibility.",
+    icon: GlobeIcon,
+    gradient: "from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30",
+    iconBg: "bg-indigo-100 dark:bg-indigo-900",
+    iconColor: "text-indigo-600 dark:text-indigo-400",
+    border: "border-indigo-100 dark:border-indigo-900",
+    hero: {
+      title: "Speak Your Language",
+      subtitle: "Multiple language support with community translations makes Memos accessible worldwide.",
+    },
+    benefits: [
+      "Interface available in multiple languages",
+      "Community-contributed translations",
+      "Easy language switching in settings",
+      "RTL (right-to-left) language support",
+      "Localized date and time formats",
+      "Contribution process for new translations",
+    ],
+    useCases: [
+      {
+        title: "International Teams",
+        description: "Support team members who speak different languages.",
+      },
+      {
+        title: "Global Organizations",
+        description: "Deploy across regions with localized interfaces.",
+      },
+      {
+        title: "Personal Preference",
+        description: "Use Memos in your preferred language for better comfort.",
+      },
+    ],
+    techDetails: [
+      "i18next internationalization framework",
+      "JSON-based translation files",
+      "Language detection from browser settings",
+      "Contribution guidelines for translators",
+    ],
+  },
+  // Work In Progress
+  "import": {
+    title: "Import",
+    description: "Migrate from other platforms with easy import from Markdown files and popular note apps.",
+    icon: UploadIcon,
+    gradient: "from-teal-50 to-green-50 dark:from-teal-950/30 dark:to-green-950/30",
+    iconBg: "bg-teal-100 dark:bg-teal-900",
+    iconColor: "text-teal-600 dark:text-teal-400",
+    border: "border-teal-100 dark:border-teal-900",
+    wip: true,
+    hero: {
+      title: "Easy Migration",
+      subtitle: "Import your existing notes from popular platforms and Markdown files with ease.",
+    },
+    benefits: [
+      "Import from Markdown files and directories",
+      "Support for popular note-taking app formats",
+      "Bulk import capability for large collections",
+      "Automatic tag and metadata extraction",
+      "Preview before finalizing import",
+      "Duplicate detection and merging",
+    ],
+    useCases: [
+      {
+        title: "Platform Migration",
+        description: "Move from other note-taking apps to Memos seamlessly.",
+      },
+      {
+        title: "Data Consolidation",
+        description: "Bring together notes from multiple sources.",
+      },
+      {
+        title: "Backup Restoration",
+        description: "Restore notes from exported backups.",
+      },
+    ],
+    techDetails: [
+      "Markdown file parser",
+      "Format conversion utilities",
+      "Batch import processing",
+      "Error handling and validation",
+    ],
+  },
+  "export": {
+    title: "Print & Export",
+    description: "Export your notes to Markdown, JSON, or CSV - your data is always portable and accessible.",
+    icon: DownloadIcon,
+    gradient: "from-purple-50 to-violet-50 dark:from-purple-950/30 dark:to-violet-950/30",
+    iconBg: "bg-purple-100 dark:bg-purple-900",
+    iconColor: "text-purple-600 dark:text-purple-400",
+    border: "border-purple-100 dark:border-purple-900",
+    wip: true,
+    hero: {
+      title: "Your Data, Your Way",
+      subtitle: "Export notes in multiple formats to ensure your data is always portable and accessible.",
+    },
+    benefits: [
+      "Export to Markdown for universal compatibility",
+      "JSON export for programmatic access",
+      "CSV export for spreadsheet analysis",
+      "Bulk export of all notes or filtered selections",
+      "Preserve tags, timestamps, and metadata",
+      "Print-friendly formatting options",
+    ],
+    useCases: [
+      {
+        title: "Data Backup",
+        description: "Create regular backups of your notes in portable formats.",
+      },
+      {
+        title: "Platform Independence",
+        description: "Ensure your notes can be used with any tool or system.",
+      },
+      {
+        title: "Archival Storage",
+        description: "Archive completed projects in standard formats.",
+      },
+    ],
+    techDetails: [
+      "Multiple export format support",
+      "Streaming export for large collections",
+      "Metadata preservation",
+      "Print CSS for clean printing",
     ],
   },
 } as const satisfies Record<(typeof FEATURE_SLUGS)[number], FeatureDefinition>;
