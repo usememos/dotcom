@@ -1,4 +1,4 @@
 {
   "title": "Auth Service",
-  "pages": ["CreateSession", "DeleteSession", "GetCurrentSession"]
+  "pages": ["GetCurrentUser", "RefreshToken", "SignIn", "SignOut"]
 }
