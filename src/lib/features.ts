@@ -135,7 +135,7 @@ export const FEATURES = {
   },
   "data-ownership": {
     title: "Data Ownership",
-    description: "Complete control over your notes with zero telemetry. All data stored locally in your chosen database.",
+    description: "Complete control over your memos with zero telemetry. All data stored locally in your chosen database.",
     icon: LockIcon,
     gradient: "from-teal-50 to-cyan-50 dark:from-teal-950/30 dark:to-cyan-950/30",
     iconBg: "bg-teal-100 dark:bg-teal-900",
@@ -267,7 +267,7 @@ export const FEATURES = {
     border: "border-blue-100 dark:border-blue-900",
     hero: {
       title: "Truly Independent",
-      subtitle: "Zero telemetry and no internet connection required after installation - your notes work anywhere, anytime.",
+      subtitle: "Zero telemetry and no internet connection required after installation - your memos work anywhere, anytime.",
     },
     benefits: [
       "Zero telemetry - no tracking, analytics, or data collection",
@@ -284,7 +284,7 @@ export const FEATURES = {
       },
       {
         title: "Remote Work Locations",
-        description: "Take your notes anywhere without worrying about internet connectivity or speed.",
+        description: "Take your memos anywhere without worrying about internet connectivity or speed.",
       },
       {
         title: "Privacy-Critical Applications",
@@ -298,10 +298,10 @@ export const FEATURES = {
       "Self-contained Docker image",
     ],
   },
-  // Core Note-Taking Features
+  // Core Memo Features
   "instant-save": {
     title: "Instant Save",
-    description: "Automatic persistence as you type - never lose a thought with streamlined plaintext input.",
+    description: "Automatic persistence as you type - never lose a memo with streamlined plaintext input.",
     icon: SaveIcon,
     gradient: "from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30",
     iconBg: "bg-green-100 dark:bg-green-900",
@@ -342,7 +342,7 @@ export const FEATURES = {
   },
   "quick-capture": {
     title: "Quick Capture",
-    description: "Fast note creation from anywhere - capture thoughts instantly without interrupting your flow.",
+    description: "Fast memo creation from anywhere - capture thoughts instantly without interrupting your flow.",
     icon: PlusCircleIcon,
     gradient: "from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30",
     iconBg: "bg-emerald-100 dark:bg-emerald-900",
@@ -350,10 +350,10 @@ export const FEATURES = {
     border: "border-emerald-100 dark:border-emerald-900",
     hero: {
       title: "Capture Thoughts Instantly",
-      subtitle: "Quick note creation from anywhere - never let a great idea slip away.",
+      subtitle: "Quick memo creation from anywhere - never let a great idea slip away.",
     },
     benefits: [
-      "Create notes from anywhere with keyboard shortcut",
+      "Create memos from anywhere with keyboard shortcut",
       "Minimal interface for distraction-free quick capture",
       "Auto-save ensures no thought is lost",
       "Browser bookmarklet for instant capture from any page",
@@ -383,7 +383,7 @@ export const FEATURES = {
   },
   "markdown-support": {
     title: "Rich Markdown",
-    description: "GitHub Flavored Markdown with syntax highlighting, tables, and LaTeX math expressions.",
+    description: "Full Markdown support with syntax highlighting, tables, and LaTeX math expressions for rich memo content.",
     icon: FileTextIcon,
     gradient: "from-orange-50 to-red-50 dark:from-orange-950/30 dark:to-red-950/30",
     iconBg: "bg-orange-100 dark:bg-orange-900",
@@ -449,7 +449,7 @@ export const FEATURES = {
       },
       {
         title: "Project Archives",
-        description: "Store project files, assets, and related documents alongside your notes.",
+        description: "Store project files, assets, and related documents alongside your memos.",
       },
       {
         title: "Learning Resources",
@@ -465,7 +465,7 @@ export const FEATURES = {
   },
   "universal-search": {
     title: "Universal Search",
-    description: "Find any note instantly with powerful full-text search across all your memos and content.",
+    description: "Find any memo instantly with powerful full-text search across all your memos and content.",
     icon: SearchIcon,
     gradient: "from-cyan-50 to-blue-50 dark:from-cyan-950/30 dark:to-blue-950/30",
     iconBg: "bg-cyan-100 dark:bg-cyan-900",
@@ -506,7 +506,7 @@ export const FEATURES = {
   },
   "tags": {
     title: "Tags",
-    description: "Organize your notes with flexible tagging system for quick categorization and filtering.",
+    description: "Organize your memos with flexible tagging system for quick categorization and filtering.",
     icon: TagIcon,
     gradient: "from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30",
     iconBg: "bg-amber-100 dark:bg-amber-900",
@@ -514,10 +514,10 @@ export const FEATURES = {
     border: "border-amber-100 dark:border-amber-900",
     hero: {
       title: "Organize with Tags",
-      subtitle: "Flexible tagging system makes it easy to categorize and filter your notes for quick access.",
+      subtitle: "Flexible tagging system makes it easy to categorize and filter your memos for quick access.",
     },
     benefits: [
-      "Unlimited tags per note for flexible organization",
+      "Unlimited tags per memo for flexible organization",
       "Auto-complete suggestions based on existing tags",
       "Tag-based filtering and navigation",
       "Tag management and renaming capabilities",
@@ -527,15 +527,15 @@ export const FEATURES = {
     useCases: [
       {
         title: "Project Organization",
-        description: "Tag notes by project, priority, or status for easy tracking.",
+        description: "Tag memos by project, priority, or status for easy tracking.",
       },
       {
         title: "Topic Categorization",
-        description: "Organize notes by topics, themes, or categories.",
+        description: "Organize memos by topics, themes, or categories.",
       },
       {
         title: "Workflow Management",
-        description: "Use tags to manage notes through different stages or workflows.",
+        description: "Use tags to manage memos through different stages or workflows.",
       },
     ],
     techDetails: [
@@ -547,7 +547,7 @@ export const FEATURES = {
   },
   "timeline-view": {
     title: "Timeline View",
-    description: "Chronological feed of all your notes - browse memories and thoughts in time order.",
+    description: "Chronological feed of all your memos - browse memories and thoughts in time order.",
     icon: ClockIcon,
     gradient: "from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30",
     iconBg: "bg-blue-100 dark:bg-blue-900",
@@ -555,20 +555,20 @@ export const FEATURES = {
     border: "border-blue-100 dark:border-blue-900",
     hero: {
       title: "Your Personal Timeline",
-      subtitle: "Browse notes chronologically - see your thoughts and memories unfold over time.",
+      subtitle: "Browse memos chronologically - see your thoughts and memories unfold over time.",
     },
     benefits: [
-      "Chronological feed showing all notes in time order",
+      "Chronological feed showing all memos in time order",
       "Daily, weekly, and monthly views for different perspectives",
-      "See your activity patterns and note-taking habits",
+      "See your activity patterns and memo-writing habits",
       "Infinite scroll for seamless browsing",
-      "Jump to any date to find past notes",
+      "Jump to any date to find past memos",
       "Activity stream shows your knowledge evolution",
     ],
     useCases: [
       {
         title: "Personal Journal",
-        description: "Browse your daily notes like a journal, see your thoughts over time.",
+        description: "Browse your daily memos like a journal, see your thoughts over time.",
       },
       {
         title: "Activity Review",
@@ -576,11 +576,11 @@ export const FEATURES = {
       },
       {
         title: "Memory Lane",
-        description: "Rediscover old ideas and notes from months or years ago.",
+        description: "Rediscover old ideas and memos from months or years ago.",
       },
     ],
     techDetails: [
-      "Efficient pagination for large note collections",
+      "Efficient pagination for large memo collections",
       "Date-based filtering and navigation",
       "Optimized queries for chronological display",
       "Responsive timeline UI",
@@ -588,7 +588,7 @@ export const FEATURES = {
   },
   "public-sharing": {
     title: "Public Sharing",
-    description: "Share notes publicly with customizable links - make knowledge accessible to the world.",
+    description: "Share memos publicly with customizable links - make knowledge accessible to the world.",
     icon: Share2Icon,
     gradient: "from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30",
     iconBg: "bg-violet-100 dark:bg-violet-900",
@@ -596,14 +596,14 @@ export const FEATURES = {
     border: "border-violet-100 dark:border-violet-900",
     hero: {
       title: "Share Your Knowledge",
-      subtitle: "Generate shareable public links for any note - control who sees what.",
+      subtitle: "Generate shareable public links for any memo - control who sees what.",
     },
     benefits: [
-      "Generate public links for any note instantly",
-      "Control visibility - keep some notes private, others public",
-      "No login required for readers to view shared notes",
+      "Generate public links for any memo instantly",
+      "Control visibility - keep some memos private, others public",
+      "No login required for readers to view shared memos",
       "Shareable URLs that work anywhere",
-      "Embed notes on external websites",
+      "Embed memos on external websites",
       "Share your knowledge base with the world",
     ],
     useCases: [
@@ -735,7 +735,7 @@ export const FEATURES = {
     useCases: [
       {
         title: "Power User Workflow",
-        description: "Navigate and create notes at lightning speed without using the mouse.",
+        description: "Navigate and create memos at lightning speed without using the mouse.",
       },
       {
         title: "Accessibility",
@@ -1131,7 +1131,7 @@ export const FEATURES = {
   },
   "export": {
     title: "Print & Export",
-    description: "Export your notes to Markdown, JSON, or CSV - your data is always portable and accessible.",
+    description: "Export your memos to Markdown, JSON, or CSV - your data is always portable and accessible.",
     icon: DownloadIcon,
     gradient: "from-purple-50 to-violet-50 dark:from-purple-950/30 dark:to-violet-950/30",
     iconBg: "bg-purple-100 dark:bg-purple-900",
@@ -1153,11 +1153,11 @@ export const FEATURES = {
     useCases: [
       {
         title: "Data Backup",
-        description: "Create regular backups of your notes in portable formats.",
+        description: "Create regular backups of your memos in portable formats.",
       },
       {
         title: "Platform Independence",
-        description: "Ensure your notes can be used with any tool or system.",
+        description: "Ensure your memos can be used with any tool or system.",
       },
       {
         title: "Archival Storage",
