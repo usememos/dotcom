@@ -400,8 +400,8 @@ export const FEATURES = {
       "Complete GitHub Flavored Markdown (GFM) compatibility",
       "Syntax highlighting for 100+ programming languages",
       "Tables, task lists, and advanced formatting options",
-      "Live preview with side-by-side editing",
-      "LaTeX math expression support",
+      "Mermaid diagrams for flowcharts, sequence diagrams, and visualizations",
+      "LaTeX math expression support for equations and formulas",
     ],
     useCases: [
       {
@@ -420,8 +420,8 @@ export const FEATURES = {
     techDetails: [
       "Based on unified/remark Markdown processor",
       "Prism.js for syntax highlighting",
+      "Mermaid.js for diagram rendering",
       "KaTeX for mathematical expressions",
-      "Custom plugins for enhanced functionality",
     ],
   },
   "media-integration": {
