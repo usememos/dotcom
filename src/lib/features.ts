@@ -20,6 +20,7 @@ import {
   KeyboardIcon,
   LayersIcon,
   LockIcon,
+  MessageCircleIcon,
   MonitorSmartphoneIcon,
   PaletteIcon,
   PlusCircleIcon,
@@ -72,6 +73,7 @@ export const FEATURE_SLUGS = [
   "tags",
   "timeline-view",
   "public-sharing",
+  "microblog",
   "beautiful-design",
   "pwa-support",
   "customizable-ui",
@@ -504,7 +506,7 @@ export const FEATURES = {
       "Search result relevance ranking",
     ],
   },
-  "tags": {
+  tags: {
     title: "Tags",
     description: "Organize your memos with flexible tagging system for quick categorization and filtering.",
     icon: TagIcon,
@@ -625,6 +627,47 @@ export const FEATURES = {
       "Shareable URL generation",
       "SEO-friendly public note pages",
       "Embed support via iframes",
+    ],
+  },
+  microblog: {
+    title: "Microblog",
+    description: "Turn your memos into a personal microblog - share thoughts, ideas, and updates with the world.",
+    icon: MessageCircleIcon,
+    gradient: "from-rose-50 to-orange-50 dark:from-rose-950/30 dark:to-orange-950/30",
+    iconBg: "bg-rose-100 dark:bg-rose-900",
+    iconColor: "text-rose-600 dark:text-rose-400",
+    border: "border-rose-100 dark:border-rose-900",
+    hero: {
+      title: "Your Personal Microblog",
+      subtitle: "Share quick thoughts, updates, and ideas with the world - a self-hosted alternative to social media.",
+    },
+    benefits: [
+      "Publish short-form content instantly with minimal friction",
+      "Own your microblog completely - no algorithms, no ads, no tracking",
+      "Chronological timeline perfect for status updates and daily thoughts",
+      "Rich media support for images, links, and formatted content",
+      "RSS feed generation for followers to subscribe",
+      "Custom domain support for your personal brand",
+    ],
+    useCases: [
+      {
+        title: "Personal Updates",
+        description: "Share daily thoughts, progress updates, and life moments on your own platform.",
+      },
+      {
+        title: "Developer Blog",
+        description: "Post quick coding tips, project updates, and technical insights.",
+      },
+      {
+        title: "Digital Garden",
+        description: "Cultivate a public space for your ideas to grow and evolve over time.",
+      },
+    ],
+    techDetails: [
+      "Public memo visibility with granular privacy controls",
+      "Built-in RSS feed generation for all public memos",
+      "SEO-optimized public memo pages",
+      "Social sharing metadata with OpenGraph support",
     ],
   },
   // User Experience
@@ -838,7 +881,7 @@ export const FEATURES = {
     ],
   },
   // Technical Excellence
-  "performance": {
+  performance: {
     title: "Super-fast",
     description: "Go-powered backend with instant loading and minimal resource usage for peak performance.",
     icon: ZapIcon,
@@ -879,7 +922,7 @@ export const FEATURES = {
       "Efficient JSON serialization",
     ],
   },
-  "lightweight": {
+  lightweight: {
     title: "Lightweight & Efficient",
     description: "Minimal footprint - runs smoothly on low-powered devices with minimal resource usage.",
     icon: FeatherIcon,
@@ -1004,7 +1047,7 @@ export const FEATURES = {
     ],
   },
   // Community & Ecosystem
-  "community": {
+  community: {
     title: "Community-Driven",
     description: "Active development with 45,000+ GitHub stars, transparent roadmap, and engaged community.",
     icon: HeartIcon,
@@ -1087,7 +1130,7 @@ export const FEATURES = {
     ],
   },
   // Work In Progress
-  "import": {
+  import: {
     title: "Import",
     description: "Migrate from other platforms with easy import from Markdown files and popular note apps.",
     icon: UploadIcon,
@@ -1122,14 +1165,9 @@ export const FEATURES = {
         description: "Restore notes from exported backups.",
       },
     ],
-    techDetails: [
-      "Markdown file parser",
-      "Format conversion utilities",
-      "Batch import processing",
-      "Error handling and validation",
-    ],
+    techDetails: ["Markdown file parser", "Format conversion utilities", "Batch import processing", "Error handling and validation"],
   },
-  "export": {
+  export: {
     title: "Print & Export",
     description: "Export your memos to Markdown, JSON, or CSV - your data is always portable and accessible.",
     icon: DownloadIcon,

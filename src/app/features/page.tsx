@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { baseOptions } from "@/app/layout.config";
 import { Footer } from "@/components/footer";
-import { FEATURES, FEATURE_SLUGS } from "@/lib/features";
+import { FEATURE_SLUGS, FEATURES } from "@/lib/features";
 
 export const dynamic = "force-static";
 export const revalidate = 86400;
@@ -109,8 +109,8 @@ export default function FeaturesPage() {
                 const feature = FEATURES[slug];
                 const Icon = feature.icon;
                 const href = `/features/${slug}`;
-                const isWip = 'wip' in feature && feature.wip;
-                
+                const isWip = "wip" in feature && feature.wip;
+
                 return (
                   <Link
                     key={slug}
@@ -122,13 +122,13 @@ export default function FeaturesPage() {
                         WIP
                       </div>
                     )}
-                    <div className={`inline-flex items-center justify-center w-12 h-12 ${feature.iconBg} ${feature.iconColor} rounded-xl mb-4`}>
+                    <div
+                      className={`inline-flex items-center justify-center w-12 h-12 ${feature.iconBg} ${feature.iconColor} rounded-xl mb-4`}
+                    >
                       <Icon className="w-6 h-6" />
                     </div>
                     <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">{feature.title}</h3>
-                    <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
-                      {feature.description}
-                    </p>
+                    <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{feature.description}</p>
                   </Link>
                 );
               })}
