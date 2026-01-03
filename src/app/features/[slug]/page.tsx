@@ -186,7 +186,7 @@ export async function generateMetadata({ params }: FeaturePageProps): Promise<Me
       siteName: "Memos",
       images: [
         {
-          url: "https://usememos.com/demo.png",
+          url: "https://usememos.com/og-image.png",
           width: 1200,
           height: 630,
           alt: `Memos ${feature.title}`,
@@ -198,7 +198,7 @@ export async function generateMetadata({ params }: FeaturePageProps): Promise<Me
       card: "summary_large_image",
       title: `${feature.title} - Memos`,
       description: feature.description,
-      images: ["https://usememos.com/demo.png"],
+      images: ["https://usememos.com/og-image.png"],
     },
   };
 }

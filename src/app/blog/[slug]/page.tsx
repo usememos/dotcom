@@ -39,7 +39,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
       ? data.feature_image.startsWith("http")
         ? data.feature_image
         : `https://usememos.com${data.feature_image}`
-      : "https://usememos.com/demo.png",
+      : "https://usememos.com/og-image.png",
     datePublished: data.published_at,
     author: {
       "@type": "Organization",

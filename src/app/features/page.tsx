@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     siteName: "Memos",
     images: [
       {
-        url: "https://usememos.com/demo.png",
+        url: "https://usememos.com/og-image.png",
         width: 1200,
         height: 630,
         alt: "Memos Features Overview",
