@@ -1,13 +1,11 @@
 ---
 title: Docker Installation
-description: Install Memos using Docker for the easiest and most reliable setup experience.
+description: Install Memos using Docker for the easiest setup experience.
 ---
 
-Docker is the recommended installation method for Memos. It provides isolation, easy updates, and works consistently across all platforms.
+Docker is the recommended installation method for Memos.
 
 ## Quick Start
-
-The fastest way to get Memos running:
 
 ```bash
 docker run -d \
@@ -17,15 +15,13 @@ docker run -d \
   neosmemo/memos:stable
 ```
 
-After the container starts, visit [http://localhost:5230](http://localhost:5230) to access your Memos instance.
+Visit [http://localhost:5230](http://localhost:5230) to access Memos.
 
-## Docker Compose (Recommended)
+## Docker Compose
 
-For production deployments, use Docker Compose:
+For production, use Docker Compose:
 
 ```yaml title="docker-compose.yml"
-version: '3.8'
-
 services:
   memos:
     image: neosmemo/memos:stable
@@ -34,62 +30,16 @@ services:
       - "5230:5230"
     volumes:
       - ./memos:/var/opt/memos
-    environment:
-      - MEMOS_MODE=prod
-      - MEMOS_ADDR=0.0.0.0
-      - MEMOS_PORT=5230
-      - MEMOS_DATA=/var/opt/memos
     restart: unless-stopped
 ```
-
-Start with:
 
 ```bash
 docker compose up -d
 ```
 
-## Configuration Options
+## With PostgreSQL
 
-### Environment Variables
-
-Supported environment variables for Docker:
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `MEMOS_MODE` | `dev` | Server mode: `dev`, `prod`, or `demo` |
-| `MEMOS_ADDR` | `` | Server address (e.g., `0.0.0.0`) |
-| `MEMOS_PORT` | `8081` | Server port |
-| `MEMOS_UNIX_SOCK` | - | Unix socket path (overrides addr/port) |
-| `MEMOS_DATA` | `/var/opt/memos` | Data directory path |
-| `MEMOS_DRIVER` | `sqlite` | Database driver: `sqlite`, `postgres`, or `mysql` |
-| `MEMOS_DSN` | - | Database connection string (DSN) |
-| `MEMOS_INSTANCE_URL` | - | Public URL of your Memos instance |
-
-<Callout type="info">
-**Note**: The default port is `8081`, but the Docker image is configured to use `5230`. Map your host port accordingly.
-</Callout>
-
-### Volume Mounts
-
-The container uses `/var/opt/memos` as the data directory. Mount this to persist data:
-
-```bash
-# Linux/macOS
--v ~/.memos/:/var/opt/memos
-
-# Windows
--v %USERPROFILE%\.memos:/var/opt/memos
-```
-
-## Database Configuration
-
-### SQLite (Default)
-
-No additional configuration needed. Data is stored in the mounted volume.
-
-### PostgreSQL
-
-```yaml
+```yaml title="docker-compose.yml"
 services:
   postgres:
     image: postgres:15
@@ -114,69 +64,18 @@ volumes:
   postgres_data:
 ```
 
-## Updates
-
-### Update Container
-
-```bash
-# Pull latest image
-docker pull neosmemo/memos:stable
-
-# Stop and remove current container (data is preserved in volume)
-docker stop memos && docker rm memos
-
-# Start new container with updated image
-docker run -d \
-  --name memos \
-  --publish 5230:5230 \
-  --volume ~/.memos/:/var/opt/memos \
-  --env MEMOS_MODE=prod \
-  neosmemo/memos:stable
-```
-
-### Using Docker Compose
+## Update
 
 ```bash
 docker compose pull
 docker compose up -d
 ```
 
-## Troubleshooting
-
-### Container Won't Start
-
-Check container logs:
-
-```bash
-docker logs memos
-```
-
-### Permission Issues
-
-Ensure proper ownership of the data directory:
-
-```bash
-sudo chown -R 1001:1001 ~/.memos/
-```
-
-### Port Conflicts
-
-If port 5230 is in use, change the mapping:
-
-```bash
-# Use port 8080 instead
---publish 8080:5230
-```
+<Callout type="info">
+Use specific version tags (e.g., `neosmemo/memos:0.24.0`) in production instead of `stable`.
+</Callout>
 
 ## Next Steps
 
-After installation:
-
-1. **[Basic Usage Guide](/docs/guides/getting-started)** - Learn to create your first memo
-2. **[Configure authentication](/docs/configuration/authentication)** - Set up user accounts
-3. **[Database configuration](/docs/configuration/database)** - Configure your database
-4. **[API Documentation](https://memos.apidocumentation.com)** - Explore the REST API
-
-<Callout type="info">
-**Production Tip**: Always use specific version tags (e.g., `neosmemo/memos:0.24.0`) instead of `stable` in production to avoid unexpected updates.
-</Callout>
+- [Configure your instance](/docs/configuration)
+- [Set up authentication](/docs/configuration/authentication)
