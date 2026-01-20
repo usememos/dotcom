@@ -16,10 +16,11 @@ export const FEATURED_SPONSORS: Sponsor[] = [
     description: "The best way to code with Al agents. Prompt, review, edit, and ship.",
   },
   {
-    name: "LambdaTest",
-    url: "https://www.lambdatest.com/?utm_source=memos&utm_medium=sponsor",
-    logo: "https://www.lambdatest.com/resources/images/logos/logo.svg",
-    description: "The Native AI-Agentic Cloud Platform to Supercharge Quality Engineering.",
+    name: "TestMu AI",
+    url: "https://www.testmu.ai/?utm_source=memos&utm_medium=sponsor",
+    logo: "/sponsors/testmu.svg",
+    logoDark: "/sponsors/testmu-dark.svg",
+    description: "The world’s first full-stack Agentic AI Quality Engineering platform.",
   },
 ];
 
