@@ -12,7 +12,7 @@ export const baseOptions: BaseLayoutProps = {
   nav: {
     title: (
       <>
-        <Image src="/logo.png" alt="Memos" width={24} height={24} className="rounded" priority />
+        <Image src="/logo.png" alt="" width={24} height={24} className="rounded" priority />
         Memos
       </>
     ),
