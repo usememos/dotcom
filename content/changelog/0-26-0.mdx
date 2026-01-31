@@ -1,0 +1,56 @@
+---
+title: Release v0.26.0
+date: "2025-01-31"
+---
+
+> This version includes significant changes to authentication and the database. Please backup your data before upgrading. Learn more in https://github.com/usememos/memos/compare/v0.25.3...v0.26.0.
+
+## Major Features
+
+- feat: refresh token rotation with sliding window sessions for enhanced authentication security
+- feat: streaming for video/audio files to fix memory exhaustion issues
+- feat: EXIF metadata stripping for image uploads (privacy enhancement)
+- feat: role refactor - HOST role migrated to ADMIN for clearer terminology
+- feat: React Query migration for improved frontend state management and caching
+- feat: memo map in user profile with Google Maps integration
+- feat: HDR image and video support
+- feat: midnight theme option
+
+## Other Improvements
+
+- feat: new locale - Galician (gl, gl_ES)
+- feat: iframe support for embedded videos in markdown content
+- feat: enhanced attachment handling with MIME type validation
+- feat: glassmorphism map controls with Google Maps integration
+- feat: slash commands tooltip to InsertMenu
+- refactor: migrate to connect-rpc
+- refactor: user auth improvements
+- refactor: consolidate MemoEditor components
+- refactor: remove legacy session cookie authentication
+- style: improve code block styling and formatting
+- perf: optimize memory usage for statistics and image processing
+- perf: optimize backend tests with parallel execution
+
+## Bug Fixes
+
+- fix: add access control checks for attachments, comments, and reactions
+- fix: math render issues
+- fix: correct calendar header month parsing
+- fix: editor auto-scroll and Safari IME handling
+- fix: prevent browser cache from serving stale memo data
+- fix: return Unauthenticated instead of PermissionDenied on token expiration
+- fix: apply theme and locale changes immediately on login screen
+- fix: allow public memo API access without authentication
+- fix: KaTeX math rendering with underscores
+- fix: ensure attachments are properly linked when creating memos
+- fix: improve text contrast in default dark mode
+- fix: disable setext header syntax
+- fix: todo command does nothing
+- fix: clean up memo_relation and attachments when deleting memo
+- fix: allow guests to view public memo comments
+
+## Localization
+
+- Updated British English, Chinese, Korean, German, French, Polish, and Italian translations
+
+**Full Changelog**: https://github.com/usememos/memos/compare/v0.25.3...v0.26.0
