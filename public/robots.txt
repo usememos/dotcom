@@ -1,4 +1,7 @@
-# Allow major search engines
+# Memos robots.txt
+# We welcome search engines and AI crawlers while keeping API/static build assets quiet.
+
+# Search engines
 User-agent: Googlebot
 User-agent: Bingbot
 User-agent: Slurp
@@ -8,29 +11,33 @@ User-agent: YandexBot
 Allow: /
 Crawl-delay: 1
 
-# Block aggressive AI training crawlers
+# AI crawlers
 User-agent: GPTBot
 User-agent: ChatGPT-User
 User-agent: CCBot
 User-agent: anthropic-ai
 User-agent: Claude-Web
 User-agent: Google-Extended
-Disallow: /
+User-agent: PerplexityBot
+User-agent: Omgilibot
+User-agent: Applebot
+Allow: /
+Crawl-delay: 2
 
-# Block common scrapers and aggressive bots
+# Known aggressive scrapers
 User-agent: AhrefsBot
 User-agent: SemrushBot
 User-agent: MJ12bot
 User-agent: DotBot
 User-agent: PetalBot
-Crawl-delay: 10
 Disallow: /
+Crawl-delay: 10
 
-# Default for all other bots - allow but be gentle
+# Default
 User-agent: *
 Allow: /
-Crawl-delay: 2
 Disallow: /_next/static/
 Disallow: /api/
+Crawl-delay: 2
 
 Sitemap: https://usememos.com/sitemap.xml
