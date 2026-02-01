@@ -196,7 +196,7 @@ export default function ScratchPage() {
       // Update item as saved
       itemStorage.update(id, {
         savedToInstance: defaultInstance.id,
-        savedMemoId: memo.id,
+        savedMemoId: memo.name,
       });
 
       setItems(itemStorage.getAll());

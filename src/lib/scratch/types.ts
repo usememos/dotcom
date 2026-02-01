@@ -59,28 +59,34 @@ export interface SaveToMemosOptions {
 }
 
 export interface Attachment {
-  id: string;
   name: string;
   filename: string;
-  externalLink: string;
+  externalLink?: string;
   type: string;
-  size: number;
+  size?: string;
 }
 
 export interface Memo {
-  id: string;
+  name: string;
   content: string;
   visibility: string;
-  createdTs: number;
-  updatedTs: number;
+  state?: string;
+  createTime?: string;
+  updateTime?: string;
   attachments?: Attachment[];
 }
 
 export interface UserInfo {
-  id: string;
+  name: string;
   username: string;
   role: string;
   email?: string;
+  displayName?: string;
+  avatarUrl?: string;
+}
+
+export interface GetCurrentUserResponse {
+  user: UserInfo;
 }
 
 export interface ConnectionTestResult {

@@ -2,7 +2,7 @@
  * API integration for connecting to Memos instances
  */
 
-import type { Attachment, ConnectionTestResult, Memo, MemoInstance, SaveToMemosOptions, UserInfo } from "./types";
+import type { Attachment, ConnectionTestResult, GetCurrentUserResponse, Memo, MemoInstance, SaveToMemosOptions } from "./types";
 
 /**
  * Test connection to a Memos instance
@@ -12,7 +12,7 @@ export async function testConnection(url: string, accessToken: string): Promise<
     // Normalize URL
     const normalizedUrl = url.replace(/\/$/, "");
 
-    const response = await fetch(`${normalizedUrl}/api/v1/auth/sessions/current`, {
+    const response = await fetch(`${normalizedUrl}/api/v1/auth/me`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -27,11 +27,11 @@ export async function testConnection(url: string, accessToken: string): Promise<
       return { success: false, error: `Server error: ${response.status}` };
     }
 
-    const data = (await response.json()) as UserInfo;
+    const data = (await response.json()) as GetCurrentUserResponse;
 
     return {
       success: true,
-      username: data.username,
+      username: data.user?.username,
     };
   } catch (error) {
     if (error instanceof TypeError) {
@@ -53,15 +53,27 @@ export async function testConnection(url: string, accessToken: string): Promise<
 export async function uploadAttachment(instance: MemoInstance, file: Blob, filename: string): Promise<Attachment> {
   const normalizedUrl = instance.url.replace(/\/$/, "");
 
-  const formData = new FormData();
-  formData.append("file", file, filename);
+  const arrayBuffer = await file.arrayBuffer();
+  const bytes = new Uint8Array(arrayBuffer);
+  let binary = "";
+  const chunkSize = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
+  }
+  const base64 = btoa(binary);
+  const mimeType = file.type || "application/octet-stream";
 
   const response = await fetch(`${normalizedUrl}/api/v1/attachments`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${instance.accessToken}`,
+      "Content-Type": "application/json",
     },
-    body: formData,
+    body: JSON.stringify({
+      filename,
+      type: mimeType,
+      content: base64,
+    }),
   });
 
   if (!response.ok) {
@@ -81,13 +93,16 @@ export async function createMemo(instance: MemoInstance, content: string, option
   const body: {
     content: string;
     visibility?: string;
-    attachmentIdList?: string[];
+    state: string;
   } = {
     content,
+    state: "NORMAL",
   };
 
   if (options?.visibility) {
     body.visibility = options.visibility;
+  } else {
+    body.visibility = "PRIVATE";
   }
 
   const response = await fetch(`${normalizedUrl}/api/v1/memos`, {
@@ -113,39 +128,32 @@ export async function createMemo(instance: MemoInstance, content: string, option
 export async function createMemoWithAttachments(
   instance: MemoInstance,
   content: string,
-  attachmentIds: string[],
+  attachments: Attachment[],
   options?: SaveToMemosOptions,
 ): Promise<Memo> {
-  const normalizedUrl = instance.url.replace(/\/$/, "");
-
-  const body: {
-    content: string;
-    visibility?: string;
-    attachmentIdList?: string[];
-  } = {
-    content,
-    attachmentIdList: attachmentIds,
-  };
-
-  if (options?.visibility) {
-    body.visibility = options.visibility;
+  const memo = await createMemo(instance, content, options);
+  if (!memo.name) {
+    throw new Error("Failed to create memo: missing memo name");
   }
 
-  const response = await fetch(`${normalizedUrl}/api/v1/memos`, {
-    method: "POST",
+  const normalizedUrl = instance.url.replace(/\/$/, "");
+  const response = await fetch(`${normalizedUrl}/api/v1/${memo.name}/attachments`, {
+    method: "PATCH",
     headers: {
       Authorization: `Bearer ${instance.accessToken}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify({
+      name: memo.name,
+      attachments: attachments.map((attachment) => ({ name: attachment.name })),
+    }),
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to create memo: ${response.status} ${response.statusText}`);
+    throw new Error(`Failed to set memo attachments: ${response.status} ${response.statusText}`);
   }
 
-  const data = await response.json();
-  return data as Memo;
+  return memo;
 }
 
 /**
@@ -159,17 +167,17 @@ export async function saveScratchpadItemToMemos(
 ): Promise<Memo> {
   try {
     // Upload files first if any
-    const attachmentIds: string[] = [];
+    const attachments: Attachment[] = [];
     if (files.length > 0) {
       for (const file of files) {
         const attachment = await uploadAttachment(instance, file.blob, file.name);
-        attachmentIds.push(attachment.id);
+        attachments.push(attachment);
       }
     }
 
     // Create memo with or without attachments
-    if (attachmentIds.length > 0) {
-      return await createMemoWithAttachments(instance, content, attachmentIds, options);
+    if (attachments.length > 0) {
+      return await createMemoWithAttachments(instance, content, attachments, options);
     } else {
       return await createMemo(instance, content, options);
     }
