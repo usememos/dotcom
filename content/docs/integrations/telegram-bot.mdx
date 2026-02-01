@@ -1,10 +1,77 @@
 ---
 title: Telegram Bot
-description: Community integration for Telegram.
+description: Sync Telegram messages and images into Memos with Memogram.
 ---
 
-A community-maintained Telegram bot is available in a separate repository:
+Memogram is the Telegram integration for Memos. It syncs text and images from a Telegram bot into your Memos instance.
 
-- https://github.com/usememos/telegram-integration
+Repository and releases:
 
-Follow that repository's README for setup and usage.
+```text
+https://github.com/usememos/telegram-integration
+https://github.com/usememos/telegram-integration/releases
+```
+
+## Prerequisites
+
+- A running Memos instance
+- A Telegram bot token
+
+## Configuration
+
+Create a `.env` file and set:
+
+```env
+SERVER_ADDR=dns:localhost:5230
+BOT_TOKEN=your_telegram_bot_token
+BOT_PROXY_ADDR=https://api.your_proxy_addr.com
+ALLOWED_USERNAMES=user1,user2,user3
+```
+
+### Configuration options
+
+- `SERVER_ADDR`: gRPC address where Memos is running.
+- `BOT_TOKEN`: Telegram bot token.
+- `BOT_PROXY_ADDR`: Optional proxy for Telegram API.
+- `ALLOWED_USERNAMES`: Optional comma-separated list of allowed usernames (without `@`).
+
+When `ALLOWED_USERNAMES` is set, only those users can use the bot.
+
+## Run Memogram
+
+### Binary
+
+1. Download the release binary.
+2. Put `.env` next to the binary.
+3. Run:
+
+```sh
+./memogram
+```
+
+### Docker
+
+```sh
+docker build -t memogram .
+docker run -d --name memogram \
+  -e SERVER_ADDR=dns:localhost:5230 \
+  -e BOT_TOKEN=your_telegram_bot_token \
+  memogram
+```
+
+### Docker Compose
+
+```yaml
+services:
+  memogram:
+    env_file: .env
+    build: memogram
+    container_name: memogram
+```
+
+## Commands
+
+- `/start <access_token>`: Authenticate with your Memos access token.
+- Send text: Saves the message as a memo.
+- Send files: Saves files as resources attached to a memo.
+- `/search <words>`: Search your memos.
