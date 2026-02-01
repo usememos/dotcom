@@ -1,0 +1,12 @@
+---
+title: Reverse Proxy
+description: Run Memos behind HTTPS.
+---
+
+For production, run Memos behind a reverse proxy (Nginx, Caddy, Traefik, etc.) and serve HTTPS.
+
+## Recommended settings
+
+- Set `MEMOS_INSTANCE_URL` to the public URL of your instance.
+- Forward standard proxy headers (`Host`, `X-Forwarded-Proto`, `X-Forwarded-For`).
+- Restrict access to the admin interface as needed.

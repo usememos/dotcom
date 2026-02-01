@@ -1,0 +1,5 @@
+{
+  "title": "Usage",
+  "description": "Daily workflows for writing and organizing memos",
+  "pages": ["index", "writing-markdown", "tags", "shortcuts", "search-archive"]
+}

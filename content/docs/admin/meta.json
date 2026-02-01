@@ -1,0 +1,5 @@
+{
+  "title": "Admin",
+  "description": "Instance administration and user management",
+  "pages": ["index", "instance-settings", "users-roles", "tokens"]
+}

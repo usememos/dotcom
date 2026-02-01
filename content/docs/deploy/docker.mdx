@@ -1,0 +1,28 @@
+---
+title: Docker
+description: Run Memos with Docker.
+---
+
+## Docker run
+
+```bash
+docker run -d \
+  --name memos \
+  --restart unless-stopped \
+  -p 5230:5230 \
+  -v ~/.memos:/var/opt/memos \
+  neosmemo/memos:stable
+```
+
+- The container listens on port `5230`.
+- Memos stores data in `/var/opt/memos` inside the container.
+
+## Environment variables
+
+Memos supports `MEMOS_*` environment variables inside the container. Common ones include:
+
+- `MEMOS_PORT`
+- `MEMOS_DRIVER`
+- `MEMOS_DSN`
+- `MEMOS_DATA`
+- `MEMOS_INSTANCE_URL`

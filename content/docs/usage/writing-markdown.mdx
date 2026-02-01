@@ -1,0 +1,75 @@
+---
+title: Writing & Markdown
+description: Markdown support in Memos.
+---
+
+Memos uses Markdown for memo content. The renderer supports common Markdown constructs plus Memos tags.
+
+## Text formatting
+
+```markdown
+**Bold**
+*Italic*
+~~Strikethrough~~
+`Inline code`
+```
+
+## Headings
+
+```markdown
+# Heading 1
+## Heading 2
+### Heading 3
+```
+
+## Lists and tasks
+
+```markdown
+- Bullet item
+- Another item
+
+1. Ordered item
+2. Another item
+
+- [ ] Task item
+- [x] Completed task
+```
+
+## Links and images
+
+```markdown
+[Link text](https://example.com)
+![Alt text](https://example.com/image.png)
+```
+
+## Code blocks
+
+````markdown
+```bash
+memos --port 8081
+```
+````
+
+## Tables
+
+```markdown
+| Name | Status |
+| ---- | ------ |
+| Memo | Active |
+```
+
+## Quotes and rules
+
+```markdown
+> Quoted text
+
+---
+```
+
+## Tags
+
+Tags are written inline using `#tag` syntax.
+
+```markdown
+#work #project-alpha
+```

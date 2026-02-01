@@ -1,4 +1,15 @@
 {
   "title": "Documentation",
-  "pages": ["index", "installation", "guides", "configuration", "integrations", "api", "faq"]
+  "pages": [
+    "index",
+    "getting-started",
+    "deploy",
+    "configuration",
+    "usage",
+    "integrations",
+    "admin",
+    "troubleshooting",
+    "api",
+    "faq"
+  ]
 }

@@ -1,0 +1,26 @@
+---
+title: Common Issues
+description: Startup and connectivity problems.
+---
+
+## Port already in use
+
+Change the port with `--port` or `MEMOS_PORT` and restart the server.
+
+## Cannot write to the data directory
+
+Ensure the data directory exists and is writable by the Memos process. You can set it with `--data` or `MEMOS_DATA`.
+
+## Database connection errors
+
+Verify the driver and DSN:
+
+- `MEMOS_DRIVER` should be `sqlite`, `mysql`, or `postgres`.
+- `MEMOS_DSN` should use the correct DSN format for your database.
+
+## Reverse proxy issues
+
+If you run behind a reverse proxy, make sure:
+
+- `MEMOS_INSTANCE_URL` matches the public URL
+- The proxy forwards standard headers (`Host`, `X-Forwarded-*`)

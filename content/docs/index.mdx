@@ -1,120 +1,33 @@
 ---
-title: What is Memos
-description: A modern, open-source, self-hosted knowledge management and note-taking platform designed for privacy-conscious users and organizations.
+title: Documentation
+description: Guides for installing, running, and using Memos.
 ---
 
-**Memos** is a modern, open-source, self-hosted knowledge management and note-taking platform designed for privacy-conscious users and organizations. Memos provides a lightweight yet powerful solution for capturing, organizing, and sharing thoughts with comprehensive Markdown support and cross-platform accessibility.
-
-## Core Concept
-
-A **memo** is an atomic, card-like unit of thought—designed to be quick to capture, easy to browse, and naturally organized. Think of it as a digital note card: short, focused, and self-contained. Memos are built around this simple concept: atomic notes that can stand alone yet connect to form a knowledge network.
-
-## Key Features
-
-### Privacy & Security
-
-- **Complete Data Ownership** — All data stored locally in your chosen database
-- **Self-Hosted Architecture** — Full control over infrastructure and access policies
-- **No External Dependencies** — Zero third-party services or cloud connections required
-
-### Content Creation
-
-- **Instant Save** — Streamlined plain text input with automatic persistence
-- **Rich Markdown Support** — Full Markdown rendering with syntax highlighting
-- **Media Integration** — Native support for images, links, and embedded content
-
-### Performance & Technology
-
-- **High-Performance Backend** — Built with Go for optimal resource utilization
-- **Modern React Frontend** — Responsive, intuitive user interface with dark mode support
-- **Lightweight Deployment** — Minimal system requirements, maximum efficiency
-- **Cross-Platform** — Linux, macOS, Windows, Docker, and Kubernetes environments
-- **Real-time Synchronization** — Seamless updates across devices and browser tabs
-
-### Customization
-
-- **Configurable Interface** — Custom branding, themes, and UI elements
-- **API-First Design** — RESTful and gRPC APIs for seamless third-party integrations
-- **Multi-Database Support** — SQLite, PostgreSQL, and MySQL compatibility
-
-### Cost-Effective
-
-- **Open Source (MIT)** — Full source code availability with permissive licensing
-- **Zero Subscription Fees** — No usage limits, premium tiers, or hidden costs
-- **Community-Driven** — Transparent development with active community support
-
-## Getting Started
-
-Ready to start using Memos? Get up and running in under 1 minute with our comprehensive guides:
+Welcome to the Memos documentation. Start with Getting Started or jump to the section you need.
 
 <Cards>
-  <Card title="Installation" href="/docs/installation" icon="Download">
-    Learn how to install Memos using Docker, binary, or development setup
+  <Card title="Getting Started" href="/docs/getting-started" icon="Play">
+    Install Memos and create your first memo.
   </Card>
-  <Card title="User Guide" href="/docs/guides" icon="BookOpen">
-    Step-by-step guides for using Memos effectively
+  <Card title="Deploy" href="/docs/deploy" icon="Container">
+    Docker, Kubernetes, and production setup.
   </Card>
   <Card title="Configuration" href="/docs/configuration" icon="Settings">
-    Configure your Memos instance for optimal performance and security
+    Server config, database, and storage.
+  </Card>
+  <Card title="Usage" href="/docs/usage" icon="FileText">
+    Writing, tags, and shortcuts.
   </Card>
   <Card title="Integrations" href="/docs/integrations" icon="Puzzle">
-    Connect Memos with external services and tools
+    RSS, webhooks, and community tools.
+  </Card>
+  <Card title="Admin" href="/docs/admin" icon="Shield">
+    Instance settings and user management.
+  </Card>
+  <Card title="Troubleshooting" href="/docs/troubleshooting" icon="LifeBuoy">
+    Common issues and fixes.
+  </Card>
+  <Card title="API" href="/docs/api" icon="Terminal">
+    REST and gRPC API reference.
   </Card>
 </Cards>
-
-## Quick Start
-
-Get Memos running with Docker in under 1 minute:
-
-```bash
-docker run -d \
-  --name memos \
-  --restart unless-stopped \
-  -p 5230:5230 \
-  -v ~/.memos:/var/opt/memos \
-  neosmemo/memos:stable
-```
-
-Access Memos at `http://localhost:5230` and complete the initial setup.
-
-## API Documentation
-
-For comprehensive API documentation, visit our dedicated API documentation site:
-
-**[memos.apidocumentation.com](https://memos.apidocumentation.com)**
-
-The API documentation includes:
-- Complete REST API reference
-- Authentication guides
-- Code examples and SDKs
-- Interactive API explorer
-- Webhook configuration
-
-## Quick Links
-
-- [Docker Installation](/docs/installation/docker) - Get up and running in minutes
-- [Basic Usage Guide](/docs/guides/getting-started) - Learn the fundamentals
-- [Content Syntax](/docs/guides/content-syntax) - Master Markdown formatting
-- [API Documentation](https://memos.apidocumentation.com) - Complete API reference
-
-## Why Choose Memos?
-
-Memos stands out as a lightweight, self-hosted alternative to cloud-based note-taking services. Built with privacy and performance in mind, it offers a comprehensive platform for personal knowledge management without compromising data ownership or security.
-
-**Key Advantages:**
-- **Privacy-First**: Complete control over your data with local storage
-- **Performance**: High-performance Go backend with modern React frontend
-- **Flexibility**: Multi-database support and extensive customization options
-- **Cost-Effective**: Zero subscription fees with full MIT license freedom
-
-## Community & Support
-
-- **Discord**: [Join our Discord server](https://discord.gg/tfPJa4UmAv) for real-time chat and community support
-- **GitHub**: [usememos/memos](https://github.com/usememos/memos)
-- **Documentation**: You're here! 📍
-- **Issues & Support**: [GitHub Issues](https://github.com/usememos/memos/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/usememos/memos/discussions)
-
----
-
-Have questions? Check out our [FAQ](/docs/faq) for answers to common questions.
