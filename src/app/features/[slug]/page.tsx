@@ -38,10 +38,10 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
 
             <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row justify-center max-w-sm sm:max-w-none mx-auto">
               <Link
-                href="/docs/installation"
+                href="/docs/getting-started"
                 className="group inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base bg-gradient-to-r from-teal-600 to-cyan-600 text-white font-semibold rounded-xl sm:rounded-2xl hover:from-teal-700 hover:to-cyan-700 hover:shadow-xl hover:shadow-teal-500/25 hover:-translate-y-0.5 transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
               >
-                Get Started
+              Get Started
               </Link>
               <Link
                 href="https://demo.usememos.com/"
@@ -134,7 +134,7 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
             </p>
             <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row justify-center max-w-sm sm:max-w-none mx-auto">
               <Link
-                href="/docs/installation"
+                href="/docs/getting-started"
                 className="group inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base bg-gradient-to-r from-teal-600 to-cyan-600 text-white font-semibold rounded-xl sm:rounded-2xl hover:from-teal-700 hover:to-cyan-700 hover:shadow-xl hover:shadow-teal-500/25 hover:-translate-y-0.5 transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
               >
                 Install Memos Now

@@ -66,7 +66,7 @@ export default function FeaturesPage() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
               <Link
-                href="/docs/installation"
+                href="/docs/getting-started"
                 className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-teal-600 to-cyan-600 text-white font-semibold rounded-2xl hover:from-teal-700 hover:to-cyan-700 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 shadow-lg"
               >
                 Get Started
@@ -147,7 +147,7 @@ export default function FeaturesPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="/docs/installation"
+                href="/docs/getting-started"
                 className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-teal-600 to-cyan-600 text-white font-semibold rounded-2xl hover:from-teal-700 hover:to-cyan-700 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 shadow-lg"
               >
                 Install Memos

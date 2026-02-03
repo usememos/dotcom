@@ -64,7 +64,7 @@ export default function HomePage() {
           </>
         }
         subtitle="A lightweight, self-hosted memo hub for effortlessly capturing and sharing your ideas. Open source, no tracking, free forever."
-        primaryCta={{ text: "Get Started", href: "/docs/installation" }}
+        primaryCta={{ text: "Get Started", href: "/docs/getting-started" }}
         secondaryCta={{
           text: "Live Demo",
           href: "https://demo.usememos.com/",
@@ -305,7 +305,7 @@ export default function HomePage() {
 
           <div className="mt-8 sm:mt-10 text-center">
             <Link
-              href="/docs/installation"
+              href="/docs/getting-started"
               className="inline-flex items-center gap-2 text-sm sm:text-base text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 font-semibold hover:underline transition-colors"
             >
               View all deployment options
@@ -418,7 +418,7 @@ export default function HomePage() {
           </p>
           <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:justify-center max-w-sm sm:max-w-none mx-auto">
             <Link
-              href="/docs/installation"
+              href="/docs/getting-started"
               className="group inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold text-white bg-gradient-to-r from-teal-600 to-cyan-600 border border-transparent rounded-xl sm:rounded-2xl shadow-lg hover:from-teal-700 hover:to-cyan-700 hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-300"
             >
               <DownloadIcon className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" />
