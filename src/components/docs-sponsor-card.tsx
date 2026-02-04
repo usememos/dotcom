@@ -14,7 +14,7 @@ export function DocsSponsorCard() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={sponsor.name}
-            className="group bg-zinc-50 flex items-center gap-3 text-left border rounded hover:opacity-80"
+            className="group bg-zinc-50 dark:bg-zinc-900 flex items-center gap-3 text-left border rounded hover:opacity-80"
           >
             <span className="flex h-10 w-full p-2 shrink-0 items-center justify-center">
               <img
