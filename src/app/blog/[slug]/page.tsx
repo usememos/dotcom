@@ -1,4 +1,3 @@
-import { TOCItems, TOCProvider, TOCScrollArea } from "fumadocs-ui/components/layout/toc";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { DocsBody } from "fumadocs-ui/page";
 import { ArrowLeftIcon, CalendarIcon, ExternalLinkIcon } from "lucide-react";
@@ -8,6 +7,7 @@ import { notFound } from "next/navigation";
 import { baseOptions } from "@/app/layout.config";
 import { AdsSectionDesktop, AdsSectionMobile } from "@/components/ads-section";
 import { Footer } from "@/components/footer";
+import { TOCSidebar } from "@/components/toc-sidebar";
 import { blogSource } from "@/lib/source";
 import { getMDXComponents } from "@/mdx-components";
 
@@ -187,12 +187,8 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                   <div className="sticky top-24 space-y-4">
                     {/* TOC Card - Scrollable */}
                     <div className="p-1">
-                      <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Table of Contents</h3>
-                      <TOCProvider toc={page.data.toc}>
-                        <TOCScrollArea>
-                          <TOCItems />
-                        </TOCScrollArea>
-                      </TOCProvider>
+                      <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-3">Table of Contents</h3>
+                      <TOCSidebar toc={page.data.toc} />
                     </div>
                     {/* Sponsor & Ads - Also sticky with TOC */}
                     <AdsSectionDesktop />

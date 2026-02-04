@@ -55,5 +55,9 @@ export default defineConfig({
   mdxOptions: {
     remarkPlugins: [],
     rehypePlugins: [],
+    remarkImageOptions: {
+      // Disable external image size fetching to avoid network timeouts during build
+      external: false,
+    },
   },
 });
