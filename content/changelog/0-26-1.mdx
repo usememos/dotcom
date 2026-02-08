@@ -1,0 +1,26 @@
+---
+title: Release v0.26.1
+date: "2026-02-08"
+---
+
+> This is a patch release focused on stability and upgrade reliability.
+
+## Bug Fixes
+
+- fix: avoid inbox crashes by gracefully handling deleted memos in the activity service
+- fix: correctly parse environment variables that contain underscores
+- fix: return consistent gRPC-style errors instead of Echo HTTP errors
+- fix: video attachment handling
+- fix: prevent 401 errors on window focus when an access token expires
+- fix: ensure the shortcut edit button opens edit mode instead of create mode
+- fix: block `Ctrl+Enter` from saving while editor content is still loading
+- fix: nested task list rendering and checkbox interactions
+- fix: make OAuth PKCE optional during sign-in
+- fix: prevent private memos from disappearing during token refresh
+- fix: add Unicode case-insensitive search support for SQLite
+- fix: correct handling of pasted files in the memo editor
+- fix: restore the access token creation flow
+- fix: preserve tag case when extracting Markdown tags
+- fix: auto-fix permission issues when upgrading from v0.25.3 to v0.26.0
+
+**Full Changelog**: https://github.com/usememos/memos/compare/v0.26.0...v0.26.1

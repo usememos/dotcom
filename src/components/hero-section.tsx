@@ -27,7 +27,7 @@ interface HeroSectionProps {
 }
 
 export function HeroSection({
-  version = "0.26.0",
+  version = "0.26.1",
   title,
   subtitle,
   primaryCta,
