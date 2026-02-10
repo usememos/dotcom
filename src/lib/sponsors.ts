@@ -20,7 +20,14 @@ export const FEATURED_SPONSORS: Sponsor[] = [
     url: "https://www.testmu.ai/?utm_source=memos&utm_medium=sponsor",
     logo: "/sponsors/testmu.svg",
     logoDark: "/sponsors/testmu-dark.svg",
-    description: "The world’s first full-stack Agentic AI Quality Engineering platform.",
+    description: "The world's first full-stack Agentic AI Quality Engineering platform.",
+  },
+  {
+    name: "SSD Nodes",
+    url: "https://www.ssdnodes.com/?utm_source=memos&utm_medium=sponsor",
+    logo: "/sponsors/ssd-nodes.svg",
+    logoDark: "/sponsors/ssd-nodes.svg",
+    description: "Affordable VPS hosting for self-hosters.",
   },
 ];
 
