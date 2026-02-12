@@ -17,7 +17,7 @@ export const FEATURED_SPONSORS: Sponsor[] = [
   },
   {
     name: "TestMu AI",
-    url: "https://www.testmu.ai/?utm_source=memos&utm_medium=sponsor",
+    url: "https://www.testmuai.com/?utm_medium=sponsor&utm_source=memos",
     logo: "/sponsors/testmu.svg",
     logoDark: "/sponsors/testmu-dark.svg",
     description: "The world's first full-stack Agentic AI Quality Engineering platform.",
