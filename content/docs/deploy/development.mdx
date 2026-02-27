@@ -12,13 +12,22 @@ git clone https://github.com/usememos/memos.git
 cd memos
 ```
 
-## 2. Run the backend
+## 2. Build the frontend
+
+```bash
+cd web
+pnpm install
+pnpm release
+cd ..
+```
+
+## 3. Run the backend
 
 ```bash
 go run ./cmd/memos --port 8081
 ```
 
-## 3. Open the app
+## 4. Open the app
 
 Visit `http://localhost:8081` in your browser.
 
