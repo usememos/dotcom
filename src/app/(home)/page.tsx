@@ -32,15 +32,24 @@ import { SponsorsSection } from "@/components/sponsors-section";
 import { StatsCard } from "@/components/stats-card";
 
 export const metadata: Metadata = {
-  title: "Memos - Open Source, Self-Hosted Note Taking",
-  description: "A lightweight, self-hosted memo hub for capturing and sharing your ideas. Open source, privacy-first, and free forever.",
-  keywords: ["note taking", "self-hosted", "open source", "privacy", "markdown", "memos", "memo hub"],
+  title: "Open Source Self-Hosted Note-Taking Tool | Memos",
+  description:
+    "Memos is a free, open source, self-hosted note-taking tool with Markdown, API access, and zero telemetry. Deploy with Docker in minutes.",
+  keywords: [
+    "open source self hosted note-taking tool",
+    "self-hosted note-taking tool",
+    "open source note taking",
+    "docker notes tool",
+    "privacy-first notes",
+    "markdown notes",
+    "memos",
+  ],
   alternates: {
     canonical: "https://usememos.com",
   },
   openGraph: {
-    title: "Memos - Open Source, Self-Hosted Note Taking",
-    description: "A lightweight, self-hosted memo hub for capturing and sharing your ideas. Open source and free forever.",
+    title: "Open Source Self-Hosted Note-Taking Tool | Memos",
+    description: "Free and open source self-hosted note-taking tool. Markdown support, zero telemetry, and fast Docker deployment.",
     url: "https://usememos.com",
     siteName: "Memos",
     locale: "en_US",
@@ -48,23 +57,57 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Memos - Open Source, Self-Hosted Note Taking",
-    description: "A lightweight, self-hosted memo hub. Open source, privacy-first, and free forever.",
+    title: "Open Source Self-Hosted Note-Taking Tool | Memos",
+    description: "Free, open source, self-hosted note-taking tool with Markdown and zero telemetry.",
   },
 };
 
 export default function HomePage() {
+  const faqItems = [
+    {
+      question: "Is Memos an open source self-hosted note-taking tool?",
+      answer: "Yes. Memos is MIT licensed and designed for self-hosting, so you control deployment, storage, and access.",
+    },
+    {
+      question: "Is Memos free to use?",
+      answer: "Yes. Memos is free to use with no subscription tiers, hidden fees, or paywalled core features.",
+    },
+    {
+      question: "How quickly can I deploy Memos?",
+      answer: "Most users can get Memos running in minutes using Docker, then expand to Compose, Kubernetes, or other setups.",
+    },
+    {
+      question: "Does Memos track my data?",
+      answer: "No. Memos is privacy-first with zero telemetry by default, and your notes stay on infrastructure you control.",
+    },
+  ];
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqItems.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+
   return (
     <main className="flex flex-1 flex-col">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+
       {/* Hero Section */}
       <HeroSection
         title={
           <>
-            Self-Hosted Notes
-            <span className="block text-teal-600">Simple & Private</span>
+            Open Source Self-Hosted
+            <span className="block text-teal-600">Note-Taking Tool</span>
           </>
         }
-        subtitle="A lightweight, self-hosted memo hub for effortlessly capturing and sharing your ideas. Open source, no tracking, free forever."
+        subtitle="Free to use, Markdown-first, and privacy-first. Deploy in minutes with Docker and keep full control of your notes."
         primaryCta={{ text: "Get Started", href: "/docs/getting-started" }}
         secondaryCta={{
           text: "Live Demo",
@@ -107,14 +150,13 @@ export default function HomePage() {
               {
                 icon: <ZapIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
                 title: "Blazing Fast",
-                description:
-                  "Capture ideas at the speed of thought. Lightweight server with a fast database means snappy performance.",
+                description: "Capture ideas at the speed of thought. Lightweight server with a fast database means snappy performance.",
               },
               {
                 icon: <PenToolIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
                 title: "Future-Proof Format",
                 description:
-                  "Write in Markdown. Own your content forever. No proprietary formats or vendor lock-in, just plain text that lasts.",
+                  "Write in Markdown. Own your content long-term. No proprietary formats or vendor lock-in, just plain text that lasts.",
               },
               {
                 icon: <ServerIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
@@ -129,7 +171,7 @@ export default function HomePage() {
               },
               {
                 icon: <DollarSignIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
-                title: "Free Forever",
+                title: "Free to Use",
                 description:
                   "Every feature. Every update. No paywalls, no premium upsells, no surprise fees. Because good software shouldn't cost a subscription.",
               },
@@ -434,6 +476,26 @@ export default function HomePage() {
               <GithubIcon className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" />
               View on GitHub
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-12 sm:py-16 lg:py-20 px-4 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 text-center mb-8 sm:mb-10">
+            Frequently Asked Questions
+          </h2>
+          <div className="space-y-4 sm:space-y-5">
+            {faqItems.map((item) => (
+              <div
+                key={item.question}
+                className="rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50/60 dark:bg-gray-800/40 p-5 sm:p-6"
+              >
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{item.question}</h3>
+                <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed">{item.answer}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
