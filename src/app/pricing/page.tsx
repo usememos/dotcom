@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Pricing - Memos",
   description:
-    "Memos is completely free and open source. No subscription fees, no hidden costs, no credit card required. You run it, you own it, you control it.",
+    "Memos is free, forever. No subscription fees, no hidden costs. Self-hosting means no costs to pass on. You run it, you own it.",
   alternates: {
     canonical: "https://usememos.com/pricing",
   },
@@ -37,21 +37,20 @@ const PRICING_FEATURES = [
 
 const WHY_FREE_REASONS = [
   {
-    title: "Open Source Philosophy",
-    description:
-      "We believe knowledge management tools should be accessible to everyone. Open source ensures transparency, security, and community ownership.",
+    title: "Open by Default",
+    description: "MIT licensed, fully transparent. The code is yours as much as the notes are.",
   },
   {
-    title: "Community-Driven",
-    description: "Memos is built and maintained by a passionate community of developers and users who contribute code, ideas, and support.",
+    title: "Built Together",
+    description: "370+ contributors shape what Memos becomes. Every contribution -- code, ideas, bug reports -- moves the project forward.",
   },
   {
-    title: "No Vendor Lock-In",
-    description: "Your data belongs to you. No subscriptions means no risk of losing access if you can't pay or if we change our pricing.",
+    title: "Your Data Stays Yours",
+    description: "No subscriptions means no risk of losing access. Your notes live in your database, in plain Markdown, permanently.",
   },
   {
-    title: "Sustainable Model",
-    description: "Self-hosting means we don't have infrastructure costs to pass on to you. You run it, you own it, you control it.",
+    title: "Self-Hosted, Zero Overhead",
+    description: "You run it on your infrastructure. No cloud costs to pass on, no accounts to manage, no vendor to depend on.",
   },
 ] as const;
 
@@ -138,7 +137,7 @@ export default function PricingPage() {
               </div>
               <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl mb-4 sm:mb-6 leading-tight">Pricing</h1>
               <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed px-4">
-                The best price is no price. Memos is completely free and open source.
+                Free, forever. Self-hosting means no costs to pass on to you.
               </p>
             </div>
 
@@ -173,11 +172,11 @@ export default function PricingPage() {
               <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950 dark:via-indigo-950 dark:to-purple-950 border border-blue-200 dark:border-blue-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg">
                 <div className="text-center">
                   <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-blue-900 dark:text-blue-100 mb-4 sm:mb-6 tracking-tight">
-                    You run it, you own it, you control it.
+                    Your Notes. Your Server. Your Rules.
                   </h2>
                   <p className="text-base sm:text-lg lg:text-xl text-blue-800 dark:text-blue-200 leading-relaxed max-w-3xl mx-auto">
-                    No subscriptions to manage. No accounts to cancel. No vendor lock-in. Install Memos on your infrastructure and it's
-                    yours—completely and permanently.
+                    Install Memos on your infrastructure and it's yours -- completely and permanently. No subscriptions to cancel, no
+                    accounts to manage.
                   </p>
                 </div>
               </div>
@@ -280,8 +279,7 @@ export default function PricingPage() {
 
               <div className={`${STYLES.card} p-6 sm:p-8 lg:p-12`}>
                 <p className="text-base sm:text-lg lg:text-xl text-gray-700 dark:text-gray-300 mb-10 sm:mb-12 text-center leading-relaxed max-w-3xl mx-auto">
-                  While Memos is free and always will be, development and infrastructure depend on community support. Here&apos;s how you
-                  can help keep this project thriving.
+                  Memos is free and always will be. Development depends on the community. Here&apos;s how you can contribute.
                 </p>
 
                 {/* Highlighted Sponsors */}
@@ -373,10 +371,10 @@ export default function PricingPage() {
             <section className="text-center">
               <div className="bg-gradient-to-br from-teal-50 via-cyan-50 to-blue-50 dark:from-teal-950 dark:via-cyan-950 dark:to-blue-950 border border-teal-200 dark:border-teal-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg">
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-teal-900 dark:text-teal-100 mb-3 sm:mb-4">
-                  Ready to Get Started?
+                  Start Capturing Thoughts
                 </h2>
                 <p className="text-base sm:text-lg lg:text-xl text-teal-800 dark:text-teal-200 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
-                  Download Memos today and start taking notes—completely free.
+                  One Docker command. Under five minutes. Your notes, on your server.
                 </p>
                 <a href={LINKS.docs} className={`${STYLES.button} bg-gradient-to-r from-teal-600 to-cyan-600 text-white`}>
                   <span>Get Started Free</span>

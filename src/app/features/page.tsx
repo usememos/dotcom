@@ -11,8 +11,7 @@ export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Features",
-  description:
-    "Discover all the powerful features that make Memos the perfect privacy-first, self-hosted note-taking platform. From instant save to multi-language support.",
+  description: "Everything Memos does -- and nothing it doesn't. Instant capture, Markdown-native storage, total data ownership, and more.",
   keywords: [
     "note taking features",
     "self-hosted",
@@ -28,9 +27,9 @@ export const metadata: Metadata = {
     canonical: "https://usememos.com/features",
   },
   openGraph: {
-    title: "Memos Features - Privacy-First Note Taking",
+    title: "Memos Features - Built for Instant Capture",
     description:
-      "Explore all the comprehensive features of Memos - from advanced privacy controls to powerful customization options and zero external dependencies.",
+      "Instant capture, Markdown-native storage, self-hosted privacy, and more. See what Memos does well -- and what it intentionally leaves out.",
     url: "https://usememos.com/features",
     siteName: "Memos",
     images: [
@@ -56,12 +55,11 @@ export default function FeaturesPage() {
         <section className="py-24 px-4 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50">
           <div className="max-w-6xl mx-auto text-center">
             <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6 leading-tight">
-              Powerful Features for
-              <span className="block text-teal-600 dark:text-teal-400">Modern Note-Taking</span>
+              Everything You Need.
+              <span className="block text-teal-600 dark:text-teal-400">Nothing You Don't.</span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed mb-12">
-              Discover all the features that make Memos the perfect privacy-first, self-hosted note-taking platform for individuals, teams,
-              and organizations.
+              Memos does one thing well: capturing your thoughts without getting in the way. Here's how.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">

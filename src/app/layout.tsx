@@ -6,11 +6,11 @@ import type { ReactNode } from "react";
 export const metadata: Metadata = {
   metadataBase: new URL("https://usememos.com"),
   title: {
-    default: "Memos - Open Source, Self-Hosted Note Taking Solution",
+    default: "Memos - Capture thoughts instantly. Own them completely",
     template: "%s - Memos",
   },
   description:
-    "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
+    "Open-source, self-hosted note-taking for instant capture. Your notes, your server, your rules. No tracking, no ads, no subscription fees.",
   keywords: [
     "note taking app",
     "self-hosted notes",
@@ -41,23 +41,23 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://usememos.com",
     siteName: "Memos",
-    title: "Memos - Open Source, Self-Hosted Note Taking Solution",
+    title: "Memos - Capture thoughts instantly. Own them completely",
     description:
-      "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
+      "Open-source, self-hosted note-taking for instant capture. Your notes, your server, your rules. No tracking, no ads, no subscription fees.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Memos - Open Source, Self-Hosted Note Taking Solution",
+        alt: "Memos - Capture thoughts instantly. Own them completely",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Memos - Open Source, Self-Hosted Note Taking Solution",
+    title: "Memos - Capture thoughts instantly. Own them completely",
     description:
-      "Effortlessly craft your impactful content with a privacy-first, lightweight note-taking solution. Free, open source, and self-hosted.",
+      "Open-source, self-hosted note-taking for instant capture. Your notes, your server, your rules. No tracking, no ads, no subscription fees.",
     images: ["/og-image.png"],
   },
   icons: {
@@ -73,7 +73,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     "@type": "SoftwareApplication",
     name: "Memos",
     description:
-      "An open-source, self-hosted note-taking service with zero telemetry. Privacy-first, lightweight solution with no tracking, ads, or subscription fees.",
+      "An open-source, self-hosted note-taking tool built for instant capture. Markdown-native, zero telemetry, deploys in minutes.",
     applicationCategory: "ProductivityApplication",
     operatingSystem: "Cross-platform",
     offers: {
@@ -105,12 +105,12 @@ export default function Layout({ children }: { children: ReactNode }) {
     },
     screenshot: "https://usememos.com/demo.png",
     featureList: [
-      "Privacy-first with zero telemetry",
-      "Self-hosted solution",
-      "Markdown support",
-      "Open source",
-      "No subscription fees",
-      "Complete data ownership",
+      "Instant thought capture",
+      "Total data ownership",
+      "Markdown-native storage",
+      "Self-hosted, zero telemetry",
+      "MIT licensed, open source",
+      "Deploys in under 5 minutes",
     ],
   };
 

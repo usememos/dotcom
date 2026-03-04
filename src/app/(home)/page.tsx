@@ -32,9 +32,9 @@ import { SponsorsSection } from "@/components/sponsors-section";
 import { StatsCard } from "@/components/stats-card";
 
 export const metadata: Metadata = {
-  title: "Open Source Self-Hosted Note-Taking Tool | Memos",
+  title: "Memos - Capture thoughts instantly. Own them completely",
   description:
-    "Memos is a free, open source, self-hosted note-taking tool with Markdown, API access, and zero telemetry. Deploy with Docker in minutes.",
+    "Memos is an open-source, self-hosted note-taking tool for instant capture. Markdown-native, zero telemetry, deploy with Docker in minutes.",
   keywords: [
     "open source self hosted note-taking tool",
     "self-hosted note-taking tool",
@@ -43,13 +43,15 @@ export const metadata: Metadata = {
     "privacy-first notes",
     "markdown notes",
     "memos",
+    "quick capture notes",
+    "self-hosted notes",
   ],
   alternates: {
     canonical: "https://usememos.com",
   },
   openGraph: {
-    title: "Open Source Self-Hosted Note-Taking Tool | Memos",
-    description: "Free and open source self-hosted note-taking tool. Markdown support, zero telemetry, and fast Docker deployment.",
+    title: "Memos - Capture thoughts instantly. Own them completely",
+    description: "Open-source, self-hosted note-taking tool for instant capture. Your notes, your server, your rules. Deploy in minutes.",
     url: "https://usememos.com",
     siteName: "Memos",
     locale: "en_US",
@@ -57,57 +59,23 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Open Source Self-Hosted Note-Taking Tool | Memos",
-    description: "Free, open source, self-hosted note-taking tool with Markdown and zero telemetry.",
+    title: "Memos - Capture thoughts instantly. Own them completely",
+    description: "Open-source, self-hosted note-taking for instant capture. Your notes, your server, your rules.",
   },
 };
 
 export default function HomePage() {
-  const faqItems = [
-    {
-      question: "Is Memos an open source self-hosted note-taking tool?",
-      answer: "Yes. Memos is MIT licensed and designed for self-hosting, so you control deployment, storage, and access.",
-    },
-    {
-      question: "Is Memos free to use?",
-      answer: "Yes. Memos is free to use with no subscription tiers, hidden fees, or paywalled core features.",
-    },
-    {
-      question: "How quickly can I deploy Memos?",
-      answer: "Most users can get Memos running in minutes using Docker, then expand to Compose, Kubernetes, or other setups.",
-    },
-    {
-      question: "Does Memos track my data?",
-      answer: "No. Memos is privacy-first with zero telemetry by default, and your notes stay on infrastructure you control.",
-    },
-  ];
-
-  const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqItems.map((item) => ({
-      "@type": "Question",
-      name: item.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: item.answer,
-      },
-    })),
-  };
-
   return (
     <main className="flex flex-1 flex-col">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-
       {/* Hero Section */}
       <HeroSection
         title={
           <>
-            Open Source Self-Hosted
-            <span className="block text-teal-600">Note-Taking Tool</span>
+            Capture freely.
+            <span className="block text-teal-600 dark:text-teal-400">Own completely.</span>
           </>
         }
-        subtitle="Free to use, Markdown-first, and privacy-first. Deploy in minutes with Docker and keep full control of your notes."
+        subtitle="Self-hosted note-taking that stays out of your way. Open source, Markdown-native, and entirely yours."
         primaryCta={{ text: "Get Started", href: "/docs/getting-started" }}
         secondaryCta={{
           text: "Live Demo",
@@ -135,7 +103,7 @@ export default function HomePage() {
               Why Memos?
             </h2>
             <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto px-4">
-              Self-hosted, fast, and private. Everything you need, nothing you don't.
+              One thing done well: capturing your thoughts without getting in the way.
             </p>
           </div>
 
@@ -144,36 +112,35 @@ export default function HomePage() {
             {[
               {
                 icon: <ShieldIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
-                title: "100% Private",
-                description: "Your thoughts are yours alone. No tracking, no analytics, no data harvesting. Ever.",
+                title: "Total Data Ownership",
+                description: "Your notes live on your server, in your database, in plain Markdown. Zero telemetry, zero tracking.",
               },
               {
                 icon: <ZapIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
-                title: "Blazing Fast",
-                description: "Capture ideas at the speed of thought. Lightweight server with a fast database means snappy performance.",
+                title: "Instant Capture",
+                description: "Open Memos, type, done. No folder navigation, no template selection. Capture first, organize later.",
               },
               {
                 icon: <PenToolIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
-                title: "Future-Proof Format",
-                description:
-                  "Write in Markdown. Own your content long-term. No proprietary formats or vendor lock-in, just plain text that lasts.",
+                title: "Markdown-Native",
+                description: "Write in plain text that lasts. No proprietary formats, no vendor lock-in. Back up with a single file copy.",
               },
               {
                 icon: <ServerIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
-                title: "Deploy Anywhere",
+                title: "Runs Anywhere",
                 description:
-                  "From a Raspberry Pi to enterprise servers—your home, your cloud, your rules. Up and running in under 5 minutes.",
+                  "From a Raspberry Pi to your own cloud. A ~20MB Docker image, one command to deploy, running in under 5 minutes.",
               },
               {
                 icon: <GithubIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
-                title: "Truly Open Source",
-                description: "MIT licensed and transparent. Join 57K+ stars and 370+ contributors building something better, together.",
+                title: "Open Source, MIT Licensed",
+                description: "The code is yours as much as the notes are. 57K+ stars, 370+ contributors, built in the open.",
               },
               {
                 icon: <DollarSignIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
-                title: "Free to Use",
+                title: "Free, Forever",
                 description:
-                  "Every feature. Every update. No paywalls, no premium upsells, no surprise fees. Because good software shouldn't cost a subscription.",
+                  "Every feature. Every update. No paywalls, no tiers, no surprise fees. Self-hosting means no costs to pass on.",
               },
             ].map((feature) => (
               <FeatureCard key={feature.title} {...feature} />
@@ -203,7 +170,7 @@ export default function HomePage() {
               Who Uses Memos?
             </h2>
             <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              From developers to students—see how people use Memos in their workflows
+              Developers, students, writers, self-hosters -- anyone who wants to capture thoughts without friction
             </p>
           </div>
 
@@ -291,9 +258,11 @@ export default function HomePage() {
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-cyan-400/20 to-teal-400/20 dark:from-cyan-600/10 dark:to-teal-600/10 rounded-full blur-3xl"></div>
             <div className="relative z-10">
               <div className="text-center mb-8 sm:mb-12">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4">Trusted by Thousands</h2>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+                  Built Together, in the Open
+                </h2>
                 <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                  A growing community of developers, writers, and self-hosters
+                  Community-driven from day one. Every contributor shapes what Memos becomes.
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-6 sm:gap-8 lg:gap-12 sm:grid-cols-4">
@@ -335,10 +304,10 @@ export default function HomePage() {
               <RocketIcon className="w-7 h-7 sm:w-8 sm:h-8" />
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4 leading-tight">
-              Running in Under 5 Minutes
+              One Command. Running in Minutes.
             </h2>
             <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              One Docker command is all it takes. Seriously, it's that easy.
+              A single Docker command gets you from zero to capturing thoughts.
             </p>
           </div>
 
@@ -374,10 +343,10 @@ export default function HomePage() {
                   <NotebookIcon className="w-7 h-7 sm:w-9 sm:h-9" />
                 </div>
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4 leading-tight">
-                  Quick Notes, Zero Setup
+                  Type. Save. Done.
                 </h2>
                 <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                  Need a quick place to jot things down? Use our browser-based scratchpad. Works offline, stores locally, and syncs to Memos
+                  A browser-based scratchpad for when you just need to write something down. Works offline, stores locally, syncs to Memos
                   when you're ready.
                 </p>
                 <ul className="space-y-3 mb-8">
@@ -454,10 +423,10 @@ export default function HomePage() {
             <BirdIcon className="w-7 h-7 sm:w-8 sm:h-8" />
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4 sm:mb-6 leading-tight px-2">
-            Ready to Get Started?
+            Your Thoughts. Your Server. Your Rules.
           </h2>
           <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-4">
-            Deploy your own Memos instance in minutes. Keep your notes private, organized, and always accessible.
+            Deploy Memos in minutes. Capture thoughts in Markdown, on infrastructure you control.
           </p>
           <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:justify-center max-w-sm sm:max-w-none mx-auto">
             <Link
@@ -476,26 +445,6 @@ export default function HomePage() {
               <GithubIcon className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" />
               View on GitHub
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-12 sm:py-16 lg:py-20 px-4 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 text-center mb-8 sm:mb-10">
-            Frequently Asked Questions
-          </h2>
-          <div className="space-y-4 sm:space-y-5">
-            {faqItems.map((item) => (
-              <div
-                key={item.question}
-                className="rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50/60 dark:bg-gray-800/40 p-5 sm:p-6"
-              >
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{item.question}</h3>
-                <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed">{item.answer}</p>
-              </div>
-            ))}
           </div>
         </div>
       </section>
