@@ -18,15 +18,15 @@ import { Footer } from "@/components/footer";
 import { getAllUseCaseSlugs, USE_CASES } from "@/lib/use-cases";
 
 export const metadata: Metadata = {
-  title: "Use Cases - How Teams & Individuals Use Memos for Note-Taking",
+  title: "Use Cases - How People Use Memos",
   description:
-    "Discover how developers, writers, researchers, businesses, and privacy-conscious professionals use Memos for secure, self-hosted note-taking. From personal knowledge management to team documentation.",
+    "Discover how developers, writers, self-hosters, students, and teams use Memos for quick capture, private notes, and lightweight documentation.",
   keywords: [
     "note taking use cases",
     "self-hosted notes",
     "developer notes",
     "team documentation",
-    "personal knowledge management",
+    "quick capture notes",
     "privacy-focused notes",
     "research notes",
     "business documentation",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Use Cases - How Teams & Individuals Use Memos",
     description:
-      "Explore real-world use cases for Memos - from software development and content creation to research, business documentation, and privacy-critical applications.",
+      "Explore real-world use cases for Memos, from software development and writing to journaling, homelabs, and shared team notes.",
     url: "https://usememos.com/use-cases",
     siteName: "Memos",
     locale: "en_US",
@@ -48,8 +48,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Use Cases - How People Use Memos",
-    description:
-      "Discover how developers, writers, researchers, and teams use Memos for secure, self-hosted note-taking and knowledge management.",
+    description: "Discover how developers, writers, self-hosters, students, and teams use Memos for quick capture and private notes.",
   },
 };
 
@@ -93,8 +92,8 @@ const useCaseCards = [
   {
     slug: "personal-knowledge",
     icon: BookOpenIcon,
-    title: "PKM Users",
-    description: "Personal wikis & journals",
+    title: "Journals",
+    description: "Daily notes & reflections",
     gradient: "from-rose-50 to-red-50 dark:from-rose-900/20 dark:to-red-900/20",
   },
   {
@@ -122,7 +121,7 @@ const useCaseCards = [
     slug: "teams",
     icon: UsersIcon,
     title: "Teams",
-    description: "Shared knowledge bases",
+    description: "Shared notes & updates",
     gradient: "from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20",
   },
 ];
@@ -143,11 +142,10 @@ export default function UseCasesPage() {
               How People Use Memos
             </h1>
             <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed mb-8">
-              From software development to personal journaling, discover how people around the world use Memos for secure, self-hosted
-              note-taking and knowledge management.
+              From software development to personal journaling, Memos works best where fast capture, privacy, and simplicity matter.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
-              {["Self-Hosters", "Developers", "Writers", "PKM Users", "Makers", "Students", "Privacy Pros", "Teams"].map((tag) => (
+              {["Self-Hosters", "Developers", "Writers", "Journals", "Makers", "Students", "Privacy Pros", "Teams"].map((tag) => (
                 <span
                   key={tag}
                   className="px-4 py-2 text-sm font-medium text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800 rounded-lg"
@@ -242,7 +240,7 @@ export default function UseCasesPage() {
               Ready to start your own use case?
             </h2>
             <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Join a global community of people who have chosen Memos for their note-taking and knowledge management needs.
+              Start with the workflow Memos does best: quick notes, private thoughts, and lightweight documentation.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center max-w-sm sm:max-w-none mx-auto">
               <Link

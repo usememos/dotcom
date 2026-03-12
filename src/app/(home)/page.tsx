@@ -32,9 +32,9 @@ import { SponsorsSection } from "@/components/sponsors-section";
 import { StatsCard } from "@/components/stats-card";
 
 export const metadata: Metadata = {
-  title: "Memos - Capture thoughts instantly. Own them completely",
+  title: "Memos - Capture thoughts instantly. Own them completely.",
   description:
-    "Memos is an open-source, self-hosted note-taking tool for instant capture. Markdown-native, zero telemetry, deploy with Docker in minutes.",
+    "Memos is an open-source, self-hosted note-taking tool built for instant capture. Markdown-native, privacy-first, and ready in minutes.",
   keywords: [
     "open source self hosted note-taking tool",
     "self-hosted note-taking tool",
@@ -50,8 +50,8 @@ export const metadata: Metadata = {
     canonical: "https://usememos.com",
   },
   openGraph: {
-    title: "Memos - Capture thoughts instantly. Own them completely",
-    description: "Open-source, self-hosted note-taking tool for instant capture. Your notes, your server, your rules. Deploy in minutes.",
+    title: "Memos - Capture thoughts instantly. Own them completely.",
+    description: "Open-source, self-hosted note-taking tool built for quick capture. Markdown-native, lightweight, and fully yours.",
     url: "https://usememos.com",
     siteName: "Memos",
     locale: "en_US",
@@ -59,8 +59,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Memos - Capture thoughts instantly. Own them completely",
-    description: "Open-source, self-hosted note-taking for instant capture. Your notes, your server, your rules.",
+    title: "Memos - Capture thoughts instantly. Own them completely.",
+    description: "Open-source, self-hosted note-taking tool built for quick capture. Markdown-native, lightweight, and fully yours.",
   },
 };
 
@@ -75,7 +75,7 @@ export default function HomePage() {
             <span className="block text-teal-600 dark:text-teal-400">Own completely.</span>
           </>
         }
-        subtitle="Self-hosted note-taking that stays out of your way. Open source, Markdown-native, and entirely yours."
+        subtitle="A private timeline for your thoughts. Self-hosted, Markdown-native, and built to stay out of your way."
         primaryCta={{ text: "Get Started", href: "/docs/getting-started" }}
         secondaryCta={{
           text: "Live Demo",
@@ -170,7 +170,7 @@ export default function HomePage() {
               Who Uses Memos?
             </h2>
             <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Developers, students, writers, self-hosters -- anyone who wants to capture thoughts without friction
+              Developers, writers, self-hosters, and anyone who wants a faster way to save a thought
             </p>
           </div>
 
@@ -196,8 +196,8 @@ export default function HomePage() {
               },
               {
                 icon: <BookOpenIcon className="w-6 h-6 sm:w-7 sm:h-7" />,
-                title: "Knowledge Seekers",
-                description: "Second brains & digital gardens",
+                title: "Journals",
+                description: "Daily notes & idea trails",
                 gradient: "from-rose-50 to-red-50 dark:from-rose-900/20 dark:to-red-900/20",
               },
               {
@@ -221,7 +221,7 @@ export default function HomePage() {
               {
                 icon: <UsersIcon className="w-6 h-6 sm:w-7 sm:h-7" />,
                 title: "Teams",
-                description: "Shared knowledge bases",
+                description: "Shared notes & updates",
                 gradient: "from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20",
               },
             ].map((useCase) => (
@@ -346,8 +346,8 @@ export default function HomePage() {
                   Type. Save. Done.
                 </h2>
                 <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                  A browser-based scratchpad for when you just need to write something down. Works offline, stores locally, syncs to Memos
-                  when you're ready.
+                  A browser-based scratchpad for when you just need to write something down. It stores locally and can sync to Memos when
+                  you are ready.
                 </p>
                 <ul className="space-y-3 mb-8">
                   {[

@@ -25,7 +25,7 @@ export function DockerCommand() {
           </div>
           <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100">Docker</h3>
         </div>
-        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">One command to start your Memos instance</p>
+        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">One command to start your Memos server</p>
       </div>
       <div className="relative bg-gray-900 dark:bg-black p-6 sm:p-8">
         <pre className="text-sm sm:text-base text-gray-100 overflow-x-auto">

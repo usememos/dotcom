@@ -14,7 +14,7 @@ export function SponsorsSection() {
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Supported by</h2>
           </div>
           <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Thank you to our amazing sponsors who make this project possible
+            Thanks to the sponsors who help keep Memos moving.
           </p>
         </div>
 

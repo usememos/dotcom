@@ -81,7 +81,7 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
         <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 bg-gradient-to-b from-gray-50/80 to-white dark:from-gray-800 dark:to-gray-900">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-8 sm:mb-10 lg:mb-12 text-center">
-              Perfect For
+              Works Well For
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {feature.useCases.map((useCase, index) => (
@@ -130,14 +130,14 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
               Ready to Get Started?
             </h2>
             <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed text-balance px-4">
-              Experience {feature.title.toLowerCase()} and all other Memos features in your own self-hosted instance.
+              Put {feature.title.toLowerCase()} to work in a self-hosted Memos instance you control.
             </p>
             <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row justify-center max-w-sm sm:max-w-none mx-auto">
               <Link
                 href="/docs/getting-started"
                 className="group inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base bg-gradient-to-r from-teal-600 to-cyan-600 text-white font-semibold rounded-xl sm:rounded-2xl hover:from-teal-700 hover:to-cyan-700 hover:shadow-xl hover:shadow-teal-500/25 hover:-translate-y-0.5 transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
               >
-                Install Memos Now
+                Install Memos
               </Link>
               <Link
                 href="/features"

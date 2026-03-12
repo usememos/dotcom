@@ -6,11 +6,10 @@ import type { ReactNode } from "react";
 export const metadata: Metadata = {
   metadataBase: new URL("https://usememos.com"),
   title: {
-    default: "Memos - Capture thoughts instantly. Own them completely",
+    default: "Memos - Capture thoughts instantly. Own them completely.",
     template: "%s - Memos",
   },
-  description:
-    "Open-source, self-hosted note-taking for instant capture. Your notes, your server, your rules. No tracking, no ads, no subscription fees.",
+  description: "Open-source, self-hosted note-taking tool built for instant capture. Markdown-native, privacy-first, and fully yours.",
   keywords: [
     "note taking app",
     "self-hosted notes",
@@ -18,10 +17,10 @@ export const metadata: Metadata = {
     "privacy-first notes",
     "markdown notes",
     "memos app",
-    "personal knowledge base",
+    "quick capture notes",
     "self-hosted memo",
     "private note taking",
-    "docker notes app",
+    "docker note-taking tool",
   ],
   authors: [{ name: "Memos Team" }],
   creator: "Memos Team",
@@ -41,23 +40,21 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://usememos.com",
     siteName: "Memos",
-    title: "Memos - Capture thoughts instantly. Own them completely",
-    description:
-      "Open-source, self-hosted note-taking for instant capture. Your notes, your server, your rules. No tracking, no ads, no subscription fees.",
+    title: "Memos - Capture thoughts instantly. Own them completely.",
+    description: "Open-source, self-hosted note-taking tool built for instant capture. Markdown-native, privacy-first, and fully yours.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Memos - Capture thoughts instantly. Own them completely",
+        alt: "Memos - Capture thoughts instantly. Own them completely.",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Memos - Capture thoughts instantly. Own them completely",
-    description:
-      "Open-source, self-hosted note-taking for instant capture. Your notes, your server, your rules. No tracking, no ads, no subscription fees.",
+    title: "Memos - Capture thoughts instantly. Own them completely.",
+    description: "Open-source, self-hosted note-taking tool built for instant capture. Markdown-native, privacy-first, and fully yours.",
     images: ["/og-image.png"],
   },
   icons: {
@@ -73,7 +70,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     "@type": "SoftwareApplication",
     name: "Memos",
     description:
-      "An open-source, self-hosted note-taking tool built for instant capture. Markdown-native, zero telemetry, deploys in minutes.",
+      "An open-source, self-hosted note-taking tool built for instant capture. Markdown-native, privacy-first, and ready in minutes.",
     applicationCategory: "ProductivityApplication",
     operatingSystem: "Cross-platform",
     offers: {

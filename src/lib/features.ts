@@ -96,7 +96,7 @@ export const FEATURES = {
   // Self-hosted & Privacy First
   "self-hosted": {
     title: "Self-Hosted",
-    description: "Deploy on your own infrastructure from Raspberry Pi to enterprise Kubernetes clusters.",
+    description: "Deploy on your own infrastructure, from a Raspberry Pi to a production server you control.",
     icon: ServerIcon,
     gradient: "from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30",
     iconBg: "bg-purple-100 dark:bg-purple-900",
@@ -104,14 +104,14 @@ export const FEATURES = {
     border: "border-purple-100 dark:border-purple-900",
     hero: {
       title: "Your Server, Your Control",
-      subtitle: "Deploy anywhere from Raspberry Pi to enterprise clusters - complete control without vendor lock-in.",
+      subtitle: "Deploy where you want, run it your way, and keep full control without vendor lock-in.",
     },
     benefits: [
-      "Complete data ownership - your data never leaves your infrastructure",
+      "Your notes stay on infrastructure you control",
       "Deploy on any server, VPS, cloud provider, or on-premises hardware",
       "Full control over user access, authentication policies, and security measures",
       "Customize and scale resources based on your specific usage patterns",
-      "Integrate seamlessly with existing corporate infrastructure and SSO systems",
+      "Fit Memos into the environment you already run",
       "No vendor lock-in or dependencies - deploy and manage on your terms",
     ],
     useCases: [
@@ -121,11 +121,11 @@ export const FEATURES = {
       },
       {
         title: "Small Team Deployment",
-        description: "Deploy on a small VPS or cloud instance for team collaboration without external dependencies.",
+        description: "Deploy on a small VPS or cloud instance for shared notes without extra service overhead.",
       },
       {
         title: "Enterprise Infrastructure",
-        description: "Integrate with existing corporate networks, authentication systems, and compliance frameworks.",
+        description: "Run Memos inside existing networks and authentication setups you already manage.",
       },
     ],
     techDetails: [
@@ -145,13 +145,13 @@ export const FEATURES = {
     border: "border-teal-100 dark:border-teal-900",
     hero: {
       title: "Your Data, Your Rules",
-      subtitle: "Complete ownership and control with zero telemetry - your data never leaves your control.",
+      subtitle: "Keep your notes in your database, on your server, with ownership that stays clear and direct.",
     },
     benefits: [
       "All data stored locally in your chosen database",
       "Zero telemetry - no tracking, ads, or analytics collection",
       "Zero external cloud dependencies or third-party services",
-      "Full GDPR and privacy compliance by design",
+      "Privacy-first defaults that keep the data path simple",
       "Complete audit trail of all data access and modifications",
       "Export your data anytime in standard formats",
     ],
@@ -166,7 +166,7 @@ export const FEATURES = {
       },
       {
         title: "Compliance Requirements",
-        description: "Meet strict regulatory requirements by ensuring data never leaves your infrastructure.",
+        description: "Keep sensitive notes in environments where local control matters.",
       },
     ],
     techDetails: [
@@ -220,7 +220,7 @@ export const FEATURES = {
   },
   "no-fees": {
     title: "Always Free",
-    description: "All features free forever - no premium tiers, usage limits, or hidden costs. Ever.",
+    description: "No premium tiers, no feature gating, and no subscription required to use Memos.",
     icon: DollarSignIcon,
     gradient: "from-lime-50 to-green-50 dark:from-lime-950/30 dark:to-green-950/30",
     iconBg: "bg-lime-100 dark:bg-lime-900",
@@ -228,10 +228,10 @@ export const FEATURES = {
     border: "border-lime-100 dark:border-lime-900",
     hero: {
       title: "Free Forever",
-      subtitle: "No subscription fees, no tracking, no ads - all features available at no cost with unlimited usage.",
+      subtitle: "No subscription fees, no tracking, and no ads. Use the full product without paywalls.",
     },
     benefits: [
-      "No subscription fees - completely free forever",
+      "No subscription fees",
       "No tracking or ads - privacy-first approach",
       "All features included with no premium tiers",
       "No user limits or storage restrictions",
@@ -241,7 +241,7 @@ export const FEATURES = {
     useCases: [
       {
         title: "Personal Projects",
-        description: "Use for personal note-taking and knowledge management without any costs.",
+        description: "Use it for personal notes, journals, and idea capture without subscription pressure.",
       },
       {
         title: "Small Businesses",
@@ -269,12 +269,12 @@ export const FEATURES = {
     border: "border-blue-100 dark:border-blue-900",
     hero: {
       title: "Truly Independent",
-      subtitle: "Zero telemetry and no internet connection required after installation - your memos work anywhere, anytime.",
+      subtitle: "Zero telemetry and no extra hosted services after installation keep Memos independent and simple.",
     },
     benefits: [
       "Zero telemetry - no tracking, analytics, or data collection",
       "Zero external API calls or third-party service dependencies",
-      "Works completely offline after initial installation",
+      "Works locally after installation without extra hosted services",
       "No CDN dependencies for fonts, icons, or other assets",
       "Self-contained binary with all dependencies included",
       "No phone-home or update check mechanisms",
@@ -290,7 +290,7 @@ export const FEATURES = {
       },
       {
         title: "Privacy-Critical Applications",
-        description: "Ensure absolutely no data leakage to external services or analytics platforms.",
+        description: "Keep your note workflow simple by avoiding extra third-party services.",
       },
     ],
     techDetails: [
@@ -303,7 +303,7 @@ export const FEATURES = {
   // Core Memo Features
   "instant-save": {
     title: "Instant Save",
-    description: "Automatic persistence as you type - never lose a memo with streamlined plaintext input.",
+    description: "Automatic persistence while you type keeps capture fast and low-friction.",
     icon: SaveIcon,
     gradient: "from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30",
     iconBg: "bg-green-100 dark:bg-green-900",
@@ -311,7 +311,7 @@ export const FEATURES = {
     border: "border-green-100 dark:border-green-900",
     hero: {
       title: "Capture Every Thought",
-      subtitle: "Automatic saving as you type ensures zero data loss - never worry about manual saves again.",
+      subtitle: "Write without stopping to think about saving. Memos keeps the flow moving.",
     },
     benefits: [
       "Automatic saving as you type with no manual save button required",
@@ -352,7 +352,7 @@ export const FEATURES = {
     border: "border-emerald-100 dark:border-emerald-900",
     hero: {
       title: "Capture Thoughts Instantly",
-      subtitle: "Quick memo creation from anywhere - never let a great idea slip away.",
+      subtitle: "Open Memos, type, done. Quick capture should feel that simple.",
     },
     benefits: [
       "Create memos from anywhere with keyboard shortcut",
@@ -393,10 +393,10 @@ export const FEATURES = {
     border: "border-orange-100 dark:border-orange-900",
     hero: {
       title: "Write with Power",
-      subtitle: "Full Markdown support with plain text storage ensures portability and future-proof content.",
+      subtitle: "Write in Markdown and keep your notes portable, readable, and easy to keep.",
     },
     benefits: [
-      "Plain text storage for maximum portability and future-proofing",
+      "Plain text storage for portability and long-term access",
       "Complete GitHub Flavored Markdown (GFM) compatibility",
       "Syntax highlighting for 100+ programming languages",
       "Tables, task lists, and advanced formatting options",
@@ -406,7 +406,7 @@ export const FEATURES = {
     useCases: [
       {
         title: "Technical Documentation",
-        description: "Create comprehensive technical docs with code blocks, diagrams, and structured content.",
+        description: "Write technical notes with code blocks, diagrams, and structured content.",
       },
       {
         title: "Academic Writing",
@@ -467,7 +467,7 @@ export const FEATURES = {
   },
   "universal-search": {
     title: "Universal Search",
-    description: "Find any memo instantly with powerful full-text search across all your memos and content.",
+    description: "Find the memo you need quickly with full-text search across your notes and content.",
     icon: SearchIcon,
     gradient: "from-cyan-50 to-blue-50 dark:from-cyan-950/30 dark:to-blue-950/30",
     iconBg: "bg-cyan-100 dark:bg-cyan-900",
@@ -496,7 +496,7 @@ export const FEATURES = {
       },
       {
         title: "Team Collaboration",
-        description: "Help team members find shared knowledge and documentation.",
+        description: "Help team members find shared notes and internal documentation.",
       },
     ],
     techDetails: [
@@ -563,7 +563,7 @@ export const FEATURES = {
       "Chronological feed showing all memos in time order",
       "Daily, weekly, and monthly views for different perspectives",
       "See your activity patterns and memo-writing habits",
-      "Infinite scroll for seamless browsing",
+      "Continuous browsing through past notes and days",
       "Jump to any date to find past memos",
       "Activity stream shows your knowledge evolution",
     ],
@@ -590,7 +590,7 @@ export const FEATURES = {
   },
   "public-sharing": {
     title: "Public Sharing",
-    description: "Share memos publicly with customizable links - make knowledge accessible to the world.",
+    description: "Share selected memos publicly with simple links whenever you want to publish or send something out.",
     icon: Share2Icon,
     gradient: "from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30",
     iconBg: "bg-violet-100 dark:bg-violet-900",
@@ -606,7 +606,7 @@ export const FEATURES = {
       "No login required for readers to view shared memos",
       "Shareable URLs that work anywhere",
       "Embed memos on external websites",
-      "Share your knowledge base with the world",
+      "Publish selected notes without moving them to another tool",
     ],
     useCases: [
       {
@@ -631,7 +631,7 @@ export const FEATURES = {
   },
   microblog: {
     title: "Microblog",
-    description: "Turn your memos into a personal microblog - share thoughts, ideas, and updates with the world.",
+    description: "Turn your memos into a personal microblog for sharing thoughts, ideas, and short updates on your own terms.",
     icon: MessageCircleIcon,
     gradient: "from-rose-50 to-orange-50 dark:from-rose-950/30 dark:to-orange-950/30",
     iconBg: "bg-rose-100 dark:bg-rose-900",
@@ -639,12 +639,12 @@ export const FEATURES = {
     border: "border-rose-100 dark:border-rose-900",
     hero: {
       title: "Your Personal Microblog",
-      subtitle: "Share quick thoughts, updates, and ideas with the world - a self-hosted alternative to social media.",
+      subtitle: "Share quick thoughts and updates from a self-hosted space you control.",
     },
     benefits: [
       "Publish short-form content instantly with minimal friction",
       "Own your microblog completely - no algorithms, no ads, no tracking",
-      "Chronological timeline perfect for status updates and daily thoughts",
+      "A chronological timeline that suits status updates and daily thoughts",
       "Rich media support for images, links, and formatted content",
       "RSS feed generation for followers to subscribe",
       "Custom domain support for your personal brand",
@@ -681,7 +681,7 @@ export const FEATURES = {
     border: "border-sky-100 dark:border-sky-900",
     hero: {
       title: "Beautiful & Responsive",
-      subtitle: "Modern React interface with dark mode support - clean design that works seamlessly across all devices.",
+      subtitle: "A clean interface that keeps the focus on writing and reading across devices.",
     },
     benefits: [
       "Clean, minimal design focused on simplicity and usability",
@@ -756,7 +756,7 @@ export const FEATURES = {
   },
   "keyboard-shortcuts": {
     title: "Keyboard Shortcuts",
-    description: "Boost productivity with comprehensive keyboard shortcuts for power users and fast navigation.",
+    description: "Move faster with keyboard shortcuts for writing, navigating, and capturing without leaving the keyboard.",
     icon: KeyboardIcon,
     gradient: "from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30",
     iconBg: "bg-blue-100 dark:bg-blue-900",
@@ -778,7 +778,7 @@ export const FEATURES = {
     useCases: [
       {
         title: "Power User Workflow",
-        description: "Navigate and create memos at lightning speed without using the mouse.",
+        description: "Navigate and create memos quickly without reaching for the mouse.",
       },
       {
         title: "Accessibility",
@@ -798,7 +798,7 @@ export const FEATURES = {
   },
   "customizable-ui": {
     title: "Customizable",
-    description: "Custom branding, themes, colors, and UI elements to create your perfect note-taking environment.",
+    description: "Adjust branding, themes, colors, and UI details to make Memos feel like your own space.",
     icon: PaletteIcon,
     gradient: "from-fuchsia-50 to-pink-50 dark:from-fuchsia-950/30 dark:to-pink-950/30",
     iconBg: "bg-fuchsia-100 dark:bg-fuchsia-900",
@@ -848,7 +848,7 @@ export const FEATURES = {
     border: "border-indigo-100 dark:border-indigo-900",
     hero: {
       title: "Deploy Anywhere",
-      subtitle: "From Raspberry Pi to enterprise Kubernetes clusters - universal compatibility for any deployment scenario.",
+      subtitle: "From Raspberry Pi to larger server setups, Memos stays portable across the environments people actually run.",
     },
     benefits: [
       "Docker containerization with multi-architecture support (recommended deployment method)",
@@ -973,12 +973,12 @@ export const FEATURES = {
     border: "border-slate-100 dark:border-slate-900",
     hero: {
       title: "Your Database, Your Choice",
-      subtitle: "Flexible support for SQLite, PostgreSQL, and MySQL - choose the best fit for your infrastructure needs.",
+      subtitle: "Flexible support for SQLite, PostgreSQL, and MySQL so you can choose the database that fits your setup.",
     },
     benefits: [
       "SQLite for simple single-user deployments with zero configuration",
-      "PostgreSQL for enterprise-grade reliability and advanced features",
-      "MySQL for seamless integration with existing infrastructure",
+      "PostgreSQL for larger multi-user deployments",
+      "MySQL for teams already using it in their stack",
       "Automatic database migrations and schema version management",
       "Connection pooling and query optimization for each database type",
       "Easy database switching without data loss or downtime",
@@ -1014,7 +1014,7 @@ export const FEATURES = {
     border: "border-violet-100 dark:border-violet-900",
     hero: {
       title: "Built for Integration",
-      subtitle: "Comprehensive REST and gRPC APIs unlock unlimited possibilities for custom integrations and automation.",
+      subtitle: "REST and gRPC APIs make it easy to automate workflows and build on top of Memos.",
     },
     benefits: [
       "Complete RESTful API covering all functionality with unrestricted access",
@@ -1027,7 +1027,7 @@ export const FEATURES = {
     useCases: [
       {
         title: "Custom Applications",
-        description: "Build custom frontends or mobile apps using the comprehensive API.",
+        description: "Build custom frontends or mobile apps using the API.",
       },
       {
         title: "Automation Workflows",
@@ -1098,7 +1098,7 @@ export const FEATURES = {
     border: "border-indigo-100 dark:border-indigo-900",
     hero: {
       title: "Speak Your Language",
-      subtitle: "Multiple language support with community translations makes Memos accessible worldwide.",
+      subtitle: "Community translations help more people use Memos in the language they prefer.",
     },
     benefits: [
       "Interface available in multiple languages",
@@ -1145,7 +1145,7 @@ export const FEATURES = {
     },
     benefits: [
       "Import from Markdown files and directories",
-      "Support for popular note-taking app formats",
+      "Support for popular note-taking tool formats",
       "Bulk import capability for large collections",
       "Automatic tag and metadata extraction",
       "Preview before finalizing import",
@@ -1154,7 +1154,7 @@ export const FEATURES = {
     useCases: [
       {
         title: "Platform Migration",
-        description: "Move from other note-taking apps to Memos seamlessly.",
+        description: "Move from other note-taking tools to Memos with less friction.",
       },
       {
         title: "Data Consolidation",

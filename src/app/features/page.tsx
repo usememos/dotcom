@@ -11,13 +11,14 @@ export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Features",
-  description: "Everything Memos does -- and nothing it doesn't. Instant capture, Markdown-native storage, total data ownership, and more.",
+  description:
+    "Explore the Memos features that matter most: instant capture, Markdown-native notes, timeline browsing, and total data ownership.",
   keywords: [
     "note taking features",
     "self-hosted",
     "privacy",
     "markdown",
-    "knowledge management",
+    "quick capture",
     "tags",
     "search",
     "export",
@@ -28,8 +29,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Memos Features - Built for Instant Capture",
-    description:
-      "Instant capture, Markdown-native storage, self-hosted privacy, and more. See what Memos does well -- and what it intentionally leaves out.",
+    description: "Instant capture, Markdown-native notes, self-hosted ownership, and a lightweight timeline experience.",
     url: "https://usememos.com/features",
     siteName: "Memos",
     images: [
@@ -55,11 +55,11 @@ export default function FeaturesPage() {
         <section className="py-24 px-4 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50">
           <div className="max-w-6xl mx-auto text-center">
             <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6 leading-tight">
-              Everything You Need.
-              <span className="block text-teal-600 dark:text-teal-400">Nothing You Don't.</span>
+              Built for fast capture.
+              <span className="block text-teal-600 dark:text-teal-400">Focused by design.</span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed mb-12">
-              Memos does one thing well: capturing your thoughts without getting in the way. Here's how.
+              Memos is strongest when it stays simple: open it, type a thought, and keep it on your own server.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
@@ -138,10 +138,10 @@ export default function FeaturesPage() {
         <section className="py-24 px-4 bg-gradient-to-br from-gray-50 via-white to-teal-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-5xl mb-6 leading-tight">
-              Ready to Experience All Features?
+              Ready to capture more quickly?
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Join thousands of users who have chosen privacy, performance, and complete control over their notes.
+              Install Memos and start writing in a faster, lighter, more private notes flow.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link

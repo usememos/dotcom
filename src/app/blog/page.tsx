@@ -11,13 +11,13 @@ export const revalidate = 1800;
 
 export const metadata: Metadata = {
   title: "Blogs",
-  description: "Insights, updates, and stories from our journey building the best open-source note-taking platform.",
+  description: "Insights, updates, and stories from the team building Memos, the open-source note-taking tool for instant capture.",
   alternates: {
     canonical: "https://usememos.com/blog",
   },
   openGraph: {
     title: "Memos Blog - Insights & Updates",
-    description: "Insights, updates, and stories from our journey building the best open-source note-taking platform.",
+    description: "Insights, updates, and stories from the team building Memos, the open-source note-taking tool for instant capture.",
     url: "https://usememos.com/blog",
     siteName: "Memos",
     images: [
@@ -48,7 +48,7 @@ export default function BlogPage() {
             <div className="mb-12 sm:mb-16 lg:mb-20">
               <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight mb-4 sm:mb-6 leading-tight">Blogs</h1>
               <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
-                Insights, updates, and stories from our journey building the best open-source note-taking platform.
+                Insights, updates, and stories from the team building Memos.
               </p>
             </div>
 

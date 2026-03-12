@@ -7,7 +7,7 @@ import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Brand - Memos",
-  description: "Official Memos brand assets, logos, and usage guidelines for the open-source note-taking platform.",
+  description: "Official Memos brand assets, logos, and usage guidelines for the open-source note-taking tool built for instant capture.",
   alternates: {
     canonical: "https://usememos.com/brand",
   },
@@ -70,7 +70,7 @@ export default function BrandPage() {
               </div>
               <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl mb-4 sm:mb-6 leading-tight">Brand</h1>
               <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
-                Download official Memos brand assets and guidelines.
+                Download official Memos brand assets and use them with clear, consistent presentation.
               </p>
             </div>
 
@@ -150,7 +150,7 @@ export default function BrandPage() {
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-8 text-center">Usage</h2>
               <div className="bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-teal-950 dark:to-cyan-950 border border-teal-200 dark:border-teal-800 rounded-2xl p-6 sm:p-8">
                 <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                  Memos is open source—you&apos;re welcome to use our brand assets in accordance with these guidelines:
+                  Memos is open source. You are welcome to use our brand assets in ways that stay clear, respectful, and consistent:
                 </p>
                 <ul className="space-y-3 text-gray-700 dark:text-gray-300">
                   <li className="flex items-start gap-3">

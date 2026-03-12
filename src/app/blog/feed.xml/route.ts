@@ -21,7 +21,7 @@ export async function GET() {
   <channel>
     <title>Memos Blog</title>
     <link>${BASE_URL}/blog</link>
-    <description>Insights, updates, and stories from our journey building the best open-source note-taking platform.</description>
+    <description>Insights, updates, and stories from the team building Memos.</description>
     <language>en</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${BASE_URL}/blog/feed.xml" rel="self" type="application/rss+xml" />

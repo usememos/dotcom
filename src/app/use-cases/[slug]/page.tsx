@@ -179,14 +179,14 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
                 Ready to get started?
               </h2>
               <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
-                Join a community of people who use Memos for their {useCase.title.toLowerCase()} needs.
+                Start with the fast, private capture flow that makes Memos useful for {useCase.title.toLowerCase()}.
               </p>
               <div className="flex flex-col gap-4 sm:flex-row sm:justify-center max-w-sm sm:max-w-none mx-auto">
                 <Link
                   href="/docs/getting-started"
                   className="group inline-flex items-center justify-center gap-3 px-8 py-4 text-base font-semibold text-white bg-gradient-to-r from-teal-600 to-cyan-600 border border-transparent rounded-2xl shadow-lg hover:from-teal-700 hover:to-cyan-700 hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-300"
                 >
-                  Get Started Now
+                  Get Started
                   <span className="group-hover:translate-x-1 transition-transform" aria-hidden="true">
                     →
                   </span>

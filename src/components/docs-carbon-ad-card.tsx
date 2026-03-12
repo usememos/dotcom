@@ -86,7 +86,7 @@ function FallbackContent({ variant }: { variant: keyof typeof CONTAINER_STYLES }
           </div>
         </div>
         <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
-          Help us build the future of open-source note-taking. Become a sponsor and get your logo featured here.
+          Support the continued development of Memos. Become a sponsor and get your logo featured here.
         </p>
       </a>
     );
@@ -94,7 +94,7 @@ function FallbackContent({ variant }: { variant: keyof typeof CONTAINER_STYLES }
 
   return (
     <a href={SPONSOR_URL} target="_blank" rel="noopener noreferrer" className={FALLBACK_STYLES.default}>
-      Become a Sponsor
+      Support Memos
     </a>
   );
 }

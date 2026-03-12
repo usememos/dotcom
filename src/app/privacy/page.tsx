@@ -6,7 +6,7 @@ import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Privacy Policy - Memos",
-  description: "Memos privacy policy - We collect nothing. Zero tracking, zero analytics. Your data stays on your server.",
+  description: "Memos privacy policy. No tracking, no analytics, and no hosted data path through us.",
   alternates: {
     canonical: "https://usememos.com/privacy",
   },
@@ -27,8 +27,7 @@ export default function PrivacyPage() {
               </div>
               <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6 leading-tight">Privacy Policy</h1>
               <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
-                Your privacy isn't a feature—it's our foundation. Memos is built to keep your data completely private and under your
-                control.
+                Privacy is part of the product. Memos is built so your data stays on infrastructure you control.
               </p>
             </div>
 
@@ -38,10 +37,10 @@ export default function PrivacyPage() {
                 <div className="text-center">
                   <h2 className="text-3xl font-bold text-teal-900 dark:text-teal-100 mb-6 tracking-tight">The Simple Truth</h2>
                   <p className="text-2xl text-teal-800 dark:text-teal-200 leading-relaxed mb-4">
-                    We don't collect <strong>anything</strong> from you.
+                    We do not run tracking or analytics on you.
                   </p>
                   <p className="text-lg text-teal-700 dark:text-teal-300 leading-relaxed">
-                    No tracking. No analytics. No telemetry. No cookies. Nothing. Your data is yours, and yours alone.
+                    No tracking. No analytics. No telemetry. No hosted copy of your notes passing through us.
                   </p>
                 </div>
               </div>
@@ -56,13 +55,15 @@ export default function PrivacyPage() {
                 <h2 className="text-3xl font-bold tracking-tight">Zero Data Collection</h2>
               </div>
 
-              <p className="text-center text-gray-600 dark:text-gray-400 mb-8 text-lg">We never collect, store, or have access to:</p>
+              <p className="text-center text-gray-600 dark:text-gray-400 mb-8 text-lg">
+                Memos is designed so we do not collect or receive:
+              </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[
                   {
                     item: "Personal Information",
-                    detail: "Names, emails, phone numbers—nothing",
+                    detail: "Names, emails, phone numbers, and similar personal data",
                   },
                   {
                     item: "Usage Data",
@@ -70,7 +71,7 @@ export default function PrivacyPage() {
                   },
                   {
                     item: "Your Content",
-                    detail: "Your notes never touch our servers",
+                    detail: "Your notes do not pass through our servers",
                   },
                   {
                     item: "Technical Data",
@@ -112,14 +113,14 @@ export default function PrivacyPage() {
 
               <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-3xl p-12 shadow-lg mb-8">
                 <p className="text-xl text-gray-700 dark:text-gray-300 text-center leading-relaxed mb-8">
-                  Memos is designed to run on <strong>your own server</strong>. This means your data never leaves your infrastructure.
+                  Memos is designed to run on <strong>your own server</strong>. That keeps the data path direct and ownership clear.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   {[
                     {
                       title: "Your Server",
-                      description: "Install Memos on your own infrastructure—cloud or local.",
+                      description: "Install Memos on infrastructure you control, whether local or cloud.",
                     },
                     {
                       title: "Your Data",
@@ -145,12 +146,12 @@ export default function PrivacyPage() {
                 {[
                   {
                     title: "No External Dependencies",
-                    description: "Memos doesn't phone home or connect to our servers. Once installed, it works completely offline.",
+                    description: "Memos does not phone home or depend on our servers after installation.",
                   },
                   {
                     title: "Complete Ownership",
                     description:
-                      "You own your data in every sense—physically, legally, and practically. We can't access it even if we wanted to.",
+                      "You keep your notes on systems you manage, with export paths and storage choices that stay in your hands.",
                   },
                 ].map((feature, index) => (
                   <div
@@ -175,18 +176,17 @@ export default function PrivacyPage() {
 
               <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-3xl p-12 shadow-lg">
                 <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 text-center leading-relaxed">
-                  Don't just take our word for it—
-                  <strong>verify it yourself</strong>. Our code is publicly available for anyone to inspect.
+                  You can inspect the code yourself. Memos is open source and available for anyone to review.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                   {[
                     "Audit our entire codebase on GitHub",
-                    "Verify no telemetry or tracking code exists",
+                    "Review the code for telemetry and tracking behavior",
                     "Build from source for complete transparency",
                     "Community-reviewed and maintained",
                     "Modify the code to suit your needs",
-                    "No proprietary black boxes",
+                    "No proprietary black boxes in the core product",
                   ].map((guarantee, index) => (
                     <div key={index} className="flex items-start gap-4">
                       <div className="w-3 h-3 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
@@ -220,7 +220,7 @@ export default function PrivacyPage() {
 
               <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-3xl p-12 shadow-lg">
                 <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 text-center leading-relaxed">
-                  Have questions about our privacy practices? We're here to help.
+                  Have questions about privacy in Memos? We can point you to the right place.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

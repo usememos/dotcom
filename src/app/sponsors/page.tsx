@@ -8,7 +8,8 @@ import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Sponsors - Memos",
-  description: "Thank you to all our sponsors and backers who support the development of Memos, the open-source note-taking platform.",
+  description:
+    "Thank you to the sponsors and backers who support the development of Memos, the open-source note-taking tool built for instant capture.",
   alternates: {
     canonical: "https://usememos.com/sponsors",
   },

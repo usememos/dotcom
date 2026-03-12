@@ -13,8 +13,7 @@ import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Pricing - Memos",
-  description:
-    "Memos is free, forever. No subscription fees, no hidden costs. Self-hosting means no costs to pass on. You run it, you own it.",
+  description: "Memos is free to use and self-host. No subscriptions, no paywalls, and no vendor lock-in.",
   alternates: {
     canonical: "https://usememos.com/pricing",
   },
@@ -137,7 +136,7 @@ export default function PricingPage() {
               </div>
               <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl mb-4 sm:mb-6 leading-tight">Pricing</h1>
               <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed px-4">
-                Free, forever. Self-hosting means no costs to pass on to you.
+                Free to use. Self-hosted by design.
               </p>
             </div>
 
@@ -175,8 +174,8 @@ export default function PricingPage() {
                     Your Notes. Your Server. Your Rules.
                   </h2>
                   <p className="text-base sm:text-lg lg:text-xl text-blue-800 dark:text-blue-200 leading-relaxed max-w-3xl mx-auto">
-                    Install Memos on your infrastructure and it's yours -- completely and permanently. No subscriptions to cancel, no
-                    accounts to manage.
+                    Install Memos on your infrastructure and keep your notes in your own hands. No subscriptions, no paywalls, no vendor
+                    lock-in.
                   </p>
                 </div>
               </div>
@@ -279,7 +278,7 @@ export default function PricingPage() {
 
               <div className={`${STYLES.card} p-6 sm:p-8 lg:p-12`}>
                 <p className="text-base sm:text-lg lg:text-xl text-gray-700 dark:text-gray-300 mb-10 sm:mb-12 text-center leading-relaxed max-w-3xl mx-auto">
-                  Memos is free and always will be. Development depends on the community. Here&apos;s how you can contribute.
+                  Memos is free to use and built in the open. If it helps you, here are a few ways to support the project.
                 </p>
 
                 {/* Highlighted Sponsors */}
