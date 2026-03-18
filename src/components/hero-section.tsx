@@ -36,9 +36,9 @@ export function HeroSection({
   demoImageDark,
 }: HeroSectionProps) {
   return (
-    <section className="relative px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-12 overflow-hidden">
+    <section className="relative px-4 sm:px-6 lg:px-4 pt-6 sm:pt-8 pb-12 overflow-hidden">
       {/* Main hero card */}
-      <div className="relative max-w-7xl mx-auto rounded-3xl sm:rounded-[2rem] bg-gradient-to-br from-teal-50 via-cyan-50/60 to-amber-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-hidden">
+      <div className="relative max-w-(--fd-layout-width) mx-auto rounded-3xl sm:rounded-[2rem] bg-gradient-to-br from-teal-50 via-cyan-50/60 to-amber-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-hidden">
         {/* Decorative gradient orbs */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-teal-200/40 via-cyan-200/20 to-transparent dark:from-teal-800/20 dark:via-cyan-800/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-gradient-to-tr from-amber-100/30 via-teal-100/20 to-transparent dark:from-amber-900/10 dark:via-teal-900/10 rounded-full blur-3xl pointer-events-none" />
@@ -87,34 +87,66 @@ export function HeroSection({
             </div>
           </div>
 
-          {/* Demo image - full width within card, peeking from bottom */}
+          {/* Demo image - use a focused crop on mobile and the wide preview on desktop */}
           {(demoImageLight || demoImageDark) && (
-            <>
-              {demoImageLight && (
-                <Image
-                  src={demoImageLight.src}
-                  alt={demoImageLight.alt}
-                  width={2546}
-                  height={1576}
-                  priority
-                  quality={85}
-                  sizes="(max-width: 640px) 100vw, 1280px"
-                  className="w-full h-auto block dark:hidden"
-                />
-              )}
-              {demoImageDark && (
-                <Image
-                  src={demoImageDark.src}
-                  alt={demoImageDark.alt}
-                  width={2546}
-                  height={1576}
-                  priority
-                  quality={85}
-                  sizes="(max-width: 640px) 100vw, 1280px"
-                  className="w-full h-auto hidden dark:block"
-                />
-              )}
-            </>
+            <div className="px-0 md:px-0 pb-4 sm:pb-0">
+              <div className="relative mr-auto overflow-hidden md:hidden">
+                <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-14 bg-gradient-to-b from-white/75 via-white/20 to-transparent dark:from-gray-950/70 dark:via-gray-950/10" />
+                {demoImageLight && (
+                  <div className="relative aspect-[11/10] dark:hidden">
+                    <Image
+                      src={demoImageLight.src}
+                      alt={demoImageLight.alt}
+                      fill
+                      priority
+                      quality={85}
+                      sizes="(max-width: 767px) 100vw"
+                      className="origin-top-left scale-[1.04] object-cover object-left-top"
+                    />
+                  </div>
+                )}
+                {demoImageDark && (
+                  <div className="relative hidden aspect-[11/10] dark:block">
+                    <Image
+                      src={demoImageDark.src}
+                      alt={demoImageDark.alt}
+                      fill
+                      priority
+                      quality={85}
+                      sizes="(max-width: 767px) 100vw"
+                      className="origin-top-left scale-[1.04] object-cover object-left-top"
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className="hidden md:block">
+                {demoImageLight && (
+                  <Image
+                    src={demoImageLight.src}
+                    alt={demoImageLight.alt}
+                    width={2546}
+                    height={1576}
+                    priority
+                    quality={85}
+                    sizes="(max-width: 1024px) 100vw, 1280px"
+                    className="w-full h-auto block dark:hidden"
+                  />
+                )}
+                {demoImageDark && (
+                  <Image
+                    src={demoImageDark.src}
+                    alt={demoImageDark.alt}
+                    width={2546}
+                    height={1576}
+                    priority
+                    quality={85}
+                    sizes="(max-width: 1024px) 100vw, 1280px"
+                    className="w-full h-auto hidden dark:block"
+                  />
+                )}
+              </div>
+            </div>
           )}
         </div>
       </div>
