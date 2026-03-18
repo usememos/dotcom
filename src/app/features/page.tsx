@@ -54,7 +54,7 @@ export default function FeaturesPage() {
         {/* Hero Section */}
         <section className="py-24 px-4 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50">
           <div className="max-w-6xl mx-auto text-center">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6 leading-tight">
+            <h1 className="font-serif text-4xl font-bold tracking-tight sm:text-6xl mb-6 leading-tight">
               Built for fast capture.
               <span className="block text-teal-600 dark:text-teal-400">Focused by design.</span>
             </h1>
@@ -137,7 +137,7 @@ export default function FeaturesPage() {
         {/* CTA Section */}
         <section className="py-24 px-4 bg-gradient-to-br from-gray-50 via-white to-teal-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-5xl mb-6 leading-tight">
+            <h2 className="font-serif text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-5xl mb-6 leading-tight">
               Ready to capture more quickly?
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">

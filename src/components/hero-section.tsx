@@ -60,7 +60,7 @@ export function HeroSection({
               </div>
             )}
 
-            <h1 className="max-w-4xl text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
+            <h1 className="max-w-4xl font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
               {title}
             </h1>
 

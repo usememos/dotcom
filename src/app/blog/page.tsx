@@ -46,7 +46,9 @@ export default function BlogPage() {
           <div className="max-w-4xl mx-auto">
             {/* Hero Section */}
             <div className="mb-12 sm:mb-16 lg:mb-20">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight mb-4 sm:mb-6 leading-tight">Blogs</h1>
+              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight mb-4 sm:mb-6 leading-tight">
+                Blogs
+              </h1>
               <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
                 Insights, updates, and stories from the team building Memos.
               </p>
@@ -62,7 +64,7 @@ export default function BlogPage() {
                   <Link href={post.url} className="block">
                     {/* Content */}
                     <div>
-                      <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3 sm:mb-4 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors tracking-tight">
+                      <h2 className="font-serif text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3 sm:mb-4 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors tracking-tight">
                         {post.data.title}
                       </h2>
 

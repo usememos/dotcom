@@ -25,7 +25,7 @@ export default function PrivacyPage() {
                   <ShieldIcon className="w-12 h-12" />
                 </div>
               </div>
-              <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6 leading-tight">Privacy Policy</h1>
+              <h1 className="font-serif text-4xl font-bold tracking-tight sm:text-6xl mb-6 leading-tight">Privacy Policy</h1>
               <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
                 Privacy is part of the product. Memos is built so your data stays on infrastructure you control.
               </p>
@@ -35,7 +35,7 @@ export default function PrivacyPage() {
             <section className="mb-20">
               <div className="bg-gradient-to-br from-teal-50 via-cyan-50 to-blue-50 dark:from-teal-950 dark:via-cyan-950 dark:to-blue-950 border border-teal-200 dark:border-teal-800 rounded-3xl p-12 shadow-lg">
                 <div className="text-center">
-                  <h2 className="text-3xl font-bold text-teal-900 dark:text-teal-100 mb-6 tracking-tight">The Simple Truth</h2>
+                  <h2 className="font-serif text-3xl font-bold text-teal-900 dark:text-teal-100 mb-6 tracking-tight">The Simple Truth</h2>
                   <p className="text-2xl text-teal-800 dark:text-teal-200 leading-relaxed mb-4">
                     We do not run tracking or analytics on you.
                   </p>
@@ -52,7 +52,7 @@ export default function PrivacyPage() {
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-red-50 dark:bg-red-900/20 text-red-500 rounded-xl">
                   <EyeOffIcon className="w-6 h-6" />
                 </div>
-                <h2 className="text-3xl font-bold tracking-tight">Zero Data Collection</h2>
+                <h2 className="font-serif text-3xl font-bold tracking-tight">Zero Data Collection</h2>
               </div>
 
               <p className="text-center text-gray-600 dark:text-gray-400 mb-8 text-lg">
@@ -108,7 +108,7 @@ export default function PrivacyPage() {
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-xl">
                   <ServerIcon className="w-6 h-6" />
                 </div>
-                <h2 className="text-3xl font-bold tracking-tight">Self-Hosted by Design</h2>
+                <h2 className="font-serif text-3xl font-bold tracking-tight">Self-Hosted by Design</h2>
               </div>
 
               <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-3xl p-12 shadow-lg mb-8">
@@ -171,7 +171,7 @@ export default function PrivacyPage() {
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl">
                   <GithubIcon className="w-6 h-6" />
                 </div>
-                <h2 className="text-3xl font-bold tracking-tight">Open Source Transparency</h2>
+                <h2 className="font-serif text-3xl font-bold tracking-tight">Open Source Transparency</h2>
               </div>
 
               <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-3xl p-12 shadow-lg">
@@ -215,7 +215,7 @@ export default function PrivacyPage() {
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 rounded-xl">
                   <UsersIcon className="w-6 h-6" />
                 </div>
-                <h2 className="text-3xl font-bold tracking-tight">Questions?</h2>
+                <h2 className="font-serif text-3xl font-bold tracking-tight">Questions?</h2>
               </div>
 
               <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-3xl p-12 shadow-lg">

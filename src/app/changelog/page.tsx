@@ -59,7 +59,7 @@ export default function ChangelogPage() {
           <div className="max-w-4xl mx-auto">
             {/* Hero Section */}
             <div className="mb-12 sm:mb-16 lg:mb-20">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight mb-4 sm:mb-6 leading-tight">
+              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight mb-4 sm:mb-6 leading-tight">
                 Changelogs
               </h1>
               <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
@@ -93,7 +93,7 @@ export default function ChangelogPage() {
                       {/* Header */}
                       <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
                         <div>
-                          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-gray-100 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+                          <h2 className="font-serif text-xl sm:text-2xl font-semibold text-gray-900 dark:text-gray-100 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
                             {version}
                           </h2>
                           {entry.data.date && (

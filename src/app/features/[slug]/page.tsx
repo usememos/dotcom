@@ -29,7 +29,7 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
         <section className="relative py-16 sm:py-20 lg:py-32 px-4 sm:px-6 overflow-hidden bg-gradient-to-br from-white via-gray-50/50 to-teal-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700">
           <div className="absolute inset-0 bg-grid-gray-100/50 dark:bg-grid-gray-800/50 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] pointer-events-none"></div>
           <div className="relative max-w-5xl mx-auto text-center">
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight mb-4 sm:mb-6 leading-[1.1] text-balance text-gray-900 dark:text-gray-50">
+            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight mb-4 sm:mb-6 leading-[1.1] text-balance text-gray-900 dark:text-gray-50">
               {feature.hero.title}
             </h1>
             <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8 sm:mb-10 lg:mb-12 text-balance px-4">
@@ -58,7 +58,7 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
         {/* Benefits Section */}
         <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6">
           <div className="max-w-5xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-8 sm:mb-10 lg:mb-12 text-center">
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-8 sm:mb-10 lg:mb-12 text-center">
               Key Benefits
             </h2>
             <div className="grid grid-cols-1 gap-3 sm:gap-4">
@@ -80,7 +80,7 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
         {/* Use Cases Section */}
         <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 bg-gradient-to-b from-gray-50/80 to-white dark:from-gray-800 dark:to-gray-900">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-8 sm:mb-10 lg:mb-12 text-center">
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-8 sm:mb-10 lg:mb-12 text-center">
               Works Well For
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
@@ -105,7 +105,7 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
         {/* Technical Details Section */}
         <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6">
           <div className="max-w-5xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-8 sm:mb-10 lg:mb-12 text-center">
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-8 sm:mb-10 lg:mb-12 text-center">
               Technical Details
             </h2>
             <div className="relative bg-gradient-to-br from-teal-50/80 via-cyan-50/50 to-gray-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-700 border border-teal-100 dark:border-gray-700 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-lg">
@@ -126,7 +126,7 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
         <section className="relative py-16 sm:py-20 lg:py-32 px-4 sm:px-6 overflow-hidden bg-gradient-to-br from-gray-50 via-white to-teal-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700">
           <div className="absolute inset-0 bg-grid-gray-100/50 dark:bg-grid-gray-800/50 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] pointer-events-none"></div>
           <div className="relative max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4 sm:mb-6 leading-tight text-balance">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4 sm:mb-6 leading-tight text-balance">
               Ready to Get Started?
             </h2>
             <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed text-balance px-4">

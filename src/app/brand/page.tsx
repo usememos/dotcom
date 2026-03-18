@@ -68,7 +68,7 @@ export default function BrandPage() {
                   <PaletteIcon className="w-7 h-7 sm:w-8 sm:h-8" />
                 </div>
               </div>
-              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl mb-4 sm:mb-6 leading-tight">Brand</h1>
+              <h1 className="font-serif text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl mb-4 sm:mb-6 leading-tight">Brand</h1>
               <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
                 Download official Memos brand assets and use them with clear, consistent presentation.
               </p>
@@ -76,7 +76,7 @@ export default function BrandPage() {
 
             {/* Primary Logos */}
             <section className="mb-12 sm:mb-16">
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-8 text-center">Primary Logos</h2>
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight mb-8 text-center">Primary Logos</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 {LOGO_ASSETS.map((logo) => (
                   <div
@@ -104,7 +104,7 @@ export default function BrandPage() {
 
             {/* Full Logos */}
             <section className="mb-12 sm:mb-16">
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-8 text-center">Full Logos</h2>
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight mb-8 text-center">Full Logos</h2>
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
                 {FULL_LOGOS.map((logo) => (
                   <div
@@ -132,7 +132,7 @@ export default function BrandPage() {
 
             {/* Guidelines */}
             <section className="mb-12 sm:mb-16">
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-8 text-center">Guidelines</h2>
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight mb-8 text-center">Guidelines</h2>
               <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-6 sm:p-8">
                 <ul className="space-y-4">
                   {GUIDELINES.map((guideline) => (
@@ -147,7 +147,7 @@ export default function BrandPage() {
 
             {/* Usage & Attribution */}
             <section className="mb-12 sm:mb-16">
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-8 text-center">Usage</h2>
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight mb-8 text-center">Usage</h2>
               <div className="bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-teal-950 dark:to-cyan-950 border border-teal-200 dark:border-teal-800 rounded-2xl p-6 sm:p-8">
                 <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
                   Memos is open source. You are welcome to use our brand assets in ways that stay clear, respectful, and consistent:
@@ -178,7 +178,9 @@ export default function BrandPage() {
             {/* Contact CTA */}
             <section className="text-center">
               <div className="bg-gradient-to-br from-teal-50 via-cyan-50 to-blue-50 dark:from-teal-950 dark:via-cyan-950 dark:to-blue-950 border border-teal-200 dark:border-teal-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg">
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-teal-900 dark:text-teal-100 mb-3 sm:mb-4">Questions?</h2>
+                <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-teal-900 dark:text-teal-100 mb-3 sm:mb-4">
+                  Questions?
+                </h2>
                 <p className="text-base sm:text-lg text-teal-800 dark:text-teal-200 mb-6 sm:mb-8 max-w-xl mx-auto leading-relaxed">
                   Need special permissions or have questions about brand usage?
                 </p>

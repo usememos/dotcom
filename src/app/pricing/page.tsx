@@ -105,7 +105,7 @@ const LINKS = {
 const STYLES = {
   section: "mb-12 sm:mb-16 lg:mb-20",
   sectionHeader: "flex items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-10 lg:mb-12",
-  sectionTitle: "text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight",
+  sectionTitle: "font-serif text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight",
   iconContainer: "inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-xl",
   icon: "w-5 h-5 sm:w-6 sm:h-6",
   card: "bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl sm:rounded-3xl shadow-lg",
@@ -134,7 +134,7 @@ export default function PricingPage() {
                   <DollarSignIcon className="w-10 h-10 sm:w-12 sm:h-12" />
                 </div>
               </div>
-              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl mb-4 sm:mb-6 leading-tight">Pricing</h1>
+              <h1 className="font-serif text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl mb-4 sm:mb-6 leading-tight">Pricing</h1>
               <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed px-4">
                 Free to use. Self-hosted by design.
               </p>
@@ -170,7 +170,7 @@ export default function PricingPage() {
             <section className={STYLES.section}>
               <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950 dark:via-indigo-950 dark:to-purple-950 border border-blue-200 dark:border-blue-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg">
                 <div className="text-center">
-                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-blue-900 dark:text-blue-100 mb-4 sm:mb-6 tracking-tight">
+                  <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-blue-900 dark:text-blue-100 mb-4 sm:mb-6 tracking-tight">
                     Your Notes. Your Server. Your Rules.
                   </h2>
                   <p className="text-base sm:text-lg lg:text-xl text-blue-800 dark:text-blue-200 leading-relaxed max-w-3xl mx-auto">
@@ -369,7 +369,7 @@ export default function PricingPage() {
             ============================================================ */}
             <section className="text-center">
               <div className="bg-gradient-to-br from-teal-50 via-cyan-50 to-blue-50 dark:from-teal-950 dark:via-cyan-950 dark:to-blue-950 border border-teal-200 dark:border-teal-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg">
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-teal-900 dark:text-teal-100 mb-3 sm:mb-4">
+                <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-teal-900 dark:text-teal-100 mb-3 sm:mb-4">
                   Start Capturing Thoughts
                 </h2>
                 <p className="text-base sm:text-lg lg:text-xl text-teal-800 dark:text-teal-200 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">

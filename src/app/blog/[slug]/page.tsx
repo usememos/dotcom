@@ -89,7 +89,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 
             {/* Article Header */}
             <header className="px-2 sm:px-0">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-6 sm:mb-8 leading-tight">
+              <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-6 sm:mb-8 leading-tight">
                 {data.title}
               </h1>
 
