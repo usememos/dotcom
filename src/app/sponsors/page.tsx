@@ -46,7 +46,9 @@ export default function SponsorsPage() {
                   <HeartIcon className="w-10 h-10 sm:w-12 sm:h-12 fill-current" />
                 </div>
               </div>
-              <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold tracking-tight mb-4 sm:mb-6 leading-tight px-4">Thanks!</h1>
+              <h1 className="font-serif text-3xl sm:text-4xl lg:text-6xl font-bold tracking-tight mb-4 sm:mb-6 leading-tight px-4">
+                Thanks!
+              </h1>
               <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed px-4">
                 All donations directly support the development and operation of Memos. Recurring donations allow us to plan for the future.
                 We deeply appreciate every donation — Thank you!
@@ -59,7 +61,7 @@ export default function SponsorsPage() {
                 <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded-xl">
                   <span className="text-xl sm:text-2xl">🦄</span>
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Featured Sponsors</h2>
+                <h2 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight">Featured Sponsors</h2>
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
@@ -146,7 +148,7 @@ export default function SponsorsPage() {
                 <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-xl">
                   <span className="text-xl sm:text-2xl">🤠</span>
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Current Backers</h2>
+                <h2 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight">Current Backers</h2>
               </div>
 
               <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
@@ -199,7 +201,7 @@ export default function SponsorsPage() {
             {/* Support Options */}
             <section className="bg-gradient-to-br from-teal-50 via-cyan-50 to-blue-50 dark:from-teal-950 dark:via-cyan-950 dark:to-blue-950 rounded-2xl sm:rounded-3xl p-6 sm:p-10 lg:p-16 shadow-lg">
               <div className="text-center">
-                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4 sm:mb-6 px-4">Support Memos Development</h2>
+                <h2 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight mb-4 sm:mb-6 px-4">Support Memos Development</h2>
                 <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-4">
                   Your support helps us maintain and improve Memos for everyone. Choose how you&apos;d like to contribute to our open-source
                   mission.
@@ -232,7 +234,7 @@ export default function SponsorsPage() {
             {/* Thank You Message */}
             <section className="mt-12 sm:mt-16 lg:mt-20 text-center px-4">
               <div className="max-w-2xl mx-auto">
-                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4 sm:mb-6">Every Contribution Matters</h2>
+                <h2 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight mb-4 sm:mb-6">Every Contribution Matters</h2>
                 <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
                   Whether you&apos;re contributing code, reporting bugs, writing documentation, or providing financial support, you&apos;re
                   helping make Memos better for everyone. Our community is what makes this project special.

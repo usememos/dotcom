@@ -11,7 +11,9 @@ export function SponsorsSection() {
         <div className="text-center mb-8 sm:mb-10 lg:mb-12">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-4">
             <HeartIcon className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-red-500 fill-current shrink-0" />
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100">Supported by</h2>
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+              Supported by
+            </h2>
           </div>
           <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             Thanks to the sponsors who help keep Memos moving.

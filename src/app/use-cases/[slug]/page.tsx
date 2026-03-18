@@ -93,7 +93,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
               >
                 <IconComponent className="w-8 h-8 sm:w-10 sm:h-10" />
               </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4 sm:mb-6 leading-tight">
+              <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4 sm:mb-6 leading-tight">
                 {useCase.title}
               </h1>
               <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 dark:text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed">
@@ -116,7 +116,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12">
                 {/* Common Workflows */}
                 <div>
-                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 sm:mb-8 flex items-center gap-3">
+                  <h2 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 sm:mb-8 flex items-center gap-3">
                     <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl">
                       <ZapIcon className="w-5 h-5 sm:w-6 sm:h-6 text-teal-600 dark:text-teal-400" />
                     </div>
@@ -134,7 +134,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
 
                 {/* Why Memos */}
                 <div>
-                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 sm:mb-8 flex items-center gap-3">
+                  <h2 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 sm:mb-8 flex items-center gap-3">
                     <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl">
                       <HeartPulseIcon className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-600 dark:text-cyan-400" />
                     </div>
@@ -154,7 +154,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
 
             {/* Related Features */}
             <div className="mb-12 sm:mb-16">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6 sm:mb-8 text-center">
+              <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6 sm:mb-8 text-center">
                 Key Features for This Use Case
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
@@ -175,7 +175,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
 
             {/* CTA Section */}
             <div className="bg-gradient-to-br from-teal-50 via-cyan-50/50 to-gray-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-700 border border-teal-100 dark:border-gray-600 rounded-2xl sm:rounded-3xl p-8 sm:p-12 lg:p-16 shadow-xl text-center">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4 sm:mb-6">
+              <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4 sm:mb-6">
                 Ready to get started?
               </h2>
               <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">

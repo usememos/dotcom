@@ -1,7 +1,20 @@
 import "@/app/global.css";
 import { RootProvider } from "fumadocs-ui/provider/next";
 import type { Metadata } from "next";
+import { Inter, Source_Serif_4 } from "next/font/google";
 import type { ReactNode } from "react";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
+
+const displaySerif = Source_Serif_4({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-display-serif",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://usememos.com"),
@@ -149,7 +162,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
       </head>
-      <body className="flex flex-col min-h-screen antialiased">
+      <body className={`${inter.variable} ${displaySerif.variable} flex min-h-screen flex-col antialiased`}>
         <RootProvider>{children}</RootProvider>
       </body>
     </html>

@@ -138,7 +138,7 @@ export default function UseCasesPage() {
             <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-teal-100 to-cyan-100 dark:from-teal-900/30 dark:to-cyan-900/30 text-teal-600 dark:text-teal-400 rounded-2xl sm:rounded-3xl mb-6 sm:mb-8">
               <LightbulbIcon className="w-8 h-8 sm:w-10 sm:h-10" />
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-6 leading-tight">
+            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-6 leading-tight">
               How People Use Memos
             </h1>
             <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed mb-8">
@@ -178,7 +178,7 @@ export default function UseCasesPage() {
                         <IconComponent className="w-7 h-7 sm:w-8 sm:h-8" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+                        <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
                           {useCase.title}
                         </h2>
                         <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 font-medium">{useCase.subtitle}</p>
@@ -204,7 +204,7 @@ export default function UseCasesPage() {
         <section className="py-12 sm:py-16 lg:py-24 px-4 bg-gradient-to-b from-gray-50/50 to-white dark:from-gray-800/50 dark:to-gray-900">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12 sm:mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
                 Find Your Use Case
               </h2>
               <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
@@ -236,7 +236,7 @@ export default function UseCasesPage() {
             <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-teal-100 to-cyan-100 dark:from-teal-900/30 dark:to-cyan-900/30 text-teal-600 dark:text-teal-400 rounded-2xl mb-6">
               <UserIcon className="w-8 h-8 sm:w-10 sm:h-10" />
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-6 leading-tight">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-6 leading-tight">
               Ready to start your own use case?
             </h2>
             <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
