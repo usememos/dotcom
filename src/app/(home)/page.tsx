@@ -72,7 +72,7 @@ export default function HomePage() {
         title={
           <>
             Capture freely.
-            <span className="block text-teal-600 dark:text-teal-400">Own completely.</span>
+            <span className="block text-fd-primary">Own completely.</span>
           </>
         }
         subtitle="A private timeline for your thoughts. Self-hosted, Markdown-native, and built to stay out of your way."

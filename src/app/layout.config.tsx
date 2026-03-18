@@ -19,15 +19,15 @@ export const baseOptions: BaseLayoutProps = {
   },
   links: [
     {
-      text: "Documentation",
+      text: <span className="font-semibold">Documentation</span>,
       url: "/docs",
     },
     {
-      text: "Changelog",
+      text: <span className="font-semibold">Changelog</span>,
       url: "/changelog",
     },
     {
-      text: "Features",
+      text: <span className="font-semibold">Features</span>,
       url: "/features",
     },
   ],
