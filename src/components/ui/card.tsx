@@ -104,14 +104,12 @@ interface CardProps {
 }
 
 export function Cards({ children }: CardsProps) {
-  return <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 mb-8 not-prose">{children}</div>;
+  return <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-6 mb-6 not-prose">{children}</div>;
 }
 
 export function Card({ title, href, icon, children }: CardProps) {
-  // Get the icon component from the icon map
   const IconComponent = icon && iconMap[icon] ? iconMap[icon] : null;
 
-  // Log warning if icon is specified but not found
   if (icon && !iconMap[icon]) {
     console.warn(`Icon "${icon}" not found in iconMap`);
   }
@@ -119,23 +117,21 @@ export function Card({ title, href, icon, children }: CardProps) {
   return (
     <Link
       href={href}
-      className="group block p-8 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:border-teal-200 dark:hover:border-teal-600 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 no-underline shadow-sm"
+      className="group flex items-start gap-3.5 p-4 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-600 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-all duration-150 no-underline"
     >
-      <div className="flex items-start space-x-4">
-        {IconComponent && (
-          <div className="shrink-0 inline-flex items-center justify-center w-12 h-12 bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 rounded-xl group-hover:scale-110 transition-transform">
-            <IconComponent className="w-6 h-6" />
-          </div>
-        )}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors tracking-tight">
-              {title}
-            </h3>
-            <ArrowRightIcon className="w-5 h-5 text-gray-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 group-hover:translate-x-1 transition-all shrink-0" />
-          </div>
-          {children && <div className="text-gray-600 dark:text-gray-300 leading-relaxed">{children}</div>}
+      {IconComponent && (
+        <div className="shrink-0 inline-flex items-center justify-center w-8 h-8 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded-lg mt-0.5 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+          <IconComponent className="w-4 h-4" />
         </div>
+      )}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between gap-2">
+          <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors tracking-tight">
+            {title}
+          </h3>
+          <ArrowRightIcon className="w-4 h-4 text-zinc-300 dark:text-zinc-600 group-hover:text-teal-500 group-hover:translate-x-0.5 transition-all shrink-0" />
+        </div>
+        {children && <div className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed mt-0.5">{children}</div>}
       </div>
     </Link>
   );
