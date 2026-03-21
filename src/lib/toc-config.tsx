@@ -1,4 +1,4 @@
-import { TocFooter, TocFooterMobile } from "@/components/toc-footer";
+import { TocFooter } from "@/components/toc-footer";
 
 /**
  * Shared TOC configuration for DocsPage components
@@ -7,8 +7,5 @@ import { TocFooter, TocFooterMobile } from "@/components/toc-footer";
 export const tocConfig = {
   tableOfContent: {
     footer: <TocFooter />,
-  },
-  tableOfContentPopover: {
-    footer: <TocFooterMobile />,
   },
 };

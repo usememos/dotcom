@@ -11,15 +11,3 @@ export function TocFooter() {
     </div>
   );
 }
-
-/**
- * TOC footer component with sponsor card and carbon ads for mobile popover
- * Uses shared AdsSectionDesktop component for consistency
- */
-export function TocFooterMobile() {
-  return (
-    <div className="mt-2 mb-2">
-      <AdsSectionDesktop />
-    </div>
-  );
-}
