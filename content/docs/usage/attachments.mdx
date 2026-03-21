@@ -1,0 +1,34 @@
+---
+title: Attachments
+description: Add files to memos and choose the right storage model for them.
+---
+
+Attachments let you keep files close to the notes they belong to. This is useful for screenshots, design references, PDFs, exported data, and other supporting material.
+
+## Typical attachment flow
+
+- drag a file into the editor
+- use the upload control in the toolbar
+- paste screenshots directly from the clipboard when supported
+
+## Common attachment types
+
+- images and screenshots
+- PDFs and documents
+- audio or video files when your storage policy allows them
+- exported artifacts such as logs or data files
+
+## Storage implications
+
+Attachments depend on the storage backend chosen for the instance:
+
+- database storage keeps everything together
+- local filesystem storage keeps files on the host or volume
+- S3-compatible storage separates files from the app host
+
+## Operational guidance
+
+- match your backup plan to your attachment storage backend
+- use sensible upload limits
+- review public memo visibility carefully when attachments are involved
+- remember that media-heavy instances need stronger storage planning than text-only instances

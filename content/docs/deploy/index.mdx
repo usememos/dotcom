@@ -1,21 +1,37 @@
 ---
 title: Deploy
-description: Install and run Memos in production or locally.
+description: Install and run Memos in local, server, and production environments.
 ---
 
-Choose the deployment method that fits your environment.
+Choose the deployment method that matches your environment and operational needs.
+
+In practice:
+
+- use Docker for the fastest single-instance setup
+- use Docker Compose when you want repeatable config and easier upgrades
+- build from source when developing or customizing Memos
+- use Kubernetes only when you already operate a cluster
+- put production traffic behind a reverse proxy and HTTPS
 
 <Cards>
+  <Card title="Binary" href="/docs/deploy/binary" icon="Download">
+    Install and supervise Memos without Docker.
+  </Card>
   <Card title="Docker" href="/docs/deploy/docker" icon="Container">
     Quick single-container setup.
   </Card>
-  <Card title="Docker Compose" href="/docs/deploy/docker-compose" icon="Layers">
-    A compose file for local or small deployments.
+  <Card title="Docker Compose" href="/docs/deploy/docker-compose" icon="Container">
+    A structured deployment for local or small production setups.
   </Card>
   <Card title="Kubernetes" href="/docs/deploy/kubernetes" icon="Cloud">
-    Deploy with the Helm chart.
+    Deploy Memos on a cluster with manifests and persistent storage.
+  </Card>
+  <Card title="Build From Source" href="/docs/deploy/development" icon="Code">
+    Compile Memos yourself for custom builds and development workflows.
   </Card>
   <Card title="Reverse Proxy" href="/docs/deploy/reverse-proxy" icon="Shield">
     Put Memos behind HTTPS.
   </Card>
 </Cards>
+
+Binary installs are also supported and fit well when you already have host-level service management in place.

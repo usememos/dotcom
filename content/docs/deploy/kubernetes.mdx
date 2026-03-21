@@ -1,10 +1,41 @@
 ---
 title: Kubernetes
-description: Deploy Memos with the Helm chart.
+description: Deploy Memos on Kubernetes with persistent storage and a reverse proxy.
 ---
 
-Memos provides a Helm chart in the separate `usememos/helm` repository.
+Use Kubernetes only if you already operate a cluster and want Memos to fit into your existing deployment model. For a single instance, Docker Compose is usually simpler.
 
-- https://github.com/usememos/helm
+## Core resources
 
-Follow the README in that repository for installation, upgrades, and chart values.
+A typical deployment includes:
+
+- a `Deployment` for the Memos container
+- a `Service` for cluster networking
+- an `Ingress` or gateway for public access
+- a `PersistentVolumeClaim` for data
+- a `Secret` for sensitive values such as DSNs
+
+## SQLite vs external databases
+
+SQLite works for a single replica and is the easiest option, but it ties you to one writable pod and one persistent volume. If you need stronger operational flexibility, use MySQL or PostgreSQL and keep only local assets in persistent storage.
+
+## Recommended shape
+
+- one Memos replica when using SQLite
+- a persistent volume mounted at `/var/opt/memos`
+- `MEMOS_INSTANCE_URL` set to the public URL
+- TLS termination at the ingress layer
+- standard forwarded headers preserved
+
+## Practical guidance
+
+- prefer external MySQL or PostgreSQL before attempting multi-replica patterns
+- back up both the database and local asset storage if assets are not stored in the database
+- start with conservative resource requests and tune based on real usage
+- keep public access behind HTTPS
+
+## When Kubernetes is worth it
+
+- Memos must fit into an existing platform standard
+- you already rely on ingress, secrets, and persistent volume workflows
+- you want deployment automation aligned with the rest of your cluster workloads

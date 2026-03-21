@@ -1,0 +1,79 @@
+---
+title: Architecture
+description: High-level system structure and the main moving parts in a Memos deployment.
+---
+
+At a high level, Memos is a lightweight web application with a frontend UI, an API and service layer, a database backend, and optional attachment storage outside the database.
+
+## Technology stack
+
+| Layer | Technology |
+| --- | --- |
+| Backend language | Go 1.25+ |
+| HTTP router | Echo v5 |
+| API protocol | gRPC + Connect RPC (dual) |
+| Schema | Protocol Buffers v2 |
+| Databases | SQLite (default), MySQL, PostgreSQL |
+| Frontend framework | React 18 + TypeScript |
+| Frontend build | Vite 7 |
+| State management | React Query v5 + React Context |
+| Frontend API client | Connect RPC |
+| Frontend styling | Tailwind CSS v4 |
+
+## Main layers
+
+- frontend UI for writing, browsing, and managing memos
+- API and service layer for authentication, memo operations, and instance settings
+- database layer for persistent content and metadata
+- optional filesystem or object storage for attachments
+
+## Dual-protocol API
+
+Memos exposes two API surfaces backed by the same service implementations:
+
+- **Connect RPC** at `/memos.api.v1.*` — used by the browser frontend; speaks HTTP/JSON with type-safe generated clients
+- **gRPC-Gateway** at `/api/v1/*` — provides REST-compatible HTTP/JSON endpoints for external tools, CLI clients, and integrations
+
+Both go through the same interceptor chain (metadata extraction, request logging, panic recovery, auth validation).
+
+## Authentication tokens
+
+Three token types are in use:
+
+| Type | Lifetime | Storage | Validated |
+| --- | --- | --- | --- |
+| Access token (JWT) | 15 minutes | Client memory | Stateless signature check |
+| Refresh token (JWT) | 30 days | HTTP-only cookie | Database lookup (revocable) |
+| Personal access token | User-defined | SHA-256 hash in DB | Database lookup |
+
+Personal access tokens use the prefix `memos_pat_` followed by 32 random characters and are stored only as their SHA-256 hash.
+
+## In-memory cache
+
+The store layer maintains an in-memory cache for hot data:
+
+| Cached resource | Cache key | TTL |
+| --- | --- | --- |
+| Instance settings | `setting_key` | 10 min |
+| Users | `user_id` | 10 min |
+| User settings | `user_id-setting_key` | 10 min |
+
+Cache entries are evicted on write operations and after their TTL expires.
+
+## Why the architecture matters
+
+Understanding these layers helps with:
+
+- choosing SQLite versus MySQL or PostgreSQL
+- planning backups correctly
+- reasoning about storage and proxy configuration
+- deciding where to troubleshoot performance problems first
+
+## Practical deployment reading
+
+For most teams, architecture questions become operational questions:
+
+- where does data live
+- which layer terminates TLS
+- what happens to attachments during backup and restore
+- how many instances need to write to the database

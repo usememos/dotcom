@@ -1,23 +1,48 @@
 ---
 title: Tags
-description: "Organize memos with #tags."
+description: Organize memos with hashtags and filter them with searchable metadata.
 ---
 
-Tags are created by typing `#` followed by a tag name anywhere in a memo.
+Tags are created directly from memo content. Write `#tagname` anywhere in a memo and Memos extracts it automatically.
 
-## Examples
+## Tag basics
 
 ```markdown
-#work
-#project-alpha
-#meeting-notes
-#memos/issue
-#memos/pull-request
+Working on the #backend API today.
+This relates to #project-alpha and #development.
+
+Meeting with #team tomorrow to discuss #roadmap.
 ```
 
-## Tips
+## Good tag habits
 
-- Use lowercase and hyphens for consistency.
-- Keep tags short and descriptive.
-- Reuse the same tag names to make filtering easier.
-- Use slashes (/) to create tag hierarchies for better organization. 
+- pick a consistent case style
+- avoid near-duplicate tags for the same concept
+- use hyphens for multi-word tags
+- prefer a small, predictable vocabulary over endless one-off tags
+
+## Filters
+
+Memos also supports richer filtering beyond plain text search. Saved filters and shortcuts can combine tags with memo properties.
+
+Examples:
+
+```txt
+tag_search == "work"
+tag_search == "work" && visibility == "PRIVATE"
+property.has_incomplete_tasks == true
+property.has_link == true
+```
+
+## When tags help most
+
+- ongoing projects
+- meeting notes
+- recurring areas of work
+- public knowledge you want to group consistently
+
+## Related workflows
+
+- use [shortcuts](/docs/usage/shortcuts) to save filters you run often
+- combine tags with [search](/docs/usage/search-archive) when browsing older memos
+- align tag naming with how your team expects to browse content

@@ -1,0 +1,28 @@
+---
+title: Testing
+description: Run the most useful checks before opening a PR or deploying a custom build.
+---
+
+Testing should stay close to the kind of change you made.
+
+## Common checks
+
+- backend tests for server or store changes
+- frontend build and targeted UI checks for web changes
+- formatting and linting where required by the repo
+- a local smoke test with the built app when behavior changed
+
+## Typical commands
+
+```bash
+go test ./...
+go test ./store/...
+go test -cover ./...
+go test -race ./...
+```
+
+If frontend changes are involved, also run the relevant web checks used by the repo.
+
+## Practical habit
+
+Run the smallest useful test loop while developing, then run a broader validation pass before asking for review.

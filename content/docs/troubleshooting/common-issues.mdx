@@ -1,6 +1,6 @@
 ---
 title: Common Issues
-description: Startup and connectivity problems.
+description: Common startup, storage, database, and proxy problems.
 ---
 
 ## Port already in use
@@ -23,4 +23,16 @@ Verify the driver and DSN:
 If you run behind a reverse proxy, make sure:
 
 - `MEMOS_INSTANCE_URL` matches the public URL
-- The proxy forwards standard headers (`Host`, `X-Forwarded-*`)
+- the proxy forwards standard headers (`Host`, `X-Forwarded-*`)
+
+## Docker starts but the app does not respond
+
+Check:
+
+- `docker logs memos`
+- whether the host port is already occupied
+- whether the mounted data directory is writable
+
+## Attachments are missing after migration
+
+Confirm which storage backend the instance uses. If attachments are stored outside the database, they must be migrated and backed up separately.

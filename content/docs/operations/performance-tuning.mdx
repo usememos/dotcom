@@ -1,0 +1,65 @@
+---
+title: Performance Tuning
+description: Focus on the parts of a Memos deployment that most affect real-world performance.
+---
+
+Memos is lightweight by default, so performance work should stay targeted. Start with storage, database choice, and deployment shape before reaching for low-level tuning.
+
+## Built-in caching
+
+Memos maintains an in-memory cache for frequently accessed data. The cache runs entirely in-process with no external dependency:
+
+| Cached resource | TTL | Max items |
+| --- | --- | --- |
+| Instance settings | 10 min | — |
+| Users | 10 min | 1000 total |
+| User settings | 10 min | — |
+
+Cache entries are invalidated immediately on write operations and automatically expired after their TTL.
+
+## SQLite tuning
+
+Memos applies these SQLite pragmas by default:
+
+| Pragma | Default value | Effect |
+| --- | --- | --- |
+| `journal_mode` | `WAL` | Write-Ahead Logging; allows concurrent reads during writes |
+| `busy_timeout` | `10000` (10 s) | Waits up to 10 s for a write lock before returning an error |
+| `foreign_keys` | `0` | Disabled for flexibility |
+| `mmap_size` | `0` | Memory-mapping disabled to avoid OOM on some systems |
+
+For higher write loads, you can extend the defaults through the DSN:
+
+```bash
+export MEMOS_DSN="/path/to/memos.db?_pragma=cache_size(-64000)&_pragma=synchronous(NORMAL)&_pragma=temp_store(MEMORY)"
+```
+
+SQLite limitations to keep in mind:
+
+| Dimension | Recommendation |
+| --- | --- |
+| Concurrent writers | 1 (serialized through WAL) |
+| Concurrent readers | Unlimited |
+| Practical DB size | Up to ~100 GB |
+| When to migrate | High concurrent writes or multi-server write patterns |
+
+## First-order decisions
+
+- SQLite is fine for many single-instance deployments
+- move to MySQL or PostgreSQL when operational needs justify it
+- choose the attachment backend based on file volume and backup expectations
+- keep the instance behind a reverse proxy in production
+
+## Where to look first
+
+- database latency or lock contention
+- slow storage volumes
+- oversized attachment handling
+- under-provisioned container or pod resources
+
+## Tuning advice
+
+- measure first
+- tune the database only after confirming the bottleneck
+- keep caching and proxy behavior simple unless usage data says otherwise
+- prefer structural fixes such as better storage placement before micro-tuning runtime flags

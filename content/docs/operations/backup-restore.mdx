@@ -1,0 +1,93 @@
+---
+title: Backup & Restore
+description: Plan recoverable backups for the database and any external attachment storage.
+---
+
+Your backup plan depends on both the database backend and the attachment storage backend.
+
+## Default data directory layout
+
+```
+~/.memos/
+├── memos_prod.db   # SQLite database (default)
+└── assets/         # Uploaded files and attachments
+```
+
+The location is controlled by `MEMOS_DATA`. Override it at runtime or use the default.
+
+## What to back up
+
+- the database itself
+- local attachment storage when attachments are not stored in the database
+- deployment configuration such as environment variables, compose files, and proxy config
+
+## SQLite backup
+
+The safest offline approach is to stop Memos and copy the database file:
+
+```bash
+sudo systemctl stop memos
+tar -czf memos-backup-$(date +%Y%m%d).tar.gz -C ~/.memos .
+sudo systemctl start memos
+```
+
+For online backups while Memos is running, use SQLite's built-in `.backup` command which handles WAL mode correctly:
+
+```bash
+sqlite3 ~/.memos/memos_prod.db ".backup ~/.memos/memos_backup.db"
+```
+
+Automated daily backup with 7-day retention:
+
+```bash
+#!/bin/bash
+BACKUP_DIR="/var/backups/memos"
+DATE=$(date +%Y%m%d-%H%M%S)
+MEMOS_DATA="${MEMOS_DATA:-$HOME/.memos}"
+mkdir -p "$BACKUP_DIR"
+sqlite3 "$MEMOS_DATA/memos_prod.db" ".backup $BACKUP_DIR/memos-$DATE.db"
+tar -czf "$BACKUP_DIR/assets-$DATE.tar.gz" -C "$MEMOS_DATA" assets
+find "$BACKUP_DIR" -name "memos-*.db" -mtime +7 -delete
+find "$BACKUP_DIR" -name "assets-*.tar.gz" -mtime +7 -delete
+```
+
+Add to cron: `0 2 * * * /usr/local/bin/backup-memos.sh`
+
+## MySQL backup
+
+```bash
+# Backup
+mysqldump -u memos_user -p memos_db | gzip > memos-backup-$(date +%Y%m%d).sql.gz
+tar -czf assets-backup-$(date +%Y%m%d).tar.gz -C ~/.memos assets
+
+# Restore
+gunzip < memos-backup.sql.gz | mysql -u memos_user -p memos_db
+tar -xzf assets-backup.tar.gz -C ~/.memos
+```
+
+## PostgreSQL backup
+
+```bash
+# Backup
+pg_dump -U memos_user -d memos_db -F c -f memos-backup-$(date +%Y%m%d).dump
+tar -czf assets-backup-$(date +%Y%m%d).tar.gz -C ~/.memos assets
+
+# Restore
+pg_restore -U memos_user -d memos_db memos-backup.dump
+tar -xzf assets-backup.tar.gz -C ~/.memos
+```
+
+## Recovery mindset
+
+Backups only matter if restore is realistic. Keep enough information to answer:
+
+- where the data lived
+- which database driver was in use
+- whether attachments were in the database, on disk, or in object storage
+- how the instance URL and proxy were configured
+
+## Operational advice
+
+- test restore at least once before you depend on the backup plan
+- record the storage backend alongside the backup process
+- treat attachment recovery as a first-class part of restore, not an afterthought

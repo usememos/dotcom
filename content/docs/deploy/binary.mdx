@@ -1,0 +1,73 @@
+---
+title: Binary
+description: Install and run Memos as a native binary on Linux, macOS, or Windows.
+---
+
+Running Memos as a binary is useful when you do not want Docker in the stack or when you already manage services directly on the host.
+
+## Supported platforms
+
+Pre-built binaries are available for:
+
+- Linux: `amd64`, `arm64`, `armv7`
+- macOS: Intel and Apple Silicon
+- Windows: `amd64`
+
+Release artifacts are published from the upstream GitHub releases page.
+
+## Typical flow
+
+1. download the archive for your platform
+2. extract the binary
+3. choose a persistent data directory
+4. set `MEMOS_*` variables or flags
+5. run the binary under a service manager
+
+## Basic run command
+
+```bash
+./memos --port 5230 --data /var/lib/memos
+```
+
+Defaults worth knowing:
+
+- port `8081`
+- SQLite database
+- local data directory for DB and assets
+
+## External databases
+
+Examples:
+
+```bash
+./memos \
+  --driver mysql \
+  --dsn "user:password@tcp(localhost:3306)/memos"
+```
+
+```bash
+./memos \
+  --driver postgres \
+  --dsn "postgres://user:password@localhost:5432/memos?sslmode=disable"
+```
+
+## Service management
+
+Binary installs work best when paired with:
+
+- `systemd` on Linux
+- `launchd` on macOS
+- a Windows service wrapper or supervisor
+
+## Why choose the binary path
+
+- no container runtime dependency
+- easy to integrate with existing host-level process supervision
+- straightforward debugging and local inspection
+
+## What you must manage yourself
+
+- upgrades and rollbacks
+- process supervision
+- data directory ownership and permissions
+- reverse proxy and HTTPS in production

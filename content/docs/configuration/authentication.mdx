@@ -1,20 +1,119 @@
 ---
-title: Authentication Settings
-description: Control sign-in methods and registration.
+title: Authentication
+description: Configure password login, SSO providers, and API tokens.
 ---
 
-Authentication behavior is controlled through instance settings.
+Memos supports three primary authentication mechanisms:
 
-## Registration and password auth
+- password-based sign-in
+- OAuth2 or SSO identity providers
+- personal access tokens for API use
 
-Admins can enable or disable:
+## Session model
 
-- User registration
-- Password-based sign-in
-- Username and nickname changes
+| Token type | Lifetime | Storage | Notes |
+| --- | --- | --- | --- |
+| Access token (JWT) | 15 min | Client memory | Stateless — verified without a DB query |
+| Refresh token (JWT) | 30 days | HTTP-only cookie | Database-backed, revocable |
+| Personal access token (PAT) | User-defined | SHA-256 hash in DB | Format: `memos_pat_<32 random chars>` |
 
-These settings are exposed via the Instance Settings API and the admin UI.
+The plain PAT is shown only once at creation time. Only its SHA-256 hash is stored in the database.
 
-## OAuth2 identity providers
+For automation or external tools, use personal access tokens instead of browser-style cookie flows.
 
-Memos supports OAuth2 identity providers for SSO. Configure providers in the admin settings to allow users to sign in with external accounts.
+## Password authentication
+
+Password authentication is enabled by default. It is simple and works well for single-user or small private instances.
+
+Password auth is usually the right starting point when:
+
+- the instance is personal or very small
+- you do not already have a central identity provider
+- you want minimal setup complexity
+
+### Disable password authentication
+
+Admins can disable password sign-in for regular users after SSO is configured. Do not do this until you have confirmed that at least one working identity provider is available.
+
+## OAuth2 and SSO
+
+SSO is the right choice for team instances that already use a central identity system. Configure the provider in instance settings, then test login with a non-admin account before forcing the whole instance onto SSO-only behavior.
+
+### OAuth2 provider fields
+
+Each identity provider requires:
+
+- `clientId` and `clientSecret` from the OAuth2 application
+- `authUrl`, `tokenUrl`, and `userInfoUrl` for the provider's OAuth2 endpoints
+- `scopes` the token should request
+- `fieldMapping` to map the provider's user info fields to Memos fields (`identifier`, `displayName`, `email`, `avatarUrl`)
+- optional `identifierFilter` — a regex applied to the identifier value; users that do not match are denied
+
+The OAuth2 callback URL for your Memos instance is: `https://<your-instance>/auth/callback`
+
+### GitHub
+
+```json
+{
+  "title": "GitHub",
+  "type": "OAUTH2",
+  "config": {
+    "oauth2Config": {
+      "clientId": "<your-client-id>",
+      "clientSecret": "<your-client-secret>",
+      "authUrl": "https://github.com/login/oauth/authorize",
+      "tokenUrl": "https://github.com/login/oauth/access_token",
+      "userInfoUrl": "https://api.github.com/user",
+      "scopes": ["read:user", "user:email"],
+      "fieldMapping": {
+        "identifier": "login",
+        "displayName": "name",
+        "email": "email",
+        "avatarUrl": "avatar_url"
+      }
+    }
+  }
+}
+```
+
+### Google
+
+```json
+{
+  "title": "Google",
+  "type": "OAUTH2",
+  "config": {
+    "oauth2Config": {
+      "clientId": "<your-client-id>",
+      "clientSecret": "<your-client-secret>",
+      "authUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+      "tokenUrl": "https://oauth2.googleapis.com/token",
+      "userInfoUrl": "https://www.googleapis.com/oauth2/v2/userinfo",
+      "scopes": ["openid", "profile", "email"],
+      "fieldMapping": {
+        "identifier": "email",
+        "displayName": "name",
+        "email": "email",
+        "avatarUrl": "picture"
+      }
+    }
+  }
+}
+```
+
+## Personal access tokens
+
+PATs are intended for scripts, integrations, and external tools.
+
+Use PATs when:
+
+- calling the API from automation
+- integrating with external services
+- avoiding interactive browser login flows
+
+Operational guidance:
+
+- create narrowly scoped tokens when possible
+- rotate tokens periodically
+- delete tokens that are no longer needed
+- do not embed PATs into public clients or front-end code

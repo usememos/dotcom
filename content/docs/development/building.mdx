@@ -1,0 +1,29 @@
+---
+title: Building
+description: Build the frontend and backend for local testing or release preparation.
+---
+
+Memos combines a frontend build with a backend binary. Local build work should confirm both pieces still fit together.
+
+## Typical build sequence
+
+```bash
+cd web
+pnpm install
+pnpm release
+cd ..
+go build -o build/memos ./cmd/memos
+```
+
+## What to verify
+
+- the frontend build completes cleanly
+- the backend binary starts
+- local configuration still works with your chosen database
+- any generated assets or code are up to date
+
+## Common variants
+
+- use `go build -o memos ./cmd/memos` for quick local builds
+- use versioned linker flags for release-oriented builds
+- cross-compile only when you actually need alternate target binaries

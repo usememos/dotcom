@@ -1,0 +1,33 @@
+---
+title: Setup
+description: Prepare a local environment for working on the Memos codebase.
+---
+
+You need both the backend and frontend toolchains available locally.
+
+## Core tools
+
+- Go 1.25+
+- Node.js 22+
+- pnpm 10+
+- Git
+- additional repo tooling such as `buf` when you work on generated API code
+
+## Setup flow
+
+1. clone the repository
+2. install backend and frontend dependencies
+3. confirm Go builds successfully
+4. choose SQLite first unless you specifically need MySQL or PostgreSQL testing
+
+## Typical commands
+
+```bash
+git clone https://github.com/usememos/memos.git
+cd memos
+go mod download
+cd web
+pnpm install
+```
+
+If you are working on protocol or generated API changes, also install the tooling required by the upstream repo for code generation and linting.

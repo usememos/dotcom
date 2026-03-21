@@ -1,17 +1,61 @@
 ---
 title: Docker Compose
-description: Run Memos with Docker Compose.
+description: Deploy Memos with Docker Compose for repeatable local or small production setups.
 ---
+
+Docker Compose is a good default when you want a checked-in deployment file, predictable restarts, and easier upgrades than a one-off `docker run` command.
+
+## Basic setup
 
 ```yaml
 services:
   memos:
     image: neosmemo/memos:stable
     container_name: memos
-    volumes:
-      - ~/.memos/:/var/opt/memos
+    restart: unless-stopped
     ports:
-      - 5230:5230
+      - "5230:5230"
+    volumes:
+      - ./data:/var/opt/memos
+    environment:
+      MEMOS_PORT: 5230
+      MEMOS_DRIVER: sqlite
+      MEMOS_INSTANCE_URL: https://memos.example.com
 ```
 
-Open `http://localhost:5230` after the container starts.
+Run it with:
+
+```bash
+docker compose up -d
+```
+
+## Why Compose is often better than raw Docker
+
+- declarative configuration you can review in git
+- easier upgrades and restarts
+- cleaner environment variable management
+- straightforward volume and network definitions
+
+## Common operational commands
+
+```bash
+docker compose logs -f
+docker compose down
+docker compose pull
+docker compose up -d
+```
+
+## Production notes
+
+- keep your data directory on persistent storage
+- place Memos behind a reverse proxy for HTTPS
+- set `MEMOS_INSTANCE_URL` to the public URL
+- back up both the database and any local assets if you do not use database-backed attachment storage
+
+## When to add more services
+
+Compose becomes more useful when you also want:
+
+- a reverse proxy container
+- a dedicated MySQL or PostgreSQL container for local evaluation
+- explicit secret and environment file handling

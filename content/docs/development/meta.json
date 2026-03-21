@@ -1,0 +1,5 @@
+{
+  "title": "Development",
+  "description": "Set up, build, test, and contribute to Memos",
+  "pages": ["index", "setup", "building", "testing", "contributing"]
+}

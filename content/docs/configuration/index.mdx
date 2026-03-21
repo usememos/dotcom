@@ -1,27 +1,33 @@
 ---
 title: Configuration
-description: Configure Memos via flags or environment variables.
+description: Configure server behavior, storage, authentication, and environment variables.
 ---
 
-Memos is configured using command-line flags or `MEMOS_*` environment variables.
+Memos can be configured through command-line flags, `MEMOS_*` environment variables, and instance-level settings managed in the UI or API.
 
-## Common options
+## Common runtime settings
 
-| Flag | Environment | Description | Default |
-| --- | --- | --- | --- |
-| `--demo` | `MEMOS_DEMO` | Enable demo mode | `false` |
-| `--addr` | `MEMOS_ADDR` | Bind address | empty |
-| `--port` | `MEMOS_PORT` | Bind port | `8081` |
-| `--unix-sock` | `MEMOS_UNIX_SOCK` | Unix socket path | empty |
-| `--data` | `MEMOS_DATA` | Data directory | auto |
-| `--driver` | `MEMOS_DRIVER` | Database driver | `sqlite` |
-| `--dsn` | `MEMOS_DSN` | Database DSN | empty |
-| `--instance-url` | `MEMOS_INSTANCE_URL` | Public instance URL | empty |
+| Flag | Environment | Purpose |
+| --- | --- | --- |
+| `--port` | `MEMOS_PORT` | HTTP port |
+| `--addr` | `MEMOS_ADDR` | bind address |
+| `--unix-sock` | `MEMOS_UNIX_SOCK` | Unix socket path |
+| `--data` | `MEMOS_DATA` | data directory |
+| `--driver` | `MEMOS_DRIVER` | database backend |
+| `--dsn` | `MEMOS_DSN` | database connection string |
+| `--instance-url` | `MEMOS_INSTANCE_URL` | public instance URL |
+| `--demo` | `MEMOS_DEMO` | demo mode |
 
-## Example
+## Configuration layers
 
-```bash
-MEMOS_DRIVER=sqlite MEMOS_DATA=/var/opt/memos memos --port 8081
-```
+- runtime flags and environment variables control server startup
+- instance settings control storage, registration, and some auth behavior
+- reverse proxy settings affect HTTPS, cookie behavior, and public URL correctness
 
-See the sections below for database, storage, authentication, and security settings.
+## Related topics
+
+- [Environment Variables](/docs/configuration/environment-variables)
+- [Database](/docs/configuration/database)
+- [Storage](/docs/configuration/storage)
+- [Authentication](/docs/configuration/authentication)
+- [Security](/docs/configuration/security)

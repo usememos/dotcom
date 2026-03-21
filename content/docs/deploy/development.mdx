@@ -1,31 +1,62 @@
 ---
-title: Development Setup
-description: Build and run Memos from source.
+title: Build From Source
+description: Build Memos locally for development, testing, and custom deployments.
 ---
 
-This guide is for contributors or anyone who wants to run Memos from source.
+Building from source is the right path when you want to contribute to Memos, test local changes, or produce a custom build.
 
-## 1. Clone the repo
+## Prerequisites
+
+- Go 1.25+
+- Node.js 22+
+- pnpm 10+
+- Git
+
+## Typical workflow
 
 ```bash
 git clone https://github.com/usememos/memos.git
 cd memos
+cd web
+pnpm install
+pnpm release
+cd ..
+go build -o build/memos ./cmd/memos
 ```
 
-## 2. Build the frontend
+Run the result:
 
 ```bash
-cd web && pnpm install && pnpm release
+./build/memos
 ```
 
-## 3. Run the backend
+Memos listens on `http://localhost:8081` by default.
 
-```bash
-go run ./cmd/memos --port 8081
-```
+## What the build is doing
 
-## 4. Open the app
+- frontend assets are produced first
+- the backend binary is built afterward
+- release-oriented builds embed frontend assets into the binary
 
-Visit `http://localhost:8081` in your browser.
+## Local development
 
-For frontend development, see the `web/` directory in the Memos repository.
+Common development flow:
+
+- run the backend locally with `go run ./cmd/memos`
+- run the frontend dev server if the upstream repo expects it
+- use SQLite first unless you are actively testing MySQL or PostgreSQL behavior
+- run tests before opening a PR
+
+## When source builds make sense
+
+- you need a custom patch or fork
+- you want to debug or profile the application
+- you are contributing code or docs
+- you want to embed a frontend build tied to a specific backend change
+
+## Before production use
+
+- build from a tagged or pinned revision
+- set explicit environment variables for instance URL and database
+- run a smoke test after build
+- keep backups before deploying a new binary

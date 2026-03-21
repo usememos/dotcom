@@ -1,23 +1,58 @@
 ---
 title: Storage
-description: Attachment storage options and limits.
+description: Configure attachment storage in the database, local filesystem, or S3-compatible object storage.
 ---
 
-Memos stores memo attachments using instance storage settings. Supported storage types include:
+Memos supports three storage backends for attachments:
 
-- Database storage
-- Local filesystem storage
+- database storage
+- local filesystem storage
 - S3-compatible object storage
 
-## Configure storage
+Storage is usually configured at the instance level rather than purely through startup flags.
 
-Storage settings are managed by administrators in the app settings or via the Instance Settings API.
+## Database storage
 
-Key options include:
+Database-backed attachments are the default.
 
-- Storage type
-- File path template for local storage
-- Upload size limit
-- S3 configuration (endpoint, region, bucket, access keys)
+Pros:
 
-See the [API reference](/docs/api) for the exact storage setting fields.
+- simplest backup story
+- no extra object store or directory layout to manage
+- good default for smaller deployments
+
+Tradeoffs:
+
+- larger database size
+- heavier database backups
+- less attractive for media-heavy instances
+
+## Local filesystem storage
+
+Use local storage when:
+
+- you want attachments outside the database
+- you control the host or persistent volume
+- you do not need cloud object storage
+
+This is common for Docker or Kubernetes setups with a persistent volume.
+
+## S3-compatible storage
+
+Use S3-compatible storage when:
+
+- you already operate object storage
+- you want asset storage independent from the app host
+- you expect many uploads or larger files
+- you want storage behavior that is easier to scale operationally
+
+## Operational reminders
+
+- set an upload limit appropriate for your environment
+- if you use local storage, back up the asset directory
+- if you use S3 storage, verify credentials, bucket policy, and public/private access expectations
+- remember that visibility rules still matter when files are attached to public memos
+
+## File path templates
+
+For local filesystem storage, path templates are useful for organization. Timestamp-based naming is a common pattern because it avoids collisions and keeps uploaded files roughly ordered.

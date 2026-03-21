@@ -1,27 +1,72 @@
 ---
 title: Database
-description: SQLite, MySQL, and PostgreSQL configuration.
+description: SQLite, MySQL, and PostgreSQL configuration for Memos.
 ---
 
 Memos supports three database backends:
 
-- `sqlite` (default)
-- `mysql`
-- `postgres`
+- `sqlite` for the default single-instance setup
+- `mysql` for managed or larger deployments
+- `postgres` for managed or larger deployments
 
-## SQLite (default)
+## SQLite
 
-If `--driver=sqlite` and no DSN is provided, Memos creates a database file in the data directory:
+SQLite is the default and the best fit for most personal deployments or small teams running a single node.
 
-- `memos_prod.db` (normal mode)
-- `memos_demo.db` (demo mode)
+Useful defaults in Memos include WAL mode and a busy timeout, which help reduce common lock contention problems.
 
-You can control the data directory with `--data` or `MEMOS_DATA`.
-
-## MySQL / PostgreSQL
-
-For MySQL or PostgreSQL, set `--driver` and provide a DSN with `--dsn` (or `MEMOS_DSN`). The DSN format follows the standard driver conventions for each database.
+Typical SQLite setup:
 
 ```bash
-MEMOS_DRIVER=postgres MEMOS_DSN="postgres://user:pass@host:5432/memos" memos
+MEMOS_DRIVER=sqlite MEMOS_DATA=/var/opt/memos memos
 ```
+
+If you need an explicit file path:
+
+```bash
+MEMOS_DRIVER=sqlite MEMOS_DSN=/opt/memos/memos.db memos
+```
+
+SQLite is usually enough when:
+
+- one instance handles all writes
+- your dataset is modest
+- operational simplicity matters more than cluster-style scaling
+
+## MySQL and PostgreSQL
+
+Use MySQL or PostgreSQL when:
+
+- you want managed backups and tooling
+- you already operate a database server
+- you expect larger datasets or more operational controls
+- you do not want the application host to carry the database file locally
+
+Examples:
+
+```bash
+MEMOS_DRIVER=mysql \
+MEMOS_DSN="memos_user:password@tcp(db:3306)/memos?charset=utf8mb4&parseTime=True&loc=Local" \
+memos
+```
+
+```bash
+MEMOS_DRIVER=postgres \
+MEMOS_DSN="postgres://memos_user:password@db:5432/memos?sslmode=disable" \
+memos
+```
+
+## Selection guidance
+
+- choose SQLite for one-node simplicity
+- choose MySQL or PostgreSQL for operational flexibility
+- keep backups aligned with your database choice
+- if you store attachments outside the database, back those up separately
+
+## Performance implications
+
+Database choice changes where bottlenecks show up:
+
+- SQLite tends to surface write contention first
+- MySQL and PostgreSQL push complexity into networked DB operations and tuning
+- attachment storage can dominate recovery and backup time even when the DB is healthy

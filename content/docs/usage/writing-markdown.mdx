@@ -1,75 +1,62 @@
 ---
-title: Writing & Markdown
-description: Markdown support in Memos.
+title: Writing Markdown
+description: Write rich memos with Markdown, checklists, code blocks, and embedded structure.
 ---
 
-Memos uses Markdown for memo content. The renderer supports common Markdown constructs plus Memos tags.
+Memos stores memo content as plain text and renders it with Markdown. That keeps content portable while still supporting rich formatting such as checklists, tables, code blocks, and links.
 
-## Text formatting
-
-```markdown
-**Bold**
-*Italic*
-~~Strikethrough~~
-`Inline code`
-```
-
-## Headings
-
-```markdown
-# Heading 1
-## Heading 2
-### Heading 3
-```
-
-## Lists and tasks
-
-```markdown
-- Bullet item
-- Another item
-
-1. Ordered item
-2. Another item
-
-- [ ] Task item
-- [x] Completed task
-```
-
-## Links and images
-
-```markdown
-[Link text](https://example.com)
-![Alt text](https://example.com/image.png)
-```
-
-## Code blocks
+## Core syntax
 
 ````markdown
-```bash
-memos --port 8081
+# Heading 1
+## Heading 2
+
+**bold**
+_italic_
+~~strikethrough~~
+
+- [ ] open task
+- [x] completed task
+
+```go
+fmt.Println("hello from memos")
 ```
 ````
 
-## Tables
+## Common patterns
+
+- headings for longer notes
+- task lists for planning
+- fenced code blocks for snippets
+- blockquotes for references
+- tables when structure matters
+- tags like `#project-x` inline in the memo body
+
+## Code blocks
+
+Use fenced code blocks with a language identifier when useful:
+
+````markdown
+```ts
+const visible = memo.visibility === "PUBLIC";
+```
+````
+
+## Checklists
+
+Task lists are especially useful in Memos because they turn ordinary notes into lightweight work queues:
 
 ```markdown
-| Name | Status |
-| ---- | ------ |
-| Memo | Active |
+- [ ] Draft release notes
+- [ ] Review production config
+- [x] Create backup
 ```
 
-## Quotes and rules
+## Writing tips
 
-```markdown
-> Quoted text
-
----
-```
-
-## Tags
-
-Tags are written inline using `#tag` syntax.
-
-```markdown
-#work #project-alpha
-```
+- keep one memo focused on one topic or update
+- use headings in longer memos so they remain readable
+- prefer plain Markdown over screenshots of text
+- use tags consistently so search and shortcuts stay useful
+- choose visibility carefully before sharing externally
+- use code fences and blockquotes to make technical notes easier to scan later
