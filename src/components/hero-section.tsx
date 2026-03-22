@@ -44,12 +44,12 @@ export function HeroSection({ version = "0.26.2", title, subtitle, primaryCta, s
       <div className="pointer-events-none absolute inset-0 opacity-40 [background-image:linear-gradient(to_right,rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.04)_1px,transparent_1px)] [background-position:center] [background-size:32px_32px] dark:opacity-20" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-white dark:to-[#070a0c]" />
 
-      <div className="mx-auto w-full max-w-(--fd-layout-width) px-4 pb-8 pt-10 sm:px-6 sm:pb-12 sm:pt-14 md:px-4 xl:pb-10 xl:pt-16">
+      <div className="mx-auto w-full max-w-(--fd-layout-width) px-4 pb-8 pt-10 sm:px-6 sm:pb-12 sm:pt-14 md:px-4 md:py-28 lg:py-36">
         <motion.div
           initial="initial"
           animate="animate"
           variants={stagger}
-          className="grid gap-4 lg:gap-8 md:grid-cols-[minmax(0,28rem)_minmax(0,1fr)] md:items-center"
+          className="grid gap-10 md:grid-cols-[minmax(0,28rem)_minmax(0,1fr)] md:items-center md:gap-8 lg:gap-16"
         >
           <div className="relative z-10 max-w-2xl">
             <motion.div
@@ -114,9 +114,7 @@ export function HeroSection({ version = "0.26.2", title, subtitle, primaryCta, s
             className="relative mx-auto w-full max-w-[42rem] xl:mx-0 xl:justify-self-end"
           >
             <div className="pointer-events-none absolute inset-0 rounded-[2.25rem] bg-[radial-gradient(circle_at_center,_rgba(20,184,166,0.16),_transparent_66%)] blur-3xl dark:bg-[radial-gradient(circle_at_center,_rgba(45,212,191,0.18),_transparent_68%)]" />
-            <div className="relative h-[240px] sm:h-[320px] md:h-[380px] lg:h-[440px] xl:h-[540px]">
-              <MemoHeroMock />
-            </div>
+            <MemoHeroMock />
           </motion.div>
         </motion.div>
       </div>
