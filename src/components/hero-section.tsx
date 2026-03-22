@@ -1,7 +1,10 @@
-import { ArrowRight, SparklesIcon } from "lucide-react";
-import Image from "next/image";
+"use client";
+
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowRight, PlayCircleIcon, SparklesIcon } from "lucide-react";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { type ReactNode } from "react";
+import { MemoHeroMock } from "@/components/memo-hero-mock";
 
 interface HeroSectionProps {
   version?: string;
@@ -16,134 +19,106 @@ interface HeroSectionProps {
     href: string;
     external?: boolean;
   };
-  demoImageLight?: {
-    src: string;
-    alt: string;
-  };
-  demoImageDark?: {
-    src: string;
-    alt: string;
-  };
 }
 
-export function HeroSection({
-  version = "0.26.2",
-  title,
-  subtitle,
-  primaryCta,
-  secondaryCta,
-  demoImageLight,
-  demoImageDark,
-}: HeroSectionProps) {
+const fadeUp = {
+  initial: { opacity: 0, y: 28 },
+  animate: { opacity: 1, y: 0 },
+};
+
+const stagger = {
+  animate: {
+    transition: {
+      staggerChildren: 0.06,
+      delayChildren: 0.04,
+    },
+  },
+};
+
+export function HeroSection({ version = "0.26.2", title, subtitle, primaryCta, secondaryCta }: HeroSectionProps) {
+  const shouldReduceMotion = useReducedMotion();
+  const transition = { duration: 0.8, ease: [0.22, 1, 0.36, 1] as const };
+
   return (
-    <section className="relative px-4 sm:px-6 lg:px-4 pt-6 sm:pt-8 pb-12 overflow-hidden">
-      {/* Main hero card */}
-      <div className="relative mx-auto max-w-(--fd-layout-width) overflow-hidden rounded-3xl border border-fd-border bg-fd-card shadow-sm shadow-black/5 sm:rounded-[2rem]">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white/55 to-transparent dark:from-white/5" />
-        <div className="relative z-10">
-          {/* Text content - left aligned */}
-          <div className="px-6 sm:px-10 lg:px-16 pt-10 sm:pt-14 lg:pt-20 pb-8 sm:pb-10 lg:pb-14">
-            {version && (
-              <div className="mb-6 sm:mb-8">
+    <section className="relative isolate overflow-hidden bg-[radial-gradient(circle_at_16%_18%,_rgba(20,184,166,0.18),_transparent_24%),radial-gradient(circle_at_78%_22%,_rgba(14,165,233,0.1),_transparent_22%),linear-gradient(180deg,_rgba(246,252,251,1)_0%,_rgba(240,247,246,0.97)_40%,_rgba(255,255,255,1)_100%)] dark:bg-[radial-gradient(circle_at_16%_18%,_rgba(13,148,136,0.18),_transparent_24%),radial-gradient(circle_at_78%_22%,_rgba(8,145,178,0.14),_transparent_22%),linear-gradient(180deg,_rgba(9,13,16,1)_0%,_rgba(10,16,19,0.98)_42%,_rgba(7,10,12,1)_100%)]">
+      <div className="pointer-events-none absolute inset-0 opacity-40 [background-image:linear-gradient(to_right,rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.04)_1px,transparent_1px)] [background-position:center] [background-size:32px_32px] dark:opacity-20" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-white dark:to-[#070a0c]" />
+
+      <div className="mx-auto w-full max-w-(--fd-layout-width) px-4 pb-8 pt-10 sm:px-6 sm:pb-12 sm:pt-14 md:px-4 xl:pb-10 xl:pt-16">
+        <motion.div
+          initial="initial"
+          animate="animate"
+          variants={stagger}
+          className="grid gap-4 lg:gap-8 md:grid-cols-[minmax(0,28rem)_minmax(0,1fr)] md:items-center"
+        >
+          <div className="relative z-10 max-w-2xl">
+            <motion.div
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              variants={fadeUp}
+              className="mb-5 inline-flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300"
+            >
+              {version && (
                 <Link
                   href={`/changelog/${version.replace(/\./g, "-")}`}
-                  className="inline-flex items-center gap-2 rounded-full border border-fd-border bg-fd-popover px-3 py-1.5 text-xs font-medium text-fd-primary shadow-sm shadow-black/5 transition-all duration-300 hover:-translate-y-0.5 hover:bg-fd-secondary hover:shadow-md sm:px-4 sm:py-2 sm:text-sm"
+                  className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/65 px-3 py-1 font-medium backdrop-blur-md transition-colors hover:bg-white dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10"
                 >
-                  <SparklesIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  <span className="opacity-70">Released</span>
-                  <span className="font-semibold">v{version}</span>
-                  <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                  <SparklesIcon className="h-3.5 w-3.5" />
+                  <span>v{version} released</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
-              </div>
-            )}
+              )}
+            </motion.div>
 
-            <h1 className="max-w-4xl font-serif text-4xl font-bold tracking-tight text-fd-foreground sm:text-5xl md:text-6xl lg:text-7xl">
+            <motion.h1
+              transition={transition}
+              variants={fadeUp}
+              className="max-w-3xl font-serif text-4xl leading-[0.95] font-bold tracking-[-0.05em] text-slate-950 sm:text-5xl lg:text-6xl dark:text-white"
+            >
               {title}
-            </h1>
+            </motion.h1>
 
-            <p className="mt-5 max-w-lg text-lg leading-relaxed text-fd-muted-foreground sm:mt-6 sm:text-xl lg:text-2xl">{subtitle}</p>
+            <motion.p
+              transition={transition}
+              variants={fadeUp}
+              className="mt-5 max-w-lg text-base leading-7 text-slate-600 sm:text-lg dark:text-slate-300"
+            >
+              {subtitle}
+            </motion.p>
 
-            <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:gap-4">
+            <motion.div transition={transition} variants={fadeUp} className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 href={primaryCta.href}
-                className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-fd-primary px-5 py-3 text-sm font-semibold text-fd-primary-foreground shadow-lg shadow-[color:oklch(0.45_0.08_250_/_0.22)] transition-all duration-300 hover:-translate-y-0.5 hover:opacity-90 hover:shadow-xl hover:shadow-[color:oklch(0.45_0.08_250_/_0.28)] sm:w-auto sm:px-7 sm:py-3.5 sm:text-base"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-6 py-3.5 text-sm font-semibold text-white transition-transform duration-300 hover:-translate-y-0.5 dark:bg-white dark:text-slate-950"
               >
                 {primaryCta.text}
+                <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href={secondaryCta.href}
                 target={secondaryCta.external ? "_blank" : undefined}
                 rel={secondaryCta.external ? "noopener noreferrer" : undefined}
-                className="group inline-flex w-full items-center justify-center gap-2 rounded-full border border-fd-border bg-fd-popover px-5 py-3 text-sm font-semibold text-fd-foreground shadow-sm shadow-black/5 transition-all duration-300 hover:-translate-y-0.5 hover:bg-fd-secondary hover:shadow-lg sm:w-auto sm:px-7 sm:py-3.5 sm:text-base"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-300/80 bg-white/70 px-6 py-3.5 text-sm font-semibold text-slate-900 backdrop-blur-md transition-colors hover:bg-white dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
               >
+                <PlayCircleIcon className="h-4 w-4" />
                 {secondaryCta.text}
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </Link>
-            </div>
+            </motion.div>
           </div>
 
-          {/* Demo image - use a focused crop on mobile and the wide preview on desktop */}
-          {(demoImageLight || demoImageDark) && (
-            <div className="border-t border-fd-border bg-fd-background px-0 pb-4 sm:pb-0 md:px-0">
-              <div className="relative mr-auto overflow-hidden md:hidden">
-                <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-14 bg-gradient-to-b from-[color:oklch(1_0_0_/_0.78)] via-[color:oklch(1_0_0_/_0.18)] to-transparent dark:from-gray-950/70 dark:via-gray-950/10" />
-                {demoImageLight && (
-                  <div className="relative aspect-[11/10] dark:hidden">
-                    <Image
-                      src={demoImageLight.src}
-                      alt={demoImageLight.alt}
-                      fill
-                      priority
-                      quality={85}
-                      sizes="(max-width: 767px) 100vw"
-                      className="origin-top-left scale-[1.04] object-cover object-left-top"
-                    />
-                  </div>
-                )}
-                {demoImageDark && (
-                  <div className="relative hidden aspect-[11/10] dark:block">
-                    <Image
-                      src={demoImageDark.src}
-                      alt={demoImageDark.alt}
-                      fill
-                      priority
-                      quality={85}
-                      sizes="(max-width: 767px) 100vw"
-                      className="origin-top-left scale-[1.04] object-cover object-left-top"
-                    />
-                  </div>
-                )}
-              </div>
-
-              <div className="hidden md:block">
-                {demoImageLight && (
-                  <Image
-                    src={demoImageLight.src}
-                    alt={demoImageLight.alt}
-                    width={2546}
-                    height={1576}
-                    priority
-                    quality={85}
-                    sizes="(max-width: 1024px) 100vw, 1280px"
-                    className="w-full h-auto block dark:hidden"
-                  />
-                )}
-                {demoImageDark && (
-                  <Image
-                    src={demoImageDark.src}
-                    alt={demoImageDark.alt}
-                    width={2546}
-                    height={1576}
-                    priority
-                    quality={85}
-                    sizes="(max-width: 1024px) 100vw, 1280px"
-                    className="w-full h-auto hidden dark:block"
-                  />
-                )}
-              </div>
+          <motion.div
+            variants={fadeUp}
+            transition={{
+              duration: shouldReduceMotion ? 0.3 : 1,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="relative mx-auto w-full max-w-[42rem] xl:mx-0 xl:justify-self-end"
+          >
+            <div className="pointer-events-none absolute inset-0 rounded-[2.25rem] bg-[radial-gradient(circle_at_center,_rgba(20,184,166,0.16),_transparent_66%)] blur-3xl dark:bg-[radial-gradient(circle_at_center,_rgba(45,212,191,0.18),_transparent_68%)]" />
+            <div className="relative h-[240px] sm:h-[320px] md:h-[380px] lg:h-[440px] xl:h-[540px]">
+              <MemoHeroMock />
             </div>
-          )}
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

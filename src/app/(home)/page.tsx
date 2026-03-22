@@ -82,14 +82,6 @@ export default function HomePage() {
           href: "https://demo.usememos.com/",
           external: true,
         }}
-        demoImageLight={{
-          src: "/demo.png",
-          alt: "Memos Dashboard Screenshot (Light Mode)",
-        }}
-        demoImageDark={{
-          src: "/demo-dark.png",
-          alt: "Memos Dashboard Screenshot (Dark Mode)",
-        }}
       />
 
       {/* Features Section */}
