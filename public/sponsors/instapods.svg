@@ -1,0 +1,9 @@
+<svg width="252" height="64" viewBox="0 0 252 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(2 4)">
+    <g transform="rotate(12 28 28)">
+      <rect x="13" y="13" width="30" height="30" rx="6" stroke="#22C55E" stroke-width="4" />
+    </g>
+    <circle cx="33" cy="33" r="4.5" fill="#22C55E" />
+  </g>
+  <text x="62" y="41" fill="#111827" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700">InstaPods</text>
+</svg>
