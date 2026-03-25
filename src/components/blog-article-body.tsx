@@ -10,12 +10,10 @@ interface BlogArticleBodyProps {
 export function BlogArticleBody({ content: Content }: BlogArticleBodyProps) {
   return (
     <div className={BLOG_ARTICLE_COLUMN_CLASS}>
-      <article className="px-1 py-2 sm:px-0">
-        <div className="blog-article-body">
-          <DocsBody>
-            <Content components={getMDXComponents()} />
-          </DocsBody>
-        </div>
+      <article className="blog-article-shell px-1 py-2 sm:px-0">
+        <DocsBody className="blog-article-body">
+          <Content components={getMDXComponents()} />
+        </DocsBody>
       </article>
     </div>
   );
