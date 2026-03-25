@@ -168,19 +168,17 @@ body {
   color: rgb(94 234 212);
 }
 
-.blog-article-body :where(pre) {
+.blog-article-body :where(figure.shiki) {
   margin-block: 2rem;
-  overflow-x: auto;
-  border: 1px solid rgb(229 231 235);
-  border-radius: 1rem;
-  background: rgb(3 7 18);
-  padding: 1rem;
 }
 
-.dark .blog-article-body :where(pre) {
-  border-color: rgb(31 41 55);
-}
-
-.blog-article-body :where(code) {
+.blog-article-body :where(:not(pre) > code) {
   font-size: 0.95em;
+  border-radius: 0.375rem;
+  background: rgba(15, 23, 42, 0.06);
+  padding: 0.15rem 0.35rem;
+}
+
+.dark .blog-article-body :where(:not(pre) > code) {
+  background: rgba(255, 255, 255, 0.08);
 }
