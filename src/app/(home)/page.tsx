@@ -10,7 +10,6 @@ import { HomeUseCasesSection } from "@/components/home-use-cases-section";
 import { SponsorsSection } from "@/components/sponsors-section";
 
 export const metadata: Metadata = {
-  title: "Memos - Capture thoughts instantly. Own them completely.",
   description:
     "Memos is an open-source, self-hosted note-taking tool built for instant capture. Markdown-native, privacy-first, and ready in minutes.",
   keywords: [
