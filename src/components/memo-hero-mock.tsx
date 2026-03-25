@@ -80,11 +80,7 @@ export function MemoHeroMock() {
               className="transition-all duration-700 ease-in-out"
               style={{
                 opacity: isActive ? 1 : 0,
-                transform: isActive
-                  ? "translateX(0)"
-                  : isLeaving
-                    ? "translateX(-24px)"
-                    : "translateX(24px)",
+                transform: isActive ? "translateX(0)" : isLeaving ? "translateX(-24px)" : "translateX(24px)",
                 zIndex: isActive ? 2 : isLeaving ? 1 : 0,
                 pointerEvents: isActive ? "auto" : "none",
               }}
