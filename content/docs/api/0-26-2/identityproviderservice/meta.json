@@ -1,10 +1,4 @@
 {
   "title": "Identity Provider Service",
-  "pages": [
-    "CreateIdentityProvider",
-    "DeleteIdentityProvider",
-    "GetIdentityProvider",
-    "ListIdentityProviders",
-    "UpdateIdentityProvider"
-  ]
+  "pages": ["CreateIdentityProvider", "DeleteIdentityProvider", "GetIdentityProvider", "ListIdentityProviders", "UpdateIdentityProvider"]
 }

@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, PlayCircleIcon, SparklesIcon } from "lucide-react";
 import Link from "next/link";
-import { type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { MemoHeroMock } from "@/components/memo-hero-mock";
 
 interface HeroSectionProps {

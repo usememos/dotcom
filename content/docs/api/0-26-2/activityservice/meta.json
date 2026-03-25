@@ -1,7 +1,4 @@
 {
   "title": "Activity Service",
-  "pages": [
-    "GetActivity",
-    "ListActivities"
-  ]
+  "pages": ["GetActivity", "ListActivities"]
 }
