@@ -3,10 +3,11 @@ import { createAPIPage } from "fumadocs-openapi/ui";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 import type { MDXComponents } from "mdx/types";
 import { Card, Cards } from "@/components/ui/card";
+import { apiDocsVersions } from "@/lib/api-docs";
 
 const APIPage = createAPIPage(
   createOpenAPI({
-    input: ["./openapi.yaml"],
+    input: apiDocsVersions.map((version) => `./openapi/${version.slug}.yaml`),
   }),
 );
 

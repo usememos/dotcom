@@ -1,4 +1,0 @@
-{
-  "title": "Identityprovider Service",
-  "pages": ["CreateIdentityProvider", "DeleteIdentityProvider", "GetIdentityProvider", "ListIdentityProviders", "UpdateIdentityProvider"]
-}

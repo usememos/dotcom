@@ -1,0 +1,13 @@
+{
+  "title": "Latest",
+  "pages": [
+    "index",
+    "attachmentservice",
+    "authservice",
+    "identityproviderservice",
+    "instanceservice",
+    "memoservice",
+    "shortcutservice",
+    "userservice"
+  ]
+}

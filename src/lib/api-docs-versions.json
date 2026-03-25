@@ -1,0 +1,13 @@
+[
+  {
+    "slug": "latest",
+    "label": "Latest",
+    "ref": "main",
+    "isLatest": true
+  },
+  {
+    "slug": "0-26-2",
+    "label": "v0.26.2",
+    "ref": "refs/tags/v0.26.2"
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "title": "Auth Service",
+  "pages": [
+    "GetCurrentUser",
+    "RefreshToken",
+    "SignIn",
+    "SignOut"
+  ]
+}

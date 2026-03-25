@@ -1,0 +1,23 @@
+{
+  "title": "Memo Service",
+  "pages": [
+    "CreateMemo",
+    "CreateMemoComment",
+    "CreateMemoShare",
+    "DeleteMemo",
+    "DeleteMemoReaction",
+    "DeleteMemoShare",
+    "GetMemo",
+    "GetMemoByShare",
+    "ListMemoAttachments",
+    "ListMemoComments",
+    "ListMemoReactions",
+    "ListMemoRelations",
+    "ListMemoShares",
+    "ListMemos",
+    "SetMemoAttachments",
+    "SetMemoRelations",
+    "UpdateMemo",
+    "UpsertMemoReaction"
+  ]
+}
