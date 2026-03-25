@@ -3,8 +3,8 @@ import Link from "next/link";
 
 export function HomeCtaSection() {
   return (
-    <section className="bg-[linear-gradient(180deg,#ffffff_0%,#eef7f5_100%)] px-4 py-14 dark:bg-[linear-gradient(180deg,#070a0c_0%,#0b1215_100%)] sm:py-18 lg:py-24">
-      <div className="mx-auto max-w-5xl">
+    <section className="bg-[linear-gradient(180deg,#ffffff_0%,#eef7f5_100%)] px-4 py-14 dark:bg-[linear-gradient(180deg,#070a0c_0%,#0b1215_100%)] sm:px-6 sm:py-18 lg:py-24">
+      <div className="mx-auto w-full max-w-(--fd-layout-width)">
         <div className="relative overflow-hidden rounded-[2rem] border border-slate-200/80 bg-[radial-gradient(circle_at_top,rgba(20,184,166,0.14),transparent_30%),linear-gradient(135deg,rgba(255,255,255,0.96),rgba(245,251,249,0.98))] px-6 py-10 text-center shadow-[0_30px_90px_-58px_rgba(15,23,42,0.3)] dark:border-white/10 dark:bg-[radial-gradient(circle_at_top,rgba(20,184,166,0.14),transparent_24%),linear-gradient(135deg,rgba(10,16,19,1),rgba(7,10,12,1))] sm:px-10 sm:py-14">
           <div className="pointer-events-none absolute left-1/2 top-0 h-44 w-44 -translate-x-1/2 rounded-full bg-teal-300/20 blur-3xl dark:bg-teal-500/10" />
           <div className="relative">

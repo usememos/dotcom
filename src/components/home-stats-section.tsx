@@ -10,8 +10,8 @@ const STATS = [
 
 export function HomeStatsSection() {
   return (
-    <section className="bg-white px-4 py-14 dark:bg-slate-900 sm:py-18 lg:py-24">
-      <div className="mx-auto max-w-6xl">
+    <section className="bg-white px-4 py-14 dark:bg-slate-900 sm:px-6 sm:py-18 lg:py-24">
+      <div className="mx-auto w-full max-w-(--fd-layout-width)">
         <div className="relative overflow-hidden rounded-[2rem] border border-slate-200/80 bg-[radial-gradient(circle_at_top_left,rgba(20,184,166,0.16),transparent_32%),linear-gradient(135deg,rgba(247,252,251,0.98),rgba(238,247,245,0.94))] px-6 py-8 shadow-[0_30px_90px_-58px_rgba(15,23,42,0.35)] dark:border-white/10 dark:bg-[radial-gradient(circle_at_top_left,rgba(20,184,166,0.12),transparent_28%),linear-gradient(135deg,rgba(11,17,20,1),rgba(8,12,15,1))] sm:px-10 sm:py-10 lg:px-14 lg:py-12">
           <div className="pointer-events-none absolute right-0 top-0 h-52 w-52 rounded-full bg-gradient-to-br from-teal-400/20 to-cyan-400/10 blur-3xl dark:from-teal-500/15 dark:to-cyan-500/5" />
           <div className="relative z-10 grid gap-10 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:items-end">

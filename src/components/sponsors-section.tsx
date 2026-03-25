@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 export function SponsorsSection() {
   return (
     <section className="bg-white px-4 py-14 dark:bg-gray-900 sm:px-6 sm:py-18 lg:py-20">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto w-full max-w-(--fd-layout-width)">
         <div className="mb-10 flex flex-col gap-5 border-b border-slate-200/80 pb-8 dark:border-white/10 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="mb-4 inline-flex items-center gap-3 rounded-full border border-slate-200/80 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-200">

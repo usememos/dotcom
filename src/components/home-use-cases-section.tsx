@@ -74,9 +74,9 @@ const USE_CASES = [
 
 export function HomeUseCasesSection() {
   return (
-    <section className="relative overflow-hidden bg-[linear-gradient(180deg,#eef6f4_0%,#ffffff_100%)] px-4 py-14 dark:bg-[linear-gradient(180deg,#081014_0%,#070a0c_100%)] sm:py-18 lg:py-24">
+    <section className="relative overflow-hidden bg-[linear-gradient(180deg,#eef6f4_0%,#ffffff_100%)] px-4 py-14 dark:bg-[linear-gradient(180deg,#081014_0%,#070a0c_100%)] sm:px-6 sm:py-18 lg:py-24">
       <div className="pointer-events-none absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-teal-200/30 blur-3xl dark:bg-teal-500/10" />
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto w-full max-w-(--fd-layout-width)">
         <div className="mb-10 flex flex-col gap-8 lg:mb-12 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeader
             icon={LightbulbIcon}

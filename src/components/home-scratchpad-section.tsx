@@ -10,8 +10,8 @@ const FEATURES = [
 
 export function HomeScratchpadSection() {
   return (
-    <section className="bg-white px-4 py-14 dark:bg-slate-900 sm:py-18 lg:py-24">
-      <div className="mx-auto max-w-6xl">
+    <section className="bg-white px-4 py-14 dark:bg-slate-900 sm:px-6 sm:py-18 lg:py-24">
+      <div className="mx-auto w-full max-w-(--fd-layout-width)">
         <div className="relative overflow-hidden rounded-[2rem] border border-slate-200/80 bg-[radial-gradient(circle_at_15%_18%,rgba(20,184,166,0.16),transparent_24%),linear-gradient(135deg,rgba(248,252,251,1),rgba(236,246,244,1))] p-8 shadow-[0_30px_100px_-60px_rgba(15,23,42,0.35)] dark:border-white/10 dark:bg-[radial-gradient(circle_at_15%_18%,rgba(20,184,166,0.14),transparent_24%),linear-gradient(135deg,rgba(11,17,20,1),rgba(8,12,15,1))] sm:p-12 lg:p-16">
           <div className="pointer-events-none absolute right-0 top-0 h-48 w-48 rounded-full bg-gradient-to-br from-teal-400/20 to-cyan-400/10 blur-3xl dark:from-teal-500/15 dark:to-cyan-500/10" />
           <div className="pointer-events-none absolute bottom-0 left-0 h-48 w-48 rounded-full bg-gradient-to-tr from-cyan-400/20 to-teal-400/10 blur-3xl dark:from-cyan-500/10 dark:to-teal-500/10" />

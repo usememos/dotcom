@@ -27,7 +27,7 @@ export function Footer() {
   ];
   return (
     <footer className="border-t bg-fd-background mt-auto">
-      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-20">
+      <div className="mx-auto w-full max-w-(--fd-layout-width) px-6 py-16 lg:px-8 lg:py-20">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4 lg:gap-16">
           {/* Features Column */}
           <div className="col-span-1">

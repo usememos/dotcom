@@ -6,7 +6,7 @@ import { SectionHeader } from "@/components/section-header";
 export function HomeDeploySection() {
   return (
     <section className="bg-[linear-gradient(180deg,#f4f8f7_0%,#ffffff_100%)] px-4 py-14 dark:bg-[linear-gradient(180deg,#081014_0%,#070a0c_100%)] sm:px-6 sm:py-18 lg:py-24">
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto w-full max-w-(--fd-layout-width)">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] lg:items-center lg:gap-14">
           <div>
             <SectionHeader

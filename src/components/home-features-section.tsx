@@ -38,9 +38,9 @@ const FEATURES = [
 
 export function HomeFeaturesSection() {
   return (
-    <section className="relative overflow-hidden bg-[linear-gradient(180deg,#ffffff_0%,#f6faf9_100%)] px-4 py-14 dark:bg-[linear-gradient(180deg,#070a0c_0%,#0b1215_100%)] sm:py-18 lg:py-24">
+    <section className="relative overflow-hidden bg-[linear-gradient(180deg,#ffffff_0%,#f6faf9_100%)] px-4 py-14 dark:bg-[linear-gradient(180deg,#070a0c_0%,#0b1215_100%)] sm:px-6 sm:py-18 lg:py-24">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-slate-300/80 to-transparent dark:via-white/10" />
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto w-full max-w-(--fd-layout-width)">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-16">
           <div className="lg:sticky lg:top-24 lg:self-start">
             <SectionHeader
