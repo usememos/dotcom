@@ -1,0 +1,7 @@
+{
+  "title": "Activity Service",
+  "pages": [
+    "GetActivity",
+    "ListActivities"
+  ]
+}

@@ -1,8 +1,9 @@
 import { createRelativeLink } from "fumadocs-ui/mdx";
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/page";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { AdsSectionMobile } from "@/components/ads-section";
+import { getApiDocsVersionFromSlug, getApiDocsVersionLabel, normalizeApiDocsSlug } from "@/lib/api-docs";
 import { source } from "@/lib/source";
 import { tocConfig } from "@/lib/toc-config";
 import { getMDXComponents } from "@/mdx-components";
@@ -12,11 +13,19 @@ export const revalidate = 3600;
 
 export default async function Page(props: { params: Promise<{ slug: string[] }> }) {
   const params = await props.params;
-  const page = source.getPage(params.slug);
+  const normalizedSlug = normalizeApiDocsSlug(params.slug);
+
+  if (normalizedSlug.join("/") !== params.slug.join("/")) {
+    redirect(`/docs/${normalizedSlug.join("/")}`);
+  }
+
+  const page = source.getPage(normalizedSlug);
   if (!page) notFound();
 
   const MDXContent = page.data.body;
   const isApi = page.url.startsWith("/docs/api");
+  const apiVersion = isApi ? getApiDocsVersionFromSlug(normalizedSlug) : undefined;
+  const apiVersionLabel = apiVersion ? getApiDocsVersionLabel(apiVersion) : undefined;
 
   // For API pages, don't pass empty TOC - let fumadocs-openapi generate it
   // Also don't use full-width layout for API pages to show TOC
@@ -27,7 +36,14 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
   const pathParts = page.url.split("/").filter(Boolean);
   const breadcrumbItems = pathParts.map((part, index) => {
     const path = `/${pathParts.slice(0, index + 1).join("/")}`;
-    const name = index === pathParts.length - 1 ? page.data.title : part.charAt(0).toUpperCase() + part.slice(1);
+    const name =
+      index === pathParts.length - 1
+        ? page.data.title
+        : index === 1
+          ? "API"
+          : index === 2 && apiVersionLabel
+            ? apiVersionLabel
+            : part.charAt(0).toUpperCase() + part.slice(1);
     return {
       "@type": "ListItem",
       position: index + 1,
@@ -49,7 +65,7 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
         name: page.data.title,
         description: page.data.description,
         url: `https://usememos.com${page.url}`,
-        assemblyVersion: "latest",
+        assemblyVersion: apiVersionLabel ?? "latest",
         executableLibraryName: "Memos API",
       }
     : {
@@ -89,11 +105,12 @@ export async function generateStaticParams() {
 
 export async function generateMetadata(props: { params: Promise<{ slug: string[] }> }): Promise<Metadata> {
   const params = await props.params;
-  const page = source.getPage(params.slug);
+  const normalizedSlug = normalizeApiDocsSlug(params.slug);
+  const page = source.getPage(normalizedSlug);
   if (!page) notFound();
 
   const isApi = page.url.startsWith("/docs/api");
-  const ogUrl = `/api/og/docs?slug=${params.slug.join("/")}`;
+  const ogUrl = `/api/og/docs?slug=${normalizedSlug.join("/")}`;
 
   return {
     title: page.data.title,

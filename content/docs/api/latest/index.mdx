@@ -1,0 +1,84 @@
+---
+title: API Reference
+description: Memos API Reference (Latest)
+---
+
+## Overview
+
+This reference tracks the latest API schema from the `main` branch.
+
+## Base URL
+
+The API is served at the `/api/v1` path of your Memos instance.
+
+```bash
+https://your-memos-instance.com/api/v1
+```
+
+For example, if your instance is hosted at `https://memos.example.com`, the API base URL would be:
+
+```bash
+https://memos.example.com/api/v1
+```
+
+## Authentication
+
+The Memos API uses Bearer Token authentication. You can obtain an access token by creating one in your account settings.
+
+Include the token in the `Authorization` header of your requests:
+
+```bash
+Authorization: Bearer <YOUR_ACCESS_TOKEN>
+```
+
+## Pagination
+
+List operations support pagination using `pageSize` and `pageToken` parameters.
+
+- `pageSize`: The maximum number of resources to return.
+- `pageToken`: A token received from a previous list response to retrieve the next page.
+
+## Filtering
+
+Some list operations support filtering via the `filter` parameter. The filter syntax follows the [Google AIP-160](https://google.aip.dev/160) standard.
+
+Example: `row_status == "NORMAL"`
+
+## Field Masks
+
+Update operations often require an `updateMask` parameter to specify which fields to update. This prevents accidental overwrites of other fields.
+
+Example: `updateMask=content,visibility`
+
+## Response Format
+
+All responses are returned in JSON format. Errors are returned with a standard status object:
+
+```json
+{
+  "code": 3,
+  "message": "Invalid argument",
+  "details": []
+}
+```
+
+## Example
+
+Here is an example of how to list memos:
+
+```bash
+curl -X GET "https://your-memos-instance.com/api/v1/memos?pageSize=10" \
+  -H "Authorization: Bearer <YOUR_ACCESS_TOKEN>"
+```
+
+## Services
+
+<Cards>
+  <Card title="Attachment Service" href="/docs/api/latest/attachmentservice/CreateAttachment" />
+  <Card title="Auth Service" href="/docs/api/latest/authservice/SignIn" />
+  <Card title="Identity Provider Service" href="/docs/api/latest/identityproviderservice/CreateIdentityProvider" />
+  <Card title="Instance Service" href="/docs/api/latest/instanceservice/GetInstanceProfile" />
+  <Card title="Memo Service" href="/docs/api/latest/memoservice/CreateMemo" />
+  <Card title="Shortcut Service" href="/docs/api/latest/shortcutservice/CreateShortcut" />
+  <Card title="User Service" href="/docs/api/latest/userservice/CreateUser" />
+</Cards>
