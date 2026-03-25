@@ -66,3 +66,121 @@ body {
 .font-serif {
   font-family: var(--font-display-serif), Georgia, Cambria, "Times New Roman", Times, serif;
 }
+
+.blog-article-body :where(hr) {
+  margin-block: 2.5rem;
+  border-color: rgb(229 231 235);
+}
+
+.dark .blog-article-body :where(hr) {
+  border-color: rgb(31 41 55);
+}
+
+.blog-article-body :where(img) {
+  margin-block: 2.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+}
+
+.blog-article-body :where(p) {
+  margin-block: 1.5rem;
+  font-size: 1.125rem;
+  line-height: 2.25rem;
+  color: rgb(55 65 81);
+}
+
+.dark .blog-article-body :where(p) {
+  color: rgb(209 213 219);
+}
+
+.blog-article-body :where(strong) {
+  font-weight: 600;
+  color: rgb(17 24 39);
+}
+
+.dark .blog-article-body :where(strong) {
+  color: rgb(243 244 246);
+}
+
+.blog-article-body :where(ul, ol) {
+  margin-block: 1.5rem;
+}
+
+.blog-article-body :where(ul, ol) > li {
+  font-size: 1.125rem;
+  line-height: 2.25rem;
+}
+
+.blog-article-body :where(blockquote) {
+  margin-block: 2.5rem;
+  border-left: 3px solid rgba(20, 184, 166, 0.7);
+  background: rgba(240, 253, 250, 0.6);
+  padding: 1rem 1.25rem;
+  font-size: 1.125rem;
+  line-height: 2.25rem;
+  color: rgb(55 65 81);
+  font-style: italic;
+}
+
+.dark .blog-article-body :where(blockquote) {
+  background: rgba(19, 78, 74, 0.2);
+  color: rgb(209 213 219);
+}
+
+.blog-article-body :where(h2) {
+  margin-top: 3.5rem;
+  margin-bottom: 1.25rem;
+  font-family: var(--font-display-serif), Georgia, Cambria, "Times New Roman", Times, serif;
+  font-size: 1.875rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: rgb(3 7 18);
+}
+
+.dark .blog-article-body :where(h2) {
+  color: rgb(249 250 251);
+}
+
+.blog-article-body :where(h3) {
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: rgb(17 24 39);
+}
+
+.dark .blog-article-body :where(h3) {
+  color: rgb(243 244 246);
+}
+
+.blog-article-body :where(a) {
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(20, 184, 166, 0.4);
+}
+
+.blog-article-body :where(a:hover) {
+  color: rgb(15 118 110);
+  text-decoration-color: rgb(13 148 136);
+}
+
+.dark .blog-article-body :where(a:hover) {
+  color: rgb(94 234 212);
+}
+
+.blog-article-body :where(pre) {
+  margin-block: 2rem;
+  overflow-x: auto;
+  border: 1px solid rgb(229 231 235);
+  border-radius: 1rem;
+  background: rgb(3 7 18);
+  padding: 1rem;
+}
+
+.dark .blog-article-body :where(pre) {
+  border-color: rgb(31 41 55);
+}
+
+.blog-article-body :where(code) {
+  font-size: 0.95em;
+}
