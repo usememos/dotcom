@@ -74,38 +74,49 @@ const USE_CASES = [
 
 export function HomeUseCasesSection() {
   return (
-    <section className="bg-gradient-to-b from-slate-50/80 to-white px-4 py-12 dark:from-slate-800 dark:to-slate-900 sm:py-16 lg:py-24">
+    <section className="relative overflow-hidden bg-[linear-gradient(180deg,#eef6f4_0%,#ffffff_100%)] px-4 py-14 dark:bg-[linear-gradient(180deg,#081014_0%,#070a0c_100%)] sm:py-18 lg:py-24">
+      <div className="pointer-events-none absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-teal-200/30 blur-3xl dark:bg-teal-500/10" />
       <div className="mx-auto max-w-6xl">
-        <SectionHeader
-          icon={LightbulbIcon}
-          title="Who Uses Memos?"
-          description="Developers, writers, self-hosters, and anyone who wants a faster way to save a thought."
-        />
+        <div className="mb-10 flex flex-col gap-8 lg:mb-12 lg:flex-row lg:items-end lg:justify-between">
+          <SectionHeader
+            icon={LightbulbIcon}
+            title="Who Uses Memos?"
+            description="Developers, writers, self-hosters, and anyone who wants a faster way to save a thought."
+            align="left"
+          />
+          <Link
+            href="/use-cases"
+            className="inline-flex items-center gap-2 self-start rounded-full border border-slate-300/70 bg-white/80 px-5 py-3 text-sm font-semibold text-slate-900 shadow-[0_20px_60px_-40px_rgba(15,23,42,0.35)] backdrop-blur-sm transition-colors hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 sm:text-base"
+          >
+            Explore All Use Cases
+            <ArrowRightIcon className="h-4 w-4" />
+          </Link>
+        </div>
 
-        <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4 sm:mb-12">
+        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-[2rem] border border-slate-200/80 bg-slate-200/80 dark:border-white/10 dark:bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
           {USE_CASES.map((useCase) => (
             <Link
               key={useCase.title}
               href={`/use-cases/${useCase.slug}`}
-              className={`group rounded-xl border border-slate-200 bg-gradient-to-br p-4 transition-all duration-300 hover:-translate-y-1 hover:border-teal-200 hover:shadow-lg dark:border-slate-700 dark:hover:border-teal-600 sm:p-6 ${useCase.gradient}`}
+              className="group relative min-h-[13rem] bg-white/90 p-5 transition-colors duration-300 hover:bg-white dark:bg-[#091015] dark:hover:bg-[#0c151a] sm:p-6"
             >
-              <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/60 text-slate-900 backdrop-blur-sm transition-transform duration-300 group-hover:scale-110 dark:bg-slate-800/60 dark:text-slate-100 sm:h-12 sm:w-12">
-                {useCase.icon}
+              <div
+                className={`absolute inset-0 bg-gradient-to-br opacity-60 transition-opacity duration-300 group-hover:opacity-90 dark:opacity-30 dark:group-hover:opacity-45 ${useCase.gradient}`}
+              />
+              <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-teal-400/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              <div className="relative flex h-full flex-col justify-between gap-10">
+                <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/70 bg-white/70 text-slate-900 shadow-[0_16px_40px_-30px_rgba(15,23,42,0.35)] backdrop-blur-sm transition-transform duration-300 group-hover:-translate-y-1 dark:border-white/10 dark:bg-white/10 dark:text-slate-100 dark:shadow-none">
+                  {useCase.icon}
+                </div>
+                <div>
+                  <h3 className="mb-2 text-lg font-semibold tracking-tight text-slate-950 dark:text-white sm:text-xl">{useCase.title}</h3>
+                  <p className="max-w-[18rem] text-sm leading-6 text-slate-600 dark:text-slate-300 sm:text-[0.95rem]">
+                    {useCase.description}
+                  </p>
+                </div>
               </div>
-              <h3 className="mb-1 text-base font-bold text-slate-900 dark:text-slate-100 sm:text-lg">{useCase.title}</h3>
-              <p className="text-xs leading-tight text-slate-600 dark:text-slate-400 sm:text-sm">{useCase.description}</p>
             </Link>
           ))}
-        </div>
-
-        <div className="text-center">
-          <Link
-            href="/use-cases"
-            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-600 to-cyan-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:from-teal-700 hover:to-cyan-700 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 sm:rounded-2xl sm:px-8 sm:py-4 sm:text-base"
-          >
-            Explore All Use Cases
-            <ArrowRightIcon className="h-4 w-4 sm:h-5 sm:w-5" />
-          </Link>
         </div>
       </div>
     </section>

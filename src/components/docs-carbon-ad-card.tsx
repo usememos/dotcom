@@ -11,7 +11,7 @@ const SPONSOR_URL = "https://github.com/sponsors/usememos";
 const CONTAINER_STYLES = {
   default: "w-full max-h-80 rounded-xl border bg-muted/30 dark:bg-muted/10 p-3 overflow-auto",
   sponsor: cn(
-    "w-full min-h-[200px] rounded-2xl overflow-auto",
+    "h-full w-full min-h-[200px] rounded-2xl overflow-auto",
     "border border-gray-200 dark:border-gray-700",
     "bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-800/50",
     "p-5 sm:p-8 shadow-sm",
@@ -22,7 +22,7 @@ const CONTAINER_STYLES = {
 
 const FALLBACK_STYLES = {
   default: "flex w-full items-center justify-center py-1 text-sm text-muted-foreground hover:opacity-80",
-  sponsor: "flex flex-col gap-2 sm:gap-4 h-full",
+  sponsor: "flex h-full flex-col gap-2 sm:gap-4",
 } as const;
 
 interface DocsCarbonAdCardProps {

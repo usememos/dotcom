@@ -6,28 +6,31 @@ import { cn } from "@/lib/utils";
 
 export function SponsorsSection() {
   return (
-    <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 bg-white dark:bg-gray-900">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-8 sm:mb-10 lg:mb-12">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-4">
-            <HeartIcon className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-red-500 fill-current shrink-0" />
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+    <section className="bg-white px-4 py-14 dark:bg-gray-900 sm:px-6 sm:py-18 lg:py-20">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-10 flex flex-col gap-5 border-b border-slate-200/80 pb-8 dark:border-white/10 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <div className="mb-4 inline-flex items-center gap-3 rounded-full border border-slate-200/80 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-200">
+              <HeartIcon className="h-4 w-4 fill-current text-rose-500" />
+              <span className="tracking-[0.12em] uppercase text-slate-500 dark:text-slate-400">Community</span>
+            </div>
+            <h2 className="font-serif text-3xl font-bold tracking-[-0.03em] text-gray-900 dark:text-gray-100 sm:text-4xl lg:text-5xl">
               Supported by
             </h2>
           </div>
-          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="max-w-2xl text-base leading-7 text-gray-600 dark:text-gray-400 sm:text-lg">
             Thanks to the sponsors who help keep Memos moving.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8 max-w-6xl mx-auto">
+        <div className="mb-6 grid grid-cols-1 gap-px overflow-hidden rounded-[2rem] border border-slate-200/80 bg-slate-200/80 dark:border-white/10 dark:bg-white/10 lg:grid-cols-2 xl:grid-cols-3 sm:mb-8">
           {FEATURED_SPONSORS.map((sponsor) => (
             <a
               key={sponsor.name}
               href={sponsor.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col gap-2 sm:gap-4 p-5 sm:p-8 bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-2xl hover:shadow-xl hover:border-teal-200 dark:hover:border-teal-600 hover:-translate-y-1 transition-all duration-300 shadow-sm"
+              className="group flex min-h-[14rem] flex-col justify-between gap-8 bg-white/90 p-5 transition-colors duration-300 hover:bg-white dark:bg-[#091015] dark:hover:bg-[#0c151a] sm:p-8"
             >
               <div className="h-10 sm:h-12 flex items-center justify-start">
                 <img
@@ -44,18 +47,22 @@ export function SponsorsSection() {
                 )}
               </div>
               {sponsor.description && (
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed">{sponsor.description}</p>
+                <p className="max-w-sm border-t border-slate-200/80 pt-4 text-sm leading-7 text-gray-600 dark:border-white/10 dark:text-gray-400 sm:text-base">
+                  {sponsor.description}
+                </p>
               )}
             </a>
           ))}
           {/* Carbon Ads */}
-          <DocsCarbonAdCard variant="sponsor" />
+          <div className="h-full lg:col-span-2 xl:col-span-2">
+            <DocsCarbonAdCard variant="sponsor" />
+          </div>
         </div>
 
         <div className="text-center">
           <Link
             href="/sponsors"
-            className="inline-flex items-center gap-2 text-sm sm:text-base text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 font-medium hover:underline transition-colors"
+            className="inline-flex items-center gap-2 text-sm font-medium text-slate-900 transition-colors hover:text-teal-700 dark:text-white dark:hover:text-teal-300 sm:text-base"
           >
             View all sponsors and backers
             <span aria-hidden="true">→</span>

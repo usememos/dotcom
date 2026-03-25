@@ -38,28 +38,31 @@ const FEATURES = [
 
 export function HomeFeaturesSection() {
   return (
-    <section className="bg-gradient-to-b from-white to-slate-50/50 px-4 py-12 dark:from-slate-900 dark:to-slate-800/50 sm:py-16 lg:py-24">
+    <section className="relative overflow-hidden bg-[linear-gradient(180deg,#ffffff_0%,#f6faf9_100%)] px-4 py-14 dark:bg-[linear-gradient(180deg,#070a0c_0%,#0b1215_100%)] sm:py-18 lg:py-24">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-slate-300/80 to-transparent dark:via-white/10" />
       <div className="mx-auto max-w-6xl">
-        <SectionHeader
-          icon={StarIcon}
-          title="Why Memos?"
-          description="One thing done well: capturing your thoughts without getting in the way."
-        />
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-16">
+          <div className="lg:sticky lg:top-24 lg:self-start">
+            <SectionHeader
+              icon={StarIcon}
+              title="Why Memos?"
+              description="One thing done well: capturing your thoughts without getting in the way."
+              align="left"
+            />
+            <Link
+              href="/features"
+              className="group inline-flex items-center gap-2 text-sm font-semibold text-slate-900 transition-colors hover:text-teal-700 dark:text-white dark:hover:text-teal-300 sm:text-base"
+            >
+              Explore All Features
+              <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
-          {FEATURES.map((feature) => (
-            <FeatureCard key={feature.title} {...feature} />
-          ))}
-        </div>
-
-        <div className="mt-10 text-center sm:mt-12">
-          <Link
-            href="/features"
-            className="group inline-flex items-center gap-2 text-base font-semibold text-teal-600 transition-all hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300 sm:text-lg"
-          >
-            Explore All Features
-            <ArrowRightIcon className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-          </Link>
+          <div className="grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 lg:gap-y-10">
+            {FEATURES.map((feature) => (
+              <FeatureCard key={feature.title} {...feature} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
