@@ -20,7 +20,7 @@ import { getAllUseCaseSlugs, USE_CASES } from "@/lib/use-cases";
 export const metadata: Metadata = {
   title: "Use Cases - How People Use Memos",
   description:
-    "Discover how developers, writers, self-hosters, students, and teams use Memos for quick capture, private notes, and lightweight documentation.",
+    "Discover how developers, writers, self-hosters, students, families, and teams use Memos for quick capture, private notes, and lightweight documentation.",
   keywords: [
     "note taking use cases",
     "self-hosted notes",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Use Cases - How Teams & Individuals Use Memos",
     description:
-      "Explore real-world use cases for Memos, from software development and writing to journaling, homelabs, and shared team notes.",
+      "Explore real-world use cases for Memos, from software development and writing to journaling, homelabs, family updates, and shared team notes.",
     url: "https://usememos.com/use-cases",
     siteName: "Memos",
     locale: "en_US",
@@ -48,7 +48,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Use Cases - How People Use Memos",
-    description: "Discover how developers, writers, self-hosters, students, and teams use Memos for quick capture and private notes.",
+    description:
+      "Discover how developers, writers, self-hosters, students, families, and teams use Memos for quick capture and private notes.",
   },
 };
 
@@ -74,6 +75,13 @@ const useCaseCards = [
     title: "Self-Hosters",
     description: "Server documentation",
     gradient: "from-slate-50 to-gray-50 dark:from-slate-900/20 dark:to-gray-900/20",
+  },
+  {
+    slug: "family",
+    icon: UsersIcon,
+    title: "Family",
+    description: "Private updates & memories",
+    gradient: "from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20",
   },
   {
     slug: "developers",
@@ -117,13 +125,6 @@ const useCaseCards = [
     description: "Confidential information",
     gradient: "from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20",
   },
-  {
-    slug: "teams",
-    icon: UsersIcon,
-    title: "Teams",
-    description: "Shared notes & updates",
-    gradient: "from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20",
-  },
 ];
 
 export default function UseCasesPage() {
@@ -145,7 +146,7 @@ export default function UseCasesPage() {
               From software development to personal journaling, Memos works best where fast capture, privacy, and simplicity matter.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
-              {["Self-Hosters", "Developers", "Writers", "Journals", "Makers", "Students", "Privacy Pros", "Teams"].map((tag) => (
+              {["Self-Hosters", "Family", "Developers", "Writers", "Journals", "Makers", "Students", "Privacy Pros"].map((tag) => (
                 <span
                   key={tag}
                   className="px-4 py-2 text-sm font-medium text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800 rounded-lg"

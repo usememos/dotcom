@@ -30,6 +30,7 @@ export type UseCaseSlug = keyof typeof USE_CASES;
  */
 export const USE_CASE_SLUGS = [
   "self-hosting",
+  "family",
   "developers",
   "writers",
   "personal-knowledge",
@@ -358,6 +359,50 @@ export const USE_CASES = {
         "IT runbook software",
         "homelab wiki",
         "self-hosted documentation",
+      ],
+    },
+  },
+  family: {
+    title: "Families & Friends",
+    subtitle: "A private social feed for your closest people",
+    description:
+      "Families and friend groups can use Memos as a lightweight social app for sharing updates, photos, memories, and everyday notes in a space that stays personal and under your control.",
+    icon: "UsersIcon",
+    gradient: "from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20",
+    iconBg: "from-pink-100 to-rose-100 dark:from-pink-900/30 dark:to-rose-900/30",
+    workflows: [
+      "Share daily updates with family members and close friends",
+      "Post milestone photos, travel notes, and personal memories",
+      "Keep household plans, reminders, and event notes in one place",
+      "Collect recipes, traditions, and family reference notes",
+      "Create a private timeline of moments you want to revisit later",
+      "Use comments and reactions to stay connected without public social media",
+    ],
+    whyMemos: [
+      "Private by default, without feeding personal updates into public platforms",
+      "Simple posting flow makes it easy for non-technical family members to use",
+      "Self-hosted setup keeps your shared memories under your control",
+      "Markdown and attachments work well for notes, photos, and links",
+      "Chronological history turns everyday updates into a lasting archive",
+    ],
+    features: [
+      { name: "Data Ownership", slug: "data-ownership" },
+      { name: "Instant Save", slug: "instant-save" },
+      { name: "Cross-Platform Support", slug: "cross-platform" },
+    ],
+    seo: {
+      title: "Memos for Families - Private Social Feed & Shared Family Notes",
+      description:
+        "See how families and friend groups use Memos as a private social feed for updates, memories, photos, and shared notes without relying on public platforms.",
+      keywords: [
+        "private family social app",
+        "family notes app",
+        "shared family journal",
+        "private social feed",
+        "friends group notes",
+        "family memory archive",
+        "self-hosted family app",
+        "private updates app",
       ],
     },
   },

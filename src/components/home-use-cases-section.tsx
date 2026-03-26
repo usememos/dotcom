@@ -22,6 +22,13 @@ const USE_CASES = [
     gradient: "from-slate-50 to-slate-100/50 dark:from-slate-900/20 dark:to-slate-800/20",
   },
   {
+    slug: "family",
+    icon: <UsersIcon className="w-6 h-6 sm:w-7 sm:h-7" />,
+    title: "Family",
+    description: "Private updates & shared memories",
+    gradient: "from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20",
+  },
+  {
     slug: "developers",
     icon: <CodeIcon className="w-6 h-6 sm:w-7 sm:h-7" />,
     title: "Developers",
@@ -62,13 +69,6 @@ const USE_CASES = [
     title: "Privacy Pros",
     description: "Confidential information",
     gradient: "from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20",
-  },
-  {
-    slug: "teams",
-    icon: <UsersIcon className="w-6 h-6 sm:w-7 sm:h-7" />,
-    title: "Teams",
-    description: "Shared notes & updates",
-    gradient: "from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20",
   },
 ];
 
