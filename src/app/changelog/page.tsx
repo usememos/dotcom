@@ -1,9 +1,10 @@
 import { HomeLayout } from "fumadocs-ui/layouts/home";
-import { ArrowRightIcon, CalendarIcon } from "lucide-react";
+import { CalendarIcon } from "lucide-react";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { baseOptions } from "@/app/layout.config";
+import { ChangelogListItem } from "@/components/changelog-list-item";
 import { Footer } from "@/components/footer";
+import { CHANGELOG_COLUMN_CLASS, getChangelogDescription, getChangelogVersion, sortChangelogPages } from "@/lib/changelog";
 import { changelogSource } from "@/lib/source";
 
 export const dynamic = "force-static";
@@ -33,104 +34,54 @@ export const metadata: Metadata = {
 };
 
 export default function ChangelogPage() {
-  const entries = changelogSource.getPages().sort((a, b) => {
-    // Extract version numbers for sorting (v0.25.0 -> [0, 25, 0])
-    const getVersionParts = (title: string) => {
-      const match = title.match(/v?(\d+)\.(\d+)\.(\d+)/);
-      return match ? [parseInt(match[1], 10), parseInt(match[2], 10), parseInt(match[3], 10)] : [0, 0, 0];
-    };
-
-    const versionA = getVersionParts(a.data.title);
-    const versionB = getVersionParts(b.data.title);
-
-    // Sort by major.minor.patch in descending order
-    for (let i = 0; i < 3; i++) {
-      if (versionA[i] !== versionB[i]) {
-        return versionB[i] - versionA[i];
-      }
-    }
-    return 0;
-  });
+  const entries = sortChangelogPages(changelogSource.getPages());
+  const latestEntry = entries[0];
+  const latestVersion = latestEntry ? getChangelogVersion(latestEntry.data.title) : undefined;
 
   return (
     <HomeLayout {...baseOptions}>
       <main className="flex flex-1 flex-col">
-        <section className="py-12 sm:py-16 lg:py-24 px-4 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50">
-          <div className="max-w-4xl mx-auto">
-            {/* Hero Section */}
+        <section className="bg-[linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(245,247,244,0.98)_26%,rgba(245,247,244,1)_100%)] px-4 py-12 dark:bg-[linear-gradient(180deg,rgba(10,10,10,0.96)_0%,rgba(18,18,18,1)_28%,rgba(10,10,10,1)_100%)] sm:py-16 lg:py-24">
+          <div className={CHANGELOG_COLUMN_CLASS}>
             <div className="mb-12 sm:mb-16 lg:mb-20">
-              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight mb-4 sm:mb-6 leading-tight">
+              <div className="mb-4 flex flex-wrap items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-500 dark:text-gray-400 sm:mb-6">
+                <span className="text-teal-700/90 dark:text-teal-300/90">Release History</span>
+                {latestVersion && <span>Latest {latestVersion}</span>}
+              </div>
+              <h1 className="mb-4 font-serif text-3xl font-bold leading-[1.02] tracking-tight text-gray-950 dark:text-gray-50 sm:mb-6 sm:text-4xl lg:text-5xl xl:text-[4.25rem]">
                 Changelogs
               </h1>
-              <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
+              <p className="max-w-2xl text-base leading-8 text-gray-600 dark:text-gray-300 sm:text-lg">
                 Stay up to date with new features, improvements, and bug fixes in Memos.
               </p>
+
+              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-600 dark:text-gray-300">
+                <div className="inline-flex items-center gap-2">
+                  <CalendarIcon className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+                  <span>{entries.length} documented releases</span>
+                </div>
+                <span className="text-gray-400 dark:text-gray-500">Each entry includes the shipped changes and upgrade context.</span>
+              </div>
             </div>
 
-            {/* Changelog Entries */}
-            <div className="space-y-4">
+            <div className="space-y-8 sm:space-y-10">
               {entries.map((entry, index) => {
-                const version = entry.data.title.replace("Release ", "");
-                const isLatest = index === 0;
+                const version = getChangelogVersion(entry.data.title);
 
                 return (
-                  <article
+                  <ChangelogListItem
                     key={entry.url}
-                    className={`relative bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl sm:rounded-2xl p-4 sm:p-5 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 shadow-sm ${
-                      isLatest ? "ring-2 ring-teal-500 border-teal-200 dark:border-teal-600" : ""
-                    }`}
-                  >
-                    <Link href={entry.url} className="block group">
-                      {/* Latest Badge */}
-                      {isLatest && (
-                        <div className="absolute -top-2 sm:-top-3 left-4 sm:left-6">
-                          <span className="px-2 sm:px-3 py-1 bg-teal-600 text-white text-xs sm:text-sm font-medium rounded-full">
-                            Latest
-                          </span>
-                        </div>
-                      )}
-
-                      {/* Header */}
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-                        <div>
-                          <h2 className="font-serif text-xl sm:text-2xl font-semibold text-gray-900 dark:text-gray-100 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
-                            {version}
-                          </h2>
-                          {entry.data.date && (
-                            <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 mt-1">
-                              <CalendarIcon className="w-3 h-3 sm:w-4 sm:h-4" />
-                              <span className="text-xs sm:text-sm">
-                                {new Date(entry.data.date).toLocaleDateString("en-US", {
-                                  year: "numeric",
-                                  month: "long",
-                                  day: "numeric",
-                                })}
-                              </span>
-                            </div>
-                          )}
-                        </div>
-
-                        <div className="sm:ml-auto">
-                          <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-semibold group-hover:gap-3 transition-all text-sm sm:text-base">
-                            <span>View Details</span>
-                            <ArrowRightIcon className="w-3 h-3 sm:w-4 sm:h-4" />
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Description */}
-                      {entry.data.description && (
-                        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-0 leading-relaxed">
-                          {entry.data.description}
-                        </p>
-                      )}
-                    </Link>
-                  </article>
+                    href={entry.url}
+                    version={version}
+                    date={entry.data.date}
+                    description={getChangelogDescription(version, entry.data.description)}
+                    breaking={entry.data.breaking}
+                    isLatest={index === 0}
+                  />
                 );
               })}
             </div>
 
-            {/* Empty State */}
             {entries.length === 0 && (
               <div className="text-center py-12 sm:py-16">
                 <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
@@ -141,27 +92,26 @@ export default function ChangelogPage() {
               </div>
             )}
 
-            {/* Footer */}
-            <div className="mt-12 sm:mt-16 lg:mt-20 pt-6 sm:pt-8 border-t border-gray-200 dark:border-gray-700 text-center">
-              <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 px-4">
+            <div className="mt-12 border-t border-gray-200/80 pt-8 dark:border-gray-800 sm:mt-16 sm:pt-10 lg:mt-20">
+              <p className="max-w-2xl text-base leading-8 text-gray-600 dark:text-gray-300 sm:text-lg">
                 Want to contribute to Memos or report an issue?
               </p>
-              <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:justify-center max-w-sm sm:max-w-none mx-auto">
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:gap-5">
                 <a
                   href="https://github.com/usememos/memos"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-200 font-semibold border border-gray-200 dark:border-gray-600 rounded-xl sm:rounded-2xl hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 backdrop-blur-sm text-sm sm:text-base"
+                  className="text-sm font-semibold text-gray-700 transition-colors hover:text-teal-700 dark:text-gray-200 dark:hover:text-teal-300 sm:text-base"
                 >
-                  <span>View on GitHub</span>
+                  View on GitHub
                 </a>
                 <a
                   href="https://github.com/usememos/memos/releases"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-teal-600 to-cyan-600 text-white font-semibold rounded-xl sm:rounded-2xl hover:from-teal-700 hover:to-cyan-700 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 shadow-lg text-sm sm:text-base"
+                  className="text-sm font-semibold text-teal-700 transition-colors hover:text-teal-800 dark:text-teal-300 dark:hover:text-teal-200 sm:text-base"
                 >
-                  <span>All Releases</span>
+                  All Releases
                 </a>
               </div>
             </div>

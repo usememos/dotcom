@@ -1,17 +1,23 @@
 import { HomeLayout } from "fumadocs-ui/layouts/home";
-import { DocsBody } from "fumadocs-ui/page";
 import { ArrowLeftIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { baseOptions } from "@/app/layout.config";
 import { AdsSectionDesktop, AdsSectionMobile } from "@/components/ads-section";
+import { ChangelogArticleBody } from "@/components/changelog-article-body";
 import { ChangelogFooter } from "@/components/changelog-footer";
 import { ChangelogHeader } from "@/components/changelog-header";
 import { Footer } from "@/components/footer";
 import { TOCSidebar } from "@/components/toc-sidebar";
+import {
+  CHANGELOG_ARTICLE_COLUMN_CLASS,
+  CHANGELOG_DETAIL_LAYOUT_CLASS,
+  getChangelogDescription,
+  getChangelogVersion,
+  sortChangelogPages,
+} from "@/lib/changelog";
 import { changelogSource } from "@/lib/source";
-import { getMDXComponents } from "@/mdx-components";
 
 interface ChangelogPageProps {
   params: Promise<{ slug: string }>;
@@ -29,64 +35,69 @@ export default async function ChangelogEntryPage({ params }: ChangelogPageProps)
   }
 
   const { data } = page;
-  const MDXContent = page.data.body;
-  const version = data.title.replace("Release ", "");
+  const Content = page.data.body;
+  const version = getChangelogVersion(data.title);
+  const sortedEntries = sortChangelogPages(changelogSource.getPages());
+  const isLatest = sortedEntries[0]?.url === page.url;
 
   return (
     <HomeLayout {...baseOptions}>
-      <main className="flex flex-1 flex-col">
-        <section className="pt-8 pb-4 px-4">
-          <div className="max-w-6xl mx-auto">
-            {/* Back to Changelog */}
-            <Link
-              href="/changelog"
-              className="group inline-flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-teal-600 dark:hover:text-teal-400 mb-8 transition-colors font-medium text-sm"
-            >
-              <ArrowLeftIcon className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-              <span>Back to Changelog</span>
-            </Link>
+      <main className="flex flex-1 flex-col bg-[linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(245,247,244,0.98)_26%,rgba(245,247,244,1)_100%)] dark:bg-[linear-gradient(180deg,rgba(10,10,10,0.96)_0%,rgba(18,18,18,1)_28%,rgba(10,10,10,1)_100%)]">
+        <section className="px-4 pb-8 pt-8 sm:pt-12 lg:pb-10">
+          <div className={CHANGELOG_DETAIL_LAYOUT_CLASS}>
+            <div className="min-w-0">
+              <div className={CHANGELOG_ARTICLE_COLUMN_CLASS}>
+                <Link
+                  href="/changelog"
+                  className="group mb-8 inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition-colors hover:text-teal-600 dark:text-gray-300 dark:hover:text-teal-400 sm:mb-12"
+                >
+                  <ArrowLeftIcon className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                  <span>Back to Changelog</span>
+                </Link>
+              </div>
 
-            {/* Release Header */}
-            <ChangelogHeader version={version} date={data.date} isLatest={false} breaking={data.breaking} />
+              <ChangelogHeader
+                version={version}
+                date={data.date}
+                description={getChangelogDescription(version, data.description)}
+                isLatest={isLatest}
+                breaking={data.breaking}
+              />
+            </div>
           </div>
         </section>
 
-        {/* Changelog Content with TOC */}
-        <section className="py-4 px-4">
-          <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8 lg:gap-12">
-            {/* Main Content */}
-            <div className="flex-1 min-w-0">
-              <article className="max-w-none bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl p-4 sm:p-8 shadow-sm">
-                <DocsBody>
-                  <MDXContent components={getMDXComponents()} />
-                </DocsBody>
-              </article>
-
-              {/* Mobile Ads - Show after content, before footer */}
+        <section className="px-4 pb-16 pt-2 sm:pb-20">
+          <div className={CHANGELOG_DETAIL_LAYOUT_CLASS}>
+            <div className="min-w-0">
+              <ChangelogArticleBody content={Content} />
               <AdsSectionMobile />
-
-              {/* Footer */}
               <ChangelogFooter version={version} date={data.date} />
             </div>
 
-            {/* Table of Contents Sidebar - Desktop Only */}
-            {page.data.toc && page.data.toc.length > 0 && (
-              <div className="lg:block lg:w-64 lg:flex-shrink-0">
-                {/* Desktop TOC - Fixed Sidebar */}
-                <div className="hidden lg:block">
-                  {/* Sticky container with all cards */}
-                  <div className="sticky top-24 space-y-4">
-                    {/* TOC Card - Scrollable */}
-                    <div className="p-1">
-                      <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-3">Table of Contents</h3>
+            <aside className="hidden lg:block">
+              <div className="sticky top-24 space-y-8">
+                {page.data.toc && page.data.toc.length > 0 && (
+                  <div className="border-t border-gray-200/80 pt-5 dark:border-gray-800">
+                    <h2 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-500 dark:text-gray-400">
+                      On This Release
+                    </h2>
+                    <div className="mt-4">
                       <TOCSidebar toc={page.data.toc} />
                     </div>
-                    {/* Sponsor & Ads - Also sticky with TOC */}
-                    <AdsSectionDesktop />
+                  </div>
+                )}
+
+                <div className="border-t border-gray-200/80 pt-5 dark:border-gray-800">
+                  <div className="space-y-3 text-sm leading-7 text-gray-600 dark:text-gray-300">
+                    <p className="font-semibold text-gray-900 dark:text-gray-100">{version}</p>
+                    <p>Shipped fixes, features, and release notes for Memos maintainers and self-hosted upgrades.</p>
                   </div>
                 </div>
+
+                <AdsSectionDesktop />
               </div>
-            )}
+            </aside>
           </div>
         </section>
       </main>
@@ -115,18 +126,18 @@ export async function generateMetadata({ params }: ChangelogPageProps): Promise<
   }
 
   const { data } = page;
-  const version = data.title.replace("Release ", "");
+  const version = getChangelogVersion(data.title);
   const pageUrl = `https://usememos.com/changelog/${slug}`;
 
   return {
     title: `${version} Release Notes - Memos`,
-    description: data.description || `Release notes for Memos ${version}`,
+    description: getChangelogDescription(version, data.description),
     alternates: {
       canonical: pageUrl,
     },
     openGraph: {
       title: `${version} Release Notes`,
-      description: data.description || `Release notes for Memos ${version}`,
+      description: getChangelogDescription(version, data.description),
       type: "article",
       publishedTime: data.date,
       url: pageUrl,
@@ -134,7 +145,7 @@ export async function generateMetadata({ params }: ChangelogPageProps): Promise<
     twitter: {
       card: "summary",
       title: `${version} Release Notes`,
-      description: data.description || `Release notes for Memos ${version}`,
+      description: getChangelogDescription(version, data.description),
     },
   };
 }

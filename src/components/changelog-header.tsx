@@ -1,60 +1,55 @@
-import { CalendarIcon, TagIcon } from "lucide-react";
+import { ArrowUpRightIcon, CalendarIcon } from "lucide-react";
+import { CHANGELOG_ARTICLE_COLUMN_CLASS, formatChangelogDate } from "@/lib/changelog";
 
 interface ChangelogHeaderProps {
-  version: string;
+  description?: string;
   date?: string;
-  isLatest?: boolean;
   breaking?: boolean;
+  isLatest?: boolean;
+  version: string;
 }
 
-/**
- * Reusable header component for changelog detail pages
- */
-export function ChangelogHeader({ version, date, isLatest = false, breaking = false }: ChangelogHeaderProps) {
+export function ChangelogHeader({ breaking = false, date, description, isLatest = false, version }: ChangelogHeaderProps) {
   return (
-    <header className="mb-6">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="inline-flex items-center justify-center w-10 h-10 bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 rounded-lg">
-          <TagIcon className="w-5 h-5" />
+    <div className={CHANGELOG_ARTICLE_COLUMN_CLASS}>
+      <header className="max-w-3xl">
+        <div className="mb-5 flex flex-wrap items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-500 dark:text-gray-400 sm:mb-6">
+          <span className="text-teal-700/90 dark:text-teal-300/90">Release Notes</span>
+          {isLatest && <span className="text-amber-700 dark:text-amber-300">Latest Release</span>}
+          {breaking && <span className="text-red-700 dark:text-red-300">Upgrade Carefully</span>}
         </div>
-        {isLatest && <span className="px-3 py-1.5 bg-teal-600 text-white text-xs font-semibold rounded-full">Latest Release</span>}
-      </div>
 
-      <h1 className="font-serif text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-5xl mb-4 leading-tight">
-        {version}
-      </h1>
+        <h1 className="mb-5 font-serif text-3xl font-bold leading-[1.02] tracking-tight text-gray-950 dark:text-gray-50 sm:text-4xl lg:text-5xl xl:text-[4.25rem]">
+          {version}
+        </h1>
 
-      {date && (
-        <div className="flex flex-wrap items-center gap-4 text-gray-600 dark:text-gray-300 mb-6">
-          <div className="flex items-center gap-2">
-            <div className="inline-flex items-center justify-center w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-full">
-              <CalendarIcon className="w-4 h-4" />
+        {description && <p className="max-w-2xl text-base leading-8 text-gray-600 dark:text-gray-300 sm:text-lg">{description}</p>}
+
+        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-gray-600 dark:text-gray-300">
+          {date && (
+            <div className="flex items-center gap-3">
+              <CalendarIcon className="h-4 w-4 flex-shrink-0 text-teal-600 dark:text-teal-400" />
+              <span className="leading-6">{formatChangelogDate(date)}</span>
             </div>
-            <span className="font-medium text-sm">
-              {new Date(date).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </span>
-          </div>
-        </div>
-      )}
+          )}
 
-      {/* Breaking Changes Warning */}
-      {breaking && (
-        <div className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-950 dark:to-orange-950 border border-red-200 dark:border-red-800 rounded-xl p-5 shadow-lg mb-6">
-          <div className="flex items-center gap-3 text-red-700 dark:text-red-300 mb-2">
-            <div className="inline-flex items-center justify-center w-10 h-10 bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400 rounded-lg">
-              <span className="text-lg">⚠️</span>
-            </div>
-            <span className="font-bold text-lg">Breaking Changes</span>
-          </div>
-          <p className="text-sm text-red-600 dark:text-red-400 leading-relaxed">
-            This release includes breaking changes. Please review the changelog carefully before updating.
-          </p>
+          <a
+            href={`https://github.com/usememos/memos/releases/tag/${version}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-2 font-semibold text-gray-700 transition-colors hover:text-teal-700 dark:text-gray-200 dark:hover:text-teal-300"
+          >
+            <span>View tagged release</span>
+            <ArrowUpRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </a>
         </div>
-      )}
-    </header>
+
+        {breaking && (
+          <div className="mt-8 border-l-2 border-red-500/70 pl-4 text-sm leading-7 text-red-700 dark:text-red-300 sm:pl-5 sm:text-base">
+            This release includes breaking changes. Review the notes before updating production or shared instances.
+          </div>
+        )}
+      </header>
+    </div>
   );
 }
