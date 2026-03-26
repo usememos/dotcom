@@ -163,7 +163,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
       </head>
       <body className={`${inter.variable} ${displaySerif.variable} flex min-h-screen flex-col antialiased`}>
-        <RootProvider>{children}</RootProvider>
+        <RootProvider theme={{ defaultTheme: "system", enableSystem: true }}>{children}</RootProvider>
       </body>
     </html>
   );
