@@ -29,13 +29,6 @@ export const FEATURED_SPONSORS: Sponsor[] = [
     logoDark: "/sponsors/ssd-nodes.svg",
     description: "Affordable VPS hosting for self-hosters.",
   },
-  {
-    name: "InstaPods",
-    url: "https://instapods.com/apps/memos/",
-    logo: "/sponsors/instapods.svg",
-    logoDark: "/sponsors/instapods-dark.svg",
-    description: "Get your app online in seconds. Deploy Memos in 30 seconds.",
-  },
 ];
 
 // Additional sponsors shown on sponsors page
