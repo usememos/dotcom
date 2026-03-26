@@ -16,33 +16,80 @@ Typical flow:
 
 ## Filter expression syntax
 
-Shortcuts use CEL (Common Expression Language) filter expressions. The following fields are available:
+Shortcuts use CEL (Common Expression Language) filter expressions. A shortcut filter must evaluate to `true` for memos you want included.
 
-| Field | Example |
-| --- | --- |
-| `tag_search` | `tag_search == "work"` |
-| `visibility` | `visibility == "PUBLIC"` |
-| `property.has_link` | `property.has_link == true` |
-| `property.has_task_list` | `property.has_task_list == true` |
-| `property.has_incomplete_tasks` | `property.has_incomplete_tasks == true` |
-| `create_time` | `create_time > timestamp("2026-01-01T00:00:00Z")` |
+### Supported fields
 
-Combine conditions with `&&`:
+| Field | Type | Example |
+| --- | --- | --- |
+| `content` | string | `content.contains("meeting")` |
+| `creator` | string | `creator == "users/john"` |
+| `creator_id` | integer | `creator_id == 42` |
+| `created_ts` | integer | `created_ts >= now() - 86400` |
+| `updated_ts` | integer | `updated_ts >= now() - 3600` |
+| `visibility` | string | `visibility == "PUBLIC"` |
+| `pinned` | boolean | `pinned` |
+| `tags` | string list | `"project/backend" in tags` |
+| `tag` | string list alias | `tag in ["work"]` |
+| `has_task_list` | boolean | `has_task_list` |
+| `has_link` | boolean | `has_link` |
+| `has_code` | boolean | `has_code` |
+| `has_incomplete_tasks` | boolean | `has_incomplete_tasks` |
+
+### Operators and functions
+
+- comparisons: `==`, `!=`, `<`, `<=`, `>`, `>=`
+- logic: `&&`, `||`, `!`, and parentheses `()`
+- membership: `tag in ["work", "team"]`, `"project/backend" in tags`, `visibility in ["PUBLIC", "PROTECTED"]`
+- functions: `content.contains("text")`, `size(tags)`, `now()`
+
+Boolean fields can be used directly without `== true`:
 
 ```
-tag_search == "work" && property.has_incomplete_tasks == true
+pinned && has_incomplete_tasks
+```
+
+### Tag matching
+
+Use `tag in [...]` when you want to match one or more tag trees:
+
+```txt
+tag in ["work"]
+tag in ["project", "team"]
+```
+
+`tag in ["project"]` also matches nested tags such as `project/backend`.
+
+Use `tags.exists()` for more specific tag patterns:
+
+```txt
+tags.exists(t, t.startsWith("archive"))
+tags.exists(t, t.endsWith("/bug"))
+tags.exists(t, t.contains("todo"))
+```
+
+### Time-based filters
+
+Timestamps use Unix seconds. You can compare against fixed values or `now()` arithmetic:
+
+```txt
+created_ts >= now() - 3600
+created_ts >= now() - 7 * 86400
+updated_ts >= now() - 60
 ```
 
 ## Example shortcuts
 
 | Name | Filter |
 | --- | --- |
-| Work TODOs | `tag_search == "work" && property.has_incomplete_tasks == true` |
+| Work TODOs | `tag in ["work"] && has_incomplete_tasks` |
 | Public posts | `visibility == "PUBLIC"` |
-| Posts with links | `property.has_link == true` |
-| Recent notes | `create_time > timestamp("2026-01-01T00:00:00Z")` |
-| Team updates | `tag_search == "team" && visibility == "PROTECTED"` |
-| Unfinished tasks | `property.has_incomplete_tasks == true` |
+| Posts with links | `has_link` |
+| Recent notes | `created_ts >= now() - 7 * 86400` |
+| Team updates | `tag in ["team"] && visibility == "PROTECTED"` |
+| Unfinished tasks | `has_task_list && has_incomplete_tasks` |
+| Pinned references | `pinned && (has_link || has_code)` |
+| Active projects | `tags.exists(t, t.startsWith("project")) && !tags.exists(t, t.startsWith("archive"))` |
 
 ## Good shortcut patterns
 
@@ -62,3 +109,5 @@ tag_search == "work" && property.has_incomplete_tasks == true
 ## Limits to remember
 
 Shortcuts are personal workflow tools. They are most useful on the home view and should reflect how you naturally revisit content rather than every theoretical filter you could build.
+
+Unsupported patterns include regular expressions, `all()`, `filter()`, `map()`, and date string parsing. Use Unix timestamps or `now()` arithmetic instead.

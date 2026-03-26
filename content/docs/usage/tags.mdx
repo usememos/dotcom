@@ -28,10 +28,11 @@ Memos also supports richer filtering beyond plain text search. Saved filters and
 Examples:
 
 ```txt
-tag_search == "work"
-tag_search == "work" && visibility == "PRIVATE"
-property.has_incomplete_tasks == true
-property.has_link == true
+tag in ["work"]
+tag in ["work"] && visibility == "PRIVATE"
+has_incomplete_tasks
+has_link
+tags.exists(t, t.startsWith("project"))
 ```
 
 ## When tags help most
