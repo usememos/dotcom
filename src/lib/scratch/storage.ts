@@ -29,6 +29,13 @@ export const instanceStorage = {
         instances.map(async (instance) => ({
           ...instance,
           lastConnected: instance.lastConnected ? new Date(instance.lastConnected) : null,
+          status: instance.serverProfile ? instance.status : "untested",
+          serverProfile: instance.serverProfile
+            ? {
+                ...instance.serverProfile,
+                detectedAt: new Date(instance.serverProfile.detectedAt),
+              }
+            : undefined,
           accessToken: await decryptToken(instance.accessToken),
         })),
       );
@@ -130,6 +137,7 @@ export const itemStorage = {
       return items.map((item) => ({
         ...item,
         createdAt: new Date(item.createdAt),
+        savedMemoRef: item.savedMemoRef ?? (item.savedMemoId ? { resourceName: item.savedMemoId } : undefined),
       }));
     } catch (error) {
       console.error("Failed to load items:", error);

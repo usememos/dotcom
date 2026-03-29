@@ -2,6 +2,32 @@
  * TypeScript interfaces and types for the Memos Scratchpad feature
  */
 
+export type ScratchInstanceStatus = "connected" | "error" | "untested" | "unsupported";
+
+export type ScratchVersionFamily = "0.26.x" | "latest" | "unsupported" | "unknown";
+
+export type ScratchSupportStatus = "supported" | "unsupported" | "unknown";
+
+export interface ScratchCapabilities {
+  canReadInstanceProfile: boolean;
+  canCreateMemo: boolean;
+  canUploadAttachment: boolean;
+  canSetMemoAttachments: boolean;
+  unsupportedReasons: string[];
+}
+
+export interface ScratchServerProfile {
+  rawVersion?: string;
+  versionFamily: ScratchVersionFamily;
+  supportStatus: ScratchSupportStatus;
+  detectedAt: Date;
+  capabilities: ScratchCapabilities;
+}
+
+export interface ScratchMemoRef {
+  resourceName: string;
+}
+
 export interface MemoInstance {
   id: string;
   name: string; // e.g., "Personal Notes"
@@ -9,7 +35,8 @@ export interface MemoInstance {
   accessToken: string; // Encrypted
   isDefault: boolean;
   lastConnected: Date | null;
-  status: "connected" | "error" | "untested";
+  status: ScratchInstanceStatus;
+  serverProfile?: ScratchServerProfile;
 }
 
 export interface ScratchpadItem {
@@ -32,7 +59,8 @@ export interface ScratchpadItem {
   };
 
   savedToInstance?: string; // Instance ID if saved
-  savedMemoId?: string; // Remote memo ID
+  savedMemoRef?: ScratchMemoRef; // Remote memo resource name
+  savedMemoId?: string; // Deprecated: old resource name storage
 
   createdAt: Date;
 }
@@ -53,31 +81,28 @@ export interface StorageQuota {
 }
 
 export interface SaveToMemosOptions {
-  instanceId: string;
-  tags?: string[];
   visibility?: "PRIVATE" | "PUBLIC" | "PROTECTED";
 }
 
-export interface Attachment {
-  name: string;
+export interface ScratchAttachment {
+  resourceName: string;
   filename: string;
   externalLink?: string;
-  type: string;
-  size?: string;
+  mimeType: string;
+  sizeBytes?: string;
 }
 
-export interface Memo {
-  name: string;
+export interface ScratchMemo {
+  memoRef: ScratchMemoRef;
   content: string;
   visibility: string;
   state?: string;
   createTime?: string;
   updateTime?: string;
-  attachments?: Attachment[];
+  attachments?: ScratchAttachment[];
 }
 
-export interface UserInfo {
-  name: string;
+export interface ScratchUser {
   username: string;
   role: string;
   email?: string;
@@ -85,12 +110,9 @@ export interface UserInfo {
   avatarUrl?: string;
 }
 
-export interface GetCurrentUserResponse {
-  user: UserInfo;
-}
-
 export interface ConnectionTestResult {
   success: boolean;
   username?: string;
+  serverProfile?: ScratchServerProfile;
   error?: string;
 }

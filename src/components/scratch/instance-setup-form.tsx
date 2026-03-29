@@ -21,6 +21,8 @@ export function InstanceSetupForm({ open, onSave, onCancel, existingInstance }: 
   const [testResult, setTestResult] = useState<{
     success: boolean;
     message: string;
+    statusTone?: "success" | "warning" | "error";
+    serverProfile?: MemoInstance["serverProfile"];
   } | null>(null);
 
   const handleTest = async () => {
@@ -39,13 +41,21 @@ export function InstanceSetupForm({ open, onSave, onCancel, existingInstance }: 
       const result = await testConnection(url, token);
 
       if (result.success) {
+        const supportStatus = result.serverProfile?.supportStatus;
+        const versionLabel = result.serverProfile?.rawVersion || "Unknown version";
+        const isSupported = supportStatus === "supported";
         setTestResult({
           success: true,
-          message: `Connected as ${result.username} ✓`,
+          statusTone: isSupported ? "success" : "warning",
+          serverProfile: result.serverProfile,
+          message: isSupported
+            ? `Connected as ${result.username} · ${versionLabel} · Supported`
+            : `Connected as ${result.username} · ${versionLabel} · Unsupported`,
         });
       } else {
         setTestResult({
           success: false,
+          statusTone: "error",
           message: result.error || "Connection failed",
         });
       }
@@ -75,7 +85,8 @@ export function InstanceSetupForm({ open, onSave, onCancel, existingInstance }: 
       accessToken: token,
       isDefault: existingInstance?.isDefault || false,
       lastConnected: null,
-      status: testResult?.success ? "connected" : "untested",
+      status: testResult?.success ? (testResult.serverProfile?.supportStatus === "supported" ? "connected" : "unsupported") : "untested",
+      serverProfile: testResult?.serverProfile,
     };
 
     onSave(instance);
@@ -150,17 +161,29 @@ export function InstanceSetupForm({ open, onSave, onCancel, existingInstance }: 
             {testResult && (
               <div
                 className={`p-4 rounded-xl flex items-center space-x-3 ${
-                  testResult.success
+                  (testResult.statusTone || (testResult.success ? "success" : "error")) === "success"
                     ? "bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800"
-                    : "bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800"
+                    : (testResult.statusTone || (testResult.success ? "success" : "error")) === "warning"
+                      ? "bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800"
+                      : "bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800"
                 }`}
               >
-                {testResult.success ? (
+                {(testResult.statusTone || (testResult.success ? "success" : "error")) === "success" ? (
                   <CheckCircleIcon className="w-5 h-5 text-green-600 dark:text-green-400" />
+                ) : (testResult.statusTone || (testResult.success ? "success" : "error")) === "warning" ? (
+                  <HelpCircleIcon className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                 ) : (
                   <XCircleIcon className="w-5 h-5 text-red-600 dark:text-red-400" />
                 )}
-                <p className={`text-sm ${testResult.success ? "text-green-800 dark:text-green-300" : "text-red-800 dark:text-red-300"}`}>
+                <p
+                  className={`text-sm ${
+                    (testResult.statusTone || (testResult.success ? "success" : "error")) === "success"
+                      ? "text-green-800 dark:text-green-300"
+                      : (testResult.statusTone || (testResult.success ? "success" : "error")) === "warning"
+                        ? "text-amber-800 dark:text-amber-300"
+                        : "text-red-800 dark:text-red-300"
+                  }`}
+                >
                   {testResult.message}
                 </p>
               </div>
