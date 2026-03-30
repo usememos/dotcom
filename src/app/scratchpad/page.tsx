@@ -20,9 +20,11 @@ export default function ScratchPage() {
     handleDeleteSelected,
     handleFileUpload,
     handleInstanceSave,
+    handleRemoveAttachment,
     handleSaveSelected,
     handleSelectItem,
-    handleUpdateItem,
+    handleUpdateItemBody,
+    handleUpdateItemLayout,
     isClient,
     items,
     selectedItemIds,
@@ -161,8 +163,10 @@ export default function ScratchPage() {
       <div className="h-screen">
         <Workspace
           items={items}
-          onUpdateItem={handleUpdateItem}
+          onUpdateItemBody={handleUpdateItemBody}
+          onUpdateItemLayout={handleUpdateItemLayout}
           onDeleteItem={handleDeleteItem}
+          onRemoveAttachment={handleRemoveAttachment}
           onCreateTextItem={handleCreateTextItem}
           onFileUpload={handleFileUpload}
           selectedItemIds={selectedItemIds}

@@ -9,6 +9,7 @@ import type {
   ScratchAttachment,
   ScratchMemo,
   ScratchMemoRef,
+  ScratchpadItem,
   ScratchServerProfile,
   ScratchSupportStatus,
   ScratchUser,
@@ -281,6 +282,38 @@ async function createMemo(instance: MemoInstance, content: string, options?: Sav
   return mapMemo(data);
 }
 
+async function updateMemo(
+  instance: MemoInstance,
+  memoRef: ScratchMemoRef,
+  content: string,
+  options?: SaveToMemosOptions,
+): Promise<ScratchMemo> {
+  const normalizedUrl = normalizeUrl(instance.url);
+  const updateMask = encodeURIComponent("content,visibility,state");
+
+  const data = await requestJson<RawMemo>(
+    `${normalizedUrl}/api/v1/${memoRef.resourceName}?updateMask=${updateMask}`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${instance.accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: memoRef.resourceName,
+        content,
+        state: "NORMAL",
+        visibility: options?.visibility ?? "PRIVATE",
+      }),
+    },
+    {
+      fallback: "Failed to update memo",
+    },
+  );
+
+  return mapMemo(data);
+}
+
 async function setMemoAttachments(instance: MemoInstance, memoRef: ScratchMemoRef, attachments: ScratchAttachment[]): Promise<void> {
   const normalizedUrl = normalizeUrl(instance.url);
   const response = await fetch(`${normalizedUrl}/api/v1/${memoRef.resourceName}/attachments`, {
@@ -388,7 +421,7 @@ export async function testConnection(url: string, accessToken: string): Promise<
 
 export async function saveScratchpadItemToMemos(
   instance: MemoInstance,
-  content: string,
+  item: ScratchpadItem,
   files: { blob: Blob; name: string }[],
   options?: SaveToMemosOptions,
 ): Promise<ScratchMemo> {
@@ -399,15 +432,26 @@ export async function saveScratchpadItemToMemos(
 
   assertSupportedProfile(profile);
 
+  const trimmedBody = item.body.trim();
+  const attachmentSummary = files.map((file) => file.name);
+  const content =
+    trimmedBody ||
+    (attachmentSummary.length === 1
+      ? `Attachment: ${attachmentSummary[0]}`
+      : attachmentSummary.map((filename) => `- ${filename}`).join("\n"));
+
+  if (!content) {
+    throw new Error("Cannot save an empty card to Memos.");
+  }
+
   const attachments: ScratchAttachment[] = [];
   for (const file of files) {
     attachments.push(await uploadAttachment(instance, file.blob, file.name));
   }
 
-  const memo = await createMemo(instance, content, options);
-  if (attachments.length === 0) {
-    return memo;
-  }
+  const memo = item.sync.memoRef
+    ? await updateMemo(instance, item.sync.memoRef, content, options)
+    : await createMemo(instance, content, options);
 
   await setMemoAttachments(instance, memo.memoRef, attachments);
   return {

@@ -12,6 +12,105 @@ const STORAGE_KEYS = {
   SETTINGS: "memos-scratch-settings",
 } as const;
 
+const ITEM_STORAGE_VERSION = 2;
+
+interface LegacyScratchpadItem {
+  id: string;
+  type: "text" | "file";
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  zIndex?: number;
+  content?: string;
+  fileRef?: {
+    id: string;
+    name: string;
+    type: string;
+    size: number;
+  };
+  savedToInstance?: string;
+  savedMemoRef?: { resourceName: string };
+  savedMemoId?: string;
+  createdAt: string | Date;
+}
+
+interface ScratchpadItemEnvelope {
+  version: number;
+  items: ScratchpadItem[];
+}
+
+function createEmptySyncState(): ScratchpadItem["sync"] {
+  return {
+    status: "local",
+  };
+}
+
+function hydrateScratchpadItem(item: ScratchpadItem): ScratchpadItem {
+  return {
+    ...item,
+    attachments: item.attachments || [],
+    createdAt: new Date(item.createdAt),
+    updatedAt: new Date(item.updatedAt),
+    sync: {
+      status: item.sync?.status || "local",
+      instanceId: item.sync?.instanceId,
+      memoRef: item.sync?.memoRef,
+      lastError: item.sync?.lastError,
+      lastSyncedAt: item.sync?.lastSyncedAt ? new Date(item.sync.lastSyncedAt) : undefined,
+    },
+  };
+}
+
+function migrateLegacyItem(item: LegacyScratchpadItem, index: number): ScratchpadItem {
+  const createdAt = new Date(item.createdAt);
+  const savedMemoRef = item.savedMemoRef ?? (item.savedMemoId ? { resourceName: item.savedMemoId } : undefined);
+
+  return {
+    id: item.id,
+    x: item.x,
+    y: item.y,
+    width: item.width,
+    height: item.height,
+    zIndex: item.zIndex ?? index + 1,
+    body: item.type === "text" ? (item.content ?? "") : "",
+    attachments: item.type === "file" && item.fileRef ? [item.fileRef] : [],
+    createdAt,
+    updatedAt: createdAt,
+    sync:
+      item.savedToInstance || savedMemoRef
+        ? {
+            instanceId: item.savedToInstance,
+            memoRef: savedMemoRef,
+            status: "synced",
+          }
+        : createEmptySyncState(),
+  };
+}
+
+function parseStoredItems(data: string): { items: ScratchpadItem[]; migrated: boolean } {
+  const parsed = JSON.parse(data) as ScratchpadItemEnvelope | LegacyScratchpadItem[];
+
+  if (Array.isArray(parsed)) {
+    return {
+      items: parsed.map((item, index) => migrateLegacyItem(item, index)),
+      migrated: true,
+    };
+  }
+
+  if (parsed.version === ITEM_STORAGE_VERSION && Array.isArray(parsed.items)) {
+    return {
+      items: parsed.items.map(hydrateScratchpadItem),
+      migrated: false,
+    };
+  }
+
+  return {
+    items: [],
+    migrated: false,
+  };
+}
+
 /**
  * Storage for Memos instances
  */
@@ -132,13 +231,11 @@ export const itemStorage = {
     if (!data) return [];
 
     try {
-      const items = JSON.parse(data) as ScratchpadItem[];
-      // Parse dates
-      return items.map((item) => ({
-        ...item,
-        createdAt: new Date(item.createdAt),
-        savedMemoRef: item.savedMemoRef ?? (item.savedMemoId ? { resourceName: item.savedMemoId } : undefined),
-      }));
+      const { items, migrated } = parseStoredItems(data);
+      if (migrated) {
+        this.save(items);
+      }
+      return items;
     } catch (error) {
       console.error("Failed to load items:", error);
       return [];
@@ -147,7 +244,11 @@ export const itemStorage = {
 
   save(items: ScratchpadItem[]): void {
     if (typeof window === "undefined") return;
-    localStorage.setItem(STORAGE_KEYS.ITEMS, JSON.stringify(items));
+    const payload: ScratchpadItemEnvelope = {
+      version: ITEM_STORAGE_VERSION,
+      items,
+    };
+    localStorage.setItem(STORAGE_KEYS.ITEMS, JSON.stringify(payload));
   },
 
   add(item: ScratchpadItem): void {
@@ -178,7 +279,7 @@ export const itemStorage = {
 
   clearSaved(): void {
     const items = this.getAll();
-    const unsaved = items.filter((i) => !i.savedToInstance);
+    const unsaved = items.filter((i) => !i.sync.instanceId);
     this.save(unsaved);
   },
 

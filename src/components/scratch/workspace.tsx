@@ -2,15 +2,16 @@
 
 import { type DragEvent, useEffect, useRef, useState } from "react";
 import type { ScratchpadItem } from "@/lib/scratch/types";
-import { FileItem } from "./file-item";
-import { TextItem } from "./text-item";
+import { CardItem } from "./card-item";
 
 interface WorkspaceProps {
   items: ScratchpadItem[];
-  onUpdateItem: (id: string, updates: Partial<ScratchpadItem>) => void;
+  onUpdateItemBody: (id: string, body: string) => void;
+  onUpdateItemLayout: (id: string, updates: Partial<ScratchpadItem>) => void;
   onDeleteItem: (id: string) => void;
+  onRemoveAttachment: (id: string, attachmentId: string) => void;
   onCreateTextItem: (x: number, y: number) => void;
-  onFileUpload: (files: FileList, x: number, y: number) => void;
+  onFileUpload: (files: FileList, x: number, y: number, targetItemId?: string) => void;
   selectedItemIds: string[];
   onSelectItem: (id: string | null, ctrlKey?: boolean) => void;
   onDragComplete?: () => void;
@@ -18,8 +19,10 @@ interface WorkspaceProps {
 
 export function Workspace({
   items,
-  onUpdateItem,
+  onUpdateItemBody,
+  onUpdateItemLayout,
   onDeleteItem,
+  onRemoveAttachment,
   onCreateTextItem,
   onFileUpload,
   selectedItemIds,
@@ -29,6 +32,20 @@ export function Workspace({
   const workspaceRef = useRef<HTMLDivElement>(null);
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [lastMousePos, setLastMousePos] = useState({ x: 0, y: 0 });
+
+  const getDropTargetItemId = (target: EventTarget | null): string | undefined => {
+    let element = target as HTMLElement | null;
+
+    while (element && element !== workspaceRef.current) {
+      const itemId = element.dataset.scratchpadItemId;
+      if (itemId) {
+        return itemId;
+      }
+      element = element.parentElement;
+    }
+
+    return undefined;
+  };
 
   // Track mouse position for paste operation
   useEffect(() => {
@@ -123,7 +140,7 @@ export function Workspace({
       const rect = workspaceRef.current.getBoundingClientRect();
       const x = e.clientX - rect.left + workspaceRef.current.scrollLeft;
       const y = e.clientY - rect.top + workspaceRef.current.scrollTop;
-      onFileUpload(e.dataTransfer.files, x, y);
+      onFileUpload(e.dataTransfer.files, x, y, getDropTargetItemId(e.target));
     }
   };
 
@@ -202,29 +219,19 @@ export function Workspace({
         )}
 
         {/* Render items */}
-        {items.map((item) => {
-          return item.type === "text" ? (
-            <TextItem
-              key={item.id}
-              item={item}
-              onUpdate={onUpdateItem}
-              onDelete={onDeleteItem}
-              isSelected={selectedItemIds.includes(item.id)}
-              onSelect={(ctrlKey) => onSelectItem(item.id, ctrlKey)}
-              onDragComplete={onDragComplete}
-            />
-          ) : (
-            <FileItem
-              key={item.id}
-              item={item}
-              onUpdate={onUpdateItem}
-              onDelete={onDeleteItem}
-              isSelected={selectedItemIds.includes(item.id)}
-              onSelect={(ctrlKey) => onSelectItem(item.id, ctrlKey)}
-              onDragComplete={onDragComplete}
-            />
-          );
-        })}
+        {items.map((item) => (
+          <CardItem
+            key={item.id}
+            item={item}
+            onUpdateBody={onUpdateItemBody}
+            onUpdateLayout={onUpdateItemLayout}
+            onDelete={onDeleteItem}
+            onRemoveAttachment={onRemoveAttachment}
+            isSelected={selectedItemIds.includes(item.id)}
+            onSelect={(ctrlKey) => onSelectItem(item.id, ctrlKey)}
+            onDragComplete={onDragComplete}
+          />
+        ))}
       </div>
     </div>
   );

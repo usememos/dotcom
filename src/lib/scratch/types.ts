@@ -28,6 +28,8 @@ export interface ScratchMemoRef {
   resourceName: string;
 }
 
+export type ScratchSyncStatus = "local" | "saving" | "synced" | "dirty" | "error";
+
 export interface MemoInstance {
   id: string;
   name: string; // e.g., "Personal Notes"
@@ -39,30 +41,33 @@ export interface MemoInstance {
   serverProfile?: ScratchServerProfile;
 }
 
+export interface ScratchpadAttachmentRef {
+  id: string; // IndexedDB key
+  name: string;
+  type: string; // MIME type
+  size: number;
+}
+
+export interface ScratchpadSyncState {
+  instanceId?: string;
+  memoRef?: ScratchMemoRef;
+  status: ScratchSyncStatus;
+  lastSyncedAt?: Date;
+  lastError?: string;
+}
+
 export interface ScratchpadItem {
   id: string;
-  type: "text" | "file";
   x: number;
   y: number;
   width: number;
   height: number;
   zIndex: number; // Stacking order (higher = on top)
-
-  content?: string; // For text items (markdown)
-
-  fileRef?: {
-    // For file items
-    id: string; // IndexedDB key
-    name: string;
-    type: string; // MIME type
-    size: number;
-  };
-
-  savedToInstance?: string; // Instance ID if saved
-  savedMemoRef?: ScratchMemoRef; // Remote memo resource name
-  savedMemoId?: string; // Deprecated: old resource name storage
-
+  body: string;
+  attachments: ScratchpadAttachmentRef[];
   createdAt: Date;
+  updatedAt: Date;
+  sync: ScratchpadSyncState;
 }
 
 export interface FileData {

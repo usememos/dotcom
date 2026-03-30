@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getSaveBlockReason, refreshMemoInstanceProfile, saveScratchpadItemToMemos } from "@/lib/scratch/api";
 import { createFileData, deleteFile, getFile, saveFile } from "@/lib/scratch/indexeddb";
 import { instanceStorage, itemStorage } from "@/lib/scratch/storage";
-import type { MemoInstance, ScratchpadItem } from "@/lib/scratch/types";
+import type { MemoInstance, ScratchpadAttachmentRef, ScratchpadItem, ScratchpadSyncState } from "@/lib/scratch/types";
 
 function getInstanceStatusLabel(instance: MemoInstance | null): string {
   if (!instance) {
@@ -24,6 +24,39 @@ function getInstanceStatusLabel(instance: MemoInstance | null): string {
   }
 
   return "Untested";
+}
+
+function createSyncState(overrides: Partial<ScratchpadSyncState> = {}): ScratchpadSyncState {
+  return {
+    status: "local",
+    ...overrides,
+  };
+}
+
+function createScratchpadItem(x: number, y: number, zIndex: number, attachments: ScratchpadAttachmentRef[] = []): ScratchpadItem {
+  const now = new Date();
+
+  return {
+    id: `item-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    x,
+    y,
+    width: attachments.length > 0 ? 320 : 280,
+    height: attachments.length > 0 ? 300 : 180,
+    zIndex,
+    body: "",
+    attachments,
+    createdAt: now,
+    updatedAt: now,
+    sync: createSyncState(),
+  };
+}
+
+function markItemDirty(sync: ScratchpadSyncState): ScratchpadSyncState {
+  return {
+    ...sync,
+    status: sync.memoRef ? "dirty" : "local",
+    lastError: undefined,
+  };
 }
 
 export function useScratchpad() {
@@ -48,7 +81,7 @@ export function useScratchpad() {
     setItems(migratedItems);
     setInstances(loadedInstances);
 
-    if (migratedItems.some((item, index) => item.zIndex !== loadedItems[index].zIndex)) {
+    if (migratedItems.some((item, index) => item.zIndex !== loadedItems[index]?.zIndex)) {
       itemStorage.save(migratedItems);
     }
 
@@ -73,7 +106,7 @@ export function useScratchpad() {
 
   const defaultInstance = instances.find((instance) => instance.isDefault) || instances[0] || null;
   const selectedItems = items.filter((item) => selectedItemIds.includes(item.id));
-  const selectedItemsRequireFiles = selectedItems.some((item) => item.type === "file");
+  const selectedItemsRequireFiles = selectedItems.some((item) => item.attachments.length > 0);
   const selectedSaveBlockReason = getSaveBlockReason(defaultInstance, selectedItemsRequireFiles);
 
   const getNextZIndex = (): number => {
@@ -88,7 +121,18 @@ export function useScratchpad() {
     const maxZ = Math.max(...items.map((candidate) => candidate.zIndex || 0));
     if (item.zIndex >= maxZ) return;
 
-    handleUpdateItem(id, { zIndex: maxZ + 1 });
+    handleUpdateItemLayout(id, { zIndex: maxZ + 1 });
+  };
+
+  const getPreferredInstanceForItem = (item: ScratchpadItem): MemoInstance | null => {
+    if (item.sync.instanceId) {
+      const savedInstance = instances.find((instance) => instance.id === item.sync.instanceId);
+      if (savedInstance) {
+        return savedInstance;
+      }
+    }
+
+    return defaultInstance;
   };
 
   const handleInstanceSave = async (instance: MemoInstance) => {
@@ -115,53 +159,73 @@ export function useScratchpad() {
   };
 
   const handleCreateTextItem = (x: number, y: number) => {
-    const newItem: ScratchpadItem = {
-      id: `item-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      type: "text",
-      x,
-      y,
-      width: 280,
-      height: 180,
-      zIndex: getNextZIndex(),
-      content: "",
-      createdAt: new Date(),
-    };
-
+    const newItem = createScratchpadItem(x, y, getNextZIndex());
     itemStorage.add(newItem);
     setItems(itemStorage.getAll());
   };
 
-  const handleFileUpload = async (files: FileList, x: number, y: number) => {
-    const baseZIndex = getNextZIndex();
+  const updateItem = (id: string, updater: (item: ScratchpadItem) => ScratchpadItem) => {
+    setItems((prevItems) => prevItems.map((item) => (item.id === id ? updater(item) : item)));
+  };
+
+  const handleFileUpload = async (files: FileList, x: number, y: number, targetItemId?: string) => {
+    const attachmentRefs: ScratchpadAttachmentRef[] = [];
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const fileData = createFileData(file);
       await saveFile(fileData);
 
-      itemStorage.add({
-        id: `item-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        type: "file",
-        x: x + i * 20,
-        y: y + i * 20,
-        width: 250,
-        height: 280,
-        zIndex: baseZIndex + i,
-        fileRef: {
-          id: fileData.id,
-          name: fileData.name,
-          type: fileData.type,
-          size: fileData.size,
-        },
-        createdAt: new Date(),
+      attachmentRefs.push({
+        id: fileData.id,
+        name: fileData.name,
+        type: fileData.type,
+        size: fileData.size,
       });
     }
 
+    if (targetItemId) {
+      updateItem(targetItemId, (item) => ({
+        ...item,
+        attachments: [...item.attachments, ...attachmentRefs],
+        updatedAt: new Date(),
+        sync: markItemDirty(item.sync),
+      }));
+      return;
+    }
+
+    const newItem = createScratchpadItem(x, y, getNextZIndex(), attachmentRefs);
+    itemStorage.add(newItem);
     setItems(itemStorage.getAll());
   };
 
-  const handleUpdateItem = (id: string, updates: Partial<ScratchpadItem>) => {
-    setItems((prevItems) => prevItems.map((item) => (item.id === id ? { ...item, ...updates } : item)));
+  const handleUpdateItemLayout = (
+    id: string,
+    updates: Pick<ScratchpadItem, "x" | "y" | "width" | "height" | "zIndex"> | Partial<ScratchpadItem>,
+  ) => {
+    updateItem(id, (item) => ({
+      ...item,
+      ...updates,
+    }));
+  };
+
+  const handleUpdateItemBody = (id: string, body: string) => {
+    updateItem(id, (item) => ({
+      ...item,
+      body,
+      updatedAt: new Date(),
+      sync: markItemDirty(item.sync),
+    }));
+  };
+
+  const handleRemoveAttachment = async (id: string, attachmentId: string) => {
+    await deleteFile(attachmentId);
+    updateItem(id, (item) => ({
+      ...item,
+      attachments: item.attachments.filter((attachment) => attachment.id !== attachmentId),
+      updatedAt: new Date(),
+      sync: markItemDirty(item.sync),
+    }));
   };
 
   const saveItemsToStorage = () => {
@@ -170,8 +234,8 @@ export function useScratchpad() {
 
   const handleDeleteItem = async (id: string) => {
     const item = items.find((candidate) => candidate.id === id);
-    if (item?.fileRef) {
-      await deleteFile(item.fileRef.id);
+    if (item) {
+      await Promise.all(item.attachments.map((attachment) => deleteFile(attachment.id)));
     }
 
     itemStorage.remove(id);
@@ -179,44 +243,66 @@ export function useScratchpad() {
   };
 
   const handleSaveItem = async (id: string, resolvedInstance?: MemoInstance) => {
-    if (!resolvedInstance && instances.length === 0) {
+    const item = items.find((candidate) => candidate.id === id);
+    if (!item) return;
+
+    const targetInstance = resolvedInstance || getPreferredInstanceForItem(item);
+    if (!targetInstance) {
       setShowInstanceForm(true);
       return;
     }
 
-    const item = items.find((candidate) => candidate.id === id);
-    if (!item) return;
+    if (!item.body.trim() && item.attachments.length === 0) {
+      alert("Cannot save an empty card to Memos.");
+      return;
+    }
 
-    const targetInstance = resolvedInstance || defaultInstance;
-    if (!targetInstance) return;
+    updateItem(id, (current) => ({
+      ...current,
+      sync: {
+        ...current.sync,
+        status: "saving",
+        lastError: undefined,
+      },
+    }));
 
     try {
-      let content = "";
-      const files: { blob: Blob; name: string }[] = [];
+      const files = (
+        await Promise.all(
+          item.attachments.map(async (attachment) => {
+            const fileData = await getFile(attachment.id);
+            return fileData ? { blob: fileData.blob, name: fileData.name } : null;
+          }),
+        )
+      ).filter((file): file is { blob: Blob; name: string } => file !== null);
 
-      if (item.type === "text") {
-        content = item.content || "";
-      } else if (item.type === "file" && item.fileRef) {
-        const fileData = await getFile(item.fileRef.id);
-        if (fileData) {
-          content = `File: ${item.fileRef.name}`;
-          files.push({ blob: fileData.blob, name: fileData.name });
-        }
+      const readyInstance = resolvedInstance || (await ensureInstanceReadyForSave(targetInstance, item.attachments.length > 0));
+      if (!readyInstance) {
+        updateItem(id, (current) => ({
+          ...current,
+          sync: {
+            ...current.sync,
+            status: current.sync.memoRef ? "dirty" : "local",
+          },
+        }));
+        return;
       }
 
-      const readyInstance = resolvedInstance || (await ensureInstanceReadyForSave(targetInstance, files.length > 0));
-      if (!readyInstance) return;
-
-      const memo = await saveScratchpadItemToMemos(readyInstance, content, files, {
+      const memo = await saveScratchpadItemToMemos(readyInstance, item, files, {
         visibility: "PRIVATE",
       });
 
-      itemStorage.update(id, {
-        savedToInstance: readyInstance.id,
-        savedMemoRef: memo.memoRef,
-        savedMemoId: undefined,
-      });
-      setItems(itemStorage.getAll());
+      const syncedAt = new Date();
+      updateItem(id, (current) => ({
+        ...current,
+        updatedAt: syncedAt,
+        sync: {
+          instanceId: readyInstance.id,
+          memoRef: memo.memoRef,
+          status: "synced",
+          lastSyncedAt: syncedAt,
+        },
+      }));
 
       await replaceInstance({
         ...readyInstance,
@@ -225,7 +311,16 @@ export function useScratchpad() {
       });
     } catch (error) {
       console.error("Failed to save:", error);
-      alert(error instanceof Error ? error.message : "Failed to save to Memos. Please check your instance connection.");
+      const message = error instanceof Error ? error.message : "Failed to save to Memos. Please check your instance connection.";
+      updateItem(id, (current) => ({
+        ...current,
+        sync: {
+          ...current.sync,
+          status: "error",
+          lastError: message,
+        },
+      }));
+      alert(message);
     }
   };
 
@@ -244,16 +339,13 @@ export function useScratchpad() {
   const handleSaveSelected = async () => {
     if (selectedItemIds.length === 0) return;
 
-    if (!defaultInstance) {
+    if (!defaultInstance && instances.length === 0) {
       setShowInstanceForm(true);
       return;
     }
 
-    const readyInstance = await ensureInstanceReadyForSave(defaultInstance, selectedItemsRequireFiles);
-    if (!readyInstance) return;
-
     for (const id of selectedItemIds) {
-      await handleSaveItem(id, readyInstance);
+      await handleSaveItem(id);
     }
 
     setSelectedItemIds([]);
@@ -297,7 +389,7 @@ export function useScratchpad() {
 
       if ((e.key === "Delete" || e.key === "Backspace") && selectedItemIds.length > 0 && !isTyping) {
         e.preventDefault();
-        selectedItemIds.forEach((id) => handleDeleteItem(id));
+        selectedItemIds.forEach((id) => void handleDeleteItem(id));
         setSelectedItemIds([]);
       }
 
@@ -319,9 +411,11 @@ export function useScratchpad() {
     handleDeleteSelected,
     handleFileUpload,
     handleInstanceSave,
+    handleRemoveAttachment,
     handleSaveSelected,
     handleSelectItem,
-    handleUpdateItem,
+    handleUpdateItemBody,
+    handleUpdateItemLayout,
     isClient,
     items,
     selectedItemIds,
