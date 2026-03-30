@@ -1,8 +1,23 @@
 import { HomeLayout } from "fumadocs-ui/layouts/home";
-import { EyeOffIcon, GithubIcon, ServerIcon, ShieldIcon, UsersIcon } from "lucide-react";
+import {
+  CookieIcon,
+  DatabaseIcon,
+  EyeOffIcon,
+  FileTextIcon,
+  GithubIcon,
+  GlobeIcon,
+  LockIcon,
+  SearchIcon,
+  ServerIcon,
+  ShieldIcon,
+  UsersIcon,
+} from "lucide-react";
 import type { Metadata } from "next";
 import { baseOptions } from "@/app/layout.config";
+import { FeatureCard } from "@/components/feature-card";
 import { Footer } from "@/components/footer";
+import { HomeCtaSection } from "@/components/home-cta-section";
+import { MarketingPageHero, MarketingSectionIntro } from "@/components/marketing-page";
 
 export const metadata: Metadata = {
   title: "Privacy Policy - Memos",
@@ -12,273 +27,312 @@ export const metadata: Metadata = {
   },
 };
 
+const HERO_PROMISES = [
+  "Your notes stay on infrastructure you control",
+  "No hosted copy of your content passes through us",
+  "The code is open for inspection on GitHub",
+] as const;
+
+const NO_COLLECTION_ITEMS = [
+  {
+    icon: UsersIcon,
+    title: "Personal accounts",
+    description:
+      "Memos is not a hosted account system run by us, so we are not asking you for names, emails, or subscriptions to use the product.",
+  },
+  {
+    icon: EyeOffIcon,
+    title: "Usage analytics",
+    description: "Memos is built without product telemetry, behavior profiling, or mandatory analytics reporting back to us.",
+  },
+  {
+    icon: FileTextIcon,
+    title: "Your note content",
+    description: "Your memos stay in your own database and storage instead of flowing through a hosted Memos service.",
+  },
+  {
+    icon: GlobeIcon,
+    title: "Centralized traffic logs",
+    description: "Your deployment talks to your own server. Routine access logs, backups, and retention stay inside your environment.",
+  },
+  {
+    icon: CookieIcon,
+    title: "Tracking scripts",
+    description: "Using Memos does not require ad pixels, third-party trackers, or a separate analytics SDK.",
+  },
+  {
+    icon: SearchIcon,
+    title: "Behavioral profiles",
+    description: "There is no business model built around profiling what you write, click, or revisit inside your own instance.",
+  },
+] as const;
+
+const DEPLOYMENT_PRINCIPLES = [
+  {
+    title: "You choose the server",
+    description: "Run Memos on hardware or cloud infrastructure you already trust.",
+  },
+  {
+    title: "You choose the database",
+    description: "SQLite, PostgreSQL, and MySQL all live in your environment, not ours.",
+  },
+  {
+    title: "You choose access rules",
+    description: "Auth, network policy, backups, and retention stay under your control.",
+  },
+] as const;
+
+const TRANSPARENCY_POINTS = [
+  "Audit the source code yourself",
+  "Review how storage, auth, and API paths work",
+  "Build from source for a fully inspectable deployment",
+  "Track changes through public commits and issues",
+] as const;
+
+const CONTACT_LINKS = [
+  {
+    title: "Report on GitHub",
+    description: "Open an issue for privacy concerns or implementation questions.",
+    href: "https://github.com/usememos/memos/issues",
+    icon: GithubIcon,
+  },
+  {
+    title: "Join Discussions",
+    description: "Talk with the community about deployments, policies, or tradeoffs.",
+    href: "https://github.com/usememos/memos/discussions",
+    icon: UsersIcon,
+  },
+] as const;
+
 export default function PrivacyPage() {
   return (
     <HomeLayout {...baseOptions}>
       <main className="flex flex-1 flex-col">
-        <section className="py-24 px-4 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50">
-          <div className="max-w-4xl mx-auto">
-            {/* Hero Section */}
-            <div className="text-center mb-20">
-              <div className="flex justify-center mb-8">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 rounded-2xl">
-                  <ShieldIcon className="w-12 h-12" />
+        <MarketingPageHero
+          eyebrow="Privacy"
+          title={
+            <>
+              Private by default.
+              <span className="block text-fd-primary">Verifiable in code.</span>
+            </>
+          }
+          description="Privacy is part of the deployment model. Memos is built so your notes stay on infrastructure you control instead of passing through a hosted service run by us."
+          primaryCta={{ text: "Read the Source", href: "https://github.com/usememos/memos", external: true }}
+          secondaryCta={{ text: "Get Started", href: "/docs/getting-started" }}
+          aside={
+            <div className="relative overflow-hidden rounded-[2rem] border border-slate-200/80 bg-white/85 p-6 shadow-[0_30px_90px_-58px_rgba(15,23,42,0.3)] backdrop-blur-sm dark:border-white/10 dark:bg-white/5 dark:shadow-none sm:p-8">
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-[radial-gradient(circle_at_top,rgba(20,184,166,0.18),transparent_72%)] dark:bg-[radial-gradient(circle_at_top,rgba(20,184,166,0.16),transparent_70%)]" />
+              <div className="relative">
+                <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200/80 bg-white text-slate-900 shadow-[0_16px_40px_-28px_rgba(15,23,42,0.45)] dark:border-white/10 dark:bg-white/5 dark:text-slate-100 dark:shadow-none">
+                  <ShieldIcon className="h-6 w-6" />
+                </div>
+                <h2 className="mt-5 font-serif text-3xl font-bold tracking-[-0.03em] text-slate-950 dark:text-slate-100">
+                  The short version
+                </h2>
+                <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">
+                  No hosted copy. No mandatory telemetry. No mystery data path between you and your notes.
+                </p>
+
+                <div className="mt-6 space-y-4 border-t border-slate-200/80 pt-5 dark:border-white/10">
+                  {HERO_PROMISES.map((item) => (
+                    <div key={item} className="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-200 sm:text-base">
+                      <LockIcon className="mt-0.5 h-5 w-5 flex-none text-teal-600 dark:text-teal-400" />
+                      <span>{item}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
-              <h1 className="font-serif text-4xl font-bold tracking-tight sm:text-6xl mb-6 leading-tight">Privacy Policy</h1>
-              <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
-                Privacy is part of the product. Memos is built so your data stays on infrastructure you control.
-              </p>
             </div>
+          }
+        />
 
-            {/* Simple Statement */}
-            <section className="mb-20">
-              <div className="bg-gradient-to-br from-teal-50 via-cyan-50 to-blue-50 dark:from-teal-950 dark:via-cyan-950 dark:to-blue-950 border border-teal-200 dark:border-teal-800 rounded-3xl p-12 shadow-lg">
-                <div className="text-center">
-                  <h2 className="font-serif text-3xl font-bold text-teal-900 dark:text-teal-100 mb-6 tracking-tight">The Simple Truth</h2>
-                  <p className="text-2xl text-teal-800 dark:text-teal-200 leading-relaxed mb-4">
-                    We do not run tracking or analytics on you.
+        <section className="bg-[linear-gradient(180deg,#f4f8f7_0%,#ffffff_100%)] px-4 py-14 dark:bg-[linear-gradient(180deg,#081014_0%,#070a0c_100%)] sm:px-6 sm:py-18 lg:py-24">
+          <div className="mx-auto w-full max-w-(--fd-layout-width)">
+            <div className="rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-[0_30px_90px_-58px_rgba(15,23,42,0.3)] dark:border-white/10 dark:bg-white/5 dark:shadow-none sm:p-8 lg:p-10">
+              <MarketingSectionIntro
+                eyebrow="Summary"
+                title="Privacy follows the architecture."
+                description="Memos is strongest when the data path stays simple: open your instance, write a note, store it on your own server."
+              />
+
+              <div className="grid gap-6 border-t border-slate-200/80 pt-8 dark:border-white/10 md:grid-cols-3">
+                <div className="rounded-[1.5rem] border border-slate-200/80 bg-slate-50/70 p-5 dark:border-white/10 dark:bg-white/5">
+                  <div className="text-sm font-semibold text-slate-950 dark:text-slate-100">No hosted note pipeline</div>
+                  <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                    Your notes are written to systems you operate instead of to a Memos-hosted account.
                   </p>
-                  <p className="text-lg text-teal-700 dark:text-teal-300 leading-relaxed">
-                    No tracking. No analytics. No telemetry. No hosted copy of your notes passing through us.
+                </div>
+                <div className="rounded-[1.5rem] border border-slate-200/80 bg-slate-50/70 p-5 dark:border-white/10 dark:bg-white/5">
+                  <div className="text-sm font-semibold text-slate-950 dark:text-slate-100">No required analytics SDK</div>
+                  <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                    The product does not depend on usage tracking to function after you install it.
+                  </p>
+                </div>
+                <div className="rounded-[1.5rem] border border-slate-200/80 bg-slate-50/70 p-5 dark:border-white/10 dark:bg-white/5">
+                  <div className="text-sm font-semibold text-slate-950 dark:text-slate-100">No opaque black box</div>
+                  <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                    The core codebase is open source, so privacy claims can be inspected instead of taken on faith.
                   </p>
                 </div>
               </div>
-            </section>
-
-            {/* What We Don't Collect */}
-            <section className="mb-20">
-              <div className="flex items-center justify-center gap-4 mb-12">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-red-50 dark:bg-red-900/20 text-red-500 rounded-xl">
-                  <EyeOffIcon className="w-6 h-6" />
-                </div>
-                <h2 className="font-serif text-3xl font-bold tracking-tight">Zero Data Collection</h2>
-              </div>
-
-              <p className="text-center text-gray-600 dark:text-gray-400 mb-8 text-lg">
-                Memos is designed so we do not collect or receive:
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {[
-                  {
-                    item: "Personal Information",
-                    detail: "Names, emails, phone numbers, and similar personal data",
-                  },
-                  {
-                    item: "Usage Data",
-                    detail: "No tracking of how you use Memos",
-                  },
-                  {
-                    item: "Your Content",
-                    detail: "Your notes do not pass through our servers",
-                  },
-                  {
-                    item: "Technical Data",
-                    detail: "No IP addresses, device info, or fingerprints",
-                  },
-                  {
-                    item: "Cookies & Trackers",
-                    detail: "No tracking scripts or third-party analytics",
-                  },
-                  {
-                    item: "Behavioral Analytics",
-                    detail: "No profiling or usage patterns",
-                  },
-                ].map((entry, index) => (
-                  <div
-                    key={index}
-                    className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-shadow"
-                  >
-                    <div className="flex items-start gap-4">
-                      <div className="w-3 h-3 bg-red-500 rounded-full mt-2 flex-shrink-0"></div>
-                      <div>
-                        <div className="text-gray-900 dark:text-gray-100 font-bold mb-1">{entry.item}</div>
-                        <div className="text-gray-600 dark:text-gray-400 text-sm">{entry.detail}</div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* How It Works */}
-            <section className="mb-20">
-              <div className="flex items-center justify-center gap-4 mb-12">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-xl">
-                  <ServerIcon className="w-6 h-6" />
-                </div>
-                <h2 className="font-serif text-3xl font-bold tracking-tight">Self-Hosted by Design</h2>
-              </div>
-
-              <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-3xl p-12 shadow-lg mb-8">
-                <p className="text-xl text-gray-700 dark:text-gray-300 text-center leading-relaxed mb-8">
-                  Memos is designed to run on <strong>your own server</strong>. That keeps the data path direct and ownership clear.
-                </p>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  {[
-                    {
-                      title: "Your Server",
-                      description: "Install Memos on infrastructure you control, whether local or cloud.",
-                    },
-                    {
-                      title: "Your Data",
-                      description: "All notes and files stay on your server, under your control.",
-                    },
-                    {
-                      title: "Your Rules",
-                      description: "You decide who can access it and how it's secured.",
-                    },
-                  ].map((step, index) => (
-                    <div key={index} className="text-center">
-                      <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 rounded-full mb-4 text-xl font-bold">
-                        {index + 1}
-                      </div>
-                      <h3 className="text-xl font-bold text-blue-900 dark:text-blue-100 mb-3">{step.title}</h3>
-                      <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{step.description}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {[
-                  {
-                    title: "No External Dependencies",
-                    description: "Memos does not phone home or depend on our servers after installation.",
-                  },
-                  {
-                    title: "Complete Ownership",
-                    description:
-                      "You keep your notes on systems you manage, with export paths and storage choices that stay in your hands.",
-                  },
-                ].map((feature, index) => (
-                  <div
-                    key={index}
-                    className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-8 shadow-sm"
-                  >
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">{feature.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{feature.description}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Open Source */}
-            <section className="mb-20">
-              <div className="flex items-center justify-center gap-4 mb-12">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl">
-                  <GithubIcon className="w-6 h-6" />
-                </div>
-                <h2 className="font-serif text-3xl font-bold tracking-tight">Open Source Transparency</h2>
-              </div>
-
-              <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-3xl p-12 shadow-lg">
-                <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 text-center leading-relaxed">
-                  You can inspect the code yourself. Memos is open source and available for anyone to review.
-                </p>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                  {[
-                    "Audit our entire codebase on GitHub",
-                    "Review the code for telemetry and tracking behavior",
-                    "Build from source for complete transparency",
-                    "Community-reviewed and maintained",
-                    "Modify the code to suit your needs",
-                    "No proprietary black boxes in the core product",
-                  ].map((guarantee, index) => (
-                    <div key={index} className="flex items-start gap-4">
-                      <div className="w-3 h-3 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
-                      <span className="text-gray-700 dark:text-gray-300 font-medium">{guarantee}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="text-center">
-                  <a
-                    href="https://github.com/usememos/memos"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-gray-800 to-gray-900 dark:from-gray-700 dark:to-gray-800 text-white font-semibold rounded-2xl hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 shadow-lg"
-                  >
-                    <GithubIcon className="w-5 h-5" />
-                    <span>View Source Code on GitHub</span>
-                  </a>
-                </div>
-              </div>
-            </section>
-
-            {/* Contact */}
-            <section className="mb-20">
-              <div className="flex items-center justify-center gap-4 mb-12">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 rounded-xl">
-                  <UsersIcon className="w-6 h-6" />
-                </div>
-                <h2 className="font-serif text-3xl font-bold tracking-tight">Questions?</h2>
-              </div>
-
-              <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-3xl p-12 shadow-lg">
-                <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 text-center leading-relaxed">
-                  Have questions about privacy in Memos? We can point you to the right place.
-                </p>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <a
-                    href="https://github.com/usememos/memos/issues"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex items-center gap-6 p-8 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-                  >
-                    <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-xl group-hover:scale-110 transition-transform">
-                      <GithubIcon className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <div className="text-lg font-bold text-gray-900 dark:text-gray-100">Report on GitHub</div>
-                      <div className="text-gray-600 dark:text-gray-400 text-sm">Open an issue for privacy concerns</div>
-                    </div>
-                  </a>
-
-                  <a
-                    href="https://github.com/usememos/memos/discussions"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex items-center gap-6 p-8 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-                  >
-                    <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-xl group-hover:scale-110 transition-transform">
-                      <UsersIcon className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <div className="text-lg font-bold text-gray-900 dark:text-gray-100">Join Discussions</div>
-                      <div className="text-gray-600 dark:text-gray-400 text-sm">Talk with the community</div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-            </section>
-
-            {/* Last Updated */}
-            <section className="text-center">
-              <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-8">
-                <p className="text-gray-600 dark:text-gray-400">
-                  <strong>Last Updated:</strong> October 2024
-                </p>
-                <p className="text-gray-500 dark:text-gray-500 text-sm mt-2">
-                  This policy reflects our commitment to your privacy. View the latest version on{" "}
-                  <a
-                    href="https://github.com/usememos/memos"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-teal-600 dark:text-teal-400 hover:underline font-semibold"
-                  >
-                    GitHub
-                  </a>
-                  .
-                </p>
-              </div>
-            </section>
+            </div>
           </div>
         </section>
+
+        <section className="bg-white px-4 py-14 dark:bg-slate-900 sm:px-6 sm:py-18 lg:py-24">
+          <div className="mx-auto w-full max-w-(--fd-layout-width)">
+            <div className="grid gap-12 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-16">
+              <div className="lg:sticky lg:top-24 lg:self-start">
+                <MarketingSectionIntro
+                  eyebrow="Collection"
+                  title="What we do not collect."
+                  description="Because Memos is self-hosted software, there is no central product account or analytics pipeline operated by us."
+                  align="left"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 lg:gap-y-10">
+                {NO_COLLECTION_ITEMS.map((item) => {
+                  const Icon = item.icon;
+
+                  return (
+                    <FeatureCard
+                      key={item.title}
+                      icon={<Icon className="h-6 w-6 sm:h-8 sm:w-8" />}
+                      title={item.title}
+                      description={item.description}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-[linear-gradient(180deg,#f4f8f7_0%,#ffffff_100%)] px-4 py-14 dark:bg-[linear-gradient(180deg,#081014_0%,#070a0c_100%)] sm:px-6 sm:py-18 lg:py-24">
+          <div className="mx-auto w-full max-w-(--fd-layout-width)">
+            <MarketingSectionIntro
+              eyebrow="Deployment"
+              title="Self-hosted by design."
+              description="The privacy story is straightforward because the deployment story is straightforward."
+            />
+
+            <div className="grid gap-6 lg:grid-cols-3">
+              {DEPLOYMENT_PRINCIPLES.map((item, index) => (
+                <div
+                  key={item.title}
+                  className="rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-[0_30px_90px_-58px_rgba(15,23,42,0.3)] dark:border-white/10 dark:bg-white/5 dark:shadow-none sm:p-8"
+                >
+                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-teal-100 text-base font-semibold text-teal-700 dark:bg-teal-500/15 dark:text-teal-300">
+                    0{index + 1}
+                  </div>
+                  <h3 className="mt-5 text-xl font-semibold tracking-tight text-slate-950 dark:text-slate-100">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">{item.description}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 grid gap-6 lg:grid-cols-2">
+              <div className="rounded-[2rem] border border-slate-200/80 bg-white/80 p-6 dark:border-white/10 dark:bg-white/5 sm:p-7">
+                <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200/80 bg-white text-slate-900 dark:border-white/10 dark:bg-white/5 dark:text-slate-100">
+                  <ServerIcon className="h-5 w-5" />
+                </div>
+                <h3 className="mt-4 text-lg font-semibold tracking-tight text-slate-950 dark:text-slate-100">No phone-home dependency</h3>
+                <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                  After installation, the core product does not depend on a hosted Memos control plane to keep your notes available.
+                </p>
+              </div>
+
+              <div className="rounded-[2rem] border border-slate-200/80 bg-white/80 p-6 dark:border-white/10 dark:bg-white/5 sm:p-7">
+                <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200/80 bg-white text-slate-900 dark:border-white/10 dark:bg-white/5 dark:text-slate-100">
+                  <DatabaseIcon className="h-5 w-5" />
+                </div>
+                <h3 className="mt-4 text-lg font-semibold tracking-tight text-slate-950 dark:text-slate-100">
+                  Ownership stays operational
+                </h3>
+                <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                  Storage, backups, export paths, and security controls stay in the same environment where your team already operates.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-white px-4 py-14 dark:bg-slate-900 sm:px-6 sm:py-18 lg:py-24">
+          <div className="mx-auto w-full max-w-(--fd-layout-width)">
+            <div className="grid gap-10 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] lg:gap-14">
+              <div>
+                <MarketingSectionIntro
+                  eyebrow="Transparency"
+                  title="Open source means inspectable."
+                  description="Privacy claims matter more when they can be checked. Memos keeps that path open."
+                  align="left"
+                />
+              </div>
+
+              <div className="rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-[0_30px_90px_-58px_rgba(15,23,42,0.3)] dark:border-white/10 dark:bg-white/5 dark:shadow-none sm:p-8 lg:p-10">
+                <div className="grid gap-5 md:grid-cols-2">
+                  {TRANSPARENCY_POINTS.map((item) => (
+                    <div key={item} className="flex items-start gap-3 border-t border-slate-200/80 pt-5 dark:border-white/10">
+                      <GithubIcon className="mt-0.5 h-5 w-5 flex-none text-teal-600 dark:text-teal-400" />
+                      <span className="text-sm leading-7 text-slate-700 dark:text-slate-300 sm:text-base">{item}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-8">
+                  <a
+                    href="https://github.com/usememos/memos"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-3 rounded-full bg-slate-950 px-6 py-3.5 text-sm font-semibold text-white transition-transform duration-300 hover:-translate-y-0.5 dark:bg-white dark:text-slate-950"
+                  >
+                    <GithubIcon className="h-4 w-4" />
+                    <span>View Source Code</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-[linear-gradient(180deg,#ffffff_0%,#eef7f5_100%)] px-4 py-14 dark:bg-[linear-gradient(180deg,#070a0c_0%,#0b1215_100%)] sm:px-6 sm:py-18 lg:py-24">
+          <div className="mx-auto w-full max-w-(--fd-layout-width)">
+            <MarketingSectionIntro
+              eyebrow="Questions"
+              title="Need to check a detail?"
+              description="Privacy questions are easiest to resolve in the open, with code and deployment context attached."
+            />
+
+            <div className="grid gap-6 md:grid-cols-2">
+              {CONTACT_LINKS.map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <a
+                    key={item.title}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-teal-300 hover:shadow-lg dark:border-white/10 dark:bg-white/5 dark:hover:border-teal-500/40 sm:p-8"
+                  >
+                    <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200/80 bg-white text-slate-900 shadow-[0_16px_40px_-28px_rgba(15,23,42,0.45)] transition-transform duration-300 group-hover:-translate-y-1 dark:border-white/10 dark:bg-white/5 dark:text-slate-100 dark:shadow-none">
+                      <Icon className="h-6 w-6" />
+                    </div>
+                    <h3 className="mt-5 text-xl font-semibold tracking-tight text-slate-950 dark:text-slate-100">{item.title}</h3>
+                    <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">{item.description}</p>
+                  </a>
+                );
+              })}
+            </div>
+
+            <div className="mt-10 text-center">
+              <p className="text-sm text-slate-500 dark:text-slate-400">Last updated: October 2024</p>
+            </div>
+          </div>
+        </section>
+
+        <HomeCtaSection />
       </main>
       <Footer />
     </HomeLayout>

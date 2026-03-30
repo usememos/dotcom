@@ -1,387 +1,373 @@
 import { HomeLayout } from "fumadocs-ui/layouts/home";
-import { CheckCircleIcon, CodeIcon, DollarSignIcon, GithubIcon, HeartIcon, ZapIcon } from "lucide-react";
+import { CheckCircleIcon, FileTextIcon, GithubIcon, HeartIcon, ServerIcon, ShieldIcon, UsersIcon, ZapIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { baseOptions } from "@/app/layout.config";
 import { DocsCarbonAdCard } from "@/components/docs-carbon-ad-card";
+import { FeatureCard } from "@/components/feature-card";
 import { Footer } from "@/components/footer";
+import { HomeCtaSection } from "@/components/home-cta-section";
+import { MarketingPageHero, MarketingSectionIntro } from "@/components/marketing-page";
 import { FEATURED_SPONSORS } from "@/lib/sponsors";
 import { cn } from "@/lib/utils";
 
-// ============================================================================
-// METADATA
-// ============================================================================
-
 export const metadata: Metadata = {
   title: "Pricing - Memos",
-  description: "Memos is free to use and self-host. No subscriptions, no paywalls, and no vendor lock-in.",
+  description: "Memos software is free to use and self-host. No subscriptions, no premium tiers, and no vendor lock-in.",
   alternates: {
     canonical: "https://usememos.com/pricing",
   },
 };
 
-// ============================================================================
-// DATA CONSTANTS
-// ============================================================================
+const HERO_INCLUDED = [
+  "All core features included",
+  "No user or note limits in the product",
+  "MIT-licensed source code",
+  "Deploy where you want",
+] as const;
 
-const PRICING_FEATURES = [
-  "Unlimited notes and memos",
-  "Unlimited users",
-  "All features included",
-  "No usage limits",
-  "Full source code access",
-  "Self-hosted on your infrastructure",
-  "Community support",
-  "Regular updates and improvements",
+const INCLUDED_HIGHLIGHTS = [
+  {
+    icon: ZapIcon,
+    title: "All core features included",
+    description: "Quick capture, timeline browsing, tags, sharing, and API access are available from the first deploy.",
+  },
+  {
+    icon: ServerIcon,
+    title: "Self-hosted on your terms",
+    description: "Run Memos on a local machine, a Raspberry Pi, a VPS, or the cloud provider you already trust.",
+  },
+  {
+    icon: FileTextIcon,
+    title: "Markdown-native storage",
+    description: "Your notes stay in plain Markdown with storage and backup choices you control.",
+  },
+  {
+    icon: ShieldIcon,
+    title: "No vendor lock-in",
+    description: "There is no subscription gate between you and your notes because the software is already yours to run.",
+  },
+  {
+    icon: UsersIcon,
+    title: "Unlimited by default",
+    description: "Memos does not meter users, notes, or timelines behind pricing plans.",
+  },
+  {
+    icon: GithubIcon,
+    title: "Open source by design",
+    description: "The full codebase stays available for review, forks, custom deployments, and long-term ownership.",
+  },
+] as const;
+
+const COST_BREAKDOWN = [
+  {
+    title: "Memos software",
+    value: "$0",
+    description: "No license fee, no seat pricing, and no premium tier.",
+  },
+  {
+    title: "Infrastructure",
+    value: "Varies",
+    description: "You choose the server, storage, backups, and network setup that fit your environment.",
+  },
+  {
+    title: "Support",
+    value: "Optional",
+    description: "Sponsor the project only if Memos is useful to you.",
+  },
+] as const;
+
+const COMPARISON_ROWS = [
+  {
+    label: "Typical cloud note app",
+    value: "$8-15 / user / month",
+  },
+  {
+    label: "Five-person team plan",
+    value: "$40-75 / month",
+  },
+  {
+    label: "Enterprise add-ons",
+    value: "Often extra",
+  },
 ] as const;
 
 const WHY_FREE_REASONS = [
   {
-    title: "Open by Default",
-    description: "MIT licensed, fully transparent. The code is yours as much as the notes are.",
+    title: "Open-source software model",
+    description: "Memos ships as MIT-licensed software, not a hosted subscription service.",
   },
   {
-    title: "Built Together",
-    description: "370+ contributors shape what Memos becomes. Every contribution -- code, ideas, bug reports -- moves the project forward.",
+    title: "Self-hosted delivery",
+    description: "You run the app on your own infrastructure, so there is no hosted seat pricing to pass through.",
   },
   {
-    title: "Your Data Stays Yours",
-    description: "No subscriptions means no risk of losing access. Your notes live in your database, in plain Markdown, permanently.",
+    title: "Focused product scope",
+    description: "Memos is built for quick capture, not for stacking tiers around a broad enterprise bundle.",
   },
   {
-    title: "Self-Hosted, Zero Overhead",
-    description: "You run it on your infrastructure. No cloud costs to pass on, no accounts to manage, no vendor to depend on.",
-  },
-] as const;
-
-const PRICING_COMPARISON = [
-  {
-    name: "Memos (Software)",
-    description: "Open source, self-hosted",
-    monthly: "$0",
-    yearly: "$0",
-    highlight: true,
-  },
-  {
-    name: "Typical Cloud Note App",
-    description: "Per-user subscription",
-    monthly: "$8-15",
-    yearly: "$96-180",
-    highlight: false,
-  },
-  {
-    name: "Team Plans (5 users)",
-    description: "Enterprise features",
-    monthly: "$40-100",
-    yearly: "$480-1,200",
-    highlight: false,
+    title: "Community-backed development",
+    description: "Contributors, bug reports, documentation, and sponsorships help keep the project moving in the open.",
   },
 ] as const;
 
 const SUPPORT_METHODS = [
   {
+    icon: GithubIcon,
     title: "Star on GitHub",
-    description: "Show your support and help others discover Memos",
+    description: "Help more people discover Memos and signal that the project is worth following.",
   },
   {
-    title: "Contribute Code",
-    description: "Submit bug fixes, features, or documentation",
+    icon: ZapIcon,
+    title: "Contribute improvements",
+    description: "Fix bugs, ship features, improve docs, or share deployment notes with the community.",
   },
   {
+    icon: HeartIcon,
     title: "Sponsor Developers",
-    description: "Support us to keep the project going",
+    description: "Fund ongoing work if Memos has become part of your daily writing flow.",
   },
 ] as const;
 
 const LINKS = {
   github: "https://github.com/usememos/memos",
   sponsor: "https://github.com/sponsors/usememos",
-  docs: "/docs",
 } as const;
-
-// ============================================================================
-// REUSABLE STYLE CONSTANTS
-// ============================================================================
-
-const STYLES = {
-  section: "mb-12 sm:mb-16 lg:mb-20",
-  sectionHeader: "flex items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-10 lg:mb-12",
-  sectionTitle: "font-serif text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight",
-  iconContainer: "inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-xl",
-  icon: "w-5 h-5 sm:w-6 sm:h-6",
-  card: "bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl sm:rounded-3xl shadow-lg",
-  gradientCard: "rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg",
-  button:
-    "inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold rounded-2xl hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 shadow-lg",
-  buttonIcon: "w-4 h-4 sm:w-5 sm:h-5",
-} as const;
-
-// ============================================================================
-// COMPONENT
-// ============================================================================
 
 export default function PricingPage() {
   return (
     <HomeLayout {...baseOptions}>
       <main className="flex flex-1 flex-col">
-        <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50">
-          <div className="max-w-4xl mx-auto">
-            {/* ============================================================
-                HERO SECTION
-            ============================================================ */}
-            <div className="text-center mb-12 sm:mb-16 lg:mb-20">
-              <div className="flex justify-center mb-6 sm:mb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-2xl">
-                  <DollarSignIcon className="w-10 h-10 sm:w-12 sm:h-12" />
+        <MarketingPageHero
+          eyebrow="Pricing"
+          title={
+            <>
+              Free to use.
+              <span className="block text-fd-primary">Yours to run.</span>
+            </>
+          }
+          description="Memos has no subscriptions, no premium tiers, and no paywalls. You get the full product and keep it on infrastructure you control."
+          primaryCta={{ text: "Get Started", href: "/docs/getting-started" }}
+          secondaryCta={{ text: "View on GitHub", href: LINKS.github, external: true }}
+          aside={
+            <div className="relative overflow-hidden rounded-[2rem] border border-slate-200/80 bg-white/85 p-6 shadow-[0_30px_90px_-58px_rgba(15,23,42,0.3)] backdrop-blur-sm dark:border-white/10 dark:bg-white/5 dark:shadow-none sm:p-8">
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-[radial-gradient(circle_at_top,rgba(20,184,166,0.18),transparent_72%)] dark:bg-[radial-gradient(circle_at_top,rgba(20,184,166,0.16),transparent_70%)]" />
+              <div className="relative">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">Software pricing</p>
+                <div className="mt-4 flex items-end gap-3">
+                  <span className="font-serif text-6xl leading-none font-bold tracking-[-0.05em] text-slate-950 dark:text-white sm:text-7xl">
+                    $0
+                  </span>
+                  <span className="pb-2 text-sm font-medium uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">forever</span>
                 </div>
-              </div>
-              <h1 className="font-serif text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl mb-4 sm:mb-6 leading-tight">Pricing</h1>
-              <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed px-4">
-                Free to use. Self-hosted by design.
-              </p>
-            </div>
+                <p className="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">
+                  Every core feature is included from the first deploy. No account wall. No upgrade prompt.
+                </p>
 
-            {/* ============================================================
-                MAIN PRICING CARD
-            ============================================================ */}
-            <section className={STYLES.section}>
-              <div className="bg-gradient-to-br from-green-50 via-teal-50 to-cyan-50 dark:from-green-950 dark:via-teal-950 dark:to-cyan-950 border border-green-200 dark:border-green-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg">
-                <div className="text-center mb-6 sm:mb-8">
-                  <div className="text-5xl sm:text-6xl lg:text-7xl font-bold text-green-900 dark:text-green-100 mb-3 sm:mb-4">$0</div>
-                  <p className="text-xl sm:text-2xl lg:text-3xl text-green-800 dark:text-green-200 font-semibold mb-2">Free</p>
-                  <p className="text-base sm:text-lg text-green-700 dark:text-green-300">
-                    No subscriptions. No hidden fees. No credit card required.
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-                  {PRICING_FEATURES.map((feature, index) => (
-                    <div key={index} className="flex items-start gap-4">
-                      <CheckCircleIcon className="w-6 h-6 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-900 dark:text-gray-100 font-medium">{feature}</span>
+                <div className="mt-6 space-y-4 border-t border-slate-200/80 pt-5 dark:border-white/10">
+                  {HERO_INCLUDED.map((item) => (
+                    <div key={item} className="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-200 sm:text-base">
+                      <CheckCircleIcon className="mt-0.5 h-5 w-5 flex-none text-teal-600 dark:text-teal-400" />
+                      <span>{item}</span>
                     </div>
                   ))}
                 </div>
-              </div>
-            </section>
 
-            {/* ============================================================
-                OWNERSHIP HIGHLIGHT
-            ============================================================ */}
-            <section className={STYLES.section}>
-              <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950 dark:via-indigo-950 dark:to-purple-950 border border-blue-200 dark:border-blue-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg">
-                <div className="text-center">
-                  <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-blue-900 dark:text-blue-100 mb-4 sm:mb-6 tracking-tight">
-                    Your Notes. Your Server. Your Rules.
-                  </h2>
-                  <p className="text-base sm:text-lg lg:text-xl text-blue-800 dark:text-blue-200 leading-relaxed max-w-3xl mx-auto">
-                    Install Memos on your infrastructure and keep your notes in your own hands. No subscriptions, no paywalls, no vendor
-                    lock-in.
-                  </p>
+                <div className="mt-6 rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 text-sm leading-6 text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
+                  Hosting costs depend on where you run Memos. The software itself is free.
                 </div>
               </div>
-            </section>
+            </div>
+          }
+        />
 
-            {/* ============================================================
-                WHY FREE?
-            ============================================================ */}
-            <section className={STYLES.section}>
-              <div className={STYLES.sectionHeader}>
-                <div className={`${STYLES.iconContainer} bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400`}>
-                  <ZapIcon className={STYLES.icon} />
-                </div>
-                <h2 className={STYLES.sectionTitle}>Why Is It Free?</h2>
+        <section className="bg-white px-4 py-14 dark:bg-slate-900 sm:px-6 sm:py-18 lg:py-24">
+          <div className="mx-auto w-full max-w-(--fd-layout-width)">
+            <div className="grid gap-12 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-16">
+              <div className="lg:sticky lg:top-24 lg:self-start">
+                <MarketingSectionIntro
+                  eyebrow="Included"
+                  title="Everything you need to capture fast."
+                  description="Pricing stays simple because Memos stays focused. The full product is available from the start."
+                  align="left"
+                />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                {WHY_FREE_REASONS.map((item, index) => (
-                  <div
-                    key={index}
-                    className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-lg transition-shadow"
-                  >
-                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 mb-3 sm:mb-4">{item.title}</h3>
-                    <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">{item.description}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
+              <div className="grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 lg:gap-y-10">
+                {INCLUDED_HIGHLIGHTS.map((item) => {
+                  const Icon = item.icon;
 
-            {/* ============================================================
-                PRICE COMPARISON TABLE
-            ============================================================ */}
-            <section className={STYLES.section}>
-              <div className={STYLES.sectionHeader}>
-                <div className={`${STYLES.iconContainer} bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400`}>
-                  <CodeIcon className={STYLES.icon} />
-                </div>
-                <h2 className={STYLES.sectionTitle}>Compare the Costs</h2>
+                  return (
+                    <FeatureCard
+                      key={item.title}
+                      icon={<Icon className="h-6 w-6 sm:h-8 sm:w-8" />}
+                      title={item.title}
+                      description={item.description}
+                    />
+                  );
+                })}
               </div>
+            </div>
+          </div>
+        </section>
 
-              <div className={`${STYLES.card} overflow-hidden`}>
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead className="bg-gray-50 dark:bg-gray-700">
-                      <tr>
-                        <th className="px-4 sm:px-6 lg:px-8 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-100">
-                          Service Type
-                        </th>
-                        <th className="px-4 sm:px-6 lg:px-8 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-100">
-                          Monthly
-                        </th>
-                        <th className="px-4 sm:px-6 lg:px-8 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-100">
-                          Yearly
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-                      {PRICING_COMPARISON.map((item, index) => (
-                        <tr key={index} className={item.highlight ? "bg-green-50 dark:bg-green-950/20" : ""}>
-                          <td className="px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
-                            <div
-                              className={`${item.highlight ? "font-bold text-green-900 dark:text-green-100" : "font-medium text-gray-900 dark:text-gray-100"} text-sm sm:text-base`}
-                            >
-                              {item.name}
-                            </div>
-                            <div
-                              className={`text-xs sm:text-sm ${item.highlight ? "text-green-700 dark:text-green-300" : "text-gray-600 dark:text-gray-400"}`}
-                            >
-                              {item.description}
-                            </div>
-                          </td>
-                          <td
-                            className={`px-4 sm:px-6 lg:px-8 py-3 sm:py-4 ${item.highlight ? "text-xl sm:text-2xl font-bold text-green-600 dark:text-green-400" : "text-sm sm:text-base text-gray-700 dark:text-gray-300"}`}
-                          >
-                            {item.monthly}
-                          </td>
-                          <td
-                            className={`px-4 sm:px-6 lg:px-8 py-3 sm:py-4 ${item.highlight ? "text-xl sm:text-2xl font-bold text-green-600 dark:text-green-400" : "text-sm sm:text-base text-gray-700 dark:text-gray-300"}`}
-                          >
-                            {item.yearly}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </section>
-
-            {/* ============================================================
-                SUPPORT THE PROJECT
-            ============================================================ */}
-            <section className={STYLES.section}>
-              <div className={STYLES.sectionHeader}>
-                <div className={`${STYLES.iconContainer} bg-pink-50 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400`}>
-                  <HeartIcon className={STYLES.icon} />
-                </div>
-                <h2 className={STYLES.sectionTitle}>Support the Project</h2>
+        <section className="bg-[linear-gradient(180deg,#f4f8f7_0%,#ffffff_100%)] px-4 py-14 dark:bg-[linear-gradient(180deg,#081014_0%,#070a0c_100%)] sm:px-6 sm:py-18 lg:py-24">
+          <div className="mx-auto w-full max-w-(--fd-layout-width)">
+            <div className="grid gap-10 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] lg:gap-14">
+              <div>
+                <MarketingSectionIntro
+                  eyebrow="Cost Model"
+                  title="Pay for infrastructure, not access."
+                  description="Memos is free software. Your actual setup cost depends on the server and storage you choose."
+                  align="left"
+                />
               </div>
 
-              <div className={`${STYLES.card} p-6 sm:p-8 lg:p-12`}>
-                <p className="text-base sm:text-lg lg:text-xl text-gray-700 dark:text-gray-300 mb-10 sm:mb-12 text-center leading-relaxed max-w-3xl mx-auto">
-                  Memos is free to use and built in the open. If it helps you, here are a few ways to support the project.
-                </p>
-
-                {/* Highlighted Sponsors */}
-                <div className="mb-10 sm:mb-12">
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 mb-6 sm:mb-8 text-center">
-                    Highlighted Sponsors
-                  </h3>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto mb-6 sm:mb-8">
-                    {FEATURED_SPONSORS.map((sponsor) => (
-                      <a
-                        key={sponsor.name}
-                        href={sponsor.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group p-6 sm:p-8 bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-950/30 dark:to-rose-950/30 border border-pink-200 dark:border-pink-800 rounded-2xl hover:shadow-xl hover:border-pink-300 dark:hover:border-pink-700 hover:-translate-y-1 transition-all duration-300 shadow-sm"
-                      >
-                        <div className="flex items-center mb-4 h-12 sm:h-14">
-                          <img
-                            src={sponsor.logo}
-                            alt={`${sponsor.name} logo`}
-                            className={cn("h-full w-auto max-w-full object-contain", sponsor.logoDark && "dark:hidden")}
-                          />
-                          {sponsor.logoDark && (
-                            <img
-                              src={sponsor.logoDark}
-                              alt={`${sponsor.name} logo`}
-                              className="hidden dark:block h-full w-auto max-w-full object-contain"
-                            />
-                          )}
+              <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_18rem]">
+                <div className="overflow-hidden rounded-[2rem] border border-slate-200/80 bg-white/90 shadow-[0_30px_90px_-58px_rgba(15,23,42,0.3)] dark:border-white/10 dark:bg-white/5 dark:shadow-none">
+                  <div className="divide-y divide-slate-200/80 dark:divide-white/10">
+                    {COST_BREAKDOWN.map((item) => (
+                      <div key={item.title} className="grid gap-3 px-6 py-5 sm:grid-cols-[minmax(0,1fr)_10rem] sm:px-8">
+                        <div>
+                          <h3 className="text-lg font-semibold tracking-tight text-slate-950 dark:text-slate-100">{item.title}</h3>
+                          <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{item.description}</p>
                         </div>
-                        {sponsor.description && (
-                          <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed">{sponsor.description}</p>
-                        )}
-                      </a>
-                    ))}
-                  </div>
-
-                  {/* Carbon Ads */}
-                  <div className="w-full mx-auto">
-                    <DocsCarbonAdCard variant="sponsor" />
-                  </div>
-                </div>
-
-                {/* Support Methods */}
-                <div className="mb-10 sm:mb-12">
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 mb-6 sm:mb-8 text-center">
-                    How You Can Help
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto">
-                    {SUPPORT_METHODS.map((item, index) => (
-                      <div
-                        key={index}
-                        className="text-center bg-gradient-to-br from-gray-50 to-white dark:from-gray-700 dark:to-gray-800 border border-gray-200 dark:border-gray-600 rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-lg transition-shadow"
-                      >
-                        <h4 className="text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100 mb-3">{item.title}</h4>
-                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">{item.description}</p>
+                        <div className="text-left text-lg font-semibold text-teal-700 dark:text-teal-300 sm:text-right">{item.value}</div>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <a
-                    href={LINKS.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`${STYLES.button} bg-gradient-to-r from-gray-800 to-gray-900 dark:from-gray-700 dark:to-gray-800 text-white`}
-                  >
-                    <GithubIcon className={STYLES.buttonIcon} />
-                    <span>View on GitHub</span>
-                  </a>
-                  <a
-                    href={LINKS.sponsor}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`${STYLES.button} bg-gradient-to-r from-pink-600 to-rose-600 text-white`}
-                  >
-                    <HeartIcon className={STYLES.buttonIcon} />
-                    <span>Become a Sponsor</span>
-                  </a>
+                <div className="rounded-[2rem] border border-slate-200/80 bg-white/80 p-6 backdrop-blur-sm dark:border-white/10 dark:bg-white/5 sm:p-7">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">
+                    Typical hosted pricing
+                  </p>
+                  <div className="mt-5 space-y-4 border-t border-slate-200/80 pt-5 dark:border-white/10">
+                    {COMPARISON_ROWS.map((item) => (
+                      <div key={item.label} className="flex items-start justify-between gap-4">
+                        <span className="text-sm leading-6 text-slate-600 dark:text-slate-300">{item.label}</span>
+                        <span className="text-right text-sm font-semibold text-slate-950 dark:text-slate-100">{item.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="mt-5 text-sm leading-6 text-slate-500 dark:text-slate-400">
+                    These numbers reflect software subscriptions. Hosting is separate either way.
+                  </p>
                 </div>
               </div>
-            </section>
-
-            {/* ============================================================
-                CTA
-            ============================================================ */}
-            <section className="text-center">
-              <div className="bg-gradient-to-br from-teal-50 via-cyan-50 to-blue-50 dark:from-teal-950 dark:via-cyan-950 dark:to-blue-950 border border-teal-200 dark:border-teal-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg">
-                <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-teal-900 dark:text-teal-100 mb-3 sm:mb-4">
-                  Start Capturing Thoughts
-                </h2>
-                <p className="text-base sm:text-lg lg:text-xl text-teal-800 dark:text-teal-200 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
-                  One Docker command. Under five minutes. Your notes, on your server.
-                </p>
-                <a href={LINKS.docs} className={`${STYLES.button} bg-gradient-to-r from-teal-600 to-cyan-600 text-white`}>
-                  <span>Get Started Free</span>
-                </a>
-              </div>
-            </section>
+            </div>
           </div>
         </section>
+
+        <section className="bg-white px-4 py-14 dark:bg-slate-900 sm:px-6 sm:py-18 lg:py-24">
+          <div className="mx-auto w-full max-w-(--fd-layout-width)">
+            <MarketingSectionIntro
+              eyebrow="Why Free"
+              title="Built to stay lightweight."
+              description="The business model follows the product model: open source, self-hosted, and clear about what Memos is for."
+            />
+
+            <div className="grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 lg:gap-y-10">
+              {WHY_FREE_REASONS.map((item) => (
+                <div key={item.title} className="border-t border-slate-200/80 pt-5 dark:border-white/10 sm:pt-6">
+                  <h3 className="text-lg font-semibold tracking-tight text-slate-950 dark:text-slate-100 sm:text-[1.35rem]">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 max-w-xl text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">{item.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-[linear-gradient(180deg,#ffffff_0%,#eef7f5_100%)] px-4 py-14 dark:bg-[linear-gradient(180deg,#070a0c_0%,#0b1215_100%)] sm:px-6 sm:py-18 lg:py-24">
+          <div className="mx-auto w-full max-w-(--fd-layout-width)">
+            <MarketingSectionIntro
+              eyebrow="Support"
+              title="Help keep Memos moving."
+              description="If Memos helps you capture ideas faster, there are a few straightforward ways to support the project."
+            />
+
+            <div className="rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-[0_30px_90px_-58px_rgba(15,23,42,0.3)] dark:border-white/10 dark:bg-white/5 dark:shadow-none sm:p-8 lg:p-10">
+              <div className="mb-10">
+                <h3 className="text-center text-lg font-semibold tracking-tight text-slate-950 dark:text-slate-100 sm:text-xl">
+                  Highlighted sponsors
+                </h3>
+                <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
+                  {FEATURED_SPONSORS.map((sponsor) => (
+                    <a
+                      key={sponsor.name}
+                      href={sponsor.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group rounded-[1.5rem] border border-slate-200/80 bg-white/90 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-teal-300 hover:shadow-lg dark:border-white/10 dark:bg-white/5 dark:hover:border-teal-500/40"
+                    >
+                      <div className="mb-4 flex h-12 items-center sm:h-14">
+                        <img
+                          src={sponsor.logo}
+                          alt={`${sponsor.name} logo`}
+                          className={cn("h-full w-auto max-w-full object-contain", sponsor.logoDark && "dark:hidden")}
+                        />
+                        {sponsor.logoDark && (
+                          <img
+                            src={sponsor.logoDark}
+                            alt={`${sponsor.name} logo`}
+                            className="hidden h-full w-auto max-w-full object-contain dark:block"
+                          />
+                        )}
+                      </div>
+                      {sponsor.description ? (
+                        <p className="text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base">{sponsor.description}</p>
+                      ) : null}
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mb-10">
+                <DocsCarbonAdCard variant="sponsor" />
+              </div>
+
+              <div className="grid grid-cols-1 gap-6 border-t border-slate-200/80 pt-8 dark:border-white/10 md:grid-cols-3">
+                {SUPPORT_METHODS.map((item) => {
+                  const Icon = item.icon;
+
+                  return (
+                    <div key={item.title} className="border-t border-slate-200/80 pt-5 dark:border-white/10 md:border-t-0 md:pt-0">
+                      <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200/80 bg-white text-slate-900 shadow-[0_16px_40px_-28px_rgba(15,23,42,0.45)] dark:border-white/10 dark:bg-white/5 dark:text-slate-100 dark:shadow-none">
+                        <Icon className="h-6 w-6" />
+                      </div>
+                      <h4 className="mt-4 text-lg font-semibold tracking-tight text-slate-950 dark:text-slate-100">{item.title}</h4>
+                      <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{item.description}</p>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+                <a
+                  href={LINKS.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-3 rounded-full bg-slate-950 px-6 py-3.5 text-sm font-semibold text-white transition-transform duration-300 hover:-translate-y-0.5 dark:bg-white dark:text-slate-950"
+                >
+                  <GithubIcon className="h-4 w-4" />
+                  <span>View on GitHub</span>
+                </a>
+                <a
+                  href={LINKS.sponsor}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-3 rounded-full border border-slate-300/80 bg-white/70 px-6 py-3.5 text-sm font-semibold text-slate-900 backdrop-blur-md transition-colors hover:bg-white dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+                >
+                  <HeartIcon className="h-4 w-4" />
+                  <span>Become a Sponsor</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <HomeCtaSection />
       </main>
       <Footer />
     </HomeLayout>
