@@ -3,11 +3,13 @@
  */
 
 import { decryptToken, encryptToken } from "./encryption";
-import type { MemoInstance, ScratchpadItem } from "./types";
+import type { MemoInstance, ScratchpadItem, ScratchpadViewport } from "./types";
+import { DEFAULT_SCRATCHPAD_VIEWPORT } from "./viewport";
 
 const STORAGE_KEYS = {
   INSTANCES: "memos-scratch-instances",
   ITEMS: "memos-scratch-items",
+  VIEWPORT: "memos-scratch-viewport",
   FIRST_VISIT: "memos-scratch-first-visit",
   SETTINGS: "memos-scratch-settings",
 } as const;
@@ -274,7 +276,7 @@ export const itemStorage = {
 
   clear(): void {
     if (typeof window === "undefined") return;
-    localStorage.setItem(STORAGE_KEYS.ITEMS, JSON.stringify([]));
+    this.save([]);
   },
 
   clearSaved(): void {
@@ -290,6 +292,37 @@ export const itemStorage = {
 
     const recent = items.filter((i) => i.createdAt > cutoffDate);
     this.save(recent);
+  },
+};
+
+export const viewportStorage = {
+  get(): ScratchpadViewport {
+    if (typeof window === "undefined") return DEFAULT_SCRATCHPAD_VIEWPORT;
+
+    const data = localStorage.getItem(STORAGE_KEYS.VIEWPORT);
+    if (!data) return DEFAULT_SCRATCHPAD_VIEWPORT;
+
+    try {
+      const parsed = JSON.parse(data) as Partial<ScratchpadViewport>;
+      return {
+        x: typeof parsed.x === "number" ? parsed.x : DEFAULT_SCRATCHPAD_VIEWPORT.x,
+        y: typeof parsed.y === "number" ? parsed.y : DEFAULT_SCRATCHPAD_VIEWPORT.y,
+        scale: typeof parsed.scale === "number" ? parsed.scale : DEFAULT_SCRATCHPAD_VIEWPORT.scale,
+      };
+    } catch {
+      localStorage.removeItem(STORAGE_KEYS.VIEWPORT);
+      return DEFAULT_SCRATCHPAD_VIEWPORT;
+    }
+  },
+
+  save(viewport: ScratchpadViewport): void {
+    if (typeof window === "undefined") return;
+    localStorage.setItem(STORAGE_KEYS.VIEWPORT, JSON.stringify(viewport));
+  },
+
+  clear(): void {
+    if (typeof window === "undefined") return;
+    localStorage.removeItem(STORAGE_KEYS.VIEWPORT);
   },
 };
 
