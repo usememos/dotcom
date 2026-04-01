@@ -1,11 +1,33 @@
 "use client";
 
 import { type DragEvent, useEffect, useRef, useState } from "react";
-import type { ScratchpadItem } from "@/lib/scratch/types";
+import {
+  beginPointerInteraction,
+  cancelPointerInteraction,
+  createIdlePointerInteractionState,
+  createPointerSession,
+  finishPointerInteraction,
+  getActivePointerInteraction,
+  getPointerSessionDelta,
+  hasPointerSessionExceededThreshold,
+  type PointerInteractionMap,
+  type PointerSession,
+} from "@/lib/scratch/interactions";
+import type { ScratchpadItem, ScratchpadViewport } from "@/lib/scratch/types";
+import {
+  DEFAULT_SCRATCHPAD_VIEWPORT,
+  panScratchpadViewport,
+  SCRATCHPAD_ZOOM_INTENSITY,
+  screenPointToCanvasPoint,
+  zoomScratchpadViewportAtPoint,
+  zoomScratchpadViewportFromCenter,
+} from "@/lib/scratch/viewport";
 import { CardItem } from "./card-item";
 
 interface WorkspaceProps {
   items: ScratchpadItem[];
+  viewport: ScratchpadViewport;
+  onViewportChange: (updater: ScratchpadViewport | ((current: ScratchpadViewport) => ScratchpadViewport)) => void;
   onUpdateItemBody: (id: string, body: string) => void;
   onUpdateItemLayout: (id: string, updates: Partial<ScratchpadItem>) => void;
   onDeleteItem: (id: string) => void;
@@ -14,11 +36,23 @@ interface WorkspaceProps {
   onFileUpload: (files: FileList, x: number, y: number, targetItemId?: string) => void;
   selectedItemIds: string[];
   onSelectItem: (id: string | null, ctrlKey?: boolean) => void;
-  onDragComplete?: () => void;
 }
+
+interface PanSession extends PointerSession {
+  startViewport: ScratchpadViewport;
+  moved: boolean;
+}
+
+interface WorkspaceInteractionMap extends PointerInteractionMap {
+  panning: PanSession;
+}
+
+const PAN_THRESHOLD = 4;
 
 export function Workspace({
   items,
+  viewport,
+  onViewportChange,
   onUpdateItemBody,
   onUpdateItemLayout,
   onDeleteItem,
@@ -27,11 +61,22 @@ export function Workspace({
   onFileUpload,
   selectedItemIds,
   onSelectItem,
-  onDragComplete,
 }: WorkspaceProps) {
   const workspaceRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef(viewport);
+  const interactionRef = useRef(createIdlePointerInteractionState<WorkspaceInteractionMap>());
+  const suppressClickRef = useRef(false);
   const [isDraggingOver, setIsDraggingOver] = useState(false);
-  const [lastMousePos, setLastMousePos] = useState({ x: 0, y: 0 });
+  const [isPanning, setIsPanning] = useState(false);
+  const [lastCanvasPos, setLastCanvasPos] = useState({ x: 320, y: 240 });
+
+  useEffect(() => {
+    viewportRef.current = viewport;
+  }, [viewport]);
+
+  const updateViewport = (updater: ScratchpadViewport | ((current: ScratchpadViewport) => ScratchpadViewport)) => {
+    onViewportChange(updater);
+  };
 
   const getDropTargetItemId = (target: EventTarget | null): string | undefined => {
     let element = target as HTMLElement | null;
@@ -47,78 +92,170 @@ export function Workspace({
     return undefined;
   };
 
-  // Track mouse position for paste operation
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (workspaceRef.current) {
-        const rect = workspaceRef.current.getBoundingClientRect();
-        setLastMousePos({
-          x: e.clientX - rect.left + workspaceRef.current.scrollLeft,
-          y: e.clientY - rect.top + workspaceRef.current.scrollTop,
-        });
+  const isTargetWithinItem = (target: EventTarget | null): boolean => {
+    let element = target as HTMLElement | null;
+
+    while (element && element !== workspaceRef.current) {
+      if (element.dataset.scratchpadItem === "true") {
+        return true;
       }
-    };
+      element = element.parentElement;
+    }
 
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+    return false;
+  };
 
-  // Handle paste event for files
+  const isTargetWithinCanvasUi = (target: EventTarget | null): boolean => {
+    let element = target as HTMLElement | null;
+
+    while (element && element !== workspaceRef.current) {
+      if (element.dataset.scratchpadUi === "true") {
+        return true;
+      }
+      element = element.parentElement;
+    }
+
+    return false;
+  };
+
+  const getCanvasPoint = (clientX: number, clientY: number, nextViewport = viewportRef.current) => {
+    if (!workspaceRef.current) return null;
+
+    const rect = workspaceRef.current.getBoundingClientRect();
+    return screenPointToCanvasPoint(clientX, clientY, rect, nextViewport);
+  };
+
+  const zoomAtPoint = (clientX: number, clientY: number, nextScale: number) => {
+    if (!workspaceRef.current) return;
+
+    const rect = workspaceRef.current.getBoundingClientRect();
+    updateViewport((current) => zoomScratchpadViewportAtPoint(current, clientX - rect.left, clientY - rect.top, nextScale));
+  };
+
+  const zoomFromViewportCenter = (factor: number) => {
+    if (!workspaceRef.current) return;
+
+    const rect = workspaceRef.current.getBoundingClientRect();
+    updateViewport((current) => zoomScratchpadViewportFromCenter(current, rect, factor));
+  };
+
   useEffect(() => {
     const handlePaste = (e: ClipboardEvent) => {
       if (e.clipboardData?.files && e.clipboardData.files.length > 0) {
         e.preventDefault();
-        const files = e.clipboardData.files;
-        // Use last mouse position for paste location
-        onFileUpload(files, lastMousePos.x, lastMousePos.y);
+        onFileUpload(e.clipboardData.files, lastCanvasPos.x, lastCanvasPos.y);
       }
     };
 
     window.addEventListener("paste", handlePaste);
     return () => window.removeEventListener("paste", handlePaste);
-  }, [lastMousePos, onFileUpload]);
+  }, [lastCanvasPos, onFileUpload]);
 
-  const handleWorkspaceClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Deselect when clicking on empty workspace
-    const target = e.target as HTMLElement;
+  const finishPan = (panSession: PanSession) => {
+    suppressClickRef.current = panSession.moved;
+    setIsPanning(false);
+  };
 
-    // Check if click is on or within a scratchpad item
-    let element: HTMLElement | null = target;
-    while (element && element !== workspaceRef.current) {
-      if (element.dataset.scratchpadItem === "true") {
-        // Clicked on an item, don't deselect
-        return;
-      }
-      element = element.parentElement;
+  const cancelPan = () => {
+    setIsPanning(false);
+  };
+
+  const handleWorkspacePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if ((e.button !== 0 && e.button !== 1) || isTargetWithinItem(e.target) || isTargetWithinCanvasUi(e.target)) {
+      return;
     }
 
-    // Clicked on empty workspace, deselect all
+    e.preventDefault();
+    const point = getCanvasPoint(e.clientX, e.clientY);
+    if (point) {
+      setLastCanvasPos(point);
+    }
+
+    beginPointerInteraction(interactionRef, e.currentTarget, "panning", {
+      ...createPointerSession(e.pointerId, e.clientX, e.clientY),
+      startViewport: viewportRef.current,
+      moved: false,
+    });
+  };
+
+  const handleWorkspacePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const point = getCanvasPoint(e.clientX, e.clientY);
+    if (point) {
+      setLastCanvasPos(point);
+    }
+
+    const panSession = getActivePointerInteraction(interactionRef, "panning", e.pointerId);
+    if (!panSession) {
+      return;
+    }
+
+    const delta = getPointerSessionDelta(panSession, e.clientX, e.clientY);
+
+    if (!panSession.moved && !hasPointerSessionExceededThreshold(panSession, e.clientX, e.clientY, PAN_THRESHOLD)) {
+      return;
+    }
+
+    if (!panSession.moved) {
+      panSession.moved = true;
+      setIsPanning(true);
+    }
+
+    updateViewport(panScratchpadViewport(panSession.startViewport, delta.x, delta.y));
+  };
+
+  const handleWorkspacePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    const panSession = finishPointerInteraction(interactionRef, e.currentTarget, "panning", e.pointerId);
+    if (!panSession) {
+      return;
+    }
+
+    finishPan(panSession);
+  };
+
+  const handleWorkspacePointerCancel = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!cancelPointerInteraction(interactionRef, "panning", e.pointerId)) {
+      return;
+    }
+
+    cancelPan();
+  };
+
+  const handleWorkspaceClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (suppressClickRef.current) {
+      suppressClickRef.current = false;
+      return;
+    }
+
+    if (isTargetWithinItem(e.target) || isTargetWithinCanvasUi(e.target)) {
+      return;
+    }
+
     onSelectItem(null);
   };
 
   const handleWorkspaceDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Only create text item if double-clicking on empty workspace area (not on a card)
-    const target = e.target as HTMLElement;
-
-    // Check if double-click is on or within a scratchpad item
-    let element: HTMLElement | null = target;
-    while (element && element !== workspaceRef.current) {
-      if (element.dataset.scratchpadItem === "true") {
-        // Double-clicked on an existing item, don't create a new one
-        return;
-      }
-      element = element.parentElement;
+    if (isTargetWithinItem(e.target) || isTargetWithinCanvasUi(e.target)) {
+      return;
     }
 
-    // Create card at double-click location
-    const rect = workspaceRef.current?.getBoundingClientRect();
-    if (!rect || !workspaceRef.current) return;
-    const x = e.clientX - rect.left + workspaceRef.current.scrollLeft;
-    const y = e.clientY - rect.top + workspaceRef.current.scrollTop;
-    onCreateTextItem(x, y);
+    const point = getCanvasPoint(e.clientX, e.clientY);
+    if (!point) return;
+
+    onCreateTextItem(point.x, point.y);
   };
 
-  // File drag and drop
+  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    e.preventDefault();
+
+    if (e.ctrlKey || e.metaKey) {
+      const zoomFactor = Math.exp(-e.deltaY * SCRATCHPAD_ZOOM_INTENSITY);
+      zoomAtPoint(e.clientX, e.clientY, viewportRef.current.scale * zoomFactor);
+      return;
+    }
+
+    updateViewport((current) => panScratchpadViewport(current, -e.deltaX, -e.deltaY));
+  };
+
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -136,102 +273,113 @@ export function Workspace({
     e.stopPropagation();
     setIsDraggingOver(false);
 
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0 && workspaceRef.current) {
-      const rect = workspaceRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left + workspaceRef.current.scrollLeft;
-      const y = e.clientY - rect.top + workspaceRef.current.scrollTop;
-      onFileUpload(e.dataTransfer.files, x, y, getDropTargetItemId(e.target));
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const point = getCanvasPoint(e.clientX, e.clientY);
+      if (!point) return;
+
+      onFileUpload(e.dataTransfer.files, point.x, point.y, getDropTargetItemId(e.target));
     }
   };
 
-  // Calculate dynamic workspace size based on items
-  const calculateWorkspaceSize = () => {
-    if (items.length === 0) {
-      // When no items, don't set explicit dimensions to prevent unnecessary scrolling
-      return { width: undefined, height: undefined };
-    }
-
-    // Padding around the furthest card to allow comfortable scrolling
-    const PADDING = 400;
-
-    // Find the maximum extents of all cards
-    let maxRight = 0;
-    let maxBottom = 0;
-
-    items.forEach((item) => {
-      const right = item.x + item.width;
-      const bottom = item.y + item.height;
-
-      maxRight = Math.max(maxRight, right);
-      maxBottom = Math.max(maxBottom, bottom);
-    });
-
-    // Calculate final dimensions with consistent padding
-    const width = maxRight + PADDING;
-    const height = maxBottom + PADDING;
-
-    return {
-      width: `${width}px`,
-      height: `${height}px`,
-    };
-  };
-
-  const workspaceSize = calculateWorkspaceSize();
+  const zoomLabel = `${Math.round(viewport.scale * 100)}%`;
+  const gridOffsetX = `${viewport.x}px`;
+  const gridOffsetY = `${viewport.y}px`;
+  const minorGrid = `${32 * viewport.scale}px`;
+  const majorGrid = `${160 * viewport.scale}px`;
 
   return (
     <div
       ref={workspaceRef}
+      onPointerDown={handleWorkspacePointerDown}
+      onPointerMove={handleWorkspacePointerMove}
+      onPointerUp={handleWorkspacePointerUp}
+      onPointerCancel={handleWorkspacePointerCancel}
       onClick={handleWorkspaceClick}
       onDoubleClick={handleWorkspaceDoubleClick}
+      onWheel={handleWheel}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      className={`relative w-full h-full overflow-auto bg-gray-50 dark:bg-gray-900 cursor-default ${
-        isDraggingOver ? "ring-4 ring-teal-400 ring-inset" : ""
-      }`}
-      style={{ minHeight: "100%" }}
+      className={`relative h-full w-full overflow-hidden bg-[#ece8dc] dark:bg-[#171411] ${
+        isPanning ? "cursor-grabbing" : "cursor-grab"
+      } ${isDraggingOver ? "ring-4 ring-teal-400 ring-inset" : ""}`}
+      style={{
+        backgroundImage:
+          "linear-gradient(to right, rgba(130,118,94,0.04) 1px, transparent 1px), " +
+          "linear-gradient(to bottom, rgba(130,118,94,0.04) 1px, transparent 1px), " +
+          "linear-gradient(to right, rgba(112,100,78,0.05) 1px, transparent 1px), " +
+          "linear-gradient(to bottom, rgba(112,100,78,0.05) 1px, transparent 1px)",
+        backgroundPosition: `${gridOffsetX} ${gridOffsetY}, ${gridOffsetX} ${gridOffsetY}, ${gridOffsetX} ${gridOffsetY}, ${gridOffsetX} ${gridOffsetY}`,
+        backgroundSize: `${minorGrid} ${minorGrid}, ${minorGrid} ${minorGrid}, ${majorGrid} ${majorGrid}, ${majorGrid} ${majorGrid}`,
+      }}
     >
-      {/* Workspace content area */}
       <div
-        className="relative workspace-content"
+        className="absolute inset-0 origin-top-left"
         style={{
-          minWidth: "100%",
-          minHeight: "100%",
-          width: workspaceSize.width || "100%",
-          height: workspaceSize.height || "100%",
+          transform: `translate3d(${viewport.x}px, ${viewport.y}px, 0) scale(${viewport.scale})`,
         }}
       >
-        {items.length === 0 && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="text-center">
-              <p className="text-gray-400 dark:text-gray-600 text-2xl mb-4">Double-click anywhere to create a card</p>
-              <p className="text-gray-400 dark:text-gray-600 text-lg">Paste (Ctrl+V) to add files</p>
-            </div>
-          </div>
-        )}
-
-        {isDraggingOver && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none bg-teal-500/10">
-            <div className="text-center">
-              <p className="text-teal-600 dark:text-teal-400 text-2xl font-bold">Drop files here</p>
-            </div>
-          </div>
-        )}
-
-        {/* Render items */}
         {items.map((item) => (
           <CardItem
             key={item.id}
             item={item}
+            canvasScale={viewport.scale}
             onUpdateBody={onUpdateItemBody}
             onUpdateLayout={onUpdateItemLayout}
             onDelete={onDeleteItem}
             onRemoveAttachment={onRemoveAttachment}
             isSelected={selectedItemIds.includes(item.id)}
             onSelect={(ctrlKey) => onSelectItem(item.id, ctrlKey)}
-            onDragComplete={onDragComplete}
           />
         ))}
+      </div>
+
+      {items.length === 0 && (
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div className="rounded-2xl border border-white/55 bg-white/68 px-6 py-5 text-center shadow-[0_18px_52px_rgba(107,91,65,0.1)] backdrop-blur-sm">
+            <p className="text-lg font-medium text-stone-800">Double-click to create a note</p>
+            <p className="mt-2 text-sm leading-6 text-stone-500">Drag to pan. Ctrl or Cmd + wheel to zoom. Paste or drop files anywhere.</p>
+          </div>
+        </div>
+      )}
+
+      {isDraggingOver && (
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-[#79a89d]/10">
+          <div className="rounded-2xl border border-[#98bdb4] bg-white/92 px-5 py-3 text-center shadow-[0_20px_60px_rgba(79,108,101,0.14)] backdrop-blur">
+            <p className="text-lg font-semibold text-[#5a8a83]">Drop files here</p>
+            <p className="mt-1 text-sm text-[#6d9a93]/90">They can land on the canvas or attach to an existing card.</p>
+          </div>
+        </div>
+      )}
+
+      <div
+        data-scratchpad-ui="true"
+        className="absolute right-4 bottom-4 flex items-center gap-1.5 rounded-full border border-white/60 bg-white/74 p-1.5 shadow-[0_12px_30px_rgba(109,92,68,0.12)] backdrop-blur-sm"
+      >
+        <button
+          type="button"
+          onClick={() => zoomFromViewportCenter(1 / 1.15)}
+          className="inline-flex h-8 w-8 items-center justify-center rounded-full text-base font-medium text-stone-500 transition hover:bg-stone-100/80"
+          title="Zoom out"
+        >
+          -
+        </button>
+        <button
+          type="button"
+          onClick={() => updateViewport(DEFAULT_SCRATCHPAD_VIEWPORT)}
+          className="rounded-full px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-500 transition hover:bg-stone-100/80"
+          title="Reset view"
+        >
+          {zoomLabel}
+        </button>
+        <button
+          type="button"
+          onClick={() => zoomFromViewportCenter(1.15)}
+          className="inline-flex h-8 w-8 items-center justify-center rounded-full text-base font-medium text-stone-500 transition hover:bg-stone-100/80"
+          title="Zoom in"
+        >
+          +
+        </button>
       </div>
     </div>
   );

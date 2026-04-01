@@ -56,6 +56,12 @@ export interface ScratchpadSyncState {
   lastError?: string;
 }
 
+export interface ScratchpadViewport {
+  x: number;
+  y: number;
+  scale: number;
+}
+
 export interface ScratchpadItem {
   id: string;
   x: number;
