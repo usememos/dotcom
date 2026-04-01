@@ -18,15 +18,32 @@ import { clampScratchpadScale } from "@/lib/scratch/viewport";
 
 type ViewportUpdater = ScratchpadViewport | ((current: ScratchpadViewport) => ScratchpadViewport);
 
+const SCRATCHPAD_MIN_ITEM_WIDTH = 220;
+const SCRATCHPAD_ITEM_SCREEN_GUTTER = 24;
+const SCRATCHPAD_TEXT_ITEM_WIDTH = 280;
+const SCRATCHPAD_TEXT_ITEM_HEIGHT = 180;
+const SCRATCHPAD_ATTACHMENT_ITEM_WIDTH = 320;
+const SCRATCHPAD_ATTACHMENT_ITEM_HEIGHT = 300;
+const SCRATCHPAD_ITEM_VERTICAL_OFFSET = 88;
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+}
+
 export function useScratchpadEditor() {
   const [isClient, setIsClient] = useState(false);
   const [state, dispatch] = useReducer(scratchpadEditorReducer, undefined, createScratchpadEditorState);
   const stateRef = useRef(state);
+  const viewportRef = useRef(state.viewport);
   const nextTransactionIdRef = useRef(1);
 
   useEffect(() => {
     stateRef.current = state;
   }, [state]);
+
+  useEffect(() => {
+    viewportRef.current = state.viewport;
+  }, [state.viewport]);
 
   useEffect(() => {
     const savedViewport = viewportStorage.get();
@@ -107,12 +124,33 @@ export function useScratchpadEditor() {
     runTransaction(reason, [{ type: "patch-item", id, patch }], persistence);
   };
 
-  const createTextItem = (x: number, y: number) => {
-    runTransaction(
-      "item.create",
-      [{ type: "add-item", item: createScratchpadItem(x, y, getNextScratchpadZIndex(stateRef.current.items)) }],
-      "immediate",
+  const createPositionedItem = (x: number, y: number, attachments: ScratchpadAttachmentRef[] = []) => {
+    const preferredWidth = attachments.length > 0 ? SCRATCHPAD_ATTACHMENT_ITEM_WIDTH : SCRATCHPAD_TEXT_ITEM_WIDTH;
+    const preferredHeight = attachments.length > 0 ? SCRATCHPAD_ATTACHMENT_ITEM_HEIGHT : SCRATCHPAD_TEXT_ITEM_HEIGHT;
+    const viewport = viewportRef.current;
+    const availableWidth = Math.max(
+      SCRATCHPAD_MIN_ITEM_WIDTH,
+      Math.floor((window.innerWidth - SCRATCHPAD_ITEM_SCREEN_GUTTER * 2) / viewport.scale),
     );
+    const width = Math.min(preferredWidth, availableWidth);
+    const leftBound = (SCRATCHPAD_ITEM_SCREEN_GUTTER - viewport.x) / viewport.scale;
+    const topBound = (SCRATCHPAD_ITEM_SCREEN_GUTTER - viewport.y) / viewport.scale;
+    const rightBound = (window.innerWidth - SCRATCHPAD_ITEM_SCREEN_GUTTER - viewport.x) / viewport.scale;
+    const bottomBound = (window.innerHeight - SCRATCHPAD_ITEM_SCREEN_GUTTER - viewport.y) / viewport.scale;
+    const originX = x - width / 2;
+    const originY = y - Math.min(preferredHeight / 2, SCRATCHPAD_ITEM_VERTICAL_OFFSET);
+    const clampedX = clamp(originX, leftBound, Math.max(leftBound, rightBound - width));
+    const clampedY = clamp(originY, topBound, Math.max(topBound, bottomBound - preferredHeight));
+
+    return {
+      ...createScratchpadItem(clampedX, clampedY, getNextScratchpadZIndex(stateRef.current.items), attachments),
+      width,
+      height: preferredHeight,
+    };
+  };
+
+  const createTextItem = (x: number, y: number) => {
+    runTransaction("item.create", [{ type: "add-item", item: createPositionedItem(x, y) }], "immediate");
   };
 
   const updateItemLayout = (
@@ -201,11 +239,7 @@ export function useScratchpadEditor() {
       }
     }
 
-    runTransaction(
-      "item.create-with-files",
-      [{ type: "add-item", item: createScratchpadItem(x, y, getNextScratchpadZIndex(stateRef.current.items), attachmentRefs) }],
-      "immediate",
-    );
+    runTransaction("item.create-with-files", [{ type: "add-item", item: createPositionedItem(x, y, attachmentRefs) }], "immediate");
   };
 
   const selectItem = (id: string | null, additive: boolean = false) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { type DragEvent, useEffect, useRef, useState } from "react";
+import { type DragEvent, useEffect, useEffectEvent, useRef, useState } from "react";
 import {
   beginPointerInteraction,
   cancelPointerInteraction,
@@ -30,7 +30,6 @@ interface WorkspaceProps {
   onViewportChange: (updater: ScratchpadViewport | ((current: ScratchpadViewport) => ScratchpadViewport)) => void;
   onUpdateItemBody: (id: string, body: string) => void;
   onUpdateItemLayout: (id: string, updates: Partial<ScratchpadItem>) => void;
-  onDeleteItem: (id: string) => void;
   onRemoveAttachment: (id: string, attachmentId: string) => void;
   onCreateTextItem: (x: number, y: number) => void;
   onFileUpload: (files: FileList, x: number, y: number, targetItemId?: string) => void;
@@ -49,13 +48,18 @@ interface WorkspaceInteractionMap extends PointerInteractionMap {
 
 const PAN_THRESHOLD = 4;
 
+interface BrowserGestureEvent extends Event {
+  clientX: number;
+  clientY: number;
+  scale: number;
+}
+
 export function Workspace({
   items,
   viewport,
   onViewportChange,
   onUpdateItemBody,
   onUpdateItemLayout,
-  onDeleteItem,
   onRemoveAttachment,
   onCreateTextItem,
   onFileUpload,
@@ -66,6 +70,7 @@ export function Workspace({
   const viewportRef = useRef(viewport);
   const interactionRef = useRef(createIdlePointerInteractionState<WorkspaceInteractionMap>());
   const suppressClickRef = useRef(false);
+  const lastGestureScaleRef = useRef(1);
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [isPanning, setIsPanning] = useState(false);
   const [lastCanvasPos, setLastCanvasPos] = useState({ x: 320, y: 240 });
@@ -125,19 +130,65 @@ export function Workspace({
     return screenPointToCanvasPoint(clientX, clientY, rect, nextViewport);
   };
 
-  const zoomAtPoint = (clientX: number, clientY: number, nextScale: number) => {
-    if (!workspaceRef.current) return;
-
-    const rect = workspaceRef.current.getBoundingClientRect();
-    updateViewport((current) => zoomScratchpadViewportAtPoint(current, clientX - rect.left, clientY - rect.top, nextScale));
-  };
-
   const zoomFromViewportCenter = (factor: number) => {
     if (!workspaceRef.current) return;
 
     const rect = workspaceRef.current.getBoundingClientRect();
     updateViewport((current) => zoomScratchpadViewportFromCenter(current, rect, factor));
   };
+
+  const shouldHandleBrowserZoomGesture = useEffectEvent((event: Event) => {
+    if (!workspaceRef.current) return false;
+
+    const target = event.target;
+    if (!(target instanceof Node) || !workspaceRef.current.contains(target)) {
+      return false;
+    }
+
+    const path = typeof event.composedPath === "function" ? event.composedPath() : [];
+
+    for (const candidate of path) {
+      if (!(candidate instanceof HTMLElement)) {
+        continue;
+      }
+
+      if (candidate.dataset.scratchpadUi === "true") {
+        return false;
+      }
+
+      if (
+        candidate.tagName === "BUTTON" ||
+        candidate.tagName === "INPUT" ||
+        candidate.tagName === "SELECT" ||
+        candidate.tagName === "TEXTAREA" ||
+        candidate.isContentEditable
+      ) {
+        return false;
+      }
+
+      const role = candidate.getAttribute("role");
+      if (role === "dialog" || role === "menu" || role === "listbox") {
+        return false;
+      }
+    }
+
+    return true;
+  });
+
+  const applyZoomFactorAtPoint = useEffectEvent((clientX: number, clientY: number, zoomFactor: number) => {
+    if (!Number.isFinite(zoomFactor) || zoomFactor <= 0) {
+      return;
+    }
+
+    if (!workspaceRef.current) {
+      return;
+    }
+
+    const rect = workspaceRef.current.getBoundingClientRect();
+    updateViewport((current) =>
+      zoomScratchpadViewportAtPoint(current, clientX - rect.left, clientY - rect.top, current.scale * zoomFactor),
+    );
+  });
 
   useEffect(() => {
     const handlePaste = (e: ClipboardEvent) => {
@@ -150,6 +201,49 @@ export function Workspace({
     window.addEventListener("paste", handlePaste);
     return () => window.removeEventListener("paste", handlePaste);
   }, [lastCanvasPos, onFileUpload]);
+
+  useEffect(() => {
+    const workspaceElement = workspaceRef.current;
+    if (!workspaceElement) {
+      return;
+    }
+
+    const handleGestureStart = (event: Event) => {
+      const gestureEvent = event as BrowserGestureEvent;
+      if (!shouldHandleBrowserZoomGesture(gestureEvent)) {
+        return;
+      }
+
+      lastGestureScaleRef.current = gestureEvent.scale || 1;
+    };
+
+    const handleGestureChange = (event: Event) => {
+      const gestureEvent = event as BrowserGestureEvent;
+      if (!shouldHandleBrowserZoomGesture(gestureEvent)) {
+        return;
+      }
+
+      const nextScale = gestureEvent.scale || lastGestureScaleRef.current;
+      const zoomFactor = nextScale / lastGestureScaleRef.current;
+      lastGestureScaleRef.current = nextScale;
+
+      applyZoomFactorAtPoint(gestureEvent.clientX, gestureEvent.clientY, zoomFactor);
+    };
+
+    const handleGestureEnd = () => {
+      lastGestureScaleRef.current = 1;
+    };
+
+    workspaceElement.addEventListener("gesturestart", handleGestureStart as EventListener, { passive: false });
+    workspaceElement.addEventListener("gesturechange", handleGestureChange as EventListener, { passive: false });
+    workspaceElement.addEventListener("gestureend", handleGestureEnd, { passive: false });
+
+    return () => {
+      workspaceElement.removeEventListener("gesturestart", handleGestureStart as EventListener);
+      workspaceElement.removeEventListener("gesturechange", handleGestureChange as EventListener);
+      workspaceElement.removeEventListener("gestureend", handleGestureEnd);
+    };
+  }, []);
 
   const finishPan = (panSession: PanSession) => {
     suppressClickRef.current = panSession.moved;
@@ -245,14 +339,18 @@ export function Workspace({
   };
 
   const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
-    e.preventDefault();
-
     if (e.ctrlKey || e.metaKey) {
+      if (!shouldHandleBrowserZoomGesture(e.nativeEvent)) {
+        return;
+      }
+
+      e.preventDefault();
       const zoomFactor = Math.exp(-e.deltaY * SCRATCHPAD_ZOOM_INTENSITY);
-      zoomAtPoint(e.clientX, e.clientY, viewportRef.current.scale * zoomFactor);
+      applyZoomFactorAtPoint(e.clientX, e.clientY, zoomFactor);
       return;
     }
 
+    e.preventDefault();
     updateViewport((current) => panScratchpadViewport(current, -e.deltaX, -e.deltaY));
   };
 
@@ -326,7 +424,6 @@ export function Workspace({
             canvasScale={viewport.scale}
             onUpdateBody={onUpdateItemBody}
             onUpdateLayout={onUpdateItemLayout}
-            onDelete={onDeleteItem}
             onRemoveAttachment={onRemoveAttachment}
             isSelected={selectedItemIds.includes(item.id)}
             onSelect={(ctrlKey) => onSelectItem(item.id, ctrlKey)}

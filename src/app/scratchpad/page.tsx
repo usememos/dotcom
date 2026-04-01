@@ -11,7 +11,6 @@ export default function ScratchPage() {
     defaultInstanceStatusLabel,
     defaultInstanceVersion,
     handleCreateTextItem,
-    handleDeleteItem,
     handleDeleteSelected,
     handleFileUpload,
     handleInstanceSave,
@@ -56,7 +55,6 @@ export default function ScratchPage() {
           onViewportChange={setViewport}
           onUpdateItemBody={handleUpdateItemBody}
           onUpdateItemLayout={handleUpdateItemLayout}
-          onDeleteItem={handleDeleteItem}
           onRemoveAttachment={handleRemoveAttachment}
           onCreateTextItem={handleCreateTextItem}
           onFileUpload={handleFileUpload}

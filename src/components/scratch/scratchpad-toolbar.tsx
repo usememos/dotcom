@@ -71,7 +71,7 @@ export function ScratchpadToolbar({
             className="flex h-9 w-9 items-center justify-center rounded-full border border-white/70 bg-white/78 text-[#5c8e86] shadow-[0_10px_26px_rgba(109,92,68,0.1)] transition hover:bg-white"
             title="Memos menu"
           >
-            <Image src="/logo.png" alt="Memos" width={28} height={28} />
+            <Image src="/logo-rounded.png" alt="Memos" width={28} height={28} />
           </button>
         </DropdownMenu.Trigger>
 

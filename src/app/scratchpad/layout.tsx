@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { ScratchpadViewportLock } from "@/components/scratch/scratchpad-viewport-lock";
 import { ThemeProvider } from "@/components/scratch/theme-provider";
 
 export const metadata: Metadata = {
@@ -23,5 +24,10 @@ export const metadata: Metadata = {
 };
 
 export default function ScratchLayout({ children }: { children: ReactNode }) {
-  return <ThemeProvider>{children}</ThemeProvider>;
+  return (
+    <ThemeProvider>
+      <ScratchpadViewportLock />
+      {children}
+    </ThemeProvider>
+  );
 }

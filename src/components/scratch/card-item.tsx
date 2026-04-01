@@ -1,6 +1,5 @@
 "use client";
 
-import { motion, useMotionValue } from "framer-motion";
 import { FileIcon, LoaderIcon, XIcon } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { getFile } from "@/lib/scratch/indexeddb";
@@ -24,7 +23,6 @@ interface CardItemProps {
   canvasScale: number;
   onUpdateBody: (id: string, body: string) => void;
   onUpdateLayout: (id: string, updates: Partial<ScratchpadItem>) => void;
-  onDelete: (id: string) => void;
   onRemoveAttachment: (id: string, attachmentId: string) => void;
   isSelected?: boolean;
   onSelect: (ctrlKey: boolean) => void;
@@ -62,14 +60,6 @@ function hashString(value: string): number {
   return hash;
 }
 
-function formatCardTime(date: Date): string {
-  return new Intl.DateTimeFormat("en-GB", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  }).format(date);
-}
-
 function getCardRotation(item: ScratchpadItem): number {
   const rotationBucket = (hashString(item.id) % 7) - 3;
   return rotationBucket * 0.65;
@@ -95,32 +85,28 @@ function getCardRingClass(item: ScratchpadItem, isSelected?: boolean): string {
   return "";
 }
 
-export function CardItem({
-  item,
-  canvasScale,
-  onUpdateBody,
-  onUpdateLayout,
-  onDelete,
-  onRemoveAttachment,
-  isSelected,
-  onSelect,
-}: CardItemProps) {
+const CARD_TEXT_CLASS_NAME = "font-serif text-[14px] leading-7 text-[#6e5d23]";
+
+export function CardItem({ item, canvasScale, onUpdateBody, onUpdateLayout, onRemoveAttachment, isSelected, onSelect }: CardItemProps) {
   const [isDragging, setIsDragging] = useState(false);
+  const [isEditing, setIsEditing] = useState(
+    () => item.body.trim().length === 0 && item.attachments.length === 0 && Date.now() - item.createdAt.getTime() < 5_000,
+  );
   const [isResizing, setIsResizing] = useState(false);
   const [attachmentPreviews, setAttachmentPreviews] = useState<AttachmentPreview[]>([]);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [liveSize, setLiveSize] = useState({ width: item.width, height: item.height });
+  const cardRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const dragOriginRef = useRef({ x: 0, y: 0 });
+  const shouldSelectOnMountRef = useRef(isEditing);
   const interactionRef = useRef(createIdlePointerInteractionState<CardInteractionMap>());
-  const dragX = useMotionValue(0);
-  const dragY = useMotionValue(0);
-  const widthMotion = useMotionValue(item.width);
-  const heightMotion = useMotionValue(item.height);
 
   const MIN_WIDTH = 220;
   const MIN_HEIGHT = 170;
   const cardRotation = useMemo(() => getCardRotation(item), [item]);
-  const cardTimestamp = useMemo(() => formatCardTime(item.updatedAt), [item.updatedAt]);
   const hasImageAttachment = item.attachments.some((attachment) => attachment.type.startsWith("image/"));
+  const hasBody = item.body.trim().length > 0;
 
   useEffect(() => {
     if (!textareaRef.current) return;
@@ -129,11 +115,42 @@ export function CardItem({
   }, [item.body]);
 
   useEffect(() => {
+    if (!isEditing || !textareaRef.current) return;
+
+    textareaRef.current.focus();
+    const nextSelectionStart = textareaRef.current.value.length;
+    textareaRef.current.setSelectionRange(nextSelectionStart, nextSelectionStart);
+  }, [isEditing]);
+
+  useEffect(() => {
+    if (!shouldSelectOnMountRef.current) return;
+
+    shouldSelectOnMountRef.current = false;
+    onSelect(false);
+  }, [onSelect]);
+
+  useEffect(() => {
+    if (!isEditing) return;
+
+    const handlePointerDownOutside = (event: PointerEvent) => {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      if (cardRef.current?.contains(target)) return;
+      setIsEditing(false);
+    };
+
+    window.addEventListener("pointerdown", handlePointerDownOutside, true);
+    return () => window.removeEventListener("pointerdown", handlePointerDownOutside, true);
+  }, [isEditing]);
+
+  useEffect(() => {
     if (!isResizing) {
-      widthMotion.set(item.width);
-      heightMotion.set(item.height);
+      setLiveSize({
+        width: item.width,
+        height: item.height,
+      });
     }
-  }, [heightMotion, isResizing, item.height, item.width, widthMotion]);
+  }, [isResizing, item.height, item.width]);
 
   useEffect(() => {
     let cancelled = false;
@@ -191,12 +208,19 @@ export function CardItem({
   const handleDoubleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    onSelect(false);
+    setIsEditing(true);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if ((e.key === "Backspace" || e.key === "Delete") && item.body === "" && item.attachments.length === 0) {
+  const handleKeyboardTargetFocus = () => {
+    onSelect(false);
+  };
+
+  const handleKeyboardTargetKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      onDelete(item.id);
+      onSelect(false);
+      setIsEditing(true);
     }
   };
 
@@ -210,6 +234,18 @@ export function CardItem({
     e.target.style.height = `${e.target.scrollHeight}px`;
   };
 
+  const handleTextareaKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      e.currentTarget.blur();
+    }
+
+    if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+      e.preventDefault();
+      e.currentTarget.blur();
+    }
+  };
+
   const finishDrag = (session: DragSession, clientX: number, clientY: number) => {
     const deltaX = (clientX - session.startClientX) / canvasScale;
     const deltaY = (clientY - session.startClientY) / canvasScale;
@@ -221,19 +257,17 @@ export function CardItem({
       });
     }
 
-    dragX.set(0);
-    dragY.set(0);
+    setDragOffset({ x: 0, y: 0 });
     setIsDragging(false);
   };
 
   const cancelDrag = () => {
-    dragX.set(0);
-    dragY.set(0);
+    setDragOffset({ x: 0, y: 0 });
     setIsDragging(false);
   };
 
   const handleCardPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.button !== 0 || isPointerInteractionMode(interactionRef.current, "resizing")) {
+    if (e.button !== 0 || isEditing || isPointerInteractionMode(interactionRef.current, "resizing")) {
       return;
     }
 
@@ -248,8 +282,7 @@ export function CardItem({
       ...createPointerSession(e.pointerId, e.clientX, e.clientY),
       moved: false,
     });
-    dragX.set(0);
-    dragY.set(0);
+    setDragOffset({ x: 0, y: 0 });
     setIsDragging(true);
   };
 
@@ -265,8 +298,10 @@ export function CardItem({
       session.moved = true;
     }
 
-    dragX.set(delta.x / canvasScale);
-    dragY.set(delta.y / canvasScale);
+    setDragOffset({
+      x: delta.x / canvasScale,
+      y: delta.y / canvasScale,
+    });
   };
 
   const handleCardPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -295,8 +330,10 @@ export function CardItem({
   };
 
   const cancelResize = () => {
-    widthMotion.set(item.width);
-    heightMotion.set(item.height);
+    setLiveSize({
+      width: item.width,
+      height: item.height,
+    });
     setIsResizing(false);
   };
 
@@ -310,8 +347,10 @@ export function CardItem({
       latestWidth: item.width,
       latestHeight: item.height,
     });
-    widthMotion.set(item.width);
-    heightMotion.set(item.height);
+    setLiveSize({
+      width: item.width,
+      height: item.height,
+    });
     setIsResizing(true);
   };
 
@@ -327,8 +366,10 @@ export function CardItem({
 
     session.latestWidth = nextWidth;
     session.latestHeight = nextHeight;
-    widthMotion.set(nextWidth);
-    heightMotion.set(nextHeight);
+    setLiveSize({
+      width: nextWidth,
+      height: nextHeight,
+    });
   };
 
   const handleResizePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -354,8 +395,11 @@ export function CardItem({
     };
   }, []);
 
+  const rotation = isSelected ? 0 : cardRotation;
+
   return (
-    <motion.div
+    <div
+      ref={cardRef}
       data-scratchpad-item="true"
       data-scratchpad-item-id={item.id}
       onPointerDown={handleCardPointerDown}
@@ -364,47 +408,36 @@ export function CardItem({
       onPointerCancel={handleCardPointerCancel}
       onClick={handleContainerClick}
       onDoubleClick={handleDoubleClick}
-      onKeyDown={handleKeyDown}
-      tabIndex={0}
-      className={`absolute flex flex-col overflow-hidden rounded-[4px] border border-[#e5d57d] bg-[#fff2a8] text-stone-700 shadow-[0_18px_36px_rgba(120,101,38,0.18)] transition-[box-shadow,transform] duration-150 focus:outline-none ${
-        isDragging ? "cursor-grabbing" : "cursor-grab"
+      className={`absolute flex flex-col overflow-hidden rounded-[4px] border border-[#e5d57d] bg-[#fff2a8] text-stone-700 transition-shadow duration-150 focus:outline-none ${
+        isEditing ? "cursor-default" : isDragging ? "cursor-grabbing" : "cursor-grab"
       } ${getCardRingClass(item, isSelected)}`}
       style={{
         left: item.x,
         top: item.y,
-        width: widthMotion,
-        minHeight: heightMotion,
+        width: liveSize.width,
+        minHeight: liveSize.height,
         zIndex: item.zIndex || 1,
-        x: dragX,
-        y: dragY,
+        transform: `translate3d(${dragOffset.x}px, ${dragOffset.y}px, 0) rotate(${rotation}deg)`,
+        touchAction: isEditing ? "auto" : "none",
       }}
-      animate={
-        isDragging
-          ? {
-              rotate: 0,
-              scale: 1.01,
-              boxShadow: "0 24px 54px rgba(90, 74, 53, 0.18)",
-            }
-          : {
-              rotate: isSelected ? 0 : cardRotation,
-              scale: 1,
-              boxShadow: "0 18px 36px rgba(120, 101, 38, 0.18)",
-            }
-      }
-      transition={{ type: "spring", stiffness: 420, damping: 34, mass: 0.45 }}
       title={item.sync.status === "synced" ? "Saved to Memos" : "Select and click save to save to Memos"}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,250,210,0.35),rgba(255,240,157,0.95))]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-6 bg-[linear-gradient(180deg,rgba(255,255,255,0.24),rgba(255,255,255,0))]" />
-      <div className="pointer-events-none absolute left-1/2 top-0 h-6 w-16 -translate-x-1/2 -translate-y-2 rounded-b-[10px] bg-white/42 blur-[0.2px]" />
+      {!isEditing && (
+        <button
+          type="button"
+          onFocus={handleKeyboardTargetFocus}
+          onKeyDown={handleKeyboardTargetKeyDown}
+          className="absolute inset-0 z-0"
+          aria-label={hasBody ? `Edit note: ${item.body.slice(0, 60)}` : "Edit note"}
+        >
+          <span className="sr-only">Select note. Press Enter to edit.</span>
+        </button>
+      )}
 
-      <div className="relative flex items-center justify-between px-4 pt-3 pb-1.5">
-        <span className="text-[9px] font-medium uppercase tracking-[0.2em] text-[#b7a253]">Note</span>
-        <span className="text-[9px] font-medium tabular-nums text-[#c8b96f]">{cardTimestamp}</span>
-      </div>
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,250,210,0.28),rgba(255,240,157,0.95))]" />
 
       {item.attachments.length > 0 && (
-        <div className="relative px-4 pb-2.5">
+        <div className="relative px-4 pt-4 pb-2.5">
           <div className="grid grid-cols-2 gap-2">
             {item.attachments.map((attachment) => {
               const preview = previewMap.get(attachment.id);
@@ -416,10 +449,10 @@ export function CardItem({
                   className={`group relative overflow-hidden rounded-[3px] border border-[#eadb8f]/85 bg-[#fff6bf]/72 p-1.5 ${
                     isImage ? "pb-3" : ""
                   }`}
-                  onPointerDown={(e) => e.stopPropagation()}
                 >
                   <button
                     type="button"
+                    onPointerDown={(e) => e.stopPropagation()}
                     onClick={(e) => {
                       e.stopPropagation();
                       void onRemoveAttachment(item.id, attachment.id);
@@ -454,18 +487,30 @@ export function CardItem({
         </div>
       )}
 
-      <div className="relative flex-1 px-4 pb-3.5">
+      <div className="relative flex-1 px-4 pt-3 pb-3.5">
         {!hasImageAttachment && item.body.trim() && (
           <div className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-[#dccb75]/75 to-transparent" />
         )}
-        <textarea
-          ref={textareaRef}
-          value={item.body}
-          onChange={handleBodyChange}
-          onPointerDown={handleTextareaPointerDown}
-          placeholder={item.attachments.length > 0 ? "Add context for these attachments..." : "Type here..."}
-          className="w-full min-h-[150px] resize-none border-none bg-transparent px-0 pt-2.5 pb-1.5 font-serif text-[14px] leading-7 text-[#6e5d23] outline-none placeholder:text-[#c8bb7e] cursor-text"
-        />
+        {isEditing ? (
+          <textarea
+            ref={textareaRef}
+            value={item.body}
+            onBlur={() => setIsEditing(false)}
+            onChange={handleBodyChange}
+            onKeyDown={handleTextareaKeyDown}
+            onPointerDown={handleTextareaPointerDown}
+            placeholder={item.attachments.length > 0 ? "Add context for these attachments..." : "Type here..."}
+            className={`w-full min-h-[150px] resize-none border-none bg-transparent px-0 pt-0 pb-1.5 outline-none placeholder:text-[#c8bb7e] cursor-text ${CARD_TEXT_CLASS_NAME}`}
+          />
+        ) : (
+          <div
+            className={`min-h-[150px] px-0 pt-0 pb-1.5 ${CARD_TEXT_CLASS_NAME} ${
+              hasBody ? "whitespace-pre-wrap break-words" : "select-none text-[#c8bb7e]"
+            }`}
+          >
+            {hasBody ? item.body : item.attachments.length > 0 ? "Double-click to describe these attachments..." : "Double-click to type"}
+          </div>
+        )}
 
         {item.sync.status === "saving" && (
           <div className="pointer-events-none absolute right-0 bottom-0 inline-flex items-center gap-1 rounded-full bg-[#f8e693] px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#947d2d]">
@@ -491,6 +536,6 @@ export function CardItem({
       >
         <div className="absolute bottom-1.5 right-1.5 h-3 w-3 border-r border-b border-[#c1a73b] opacity-55 transition-opacity group-hover:opacity-100" />
       </div>
-    </motion.div>
+    </div>
   );
 }

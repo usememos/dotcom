@@ -96,14 +96,14 @@ export function InstanceSetupForm({ open, onSave, onCancel, existingInstance }: 
     <Dialog.Root open={open} onOpenChange={(open) => !open && onCancel()}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/50 z-50" />
-        <Dialog.Content className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto z-50 p-8">
-          <Dialog.Title className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+        <Dialog.Content className="fixed left-1/2 top-1/2 z-50 max-h-[calc(100vh-1.5rem)] w-[min(calc(100vw-1.5rem),42rem)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-[1.25rem] bg-white p-5 shadow-2xl dark:bg-gray-800 sm:max-h-[90vh] sm:rounded-2xl sm:p-8">
+          <Dialog.Title className="mb-2 pr-10 text-2xl font-bold text-gray-900 dark:text-gray-100 sm:text-3xl">
             {existingInstance ? "Edit Instance" : "Connect Memos Instance"}
           </Dialog.Title>
-          <Dialog.Description className="text-gray-600 dark:text-gray-400 mb-8">
+          <Dialog.Description className="mb-6 pr-10 text-sm text-gray-600 dark:text-gray-400 sm:mb-8 sm:text-base">
             Enter your self-hosted Memos instance details to enable saving.
           </Dialog.Description>
-          <Dialog.Close className="absolute top-6 right-6 p-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+          <Dialog.Close className="absolute top-4 right-4 rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-gray-300 sm:top-6 sm:right-6">
             <XIcon className="w-5 h-5" />
           </Dialog.Close>
 
@@ -151,9 +151,9 @@ export function InstanceSetupForm({ open, onSave, onCancel, existingInstance }: 
                 placeholder="Enter your access token"
                 className="w-full px-4 py-3 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-teal-500 dark:focus:ring-teal-400 focus:border-transparent outline-none transition text-gray-900 dark:text-gray-100"
               />
-              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 flex items-center">
-                <HelpCircleIcon className="w-4 h-4 mr-1" />
-                Get your token: Settings → Access Tokens → Create New Token
+              <p className="mt-2 flex items-start gap-1.5 text-sm text-gray-500 dark:text-gray-400">
+                <HelpCircleIcon className="mt-0.5 h-4 w-4 shrink-0" />
+                <span>Get your token: Settings → Access Tokens → Create New Token</span>
               </p>
             </div>
 
@@ -191,24 +191,24 @@ export function InstanceSetupForm({ open, onSave, onCancel, existingInstance }: 
           </div>
 
           {/* CORS Help */}
-          <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-800 rounded-xl">
+          <div className="mt-6 rounded-xl border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/10">
             <p className="text-sm text-blue-800 dark:text-blue-300">
               <strong>Note:</strong> Your Memos instance must have CORS enabled for{" "}
               <code className="bg-blue-100 dark:bg-blue-900/50 px-1 py-0.5 rounded">https://usememos.com</code>. Add this to your instance
               environment:
             </p>
-            <code className="block mt-2 p-2 bg-blue-100 dark:bg-blue-900/50 rounded text-xs text-blue-900 dark:text-blue-200">
+            <code className="mt-2 block break-all rounded bg-blue-100 p-2 text-xs text-blue-900 dark:bg-blue-900/50 dark:text-blue-200">
               MEMOS_CORS_ALLOW_ORIGINS=https://usememos.com
             </code>
           </div>
 
           {/* Actions */}
-          <div className="flex space-x-4 mt-8">
+          <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:gap-4">
             <button
               type="button"
               onClick={handleTest}
               disabled={testing || !url || !token}
-              className="flex-1 px-6 py-3 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-xl font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              className="flex w-full items-center justify-center rounded-xl bg-gray-100 px-6 py-3 font-semibold text-gray-900 transition hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600 sm:flex-1"
             >
               {testing ? (
                 <>
@@ -223,7 +223,7 @@ export function InstanceSetupForm({ open, onSave, onCancel, existingInstance }: 
             <button
               type="button"
               onClick={onCancel}
-              className="px-6 py-3 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-xl font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+              className="w-full rounded-xl bg-gray-100 px-6 py-3 font-semibold text-gray-900 transition hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600 sm:w-auto"
             >
               Cancel
             </button>
@@ -232,7 +232,7 @@ export function InstanceSetupForm({ open, onSave, onCancel, existingInstance }: 
               type="button"
               onClick={handleSave}
               disabled={!url || !token}
-              className="px-6 py-3 bg-teal-600 text-white rounded-xl font-semibold hover:bg-teal-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full rounded-xl bg-teal-600 px-6 py-3 font-semibold text-white transition hover:bg-teal-700 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
             >
               Save & Connect
             </button>
