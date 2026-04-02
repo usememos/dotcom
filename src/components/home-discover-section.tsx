@@ -42,38 +42,47 @@ const DISCOVER_LINKS = [
 
 export function HomeDiscoverSection() {
   return (
-    <section className="bg-white px-4 py-14 dark:bg-slate-900 sm:px-6 sm:py-18 lg:py-24">
+    <section className="relative bg-transparent px-4 py-14 sm:px-6 sm:py-18 lg:py-24">
       <div className="mx-auto w-full max-w-(--fd-layout-width)">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-teal-700 dark:text-teal-300">Explore Memos</p>
-          <h2 className="mt-4 font-serif text-3xl font-bold tracking-[-0.03em] text-slate-950 dark:text-slate-100 sm:text-4xl lg:text-5xl">
-            Start with the pages Google should understand first.
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600 dark:text-slate-300 sm:text-lg">
-            These sections explain how Memos works, how it ships, and how people use it in production.
-          </p>
-        </div>
+        <div className="grid gap-10 border-t border-stone-300/60 pt-10 dark:border-white/10 lg:grid-cols-[minmax(0,21rem)_minmax(0,1fr)] lg:gap-14 lg:pt-14">
+          <div className="lg:sticky lg:top-24 lg:self-start">
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-stone-500 dark:text-stone-400">Explore Memos</p>
+            <h2 className="mt-4 max-w-[12ch] text-balance font-serif text-3xl font-semibold tracking-[-0.03em] text-stone-950 dark:text-stone-100 sm:text-4xl lg:text-[3.15rem]">
+              Start with the pages that explain the product plainly.
+            </h2>
+            <p className="mt-4 max-w-md text-balance text-base leading-7 text-stone-600 dark:text-stone-300 sm:text-lg">
+              Documentation, release notes, product context, and practical entry points for people evaluating Memos for real use.
+            </p>
+          </div>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {DISCOVER_LINKS.map((item) => {
-            const Icon = item.icon;
+          <div className="grid sm:grid-cols-2 sm:gap-x-8">
+            {DISCOVER_LINKS.map((item, index) => {
+              const Icon = item.icon;
 
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="group rounded-[1.75rem] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(244,248,247,0.96)_100%)] p-6 shadow-[0_30px_90px_-58px_rgba(15,23,42,0.3)] transition-all duration-300 hover:-translate-y-1 hover:border-teal-200 hover:shadow-[0_36px_100px_-58px_rgba(13,148,136,0.34)] dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(10,16,19,1)_0%,rgba(7,10,12,1)_100%)] dark:shadow-none dark:hover:border-teal-500/40"
-              >
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200/80 bg-white text-slate-950 shadow-[0_20px_40px_-28px_rgba(15,23,42,0.4)] transition-transform duration-300 group-hover:-translate-y-0.5 dark:border-white/10 dark:bg-white/5 dark:text-slate-100 dark:shadow-none">
-                  <Icon className="h-5 w-5" />
-                </div>
-                <h3 className="mt-5 text-lg font-semibold tracking-tight text-slate-950 transition-colors group-hover:text-teal-700 dark:text-slate-100 dark:group-hover:text-teal-300">
-                  {item.title}
-                </h3>
-                <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{item.description}</p>
-              </Link>
-            );
-          })}
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="group flex gap-4 border-b border-stone-300/60 py-6 transition-colors hover:text-stone-700 dark:border-white/10 dark:hover:text-stone-200 sm:py-7"
+                >
+                  <div className="flex flex-col items-start gap-4">
+                    <span className="text-[11px] font-semibold tracking-[0.18em] text-stone-400 uppercase dark:text-stone-500">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <div className="inline-flex h-8 w-8 items-center justify-center text-stone-700 dark:text-stone-200">
+                      <Icon className="h-4 w-4 stroke-[1.8]" />
+                    </div>
+                  </div>
+                  <div className="min-w-0 pt-0.5">
+                    <h3 className="text-balance text-lg font-semibold tracking-tight text-stone-950 dark:text-stone-100">{item.title}</h3>
+                    <p className="mt-3 max-w-[28rem] text-balance text-sm leading-7 text-stone-600 dark:text-stone-300 sm:text-[0.98rem]">
+                      {item.description}
+                    </p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

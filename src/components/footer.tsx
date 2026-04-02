@@ -28,7 +28,7 @@ export function Footer() {
     { slug: "api-first", feature: FEATURES["api-first"] },
   ];
   return (
-    <footer className="border-t bg-fd-background mt-auto">
+    <footer className="mt-auto border-t border-stone-300/55 bg-transparent dark:border-white/8">
       <div className="mx-auto w-full max-w-(--fd-layout-width) px-6 py-16 lg:px-8 lg:py-20">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4 lg:gap-16">
           {/* Explore Column */}
@@ -38,7 +38,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/docs"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-stone-700 dark:hover:text-stone-200"
                 >
                   <BookOpenIcon className="w-4 h-4" />
                   Documentation
@@ -47,7 +47,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/blog"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-stone-700 dark:hover:text-stone-200"
                 >
                   <NewspaperIcon className="w-4 h-4" />
                   Blog
@@ -56,7 +56,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/changelog"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-stone-700 dark:hover:text-stone-200"
                 >
                   <HistoryIcon className="w-4 h-4" />
                   Changelog
@@ -65,7 +65,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/features"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-stone-700 dark:hover:text-stone-200"
                 >
                   <SparklesIcon className="w-4 h-4" />
                   Features
@@ -74,7 +74,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/pricing"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-stone-700 dark:hover:text-stone-200"
                 >
                   <DollarSignIcon className="w-4 h-4" />
                   Pricing
@@ -83,7 +83,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/use-cases"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-stone-700 dark:hover:text-stone-200"
                 >
                   <LightbulbIcon className="w-4 h-4" />
                   Use Cases
@@ -102,7 +102,7 @@ export function Footer() {
                   <li key={slug}>
                     <Link
                       href={`/features/${slug}`}
-                      className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                      className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-stone-700 dark:hover:text-stone-200"
                     >
                       <Icon className="w-4 h-4" />
                       {feature.title}
@@ -113,7 +113,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/features"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors font-medium"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground font-medium transition-colors hover:text-stone-700 dark:hover:text-stone-200"
                 >
                   <SparklesIcon className="w-4 h-4" />
                   View all features
@@ -129,7 +129,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/docs/api"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-stone-700 dark:hover:text-stone-200"
                 >
                   <CodeIcon className="w-4 h-4" />
                   API Reference
@@ -140,7 +140,7 @@ export function Footer() {
                   href="https://demo.usememos.com/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-stone-700 dark:hover:text-stone-200"
                 >
                   <ExternalLinkIcon className="w-4 h-4" />
                   Live Demo
@@ -151,7 +151,7 @@ export function Footer() {
                   href="https://github.com/usememos/memos"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-stone-700 dark:hover:text-stone-200"
                 >
                   <GithubIcon className="w-4 h-4" />
                   GitHub
@@ -162,7 +162,7 @@ export function Footer() {
                   href="https://discord.gg/tfPJa4UmAv"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-stone-700 dark:hover:text-stone-200"
                 >
                   <MessageCircleIcon className="w-4 h-4" />
                   Discord
@@ -173,7 +173,7 @@ export function Footer() {
                   href="https://x.com/usememos"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-stone-700 dark:hover:text-stone-200"
                 >
                   <TwitterIcon className="w-4 h-4" />X / Twitter
                 </a>
@@ -181,7 +181,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/privacy"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-stone-700 dark:hover:text-stone-200"
                 >
                   <ShieldCheckIcon className="w-4 h-4" />
                   Privacy Policy
@@ -197,7 +197,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/brand"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-stone-700 dark:hover:text-stone-200"
                 >
                   <PaletteIcon className="w-4 h-4" />
                   Brand Guidelines
@@ -206,7 +206,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/sponsors"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-stone-700 dark:hover:text-stone-200"
                 >
                   <HeartIcon className="w-4 h-4" />
                   Sponsors
@@ -217,7 +217,7 @@ export function Footer() {
                   href="https://github.com/usememos/memos/blob/main/LICENSE"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-stone-700 dark:hover:text-stone-200"
                 >
                   <ScaleIcon className="w-4 h-4" />
                   MIT License
@@ -228,7 +228,7 @@ export function Footer() {
                   href="https://github.com/usememos/memos/issues"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-stone-700 dark:hover:text-stone-200"
                 >
                   <FileTextIcon className="w-4 h-4" />
                   Report an Issue

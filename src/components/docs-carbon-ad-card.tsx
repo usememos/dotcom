@@ -10,12 +10,12 @@ const SPONSOR_URL = "https://github.com/sponsors/usememos";
 // Style variants for different contexts
 const CONTAINER_STYLES = {
   default: "w-full max-h-80 rounded-xl border bg-muted/30 dark:bg-muted/10 p-3 overflow-auto",
-  sponsor: cn("h-full w-full min-h-[200px] overflow-auto", "bg-transparent p-5 sm:p-8"),
+  sponsor: cn("h-full w-full min-h-[200px] overflow-auto", "bg-transparent p-0"),
 } as const;
 
 const FALLBACK_STYLES = {
   default: "flex w-full items-center justify-center py-1 text-sm text-muted-foreground hover:opacity-80",
-  sponsor: "flex h-full flex-col gap-2 sm:gap-4",
+  sponsor: "flex h-full flex-col gap-3 sm:gap-4",
 } as const;
 
 interface DocsCarbonAdCardProps {
@@ -75,16 +75,15 @@ function FallbackContent({ variant }: { variant: keyof typeof CONTAINER_STYLES }
         href={SPONSOR_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className={`${FALLBACK_STYLES.sponsor} text-left transition-colors duration-300 hover:text-teal-700 dark:hover:text-teal-300`}
+        className={`${FALLBACK_STYLES.sponsor} text-left transition-colors duration-300 hover:text-stone-700 dark:hover:text-stone-200`}
       >
-        <div className="h-10 sm:h-12 flex items-center justify-start">
+        <div className="flex h-10 items-center justify-start sm:h-12">
           <div className="flex items-center gap-2">
-            <HeartIcon className="w-8 h-8 sm:w-10 sm:h-10 text-red-500 fill-current" />
-            <span className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100">Support Memos</span>
+            <HeartIcon className="h-8 w-8 text-stone-700 sm:h-10 sm:w-10 dark:text-stone-200" />
+            <span className="text-lg font-semibold text-stone-900 sm:text-xl dark:text-stone-100">Support Memos</span>
           </div>
         </div>
-        <div className="max-w-sm border-t border-slate-200/80 pt-4 dark:border-white/10" />
-        <p className="max-w-3xl text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+        <p className="max-w-3xl text-balance text-sm leading-relaxed text-stone-600 dark:text-stone-300 sm:text-base">
           Support the continued development of Memos. Become a sponsor and get your logo featured here.
         </p>
       </a>

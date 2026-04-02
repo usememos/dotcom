@@ -44,14 +44,14 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <main className="flex flex-1 flex-col">
+    <main className="flex flex-1 flex-col bg-[linear-gradient(180deg,rgba(248,244,237,0.92)_0%,rgba(246,240,231,0.75)_18%,rgba(250,248,243,0.82)_44%,rgba(244,238,229,0.92)_100%)] dark:bg-[linear-gradient(180deg,rgba(29,25,22,0.96)_0%,rgba(34,29,25,0.94)_48%,rgba(27,23,20,0.98)_100%)]">
       <HeroSection
-        title={
-          <>
-            Capture freely.
-            <span className="block text-fd-primary">Own completely.</span>
-          </>
-        }
+        titleLines={[
+          "Capture freely.",
+          <span key="own" className="text-fd-primary">
+            Own completely.
+          </span>,
+        ]}
         subtitle="A private timeline for your thoughts. Self-hosted, Markdown-native, and built to stay out of your way."
         primaryCta={{ text: "Get Started", href: "/docs/getting-started" }}
         secondaryCta={{ text: "Live Demo", href: "https://demo.usememos.com/", external: true }}

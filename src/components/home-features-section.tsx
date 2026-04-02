@@ -38,20 +38,19 @@ const FEATURES = [
 
 export function HomeFeaturesSection() {
   return (
-    <section className="relative overflow-hidden bg-[linear-gradient(180deg,#ffffff_0%,#f6faf9_100%)] px-4 py-14 dark:bg-[linear-gradient(180deg,#070a0c_0%,#0b1215_100%)] sm:px-6 sm:py-18 lg:py-24">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-slate-300/80 to-transparent dark:via-white/10" />
+    <section className="relative overflow-hidden bg-transparent px-4 py-14 sm:px-6 sm:py-18 lg:py-24">
       <div className="mx-auto w-full max-w-(--fd-layout-width)">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-16">
+        <div className="grid gap-10 border-t border-stone-300/60 pt-10 dark:border-white/10 lg:grid-cols-[minmax(0,21rem)_minmax(0,1fr)] lg:gap-14 lg:pt-14">
           <div className="lg:sticky lg:top-24 lg:self-start">
             <SectionHeader
               icon={StarIcon}
               title="Why Memos?"
-              description="One thing done well: capturing your thoughts without getting in the way."
+              description="A focused tool for quick capture, plain-text notes, and long-term control over your own data."
               align="left"
             />
             <Link
               href="/features"
-              className="group inline-flex items-center gap-2 text-sm font-semibold text-slate-900 transition-colors hover:text-teal-700 dark:text-white dark:hover:text-teal-300 sm:text-base"
+              className="group inline-flex items-center gap-2 text-sm font-semibold text-stone-900 transition-colors hover:text-stone-700 dark:text-stone-100 dark:hover:text-stone-200 sm:text-base"
             >
               Explore All Features
               <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
