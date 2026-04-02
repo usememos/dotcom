@@ -15,7 +15,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { baseOptions } from "@/app/layout.config";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Footer } from "@/components/footer";
+import { buildBreadcrumbJsonLd } from "@/lib/seo";
 import { getAllUseCaseSlugs, getUseCase } from "@/lib/use-cases";
 
 // Icon mapping
@@ -49,14 +51,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   return {
-    title: useCase.seo.title,
+    title: `${useCase.title} Use Case`,
     description: useCase.seo.description,
     keywords: useCase.seo.keywords,
     alternates: {
       canonical: `https://usememos.com/use-cases/${slug}`,
     },
     openGraph: {
-      title: useCase.seo.title,
+      title: `${useCase.title} - Memos Use Case`,
       description: useCase.seo.description,
       url: `https://usememos.com/use-cases/${slug}`,
       siteName: "Memos",
@@ -65,7 +67,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     twitter: {
       card: "summary_large_image",
-      title: useCase.seo.title,
+      title: `${useCase.title} - Memos Use Case`,
       description: useCase.seo.description,
     },
   };
@@ -80,14 +82,22 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
   }
 
   const IconComponent = iconMap[useCase.icon as IconName];
+  const breadcrumbItems = [
+    { href: "/", name: "Home" },
+    { href: "/use-cases", name: "Use Cases" },
+    { href: `/use-cases/${slug}`, name: useCase.title },
+  ];
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
 
   return (
     <HomeLayout {...baseOptions}>
       <main className="flex flex-1 flex-col">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         {/* Hero Section */}
         <section className="py-16 sm:py-20 lg:py-32 px-4 bg-gradient-to-b from-white via-gray-50/50 to-white dark:from-gray-900 dark:via-gray-800/50 dark:to-gray-900">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12 sm:mb-16">
+              <Breadcrumbs items={breadcrumbItems} className="mb-8 text-left" />
               <div
                 className={`inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br ${useCase.iconBg} text-gray-900 dark:text-gray-100 rounded-2xl sm:rounded-3xl mb-6 sm:mb-8`}
               >

@@ -3,9 +3,11 @@ import {
   CodeIcon,
   DollarSignIcon,
   ExternalLinkIcon,
+  FileTextIcon,
   GithubIcon,
   HeartIcon,
   HistoryIcon,
+  LightbulbIcon,
   MessageCircleIcon,
   NewspaperIcon,
   PaletteIcon,
@@ -29,6 +31,67 @@ export function Footer() {
     <footer className="border-t bg-fd-background mt-auto">
       <div className="mx-auto w-full max-w-(--fd-layout-width) px-6 py-16 lg:px-8 lg:py-20">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4 lg:gap-16">
+          {/* Explore Column */}
+          <div className="col-span-1">
+            <h3 className="font-semibold text-fd-foreground mb-6 text-sm uppercase tracking-wider">Explore</h3>
+            <ul className="space-y-4 text-sm">
+              <li>
+                <Link
+                  href="/docs"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                >
+                  <BookOpenIcon className="w-4 h-4" />
+                  Documentation
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/blog"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                >
+                  <NewspaperIcon className="w-4 h-4" />
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/changelog"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                >
+                  <HistoryIcon className="w-4 h-4" />
+                  Changelog
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/features"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                >
+                  <SparklesIcon className="w-4 h-4" />
+                  Features
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/pricing"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                >
+                  <DollarSignIcon className="w-4 h-4" />
+                  Pricing
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/use-cases"
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                >
+                  <LightbulbIcon className="w-4 h-4" />
+                  Use Cases
+                </Link>
+              </li>
+            </ul>
+          </div>
+
           {/* Features Column */}
           <div className="col-span-1">
             <h3 className="font-semibold text-fd-foreground mb-6 text-sm uppercase tracking-wider">Features</h3>
@@ -53,25 +116,16 @@ export function Footer() {
                   className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors font-medium"
                 >
                   <SparklesIcon className="w-4 h-4" />
-                  View all features →
+                  View all features
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Product Column */}
+          {/* Community Column */}
           <div className="col-span-1">
-            <h3 className="font-semibold text-fd-foreground mb-6 text-sm uppercase tracking-wider">Product</h3>
+            <h3 className="font-semibold text-fd-foreground mb-6 text-sm uppercase tracking-wider">Community</h3>
             <ul className="space-y-4 text-sm">
-              <li>
-                <Link
-                  href="/docs"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
-                >
-                  <BookOpenIcon className="w-4 h-4" />
-                  Documentation
-                </Link>
-              </li>
               <li>
                 <Link
                   href="/docs/api"
@@ -79,24 +133,6 @@ export function Footer() {
                 >
                   <CodeIcon className="w-4 h-4" />
                   API Reference
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/blog"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
-                >
-                  <NewspaperIcon className="w-4 h-4" />
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/changelog"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
-                >
-                  <HistoryIcon className="w-4 h-4" />
-                  Changelog
                 </Link>
               </li>
               <li>
@@ -110,13 +146,6 @@ export function Footer() {
                   Live Demo
                 </a>
               </li>
-            </ul>
-          </div>
-
-          {/* Community Column */}
-          <div className="col-span-1">
-            <h3 className="font-semibold text-fd-foreground mb-6 text-sm uppercase tracking-wider">Community</h3>
-            <ul className="space-y-4 text-sm">
               <li>
                 <a
                   href="https://github.com/usememos/memos"
@@ -151,11 +180,11 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/sponsors"
+                  href="/privacy"
                   className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
                 >
-                  <HeartIcon className="w-4 h-4" />
-                  Sponsors
+                  <ShieldCheckIcon className="w-4 h-4" />
+                  Privacy Policy
                 </Link>
               </li>
             </ul>
@@ -167,20 +196,20 @@ export function Footer() {
             <ul className="space-y-4 text-sm">
               <li>
                 <Link
-                  href="/pricing"
+                  href="/brand"
                   className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
                 >
-                  <DollarSignIcon className="w-4 h-4" />
-                  Pricing
+                  <PaletteIcon className="w-4 h-4" />
+                  Brand Guidelines
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/privacy"
+                  href="/sponsors"
                   className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
                 >
-                  <ShieldCheckIcon className="w-4 h-4" />
-                  Privacy Policy
+                  <HeartIcon className="w-4 h-4" />
+                  Sponsors
                 </Link>
               </li>
               <li>
@@ -195,13 +224,15 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <Link
-                  href="/brand"
+                <a
+                  href="https://github.com/usememos/memos/issues"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-fd-muted-foreground hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
                 >
-                  <PaletteIcon className="w-4 h-4" />
-                  Brand Guidelines
-                </Link>
+                  <FileTextIcon className="w-4 h-4" />
+                  Report an Issue
+                </a>
               </li>
             </ul>
           </div>

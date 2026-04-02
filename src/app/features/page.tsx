@@ -3,14 +3,21 @@ import { ArrowRightIcon, ServerIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { baseOptions } from "@/app/layout.config";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Footer } from "@/components/footer";
 import { FEATURE_SLUGS, FEATURES } from "@/lib/features";
+import { buildBreadcrumbJsonLd, buildMarketingMetadata } from "@/lib/seo";
 
 export const dynamic = "force-static";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Features",
+  ...buildMarketingMetadata({
+    title: "Features",
+    description:
+      "Explore the Memos features that matter most: instant capture, Markdown-native notes, timeline browsing, and total data ownership.",
+    path: "/features",
+  }),
   description:
     "Explore the Memos features that matter most: instant capture, Markdown-native notes, timeline browsing, and total data ownership.",
   keywords: [
@@ -24,25 +31,14 @@ export const metadata: Metadata = {
     "export",
     "keyboard shortcuts",
   ],
-  alternates: {
-    canonical: "https://usememos.com/features",
-  },
-  openGraph: {
-    title: "Memos Features - Built for Instant Capture",
-    description: "Instant capture, Markdown-native notes, self-hosted ownership, and a lightweight timeline experience.",
-    url: "https://usememos.com/features",
-    siteName: "Memos",
-    images: [
-      {
-        url: "https://usememos.com/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Memos Features Overview",
-      },
-    ],
-    type: "website",
-  },
 };
+
+const breadcrumbItems = [
+  { href: "/", name: "Home" },
+  { href: "/features", name: "Features" },
+];
+
+const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
 
 // Features are now ordered as: self-hosted, open source, note taking
 const featureOrder = FEATURE_SLUGS;
@@ -51,9 +47,11 @@ export default function FeaturesPage() {
   return (
     <HomeLayout {...baseOptions}>
       <main className="flex flex-1 flex-col">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         {/* Hero Section */}
         <section className="py-24 px-4 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50">
           <div className="max-w-6xl mx-auto text-center">
+            <Breadcrumbs items={breadcrumbItems} className="mb-8 text-left" />
             <h1 className="font-serif text-4xl font-bold tracking-tight sm:text-6xl mb-6 leading-tight">
               Built for fast capture.
               <span className="block text-teal-600 dark:text-teal-400">Focused by design.</span>

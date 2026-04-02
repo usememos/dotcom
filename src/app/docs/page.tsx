@@ -3,6 +3,8 @@ import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/page
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { AdsSectionMobile } from "@/components/ads-section";
+import { Breadcrumbs } from "@/components/breadcrumbs";
+import { buildBreadcrumbJsonLd } from "@/lib/seo";
 import { source } from "@/lib/source";
 import { tocConfig } from "@/lib/toc-config";
 import { getMDXComponents } from "@/mdx-components";
@@ -16,6 +18,10 @@ export default async function Page() {
 
   const MDXContent = page.data.body;
   const isApi = page.url.startsWith("/docs/api");
+  const breadcrumbItems = [
+    { href: "/", name: "Home" },
+    { href: page.url, name: "Documentation" },
+  ];
 
   const jsonLd = isApi
     ? {
@@ -38,10 +44,13 @@ export default async function Page() {
           name: "Memos Team",
         },
       };
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
 
   return (
     <DocsPage toc={page.data.toc} full={page.data.full} {...tocConfig}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <Breadcrumbs items={breadcrumbItems} className="mb-6" />
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>

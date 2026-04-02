@@ -2,18 +2,25 @@ import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { ExternalLinkIcon, HandshakeIcon, HeartIcon, UsersIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { baseOptions } from "@/app/layout.config";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Footer } from "@/components/footer";
+import { buildBreadcrumbJsonLd, buildMarketingMetadata } from "@/lib/seo";
 import { COMMUNITY_SPONSORS, FEATURED_SPONSORS } from "@/lib/sponsors";
 import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = {
-  title: "Sponsors - Memos",
+export const metadata: Metadata = buildMarketingMetadata({
+  title: "Sponsors",
   description:
     "Thank you to the sponsors and backers who support the development of Memos, the open-source note-taking tool built for instant capture.",
-  alternates: {
-    canonical: "https://usememos.com/sponsors",
-  },
-};
+  path: "/sponsors",
+});
+
+const breadcrumbItems = [
+  { href: "/", name: "Home" },
+  { href: "/sponsors", name: "Sponsors" },
+];
+
+const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
 
 const GITHUB_USER_BACKERS = [
   {
@@ -37,17 +44,19 @@ export default function SponsorsPage() {
   return (
     <HomeLayout {...baseOptions}>
       <main className="flex flex-1 flex-col">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50">
           <div className="max-w-6xl mx-auto">
             {/* Hero Section */}
             <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+              <Breadcrumbs items={breadcrumbItems} className="mb-8 text-left" />
               <div className="flex justify-center mb-6 sm:mb-8">
                 <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-red-50 dark:bg-red-900/20 text-red-500 rounded-2xl">
                   <HeartIcon className="w-10 h-10 sm:w-12 sm:h-12 fill-current" />
                 </div>
               </div>
               <h1 className="font-serif text-3xl sm:text-4xl lg:text-6xl font-bold tracking-tight mb-4 sm:mb-6 leading-tight px-4">
-                Thanks!
+                Sponsors
               </h1>
               <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed px-4">
                 All donations directly support the development and operation of Memos. Recurring donations allow us to plan for the future.

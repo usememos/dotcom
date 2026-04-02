@@ -14,18 +14,25 @@ import {
 } from "lucide-react";
 import type { Metadata } from "next";
 import { baseOptions } from "@/app/layout.config";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { FeatureCard } from "@/components/feature-card";
 import { Footer } from "@/components/footer";
 import { HomeCtaSection } from "@/components/home-cta-section";
 import { MarketingPageHero, MarketingSectionIntro } from "@/components/marketing-page";
+import { buildBreadcrumbJsonLd, buildMarketingMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy - Memos",
+export const metadata: Metadata = buildMarketingMetadata({
+  title: "Privacy Policy",
   description: "Memos privacy policy. No tracking, no analytics, and no hosted data path through us.",
-  alternates: {
-    canonical: "https://usememos.com/privacy",
-  },
-};
+  path: "/privacy",
+});
+
+const breadcrumbItems = [
+  { href: "/", name: "Home" },
+  { href: "/privacy", name: "Privacy Policy" },
+];
+
+const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
 
 const HERO_PROMISES = [
   "Your notes stay on infrastructure you control",
@@ -108,6 +115,12 @@ export default function PrivacyPage() {
   return (
     <HomeLayout {...baseOptions}>
       <main className="flex flex-1 flex-col">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+        <div className="px-4 pt-6 sm:px-6">
+          <div className="mx-auto w-full max-w-(--fd-layout-width)">
+            <Breadcrumbs items={breadcrumbItems} />
+          </div>
+        </div>
         <MarketingPageHero
           eyebrow="Privacy"
           title={

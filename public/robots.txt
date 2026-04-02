@@ -36,7 +36,6 @@ Crawl-delay: 10
 # Default
 User-agent: *
 Allow: /
-Disallow: /_next/static/
 Disallow: /api/
 Crawl-delay: 2
 

@@ -3,7 +3,9 @@ import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/page
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { AdsSectionMobile } from "@/components/ads-section";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { getApiDocsVersionFromSlug, getApiDocsVersionLabel, normalizeApiDocsSlug } from "@/lib/api-docs";
+import { buildBreadcrumbJsonLd } from "@/lib/seo";
 import { source } from "@/lib/source";
 import { tocConfig } from "@/lib/toc-config";
 import { getMDXComponents } from "@/mdx-components";
@@ -34,29 +36,29 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
 
   // Build breadcrumb items from URL path
   const pathParts = page.url.split("/").filter(Boolean);
-  const breadcrumbItems = pathParts.map((part, index) => {
-    const path = `/${pathParts.slice(0, index + 1).join("/")}`;
-    const name =
-      index === pathParts.length - 1
-        ? page.data.title
-        : index === 1
-          ? "API"
-          : index === 2 && apiVersionLabel
-            ? apiVersionLabel
-            : part.charAt(0).toUpperCase() + part.slice(1);
-    return {
-      "@type": "ListItem",
-      position: index + 1,
-      name,
-      item: `https://usememos.com${path}`,
-    };
-  });
+  const uiBreadcrumbItems = [
+    { href: "/", name: "Home" },
+    ...pathParts.map((part, index) => {
+      const path = `/${pathParts.slice(0, index + 1).join("/")}`;
+      const name =
+        index === pathParts.length - 1
+          ? page.data.title
+          : index === 0
+            ? "Documentation"
+            : index === 1
+              ? "API"
+              : index === 2 && apiVersionLabel
+                ? apiVersionLabel
+                : part.charAt(0).toUpperCase() + part.slice(1);
 
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: breadcrumbItems,
-  };
+      return { href: path, name };
+    }),
+  ];
+  const breadcrumbItems = uiBreadcrumbItems.map((item) => ({
+    href: item.href,
+    name: item.name,
+  }));
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
 
   const jsonLd = isApi
     ? {
@@ -84,6 +86,7 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
     <DocsPage {...fullProp} {...tocProps} {...tocConfig}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <Breadcrumbs items={breadcrumbItems} className="mb-6" />
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>

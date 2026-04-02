@@ -3,6 +3,7 @@ import { Footer } from "@/components/footer";
 import { HeroSection } from "@/components/hero-section";
 import { HomeCtaSection } from "@/components/home-cta-section";
 import { HomeDeploySection } from "@/components/home-deploy-section";
+import { HomeDiscoverSection } from "@/components/home-discover-section";
 import { HomeFeaturesSection } from "@/components/home-features-section";
 import { HomeScratchpadSection } from "@/components/home-scratchpad-section";
 import { HomeStatsSection } from "@/components/home-stats-section";
@@ -55,6 +56,7 @@ export default function HomePage() {
         primaryCta={{ text: "Get Started", href: "/docs/getting-started" }}
         secondaryCta={{ text: "Live Demo", href: "https://demo.usememos.com/", external: true }}
       />
+      <HomeDiscoverSection />
       <HomeFeaturesSection />
       <HomeUseCasesSection />
       <HomeStatsSection />

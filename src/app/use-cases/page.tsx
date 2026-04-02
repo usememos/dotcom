@@ -14,11 +14,19 @@ import {
 import type { Metadata } from "next";
 import Link from "next/link";
 import { baseOptions } from "@/app/layout.config";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Footer } from "@/components/footer";
+import { buildBreadcrumbJsonLd, buildMarketingMetadata } from "@/lib/seo";
 import { getAllUseCaseSlugs, USE_CASES } from "@/lib/use-cases";
 
 export const metadata: Metadata = {
-  title: "Use Cases - How People Use Memos",
+  ...buildMarketingMetadata({
+    title: "Use Cases",
+    description:
+      "Discover how developers, writers, self-hosters, students, families, and teams use Memos for quick capture, private notes, and lightweight documentation.",
+    path: "/use-cases",
+  }),
+  title: "Use Cases",
   description:
     "Discover how developers, writers, self-hosters, students, families, and teams use Memos for quick capture, private notes, and lightweight documentation.",
   keywords: [
@@ -33,25 +41,14 @@ export const metadata: Metadata = {
     "code snippets manager",
     "markdown notes",
   ],
-  alternates: {
-    canonical: "https://usememos.com/use-cases",
-  },
-  openGraph: {
-    title: "Use Cases - How Teams & Individuals Use Memos",
-    description:
-      "Explore real-world use cases for Memos, from software development and writing to journaling, homelabs, family updates, and shared team notes.",
-    url: "https://usememos.com/use-cases",
-    siteName: "Memos",
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Use Cases - How People Use Memos",
-    description:
-      "Discover how developers, writers, self-hosters, students, families, and teams use Memos for quick capture and private notes.",
-  },
 };
+
+const breadcrumbItems = [
+  { href: "/", name: "Home" },
+  { href: "/use-cases", name: "Use Cases" },
+];
+
+const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
 
 // Icon mapping
 const iconMap = {
@@ -133,9 +130,11 @@ export default function UseCasesPage() {
   return (
     <HomeLayout {...baseOptions}>
       <main className="flex flex-1 flex-col">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         {/* Hero Section */}
         <section className="py-16 sm:py-20 lg:py-32 px-4 bg-gradient-to-b from-white via-gray-50/50 to-white dark:from-gray-900 dark:via-gray-800/50 dark:to-gray-900">
           <div className="max-w-6xl mx-auto text-center">
+            <Breadcrumbs items={breadcrumbItems} className="mb-8 text-left" />
             <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-teal-100 to-cyan-100 dark:from-teal-900/30 dark:to-cyan-900/30 text-teal-600 dark:text-teal-400 rounded-2xl sm:rounded-3xl mb-6 sm:mb-8">
               <LightbulbIcon className="w-8 h-8 sm:w-10 sm:h-10" />
             </div>
