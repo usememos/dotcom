@@ -4,8 +4,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { baseOptions } from "@/app/layout.config";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Footer } from "@/components/footer";
 import { getAllFeatureSlugs, getFeature } from "@/lib/features";
+import { buildBreadcrumbJsonLd } from "@/lib/seo";
 
 interface FeaturePageProps {
   params: Promise<{ slug: string }>;
@@ -22,13 +24,22 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
     notFound();
   }
 
+  const breadcrumbItems = [
+    { href: "/", name: "Home" },
+    { href: "/features", name: "Features" },
+    { href: `/features/${slug}`, name: feature.title },
+  ];
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
+
   return (
     <HomeLayout {...baseOptions}>
       <main className="flex flex-1 flex-col">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         {/* Hero Section */}
         <section className="relative py-16 sm:py-20 lg:py-32 px-4 sm:px-6 overflow-hidden bg-gradient-to-br from-white via-gray-50/50 to-teal-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700">
           <div className="absolute inset-0 bg-grid-gray-100/50 dark:bg-grid-gray-800/50 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] pointer-events-none"></div>
           <div className="relative max-w-5xl mx-auto text-center">
+            <Breadcrumbs items={breadcrumbItems} className="mb-8 text-left" />
             <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight mb-4 sm:mb-6 leading-[1.1] text-balance text-gray-900 dark:text-gray-50">
               {feature.hero.title}
             </h1>
@@ -173,7 +184,7 @@ export async function generateMetadata({ params }: FeaturePageProps): Promise<Me
   const pageUrl = `https://usememos.com/features/${slug}`;
 
   return {
-    title: `${feature.title} - Memos Features`,
+    title: `${feature.title} Feature`,
     description: feature.description,
     keywords: [`memos ${feature.title.toLowerCase()}`, "self-hosted", "privacy", "note taking", "open source"],
     alternates: {

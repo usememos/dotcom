@@ -2,36 +2,28 @@ import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { CalendarIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { baseOptions } from "@/app/layout.config";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ChangelogListItem } from "@/components/changelog-list-item";
 import { Footer } from "@/components/footer";
 import { CHANGELOG_COLUMN_CLASS, getChangelogDescription, getChangelogVersion, sortChangelogPages } from "@/lib/changelog";
+import { buildBreadcrumbJsonLd, buildMarketingMetadata } from "@/lib/seo";
 import { changelogSource } from "@/lib/source";
 
 export const dynamic = "force-static";
 export const revalidate = 1800;
 
-export const metadata: Metadata = {
-  title: "Changelogs",
+export const metadata: Metadata = buildMarketingMetadata({
+  title: "Changelog",
   description: "Stay up to date with new features, improvements, and bug fixes in Memos.",
-  alternates: {
-    canonical: "https://usememos.com/changelog",
-  },
-  openGraph: {
-    title: "Memos Changelog - Release Notes & Updates",
-    description: "Stay up to date with new features, improvements, and bug fixes in Memos.",
-    url: "https://usememos.com/changelog",
-    siteName: "Memos",
-    images: [
-      {
-        url: "https://usememos.com/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Memos Changelog",
-      },
-    ],
-    type: "website",
-  },
-};
+  path: "/changelog",
+});
+
+const breadcrumbItems = [
+  { href: "/", name: "Home" },
+  { href: "/changelog", name: "Changelog" },
+];
+
+const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
 
 export default function ChangelogPage() {
   const entries = sortChangelogPages(changelogSource.getPages());
@@ -41,15 +33,17 @@ export default function ChangelogPage() {
   return (
     <HomeLayout {...baseOptions}>
       <main className="flex flex-1 flex-col">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         <section className="bg-[linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(245,247,244,0.98)_26%,rgba(245,247,244,1)_100%)] px-4 py-12 dark:bg-[linear-gradient(180deg,rgba(10,10,10,0.96)_0%,rgba(18,18,18,1)_28%,rgba(10,10,10,1)_100%)] sm:py-16 lg:py-24">
           <div className={CHANGELOG_COLUMN_CLASS}>
             <div className="mb-12 sm:mb-16 lg:mb-20">
+              <Breadcrumbs items={breadcrumbItems} className="mb-8" />
               <div className="mb-4 flex flex-wrap items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-500 dark:text-gray-400 sm:mb-6">
                 <span className="text-teal-700/90 dark:text-teal-300/90">Release History</span>
                 {latestVersion && <span>Latest {latestVersion}</span>}
               </div>
               <h1 className="mb-4 font-serif text-3xl font-bold leading-[1.02] tracking-tight text-gray-950 dark:text-gray-50 sm:mb-6 sm:text-4xl lg:text-5xl xl:text-[4.25rem]">
-                Changelogs
+                Changelog
               </h1>
               <p className="max-w-2xl text-base leading-8 text-gray-600 dark:text-gray-300 sm:text-lg">
                 Stay up to date with new features, improvements, and bug fixes in Memos.

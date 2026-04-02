@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { baseOptions } from "@/app/layout.config";
 import { AdsSectionDesktop, AdsSectionMobile } from "@/components/ads-section";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ChangelogArticleBody } from "@/components/changelog-article-body";
 import { ChangelogFooter } from "@/components/changelog-footer";
 import { ChangelogHeader } from "@/components/changelog-header";
@@ -17,6 +18,7 @@ import {
   getChangelogVersion,
   sortChangelogPages,
 } from "@/lib/changelog";
+import { buildBreadcrumbJsonLd } from "@/lib/seo";
 import { changelogSource } from "@/lib/source";
 
 interface ChangelogPageProps {
@@ -39,14 +41,22 @@ export default async function ChangelogEntryPage({ params }: ChangelogPageProps)
   const version = getChangelogVersion(data.title);
   const sortedEntries = sortChangelogPages(changelogSource.getPages());
   const isLatest = sortedEntries[0]?.url === page.url;
+  const breadcrumbItems = [
+    { href: "/", name: "Home" },
+    { href: "/changelog", name: "Changelog" },
+    { href: `/changelog/${slug}`, name: version },
+  ];
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
 
   return (
     <HomeLayout {...baseOptions}>
       <main className="flex flex-1 flex-col bg-[linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(245,247,244,0.98)_26%,rgba(245,247,244,1)_100%)] dark:bg-[linear-gradient(180deg,rgba(10,10,10,0.96)_0%,rgba(18,18,18,1)_28%,rgba(10,10,10,1)_100%)]">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         <section className="px-4 pb-8 pt-8 sm:pt-12 lg:pb-10">
           <div className={CHANGELOG_DETAIL_LAYOUT_CLASS}>
             <div className="min-w-0">
               <div className={CHANGELOG_ARTICLE_COLUMN_CLASS}>
+                <Breadcrumbs items={breadcrumbItems} className="mb-6" />
                 <Link
                   href="/changelog"
                   className="group mb-8 inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition-colors hover:text-teal-600 dark:text-gray-300 dark:hover:text-teal-400 sm:mb-12"
@@ -130,7 +140,7 @@ export async function generateMetadata({ params }: ChangelogPageProps): Promise<
   const pageUrl = `https://usememos.com/changelog/${slug}`;
 
   return {
-    title: `${version} Release Notes - Memos`,
+    title: `${version} Release Notes`,
     description: getChangelogDescription(version, data.description),
     alternates: {
       canonical: pageUrl,

@@ -1,5 +1,6 @@
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 import Image from "next/image";
+import { SITE_NAV_ITEMS } from "@/lib/seo";
 
 /**
  * Shared layout configurations
@@ -17,19 +18,9 @@ export const baseOptions: BaseLayoutProps = {
       </>
     ),
   },
-  links: [
-    {
-      text: <span className="font-semibold">Documentation</span>,
-      url: "/docs",
-    },
-    {
-      text: <span className="font-semibold">Changelog</span>,
-      url: "/changelog",
-    },
-    {
-      text: <span className="font-semibold">Features</span>,
-      url: "/features",
-    },
-  ],
+  links: SITE_NAV_ITEMS.map((item) => ({
+    text: <span className="font-semibold">{item.name}</span>,
+    url: item.href,
+  })),
   githubUrl: "https://github.com/usememos/memos",
 };

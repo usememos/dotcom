@@ -1,6 +1,3 @@
-"use client";
-
-import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, PlayCircleIcon, SparklesIcon } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -21,42 +18,16 @@ interface HeroSectionProps {
   };
 }
 
-const fadeUp = {
-  initial: { opacity: 0, y: 28 },
-  animate: { opacity: 1, y: 0 },
-};
-
-const stagger = {
-  animate: {
-    transition: {
-      staggerChildren: 0.06,
-      delayChildren: 0.04,
-    },
-  },
-};
-
 export function HeroSection({ version = "0.26.2", title, subtitle, primaryCta, secondaryCta }: HeroSectionProps) {
-  const shouldReduceMotion = useReducedMotion();
-  const transition = { duration: 0.8, ease: [0.22, 1, 0.36, 1] as const };
-
   return (
     <section className="relative isolate overflow-hidden bg-[radial-gradient(circle_at_16%_18%,_rgba(20,184,166,0.18),_transparent_24%),radial-gradient(circle_at_78%_22%,_rgba(14,165,233,0.1),_transparent_22%),linear-gradient(180deg,_rgba(246,252,251,1)_0%,_rgba(240,247,246,0.97)_40%,_rgba(255,255,255,1)_100%)] dark:bg-[radial-gradient(circle_at_16%_18%,_rgba(13,148,136,0.18),_transparent_24%),radial-gradient(circle_at_78%_22%,_rgba(8,145,178,0.14),_transparent_22%),linear-gradient(180deg,_rgba(9,13,16,1)_0%,_rgba(10,16,19,0.98)_42%,_rgba(7,10,12,1)_100%)]">
       <div className="pointer-events-none absolute inset-0 opacity-40 [background-image:linear-gradient(to_right,rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.04)_1px,transparent_1px)] [background-position:center] [background-size:32px_32px] dark:opacity-20" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-white dark:to-[#070a0c]" />
 
       <div className="mx-auto w-full max-w-(--fd-layout-width) px-4 pb-8 pt-10 sm:px-6 sm:pb-12 sm:pt-14 md:px-4 md:py-28 lg:py-36">
-        <motion.div
-          initial="initial"
-          animate="animate"
-          variants={stagger}
-          className="grid gap-10 md:grid-cols-[minmax(0,28rem)_minmax(0,1fr)] md:items-center md:gap-8 lg:gap-16"
-        >
+        <div className="grid gap-10 md:grid-cols-[minmax(0,28rem)_minmax(0,1fr)] md:items-center md:gap-8 lg:gap-16">
           <div className="relative z-10 max-w-2xl">
-            <motion.div
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              variants={fadeUp}
-              className="mb-5 inline-flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300"
-            >
+            <div className="mb-5 inline-flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
               {version && (
                 <Link
                   href={`/changelog/${version.replace(/\./g, "-")}`}
@@ -67,25 +38,15 @@ export function HeroSection({ version = "0.26.2", title, subtitle, primaryCta, s
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               )}
-            </motion.div>
+            </div>
 
-            <motion.h1
-              transition={transition}
-              variants={fadeUp}
-              className="max-w-3xl font-serif text-4xl leading-[0.95] font-bold tracking-[-0.05em] text-slate-950 sm:text-5xl lg:text-6xl dark:text-white"
-            >
+            <h1 className="max-w-3xl font-serif text-4xl leading-[0.95] font-bold tracking-[-0.05em] text-slate-950 sm:text-5xl lg:text-6xl dark:text-white">
               {title}
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              transition={transition}
-              variants={fadeUp}
-              className="mt-5 max-w-lg text-base leading-7 text-slate-600 sm:text-lg dark:text-slate-300"
-            >
-              {subtitle}
-            </motion.p>
+            <p className="mt-5 max-w-lg text-base leading-7 text-slate-600 sm:text-lg dark:text-slate-300">{subtitle}</p>
 
-            <motion.div transition={transition} variants={fadeUp} className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 href={primaryCta.href}
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-6 py-3.5 text-sm font-semibold text-white transition-transform duration-300 hover:-translate-y-0.5 dark:bg-white dark:text-slate-950"
@@ -102,21 +63,14 @@ export function HeroSection({ version = "0.26.2", title, subtitle, primaryCta, s
                 <PlayCircleIcon className="h-4 w-4" />
                 {secondaryCta.text}
               </Link>
-            </motion.div>
+            </div>
           </div>
 
-          <motion.div
-            variants={fadeUp}
-            transition={{
-              duration: shouldReduceMotion ? 0.3 : 1,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="relative mx-auto w-full max-w-[42rem] xl:mx-0 xl:justify-self-end"
-          >
+          <div className="relative mx-auto w-full max-w-[42rem] xl:mx-0 xl:justify-self-end">
             <div className="pointer-events-none absolute inset-0 rounded-[2.25rem] bg-[radial-gradient(circle_at_center,_rgba(20,184,166,0.16),_transparent_66%)] blur-3xl dark:bg-[radial-gradient(circle_at_center,_rgba(45,212,191,0.18),_transparent_68%)]" />
             <MemoHeroMock />
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -3,6 +3,7 @@ import { RootProvider } from "fumadocs-ui/provider/next";
 import type { Metadata } from "next";
 import { Inter, Source_Serif_4 } from "next/font/google";
 import type { ReactNode } from "react";
+import { buildSiteNavigationJsonLd } from "@/lib/seo";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -91,14 +92,8 @@ export default function Layout({ children }: { children: ReactNode }) {
       price: "0",
       priceCurrency: "USD",
     },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.8",
-      ratingCount: "1000",
-    },
     url: "https://usememos.com",
     downloadUrl: "https://github.com/usememos/memos",
-    softwareVersion: "latest",
     author: {
       "@type": "Organization",
       name: "Memos Team",
@@ -149,6 +144,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       "query-input": "required name=search_term_string",
     },
   };
+  const siteNavigationJsonLd = buildSiteNavigationJsonLd();
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -161,6 +157,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteNavigationJsonLd) }} />
       </head>
       <body className={`${inter.variable} ${displaySerif.variable} flex min-h-screen flex-col antialiased`}>
         <RootProvider theme={{ defaultTheme: "system", enableSystem: true }}>{children}</RootProvider>

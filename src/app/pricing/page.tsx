@@ -2,21 +2,28 @@ import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { CheckCircleIcon, FileTextIcon, GithubIcon, HeartIcon, ServerIcon, ShieldIcon, UsersIcon, ZapIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { baseOptions } from "@/app/layout.config";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { DocsCarbonAdCard } from "@/components/docs-carbon-ad-card";
 import { FeatureCard } from "@/components/feature-card";
 import { Footer } from "@/components/footer";
 import { HomeCtaSection } from "@/components/home-cta-section";
 import { MarketingPageHero, MarketingSectionIntro } from "@/components/marketing-page";
+import { buildBreadcrumbJsonLd, buildMarketingMetadata } from "@/lib/seo";
 import { FEATURED_SPONSORS } from "@/lib/sponsors";
 import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = {
-  title: "Pricing - Memos",
+export const metadata: Metadata = buildMarketingMetadata({
+  title: "Pricing",
   description: "Memos software is free to use and self-host. No subscriptions, no premium tiers, and no vendor lock-in.",
-  alternates: {
-    canonical: "https://usememos.com/pricing",
-  },
-};
+  path: "/pricing",
+});
+
+const breadcrumbItems = [
+  { href: "/", name: "Home" },
+  { href: "/pricing", name: "Pricing" },
+];
+
+const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
 
 const HERO_INCLUDED = [
   "All core features included",
@@ -137,6 +144,12 @@ export default function PricingPage() {
   return (
     <HomeLayout {...baseOptions}>
       <main className="flex flex-1 flex-col">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+        <div className="px-4 pt-6 sm:px-6">
+          <div className="mx-auto w-full max-w-(--fd-layout-width)">
+            <Breadcrumbs items={breadcrumbItems} />
+          </div>
+        </div>
         <MarketingPageHero
           eyebrow="Pricing"
           title={

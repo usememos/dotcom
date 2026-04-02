@@ -3,15 +3,22 @@ import { DownloadIcon, PaletteIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { baseOptions } from "@/app/layout.config";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Footer } from "@/components/footer";
+import { buildBreadcrumbJsonLd, buildMarketingMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Brand - Memos",
+export const metadata: Metadata = buildMarketingMetadata({
+  title: "Brand",
   description: "Official Memos brand assets, logos, and usage guidelines for the open-source note-taking tool built for instant capture.",
-  alternates: {
-    canonical: "https://usememos.com/brand",
-  },
-};
+  path: "/brand",
+});
+
+const breadcrumbItems = [
+  { href: "/", name: "Home" },
+  { href: "/brand", name: "Brand" },
+];
+
+const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
 
 const LOGO_ASSETS = [
   {
@@ -59,10 +66,12 @@ export default function BrandPage() {
   return (
     <HomeLayout {...baseOptions}>
       <main className="flex flex-1 flex-col">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         <section className="py-12 sm:py-16 lg:py-24 px-4 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50">
           <div className="max-w-4xl mx-auto">
             {/* Hero */}
             <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+              <Breadcrumbs items={breadcrumbItems} className="mb-8 text-left" />
               <div className="flex justify-center mb-6">
                 <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-teal-100 to-cyan-100 dark:from-teal-900/30 dark:to-cyan-900/30 text-teal-600 dark:text-teal-400 rounded-2xl">
                   <PaletteIcon className="w-7 h-7 sm:w-8 sm:h-8" />
