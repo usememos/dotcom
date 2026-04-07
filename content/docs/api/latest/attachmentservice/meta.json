@@ -1,4 +1,4 @@
 {
   "title": "Attachment Service",
-  "pages": ["CreateAttachment", "DeleteAttachment", "GetAttachment", "ListAttachments", "UpdateAttachment"]
+  "pages": ["BatchDeleteAttachments", "CreateAttachment", "DeleteAttachment", "GetAttachment", "ListAttachments", "UpdateAttachment"]
 }

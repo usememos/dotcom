@@ -1,6 +1,7 @@
 {
   "title": "User Service",
   "pages": [
+    "BatchGetUsers",
     "CreatePersonalAccessToken",
     "CreateUser",
     "CreateUserWebhook",
