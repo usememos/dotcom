@@ -3,22 +3,22 @@
 @import "fumadocs-ui/css/preset.css";
 
 :root {
-  --background: oklch(0.972 0.01 78);
-  --foreground: oklch(0.32 0.018 65);
-  --card: oklch(0.988 0.004 80);
-  --card-foreground: oklch(0.29 0.015 68);
-  --popover: oklch(0.992 0.003 80);
-  --popover-foreground: oklch(0.3 0.016 68);
-  --primary: oklch(0.5 0.045 48);
-  --primary-foreground: oklch(0.985 0.004 82);
-  --secondary: oklch(0.948 0.012 78);
-  --secondary-foreground: oklch(0.42 0.018 62);
-  --muted: oklch(0.952 0.008 78);
-  --muted-foreground: oklch(0.52 0.014 65);
-  --accent: oklch(0.948 0.012 78);
-  --accent-foreground: oklch(0.34 0.018 62);
-  --border: oklch(0.89 0.01 72);
-  --ring: oklch(0.5 0.045 48);
+  --background: oklch(0.995 0 0);
+  --foreground: oklch(0.22 0.006 250);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2 0.006 250);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2 0.006 250);
+  --primary: oklch(0.48 0.09 165);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.965 0.004 250);
+  --secondary-foreground: oklch(0.32 0.008 250);
+  --muted: oklch(0.962 0.004 250);
+  --muted-foreground: oklch(0.5 0.01 250);
+  --accent: oklch(0.955 0.018 165);
+  --accent-foreground: oklch(0.28 0.055 165);
+  --border: oklch(0.9 0.006 250);
+  --ring: oklch(0.48 0.09 165);
 
   --color-fd-background: var(--background);
   --color-fd-foreground: var(--foreground);
@@ -39,33 +39,33 @@
 }
 
 .dark {
-  --background: oklch(0.2 0.008 70);
-  --foreground: oklch(0.92 0.01 78);
-  --card: oklch(0.24 0.008 68);
-  --card-foreground: oklch(0.94 0.01 80);
-  --popover: oklch(0.25 0.008 68);
-  --popover-foreground: oklch(0.93 0.01 78);
-  --primary: oklch(0.78 0.03 70);
-  --primary-foreground: oklch(0.2 0.008 68);
-  --secondary: oklch(0.27 0.008 68);
-  --secondary-foreground: oklch(0.9 0.01 78);
-  --muted: oklch(0.27 0.008 68);
-  --muted-foreground: oklch(0.74 0.01 72);
-  --accent: oklch(0.29 0.008 68);
-  --accent-foreground: oklch(0.92 0.01 78);
-  --border: oklch(0.34 0.008 68 / 0.55);
-  --ring: oklch(0.78 0.03 70);
+  --background: oklch(0.17 0.006 250);
+  --foreground: oklch(0.94 0.003 250);
+  --card: oklch(0.2 0.007 250);
+  --card-foreground: oklch(0.94 0.003 250);
+  --popover: oklch(0.2 0.007 250);
+  --popover-foreground: oklch(0.94 0.003 250);
+  --primary: oklch(0.72 0.09 165);
+  --primary-foreground: oklch(0.17 0.006 250);
+  --secondary: oklch(0.24 0.008 250);
+  --secondary-foreground: oklch(0.9 0.004 250);
+  --muted: oklch(0.24 0.008 250);
+  --muted-foreground: oklch(0.7 0.008 250);
+  --accent: oklch(0.25 0.035 165);
+  --accent-foreground: oklch(0.9 0.045 165);
+  --border: oklch(0.34 0.01 250 / 0.6);
+  --ring: oklch(0.72 0.09 165);
 }
 
 body {
   font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   background-color: var(--color-fd-background);
-  background-image: linear-gradient(180deg, rgba(249, 245, 238, 0.95) 0%, rgba(246, 241, 232, 0.92) 48%, rgba(250, 247, 241, 1) 100%);
+  background-image: none;
   color: var(--color-fd-foreground);
 }
 
 .dark body {
-  background-image: linear-gradient(180deg, rgba(27, 24, 21, 1) 0%, rgba(31, 27, 23, 1) 48%, rgba(25, 22, 19, 1) 100%);
+  background-image: none;
 }
 
 .font-serif {

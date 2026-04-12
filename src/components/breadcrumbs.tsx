@@ -9,18 +9,18 @@ interface BreadcrumbsProps {
 export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
   return (
     <nav aria-label="Breadcrumb" className={className}>
-      <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-slate-500 dark:text-slate-400">
+      <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-zinc-500 dark:text-zinc-400">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
 
           return (
             <li key={`${item.href}-${item.name}`} className="flex items-center gap-2">
               {isLast ? (
-                <span aria-current="page" className="font-medium text-slate-700 dark:text-slate-200">
+                <span aria-current="page" className="font-medium text-zinc-700 dark:text-zinc-200">
                   {item.name}
                 </span>
               ) : (
-                <Link href={item.href} className="transition-colors hover:text-teal-700 dark:hover:text-teal-300">
+                <Link href={item.href} className="transition-colors hover:text-zinc-700 dark:hover:text-zinc-700">
                   {item.name}
                 </Link>
               )}

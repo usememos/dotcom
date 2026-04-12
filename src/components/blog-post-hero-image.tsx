@@ -8,7 +8,7 @@ interface BlogPostHeroImageProps {
 export function BlogPostHeroImage({ alt, src }: BlogPostHeroImageProps) {
   return (
     <div className={`${BLOG_COLUMN_CLASS} mt-10 sm:mt-12`}>
-      <img src={src} alt={alt} className="h-56 w-full rounded-2xl object-cover sm:h-72 lg:h-[30rem]" />
+      <img src={src} alt={alt} className="h-56 w-full rounded-lg object-cover sm:h-72 lg:h-[30rem]" />
     </div>
   );
 }

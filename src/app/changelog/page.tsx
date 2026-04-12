@@ -32,29 +32,26 @@ export default function ChangelogPage() {
 
   return (
     <HomeLayout {...baseOptions}>
-      <main className="flex flex-1 flex-col">
+      <main className="flex flex-1 flex-col bg-white dark:bg-zinc-950">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-        <section className="bg-[linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(245,247,244,0.98)_26%,rgba(245,247,244,1)_100%)] px-4 py-12 dark:bg-[linear-gradient(180deg,rgba(10,10,10,0.96)_0%,rgba(18,18,18,1)_28%,rgba(10,10,10,1)_100%)] sm:py-16 lg:py-24">
+        <section className="px-4 py-14 sm:px-6 lg:py-20">
           <div className={CHANGELOG_COLUMN_CLASS}>
-            <div className="mb-12 sm:mb-16 lg:mb-20">
-              <Breadcrumbs items={breadcrumbItems} className="mb-8" />
-              <div className="mb-4 flex flex-wrap items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-500 dark:text-gray-400 sm:mb-6">
-                <span className="text-teal-700/90 dark:text-teal-300/90">Release History</span>
-                {latestVersion && <span>Latest {latestVersion}</span>}
-              </div>
-              <h1 className="mb-4 font-serif text-3xl font-bold leading-[1.02] tracking-tight text-gray-950 dark:text-gray-50 sm:mb-6 sm:text-4xl lg:text-5xl xl:text-[4.25rem]">
+            <div className="mb-12 border-b border-zinc-200 pb-10 dark:border-white/10 sm:mb-16">
+              <Breadcrumbs items={breadcrumbItems} className="mb-10" />
+              <p className="mb-5 text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Release History</p>
+              <h1 className="text-balance font-serif text-4xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-6xl lg:text-7xl">
                 Changelog
               </h1>
-              <p className="max-w-2xl text-base leading-8 text-gray-600 dark:text-gray-300 sm:text-lg">
+              <p className="mt-6 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">
                 Stay up to date with new features, improvements, and bug fixes in Memos.
               </p>
 
-              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-600 dark:text-gray-300">
+              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-zinc-600 dark:text-zinc-300">
                 <div className="inline-flex items-center gap-2">
-                  <CalendarIcon className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+                  <CalendarIcon className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
                   <span>{entries.length} documented releases</span>
                 </div>
-                <span className="text-gray-400 dark:text-gray-500">Each entry includes the shipped changes and upgrade context.</span>
+                {latestVersion ? <span className="text-zinc-400 dark:text-zinc-1000">Latest {latestVersion}</span> : null}
               </div>
             </div>
 
@@ -77,38 +74,14 @@ export default function ChangelogPage() {
             </div>
 
             {entries.length === 0 && (
-              <div className="text-center py-12 sm:py-16">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
-                  <CalendarIcon className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
+              <div className="py-12 text-center sm:py-16">
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-zinc-100 dark:bg-white/5 sm:mb-6 sm:h-16 sm:w-16">
+                  <CalendarIcon className="h-6 w-6 text-zinc-400 sm:h-8 sm:w-8" />
                 </div>
-                <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No changelog entries yet</h3>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 px-4">Check back soon for updates and new releases.</p>
+                <h3 className="mb-2 text-base font-medium text-zinc-900 dark:text-zinc-100 sm:text-lg">No changelog entries yet</h3>
+                <p className="px-4 text-sm text-zinc-600 dark:text-zinc-300 sm:text-base">Check back soon for updates and new releases.</p>
               </div>
             )}
-
-            <div className="mt-12 border-t border-gray-200/80 pt-8 dark:border-gray-800 sm:mt-16 sm:pt-10 lg:mt-20">
-              <p className="max-w-2xl text-base leading-8 text-gray-600 dark:text-gray-300 sm:text-lg">
-                Want to contribute to Memos or report an issue?
-              </p>
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:gap-5">
-                <a
-                  href="https://github.com/usememos/memos"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-semibold text-gray-700 transition-colors hover:text-teal-700 dark:text-gray-200 dark:hover:text-teal-300 sm:text-base"
-                >
-                  View on GitHub
-                </a>
-                <a
-                  href="https://github.com/usememos/memos/releases"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-semibold text-teal-700 transition-colors hover:text-teal-800 dark:text-teal-300 dark:hover:text-teal-200 sm:text-base"
-                >
-                  All Releases
-                </a>
-              </div>
-            </div>
           </div>
         </section>
       </main>

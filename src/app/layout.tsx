@@ -20,10 +20,11 @@ const displaySerif = Source_Serif_4({
 export const metadata: Metadata = {
   metadataBase: new URL("https://usememos.com"),
   title: {
-    default: "Memos - Capture thoughts instantly. Own them completely.",
+    default: "Memos - Capture first. Keep it yours.",
     template: "%s - Memos",
   },
-  description: "Open-source, self-hosted note-taking tool built for instant capture. Markdown-native, privacy-first, and fully yours.",
+  description:
+    "Open-source, self-hosted timeline for quick notes, daily logs, links, and snippets. Markdown-native, lightweight, and yours to run.",
   keywords: [
     "note taking app",
     "self-hosted notes",
@@ -54,21 +55,23 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://usememos.com",
     siteName: "Memos",
-    title: "Memos - Capture thoughts instantly. Own them completely.",
-    description: "Open-source, self-hosted note-taking tool built for instant capture. Markdown-native, privacy-first, and fully yours.",
+    title: "Memos - Capture first. Keep it yours.",
+    description:
+      "Open-source, self-hosted timeline for quick notes, daily logs, links, and snippets. Markdown-native, lightweight, and yours to run.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Memos - Capture thoughts instantly. Own them completely.",
+        alt: "Memos - Capture first. Keep it yours.",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Memos - Capture thoughts instantly. Own them completely.",
-    description: "Open-source, self-hosted note-taking tool built for instant capture. Markdown-native, privacy-first, and fully yours.",
+    title: "Memos - Capture first. Keep it yours.",
+    description:
+      "Open-source, self-hosted timeline for quick notes, daily logs, links, and snippets. Markdown-native, lightweight, and yours to run.",
     images: ["/og-image.png"],
   },
   icons: {
@@ -83,8 +86,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "Memos",
-    description:
-      "An open-source, self-hosted note-taking tool built for instant capture. Markdown-native, privacy-first, and ready in minutes.",
+    description: "An open-source, self-hosted timeline for quick notes, daily logs, links, and snippets.",
     applicationCategory: "ProductivityApplication",
     operatingSystem: "Cross-platform",
     offers: {
@@ -111,7 +113,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     screenshot: "https://usememos.com/demo.png",
     featureList: [
       "Instant thought capture",
-      "Total data ownership",
+      "Private timeline",
       "Markdown-native storage",
       "Self-hosted, zero telemetry",
       "MIT licensed, open source",

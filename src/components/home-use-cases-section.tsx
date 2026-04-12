@@ -66,21 +66,22 @@ const USE_CASES = [
 
 export function HomeUseCasesSection() {
   return (
-    <section className="relative overflow-hidden bg-transparent px-4 py-14 sm:px-6 sm:py-18 lg:py-24">
+    <section className="border-b border-zinc-200 bg-zinc-50 px-4 py-14 dark:border-white/10 dark:bg-zinc-950 sm:px-6 sm:py-18 lg:py-22">
       <div className="mx-auto w-full max-w-(--fd-layout-width)">
-        <div className="grid gap-10 border-t border-stone-300/60 pt-10 dark:border-white/10 lg:grid-cols-[minmax(0,21rem)_minmax(0,1fr)] lg:gap-14 lg:pt-14">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
           <div className="lg:sticky lg:top-24 lg:self-start">
             <SectionHeader
               icon={LightbulbIcon}
-              title="Who Uses Memos?"
-              description="Developers, writers, self-hosters, and anyone who wants a faster way to save a thought."
+              eyebrow="Use Cases"
+              title="Where Memos fits."
+              description="Use it where small notes matter: logs, links, snippets, journals, and private updates you want to keep."
               align="left"
             />
             <Link
               href="/use-cases"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-stone-900 transition-colors hover:text-stone-700 dark:text-stone-100 dark:hover:text-stone-200 sm:text-base"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-zinc-950 transition-colors hover:text-zinc-600 dark:text-zinc-100 dark:hover:text-zinc-300 sm:text-base"
             >
-              Explore All Use Cases
+              Explore Use Cases
               <ArrowRightIcon className="h-4 w-4" />
             </Link>
           </div>
@@ -90,19 +91,19 @@ export function HomeUseCasesSection() {
               <Link
                 key={useCase.title}
                 href={`/use-cases/${useCase.slug}`}
-                className="group flex gap-4 border-b border-stone-300/60 py-6 transition-colors hover:text-stone-700 dark:border-white/10 dark:hover:text-stone-200 sm:py-7"
+                className="group flex gap-4 border-b border-zinc-200 py-6 transition-colors hover:text-zinc-700 dark:border-white/10 dark:hover:text-zinc-200 sm:py-7"
               >
                 <div className="flex flex-col items-start gap-4">
-                  <span className="text-[11px] font-semibold tracking-[0.18em] text-stone-400 uppercase dark:text-stone-500">
+                  <span className="text-[11px] font-semibold tracking-[0.18em] text-zinc-400 uppercase dark:text-zinc-500">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <div className="inline-flex h-8 w-8 items-center justify-center text-stone-800 dark:text-stone-200">{useCase.icon}</div>
+                  <div className="inline-flex h-8 w-8 items-center justify-center text-zinc-800 dark:text-zinc-200">{useCase.icon}</div>
                 </div>
                 <div className="min-w-0 pt-0.5">
-                  <h3 className="text-balance text-lg font-semibold tracking-tight text-stone-950 dark:text-stone-100 sm:text-xl">
+                  <h3 className="text-balance text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-100 sm:text-xl">
                     {useCase.title}
                   </h3>
-                  <p className="mt-3 max-w-[24rem] text-balance text-sm leading-7 text-stone-600 dark:text-stone-300 sm:text-[0.98rem]">
+                  <p className="mt-3 max-w-[24rem] text-balance text-sm leading-7 text-zinc-600 dark:text-zinc-300 sm:text-[0.98rem]">
                     {useCase.description}
                   </p>
                 </div>

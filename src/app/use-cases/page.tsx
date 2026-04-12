@@ -1,16 +1,4 @@
 import { HomeLayout } from "fumadocs-ui/layouts/home";
-import {
-  BookOpenIcon,
-  CodeIcon,
-  GraduationCapIcon,
-  LightbulbIcon,
-  PencilIcon,
-  ServerIcon,
-  ShieldCheckIcon,
-  UserIcon,
-  UsersIcon,
-  WrenchIcon,
-} from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { baseOptions } from "@/app/layout.config";
@@ -22,13 +10,11 @@ import { getAllUseCaseSlugs, USE_CASES } from "@/lib/use-cases";
 export const metadata: Metadata = {
   ...buildMarketingMetadata({
     title: "Use Cases",
-    description:
-      "Discover how developers, writers, self-hosters, students, families, and teams use Memos for quick capture, private notes, and lightweight documentation.",
+    description: "See where Memos fits best: quick notes, daily logs, links, snippets, private updates, and lightweight documentation.",
     path: "/use-cases",
   }),
   title: "Use Cases",
-  description:
-    "Discover how developers, writers, self-hosters, students, families, and teams use Memos for quick capture, private notes, and lightweight documentation.",
+  description: "See where Memos fits best: quick notes, daily logs, links, snippets, private updates, and lightweight documentation.",
   keywords: [
     "note taking use cases",
     "self-hosted notes",
@@ -50,213 +36,116 @@ const breadcrumbItems = [
 
 const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
 
-// Icon mapping
-const iconMap = {
-  CodeIcon: CodeIcon,
-  PencilIcon: PencilIcon,
-  ShieldCheckIcon: ShieldCheckIcon,
-  GraduationCapIcon: GraduationCapIcon,
-  BookOpenIcon: BookOpenIcon,
-  ServerIcon: ServerIcon,
-  UsersIcon: UsersIcon,
-  WrenchIcon: WrenchIcon,
-} as const;
-
-type IconName = keyof typeof iconMap;
-
-// Use case card data for the quick overview grid
-const useCaseCards = [
+const USE_CASE_PRINCIPLES = [
   {
-    slug: "self-hosting",
-    icon: ServerIcon,
-    title: "Self-Hosters",
-    description: "Server documentation",
-    gradient: "from-slate-50 to-gray-50 dark:from-slate-900/20 dark:to-gray-900/20",
+    title: "Start with small notes.",
+    description: "A link, a log, a quick update, or a thought that needs a place to land.",
   },
   {
-    slug: "family",
-    icon: UsersIcon,
-    title: "Family",
-    description: "Private updates & memories",
-    gradient: "from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20",
+    title: "Keep the timeline natural.",
+    description: "Write now, then use tags and search when you need to find something later.",
   },
   {
-    slug: "developers",
-    icon: CodeIcon,
-    title: "Developers",
-    description: "Code snippets & technical notes",
-    gradient: "from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20",
+    title: "Own the context.",
+    description: "Run Memos where your personal, team, or homelab notes should live.",
   },
-  {
-    slug: "writers",
-    icon: PencilIcon,
-    title: "Writers",
-    description: "Article drafts & research",
-    gradient: "from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20",
-  },
-  {
-    slug: "personal-knowledge",
-    icon: BookOpenIcon,
-    title: "Journals",
-    description: "Daily notes & reflections",
-    gradient: "from-rose-50 to-red-50 dark:from-rose-900/20 dark:to-red-900/20",
-  },
-  {
-    slug: "hobbyists-makers",
-    icon: WrenchIcon,
-    title: "Makers",
-    description: "Project logs & ideas",
-    gradient: "from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20",
-  },
-  {
-    slug: "students-researchers",
-    icon: GraduationCapIcon,
-    title: "Students",
-    description: "Lecture notes & research",
-    gradient: "from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20",
-  },
-  {
-    slug: "privacy-professionals",
-    icon: ShieldCheckIcon,
-    title: "Privacy Pros",
-    description: "Confidential information",
-    gradient: "from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20",
-  },
-];
+] as const;
 
 export default function UseCasesPage() {
   const slugs = getAllUseCaseSlugs();
 
   return (
     <HomeLayout {...baseOptions}>
-      <main className="flex flex-1 flex-col">
+      <main className="flex flex-1 flex-col bg-white dark:bg-zinc-950">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-        {/* Hero Section */}
-        <section className="py-16 sm:py-20 lg:py-32 px-4 bg-gradient-to-b from-white via-gray-50/50 to-white dark:from-gray-900 dark:via-gray-800/50 dark:to-gray-900">
-          <div className="max-w-6xl mx-auto text-center">
-            <Breadcrumbs items={breadcrumbItems} className="mb-8 text-left" />
-            <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-teal-100 to-cyan-100 dark:from-teal-900/30 dark:to-cyan-900/30 text-teal-600 dark:text-teal-400 rounded-2xl sm:rounded-3xl mb-6 sm:mb-8">
-              <LightbulbIcon className="w-8 h-8 sm:w-10 sm:h-10" />
-            </div>
-            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-6 leading-tight">
-              How People Use Memos
-            </h1>
-            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed mb-8">
-              From software development to personal journaling, Memos works best where fast capture, privacy, and simplicity matter.
-            </p>
-            <div className="flex flex-wrap justify-center gap-3">
-              {["Self-Hosters", "Family", "Developers", "Writers", "Journals", "Makers", "Students", "Privacy Pros"].map((tag) => (
-                <span
-                  key={tag}
-                  className="px-4 py-2 text-sm font-medium text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800 rounded-lg"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Use Cases Grid with Links to Individual Pages */}
-        <section className="py-12 sm:py-16 lg:py-24 px-4 bg-white dark:bg-gray-900">
-          <div className="max-w-6xl mx-auto space-y-16 sm:space-y-20 lg:space-y-24">
-            {slugs.map((slug) => {
-              const useCase = USE_CASES[slug as keyof typeof USE_CASES];
-              const IconComponent = iconMap[useCase.icon as IconName];
-
-              return (
-                <article key={slug} className="scroll-mt-20">
-                  <Link
-                    href={`/use-cases/${slug}`}
-                    className={`block bg-gradient-to-br ${useCase.gradient} border border-gray-200 dark:border-gray-700 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg hover:shadow-2xl hover:border-teal-200 dark:hover:border-teal-600 hover:-translate-y-1 transition-all duration-300`}
-                  >
-                    {/* Header */}
-                    <div className="flex items-start gap-4 sm:gap-6 mb-6">
-                      <div
-                        className={`flex-shrink-0 inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br ${useCase.iconBg} text-gray-900 dark:text-gray-100 rounded-xl sm:rounded-2xl`}
-                      >
-                        <IconComponent className="w-7 h-7 sm:w-8 sm:h-8" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
-                          {useCase.title}
-                        </h2>
-                        <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 font-medium">{useCase.subtitle}</p>
-                      </div>
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">{useCase.description}</p>
-
-                    {/* CTA */}
-                    <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-semibold">
-                      <span>Learn more about this use case</span>
-                      <span aria-hidden="true">→</span>
-                    </div>
-                  </Link>
-                </article>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* Quick Navigation Grid */}
-        <section className="py-12 sm:py-16 lg:py-24 px-4 bg-gradient-to-b from-gray-50/50 to-white dark:from-gray-800/50 dark:to-gray-900">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12 sm:mb-16">
-              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
-                Find Your Use Case
-              </h2>
-              <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                Explore detailed guides for each use case
+        <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
+          <div className="mx-auto max-w-5xl">
+            <Breadcrumbs items={breadcrumbItems} className="mb-10" />
+            <div className="mx-auto max-w-3xl text-center">
+              <p className="mb-5 text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Use Cases</p>
+              <h1 className="text-balance font-serif text-5xl font-semibold leading-[1.04] tracking-normal text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
+                Use Memos where quick notes actually happen.
+              </h1>
+              <p className="mx-auto mt-7 max-w-2xl text-balance text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">
+                Memos fits the small workflows that do not need a full workspace: journals, server logs, snippets, private updates, and
+                notes you want to keep.
               </p>
             </div>
+          </div>
+        </section>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-              {useCaseCards.map((card) => (
-                <Link
-                  key={card.slug}
-                  href={`/use-cases/${card.slug}`}
-                  className={`group p-4 sm:p-6 bg-gradient-to-br ${card.gradient} border border-gray-200 dark:border-gray-700 rounded-xl hover:border-teal-200 dark:hover:border-teal-600 hover:shadow-lg hover:-translate-y-1 transition-all duration-300`}
-                >
-                  <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm text-gray-900 dark:text-gray-100 rounded-lg mb-3 group-hover:scale-110 transition-transform duration-300">
-                    <card.icon className="w-5 h-5 sm:w-6 sm:h-6" />
-                  </div>
-                  <h3 className="text-sm sm:text-base font-bold text-gray-900 dark:text-gray-100 leading-tight mb-1">{card.title}</h3>
-                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{card.description}</p>
-                </Link>
-              ))}
+        <section className="px-4 py-12 sm:px-6 lg:py-16">
+          <div className="mx-auto grid max-w-5xl gap-3 lg:grid-cols-3">
+            {USE_CASE_PRINCIPLES.map((item) => (
+              <div
+                key={item.title}
+                className="rounded-lg bg-zinc-50 p-7 transition-colors hover:bg-zinc-100 dark:bg-white/5 dark:hover:bg-white/8"
+              >
+                <h2 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{item.title}</h2>
+                <p className="mt-3 max-w-md text-sm leading-7 text-zinc-600 dark:text-zinc-300 sm:text-base">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="px-4 py-14 sm:px-6 lg:py-20">
+          <div className="mx-auto grid w-full max-w-(--fd-layout-width) gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
+            <div className="lg:sticky lg:top-24 lg:self-start">
+              <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Browse</p>
+              <h2 className="mt-4 max-w-xs text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
+                Pick the closest workflow.
+              </h2>
+            </div>
+            <div className="grid gap-2">
+              {slugs.map((slug) => {
+                const useCase = USE_CASES[slug as keyof typeof USE_CASES];
+
+                return (
+                  <Link
+                    key={slug}
+                    href={`/use-cases/${slug}`}
+                    className="group grid gap-3 rounded-lg px-4 py-4 transition-colors hover:bg-zinc-50 dark:hover:bg-white/5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start"
+                  >
+                    <div>
+                      <h3 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{useCase.title}</h3>
+                      <p className="mt-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 sm:text-base">{useCase.subtitle}</p>
+                      <p className="mt-3 max-w-3xl text-sm leading-7 text-zinc-600 dark:text-zinc-300 sm:text-base">
+                        {useCase.description}
+                      </p>
+                    </div>
+                    <span className="hidden translate-y-1 text-sm font-semibold text-zinc-500 transition-transform group-hover:translate-x-1 sm:block">
+                      Read
+                    </span>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-12 sm:py-16 lg:py-24 px-4 bg-gradient-to-br from-teal-50 via-cyan-50/50 to-gray-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-700">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-teal-100 to-cyan-100 dark:from-teal-900/30 dark:to-cyan-900/30 text-teal-600 dark:text-teal-400 rounded-2xl mb-6">
-              <UserIcon className="w-8 h-8 sm:w-10 sm:h-10" />
-            </div>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-6 leading-tight">
-              Ready to start your own use case?
+        <section className="border-t border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
+          <div className="mx-auto max-w-4xl text-center">
+            <h2 className="mb-6 text-balance font-serif text-4xl font-semibold tracking-[-0.04em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
+              Ready to start with one note?
             </h2>
-            <p className="text-base sm:text-lg text-gray-700 dark:text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Start with the workflow Memos does best: quick notes, private thoughts, and lightweight documentation.
+            <p className="mx-auto mb-10 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">
+              Start with the workflow Memos does best: quick capture, private timelines, and lightweight review.
             </p>
-            <div className="flex flex-col gap-4 sm:flex-row sm:justify-center max-w-sm sm:max-w-none mx-auto">
+            <div className="mx-auto flex max-w-sm flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center">
               <Link
                 href="/docs/getting-started"
-                className="group inline-flex items-center justify-center gap-3 px-8 py-4 text-base font-semibold text-white bg-gradient-to-r from-teal-600 to-cyan-600 border border-transparent rounded-2xl shadow-lg hover:from-teal-700 hover:to-cyan-700 hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-300"
+                className="group inline-flex items-center justify-center gap-3 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
               >
-                Get Started Now
+                Install Memos
                 <span className="group-hover:translate-x-1 transition-transform" aria-hidden="true">
                   →
                 </span>
               </Link>
               <Link
                 href="/features"
-                className="inline-flex items-center justify-center gap-3 px-8 py-4 text-base font-semibold text-gray-700 dark:text-gray-200 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-600 rounded-2xl hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-all duration-300"
+                className="inline-flex items-center justify-center gap-3 rounded-lg border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-white/15 dark:bg-transparent dark:text-zinc-100 dark:hover:bg-white/8"
               >
-                Explore All Features
+                See Features
               </Link>
             </div>
           </div>

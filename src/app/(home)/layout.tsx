@@ -1,7 +1,11 @@
-import { HomeLayout } from "fumadocs-ui/layouts/home";
 import type { ReactNode } from "react";
-import { baseOptions } from "@/app/layout.config";
+import { HomeHeader } from "@/components/home-header";
 
 export default function Layout({ children }: { children: ReactNode }) {
-  return <HomeLayout {...baseOptions}>{children}</HomeLayout>;
+  return (
+    <div id="nd-home-layout" className="flex flex-1 flex-col [--fd-layout-width:1400px]">
+      <HomeHeader />
+      {children}
+    </div>
+  );
 }

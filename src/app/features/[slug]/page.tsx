@@ -1,5 +1,5 @@
 import { HomeLayout } from "fumadocs-ui/layouts/home";
-import { CheckCircleIcon, StarIcon } from "lucide-react";
+import { ArrowRightIcon, CheckCircleIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -33,32 +33,38 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
 
   return (
     <HomeLayout {...baseOptions}>
-      <main className="flex flex-1 flex-col">
+      <main className="flex flex-1 flex-col bg-white dark:bg-zinc-950">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-        {/* Hero Section */}
-        <section className="relative py-16 sm:py-20 lg:py-32 px-4 sm:px-6 overflow-hidden bg-gradient-to-br from-white via-gray-50/50 to-teal-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700">
-          <div className="absolute inset-0 bg-grid-gray-100/50 dark:bg-grid-gray-800/50 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] pointer-events-none"></div>
-          <div className="relative max-w-5xl mx-auto text-center">
-            <Breadcrumbs items={breadcrumbItems} className="mb-8 text-left" />
-            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight mb-4 sm:mb-6 leading-[1.1] text-balance text-gray-900 dark:text-gray-50">
-              {feature.hero.title}
-            </h1>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8 sm:mb-10 lg:mb-12 text-balance px-4">
-              {feature.hero.subtitle}
-            </p>
 
-            <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row justify-center max-w-sm sm:max-w-none mx-auto">
+        <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
+          <div className="mx-auto w-full max-w-(--fd-layout-width)">
+            <Breadcrumbs items={breadcrumbItems} className="mb-10" />
+            <div className="grid gap-10 lg:grid-cols-[minmax(0,42rem)_minmax(0,1fr)] lg:items-end lg:gap-16">
+              <div>
+                <p className="mb-5 text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Feature</p>
+                <h1 className="text-balance font-serif text-4xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
+                  {feature.hero.title}
+                </h1>
+                <p className="mt-6 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">{feature.hero.subtitle}</p>
+              </div>
+              <p className="rounded-lg bg-zinc-50 p-4 text-sm leading-7 text-zinc-600 dark:bg-white/5 dark:text-zinc-300">
+                {feature.description}
+              </p>
+            </div>
+
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/docs/getting-started"
-                className="group inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base bg-gradient-to-r from-teal-600 to-cyan-600 text-white font-semibold rounded-xl sm:rounded-2xl hover:from-teal-700 hover:to-cyan-700 hover:shadow-xl hover:shadow-teal-500/25 hover:-translate-y-0.5 transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
               >
-                Get Started
+                Install Memos
+                <ArrowRightIcon className="h-4 w-4" />
               </Link>
               <Link
                 href="https://demo.usememos.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base bg-white/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-200 font-semibold border border-gray-200 dark:border-gray-600 rounded-xl sm:rounded-2xl hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-white/15 dark:bg-transparent dark:text-zinc-100 dark:hover:bg-white/8"
               >
                 Try Demo
               </Link>
@@ -66,95 +72,89 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
           </div>
         </section>
 
-        {/* Benefits Section */}
-        <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-8 sm:mb-10 lg:mb-12 text-center">
-              Key Benefits
-            </h2>
-            <div className="grid grid-cols-1 gap-3 sm:gap-4">
-              {feature.benefits.map((benefit, index) => (
+        <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
+          <div className="mx-auto grid w-full max-w-(--fd-layout-width) gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
+            <div>
+              <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Benefits</p>
+              <h2 className="mt-4 text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
+                Why it matters.
+              </h2>
+            </div>
+            <div className="grid gap-2">
+              {feature.benefits.map((benefit) => (
                 <div
-                  key={index}
-                  className="group flex items-start gap-3 sm:gap-4 p-4 sm:p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl sm:rounded-2xl shadow-sm hover:shadow-md hover:border-teal-200 dark:hover:border-teal-700 transition-all duration-300"
+                  key={benefit}
+                  className="flex items-start gap-3 rounded-lg bg-zinc-50 px-4 py-3 text-sm leading-7 text-zinc-700 dark:bg-white/5 dark:text-zinc-300 sm:text-base"
                 >
-                  <div className="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 rounded-full flex-shrink-0 mt-0.5 sm:mt-1 group-hover:scale-110 transition-transform duration-300">
-                    <CheckCircleIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </div>
-                  <p className="text-sm sm:text-base lg:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">{benefit}</p>
+                  <CheckCircleIcon className="mt-1 h-4 w-4 shrink-0 text-zinc-500 dark:text-zinc-400" />
+                  <span>{benefit}</span>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Use Cases Section */}
-        <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 bg-gradient-to-b from-gray-50/80 to-white dark:from-gray-800 dark:to-gray-900">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-8 sm:mb-10 lg:mb-12 text-center">
-              Works Well For
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-              {feature.useCases.map((useCase, index) => (
-                <div
-                  key={index}
-                  className="group bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-xl hover:border-teal-200 dark:hover:border-teal-700 hover:-translate-y-1 transition-all duration-300"
-                >
-                  <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20 text-teal-600 dark:text-teal-400 rounded-xl sm:rounded-2xl mb-4 sm:mb-5 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
-                    <StarIcon className="w-5 h-5 sm:w-6 sm:h-6" />
-                  </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 mb-2 sm:mb-3 tracking-tight">
-                    {useCase.title}
-                  </h3>
-                  <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">{useCase.description}</p>
+        <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
+          <div className="mx-auto grid w-full max-w-(--fd-layout-width) gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
+            <div>
+              <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Use Cases</p>
+              <h2 className="mt-4 text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
+                Works well for.
+              </h2>
+            </div>
+            <div className="grid gap-5 sm:grid-cols-3">
+              {feature.useCases.map((useCase) => (
+                <div key={useCase.title} className="rounded-lg bg-zinc-50 p-4 dark:bg-white/5">
+                  <h3 className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{useCase.title}</h3>
+                  <p className="mt-2 text-sm leading-7 text-zinc-600 dark:text-zinc-300">{useCase.description}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Technical Details Section */}
-        <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-8 sm:mb-10 lg:mb-12 text-center">
-              Technical Details
-            </h2>
-            <div className="relative bg-gradient-to-br from-teal-50/80 via-cyan-50/50 to-gray-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-700 border border-teal-100 dark:border-gray-700 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-lg">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-teal-400/10 to-cyan-400/10 dark:from-teal-600/10 dark:to-cyan-600/10 rounded-full blur-3xl"></div>
-              <div className="relative grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-                {feature.techDetails.map((detail, index) => (
-                  <div key={index} className="flex items-center gap-3 group">
-                    <div className="w-2 h-2 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full flex-shrink-0 group-hover:scale-150 transition-transform duration-300"></div>
-                    <span className="text-sm sm:text-base text-gray-700 dark:text-gray-300 font-medium">{detail}</span>
-                  </div>
-                ))}
-              </div>
+        <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
+          <div className="mx-auto grid w-full max-w-(--fd-layout-width) gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
+            <div>
+              <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Technical Details</p>
+              <h2 className="mt-4 text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
+                What it uses.
+              </h2>
+            </div>
+            <div className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
+              {feature.techDetails.map((detail) => (
+                <div
+                  key={detail}
+                  className="flex items-start gap-3 rounded-lg bg-zinc-50 px-4 py-3 text-sm text-zinc-700 dark:bg-white/5 dark:text-zinc-300"
+                >
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-zinc-400" />
+                  <span>{detail}</span>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="relative py-16 sm:py-20 lg:py-32 px-4 sm:px-6 overflow-hidden bg-gradient-to-br from-gray-50 via-white to-teal-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700">
-          <div className="absolute inset-0 bg-grid-gray-100/50 dark:bg-grid-gray-800/50 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] pointer-events-none"></div>
-          <div className="relative max-w-4xl mx-auto text-center">
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4 sm:mb-6 leading-tight text-balance">
-              Ready to Get Started?
+        <section className="px-4 py-14 sm:px-6 lg:py-20">
+          <div className="mx-auto max-w-4xl text-center">
+            <h2 className="mb-6 text-balance font-serif text-4xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-5xl">
+              Ready to start?
             </h2>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed text-balance px-4">
+            <p className="mx-auto mb-10 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">
               Put {feature.title.toLowerCase()} to work in a self-hosted Memos instance you control.
             </p>
-            <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row justify-center max-w-sm sm:max-w-none mx-auto">
+            <div className="flex flex-col justify-center gap-3 sm:flex-row">
               <Link
                 href="/docs/getting-started"
-                className="group inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base bg-gradient-to-r from-teal-600 to-cyan-600 text-white font-semibold rounded-xl sm:rounded-2xl hover:from-teal-700 hover:to-cyan-700 hover:shadow-xl hover:shadow-teal-500/25 hover:-translate-y-0.5 transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
               >
                 Install Memos
               </Link>
               <Link
                 href="/features"
-                className="inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base bg-white/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-200 font-semibold border border-gray-200 dark:border-gray-600 rounded-xl sm:rounded-2xl hover:bg-white dark:hover:bg-gray-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-white/15 dark:bg-transparent dark:text-zinc-100 dark:hover:bg-white/8"
               >
-                Explore All Features
+                Explore Features
               </Link>
             </div>
           </div>

@@ -58,7 +58,6 @@ pnpm postinstall
 - **Shared Config**: `app/layout.config.tsx` defines baseOptions for navigation and branding
 
 ### Styling Patterns
-- Follow Supernotes.app aesthetic - gradients, rounded corners, modern spacing
 - Use `py-24` for section padding, `rounded-2xl` for cards
 - Teal/cyan color scheme (`teal-600`, `cyan-600`) for primary actions
 - Dark mode support throughout with `dark:` prefixes

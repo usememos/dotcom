@@ -36,7 +36,6 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
   ];
   const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
 
-  // JSON-LD structured data for blog post
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -68,20 +67,17 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
     <HomeLayout {...baseOptions}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <main className="flex flex-1 flex-col bg-[linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(245,247,244,0.98)_26%,rgba(245,247,244,1)_100%)] dark:bg-[linear-gradient(180deg,rgba(10,10,10,0.96)_0%,rgba(18,18,18,1)_28%,rgba(10,10,10,1)_100%)]">
+      <main className="flex flex-1 flex-col bg-white dark:bg-zinc-950">
         <section className="px-4 pb-8 pt-8 sm:pt-12 lg:pb-10">
           <div className="mx-auto max-w-6xl">
             <div className="mb-8">
               <Breadcrumbs items={breadcrumbItems} className={undefined} />
             </div>
             <BlogPostHeader title={data.title} description={data.description} publishedAt={data.published_at} tags={data.tags} />
-
-            {/* Feature Image */}
             {data.feature_image && <BlogPostHeroImage src={data.feature_image} alt={data.title} />}
           </div>
         </section>
 
-        {/* Article Content */}
         <section className="px-4 pb-16 pt-2 sm:pb-20">
           <div className="mx-auto max-w-6xl">
             <BlogArticleBody content={Content} />

@@ -6,58 +6,59 @@ import { SectionHeader } from "@/components/section-header";
 const FEATURES = [
   {
     icon: <ShieldIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
-    title: "Total Data Ownership",
-    description: "Your notes live on your server, in your database, in plain Markdown. Zero telemetry, zero tracking.",
+    title: "Your Notes Stay With You",
+    description: "Run Memos on your server, store notes in your database, and keep the data path clear.",
   },
   {
     icon: <ZapIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
-    title: "Instant Capture",
-    description: "Open Memos, type, done. No folder navigation, no template selection. Capture first, organize later.",
+    title: "Open, Type, Move On",
+    description: "No folder choice, no template step, no title required before a thought is worth saving.",
   },
   {
     icon: <PenToolIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
-    title: "Markdown-Native",
-    description: "Write in plain text that lasts. No proprietary formats, no vendor lock-in. Back up with a single file copy.",
+    title: "Plain Markdown",
+    description: "Write in a format that stays readable, portable, and easy to back up outside the app.",
   },
   {
     icon: <ServerIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
-    title: "Runs Anywhere",
-    description: "From a Raspberry Pi to your own cloud. A ~20MB Docker image, one command to deploy, running in under 5 minutes.",
+    title: "Small Enough to Run Anywhere",
+    description: "Start on a Raspberry Pi, VPS, or cloud box with a lightweight Docker deploy.",
   },
   {
     icon: <GithubIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
-    title: "Open Source, MIT Licensed",
-    description: "The code is yours as much as the notes are. 57K+ stars, 370+ contributors, built in the open.",
+    title: "Open Source You Can Inspect",
+    description: "MIT licensed, public on GitHub, and shaped by contributors who run Memos themselves.",
   },
   {
     icon: <DollarSignIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
-    title: "Free, Forever",
-    description: "Every feature. Every update. No paywalls, no tiers, no surprise fees. Self-hosting means no costs to pass on.",
+    title: "Free Because You Host It",
+    description: "No paid unlocks or seat pricing in the product. Bring the infrastructure that fits your setup.",
   },
 ];
 
 export function HomeFeaturesSection() {
   return (
-    <section className="relative overflow-hidden bg-transparent px-4 py-14 sm:px-6 sm:py-18 lg:py-24">
+    <section className="border-b border-zinc-200 bg-white px-4 py-14 dark:border-white/10 dark:bg-zinc-950 sm:px-6 sm:py-18 lg:py-22">
       <div className="mx-auto w-full max-w-(--fd-layout-width)">
-        <div className="grid gap-10 border-t border-stone-300/60 pt-10 dark:border-white/10 lg:grid-cols-[minmax(0,21rem)_minmax(0,1fr)] lg:gap-14 lg:pt-14">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
           <div className="lg:sticky lg:top-24 lg:self-start">
             <SectionHeader
               icon={StarIcon}
-              title="Why Memos?"
-              description="A focused tool for quick capture, plain-text notes, and long-term control over your own data."
+              eyebrow="Product"
+              title="Small on purpose. Fast by default."
+              description="Memos keeps the core loop simple: capture now, organize later, and keep the notes on your side of the line."
               align="left"
             />
             <Link
               href="/features"
-              className="group inline-flex items-center gap-2 text-sm font-semibold text-stone-900 transition-colors hover:text-stone-700 dark:text-stone-100 dark:hover:text-stone-200 sm:text-base"
+              className="group inline-flex items-center gap-2 text-sm font-semibold text-zinc-950 transition-colors hover:text-zinc-600 dark:text-zinc-100 dark:hover:text-zinc-300 sm:text-base"
             >
-              Explore All Features
+              See the Feature Set
               <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 lg:gap-y-10">
+          <div className="grid grid-cols-1 gap-x-10 gap-y-8 sm:grid-cols-2 lg:gap-y-10">
             {FEATURES.map((feature) => (
               <FeatureCard key={feature.title} {...feature} />
             ))}

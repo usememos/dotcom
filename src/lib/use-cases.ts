@@ -108,7 +108,7 @@ export const USE_CASES = {
     ],
     whyMemos: [
       "Distraction-free writing environment without cloud interruptions",
-      "Complete ownership of drafts - no platform can lock you out",
+      "Draft ownership stays clear because the instance is yours to run",
       "Instant save prevents losing work during creative flow",
       "Markdown formatting for clean, portable content",
       "Chronological timeline helps track idea evolution",
@@ -121,7 +121,7 @@ export const USE_CASES = {
     seo: {
       title: "Memos for Writers & Content Creators - Distraction-Free Writing Tool",
       description:
-        "Learn how writers and content creators use Memos for article drafts, research collection, and creative ideation. Self-hosted writing tool with Markdown support and complete data ownership.",
+        "Learn how writers and content creators use Memos for article drafts, research collection, and creative ideation. Self-hosted writing with Markdown support and clear data ownership.",
       keywords: [
         "writing app for authors",
         "content creation tool",
@@ -246,7 +246,7 @@ export const USE_CASES = {
       "Lightweight and fast - no bloated features or complexity",
       "Chronological timeline for natural journal flow",
       "Tag system for flexible organization and connections",
-      "Complete control over notes you want to keep long-term",
+      "Long-term control over notes you want to keep",
       "No vendor lock-in - export your life's work anytime",
     ],
     features: [
@@ -257,7 +257,7 @@ export const USE_CASES = {
     seo: {
       title: "Memos for Personal Journaling & Notes",
       description:
-        "Learn how people use Memos for personal notes, daily journaling, and lightweight idea trails with complete data ownership.",
+        "Learn how people use Memos for personal notes, daily journaling, and lightweight idea trails with clear data ownership.",
       keywords: [
         "personal notes",
         "journal app",
@@ -427,7 +427,7 @@ export const USE_CASES = {
       "PostgreSQL/MySQL support for multi-user setups",
       "Custom branding for team identity and consistency",
       "API enables integration with team tools and workflows",
-      "Self-hosted keeps all team knowledge internal and secure",
+      "Self-hosting keeps team notes inside infrastructure you manage",
     ],
     features: [
       { name: "Database Support", slug: "database-support" },

@@ -24,8 +24,7 @@ export function HomeScratchpadSection() {
               Type. Save. Done.
             </h2>
             <p className="mb-8 max-w-md text-balance text-base leading-7 text-stone-700 dark:text-stone-300 sm:text-lg">
-              A browser-based scratchpad for when you just need to write something down. It stores locally and can sync to Memos when you
-              are ready.
+              A browser-based scratchpad for loose thoughts and files. Keep it local, then send the pieces worth saving to Memos.
             </p>
             <Link
               href="/scratchpad"

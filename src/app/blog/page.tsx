@@ -29,27 +29,26 @@ export default function BlogPage() {
   const posts = blogSource.getPages().sort((a, b) => {
     const dateA = new Date(a.data.published_at).getTime();
     const dateB = new Date(b.data.published_at).getTime();
-    return dateB - dateA; // Sort by newest first
+    return dateB - dateA;
   });
 
   return (
     <HomeLayout {...baseOptions}>
-      <main className="flex flex-1 flex-col">
+      <main className="flex flex-1 flex-col bg-white dark:bg-zinc-950">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-        <section className="bg-[linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(245,247,244,0.98)_26%,rgba(245,247,244,1)_100%)] px-4 py-12 dark:bg-[linear-gradient(180deg,rgba(10,10,10,0.96)_0%,rgba(18,18,18,1)_28%,rgba(10,10,10,1)_100%)] sm:py-16 lg:py-24">
+        <section className="px-4 py-14 sm:px-6 lg:py-20">
           <div className={BLOG_COLUMN_CLASS}>
-            {/* Hero Section */}
-            <div className="mb-12 sm:mb-16 lg:mb-20">
-              <Breadcrumbs items={breadcrumbItems} className="mb-8" />
-              <h1 className="mb-4 font-serif text-3xl font-bold leading-[1.02] tracking-tight text-gray-950 dark:text-gray-50 sm:mb-6 sm:text-4xl lg:text-5xl xl:text-[4.25rem]">
-                Blog
+            <div className="mb-12 border-b border-zinc-200 pb-10 dark:border-white/10 sm:mb-16">
+              <Breadcrumbs items={breadcrumbItems} className="mb-10" />
+              <p className="mb-5 text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Blog</p>
+              <h1 className="text-balance font-serif text-4xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-6xl lg:text-7xl">
+                Notes from the project.
               </h1>
-              <p className="max-w-2xl text-base leading-8 text-gray-600 dark:text-gray-300 sm:text-lg">
-                Insights, updates, and stories from the team building Memos.
+              <p className="mt-6 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">
+                Product thinking, self-hosting notes, and updates from the people building Memos.
               </p>
             </div>
 
-            {/* Blog Posts */}
             <div className="space-y-8 sm:space-y-10">
               {posts.map((post) => (
                 <BlogListItem
@@ -63,14 +62,13 @@ export default function BlogPage() {
               ))}
             </div>
 
-            {/* Empty State */}
             {posts.length === 0 && (
-              <div className="text-center py-12 sm:py-16">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
-                  <UserIcon className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
+              <div className="py-12 text-center sm:py-16">
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-zinc-100 dark:bg-white/5 sm:mb-6 sm:h-16 sm:w-16">
+                  <UserIcon className="h-6 w-6 text-zinc-400 sm:h-8 sm:w-8" />
                 </div>
-                <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No blog posts yet</h3>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 px-4">
+                <h3 className="mb-2 text-base font-medium text-zinc-900 dark:text-zinc-100 sm:text-lg">No blog posts yet</h3>
+                <p className="px-4 text-sm text-zinc-600 dark:text-zinc-300 sm:text-base">
                   Check back soon for insights and updates from the Memos team.
                 </p>
               </div>

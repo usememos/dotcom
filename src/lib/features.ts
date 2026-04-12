@@ -96,28 +96,28 @@ export const FEATURES = {
   // Self-hosted & Privacy First
   "self-hosted": {
     title: "Self-Hosted",
-    description: "Deploy on your own infrastructure, from a Raspberry Pi to a production server you control.",
+    description: "Run Memos on infrastructure you choose, from a Raspberry Pi to a production server.",
     icon: ServerIcon,
     gradient: "from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30",
     iconBg: "bg-purple-100 dark:bg-purple-900",
     iconColor: "text-purple-600 dark:text-purple-400",
     border: "border-purple-100 dark:border-purple-900",
     hero: {
-      title: "Your Server, Your Control",
-      subtitle: "Deploy where you want, run it your way, and keep full control without vendor lock-in.",
+      title: "Run Memos Yourself",
+      subtitle: "Deploy where you want and keep the note-taking timeline inside infrastructure you trust.",
     },
     benefits: [
       "Your notes stay on infrastructure you control",
       "Deploy on any server, VPS, cloud provider, or on-premises hardware",
-      "Full control over user access, authentication policies, and security measures",
-      "Customize and scale resources based on your specific usage patterns",
+      "Set user access, authentication, and security policies yourself",
+      "Scale resources based on your usage patterns",
       "Fit Memos into the environment you already run",
       "No vendor lock-in or dependencies - deploy and manage on your terms",
     ],
     useCases: [
       {
         title: "Home Lab Setup",
-        description: "Run Memos on your home server or NAS for personal and family use with complete privacy.",
+        description: "Run Memos on your home server or NAS for personal and family notes.",
       },
       {
         title: "Small Team Deployment",
@@ -137,14 +137,14 @@ export const FEATURES = {
   },
   "data-ownership": {
     title: "Data Ownership",
-    description: "Complete control over your memos with zero telemetry. All data stored locally in your chosen database.",
+    description: "Keep notes in your chosen database with zero telemetry and a clear path to export.",
     icon: LockIcon,
     gradient: "from-teal-50 to-cyan-50 dark:from-teal-950/30 dark:to-cyan-950/30",
     iconBg: "bg-teal-100 dark:bg-teal-900",
     iconColor: "text-teal-600 dark:text-teal-400",
     border: "border-teal-100 dark:border-teal-900",
     hero: {
-      title: "Your Data, Your Rules",
+      title: "Keep Notes on Your Side",
       subtitle: "Keep your notes in your database, on your server, with ownership that stays clear and direct.",
     },
     benefits: [
@@ -152,13 +152,13 @@ export const FEATURES = {
       "Zero telemetry - no tracking, ads, or analytics collection",
       "Zero external cloud dependencies or third-party services",
       "Privacy-first defaults that keep the data path simple",
-      "Complete audit trail of all data access and modifications",
+      "Clear database ownership for review, backup, and migration",
       "Export your data anytime in standard formats",
     ],
     useCases: [
       {
-        title: "Personal Knowledge Management",
-        description: "Keep sensitive thoughts, ideas, and personal information completely private and under your control.",
+        title: "Private Personal Notes",
+        description: "Keep sensitive thoughts, ideas, and personal information in an environment you control.",
       },
       {
         title: "Corporate Documentation",
@@ -179,7 +179,7 @@ export const FEATURES = {
   // Open Source & Freedom
   "open-source": {
     title: "Open Source",
-    description: "MIT licensed with full source code transparency - freedom to use, modify, and distribute.",
+    description: "MIT licensed and developed in public, so the code can be inspected, forked, and improved.",
     icon: GitBranchIcon,
     gradient: "from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30",
     iconBg: "bg-emerald-100 dark:bg-emerald-900",
@@ -187,7 +187,7 @@ export const FEATURES = {
     border: "border-emerald-100 dark:border-emerald-900",
     hero: {
       title: "Truly Open Source",
-      subtitle: "MIT license ensures complete freedom to use, modify, and distribute - transparency you can trust.",
+      subtitle: "MIT licensed software you can inspect, fork, modify, and run for the long term.",
     },
     benefits: [
       "MIT license with no usage restrictions or limitations",
@@ -195,7 +195,7 @@ export const FEATURES = {
       "Community-driven development with active contributors",
       "No vendor lock-in, licensing fees, or hidden costs",
       "Freedom to fork, modify, and customize for your specific needs",
-      "Complete audit trail with full version history and commit logs",
+      "Public version history and commit logs",
     ],
     useCases: [
       {
@@ -219,21 +219,21 @@ export const FEATURES = {
     ],
   },
   "no-fees": {
-    title: "Always Free",
-    description: "No premium tiers, no feature gating, and no subscription required to use Memos.",
+    title: "Free Software",
+    description: "No subscription, seat pricing, or paid feature unlocks inside Memos.",
     icon: DollarSignIcon,
     gradient: "from-lime-50 to-green-50 dark:from-lime-950/30 dark:to-green-950/30",
     iconBg: "bg-lime-100 dark:bg-lime-900",
     iconColor: "text-lime-600 dark:text-lime-400",
     border: "border-lime-100 dark:border-lime-900",
     hero: {
-      title: "Free Forever",
-      subtitle: "No subscription fees, no tracking, and no ads. Use the full product without paywalls.",
+      title: "Free Because You Host It",
+      subtitle: "No subscription fees, no tracking, and no ads. Run the product without paywalls.",
     },
     benefits: [
       "No subscription fees",
       "No tracking or ads - privacy-first approach",
-      "All features included with no premium tiers",
+      "No paid feature unlocks",
       "No user limits or storage restrictions",
       "No time-limited trials or hidden costs",
       "Community support at no charge",
@@ -384,20 +384,20 @@ export const FEATURES = {
     ],
   },
   "markdown-support": {
-    title: "Rich Markdown",
-    description: "Full Markdown support with syntax highlighting, tables, and LaTeX math expressions for rich memo content.",
+    title: "Markdown Notes",
+    description: "Write portable notes with Markdown, syntax highlighting, tables, and LaTeX math.",
     icon: FileTextIcon,
     gradient: "from-orange-50 to-red-50 dark:from-orange-950/30 dark:to-red-950/30",
     iconBg: "bg-orange-100 dark:bg-orange-900",
     iconColor: "text-orange-600 dark:text-orange-400",
     border: "border-orange-100 dark:border-orange-900",
     hero: {
-      title: "Write with Power",
+      title: "Write in Plain Markdown",
       subtitle: "Write in Markdown and keep your notes portable, readable, and easy to keep.",
     },
     benefits: [
       "Plain text storage for portability and long-term access",
-      "Complete GitHub Flavored Markdown (GFM) compatibility",
+      "GitHub Flavored Markdown (GFM) compatibility",
       "Syntax highlighting for 100+ programming languages",
       "Tables, task lists, and advanced formatting options",
       "Mermaid diagrams for flowcharts, sequence diagrams, and visualizations",
@@ -549,15 +549,15 @@ export const FEATURES = {
   },
   "timeline-view": {
     title: "Timeline View",
-    description: "Chronological feed of all your memos - browse memories and thoughts in time order.",
+    description: "Browse quick notes, logs, and ideas in the order you captured them.",
     icon: ClockIcon,
     gradient: "from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30",
     iconBg: "bg-blue-100 dark:bg-blue-900",
     iconColor: "text-blue-600 dark:text-blue-400",
     border: "border-blue-100 dark:border-blue-900",
     hero: {
-      title: "Your Personal Timeline",
-      subtitle: "Browse memos chronologically - see your thoughts and memories unfold over time.",
+      title: "Your Private Timeline",
+      subtitle: "Browse memos chronologically and revisit thoughts in the order they happened.",
     },
     benefits: [
       "Chronological feed showing all memos in time order",
@@ -565,7 +565,7 @@ export const FEATURES = {
       "See your activity patterns and memo-writing habits",
       "Continuous browsing through past notes and days",
       "Jump to any date to find past memos",
-      "Activity stream shows your knowledge evolution",
+      "Activity stream shows how your notes build over time",
     ],
     useCases: [
       {
@@ -597,8 +597,8 @@ export const FEATURES = {
     iconColor: "text-violet-600 dark:text-violet-400",
     border: "border-violet-100 dark:border-violet-900",
     hero: {
-      title: "Share Your Knowledge",
-      subtitle: "Generate shareable public links for any memo - control who sees what.",
+      title: "Share Selected Notes",
+      subtitle: "Generate public links for specific memos while keeping the rest private.",
     },
     benefits: [
       "Generate public links for any memo instantly",
@@ -610,7 +610,7 @@ export const FEATURES = {
     ],
     useCases: [
       {
-        title: "Knowledge Sharing",
+        title: "Public Notes",
         description: "Share tutorials, guides, and documentation with colleagues or the public.",
       },
       {
@@ -643,7 +643,7 @@ export const FEATURES = {
     },
     benefits: [
       "Publish short-form content instantly with minimal friction",
-      "Own your microblog completely - no algorithms, no ads, no tracking",
+      "Run your microblog without algorithms, ads, or tracking",
       "A chronological timeline that suits status updates and daily thoughts",
       "Rich media support for images, links, and formatted content",
       "RSS feed generation for followers to subscribe",
@@ -697,8 +697,8 @@ export const FEATURES = {
         description: "Capture thoughts on the go with a mobile-optimized interface.",
       },
       {
-        title: "Desktop Productivity",
-        description: "Full-featured desktop experience with keyboard shortcuts and advanced features.",
+        title: "Desktop Writing",
+        description: "A focused desktop experience with keyboard shortcuts for fast capture.",
       },
       {
         title: "Cross-Device Sync",
@@ -806,13 +806,13 @@ export const FEATURES = {
     border: "border-fuchsia-100 dark:border-fuchsia-900",
     hero: {
       title: "Make It Yours",
-      subtitle: "Personalize branding, themes, and UI elements to create a unique experience tailored to your identity.",
+      subtitle: "Personalize branding, themes, and UI details so the instance feels like yours.",
     },
     benefits: [
       "Custom server name, description, and branding elements",
       "Personalized favicon and logo for brand identity",
       "Configurable theme colors and styling options",
-      "Custom CSS injection for advanced styling and tweaks",
+      "Custom CSS injection for styling and layout tweaks",
       "Multi-language interface support for global teams",
       "Flexible layout options and visibility controls",
     ],
@@ -945,7 +945,7 @@ export const FEATURES = {
     useCases: [
       {
         title: "Raspberry Pi Hosting",
-        description: "Run a full-featured note server on a Raspberry Pi with room to spare.",
+        description: "Run a private note server on a Raspberry Pi with room to spare.",
       },
       {
         title: "Budget VPS",
@@ -1006,7 +1006,7 @@ export const FEATURES = {
   },
   "api-first": {
     title: "API & Integrations",
-    description: "Full REST and gRPC APIs with unrestricted access for custom integrations and automation.",
+    description: "REST and gRPC APIs for custom capture flows, integrations, and automation.",
     icon: CodeIcon,
     gradient: "from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30",
     iconBg: "bg-violet-100 dark:bg-violet-900",
@@ -1017,8 +1017,8 @@ export const FEATURES = {
       subtitle: "REST and gRPC APIs make it easy to automate workflows and build on top of Memos.",
     },
     benefits: [
-      "Complete RESTful API covering all functionality with unrestricted access",
-      "High-performance gRPC API for advanced integrations and real-time operations",
+      "RESTful API for custom integrations and automation",
+      "gRPC API for high-performance integrations and real-time operations",
       "OpenAPI 3.0 specification for automatic client generation and easy integration",
       "JWT-based authentication with flexible authorization controls",
       "Webhook support for real-time event notifications and automation",
@@ -1177,7 +1177,7 @@ export const FEATURES = {
     border: "border-purple-100 dark:border-purple-900",
     wip: true,
     hero: {
-      title: "Your Data, Your Way",
+      title: "Take Notes With You",
       subtitle: "Export notes in multiple formats to ensure your data is always portable and accessible.",
     },
     benefits: [

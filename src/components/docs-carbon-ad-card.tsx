@@ -9,12 +9,15 @@ const SPONSOR_URL = "https://github.com/sponsors/usememos";
 
 // Style variants for different contexts
 const CONTAINER_STYLES = {
-  default: "w-full max-h-80 rounded-xl border bg-muted/30 dark:bg-muted/10 p-3 overflow-auto",
+  default: "w-full max-h-80 rounded-lg border bg-muted/30 dark:bg-muted/10 p-3 overflow-auto",
+  compact: "w-full max-h-24 overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 p-2 dark:border-white/10 dark:bg-white/5",
   sponsor: cn("h-full w-full min-h-[200px] overflow-auto", "bg-transparent p-0"),
 } as const;
 
 const FALLBACK_STYLES = {
   default: "flex w-full items-center justify-center py-1 text-sm text-muted-foreground hover:opacity-80",
+  compact:
+    "flex w-full items-center justify-center py-1 text-xs text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100",
   sponsor: "flex h-full flex-col gap-3 sm:gap-4",
 } as const;
 
@@ -91,7 +94,7 @@ function FallbackContent({ variant }: { variant: keyof typeof CONTAINER_STYLES }
   }
 
   return (
-    <a href={SPONSOR_URL} target="_blank" rel="noopener noreferrer" className={FALLBACK_STYLES.default}>
+    <a href={SPONSOR_URL} target="_blank" rel="noopener noreferrer" className={FALLBACK_STYLES[variant]}>
       Support Memos
     </a>
   );

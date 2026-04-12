@@ -5,7 +5,7 @@ import { MemoHeroMock } from "@/components/memo-hero-mock";
 
 interface HeroSectionProps {
   version?: string;
-  titleLines: [ReactNode, ReactNode];
+  title: ReactNode;
   subtitle: string;
   primaryCta: {
     text: string;
@@ -18,46 +18,44 @@ interface HeroSectionProps {
   };
 }
 
-export function HeroSection({ version = "0.26.2", titleLines, subtitle, primaryCta, secondaryCta }: HeroSectionProps) {
+export function HeroSection({ version = "0.26.2", title, subtitle, primaryCta, secondaryCta }: HeroSectionProps) {
   return (
-    <section className="relative isolate overflow-hidden bg-transparent">
-      <div className="mx-auto w-full max-w-(--fd-layout-width) px-4 pb-16 pt-14 sm:px-6 sm:pt-18 md:px-4 lg:pb-24 lg:pt-24">
-        <div className="grid gap-14 lg:grid-cols-[minmax(0,38rem)_minmax(0,1fr)] lg:items-start lg:gap-14 xl:grid-cols-[minmax(0,40rem)_minmax(0,38rem)] xl:gap-20">
-          <div className="relative z-10 max-w-[40rem] lg:pt-4">
-            <div className="mb-6 inline-flex items-center gap-3 text-sm text-stone-600 dark:text-stone-300">
+    <section className="relative isolate overflow-hidden border-b border-zinc-200 bg-white dark:border-white/10 dark:bg-zinc-950">
+      <div className="mx-auto w-full max-w-(--fd-layout-width) px-4 pt-12 sm:px-6 lg:pt-18">
+        <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-4xl text-center">
+            <div className="mb-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-zinc-500 dark:text-zinc-400">
               {version && (
                 <Link
                   href={`/changelog/${version.replace(/\./g, "-")}`}
-                  className="inline-flex items-center gap-2 rounded-full border border-stone-300/70 bg-[rgba(255,252,247,0.7)] px-3 py-1.5 text-xs font-medium tracking-[0.16em] uppercase transition-colors hover:bg-[rgba(255,252,247,0.95)] dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10"
+                  className="inline-flex items-center gap-2 text-xs font-medium tracking-[0.14em] uppercase transition-colors hover:text-zinc-950 dark:hover:text-zinc-100"
                 >
                   <SparklesIcon className="h-3.5 w-3.5" />
                   <span>Latest Release</span>
-                  <span className="font-semibold tracking-normal text-stone-800 normal-case dark:text-stone-100">v{version}</span>
+                  <span className="font-semibold tracking-normal text-zinc-800 normal-case dark:text-zinc-200">v{version}</span>
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               )}
             </div>
 
-            <h1 className="w-fit max-w-full font-serif text-[clamp(1.8rem,10.5vw,3.4rem)] leading-[0.88] font-semibold tracking-[-0.06em] text-stone-950 dark:text-stone-100 sm:tracking-[-0.055em] md:text-[clamp(3.6rem,7vw,5.6rem)]">
-              {titleLines.map((line, index) => (
-                <span key={index} className="block whitespace-nowrap">
-                  {line}
-                </span>
-              ))}
+            <h1 className="mx-auto max-w-5xl text-balance font-serif text-5xl leading-[1.02] font-semibold tracking-normal text-zinc-950 dark:text-zinc-50 sm:text-6xl md:text-7xl lg:text-8xl">
+              {title}
             </h1>
 
-            <p className="mt-6 max-w-[34rem] text-balance text-base leading-8 text-stone-600 sm:text-lg dark:text-stone-300">{subtitle}</p>
+            <p className="mx-auto mt-7 max-w-[37rem] text-balance text-base leading-8 text-zinc-600 sm:text-lg dark:text-zinc-300">
+              {subtitle}
+            </p>
 
-            <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-stone-500 dark:text-stone-400">
-              <span>Self-hosted</span>
+            <div className="mt-7 flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm text-zinc-500 dark:text-zinc-400">
+              <span>Private timeline</span>
               <span>Markdown-native</span>
-              <span>MIT licensed</span>
+              <span>Self-hosted</span>
             </div>
 
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
                 href={primaryCta.href}
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-stone-900 px-6 py-3.5 text-sm font-semibold text-stone-50 transition-colors duration-300 hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-white"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors duration-300 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
               >
                 {primaryCta.text}
                 <ArrowRight className="h-4 w-4" />
@@ -66,7 +64,7 @@ export function HeroSection({ version = "0.26.2", titleLines, subtitle, primaryC
                 href={secondaryCta.href}
                 target={secondaryCta.external ? "_blank" : undefined}
                 rel={secondaryCta.external ? "noopener noreferrer" : undefined}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-stone-300/80 bg-[rgba(255,252,247,0.7)] px-6 py-3.5 text-sm font-semibold text-stone-900 transition-colors hover:bg-[rgba(255,252,247,0.95)] dark:border-white/15 dark:bg-white/5 dark:text-stone-100 dark:hover:bg-white/10"
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-white/15 dark:bg-transparent dark:text-zinc-100 dark:hover:bg-white/8"
               >
                 <PlayCircleIcon className="h-4 w-4" />
                 {secondaryCta.text}
@@ -74,19 +72,8 @@ export function HeroSection({ version = "0.26.2", titleLines, subtitle, primaryC
             </div>
           </div>
 
-          <div className="relative mx-auto w-full max-w-[42rem] lg:pt-4 xl:mx-0 xl:justify-self-end">
-            <div className="rounded-[2.2rem] border border-stone-300/70 bg-[rgba(255,250,244,0.78)] p-5 shadow-[0_24px_90px_-58px_rgba(68,50,33,0.4)] dark:border-white/10 dark:bg-[rgba(22,18,15,0.92)] dark:shadow-[0_28px_90px_-48px_rgba(0,0,0,0.7)] sm:p-6">
-              <div className="mb-5 flex items-start justify-between gap-4 px-5 sm:px-6">
-                <div>
-                  <p className="text-xs font-semibold tracking-[0.18em] text-stone-500 uppercase dark:text-stone-400">Inside Memos</p>
-                  <p className="mt-2 max-w-xs text-balance text-sm leading-6 text-stone-600 dark:text-stone-300">
-                    A calm timeline for notes, logs, reading lists, and the small things worth keeping.
-                  </p>
-                </div>
-                <span className="text-[11px] font-medium tracking-[0.12em] uppercase text-stone-500 dark:text-stone-400">
-                  Private by default
-                </span>
-              </div>
+          <div className="relative left-1/2 mt-12 w-screen -translate-x-1/2 border-t border-zinc-200 bg-zinc-50 dark:border-white/10 dark:bg-zinc-900 lg:mt-16">
+            <div className="mx-auto max-w-[1500px]">
               <MemoHeroMock />
             </div>
           </div>
