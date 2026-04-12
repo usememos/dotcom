@@ -97,7 +97,7 @@ function MemoCard({
 
 export function MemoHeroMock() {
   return (
-    <div className="relative max-h-[36rem] overflow-hidden px-4 pt-8 pb-14 sm:max-h-[38rem] sm:px-6 lg:max-h-[42rem] lg:pt-10 lg:pb-18">
+    <div className="relative max-h-[40rem] overflow-hidden px-4 pt-8 pb-14 sm:max-h-[42rem] sm:px-6 lg:max-h-[46rem] lg:pt-10 lg:pb-18">
       <div className="mx-auto grid max-w-3xl gap-3 sm:gap-4">
         <MemoCard
           time="1 minute ago"

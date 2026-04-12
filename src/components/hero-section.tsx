@@ -72,7 +72,7 @@ export function HeroSection({ version = "0.26.2", title, subtitle, primaryCta, s
             </div>
           </div>
 
-          <div className="relative mt-12 border-t border-zinc-200 bg-zinc-50 dark:border-white/10 dark:bg-zinc-900 sm:left-1/2 sm:w-screen sm:-translate-x-1/2 lg:mt-16">
+          <div className="relative left-1/2 mt-12 w-screen -translate-x-1/2 border-t border-zinc-200 bg-zinc-50 dark:border-white/10 dark:bg-zinc-900 lg:mt-16">
             <div className="mx-auto max-w-[1500px]">
               <MemoHeroMock />
             </div>
