@@ -37,10 +37,6 @@ export interface FeatureDefinition {
   title: string;
   description: string;
   icon: LucideIcon;
-  gradient: string;
-  iconBg: string;
-  iconColor: string;
-  border: string;
   wip?: boolean;
   hero: {
     title: string;
@@ -98,10 +94,6 @@ export const FEATURES = {
     title: "Self-Hosted",
     description: "Run Memos on infrastructure you choose, from a Raspberry Pi to a production server.",
     icon: ServerIcon,
-    gradient: "from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30",
-    iconBg: "bg-purple-100 dark:bg-purple-900",
-    iconColor: "text-purple-600 dark:text-purple-400",
-    border: "border-purple-100 dark:border-purple-900",
     hero: {
       title: "Run Memos Yourself",
       subtitle: "Deploy where you want and keep the note-taking timeline inside infrastructure you trust.",
@@ -139,10 +131,6 @@ export const FEATURES = {
     title: "Data Ownership",
     description: "Keep notes in your chosen database with zero telemetry and a clear path to export.",
     icon: LockIcon,
-    gradient: "from-teal-50 to-cyan-50 dark:from-teal-950/30 dark:to-cyan-950/30",
-    iconBg: "bg-teal-100 dark:bg-teal-900",
-    iconColor: "text-teal-600 dark:text-teal-400",
-    border: "border-teal-100 dark:border-teal-900",
     hero: {
       title: "Keep Notes on Your Side",
       subtitle: "Keep your notes in your database, on your server, with ownership that stays clear and direct.",
@@ -181,10 +169,6 @@ export const FEATURES = {
     title: "Open Source",
     description: "MIT licensed and developed in public, so the code can be inspected, forked, and improved.",
     icon: GitBranchIcon,
-    gradient: "from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30",
-    iconBg: "bg-emerald-100 dark:bg-emerald-900",
-    iconColor: "text-emerald-600 dark:text-emerald-400",
-    border: "border-emerald-100 dark:border-emerald-900",
     hero: {
       title: "Truly Open Source",
       subtitle: "MIT licensed software you can inspect, fork, modify, and run for the long term.",
@@ -222,10 +206,6 @@ export const FEATURES = {
     title: "Free Software",
     description: "No subscription, seat pricing, or paid feature unlocks inside Memos.",
     icon: DollarSignIcon,
-    gradient: "from-lime-50 to-green-50 dark:from-lime-950/30 dark:to-green-950/30",
-    iconBg: "bg-lime-100 dark:bg-lime-900",
-    iconColor: "text-lime-600 dark:text-lime-400",
-    border: "border-lime-100 dark:border-lime-900",
     hero: {
       title: "Free Because You Host It",
       subtitle: "No subscription fees, no tracking, and no ads. Run the product without paywalls.",
@@ -263,10 +243,6 @@ export const FEATURES = {
     title: "No Dependencies",
     description: "Works with zero external dependencies or cloud connections required. Fully self-contained.",
     icon: CloudOffIcon,
-    gradient: "from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30",
-    iconBg: "bg-blue-100 dark:bg-blue-900",
-    iconColor: "text-blue-600 dark:text-blue-400",
-    border: "border-blue-100 dark:border-blue-900",
     hero: {
       title: "Truly Independent",
       subtitle: "Zero telemetry and no extra hosted services after installation keep Memos independent and simple.",
@@ -305,10 +281,6 @@ export const FEATURES = {
     title: "Instant Save",
     description: "Automatic persistence while you type keeps capture fast and low-friction.",
     icon: SaveIcon,
-    gradient: "from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30",
-    iconBg: "bg-green-100 dark:bg-green-900",
-    iconColor: "text-green-600 dark:text-green-400",
-    border: "border-green-100 dark:border-green-900",
     hero: {
       title: "Capture Every Thought",
       subtitle: "Write without stopping to think about saving. Memos keeps the flow moving.",
@@ -346,10 +318,6 @@ export const FEATURES = {
     title: "Quick Capture",
     description: "Fast memo creation from anywhere - capture thoughts instantly without interrupting your flow.",
     icon: PlusCircleIcon,
-    gradient: "from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30",
-    iconBg: "bg-emerald-100 dark:bg-emerald-900",
-    iconColor: "text-emerald-600 dark:text-emerald-400",
-    border: "border-emerald-100 dark:border-emerald-900",
     hero: {
       title: "Capture Thoughts Instantly",
       subtitle: "Open Memos, type, done. Quick capture should feel that simple.",
@@ -387,10 +355,6 @@ export const FEATURES = {
     title: "Markdown Notes",
     description: "Write portable notes with Markdown, syntax highlighting, tables, and LaTeX math.",
     icon: FileTextIcon,
-    gradient: "from-orange-50 to-red-50 dark:from-orange-950/30 dark:to-red-950/30",
-    iconBg: "bg-orange-100 dark:bg-orange-900",
-    iconColor: "text-orange-600 dark:text-orange-400",
-    border: "border-orange-100 dark:border-orange-900",
     hero: {
       title: "Write in Plain Markdown",
       subtitle: "Write in Markdown and keep your notes portable, readable, and easy to keep.",
@@ -428,10 +392,6 @@ export const FEATURES = {
     title: "Media Support",
     description: "Drag-and-drop support for images, videos, audio files, and document attachments.",
     icon: ImageIcon,
-    gradient: "from-pink-50 to-rose-50 dark:from-pink-950/30 dark:to-rose-950/30",
-    iconBg: "bg-pink-100 dark:bg-pink-900",
-    iconColor: "text-pink-600 dark:text-pink-400",
-    border: "border-pink-100 dark:border-pink-900",
     hero: {
       title: "Rich Media Support",
       subtitle: "Seamlessly integrate images, videos, and documents with simple drag-and-drop functionality.",
@@ -469,10 +429,6 @@ export const FEATURES = {
     title: "Universal Search",
     description: "Find the memo you need quickly with full-text search across your notes and content.",
     icon: SearchIcon,
-    gradient: "from-cyan-50 to-blue-50 dark:from-cyan-950/30 dark:to-blue-950/30",
-    iconBg: "bg-cyan-100 dark:bg-cyan-900",
-    iconColor: "text-cyan-600 dark:text-cyan-400",
-    border: "border-cyan-100 dark:border-cyan-900",
     hero: {
       title: "Find Anything Instantly",
       subtitle: "Powerful full-text search helps you find any note in milliseconds across your entire collection.",
@@ -510,10 +466,6 @@ export const FEATURES = {
     title: "Tags",
     description: "Organize your memos with flexible tagging system for quick categorization and filtering.",
     icon: TagIcon,
-    gradient: "from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30",
-    iconBg: "bg-amber-100 dark:bg-amber-900",
-    iconColor: "text-amber-600 dark:text-amber-400",
-    border: "border-amber-100 dark:border-amber-900",
     hero: {
       title: "Organize with Tags",
       subtitle: "Flexible tagging system makes it easy to categorize and filter your memos for quick access.",
@@ -551,10 +503,6 @@ export const FEATURES = {
     title: "Timeline View",
     description: "Browse quick notes, logs, and ideas in the order you captured them.",
     icon: ClockIcon,
-    gradient: "from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30",
-    iconBg: "bg-blue-100 dark:bg-blue-900",
-    iconColor: "text-blue-600 dark:text-blue-400",
-    border: "border-blue-100 dark:border-blue-900",
     hero: {
       title: "Your Private Timeline",
       subtitle: "Browse memos chronologically and revisit thoughts in the order they happened.",
@@ -592,10 +540,6 @@ export const FEATURES = {
     title: "Public Sharing",
     description: "Share selected memos publicly with simple links whenever you want to publish or send something out.",
     icon: Share2Icon,
-    gradient: "from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30",
-    iconBg: "bg-violet-100 dark:bg-violet-900",
-    iconColor: "text-violet-600 dark:text-violet-400",
-    border: "border-violet-100 dark:border-violet-900",
     hero: {
       title: "Share Selected Notes",
       subtitle: "Generate public links for specific memos while keeping the rest private.",
@@ -633,10 +577,6 @@ export const FEATURES = {
     title: "Microblog",
     description: "Turn your memos into a personal microblog for sharing thoughts, ideas, and short updates on your own terms.",
     icon: MessageCircleIcon,
-    gradient: "from-rose-50 to-orange-50 dark:from-rose-950/30 dark:to-orange-950/30",
-    iconBg: "bg-rose-100 dark:bg-rose-900",
-    iconColor: "text-rose-600 dark:text-rose-400",
-    border: "border-rose-100 dark:border-rose-900",
     hero: {
       title: "Your Personal Microblog",
       subtitle: "Share quick thoughts and updates from a self-hosted space you control.",
@@ -675,10 +615,6 @@ export const FEATURES = {
     title: "Beautiful Design",
     description: "Modern React and TypeScript interface with dark mode and responsive design for all devices.",
     icon: LayersIcon,
-    gradient: "from-sky-50 to-blue-50 dark:from-sky-950/30 dark:to-blue-950/30",
-    iconBg: "bg-sky-100 dark:bg-sky-900",
-    iconColor: "text-sky-600 dark:text-sky-400",
-    border: "border-sky-100 dark:border-sky-900",
     hero: {
       title: "Beautiful & Responsive",
       subtitle: "A clean interface that keeps the focus on writing and reading across devices.",
@@ -717,10 +653,6 @@ export const FEATURES = {
     title: "Progressive Web App",
     description: "Install as a native app on any device - works offline with full functionality.",
     icon: MonitorSmartphoneIcon,
-    gradient: "from-cyan-50 to-blue-50 dark:from-cyan-950/30 dark:to-blue-950/30",
-    iconBg: "bg-cyan-100 dark:bg-cyan-900",
-    iconColor: "text-cyan-600 dark:text-cyan-400",
-    border: "border-cyan-100 dark:border-cyan-900",
     hero: {
       title: "Install Like a Native App",
       subtitle: "Progressive Web App technology delivers native-like experience on any device.",
@@ -758,10 +690,6 @@ export const FEATURES = {
     title: "Keyboard Shortcuts",
     description: "Move faster with keyboard shortcuts for writing, navigating, and capturing without leaving the keyboard.",
     icon: KeyboardIcon,
-    gradient: "from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30",
-    iconBg: "bg-blue-100 dark:bg-blue-900",
-    iconColor: "text-blue-600 dark:text-blue-400",
-    border: "border-blue-100 dark:border-blue-900",
     wip: true,
     hero: {
       title: "Work at Speed",
@@ -800,10 +728,6 @@ export const FEATURES = {
     title: "Customizable",
     description: "Adjust branding, themes, colors, and UI details to make Memos feel like your own space.",
     icon: PaletteIcon,
-    gradient: "from-fuchsia-50 to-pink-50 dark:from-fuchsia-950/30 dark:to-pink-950/30",
-    iconBg: "bg-fuchsia-100 dark:bg-fuchsia-900",
-    iconColor: "text-fuchsia-600 dark:text-fuchsia-400",
-    border: "border-fuchsia-100 dark:border-fuchsia-900",
     hero: {
       title: "Make It Yours",
       subtitle: "Personalize branding, themes, and UI details so the instance feels like yours.",
@@ -842,10 +766,6 @@ export const FEATURES = {
     title: "Cross-Platform",
     description: "Linux, macOS, Windows, Docker, and Kubernetes - deploy anywhere with universal compatibility.",
     icon: ServerIcon,
-    gradient: "from-indigo-50 to-blue-50 dark:from-indigo-950/30 dark:to-blue-950/30",
-    iconBg: "bg-indigo-100 dark:bg-indigo-900",
-    iconColor: "text-indigo-600 dark:text-indigo-400",
-    border: "border-indigo-100 dark:border-indigo-900",
     hero: {
       title: "Deploy Anywhere",
       subtitle: "From Raspberry Pi to larger server setups, Memos stays portable across the environments people actually run.",
@@ -885,10 +805,6 @@ export const FEATURES = {
     title: "Super-fast",
     description: "Go-powered backend with instant loading and minimal resource usage for peak performance.",
     icon: ZapIcon,
-    gradient: "from-yellow-50 to-amber-50 dark:from-yellow-950/30 dark:to-amber-950/30",
-    iconBg: "bg-yellow-100 dark:bg-yellow-900",
-    iconColor: "text-yellow-600 dark:text-yellow-400",
-    border: "border-yellow-100 dark:border-yellow-900",
     hero: {
       title: "Built for Speed",
       subtitle: "Go-powered backend delivers instant loading and exceptional performance with no cloud latency dependency.",
@@ -926,10 +842,6 @@ export const FEATURES = {
     title: "Lightweight & Efficient",
     description: "Minimal footprint - runs smoothly on low-powered devices with minimal resource usage.",
     icon: FeatherIcon,
-    gradient: "from-sky-50 to-cyan-50 dark:from-sky-950/30 dark:to-cyan-950/30",
-    iconBg: "bg-sky-100 dark:bg-sky-900",
-    iconColor: "text-sky-600 dark:text-sky-400",
-    border: "border-sky-100 dark:border-sky-900",
     hero: {
       title: "Light as a Feather",
       subtitle: "Minimal resource usage means Memos runs smoothly even on low-powered hardware.",
@@ -967,10 +879,6 @@ export const FEATURES = {
     title: "Multi-Database",
     description: "Choose between SQLite, PostgreSQL, or MySQL to match your infrastructure needs.",
     icon: DatabaseIcon,
-    gradient: "from-slate-50 to-gray-50 dark:from-slate-950/30 dark:to-gray-950/30",
-    iconBg: "bg-slate-100 dark:bg-slate-900",
-    iconColor: "text-slate-600 dark:text-slate-400",
-    border: "border-slate-100 dark:border-slate-900",
     hero: {
       title: "Your Database, Your Choice",
       subtitle: "Flexible support for SQLite, PostgreSQL, and MySQL so you can choose the database that fits your setup.",
@@ -1008,10 +916,6 @@ export const FEATURES = {
     title: "API & Integrations",
     description: "REST and gRPC APIs for custom capture flows, integrations, and automation.",
     icon: CodeIcon,
-    gradient: "from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30",
-    iconBg: "bg-violet-100 dark:bg-violet-900",
-    iconColor: "text-violet-600 dark:text-violet-400",
-    border: "border-violet-100 dark:border-violet-900",
     hero: {
       title: "Built for Integration",
       subtitle: "REST and gRPC APIs make it easy to automate workflows and build on top of Memos.",
@@ -1051,10 +955,6 @@ export const FEATURES = {
     title: "Community-Driven",
     description: "Active development with 45,000+ GitHub stars, transparent roadmap, and engaged community.",
     icon: HeartIcon,
-    gradient: "from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30",
-    iconBg: "bg-rose-100 dark:bg-rose-900",
-    iconColor: "text-rose-600 dark:text-rose-400",
-    border: "border-rose-100 dark:border-rose-900",
     hero: {
       title: "Built Together",
       subtitle: "Active community with 45,000+ GitHub stars collaborating to make Memos better every day.",
@@ -1092,10 +992,6 @@ export const FEATURES = {
     title: "Multi-Language Support",
     description: "Available in multiple languages with community-contributed translations for global accessibility.",
     icon: GlobeIcon,
-    gradient: "from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30",
-    iconBg: "bg-indigo-100 dark:bg-indigo-900",
-    iconColor: "text-indigo-600 dark:text-indigo-400",
-    border: "border-indigo-100 dark:border-indigo-900",
     hero: {
       title: "Speak Your Language",
       subtitle: "Community translations help more people use Memos in the language they prefer.",
@@ -1134,10 +1030,6 @@ export const FEATURES = {
     title: "Import",
     description: "Migrate from other platforms with easy import from Markdown files and popular note apps.",
     icon: UploadIcon,
-    gradient: "from-teal-50 to-green-50 dark:from-teal-950/30 dark:to-green-950/30",
-    iconBg: "bg-teal-100 dark:bg-teal-900",
-    iconColor: "text-teal-600 dark:text-teal-400",
-    border: "border-teal-100 dark:border-teal-900",
     wip: true,
     hero: {
       title: "Easy Migration",
@@ -1171,10 +1063,6 @@ export const FEATURES = {
     title: "Print & Export",
     description: "Export your memos to Markdown, JSON, or CSV - your data is always portable and accessible.",
     icon: DownloadIcon,
-    gradient: "from-purple-50 to-violet-50 dark:from-purple-950/30 dark:to-violet-950/30",
-    iconBg: "bg-purple-100 dark:bg-purple-900",
-    iconColor: "text-purple-600 dark:text-purple-400",
-    border: "border-purple-100 dark:border-purple-900",
     wip: true,
     hero: {
       title: "Take Notes With You",

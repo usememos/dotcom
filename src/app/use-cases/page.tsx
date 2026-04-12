@@ -1,12 +1,11 @@
 import { HomeLayout } from "fumadocs-ui/layouts/home";
-import { BookOpenIcon, CodeIcon, GraduationCapIcon, PencilIcon, ServerIcon, ShieldCheckIcon, UsersIcon, WrenchIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { baseOptions } from "@/app/layout.config";
-import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Footer } from "@/components/footer";
+import { MarketingCtaSection, MarketingPageHero, MarketingSectionHeader, MarketingSummaryBand } from "@/components/marketing-page";
 import { buildBreadcrumbJsonLd, buildMarketingMetadata } from "@/lib/seo";
-import { getAllUseCaseSlugs, USE_CASES } from "@/lib/use-cases";
+import { getAllUseCaseSlugs, getUseCase } from "@/lib/use-cases";
 
 export const metadata: Metadata = {
   ...buildMarketingMetadata({
@@ -52,19 +51,6 @@ const USE_CASE_PRINCIPLES = [
   },
 ] as const;
 
-const iconMap = {
-  BookOpenIcon,
-  CodeIcon,
-  GraduationCapIcon,
-  PencilIcon,
-  ServerIcon,
-  ShieldCheckIcon,
-  UsersIcon,
-  WrenchIcon,
-} as const;
-
-type IconName = keyof typeof iconMap;
-
 export default function UseCasesPage() {
   const slugs = getAllUseCaseSlugs();
 
@@ -72,45 +58,28 @@ export default function UseCasesPage() {
     <HomeLayout {...baseOptions}>
       <main className="flex flex-1 flex-col bg-white dark:bg-zinc-950">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-        <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto max-w-6xl">
-            <Breadcrumbs items={breadcrumbItems} className="mb-10" />
-            <div className="mx-auto max-w-3xl text-center">
-              <p className="mb-5 text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Use Cases</p>
-              <h1 className="text-balance font-serif text-5xl font-semibold leading-[1.04] tracking-normal text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
-                Use Memos where quick notes actually happen.
-              </h1>
-              <p className="mx-auto mt-7 max-w-2xl text-balance text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">
-                Memos fits the small workflows that do not need a full workspace: journals, server logs, snippets, private updates, and
-                notes you want to keep.
-              </p>
-            </div>
-          </div>
-        </section>
 
-        <section className="border-b border-zinc-200 px-4 dark:border-white/10 sm:px-6">
-          <div className="mx-auto grid max-w-6xl divide-y divide-zinc-200 dark:divide-white/10 lg:grid-cols-3 lg:divide-x lg:divide-y-0">
-            {USE_CASE_PRINCIPLES.map((item) => (
-              <div key={item.title} className="py-8 lg:px-8 lg:first:pl-0 lg:last:pr-0">
-                <h2 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{item.title}</h2>
-                <p className="mt-3 max-w-md text-sm leading-7 text-zinc-600 dark:text-zinc-300 sm:text-base">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+        <MarketingPageHero
+          breadcrumbs={breadcrumbItems}
+          eyebrow="Use Cases"
+          title="Use Memos where quick notes actually happen."
+          description="Memos fits the small workflows that do not need a full workspace: journals, server logs, snippets, private updates, and notes you want to keep."
+        />
+
+        <MarketingSummaryBand items={USE_CASE_PRINCIPLES} />
 
         <section className="px-4 py-14 sm:px-6 lg:py-20">
           <div className="mx-auto w-full max-w-6xl">
-            <div className="mb-12 text-center">
-              <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Browse</p>
-              <h2 className="mx-auto mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
-                Pick the closest workflow.
-              </h2>
-            </div>
+            <MarketingSectionHeader eyebrow="Browse" title="Pick the closest workflow." />
             <div className="grid gap-4 sm:grid-cols-2">
               {slugs.map((slug) => {
-                const useCase = USE_CASES[slug as keyof typeof USE_CASES];
-                const Icon = iconMap[useCase.icon as IconName];
+                const useCase = getUseCase(slug);
+
+                if (!useCase) {
+                  return null;
+                }
+
+                const Icon = useCase.icon;
 
                 return (
                   <Link
@@ -132,33 +101,15 @@ export default function UseCasesPage() {
           </div>
         </section>
 
-        <section className="border-t border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto max-w-4xl text-center">
-            <h2 className="mb-6 text-balance font-serif text-4xl font-semibold tracking-[-0.04em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
-              Ready to start with one note?
-            </h2>
-            <p className="mx-auto mb-10 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">
-              Start with the workflow Memos does best: quick capture, private timelines, and lightweight review.
-            </p>
-            <div className="mx-auto flex max-w-sm flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center">
-              <Link
-                href="/docs/getting-started"
-                className="group inline-flex items-center justify-center gap-3 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
-              >
-                Install Memos
-                <span className="group-hover:translate-x-1 transition-transform" aria-hidden="true">
-                  →
-                </span>
-              </Link>
-              <Link
-                href="/features"
-                className="inline-flex items-center justify-center gap-3 rounded-lg border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-white/15 dark:bg-transparent dark:text-zinc-100 dark:hover:bg-white/8"
-              >
-                See Features
-              </Link>
-            </div>
-          </div>
-        </section>
+        <MarketingCtaSection
+          title="Ready to start with one note?"
+          description="Start with the workflow Memos does best: quick capture, private timelines, and lightweight review."
+          actions={[
+            { label: "Install Memos", href: "/docs/getting-started", showArrow: true },
+            { label: "See Features", href: "/features" },
+          ]}
+          borderTop
+        />
 
         <Footer />
       </main>

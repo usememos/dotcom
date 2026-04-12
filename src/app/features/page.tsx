@@ -3,8 +3,8 @@ import { ArrowRightIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { baseOptions } from "@/app/layout.config";
-import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Footer } from "@/components/footer";
+import { MarketingCtaSection, MarketingPageHero, MarketingSectionHeader, MarketingSummaryBand } from "@/components/marketing-page";
 import { FEATURES, type FeatureSlug } from "@/lib/features";
 import { buildBreadcrumbJsonLd, buildMarketingMetadata } from "@/lib/seo";
 
@@ -90,58 +90,23 @@ export default function FeaturesPage() {
     <HomeLayout {...baseOptions}>
       <main className="flex flex-1 flex-col bg-white dark:bg-zinc-950">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-        <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto max-w-6xl">
-            <Breadcrumbs items={breadcrumbItems} className="mb-10" />
-            <div className="mx-auto max-w-3xl text-center">
-              <p className="mb-5 text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Features</p>
-              <h1 className="text-balance font-serif text-5xl font-semibold leading-[1.04] tracking-normal text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
-                Everything Memos needs. Nothing that slows capture down.
-              </h1>
-              <p className="mx-auto mt-7 max-w-2xl text-balance text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">
-                Memos keeps the product surface small: quick notes, a private timeline, Markdown, tags, search, and self-hosted ownership.
-              </p>
-            </div>
 
-            <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
-              <Link
-                href="/docs/getting-started"
-                className="group inline-flex items-center justify-center gap-3 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
-              >
-                Install Memos
-                <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link
-                href="https://demo.usememos.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-3 rounded-lg border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-white/15 dark:bg-transparent dark:text-zinc-100 dark:hover:bg-white/8"
-              >
-                Try Live Demo
-              </Link>
-            </div>
-          </div>
-        </section>
+        <MarketingPageHero
+          breadcrumbs={breadcrumbItems}
+          eyebrow="Features"
+          title="Everything Memos needs. Nothing that slows capture down."
+          description="Memos keeps the product surface small: quick notes, a private timeline, Markdown, tags, search, and self-hosted ownership."
+          actions={[
+            { label: "Install Memos", href: "/docs/getting-started", showArrow: true },
+            { label: "Try Live Demo", href: "https://demo.usememos.com/" },
+          ]}
+        />
 
-        <section className="border-b border-zinc-200 px-4 dark:border-white/10 sm:px-6">
-          <div className="mx-auto grid max-w-6xl divide-y divide-zinc-200 dark:divide-white/10 lg:grid-cols-3 lg:divide-x lg:divide-y-0">
-            {FEATURE_PRINCIPLES.map((item) => (
-              <div key={item.title} className="py-8 lg:px-8 lg:first:pl-0 lg:last:pr-0">
-                <h2 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{item.title}</h2>
-                <p className="mt-3 max-w-md text-sm leading-7 text-zinc-600 dark:text-zinc-300 sm:text-base">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+        <MarketingSummaryBand items={FEATURE_PRINCIPLES} />
 
         <section className="px-4 py-14 sm:px-6 lg:py-20">
           <div className="mx-auto w-full max-w-6xl">
-            <div className="mb-12 text-center">
-              <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Browse</p>
-              <h2 className="mx-auto mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
-                Find the piece you need.
-              </h2>
-            </div>
+            <MarketingSectionHeader eyebrow="Browse" title="Find the piece you need." />
             <div className="space-y-14">
               {FEATURE_GROUPS.map((group) => (
                 <section key={group.title} aria-labelledby={`${group.title.toLowerCase()}-features`}>
@@ -189,31 +154,15 @@ export default function FeaturesPage() {
           </div>
         </section>
 
-        <section className="border-t border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto max-w-4xl text-center">
-            <h2 className="mb-6 text-balance font-serif text-4xl font-semibold tracking-[-0.04em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
-              Ready for faster private notes?
-            </h2>
-            <p className="mx-auto mb-10 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">
-              Install Memos and start with the capture flow it does best.
-            </p>
-            <div className="flex flex-col justify-center gap-3 sm:flex-row">
-              <Link
-                href="/docs/getting-started"
-                className="group inline-flex items-center justify-center gap-3 rounded-md bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
-              >
-                Install Memos
-                <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link
-                href="/docs"
-                className="inline-flex items-center justify-center gap-3 rounded-md border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-white/15 dark:bg-transparent dark:text-zinc-100 dark:hover:bg-white/8"
-              >
-                Read Docs
-              </Link>
-            </div>
-          </div>
-        </section>
+        <MarketingCtaSection
+          title="Ready for faster private notes?"
+          description="Install Memos and start with the capture flow it does best."
+          actions={[
+            { label: "Install Memos", href: "/docs/getting-started", showArrow: true },
+            { label: "Read Docs", href: "/docs" },
+          ]}
+          borderTop
+        />
       </main>
       <Footer />
     </HomeLayout>

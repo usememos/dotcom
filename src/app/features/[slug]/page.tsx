@@ -1,11 +1,10 @@
 import { HomeLayout } from "fumadocs-ui/layouts/home";
-import { ArrowRightIcon, CheckCircleIcon } from "lucide-react";
+import { CheckCircleIcon } from "lucide-react";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { baseOptions } from "@/app/layout.config";
-import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Footer } from "@/components/footer";
+import { MarketingCtaSection, MarketingPageHero, MarketingSectionHeader } from "@/components/marketing-page";
 import { getAllFeatureSlugs, getFeature } from "@/lib/features";
 import { buildBreadcrumbJsonLd, buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
@@ -37,38 +36,17 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
       <main className="flex flex-1 flex-col bg-white dark:bg-zinc-950">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
-        <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto w-full max-w-6xl">
-            <Breadcrumbs items={breadcrumbItems} className="mb-10" />
-            <div className="mx-auto max-w-3xl text-center">
-              <p className="mb-5 text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Feature</p>
-              <h1 className="text-balance font-serif text-4xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
-                {feature.hero.title}
-              </h1>
-              <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">
-                {feature.hero.subtitle}
-              </p>
-            </div>
-
-            <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
-              <Link
-                href="/docs/getting-started"
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
-              >
-                Install Memos
-                <ArrowRightIcon className="h-4 w-4" />
-              </Link>
-              <Link
-                href="https://demo.usememos.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-white/15 dark:bg-transparent dark:text-zinc-100 dark:hover:bg-white/8"
-              >
-                Try Demo
-              </Link>
-            </div>
-          </div>
-        </section>
+        <MarketingPageHero
+          breadcrumbs={breadcrumbItems}
+          eyebrow="Feature"
+          title={feature.hero.title}
+          description={feature.hero.subtitle}
+          titleSize="default"
+          actions={[
+            { label: "Install Memos", href: "/docs/getting-started", showArrow: true },
+            { label: "Try Demo", href: "https://demo.usememos.com/" },
+          ]}
+        />
 
         <section className="border-b border-zinc-200 px-4 dark:border-white/10 sm:px-6">
           <div className="mx-auto max-w-3xl py-8 text-center">
@@ -79,12 +57,7 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
 
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
           <div className="mx-auto w-full max-w-6xl">
-            <div className="mb-10 text-center">
-              <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Benefits</p>
-              <h2 className="mx-auto mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
-                Why it matters.
-              </h2>
-            </div>
+            <MarketingSectionHeader eyebrow="Benefits" title="Why it matters." />
             <div className="grid gap-3 sm:grid-cols-2">
               {feature.benefits.map((benefit, index) => (
                 <div
@@ -104,12 +77,7 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
 
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
           <div className="mx-auto w-full max-w-6xl">
-            <div className="mb-10 text-center">
-              <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Use Cases</p>
-              <h2 className="mx-auto mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
-                Works well for.
-              </h2>
-            </div>
+            <MarketingSectionHeader eyebrow="Use Cases" title="Works well for." />
             <div className="grid gap-4 sm:grid-cols-3">
               {feature.useCases.map((useCase, index) => (
                 <div key={useCase.title} className="rounded-lg border border-zinc-200 p-5 dark:border-white/10">
@@ -124,12 +92,7 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
 
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
           <div className="mx-auto w-full max-w-6xl">
-            <div className="mb-10 text-center">
-              <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Technical Details</p>
-              <h2 className="mx-auto mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
-                What it uses.
-              </h2>
-            </div>
+            <MarketingSectionHeader eyebrow="Technical Details" title="What it uses." />
             <div className="grid border-y border-zinc-200 dark:border-white/10 sm:grid-cols-2">
               {feature.techDetails.map((detail, index) => (
                 <div
@@ -144,30 +107,14 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
           </div>
         </section>
 
-        <section className="px-4 py-14 sm:px-6 lg:py-20">
-          <div className="mx-auto max-w-4xl text-center">
-            <h2 className="mb-6 text-balance font-serif text-4xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-5xl">
-              Ready to start?
-            </h2>
-            <p className="mx-auto mb-10 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">
-              Put {feature.title.toLowerCase()} to work in a self-hosted Memos instance you control.
-            </p>
-            <div className="flex flex-col justify-center gap-3 sm:flex-row">
-              <Link
-                href="/docs/getting-started"
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
-              >
-                Install Memos
-              </Link>
-              <Link
-                href="/features"
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-white/15 dark:bg-transparent dark:text-zinc-100 dark:hover:bg-white/8"
-              >
-                Explore Features
-              </Link>
-            </div>
-          </div>
-        </section>
+        <MarketingCtaSection
+          title="Ready to start?"
+          description={`Put ${feature.title.toLowerCase()} to work in a self-hosted Memos instance you control.`}
+          actions={[
+            { label: "Install Memos", href: "/docs/getting-started" },
+            { label: "Explore Features", href: "/features" },
+          ]}
+        />
       </main>
       <Footer />
     </HomeLayout>

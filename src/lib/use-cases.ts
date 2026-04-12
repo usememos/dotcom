@@ -3,13 +3,14 @@
  * This serves as the single source of truth for all use case-related data
  */
 
+import type { LucideIcon } from "lucide-react";
+import { BookOpenIcon, CodeIcon, GraduationCapIcon, PencilIcon, ServerIcon, ShieldCheckIcon, UsersIcon, WrenchIcon } from "lucide-react";
+
 export interface UseCaseDefinition {
   title: string;
   subtitle: string;
   description: string;
-  icon: string; // Icon name from lucide-react
-  gradient: string;
-  iconBg: string;
+  icon: LucideIcon;
   workflows: string[];
   whyMemos: string[];
   features: Array<{
@@ -49,9 +50,7 @@ export const USE_CASES = {
     subtitle: "Code snippets, technical notes, and architecture decisions",
     description:
       "Developers use Memos to capture code snippets, debug notes, architecture decisions, and learning resources. Markdown and quick capture make it a natural fit for fast-moving development work.",
-    icon: "CodeIcon",
-    gradient: "from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20",
-    iconBg: "from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30",
+    icon: CodeIcon,
     workflows: [
       "Store reusable code snippets and command-line recipes",
       "Document bug investigations and troubleshooting steps",
@@ -95,9 +94,7 @@ export const USE_CASES = {
     subtitle: "Article drafts, research collection, and creative ideas",
     description:
       "Writers and content creators use Memos to draft articles, collect research, brainstorm ideas, and keep an editorial trail. The interface stays light, and ownership stays clear.",
-    icon: "PencilIcon",
-    gradient: "from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20",
-    iconBg: "from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30",
+    icon: PencilIcon,
     workflows: [
       "Draft blog posts and articles in clean Markdown format",
       "Collect research links, quotes, and source materials",
@@ -141,9 +138,7 @@ export const USE_CASES = {
     subtitle: "Journalists, healthcare workers, legal professionals",
     description:
       "Professionals handling sensitive information use Memos for confidential notes, client records, and private research. Self-hosting and clear data ownership make it a strong fit when privacy matters.",
-    icon: "ShieldCheckIcon",
-    gradient: "from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20",
-    iconBg: "from-emerald-100 to-teal-100 dark:from-emerald-900/30 dark:to-teal-900/30",
+    icon: ShieldCheckIcon,
     workflows: [
       "Record confidential interviews and source communications",
       "Document patient notes and healthcare observations in self-managed environments",
@@ -185,9 +180,7 @@ export const USE_CASES = {
     subtitle: "Academic notes, research compilation, and study materials",
     description:
       "Students and researchers use Memos for lecture notes, reading trails, thesis work, and study groups. It works especially well for fast capture and lightweight organization.",
-    icon: "GraduationCapIcon",
-    gradient: "from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20",
-    iconBg: "from-yellow-100 to-amber-100 dark:from-yellow-900/30 dark:to-amber-900/30",
+    icon: GraduationCapIcon,
     workflows: [
       "Take lecture notes with rich Markdown formatting",
       "Organize research papers, citations, and literature reviews",
@@ -231,9 +224,7 @@ export const USE_CASES = {
     subtitle: "Daily journaling, personal notes, and idea trails",
     description:
       "People use Memos for daily journals, reading notes, idea trails, and lightweight personal archives. The timeline and fast capture flow make it easy to keep coming back.",
-    icon: "BookOpenIcon",
-    gradient: "from-rose-50 to-red-50 dark:from-rose-900/20 dark:to-red-900/20",
-    iconBg: "from-rose-100 to-red-100 dark:from-rose-900/30 dark:to-red-900/30",
+    icon: BookOpenIcon,
     workflows: [
       "Write daily journal entries and personal reflections",
       "Keep a personal archive of ideas and references",
@@ -275,9 +266,7 @@ export const USE_CASES = {
     subtitle: "Project logs, ideas collection, and creative documentation",
     description:
       "Makers, DIY enthusiasts, and hobbyists use Memos to document projects, collect inspiration, track materials, and keep build logs. Media support and quick capture help keep ideas close.",
-    icon: "WrenchIcon",
-    gradient: "from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20",
-    iconBg: "from-orange-100 to-amber-100 dark:from-orange-900/30 dark:to-amber-900/30",
+    icon: WrenchIcon,
     workflows: [
       "Document DIY projects with photos, notes, and progress logs",
       "Collect inspiration and ideas for future creative projects",
@@ -321,9 +310,7 @@ export const USE_CASES = {
     subtitle: "Server documentation, configuration notes, and infrastructure logs",
     description:
       "Self-hosting enthusiasts and homelab operators use Memos to document server configurations, troubleshooting procedures, and infrastructure changes. Its lightweight deployment makes it easy to keep close to the rest of the stack.",
-    icon: "ServerIcon",
-    gradient: "from-slate-50 to-gray-50 dark:from-slate-900/20 dark:to-gray-900/20",
-    iconBg: "from-slate-100 to-gray-100 dark:from-slate-900/30 dark:to-gray-900/30",
+    icon: ServerIcon,
     workflows: [
       "Document server configurations and network topology",
       "Record troubleshooting steps and solution databases",
@@ -367,9 +354,7 @@ export const USE_CASES = {
     subtitle: "A private social feed for your closest people",
     description:
       "Families and friend groups can use Memos as a lightweight social app for sharing updates, photos, memories, and everyday notes in a space that stays personal and under your control.",
-    icon: "UsersIcon",
-    gradient: "from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20",
-    iconBg: "from-pink-100 to-rose-100 dark:from-pink-900/30 dark:to-rose-900/30",
+    icon: UsersIcon,
     workflows: [
       "Share daily updates with family members and close friends",
       "Post milestone photos, travel notes, and personal memories",
@@ -411,9 +396,7 @@ export const USE_CASES = {
     subtitle: "Shared notes, meeting records, and internal updates",
     description:
       "Teams use Memos for shared notes, meeting records, internal updates, and lightweight documentation. It works best for teams that want a simple self-hosted writing space.",
-    icon: "UsersIcon",
-    gradient: "from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20",
-    iconBg: "from-violet-100 to-purple-100 dark:from-violet-900/30 dark:to-purple-900/30",
+    icon: UsersIcon,
     workflows: [
       "Share meeting agendas, notes, and action items",
       "Build internal documentation and process guides",

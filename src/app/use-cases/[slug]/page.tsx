@@ -1,26 +1,12 @@
 import { HomeLayout } from "fumadocs-ui/layouts/home";
-import { BookOpenIcon, CodeIcon, GraduationCapIcon, PencilIcon, ServerIcon, ShieldCheckIcon, UsersIcon, WrenchIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { baseOptions } from "@/app/layout.config";
-import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Footer } from "@/components/footer";
+import { MarketingPageHero, MarketingSectionHeader } from "@/components/marketing-page";
 import { buildBreadcrumbJsonLd, buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/lib/seo";
 import { getAllUseCaseSlugs, getUseCase } from "@/lib/use-cases";
-
-const iconMap = {
-  CodeIcon,
-  PencilIcon,
-  ShieldCheckIcon,
-  GraduationCapIcon,
-  BookOpenIcon,
-  ServerIcon,
-  UsersIcon,
-  WrenchIcon,
-} as const;
-
-type IconName = keyof typeof iconMap;
 
 export async function generateStaticParams() {
   return getAllUseCaseSlugs().map((slug) => ({
@@ -71,7 +57,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
     notFound();
   }
 
-  const IconComponent = iconMap[useCase.icon as IconName];
+  const IconComponent = useCase.icon;
   const breadcrumbItems = [
     { href: "/", name: "Home" },
     { href: "/use-cases", name: "Use Cases" },
@@ -84,18 +70,13 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
       <main className="flex flex-1 flex-col bg-white dark:bg-zinc-950">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
-        <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto w-full max-w-6xl">
-            <Breadcrumbs items={breadcrumbItems} className="mb-10" />
-            <div className="mx-auto max-w-3xl text-center">
-              <p className="mb-5 text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Use Case</p>
-              <h1 className="text-balance font-serif text-4xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
-                {useCase.title}
-              </h1>
-              <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">{useCase.subtitle}</p>
-            </div>
-          </div>
-        </section>
+        <MarketingPageHero
+          breadcrumbs={breadcrumbItems}
+          eyebrow="Use Case"
+          title={useCase.title}
+          description={useCase.subtitle}
+          titleSize="default"
+        />
 
         <section className="border-b border-zinc-200 px-4 dark:border-white/10 sm:px-6">
           <div className="mx-auto max-w-3xl py-8 text-center">
@@ -106,12 +87,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
 
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
           <div className="mx-auto w-full max-w-6xl">
-            <div className="mb-10 text-center">
-              <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Workflows</p>
-              <h2 className="mx-auto mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
-                Common ways to use it.
-              </h2>
-            </div>
+            <MarketingSectionHeader eyebrow="Workflows" title="Common ways to use it." />
             <div className="border-y border-zinc-200 dark:border-white/10">
               {useCase.workflows.map((workflow, index) => (
                 <div
@@ -128,12 +104,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
 
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
           <div className="mx-auto w-full max-w-6xl">
-            <div className="mb-10 text-center">
-              <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Fit</p>
-              <h2 className="mx-auto mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
-                Why Memos fits.
-              </h2>
-            </div>
+            <MarketingSectionHeader eyebrow="Fit" title="Why Memos fits." />
             <div className="grid gap-4 sm:grid-cols-2">
               {useCase.whyMemos.map((reason, index) => (
                 <div key={reason} className="rounded-lg border border-zinc-200 p-5 dark:border-white/10">
@@ -147,12 +118,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
 
         <section className="px-4 py-14 sm:px-6 lg:py-20">
           <div className="mx-auto w-full max-w-6xl">
-            <div className="mb-10 text-center">
-              <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Related Features</p>
-              <h2 className="mx-auto mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
-                Start here.
-              </h2>
-            </div>
+            <MarketingSectionHeader eyebrow="Related Features" title="Start here." />
             <div className="grid gap-3 sm:grid-cols-3">
               {useCase.features.map((feature, index) => (
                 <Link

@@ -2,8 +2,8 @@ import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { ArrowRightIcon, HeartIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { baseOptions } from "@/app/layout.config";
-import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Footer } from "@/components/footer";
+import { MarketingPageHero, MarketingSectionHeader } from "@/components/marketing-page";
 import { buildBreadcrumbJsonLd, buildMarketingMetadata } from "@/lib/seo";
 import { COMMUNITY_SPONSORS, FEATURED_SPONSORS } from "@/lib/sponsors";
 import { cn } from "@/lib/utils";
@@ -34,40 +34,17 @@ export default function SponsorsPage() {
       <main className="flex flex-1 flex-col bg-white dark:bg-zinc-950">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
-        <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto max-w-6xl">
-            <Breadcrumbs items={breadcrumbItems} className="mb-10" />
-            <div className="mx-auto max-w-3xl text-center">
-              <p className="mb-5 text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Sponsors</p>
-              <h1 className="text-balance font-serif text-5xl font-semibold leading-[1.04] tracking-normal text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
-                Back the project.
-              </h1>
-              <p className="mx-auto mt-7 max-w-2xl text-balance text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">
-                Sponsorship helps keep Memos maintained, documented, and available for self-hosters.
-              </p>
-              <div className="mt-9 flex justify-center">
-                <a
-                  href="https://github.com/sponsors/usememos"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
-                >
-                  <HeartIcon className="h-4 w-4" />
-                  Become a Sponsor
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
+        <MarketingPageHero
+          breadcrumbs={breadcrumbItems}
+          eyebrow="Sponsors"
+          title="Back the project."
+          description="Sponsorship helps keep Memos maintained, documented, and available for self-hosters."
+          actions={[{ label: "Become a Sponsor", href: "https://github.com/sponsors/usememos", icon: <HeartIcon className="h-4 w-4" /> }]}
+        />
 
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
           <div className="mx-auto w-full max-w-6xl">
-            <div className="mb-10">
-              <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Featured</p>
-              <h2 className="mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
-                Sponsors helping Memos grow.
-              </h2>
-            </div>
+            <MarketingSectionHeader eyebrow="Featured" title="Sponsors helping Memos grow." align="left" />
             <div className="border-y border-zinc-200 dark:border-white/10">
               {FEATURED_SPONSORS.map((sponsor) => (
                 <a
@@ -106,12 +83,7 @@ export default function SponsorsPage() {
 
         <section className="px-4 py-14 sm:px-6 lg:py-20">
           <div className="mx-auto w-full max-w-6xl">
-            <div className="mb-10">
-              <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Community</p>
-              <h2 className="mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
-                Backers and supporters.
-              </h2>
-            </div>
+            <MarketingSectionHeader eyebrow="Community" title="Backers and supporters." align="left" />
             <div className="space-y-10">
               <div className="grid gap-3 sm:grid-cols-2">
                 {COMMUNITY_SPONSORS.map((sponsor) => (
