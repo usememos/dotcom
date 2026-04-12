@@ -110,7 +110,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         url: "https://usememos.com/logo-rounded.png",
       },
     },
-    screenshot: "https://usememos.com/demo.png",
+    screenshot: "https://usememos.com/og-image.png",
     featureList: [
       "Instant thought capture",
       "Private timeline",

@@ -118,7 +118,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <Footer compact />
+      <Footer />
     </main>
   );
 }
