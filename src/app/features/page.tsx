@@ -91,7 +91,7 @@ export default function FeaturesPage() {
       <main className="flex flex-1 flex-col bg-white dark:bg-zinc-950">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto max-w-5xl">
+          <div className="mx-auto max-w-6xl">
             <Breadcrumbs items={breadcrumbItems} className="mb-10" />
             <div className="mx-auto max-w-3xl text-center">
               <p className="mb-5 text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Features</p>
@@ -123,13 +123,10 @@ export default function FeaturesPage() {
           </div>
         </section>
 
-        <section className="px-4 py-12 sm:px-6 lg:py-16">
-          <div className="mx-auto grid max-w-5xl gap-3 lg:grid-cols-3">
+        <section className="border-b border-zinc-200 px-4 dark:border-white/10 sm:px-6">
+          <div className="mx-auto grid max-w-6xl divide-y divide-zinc-200 dark:divide-white/10 lg:grid-cols-3 lg:divide-x lg:divide-y-0">
             {FEATURE_PRINCIPLES.map((item) => (
-              <div
-                key={item.title}
-                className="rounded-lg bg-zinc-50 p-7 transition-colors hover:bg-zinc-100 dark:bg-white/5 dark:hover:bg-white/8"
-              >
+              <div key={item.title} className="py-8 lg:px-8 lg:first:pl-0 lg:last:pr-0">
                 <h2 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{item.title}</h2>
                 <p className="mt-3 max-w-md text-sm leading-7 text-zinc-600 dark:text-zinc-300 sm:text-base">{item.description}</p>
               </div>
@@ -138,17 +135,17 @@ export default function FeaturesPage() {
         </section>
 
         <section className="px-4 py-14 sm:px-6 lg:py-20">
-          <div className="mx-auto grid w-full max-w-(--fd-layout-width) gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
-            <div className="lg:sticky lg:top-24 lg:self-start">
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="mb-12 text-center">
               <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Browse</p>
-              <h2 className="mt-4 max-w-xs text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
+              <h2 className="mx-auto mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
                 Find the piece you need.
               </h2>
             </div>
-            <div className="space-y-12">
+            <div className="space-y-14">
               {FEATURE_GROUPS.map((group) => (
                 <section key={group.title} aria-labelledby={`${group.title.toLowerCase()}-features`}>
-                  <div className="mb-5">
+                  <div className="mb-6 border-t border-zinc-200 pt-6 dark:border-white/10">
                     <h2
                       id={`${group.title.toLowerCase()}-features`}
                       className="text-2xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100"
@@ -158,29 +155,30 @@ export default function FeaturesPage() {
                     <p className="mt-2 max-w-2xl text-sm leading-7 text-zinc-600 dark:text-zinc-300 sm:text-base">{group.description}</p>
                   </div>
 
-                  <div className="grid gap-2">
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     {group.slugs.map((slug) => {
                       const feature = FEATURES[slug];
+                      const Icon = feature.icon;
                       const isWip = "wip" in feature && feature.wip;
 
                       return (
                         <Link
                           key={slug}
                           href={`/features/${slug}`}
-                          className="group grid gap-3 rounded-lg px-4 py-4 transition-colors hover:bg-zinc-50 dark:hover:bg-white/5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start"
+                          className="group rounded-lg border border-zinc-200 p-5 transition-colors hover:bg-zinc-50 dark:border-white/10 dark:hover:bg-white/5"
                         >
-                          <div>
-                            <div className="flex flex-wrap items-center gap-2">
-                              <h3 className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{feature.title}</h3>
-                              {isWip ? (
-                                <span className="rounded-md border border-zinc-200 px-2 py-0.5 text-xs font-medium text-zinc-500 dark:border-white/10 dark:text-zinc-400">
-                                  WIP
-                                </span>
-                              ) : null}
-                            </div>
-                            <p className="mt-2 max-w-3xl text-sm leading-7 text-zinc-600 dark:text-zinc-300">{feature.description}</p>
+                          <div className="mb-5 flex items-center justify-between gap-4 text-zinc-400 dark:text-zinc-500">
+                            <Icon className="h-4 w-4 stroke-[1.8]" />
+                            {isWip ? (
+                              <span className="rounded-md border border-zinc-200 px-2 py-0.5 text-xs font-medium text-zinc-500 dark:border-white/10 dark:text-zinc-400">
+                                WIP
+                              </span>
+                            ) : (
+                              <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                            )}
                           </div>
-                          <ArrowRightIcon className="hidden h-4 w-4 translate-y-2 text-zinc-400 transition-transform group-hover:translate-x-1 sm:block" />
+                          <h3 className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{feature.title}</h3>
+                          <p className="mt-3 text-sm leading-7 text-zinc-600 dark:text-zinc-300">{feature.description}</p>
                         </Link>
                       );
                     })}

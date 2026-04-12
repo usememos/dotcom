@@ -40,7 +40,7 @@ export default function BrandPage() {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto max-w-5xl">
+          <div className="mx-auto max-w-6xl">
             <Breadcrumbs items={breadcrumbItems} className="mb-10" />
             <div className="mx-auto max-w-3xl text-center">
               <p className="mb-5 text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Brand</p>
@@ -54,21 +54,32 @@ export default function BrandPage() {
           </div>
         </section>
 
+        <section className="border-b border-zinc-200 px-4 dark:border-white/10 sm:px-6">
+          <div className="mx-auto grid max-w-6xl divide-y divide-zinc-200 dark:divide-white/10 lg:grid-cols-3 lg:divide-x lg:divide-y-0">
+            {GUIDELINES.map((guideline, index) => (
+              <div key={guideline} className="py-8 lg:px-8 lg:first:pl-0 lg:last:pr-0">
+                <p className="text-xs font-semibold tracking-[0.18em] text-zinc-400">{String(index + 1).padStart(2, "0")}</p>
+                <p className="mt-4 text-sm leading-7 text-zinc-600 dark:text-zinc-300 sm:text-base">{guideline}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto grid w-full max-w-(--fd-layout-width) gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
-            <div>
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="mb-10">
               <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Logos</p>
-              <h2 className="mt-4 text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
+              <h2 className="mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
                 Use the mark plainly.
               </h2>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {LOGOS.map((logo) => (
-                <div key={logo.src} className="rounded-lg border border-zinc-200 bg-white p-6 dark:border-white/10 dark:bg-zinc-950">
+                <div key={logo.src} className="rounded-lg border border-zinc-200 bg-white p-5 dark:border-white/10 dark:bg-zinc-950">
                   <div className="flex h-24 items-center justify-center">
                     <Image src={logo.src} alt={logo.alt} width={logo.width} height={logo.height} className="max-h-full max-w-full" />
                   </div>
-                  <div className="mt-5 flex items-center justify-between gap-4 rounded-lg bg-zinc-50 px-3 py-2 dark:bg-white/5">
+                  <div className="mt-5 flex items-center justify-between gap-4 border-t border-zinc-200 pt-4 dark:border-white/10">
                     <p className="font-semibold text-zinc-950 dark:text-zinc-100">{logo.title}</p>
                     <a
                       href={logo.src}
@@ -80,27 +91,6 @@ export default function BrandPage() {
                     </a>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="px-4 py-14 sm:px-6 lg:py-20">
-          <div className="mx-auto grid w-full max-w-(--fd-layout-width) gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
-            <div>
-              <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Usage</p>
-              <h2 className="mt-4 text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
-                Keep it simple.
-              </h2>
-            </div>
-            <div className="grid gap-2">
-              {GUIDELINES.map((guideline) => (
-                <p
-                  key={guideline}
-                  className="rounded-lg bg-zinc-50 px-4 py-3 text-sm leading-7 text-zinc-600 dark:bg-white/5 dark:text-zinc-300 sm:text-base"
-                >
-                  {guideline}
-                </p>
               ))}
             </div>
           </div>

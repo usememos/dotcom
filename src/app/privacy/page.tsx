@@ -67,7 +67,7 @@ export default function PrivacyPage() {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto max-w-5xl">
+          <div className="mx-auto max-w-6xl">
             <Breadcrumbs items={breadcrumbItems} className="mb-10" />
             <div className="mx-auto max-w-3xl text-center">
               <p className="mb-5 text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Privacy</p>
@@ -77,52 +77,49 @@ export default function PrivacyPage() {
               <p className="mx-auto mt-7 max-w-2xl text-balance text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">
                 Privacy is part of the deployment model. Memos is built so your notes stay on infrastructure you control.
               </p>
-            </div>
-
-            <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
-              <a
-                href="https://github.com/usememos/memos"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
-              >
-                <GithubIcon className="h-4 w-4" />
-                Read the Source
-              </a>
-              <Link
-                href="/docs/getting-started"
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-white/15 dark:bg-transparent dark:text-zinc-100 dark:hover:bg-white/8"
-              >
-                Install Memos
-              </Link>
+              <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
+                <a
+                  href="https://github.com/usememos/memos"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
+                >
+                  <GithubIcon className="h-4 w-4" />
+                  Read the Source
+                </a>
+                <Link
+                  href="/docs/getting-started"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-white/15 dark:bg-transparent dark:text-zinc-100 dark:hover:bg-white/8"
+                >
+                  Install Memos
+                </Link>
+              </div>
             </div>
           </div>
         </section>
 
-        <section className="px-4 py-12 sm:px-6 lg:py-16">
-          <div className="mx-auto grid max-w-5xl gap-3 lg:grid-cols-3">
-            {SUMMARY.map((item) => (
-              <div
-                key={item}
-                className="rounded-lg bg-zinc-50 p-7 transition-colors hover:bg-zinc-100 dark:bg-white/5 dark:hover:bg-white/8"
-              >
-                <p className="text-sm leading-7 text-zinc-700 dark:text-zinc-300 sm:text-base">{item}</p>
+        <section className="border-b border-zinc-200 px-4 dark:border-white/10 sm:px-6">
+          <div className="mx-auto grid max-w-6xl divide-y divide-zinc-200 dark:divide-white/10 lg:grid-cols-3 lg:divide-x lg:divide-y-0">
+            {SUMMARY.map((item, index) => (
+              <div key={item} className="py-8 lg:px-8 lg:first:pl-0 lg:last:pr-0">
+                <p className="text-xs font-semibold tracking-[0.18em] text-zinc-400">{String(index + 1).padStart(2, "0")}</p>
+                <p className="mt-4 text-sm leading-7 text-zinc-600 dark:text-zinc-300 sm:text-base">{item}</p>
               </div>
             ))}
           </div>
         </section>
 
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto grid w-full max-w-(--fd-layout-width) gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
-            <div>
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-10">
               <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Collection</p>
-              <h2 className="mt-4 text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
+              <h2 className="mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
                 What we do not collect.
               </h2>
             </div>
             <div className="grid gap-5 sm:grid-cols-2">
               {NO_COLLECTION.map((item) => (
-                <div key={item.title} className="rounded-lg bg-zinc-50 p-4 dark:bg-white/5">
+                <div key={item.title} className="rounded-lg border border-zinc-200 p-5 dark:border-white/10">
                   <h3 className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{item.title}</h3>
                   <p className="mt-2 text-sm leading-7 text-zinc-600 dark:text-zinc-300">{item.description}</p>
                 </div>
@@ -132,16 +129,16 @@ export default function PrivacyPage() {
         </section>
 
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto grid w-full max-w-(--fd-layout-width) gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
-            <div>
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-10">
               <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Deployment</p>
-              <h2 className="mt-4 text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
+              <h2 className="mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
                 Self-hosted by design.
               </h2>
             </div>
             <div className="grid gap-5 sm:grid-cols-3">
               {DEPLOYMENT.map((item) => (
-                <div key={item.title} className="rounded-lg bg-zinc-50 p-4 dark:bg-white/5">
+                <div key={item.title} className="rounded-lg border border-zinc-200 p-5 dark:border-white/10">
                   <h3 className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{item.title}</h3>
                   <p className="mt-2 text-sm leading-7 text-zinc-600 dark:text-zinc-300">{item.description}</p>
                 </div>

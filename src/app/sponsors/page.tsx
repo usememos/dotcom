@@ -1,5 +1,5 @@
 import { HomeLayout } from "fumadocs-ui/layouts/home";
-import { HeartIcon } from "lucide-react";
+import { ArrowRightIcon, HeartIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { baseOptions } from "@/app/layout.config";
 import { Breadcrumbs } from "@/components/breadcrumbs";
@@ -35,7 +35,7 @@ export default function SponsorsPage() {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto max-w-5xl">
+          <div className="mx-auto max-w-6xl">
             <Breadcrumbs items={breadcrumbItems} className="mb-10" />
             <div className="mx-auto max-w-3xl text-center">
               <p className="mb-5 text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Sponsors</p>
@@ -45,39 +45,39 @@ export default function SponsorsPage() {
               <p className="mx-auto mt-7 max-w-2xl text-balance text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">
                 Sponsorship helps keep Memos maintained, documented, and available for self-hosters.
               </p>
-            </div>
-            <div className="mt-9 flex justify-center">
-              <a
-                href="https://github.com/sponsors/usememos"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
-              >
-                <HeartIcon className="h-4 w-4" />
-                Become a Sponsor
-              </a>
+              <div className="mt-9 flex justify-center">
+                <a
+                  href="https://github.com/sponsors/usememos"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
+                >
+                  <HeartIcon className="h-4 w-4" />
+                  Become a Sponsor
+                </a>
+              </div>
             </div>
           </div>
         </section>
 
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto grid w-full max-w-(--fd-layout-width) gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
-            <div>
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="mb-10">
               <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Featured</p>
-              <h2 className="mt-4 text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
+              <h2 className="mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
                 Sponsors helping Memos grow.
               </h2>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="border-y border-zinc-200 dark:border-white/10">
               {FEATURED_SPONSORS.map((sponsor) => (
                 <a
                   key={sponsor.name}
                   href={sponsor.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-lg border border-zinc-200 bg-white p-6 transition-colors hover:bg-zinc-50 dark:border-white/10 dark:bg-zinc-950 dark:hover:bg-white/5"
+                  className="group grid gap-6 border-b border-zinc-200 py-6 transition-colors last:border-b-0 hover:bg-zinc-50 dark:border-white/10 dark:hover:bg-white/5 sm:grid-cols-[14rem_minmax(0,1fr)_auto] sm:items-center sm:px-4"
                 >
-                  <div className="flex h-14 items-center">
+                  <div className="flex h-12 items-center">
                     <img
                       src={sponsor.logo}
                       alt={`${sponsor.name} logo`}
@@ -91,9 +91,13 @@ export default function SponsorsPage() {
                       />
                     )}
                   </div>
-                  {sponsor.description ? (
-                    <p className="mt-5 text-sm leading-7 text-zinc-600 dark:text-zinc-300">{sponsor.description}</p>
-                  ) : null}
+                  <div>
+                    <h3 className="font-semibold text-zinc-950 dark:text-zinc-100">{sponsor.name}</h3>
+                    {sponsor.description ? (
+                      <p className="mt-1 text-sm leading-7 text-zinc-600 dark:text-zinc-300">{sponsor.description}</p>
+                    ) : null}
+                  </div>
+                  <ArrowRightIcon className="hidden h-4 w-4 text-zinc-400 transition-transform group-hover:translate-x-1 sm:block" />
                 </a>
               ))}
             </div>
@@ -101,10 +105,10 @@ export default function SponsorsPage() {
         </section>
 
         <section className="px-4 py-14 sm:px-6 lg:py-20">
-          <div className="mx-auto grid w-full max-w-(--fd-layout-width) gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
-            <div>
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="mb-10">
               <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Community</p>
-              <h2 className="mt-4 text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
+              <h2 className="mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
                 Backers and supporters.
               </h2>
             </div>

@@ -30,6 +30,7 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
     { href: `/features/${slug}`, name: feature.title },
   ];
   const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
+  const Icon = feature.icon;
 
   return (
     <HomeLayout {...baseOptions}>
@@ -37,22 +38,19 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto w-full max-w-(--fd-layout-width)">
+          <div className="mx-auto w-full max-w-6xl">
             <Breadcrumbs items={breadcrumbItems} className="mb-10" />
-            <div className="grid gap-10 lg:grid-cols-[minmax(0,42rem)_minmax(0,1fr)] lg:items-end lg:gap-16">
-              <div>
-                <p className="mb-5 text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Feature</p>
-                <h1 className="text-balance font-serif text-4xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
-                  {feature.hero.title}
-                </h1>
-                <p className="mt-6 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">{feature.hero.subtitle}</p>
-              </div>
-              <p className="rounded-lg bg-zinc-50 p-4 text-sm leading-7 text-zinc-600 dark:bg-white/5 dark:text-zinc-300">
-                {feature.description}
+            <div className="mx-auto max-w-3xl text-center">
+              <p className="mb-5 text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Feature</p>
+              <h1 className="text-balance font-serif text-4xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
+                {feature.hero.title}
+              </h1>
+              <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">
+                {feature.hero.subtitle}
               </p>
             </div>
 
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
                 href="/docs/getting-started"
                 className="inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
@@ -72,22 +70,32 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
           </div>
         </section>
 
+        <section className="border-b border-zinc-200 px-4 dark:border-white/10 sm:px-6">
+          <div className="mx-auto max-w-3xl py-8 text-center">
+            <Icon className="mx-auto mb-4 h-5 w-5 stroke-[1.8] text-zinc-500 dark:text-zinc-400" />
+            <p className="max-w-4xl text-base leading-8 text-zinc-600 dark:text-zinc-300">{feature.description}</p>
+          </div>
+        </section>
+
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto grid w-full max-w-(--fd-layout-width) gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
-            <div>
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="mb-10 text-center">
               <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Benefits</p>
-              <h2 className="mt-4 text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
+              <h2 className="mx-auto mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
                 Why it matters.
               </h2>
             </div>
-            <div className="grid gap-2">
-              {feature.benefits.map((benefit) => (
+            <div className="grid gap-3 sm:grid-cols-2">
+              {feature.benefits.map((benefit, index) => (
                 <div
                   key={benefit}
-                  className="flex items-start gap-3 rounded-lg bg-zinc-50 px-4 py-3 text-sm leading-7 text-zinc-700 dark:bg-white/5 dark:text-zinc-300 sm:text-base"
+                  className="rounded-lg border border-zinc-200 p-5 text-sm leading-7 text-zinc-700 dark:border-white/10 dark:text-zinc-300 sm:text-base"
                 >
-                  <CheckCircleIcon className="mt-1 h-4 w-4 shrink-0 text-zinc-500 dark:text-zinc-400" />
-                  <span>{benefit}</span>
+                  <div className="mb-4 flex items-center gap-2 text-xs font-semibold tracking-[0.18em] text-zinc-400">
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    <CheckCircleIcon className="h-4 w-4" />
+                  </div>
+                  {benefit}
                 </div>
               ))}
             </div>
@@ -95,18 +103,19 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
         </section>
 
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto grid w-full max-w-(--fd-layout-width) gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
-            <div>
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="mb-10 text-center">
               <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Use Cases</p>
-              <h2 className="mt-4 text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
+              <h2 className="mx-auto mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
                 Works well for.
               </h2>
             </div>
-            <div className="grid gap-5 sm:grid-cols-3">
-              {feature.useCases.map((useCase) => (
-                <div key={useCase.title} className="rounded-lg bg-zinc-50 p-4 dark:bg-white/5">
+            <div className="grid gap-4 sm:grid-cols-3">
+              {feature.useCases.map((useCase, index) => (
+                <div key={useCase.title} className="rounded-lg border border-zinc-200 p-5 dark:border-white/10">
+                  <p className="mb-5 text-xs font-semibold tracking-[0.18em] text-zinc-400">{String(index + 1).padStart(2, "0")}</p>
                   <h3 className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{useCase.title}</h3>
-                  <p className="mt-2 text-sm leading-7 text-zinc-600 dark:text-zinc-300">{useCase.description}</p>
+                  <p className="mt-3 text-sm leading-7 text-zinc-600 dark:text-zinc-300">{useCase.description}</p>
                 </div>
               ))}
             </div>
@@ -114,21 +123,21 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
         </section>
 
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto grid w-full max-w-(--fd-layout-width) gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
-            <div>
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="mb-10 text-center">
               <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Technical Details</p>
-              <h2 className="mt-4 text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
+              <h2 className="mx-auto mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
                 What it uses.
               </h2>
             </div>
-            <div className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
-              {feature.techDetails.map((detail) => (
+            <div className="grid border-y border-zinc-200 dark:border-white/10 sm:grid-cols-2">
+              {feature.techDetails.map((detail, index) => (
                 <div
                   key={detail}
-                  className="flex items-start gap-3 rounded-lg bg-zinc-50 px-4 py-3 text-sm text-zinc-700 dark:bg-white/5 dark:text-zinc-300"
+                  className="border-b border-zinc-200 py-5 dark:border-white/10 sm:px-5 sm:odd:border-r sm:[&:nth-last-child(-n+2)]:border-b-0"
                 >
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-zinc-400" />
-                  <span>{detail}</span>
+                  <p className="text-xs font-semibold tracking-[0.18em] text-zinc-400">{String(index + 1).padStart(2, "0")}</p>
+                  <p className="mt-3 text-sm leading-7 text-zinc-700 dark:text-zinc-300">{detail}</p>
                 </div>
               ))}
             </div>

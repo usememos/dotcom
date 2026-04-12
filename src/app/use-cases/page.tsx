@@ -1,4 +1,5 @@
 import { HomeLayout } from "fumadocs-ui/layouts/home";
+import { BookOpenIcon, CodeIcon, GraduationCapIcon, PencilIcon, ServerIcon, ShieldCheckIcon, UsersIcon, WrenchIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { baseOptions } from "@/app/layout.config";
@@ -51,6 +52,19 @@ const USE_CASE_PRINCIPLES = [
   },
 ] as const;
 
+const iconMap = {
+  BookOpenIcon,
+  CodeIcon,
+  GraduationCapIcon,
+  PencilIcon,
+  ServerIcon,
+  ShieldCheckIcon,
+  UsersIcon,
+  WrenchIcon,
+} as const;
+
+type IconName = keyof typeof iconMap;
+
 export default function UseCasesPage() {
   const slugs = getAllUseCaseSlugs();
 
@@ -59,7 +73,7 @@ export default function UseCasesPage() {
       <main className="flex flex-1 flex-col bg-white dark:bg-zinc-950">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto max-w-5xl">
+          <div className="mx-auto max-w-6xl">
             <Breadcrumbs items={breadcrumbItems} className="mb-10" />
             <div className="mx-auto max-w-3xl text-center">
               <p className="mb-5 text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Use Cases</p>
@@ -74,13 +88,10 @@ export default function UseCasesPage() {
           </div>
         </section>
 
-        <section className="px-4 py-12 sm:px-6 lg:py-16">
-          <div className="mx-auto grid max-w-5xl gap-3 lg:grid-cols-3">
+        <section className="border-b border-zinc-200 px-4 dark:border-white/10 sm:px-6">
+          <div className="mx-auto grid max-w-6xl divide-y divide-zinc-200 dark:divide-white/10 lg:grid-cols-3 lg:divide-x lg:divide-y-0">
             {USE_CASE_PRINCIPLES.map((item) => (
-              <div
-                key={item.title}
-                className="rounded-lg bg-zinc-50 p-7 transition-colors hover:bg-zinc-100 dark:bg-white/5 dark:hover:bg-white/8"
-              >
+              <div key={item.title} className="py-8 lg:px-8 lg:first:pl-0 lg:last:pr-0">
                 <h2 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{item.title}</h2>
                 <p className="mt-3 max-w-md text-sm leading-7 text-zinc-600 dark:text-zinc-300 sm:text-base">{item.description}</p>
               </div>
@@ -89,33 +100,31 @@ export default function UseCasesPage() {
         </section>
 
         <section className="px-4 py-14 sm:px-6 lg:py-20">
-          <div className="mx-auto grid w-full max-w-(--fd-layout-width) gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
-            <div className="lg:sticky lg:top-24 lg:self-start">
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="mb-12 text-center">
               <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Browse</p>
-              <h2 className="mt-4 max-w-xs text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
+              <h2 className="mx-auto mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
                 Pick the closest workflow.
               </h2>
             </div>
-            <div className="grid gap-2">
+            <div className="grid gap-4 sm:grid-cols-2">
               {slugs.map((slug) => {
                 const useCase = USE_CASES[slug as keyof typeof USE_CASES];
+                const Icon = iconMap[useCase.icon as IconName];
 
                 return (
                   <Link
                     key={slug}
                     href={`/use-cases/${slug}`}
-                    className="group grid gap-3 rounded-lg px-4 py-4 transition-colors hover:bg-zinc-50 dark:hover:bg-white/5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start"
+                    className="group rounded-lg border border-zinc-200 p-5 transition-colors hover:bg-zinc-50 dark:border-white/10 dark:hover:bg-white/5"
                   >
-                    <div>
-                      <h3 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{useCase.title}</h3>
-                      <p className="mt-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 sm:text-base">{useCase.subtitle}</p>
-                      <p className="mt-3 max-w-3xl text-sm leading-7 text-zinc-600 dark:text-zinc-300 sm:text-base">
-                        {useCase.description}
-                      </p>
+                    <div className="mb-5 flex items-center justify-between gap-4 text-zinc-400 dark:text-zinc-500">
+                      <Icon className="h-4 w-4 stroke-[1.8]" />
+                      <span className="text-sm font-semibold transition-transform group-hover:translate-x-1">Read</span>
                     </div>
-                    <span className="hidden translate-y-1 text-sm font-semibold text-zinc-500 transition-transform group-hover:translate-x-1 sm:block">
-                      Read
-                    </span>
+                    <h3 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{useCase.title}</h3>
+                    <p className="mt-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 sm:text-base">{useCase.subtitle}</p>
+                    <p className="mt-4 max-w-3xl text-sm leading-7 text-zinc-600 dark:text-zinc-300 sm:text-base">{useCase.description}</p>
                   </Link>
                 );
               })}

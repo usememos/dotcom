@@ -85,42 +85,41 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto w-full max-w-(--fd-layout-width)">
+          <div className="mx-auto w-full max-w-6xl">
             <Breadcrumbs items={breadcrumbItems} className="mb-10" />
-            <div className="grid gap-10 lg:grid-cols-[minmax(0,42rem)_minmax(0,1fr)] lg:items-end lg:gap-16">
-              <div>
-                <p className="mb-5 text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Use Case</p>
-                <h1 className="text-balance font-serif text-4xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
-                  {useCase.title}
-                </h1>
-                <p className="mt-6 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">{useCase.subtitle}</p>
-              </div>
-              <div className="rounded-lg bg-zinc-50 p-4 dark:bg-white/5">
-                <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-lg border border-zinc-200 text-zinc-700 dark:border-white/10 dark:text-zinc-200">
-                  <IconComponent className="h-6 w-6" />
-                </div>
-                <p className="text-sm leading-7 text-zinc-600 dark:text-zinc-300">{useCase.description}</p>
-              </div>
+            <div className="mx-auto max-w-3xl text-center">
+              <p className="mb-5 text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Use Case</p>
+              <h1 className="text-balance font-serif text-4xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
+                {useCase.title}
+              </h1>
+              <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">{useCase.subtitle}</p>
             </div>
           </div>
         </section>
 
+        <section className="border-b border-zinc-200 px-4 dark:border-white/10 sm:px-6">
+          <div className="mx-auto max-w-3xl py-8 text-center">
+            <IconComponent className="mx-auto mb-4 h-5 w-5 stroke-[1.8] text-zinc-500 dark:text-zinc-400" />
+            <p className="max-w-4xl text-base leading-8 text-zinc-600 dark:text-zinc-300">{useCase.description}</p>
+          </div>
+        </section>
+
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto grid w-full max-w-(--fd-layout-width) gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
-            <div>
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="mb-10 text-center">
               <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Workflows</p>
-              <h2 className="mt-4 text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
+              <h2 className="mx-auto mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
                 Common ways to use it.
               </h2>
             </div>
-            <div className="grid gap-2">
-              {useCase.workflows.map((workflow) => (
+            <div className="border-y border-zinc-200 dark:border-white/10">
+              {useCase.workflows.map((workflow, index) => (
                 <div
                   key={workflow}
-                  className="flex items-start gap-3 rounded-lg bg-zinc-50 px-4 py-3 text-sm leading-7 text-zinc-700 dark:bg-white/5 dark:text-zinc-300 sm:text-base"
+                  className="grid gap-3 border-b border-zinc-200 py-5 last:border-b-0 dark:border-white/10 sm:grid-cols-[4rem_minmax(0,1fr)]"
                 >
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-zinc-400" />
-                  <span>{workflow}</span>
+                  <p className="text-xs font-semibold tracking-[0.18em] text-zinc-400">{String(index + 1).padStart(2, "0")}</p>
+                  <p className="text-sm leading-7 text-zinc-700 dark:text-zinc-300 sm:text-base">{workflow}</p>
                 </div>
               ))}
             </div>
@@ -128,17 +127,18 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
         </section>
 
         <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto grid w-full max-w-(--fd-layout-width) gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
-            <div>
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="mb-10 text-center">
               <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Fit</p>
-              <h2 className="mt-4 text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
+              <h2 className="mx-auto mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
                 Why Memos fits.
               </h2>
             </div>
-            <div className="grid gap-5 sm:grid-cols-2">
-              {useCase.whyMemos.map((reason) => (
-                <div key={reason} className="rounded-lg bg-zinc-50 p-4 text-sm leading-7 text-zinc-600 dark:bg-white/5 dark:text-zinc-300">
-                  {reason}
+            <div className="grid gap-4 sm:grid-cols-2">
+              {useCase.whyMemos.map((reason, index) => (
+                <div key={reason} className="rounded-lg border border-zinc-200 p-5 dark:border-white/10">
+                  <p className="mb-5 text-xs font-semibold tracking-[0.18em] text-zinc-400">{String(index + 1).padStart(2, "0")}</p>
+                  <p className="text-sm leading-7 text-zinc-600 dark:text-zinc-300">{reason}</p>
                 </div>
               ))}
             </div>
@@ -146,20 +146,21 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
         </section>
 
         <section className="px-4 py-14 sm:px-6 lg:py-20">
-          <div className="mx-auto grid w-full max-w-(--fd-layout-width) gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
-            <div>
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="mb-10 text-center">
               <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Related Features</p>
-              <h2 className="mt-4 text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
+              <h2 className="mx-auto mt-4 max-w-2xl text-balance font-serif text-3xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-4xl">
                 Start here.
               </h2>
             </div>
-            <div className="grid gap-4 sm:grid-cols-3">
-              {useCase.features.map((feature) => (
+            <div className="grid gap-3 sm:grid-cols-3">
+              {useCase.features.map((feature, index) => (
                 <Link
                   key={feature.slug}
                   href={`/features/${feature.slug}`}
-                  className="group rounded-lg bg-zinc-50 p-4 transition-colors hover:bg-zinc-100 dark:bg-white/5 dark:hover:bg-white/8"
+                  className="group rounded-lg border border-zinc-200 p-5 transition-colors hover:bg-zinc-50 dark:border-white/10 dark:hover:bg-white/5"
                 >
+                  <p className="mb-5 text-xs font-semibold tracking-[0.18em] text-zinc-400">{String(index + 1).padStart(2, "0")}</p>
                   <h3 className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{feature.name}</h3>
                   <span className="mt-2 inline-block text-sm text-zinc-500 dark:text-zinc-400">Learn more</span>
                 </Link>

@@ -36,7 +36,7 @@ export const COMMUNITY_SPONSORS: Sponsor[] = [
   {
     name: "yourselfhosted",
     url: "https://yourselfhosted.com",
-    logo: "https://www.yourselfhosted.com/sea-otter.svg",
+    logo: "https://yourselfhosted.com/sea-otter.svg",
     description: "Self-hosted solutions and guides for privacy-focused individuals.",
   },
 ];
