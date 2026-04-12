@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import { baseOptions } from "@/app/layout.config";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Footer } from "@/components/footer";
-import { buildBreadcrumbJsonLd } from "@/lib/seo";
+import { buildBreadcrumbJsonLd, buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/lib/seo";
 import { getAllUseCaseSlugs, getUseCase } from "@/lib/use-cases";
 
 const iconMap = {
@@ -52,11 +52,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       siteName: "Memos",
       locale: "en_US",
       type: "article",
+      images: buildDefaultOpenGraphImages(`${useCase.title} - Memos Use Case`),
     },
     twitter: {
       card: "summary_large_image",
       title: `${useCase.title} - Memos Use Case`,
       description: useCase.seo.description,
+      images: [DEFAULT_OG_IMAGE],
     },
   };
 }

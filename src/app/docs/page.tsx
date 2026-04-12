@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { AdsSectionMobile } from "@/components/ads-section";
 import { Breadcrumbs } from "@/components/breadcrumbs";
-import { buildBreadcrumbJsonLd } from "@/lib/seo";
+import { buildBreadcrumbJsonLd, buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/lib/seo";
 import { source } from "@/lib/source";
 import { tocConfig } from "@/lib/toc-config";
 import { getMDXComponents } from "@/mdx-components";
@@ -83,11 +83,13 @@ export async function generateMetadata(): Promise<Metadata> {
       description: page.data.description,
       type: "article",
       url: `https://usememos.com${page.url}`,
+      images: buildDefaultOpenGraphImages(page.data.title),
     },
     twitter: {
       card: "summary_large_image",
       title: isApi ? `${page.data.title} - Memos API Reference` : page.data.title,
       description: page.data.description,
+      images: [DEFAULT_OG_IMAGE],
     },
   };
 }

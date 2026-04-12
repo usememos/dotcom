@@ -23,7 +23,7 @@ export function HeroSection({ version = "0.26.2", title, subtitle, primaryCta, s
     <section className="relative isolate overflow-hidden border-b border-zinc-200 bg-white dark:border-white/10 dark:bg-zinc-950">
       <div className="mx-auto w-full max-w-(--fd-layout-width) px-4 pt-12 sm:px-6 lg:pt-18">
         <div className="mx-auto max-w-6xl">
-          <div className="mx-auto max-w-4xl text-center">
+          <div className="mx-auto w-full max-w-[calc(100vw-2rem)] text-center sm:max-w-4xl">
             <div className="mb-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-zinc-500 dark:text-zinc-400">
               {version && (
                 <Link
@@ -38,7 +38,7 @@ export function HeroSection({ version = "0.26.2", title, subtitle, primaryCta, s
               )}
             </div>
 
-            <h1 className="mx-auto max-w-5xl text-balance font-serif text-5xl leading-[1.02] font-semibold tracking-normal text-zinc-950 dark:text-zinc-50 sm:text-6xl md:text-7xl lg:text-8xl">
+            <h1 className="mx-auto max-w-5xl text-balance font-serif text-4xl leading-[1.04] font-semibold tracking-normal text-zinc-950 dark:text-zinc-50 sm:text-6xl md:text-7xl lg:text-8xl">
               {title}
             </h1>
 
@@ -55,7 +55,7 @@ export function HeroSection({ version = "0.26.2", title, subtitle, primaryCta, s
             <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
                 href={primaryCta.href}
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors duration-300 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors duration-300 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white sm:w-auto"
               >
                 {primaryCta.text}
                 <ArrowRight className="h-4 w-4" />
@@ -64,7 +64,7 @@ export function HeroSection({ version = "0.26.2", title, subtitle, primaryCta, s
                 href={secondaryCta.href}
                 target={secondaryCta.external ? "_blank" : undefined}
                 rel={secondaryCta.external ? "noopener noreferrer" : undefined}
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-white/15 dark:bg-transparent dark:text-zinc-100 dark:hover:bg-white/8"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-white/15 dark:bg-transparent dark:text-zinc-100 dark:hover:bg-white/8 sm:w-auto"
               >
                 <PlayCircleIcon className="h-4 w-4" />
                 {secondaryCta.text}
@@ -72,7 +72,7 @@ export function HeroSection({ version = "0.26.2", title, subtitle, primaryCta, s
             </div>
           </div>
 
-          <div className="relative left-1/2 mt-12 w-screen -translate-x-1/2 border-t border-zinc-200 bg-zinc-50 dark:border-white/10 dark:bg-zinc-900 lg:mt-16">
+          <div className="relative mt-12 border-t border-zinc-200 bg-zinc-50 dark:border-white/10 dark:bg-zinc-900 sm:left-1/2 sm:w-screen sm:-translate-x-1/2 lg:mt-16">
             <div className="mx-auto max-w-[1500px]">
               <MemoHeroMock />
             </div>

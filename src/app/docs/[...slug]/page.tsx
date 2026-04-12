@@ -5,7 +5,7 @@ import { notFound, redirect } from "next/navigation";
 import { AdsSectionMobile } from "@/components/ads-section";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { getApiDocsVersionFromSlug, getApiDocsVersionLabel, normalizeApiDocsSlug } from "@/lib/api-docs";
-import { buildBreadcrumbJsonLd } from "@/lib/seo";
+import { buildBreadcrumbJsonLd, buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/lib/seo";
 import { source } from "@/lib/source";
 import { tocConfig } from "@/lib/toc-config";
 import { getMDXComponents } from "@/mdx-components";
@@ -113,8 +113,6 @@ export async function generateMetadata(props: { params: Promise<{ slug: string[]
   if (!page) notFound();
 
   const isApi = page.url.startsWith("/docs/api");
-  const ogUrl = `/api/og/docs?slug=${normalizedSlug.join("/")}`;
-
   return {
     title: page.data.title,
     description: page.data.description,
@@ -126,13 +124,13 @@ export async function generateMetadata(props: { params: Promise<{ slug: string[]
       description: page.data.description,
       type: "article",
       url: `https://usememos.com${page.url}`,
-      images: [{ url: ogUrl, width: 1200, height: 630, alt: page.data.title }],
+      images: buildDefaultOpenGraphImages(page.data.title),
     },
     twitter: {
       card: "summary_large_image",
       title: isApi ? `${page.data.title} - Memos API Reference` : page.data.title,
       description: page.data.description,
-      images: [ogUrl],
+      images: [DEFAULT_OG_IMAGE],
     },
   };
 }

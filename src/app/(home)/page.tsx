@@ -2,6 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/footer";
 import { HeroSection } from "@/components/hero-section";
+import { HomeDeploySection } from "@/components/home-deploy-section";
+import { HomeDiscoverSection } from "@/components/home-discover-section";
+import { HomeFeaturesSection } from "@/components/home-features-section";
+import { HomeUseCasesSection } from "@/components/home-use-cases-section";
+import { buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 const PRINCIPLES = [
   {
@@ -29,6 +34,9 @@ const START_LINKS = [
 ] as const;
 
 export const metadata: Metadata = {
+  title: {
+    absolute: "Memos - Open-Source Self-Hosted Notes",
+  },
   description:
     "Memos is an open-source, self-hosted timeline for quick notes, daily logs, links, and snippets. Capture first, organize later, and keep every memo yours.",
   keywords: [
@@ -53,18 +61,20 @@ export const metadata: Metadata = {
     siteName: "Memos",
     locale: "en_US",
     type: "website",
+    images: buildDefaultOpenGraphImages(),
   },
   twitter: {
     card: "summary_large_image",
     title: "Memos - Capture first. Keep it yours.",
     description:
       "Open-source, self-hosted timeline for quick notes, daily logs, links, and snippets. Markdown-native, lightweight, and yours to run.",
+    images: [DEFAULT_OG_IMAGE],
   },
 };
 
 export default function HomePage() {
   return (
-    <main className="flex flex-1 flex-col bg-white dark:bg-zinc-950">
+    <main className="flex flex-1 flex-col overflow-x-hidden bg-white dark:bg-zinc-950">
       <HeroSection
         title={
           <>
@@ -77,7 +87,7 @@ export default function HomePage() {
         secondaryCta={{ text: "Try Live Demo", href: "https://demo.usememos.com/", external: true }}
       />
       <section className="border-b border-zinc-200 bg-white px-4 py-14 dark:border-white/10 dark:bg-zinc-950 sm:px-6 lg:py-20">
-        <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-end">
+        <div className="mx-auto grid w-full max-w-[calc(100vw-2rem)] gap-8 sm:max-w-6xl lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-end">
           <h2 className="text-balance font-serif text-3xl font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-4xl lg:text-5xl">
             Not a workspace. Not a second brain.
           </h2>
@@ -88,7 +98,7 @@ export default function HomePage() {
       </section>
 
       <section className="border-b border-zinc-200 bg-white px-4 dark:border-white/10 dark:bg-zinc-950 sm:px-6">
-        <div className="mx-auto grid max-w-5xl divide-y divide-zinc-200 dark:divide-white/10 lg:grid-cols-3 lg:divide-x lg:divide-y-0">
+        <div className="mx-auto grid w-full max-w-[calc(100vw-2rem)] divide-y divide-zinc-200 dark:divide-white/10 sm:max-w-6xl lg:grid-cols-3 lg:divide-x lg:divide-y-0">
           {PRINCIPLES.map((item) => (
             <div key={item.title} className="py-8 lg:px-8 lg:first:pl-0 lg:last:pr-0">
               <p className="text-xs font-semibold tracking-[0.18em] text-zinc-400 uppercase dark:text-zinc-500">{item.label}</p>
@@ -98,6 +108,11 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      <HomeFeaturesSection />
+      <HomeDeploySection />
+      <HomeUseCasesSection />
+      <HomeDiscoverSection />
 
       <section className="bg-white px-4 py-16 dark:bg-zinc-950 sm:px-6 lg:py-22">
         <div className="mx-auto max-w-2xl text-center">

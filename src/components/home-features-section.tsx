@@ -5,32 +5,32 @@ import { SectionHeader } from "@/components/section-header";
 
 const FEATURES = [
   {
-    icon: <ShieldIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
+    icon: <ShieldIcon className="h-4 w-4 stroke-[1.8]" />,
     title: "Your Notes Stay With You",
     description: "Run Memos on your server, store notes in your database, and keep the data path clear.",
   },
   {
-    icon: <ZapIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
+    icon: <ZapIcon className="h-4 w-4 stroke-[1.8]" />,
     title: "Open, Type, Move On",
     description: "No folder choice, no template step, no title required before a thought is worth saving.",
   },
   {
-    icon: <PenToolIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
+    icon: <PenToolIcon className="h-4 w-4 stroke-[1.8]" />,
     title: "Plain Markdown",
     description: "Write in a format that stays readable, portable, and easy to back up outside the app.",
   },
   {
-    icon: <ServerIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
+    icon: <ServerIcon className="h-4 w-4 stroke-[1.8]" />,
     title: "Small Enough to Run Anywhere",
     description: "Start on a Raspberry Pi, VPS, or cloud box with a lightweight Docker deploy.",
   },
   {
-    icon: <GithubIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
+    icon: <GithubIcon className="h-4 w-4 stroke-[1.8]" />,
     title: "Open Source You Can Inspect",
     description: "MIT licensed, public on GitHub, and shaped by contributors who run Memos themselves.",
   },
   {
-    icon: <DollarSignIcon className="w-6 h-6 sm:w-8 sm:h-8" />,
+    icon: <DollarSignIcon className="h-4 w-4 stroke-[1.8]" />,
     title: "Free Because You Host It",
     description: "No paid unlocks or seat pricing in the product. Bring the infrastructure that fits your setup.",
   },
@@ -39,7 +39,7 @@ const FEATURES = [
 export function HomeFeaturesSection() {
   return (
     <section className="border-b border-zinc-200 bg-white px-4 py-14 dark:border-white/10 dark:bg-zinc-950 sm:px-6 sm:py-18 lg:py-22">
-      <div className="mx-auto w-full max-w-(--fd-layout-width)">
+      <div className="mx-auto w-full max-w-[calc(100vw-2rem)] sm:max-w-6xl">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
           <div className="lg:sticky lg:top-24 lg:self-start">
             <SectionHeader
@@ -58,7 +58,7 @@ export function HomeFeaturesSection() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 gap-x-10 gap-y-8 sm:grid-cols-2 lg:gap-y-10">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {FEATURES.map((feature) => (
               <FeatureCard key={feature.title} {...feature} />
             ))}

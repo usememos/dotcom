@@ -1,9 +1,9 @@
 import "@/app/global.css";
 import { RootProvider } from "fumadocs-ui/provider/next";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Source_Serif_4 } from "next/font/google";
 import type { ReactNode } from "react";
-import { buildSiteNavigationJsonLd } from "@/lib/seo";
+import { buildSiteNavigationJsonLd, DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_ALT } from "@/lib/seo";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -60,10 +60,10 @@ export const metadata: Metadata = {
       "Open-source, self-hosted timeline for quick notes, daily logs, links, and snippets. Markdown-native, lightweight, and yours to run.",
     images: [
       {
-        url: "/og-image.png",
+        url: DEFAULT_OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Memos - Capture first. Keep it yours.",
+        alt: DEFAULT_OG_IMAGE_ALT,
       },
     ],
   },
@@ -72,13 +72,19 @@ export const metadata: Metadata = {
     title: "Memos - Capture first. Keep it yours.",
     description:
       "Open-source, self-hosted timeline for quick notes, daily logs, links, and snippets. Markdown-native, lightweight, and yours to run.",
-    images: ["/og-image.png"],
+    images: [DEFAULT_OG_IMAGE],
   },
   icons: {
     icon: "/logo-rounded.png",
     shortcut: "/logo-rounded.png",
     apple: "/logo-rounded.png",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -110,7 +116,8 @@ export default function Layout({ children }: { children: ReactNode }) {
         url: "https://usememos.com/logo-rounded.png",
       },
     },
-    screenshot: "https://usememos.com/og-image.png",
+    image: DEFAULT_OG_IMAGE,
+    screenshot: DEFAULT_OG_IMAGE,
     featureList: [
       "Instant thought capture",
       "Private timeline",
@@ -139,19 +146,14 @@ export default function Layout({ children }: { children: ReactNode }) {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Memos",
+    alternateName: ["usememos", "usememos.com"],
     url: "https://usememos.com",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: "https://usememos.com/docs?q={search_term_string}",
-      "query-input": "required name=search_term_string",
-    },
   };
   const siteNavigationJsonLd = buildSiteNavigationJsonLd();
 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />

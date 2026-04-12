@@ -5,8 +5,8 @@ import { SectionHeader } from "@/components/section-header";
 
 export function HomeDeploySection() {
   return (
-    <section className="border-b border-zinc-200 bg-zinc-50 px-4 py-14 dark:border-white/10 dark:bg-zinc-950 sm:px-6 sm:py-18 lg:py-22">
-      <div className="mx-auto w-full max-w-(--fd-layout-width)">
+    <section className="border-b border-zinc-200 bg-white px-4 py-14 dark:border-white/10 dark:bg-zinc-950 sm:px-6 sm:py-18 lg:py-22">
+      <div className="mx-auto w-full max-w-[calc(100vw-2rem)] sm:max-w-6xl">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:items-start lg:gap-16">
           <div>
             <SectionHeader

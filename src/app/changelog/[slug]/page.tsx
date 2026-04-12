@@ -18,7 +18,7 @@ import {
   getChangelogVersion,
   sortChangelogPages,
 } from "@/lib/changelog";
-import { buildBreadcrumbJsonLd } from "@/lib/seo";
+import { buildBreadcrumbJsonLd, buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/lib/seo";
 import { changelogSource } from "@/lib/source";
 
 interface ChangelogPageProps {
@@ -144,7 +144,13 @@ export async function generateMetadata({ params }: ChangelogPageProps): Promise<
       type: "article",
       publishedTime: data.date,
       url: pageUrl,
+      images: buildDefaultOpenGraphImages(`${version} Release Notes - Memos`),
     },
-    twitter: { card: "summary", title: `${version} Release Notes`, description: getChangelogDescription(version, data.description) },
+    twitter: {
+      card: "summary_large_image",
+      title: `${version} Release Notes`,
+      description: getChangelogDescription(version, data.description),
+      images: [DEFAULT_OG_IMAGE],
+    },
   };
 }

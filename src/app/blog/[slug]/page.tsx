@@ -9,7 +9,7 @@ import { BlogPostHeroImage } from "@/components/blog-post-hero-image";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Footer } from "@/components/footer";
 import { getAbsoluteBlogImageUrl } from "@/lib/blog";
-import { buildBreadcrumbJsonLd } from "@/lib/seo";
+import { buildBreadcrumbJsonLd, DEFAULT_OG_IMAGE } from "@/lib/seo";
 import { blogSource } from "@/lib/source";
 
 interface BlogPageProps {
@@ -41,7 +41,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
     "@type": "BlogPosting",
     headline: data.title,
     description: data.description,
-    image: getAbsoluteBlogImageUrl(data.feature_image) ?? "https://usememos.com/og-image.png",
+    image: getAbsoluteBlogImageUrl(data.feature_image) ?? DEFAULT_OG_IMAGE,
     datePublished: data.published_at,
     author: {
       "@type": "Organization",
@@ -109,6 +109,7 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
   const { data } = page;
   const pageUrl = `https://usememos.com/blog/${slug}`;
   const absoluteImageUrl = getAbsoluteBlogImageUrl(data.feature_image);
+  const imageUrl = absoluteImageUrl ?? DEFAULT_OG_IMAGE;
 
   return {
     title: data.title,
@@ -122,13 +123,13 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
       type: "article",
       publishedTime: data.published_at,
       url: pageUrl,
-      images: absoluteImageUrl ? [absoluteImageUrl] : undefined,
+      images: [imageUrl],
     },
     twitter: {
       card: "summary_large_image",
       title: data.title,
       description: data.description,
-      images: absoluteImageUrl ? [absoluteImageUrl] : undefined,
+      images: [imageUrl],
     },
   };
 }

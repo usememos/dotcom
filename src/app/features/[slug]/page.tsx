@@ -7,7 +7,7 @@ import { baseOptions } from "@/app/layout.config";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Footer } from "@/components/footer";
 import { getAllFeatureSlugs, getFeature } from "@/lib/features";
-import { buildBreadcrumbJsonLd } from "@/lib/seo";
+import { buildBreadcrumbJsonLd, buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 interface FeaturePageProps {
   params: Promise<{ slug: string }>;
@@ -195,21 +195,14 @@ export async function generateMetadata({ params }: FeaturePageProps): Promise<Me
       description: feature.description,
       url: pageUrl,
       siteName: "Memos",
-      images: [
-        {
-          url: "https://usememos.com/og-image.png",
-          width: 1200,
-          height: 630,
-          alt: `Memos ${feature.title}`,
-        },
-      ],
+      images: buildDefaultOpenGraphImages(`Memos ${feature.title}`),
       type: "article",
     },
     twitter: {
       card: "summary_large_image",
       title: `${feature.title} - Memos`,
       description: feature.description,
-      images: ["https://usememos.com/og-image.png"],
+      images: [DEFAULT_OG_IMAGE],
     },
   };
 }
