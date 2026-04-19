@@ -13,6 +13,7 @@ const DEMO_SERVER = `servers:
 
 const SERVICE_ENTRY_PAGES = {
   activityservice: "GetActivity",
+  aiservice: "Transcribe",
   attachmentservice: "CreateAttachment",
   authservice: "SignIn",
   identityproviderservice: "CreateIdentityProvider",
@@ -24,6 +25,7 @@ const SERVICE_ENTRY_PAGES = {
 
 const SERVICE_TITLES = {
   activityservice: "Activity Service",
+  aiservice: "AI Service",
   attachmentservice: "Attachment Service",
   authservice: "Auth Service",
   identityproviderservice: "Identity Provider Service",

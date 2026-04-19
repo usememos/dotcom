@@ -6,6 +6,11 @@
     "isLatest": true
   },
   {
+    "slug": "0-27-1",
+    "label": "0.27.x",
+    "ref": "refs/tags/v0.27.1"
+  },
+  {
     "slug": "0-26-2",
     "label": "0.26.x",
     "ref": "refs/tags/v0.26.2"
