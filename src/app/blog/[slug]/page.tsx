@@ -8,8 +8,8 @@ import { BlogPostHeader } from "@/components/blog-post-header";
 import { BlogPostHeroImage } from "@/components/blog-post-hero-image";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Footer } from "@/components/footer";
-import { getAbsoluteBlogImageUrl } from "@/lib/blog";
-import { buildBreadcrumbJsonLd, DEFAULT_OG_IMAGE } from "@/lib/seo";
+import { buildBreadcrumbJsonLd } from "@/lib/seo";
+import { getBlogSocialPreview, getOpenGraphImages, getTwitterImages } from "@/lib/social-preview";
 import { blogSource } from "@/lib/source";
 
 interface BlogPageProps {
@@ -35,13 +35,14 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
     { href: `/blog/${slug}`, name: data.title },
   ];
   const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
+  const preview = getBlogSocialPreview(page);
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: data.title,
     description: data.description,
-    image: getAbsoluteBlogImageUrl(data.feature_image) ?? DEFAULT_OG_IMAGE,
+    image: preview.imageUrl,
     datePublished: data.published_at,
     author: {
       "@type": "Organization",
@@ -107,29 +108,27 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
   }
 
   const { data } = page;
-  const pageUrl = `https://usememos.com/blog/${slug}`;
-  const absoluteImageUrl = getAbsoluteBlogImageUrl(data.feature_image);
-  const imageUrl = absoluteImageUrl ?? DEFAULT_OG_IMAGE;
+  const preview = getBlogSocialPreview(page);
 
   return {
     title: data.title,
     description: data.description,
     alternates: {
-      canonical: pageUrl,
+      canonical: preview.url,
     },
     openGraph: {
-      title: data.title,
-      description: data.description,
+      title: preview.title,
+      description: preview.description,
       type: "article",
       publishedTime: data.published_at,
-      url: pageUrl,
-      images: [imageUrl],
+      url: preview.url,
+      images: getOpenGraphImages(preview),
     },
     twitter: {
       card: "summary_large_image",
-      title: data.title,
-      description: data.description,
-      images: [imageUrl],
+      title: preview.title,
+      description: preview.description,
+      images: getTwitterImages(preview),
     },
   };
 }

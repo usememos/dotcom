@@ -9,6 +9,7 @@
     "build": "next build",
     "dev": "next dev --turbo",
     "start": "next start",
+    "og:audit": "node scripts/og-audit.mjs",
     "postinstall": "node scripts/generate-openapi.mjs && fumadocs-mdx && pnpm format",
     "lint": "biome check",
     "format": "biome format --write",

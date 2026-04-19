@@ -6,17 +6,36 @@ import { BlogListItem } from "@/components/blog-list-item";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Footer } from "@/components/footer";
 import { BLOG_COLUMN_CLASS } from "@/lib/blog";
-import { buildBreadcrumbJsonLd, buildMarketingMetadata } from "@/lib/seo";
+import { buildBreadcrumbJsonLd } from "@/lib/seo";
+import { getBlogIndexSocialPreview, getOpenGraphImages, getTwitterImages } from "@/lib/social-preview";
 import { blogSource } from "@/lib/source";
 
 export const dynamic = "force-static";
 export const revalidate = 1800;
 
-export const metadata: Metadata = buildMarketingMetadata({
-  title: "Blog",
-  description: "Insights, updates, and stories from the team building Memos, the open-source note-taking tool for instant capture.",
-  path: "/blog",
-});
+const socialPreview = getBlogIndexSocialPreview();
+
+export const metadata: Metadata = {
+  title: socialPreview.title,
+  description: socialPreview.description,
+  alternates: {
+    canonical: socialPreview.url,
+  },
+  openGraph: {
+    title: `${socialPreview.title} - Memos`,
+    description: socialPreview.description,
+    type: "website",
+    url: socialPreview.url,
+    siteName: "Memos",
+    images: getOpenGraphImages(socialPreview),
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${socialPreview.title} - Memos`,
+    description: socialPreview.description,
+    images: getTwitterImages(socialPreview),
+  },
+};
 
 const breadcrumbItems = [
   { href: "/", name: "Home" },

@@ -6,17 +6,36 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ChangelogListItem } from "@/components/changelog-list-item";
 import { Footer } from "@/components/footer";
 import { CHANGELOG_COLUMN_CLASS, getChangelogDescription, getChangelogVersion, sortChangelogPages } from "@/lib/changelog";
-import { buildBreadcrumbJsonLd, buildMarketingMetadata } from "@/lib/seo";
+import { buildBreadcrumbJsonLd } from "@/lib/seo";
+import { getChangelogIndexSocialPreview, getOpenGraphImages, getTwitterImages } from "@/lib/social-preview";
 import { changelogSource } from "@/lib/source";
 
 export const dynamic = "force-static";
 export const revalidate = 1800;
 
-export const metadata: Metadata = buildMarketingMetadata({
-  title: "Changelog",
-  description: "Stay up to date with new features, improvements, and bug fixes in Memos.",
-  path: "/changelog",
-});
+const socialPreview = getChangelogIndexSocialPreview();
+
+export const metadata: Metadata = {
+  title: socialPreview.title,
+  description: socialPreview.description,
+  alternates: {
+    canonical: socialPreview.url,
+  },
+  openGraph: {
+    title: `${socialPreview.title} - Memos`,
+    description: socialPreview.description,
+    type: "website",
+    url: socialPreview.url,
+    siteName: "Memos",
+    images: getOpenGraphImages(socialPreview),
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${socialPreview.title} - Memos`,
+    description: socialPreview.description,
+    images: getTwitterImages(socialPreview),
+  },
+};
 
 const breadcrumbItems = [
   { href: "/", name: "Home" },

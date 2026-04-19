@@ -18,7 +18,8 @@ import {
   getChangelogVersion,
   sortChangelogPages,
 } from "@/lib/changelog";
-import { buildBreadcrumbJsonLd, buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/lib/seo";
+import { buildBreadcrumbJsonLd } from "@/lib/seo";
+import { getChangelogSocialPreview, getOpenGraphImages, getTwitterImages } from "@/lib/social-preview";
 import { changelogSource } from "@/lib/source";
 
 interface ChangelogPageProps {
@@ -133,24 +134,24 @@ export async function generateMetadata({ params }: ChangelogPageProps): Promise<
   }
   const { data } = page;
   const version = getChangelogVersion(data.title);
-  const pageUrl = `https://usememos.com/changelog/${slug}`;
+  const preview = getChangelogSocialPreview(page);
   return {
     title: `${version} Release Notes`,
-    description: getChangelogDescription(version, data.description),
-    alternates: { canonical: pageUrl },
+    description: preview.description,
+    alternates: { canonical: preview.url },
     openGraph: {
-      title: `${version} Release Notes`,
-      description: getChangelogDescription(version, data.description),
+      title: preview.title,
+      description: preview.description,
       type: "article",
       publishedTime: data.date,
-      url: pageUrl,
-      images: buildDefaultOpenGraphImages(`${version} Release Notes - Memos`),
+      url: preview.url,
+      images: getOpenGraphImages(preview),
     },
     twitter: {
       card: "summary_large_image",
-      title: `${version} Release Notes`,
-      description: getChangelogDescription(version, data.description),
-      images: [DEFAULT_OG_IMAGE],
+      title: preview.title,
+      description: preview.description,
+      images: getTwitterImages(preview),
     },
   };
 }
