@@ -1,0 +1,15 @@
+---
+title: Release v0.27.1
+description: Patch fixes for user resource names and release artifacts
+date: "2026-04-19"
+---
+
+> This patch release fixes user resource naming edge cases introduced around identity provider handling and ensures release artifacts carry the correct build version.
+
+## Bug Fixes
+
+- **Mixed-case user names** - User resource names now support mixed-case values.
+- **Identity provider subjects** - User resource names can now be UUIDv4 values from identity provider `sub` claims.
+- **Release artifacts** - Build versions are now injected into release artifacts.
+
+**Full Changelog**: [v0.27.0...v0.27.1](https://github.com/usememos/memos/compare/v0.27.0...v0.27.1)

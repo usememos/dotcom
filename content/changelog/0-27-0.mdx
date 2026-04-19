@@ -1,0 +1,66 @@
+---
+title: Release v0.27.0
+description: Live refresh, voice notes, AI transcription, MCP tools, and memo sharing improvements
+date: "2026-04-18"
+---
+
+> This release adds real-time updates, richer memo authoring, AI transcription, and a new MCP integration. It also includes security hardening, attachment improvements, and many editor and API fixes.
+
+## New Features
+
+### Real-Time and Memo Creation
+
+- **Live refresh** - Memo updates now arrive through Server-Sent Events, with a visual indicator for the connection state.
+- **Voice notes** - The memo composer can record voice notes with a compact waveform panel.
+- **AI transcription** - Audio transcription now supports instance-level providers, bring-your-own-key providers, and Gemini.
+- **MCP integration** - The new MCP server supports PAT authentication, a standard protocol structure, expanded tools, and safer tool exposure.
+- **Memo mentions** - Memos can mention other memos, render those mentions, and send related notifications.
+- **Memo sharing** - Private memos can be shared with links, and memo detail pages can share images directly.
+
+### Reading and Navigation
+
+- **Detail outline** - Memo detail pages now include outline navigation in the sidebar.
+- **Automatic titles** - The first H1 heading can be extracted into the memo title property.
+- **Inline previews** - Memo lists can show comment previews, and memo previews understand comment metadata.
+- **Media browsing** - Image previews support arrow-key navigation, Live Photo playback is improved, audio attachments render inline, and SVG attachments can be previewed.
+
+### Tags and Metadata
+
+- **Tag metadata controls** - Instance admins and users can configure tag metadata, including canonical tags and blur rules.
+- **Anchored matching** - Tag setting keys are treated as anchored regular expressions for more predictable matching.
+- **Better snippets** - Memo snippets include plain URLs and tags, and tag parsing now preserves emoji variation selectors.
+
+## Admin and Security
+
+- **Webhook controls** - Memos can dispatch webhooks for comment creation, attachment changes, and relation changes.
+- **Private webhook opt-in** - The `--allow-private-webhooks` flag allows intentionally sending webhooks to private targets.
+- **Storage default** - The default storage type is now local filesystem.
+- **Notification transport** - Instance settings now include notification transport configuration.
+- **Sensitive settings** - Credentials are write-only, sensitive settings are restricted to admins, and user emails are visible only to the user and admins.
+- **Access hardening** - Archived memos are restricted to their creator, memo content iframes and HTML sanitization are hardened, local attachment uploads cannot overwrite files, and Unix socket permissions are reduced from `755` to `660`.
+
+## Authentication and API Reliability
+
+- **Identity resources** - Identity provider resource names now use UIDs, and user resource names now use usernames.
+- **Token refresh** - Access token refresh is more reliable in the web app and across browser tabs.
+- **Session recovery** - Sessions can recover from the refresh cookie when local storage is empty.
+- **Public routing** - Unauthenticated users are redirected to `/explore` when public visibility is enabled.
+- **API resilience** - Memo conversion tolerates missing related users, legacy installations with empty schema versions are detected, MySQL custom timestamps are handled correctly, and CEL filter syntax is enforced.
+
+## User Interface Fixes
+
+- **Editor reliability** - Drafts are preserved across tab suspension and editor remounts, `Cmd+Enter` only saves the active editor, and newly linked memos appear while editing memos with attachments.
+- **Comment layout** - Comments span the full memo detail width, and the comment editor appears above the comment list.
+- **Markdown rendering** - KaTeX and Mermaid errors are handled more gracefully, Markdown image `height` and `width` attributes are supported, and memo content prop leaks are prevented.
+- **Navigation polish** - Selecting a shortcut clears the content search filter, focus mode no longer resets editor height, and memo detail cache refreshes after saving.
+- **Visual polish** - Metadata styling is unified across memo views and the editor, map styling is refined for dark mode, and the HTML `lang` attribute syncs with the active locale.
+
+## Performance and Maintenance
+
+- **Faster memo lists** - Memo relations are batch loaded when listing memos.
+- **Lower memory pressure** - Backend paths use less memory.
+- **SSE reliability** - SSE broadcasts avoid duplicate comment events, and clients close cleanly during server shutdown.
+- **Deployment resilience** - Chunk load errors after redeployment trigger automatic reloads.
+- **Project maintenance** - Sitemap and robots routes were restored, and installer compatibility and documentation were improved.
+
+**Full Changelog**: [v0.26.2...v0.27.0](https://github.com/usememos/memos/compare/v0.26.2...v0.27.0)
