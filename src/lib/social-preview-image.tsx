@@ -4,7 +4,7 @@ import { ImageResponse } from "next/og";
 import type { ContentSocialPreview } from "@/lib/social-preview";
 import { SOCIAL_PREVIEW_IMAGE_SIZE } from "@/lib/social-preview";
 
-const logoPromise = readFile(join(process.cwd(), "public/logo-rounded.png")).then(
+const logoPromise = readFile(join(process.cwd(), "public/full-logo-landscape.png")).then(
   (buffer) => `data:image/png;base64,${buffer.toString("base64")}`,
 );
 const fontDefinitions = [
@@ -44,7 +44,7 @@ function truncateText(value: string, maxLength: number): string {
 
 export async function createSocialPreviewImage(preview: ContentSocialPreview) {
   const [logoSrc, fonts] = await Promise.all([logoPromise, fontsPromise]);
-  const description = truncateText(preview.description, 150);
+  const description = truncateText(preview.description, 138);
 
   return new ImageResponse(
     <div
@@ -55,7 +55,7 @@ export async function createSocialPreviewImage(preview: ContentSocialPreview) {
         flexDirection: "column",
         background: "#f8e2ac",
         color: "#24180d",
-        padding: "64px 76px 72px",
+        padding: "72px 84px 78px",
         fontFamily: "Inter, Arial, sans-serif",
         position: "relative",
         overflow: "hidden",
@@ -75,7 +75,7 @@ export async function createSocialPreviewImage(preview: ContentSocialPreview) {
           display: "flex",
           position: "absolute",
           right: 70,
-          bottom: 54,
+          bottom: 58,
           width: 330,
           height: 330,
           borderRadius: 8,
@@ -91,9 +91,8 @@ export async function createSocialPreviewImage(preview: ContentSocialPreview) {
           position: "relative",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <img src={logoSrc} alt="Memos" width={58} height={58} />
-          <div style={{ display: "flex", fontSize: 30, fontWeight: 600, letterSpacing: 0, color: "#31200e" }}>Memos</div>
+        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+          <img src={logoSrc} alt="Memos" width={220} height={70} />
         </div>
       </div>
 
@@ -103,19 +102,23 @@ export async function createSocialPreviewImage(preview: ContentSocialPreview) {
           flex: 1,
           flexDirection: "column",
           justifyContent: "center",
-          gap: 24,
+          gap: 28,
           position: "relative",
-          maxWidth: 920,
-          paddingTop: 26,
+          maxWidth: 990,
+          paddingTop: 18,
         }}
       >
         <div
           style={{
             display: "flex",
-            color: "#956117",
-            fontSize: 23,
+            borderRadius: 8,
+            background: "rgba(126, 79, 15, 0.12)",
+            color: "#80510f",
+            fontSize: 24,
             fontWeight: 800,
             letterSpacing: 0,
+            padding: "9px 14px",
+            alignSelf: "flex-start",
           }}
         >
           {preview.section}
@@ -123,7 +126,7 @@ export async function createSocialPreviewImage(preview: ContentSocialPreview) {
         <div
           style={{
             display: "flex",
-            fontSize: preview.title.length > 72 ? 58 : 74,
+            fontSize: preview.title.length > 72 ? 70 : 88,
             lineHeight: 1,
             fontFamily: "Source Serif 4, Georgia, serif",
             fontWeight: 700,
@@ -132,17 +135,17 @@ export async function createSocialPreviewImage(preview: ContentSocialPreview) {
             whiteSpace: "pre-wrap",
           }}
         >
-          {truncateText(preview.title, 88)}
+          {truncateText(preview.title, 82)}
         </div>
         <div
           style={{
             display: "flex",
-            fontSize: 32,
-            lineHeight: 1.35,
+            fontSize: 38,
+            lineHeight: 1.28,
             fontWeight: 400,
             color: "#6f542f",
             whiteSpace: "pre-wrap",
-            maxWidth: 860,
+            maxWidth: 940,
           }}
         >
           {description}
