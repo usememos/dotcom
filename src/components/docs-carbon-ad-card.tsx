@@ -33,30 +33,38 @@ export function DocsCarbonAdCard({ variant = "default" }: DocsCarbonAdCardProps)
     const container = containerRef.current;
     if (!container) return;
 
+    const markAdLoaded = () => {
+      if (!container.querySelector("#carbonads, [id^='carbonads_']")) {
+        return false;
+      }
+
+      setAdLoaded(true);
+      return true;
+    };
+
     // Move existing ad if present, otherwise load script
     const existingAd = document.getElementById("carbonads");
     if (existingAd) {
       container.appendChild(existingAd);
-      setAdLoaded(true);
-      return;
+      markAdLoaded();
+      return undefined;
     }
-
-    // Skip if script already exists
-    if (document.getElementById("_carbonads_js")) return;
-
-    const script = document.createElement("script");
-    script.src = CARBON_SCRIPT_URL;
-    script.id = "_carbonads_js";
-    script.async = true;
-    container.appendChild(script);
 
     // Check for ad insertion
     const checkAd = setInterval(() => {
-      if (container.querySelector("#carbonads")) {
-        setAdLoaded(true);
+      if (markAdLoaded()) {
         clearInterval(checkAd);
       }
     }, 100);
+
+    // Skip loading a duplicate script, but keep watching for the ad it inserts.
+    if (!document.getElementById("_carbonads_js")) {
+      const script = document.createElement("script");
+      script.src = CARBON_SCRIPT_URL;
+      script.id = "_carbonads_js";
+      script.async = true;
+      container.appendChild(script);
+    }
 
     return () => clearInterval(checkAd);
   }, []);
