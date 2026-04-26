@@ -9,11 +9,13 @@ Memos supports three primary authentication mechanisms:
 - OAuth2 or SSO identity providers
 - personal access tokens for API use
 
+Use password sign-in for simple private instances. Use SSO when your team already has a central identity provider and you want Memos sign-in to follow that identity system. Use personal access tokens for scripts and integrations.
+
 ## Session model
 
 | Token type | Lifetime | Storage | Notes |
 | --- | --- | --- | --- |
-| Access token (JWT) | 15 min | Client memory | Stateless — verified without a DB query |
+| Access token (JWT) | 15 min | Client memory | Stateless; verified without a DB query |
 | Refresh token (JWT) | 30 days | HTTP-only cookie | Database-backed, revocable |
 | Personal access token (PAT) | User-defined | SHA-256 hash in DB | Format: `memos_pat_<32 random chars>` |
 
@@ -31,13 +33,38 @@ Password auth is usually the right starting point when:
 - you do not already have a central identity provider
 - you want minimal setup complexity
 
+Users sign in with their Memos username and password. Archived users cannot sign in. Failed sign-in attempts use the same error message for unknown usernames and wrong passwords, so the login page does not reveal whether a username exists.
+
 ### Disable password authentication
 
-Admins can disable password sign-in for regular users after SSO is configured. Do not do this until you have confirmed that at least one working identity provider is available.
+Admins can disable password sign-in for regular users after SSO is configured. When password auth is disabled:
+
+- regular users must sign in with SSO
+- password-based registration is unavailable
+- admins can still use password sign-in through the admin sign-in path
+- the regular sign-in page hides the password form
+
+Keep at least one admin account with a known password. This gives you a recovery path if an SSO provider is misconfigured or temporarily unavailable.
 
 ## OAuth2 and SSO
 
 SSO is the right choice for team instances that already use a central identity system. Configure the provider in instance settings, then test login with a non-admin account before forcing the whole instance onto SSO-only behavior.
+
+The OAuth2 callback URL for your Memos instance is:
+
+```text
+https://<your-instance>/auth/callback
+```
+
+Register that exact URL in the OAuth2 application for your identity provider.
+
+### How SSO users are matched
+
+Memos stores local users separately from external SSO accounts. When a user signs in through SSO, Memos reads the configured identifier field from the provider's user info response and looks for an existing linked identity.
+
+If a matching linked identity already exists, Memos signs in to the same local user. If no match exists and registration is allowed, Memos creates a regular local user and links that external account. If user registration is disabled, first-time SSO sign-in is rejected until an account is created or linked by another flow.
+
+SSO-created users receive a generated local username. Do not assume the local username is the user's email address or provider subject.
 
 ### OAuth2 provider fields
 
@@ -47,9 +74,15 @@ Each identity provider requires:
 - `authUrl`, `tokenUrl`, and `userInfoUrl` for the provider's OAuth2 endpoints
 - `scopes` the token should request
 - `fieldMapping` to map the provider's user info fields to Memos fields (`identifier`, `displayName`, `email`, `avatarUrl`)
-- optional `identifierFilter` — a regex applied to the identifier value; users that do not match are denied
+- optional `identifierFilter`, a regex applied to the identifier value; users that do not match are denied
 
-The OAuth2 callback URL for your Memos instance is: `https://<your-instance>/auth/callback`
+The `identifier` mapping is the most important setting. It becomes the external identity key that Memos uses for future sign-ins. Choose a stable provider field such as a subject ID, username, or email address depending on how your provider guarantees identity stability.
+
+Changing the provider UID or the `fieldMapping.identifier` value after users have signed in can prevent Memos from finding existing linked identities. Treat those settings as stable once SSO is in use.
+
+Use `identifierFilter` to restrict who can sign in. For example, a filter can allow only users from a specific email domain. Test the regex carefully; a bad filter can block every SSO user.
+
+Memos only reads string fields from the user info response. If your provider returns nested objects or non-string values for a field, adjust the provider configuration or expose a flat string claim.
 
 ### GitHub
 
@@ -76,6 +109,8 @@ The OAuth2 callback URL for your Memos instance is: `https://<your-instance>/aut
 }
 ```
 
+GitHub's `email` field can be empty depending on the user's profile privacy and granted scopes. If you need a guaranteed identifier, use `login` or another stable field from your identity policy.
+
 ### Google
 
 ```json
@@ -101,6 +136,27 @@ The OAuth2 callback URL for your Memos instance is: `https://<your-instance>/aut
 }
 ```
 
+Google `email` works well for many private deployments, especially when combined with an `identifierFilter` that limits access to your domain. If your organization can rename or recycle email addresses, prefer a stable subject field if your provider exposes one through user info.
+
+### Safe SSO rollout
+
+1. Create the OAuth2 application with `https://<your-instance>/auth/callback` as the callback URL.
+2. Add the identity provider in Memos and save the client ID, client secret, endpoints, scopes, and field mappings.
+3. Test SSO sign-in with a non-admin account.
+4. Confirm first-time SSO behavior matches your registration policy.
+5. Keep admin password access available as a recovery path.
+6. Disable password authentication for regular users only after SSO is working.
+
+## Linked identities
+
+Users can link an external SSO account to their existing Memos account from account settings. After a provider is linked, signing in with that SSO account opens the same Memos user.
+
+Each Memos user can link at most one external account per identity provider. The same external account cannot be linked to multiple Memos users.
+
+Unlinking removes only the relationship between the Memos user and the external account. It does not delete the Memos user, the identity provider configuration, or the external account. Before unlinking, make sure the user still has another usable sign-in method.
+
+See [Linked Identities](/docs/usage/linked-identities) for the end-user workflow.
+
 ## Personal access tokens
 
 PATs are intended for scripts, integrations, and external tools.
@@ -117,3 +173,8 @@ Operational guidance:
 - rotate tokens periodically
 - delete tokens that are no longer needed
 - do not embed PATs into public clients or front-end code
+
+## API references
+
+- [Auth Service: SignIn](/docs/api/latest/authservice/SignIn)
+- [Identity Provider Service: CreateIdentityProvider](/docs/api/latest/identityproviderservice/CreateIdentityProvider)

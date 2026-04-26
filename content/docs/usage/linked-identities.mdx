@@ -1,0 +1,65 @@
+---
+title: Linked Identities
+description: Sign in with SSO and link external accounts to your Memos user.
+---
+
+Linked identities connect your Memos account to external SSO accounts from configured identity providers. After a provider is linked, you can use that SSO account to sign in to the same Memos user.
+
+## Sign in with SSO
+
+If your instance has SSO providers configured, the sign-in page shows a button for each provider. Choose a provider, finish the authorization flow on the provider's site, and return to Memos.
+
+The first time you sign in with an SSO account, one of two things happens:
+
+- if the external account is already linked, Memos signs in to the linked user
+- if the external account is new and registration is allowed, Memos creates a regular local user and links the SSO account
+- if registration is disabled, the sign-in is rejected until the account is created or linked another way
+
+An SSO-created Memos user may have a generated local username. Your display name, email, and avatar can still come from the SSO provider when those fields are available.
+
+## Link an SSO account
+
+Use account settings when you already have a Memos account and want to connect it to an external SSO account.
+
+1. Sign in to Memos with your existing account.
+2. Open account settings.
+3. Find the linked identities or SSO account section.
+4. Choose the provider you want to link.
+5. Complete the provider authorization flow.
+6. Return to Memos and confirm that the provider now appears as linked.
+
+After linking, signing in with that provider account will open your existing Memos account instead of creating a separate user.
+
+## Linking rules
+
+Memos keeps local users and external identities separate. A linked identity records which provider account belongs to which Memos user.
+
+The current rules are:
+
+- one Memos user can link multiple SSO providers
+- one Memos user can link only one external account per provider
+- one external account can be linked to only one Memos user
+- linking the same provider account again is treated as already linked
+
+If you try to link a provider account that is already connected to another Memos user, Memos rejects the link. If your Memos account already has a different account linked for the same provider, unlink the current provider first or use the existing linked account.
+
+## Unlink an SSO account
+
+Unlinking removes the connection between your Memos account and the external provider account. It does not delete:
+
+- your Memos account
+- the external provider account
+- the identity provider configuration for the instance
+- any memos, attachments, or settings in your account
+
+Before unlinking, make sure you still have another way to sign in. You may lock yourself out if you unlink your only SSO account while password sign-in is disabled or unavailable for your account.
+
+Admins can also remove linked identities for users when cleaning up accounts or recovering from a mistaken link.
+
+## Troubleshooting
+
+If an SSO sign-in creates a different Memos user than expected, sign out and ask an admin to check which provider account is linked to each Memos user.
+
+If SSO sign-in used to work but now fails, the identity provider configuration may have changed. Provider UID, identifier mapping, and identifier filters all affect whether Memos can match your external account to the existing linked identity.
+
+For administrator setup details, see [Authentication](/docs/configuration/authentication).
