@@ -579,10 +579,10 @@ paths:
                   in: query
                   description: |-
                     Optional. The order to sort results by.
-                     Default to "display_time desc".
+                     Default to "create_time desc".
                      Supports comma-separated list of fields following AIP-132.
-                     Example: "pinned desc, display_time desc" or "create_time asc"
-                     Supported fields: pinned, display_time, create_time, update_time, name
+                     Example: "pinned desc, create_time desc" or "update_time asc"
+                     Supported fields: pinned, create_time, update_time, name
                   schema:
                     type: string
                 - name: filter
@@ -1347,6 +1347,123 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/User'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/v1/users/{user}/linkedIdentities:
+        get:
+            tags:
+                - UserService
+            description: ListLinkedIdentities returns a list of linked SSO identities for a user.
+            operationId: UserService_ListLinkedIdentities
+            parameters:
+                - name: user
+                  in: path
+                  description: The user id.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListLinkedIdentitiesResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        post:
+            tags:
+                - UserService
+            description: CreateLinkedIdentity links an SSO identity to the authenticated user.
+            operationId: UserService_CreateLinkedIdentity
+            parameters:
+                - name: user
+                  in: path
+                  description: The user id.
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateLinkedIdentityRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LinkedIdentity'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/v1/users/{user}/linkedIdentities/{linkedIdentity}:
+        get:
+            tags:
+                - UserService
+            description: GetLinkedIdentity gets a linked SSO identity for a user.
+            operationId: UserService_GetLinkedIdentity
+            parameters:
+                - name: user
+                  in: path
+                  description: The user id.
+                  required: true
+                  schema:
+                    type: string
+                - name: linkedIdentity
+                  in: path
+                  description: The linkedIdentity id.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LinkedIdentity'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        delete:
+            tags:
+                - UserService
+            description: DeleteLinkedIdentity unlinks an SSO identity from a user.
+            operationId: UserService_DeleteLinkedIdentity
+            parameters:
+                - name: user
+                  in: path
+                  description: The user id.
+                  required: true
+                  schema:
+                    type: string
+                - name: linkedIdentity
+                  in: path
+                  description: The linkedIdentity id.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content: {}
                 default:
                     description: Default error response
                     content:
@@ -2269,6 +2386,33 @@ components:
                      };
 
                      // ...
+        CreateLinkedIdentityRequest:
+            required:
+                - parent
+                - idpName
+                - code
+                - redirectUri
+            type: object
+            properties:
+                parent:
+                    type: string
+                    description: |-
+                        Required. The parent user who owns the linked identity.
+                         Format: users/{user}
+                idpName:
+                    type: string
+                    description: |-
+                        Required. The identity provider to link.
+                         Format: identity-providers/{uid}
+                code:
+                    type: string
+                    description: Required. The authorization code from the identity provider.
+                redirectUri:
+                    type: string
+                    description: Required. The redirect URI used in the OAuth flow.
+                codeVerifier:
+                    type: string
+                    description: Optional. The PKCE code verifier used in the OAuth flow.
         CreatePersonalAccessTokenRequest:
             required:
                 - parent
@@ -2386,6 +2530,9 @@ components:
                     description: |-
                         The first administrator who set up this instance.
                          When null, instance requires initial setup (creating the first admin account).
+                commit:
+                    type: string
+                    description: Commit is the current build commit of instance.
             description: Instance profile message containing basic instance information.
         InstanceSetting:
             type: object
@@ -2482,9 +2629,6 @@ components:
         InstanceSetting_MemoRelatedSetting:
             type: object
             properties:
-                displayWithUpdateTime:
-                    type: boolean
-                    description: display_with_update_time orders and displays memo with update time.
                 contentLengthLimit:
                     type: integer
                     description: content_length_limit is the limit of content length. Unit is byte.
@@ -2555,6 +2699,25 @@ components:
                          so a single entry like "project/.*" matches all tags under that prefix.
                          Exact tag names are also valid (they are trivially valid regex patterns).
             description: Tag metadata configuration.
+        LinkedIdentity:
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: |-
+                        The resource name of the linked identity.
+                         Format: users/{user}/linkedIdentities/{linked_identity}
+                idpName:
+                    readOnly: true
+                    type: string
+                    description: |-
+                        The resource name of the identity provider.
+                         Format: identity-providers/{uid}
+                externUid:
+                    readOnly: true
+                    type: string
+                    description: The external user identifier from the identity provider.
+            description: LinkedIdentity represents an SSO identity linked to a user account.
         ListAllUserStatsResponse:
             type: object
             properties:
@@ -2588,6 +2751,14 @@ components:
                     items:
                         $ref: '#/components/schemas/IdentityProvider'
                     description: The list of identity providers.
+        ListLinkedIdentitiesResponse:
+            type: object
+            properties:
+                linkedIdentities:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/LinkedIdentity'
+                    description: The list of linked identities.
         ListMemoAttachmentsResponse:
             type: object
             properties:
@@ -2787,10 +2958,6 @@ components:
                     description: |-
                         The last update timestamp.
                          If not set on creation, the server will set it to the current time.
-                    format: date-time
-                displayTime:
-                    type: string
-                    description: The display timestamp of the memo.
                     format: date-time
                 content:
                     type: string
@@ -3466,12 +3633,6 @@ components:
                     description: |-
                         The resource name of the user whose stats these are.
                          Format: users/{user}
-                memoDisplayTimestamps:
-                    type: array
-                    items:
-                        type: string
-                        format: date-time
-                    description: The timestamps when the memos were displayed.
                 memoTypeStats:
                     allOf:
                         - $ref: '#/components/schemas/UserStats_MemoTypeStats'
@@ -3482,6 +3643,12 @@ components:
                         type: integer
                         format: int32
                     description: The count of tags.
+                memoCreatedTimestamps:
+                    type: array
+                    items:
+                        type: string
+                        format: date-time
+                    description: The creation timestamps of the user's memos.
                 pinnedMemos:
                     type: array
                     items:
