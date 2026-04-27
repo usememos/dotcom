@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { latestApiDocsVersion } from "@/lib/api-docs";
 import { getAllFeatureSlugs } from "@/lib/features";
 import { blogSource, changelogSource, source } from "@/lib/source";
 import { getAllUseCaseSlugs } from "@/lib/use-cases";
@@ -19,6 +20,30 @@ function parseDate(value: string | undefined): Date | undefined {
 
 function dedupeSitemap(sitemap: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
   return Array.from(new Map(sitemap.map((item) => [item.url, item])).values());
+}
+
+function getDocSitemapEntry(pageUrl: string) {
+  if (pageUrl === "/docs") {
+    return {
+      changeFrequency: "weekly" as const,
+      priority: 0.9,
+    };
+  }
+
+  if (pageUrl.startsWith("/docs/api")) {
+    const latestApiDocsPath = `/docs/api/${latestApiDocsVersion}`;
+    const isLatestApiDocsPage = pageUrl === latestApiDocsPath || pageUrl.startsWith(`${latestApiDocsPath}/`);
+
+    return {
+      changeFrequency: isLatestApiDocsPage ? ("weekly" as const) : ("yearly" as const),
+      priority: isLatestApiDocsPage ? 0.8 : 0.5,
+    };
+  }
+
+  return {
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+  };
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -106,8 +131,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       return {
         url: `${BASE_URL}${page.url}`,
         ...(lastModified ? { lastModified } : {}),
-        changeFrequency: "weekly" as const,
-        priority: page.url === "/docs" ? 0.9 : page.url.startsWith("/docs/api") ? 0.8 : 0.7,
+        ...getDocSitemapEntry(page.url),
       };
     });
 
