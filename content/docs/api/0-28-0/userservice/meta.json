@@ -1,0 +1,30 @@
+{
+  "title": "User Service",
+  "pages": [
+    "BatchGetUsers",
+    "CreateLinkedIdentity",
+    "CreatePersonalAccessToken",
+    "CreateUser",
+    "CreateUserWebhook",
+    "DeleteLinkedIdentity",
+    "DeletePersonalAccessToken",
+    "DeleteUser",
+    "DeleteUserNotification",
+    "DeleteUserWebhook",
+    "GetLinkedIdentity",
+    "GetUser",
+    "GetUserSetting",
+    "GetUserStats",
+    "ListAllUserStats",
+    "ListLinkedIdentities",
+    "ListPersonalAccessTokens",
+    "ListUserNotifications",
+    "ListUserSettings",
+    "ListUserWebhooks",
+    "ListUsers",
+    "UpdateUser",
+    "UpdateUserNotification",
+    "UpdateUserSetting",
+    "UpdateUserWebhook"
+  ]
+}

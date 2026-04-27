@@ -1,0 +1,42 @@
+---
+title: Release v0.28.0
+description: SSO user identity linkage, account management improvements, and authentication hardening
+date: "2026-04-27"
+---
+
+> This release improves SSO account handling by linking external provider identities to local Memos users instead of treating provider identifiers as local usernames. It also refreshes account and SSO management, adds memo time display controls, and includes several authentication and editor fixes.
+
+## Breaking Change
+
+- **Existing SSO users must link their identity again** - If you previously signed in through SSO, sign in once with your username and password after upgrading, then go to Account Settings to link your SSO identity. After the identity is linked, future SSO sign-ins will resolve to your existing Memos account.
+
+## New Features
+
+### SSO User Identity Linkage
+
+- **Linked SSO identities** - Memos now stores external SSO subjects in a dedicated `user_identity` model and links them to local users.
+- **Stable local usernames** - SSO sign-ins now resolve users through the identity linkage table, so external provider IDs no longer need to become local usernames.
+- **Cleaner first-login flow** - New SSO users get usernames derived from profile data, with collision handling and cleanup for concurrent first-login races.
+- **Linked identity management** - Account settings now include a clearer linked identity view so users can understand which SSO accounts are connected.
+
+### Account and SSO Management
+
+- **Redesigned SSO settings** - SSO providers, linked identities, and members now use a clearer information-flow layout.
+- **Improved provider editing** - The SSO create and update dialog is grouped into clearer sections with better create-versus-edit behavior.
+- **Safer account deletion** - Account deletion moved into a dedicated danger area, and user deletion now cleans up related database resources transactionally before reporting attachment storage cleanup failures.
+- **More reliable OAuth userinfo** - OAuth userinfo requests now propagate context, use timeout handling, and report non-2xx responses more clearly.
+
+### Memo Display Controls
+
+- **Shown time preference** - Memo lists can now use either created time or updated time as the displayed and ordered time basis, with created time remaining the default.
+
+## Bug Fixes
+
+- **Authorization hardening** - Archived users are rejected in access-token flows, memo ownership is required before attachment changes, and Connect CORS origin checks are stricter.
+- **Username validation** - Writable username validation is separated from legacy resource-name lookup, preserving legacy username auth flows while tightening new username changes.
+- **Memo list performance** - List memo queries do less overhead.
+- **Task checkbox state** - Task checkbox state is preserved in the web app.
+- **Dropdown scrolling** - Dropdown menus no longer force scroll disappearance through modal behavior.
+- **Markdown lists** - Mixed task and bullet lists are split more predictably.
+
+**Full Changelog**: [v0.27.1...v0.28.0](https://github.com/usememos/memos/compare/v0.27.1...v0.28.0)

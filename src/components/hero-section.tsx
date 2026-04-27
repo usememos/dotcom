@@ -18,7 +18,7 @@ interface HeroSectionProps {
   };
 }
 
-export function HeroSection({ version = "0.27.1", title, subtitle, primaryCta, secondaryCta }: HeroSectionProps) {
+export function HeroSection({ version = "0.28.0", title, subtitle, primaryCta, secondaryCta }: HeroSectionProps) {
   return (
     <section className="relative isolate overflow-hidden border-b border-zinc-200 bg-white dark:border-white/10 dark:bg-zinc-950">
       <div className="mx-auto w-full max-w-(--fd-layout-width) px-4 pt-12 sm:px-6 lg:pt-18">
