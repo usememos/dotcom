@@ -1,5 +1,4 @@
-import { ArrowLeftIcon, CalendarIcon } from "lucide-react";
-import Link from "next/link";
+import { CalendarIcon } from "lucide-react";
 import { BLOG_COLUMN_CLASS, formatBlogDate } from "@/lib/blog";
 
 interface BlogPostHeaderProps {
@@ -12,14 +11,6 @@ interface BlogPostHeaderProps {
 export function BlogPostHeader({ description, publishedAt, tags, title }: BlogPostHeaderProps) {
   return (
     <div className={BLOG_COLUMN_CLASS}>
-      <Link
-        href="/blog"
-        className="group mb-8 inline-flex items-center gap-2 text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-700 dark:text-zinc-300 dark:hover:text-zinc-700 sm:mb-12"
-      >
-        <ArrowLeftIcon className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-        <span>Back to Blog</span>
-      </Link>
-
       <header className="max-w-3xl">
         {tags && tags.length > 0 && (
           <div className="mb-5 flex flex-wrap gap-2 sm:mb-6">
