@@ -23,13 +23,6 @@ export const FEATURED_SPONSORS: Sponsor[] = [
     description: "The best way to code with Al agents. Prompt, review, edit, and ship.",
   },
   {
-    name: "TestMu AI",
-    url: "https://www.testmuai.com/?utm_medium=sponsor&utm_source=memos",
-    logo: "/sponsors/testmu.svg",
-    logoDark: "/sponsors/testmu-dark.svg",
-    description: "The world's first full-stack Agentic AI Quality Engineering platform.",
-  },
-  {
     name: "SSD Nodes",
     url: "https://www.ssdnodes.com/?utm_source=memos&utm_medium=sponsor",
     logo: "/sponsors/ssd-nodes.svg",
