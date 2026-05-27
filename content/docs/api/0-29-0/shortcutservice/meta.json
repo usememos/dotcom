@@ -1,0 +1,4 @@
+{
+  "title": "Shortcut Service",
+  "pages": ["CreateShortcut", "DeleteShortcut", "GetShortcut", "ListShortcuts", "UpdateShortcut"]
+}
