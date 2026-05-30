@@ -33,6 +33,25 @@ pnpm start
 pnpm postinstall
 ```
 
+## Cloudflare Deployment
+
+This project deploys to Cloudflare Workers through `@opennextjs/cloudflare`.
+
+```bash
+# Preview the production Worker runtime locally
+pnpm preview
+
+# Smoke test a running preview
+SMOKE_BASE_URL=http://localhost:8788 pnpm smoke:cf
+
+# Deploy to Cloudflare
+pnpm deploy
+```
+
+Use `pnpm dev` for day-to-day local development. Use `pnpm preview` before deployment because it runs the built app in the Workers runtime instead of the local Node.js Next server.
+
+OpenNext is configured with static-assets incremental cache for this mostly static site. Treat content updates as rebuild/redeploy events. If future runtime ISR/revalidation is required, design a persistent cache backend such as R2/KV first.
+
 ## Architecture
 
 ### Page Structure

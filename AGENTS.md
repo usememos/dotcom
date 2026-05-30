@@ -9,6 +9,7 @@ This is a **Next.js 16 static marketing/docs website** for Memos (usememos.com).
 | Service | Command | Port | Notes |
 |---------|---------|------|-------|
 | Dev server | `pnpm dev` | 3000 | Uses Turbopack; hot-reloads on file changes |
+| Cloudflare preview | `pnpm preview` | 8788 | Builds through OpenNext and runs in the Workers runtime |
 
 ### Key commands
 
@@ -18,6 +19,9 @@ Refer to `CLAUDE.md` and `package.json` scripts for the full list. Quick referen
 - **Format**: `pnpm format` (runs Biome format with `--write`)
 - **Build**: `pnpm build` (full production build, generates 300+ static pages)
 - **Dev**: `pnpm dev` (starts on port 3000 with Turbopack)
+- **Cloudflare preview**: `pnpm preview` (OpenNext build + local Workers runtime)
+- **Cloudflare deploy**: `pnpm deploy` (OpenNext build + Cloudflare deploy)
+- **Cloudflare smoke test**: `SMOKE_BASE_URL=http://localhost:8788 pnpm smoke:cf`
 
 ### Gotchas
 
