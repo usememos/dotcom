@@ -34,3 +34,7 @@ yarn-error.log*
 
 .source
 openapi.yaml
+
+# cloudflare
+.open-next/
+.wrangler/
