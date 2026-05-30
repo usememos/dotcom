@@ -1,0 +1,106 @@
+---
+title: AI
+description: Connecting AI clients to Memos.
+---
+
+There are two main ways of enabling AI clients to work with your Memos
+instance: using MCP or using the API directly.
+
+## MCP
+
+Memos exposes much of its functionality through an embedded MCP server at `/mcp`.
+
+First, you will need an API token as described in the [authentication docs](../api/latest#authentication).
+
+The exact next steps to configure the MCP server will be different for each AI
+client. Taking OpenCode as an example, just make sure that the memos MCP server
+is properly declared in your `~/.config/opencode/opencode.json`, like this:
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "memos": {
+      "type": "remote",
+      "url": "http://localhost:5230/mcp",
+      "headers": {
+        "Authorization": "Bearer <your_token>"
+      }
+    }
+  }
+}
+```                                
+
+(Do not forget to replace the URL and token with actual values.)
+
+
+## Direct API access
+
+In some situations, you may want to give agents direct API access instead. One
+possible way of doing that is by using an agentic tool called Latchkey.
+
+
+### 1. Install the prerequisites
+
+Install Latchkey on the machine where the agent will run. That
+will allow the agent to send authenticated HTTP requests to the
+API without leaking any secrets into prompts.
+
+1. Make sure your system has a working `node` installation. If not, you can download it from the [official page](https://nodejs.org/en/download).
+2. Install Latchkey:
+
+    ```bash
+    npm install -g latchkey
+    ```
+
+### 2. Generate and Configure the API Token
+
+1. Get an API token as described in the [authentication docs](../api/latest#authentication).
+2. Point Latchkey to your Memos instance, for example:
+
+    ```bash
+    latchkey services register memos \
+        --base-api-url=http://localhost:5230/api/v1
+    ```
+
+3. Insert the API token:
+
+    ```bash
+    latchkey auth set memos -H "Authorization: Bearer <your_token>"
+    ```
+
+### 3. Configure the AI Agent
+
+Using `skills.sh`:
+
+```bash
+npx skills add imbue-ai/latchkey
+```
+
+You can also configure the AI agent manually. The exact steps
+will differ depending on the agent. Taking OpenCode as an example:
+
+```bash
+mkdir -p ~/.opencode/skills/latchkey
+latchkey skill-md > ~/.opencode/skills/latchkey/SKILL.md
+```
+
+## Using the AI client
+
+After completing the previous steps, you should now be able to
+use your AI client of choice to work with Memos! Here are some
+example questions and tasks for an AI agent:
+
+> I had a note about fixing that issue where my terminal freezes - what was the fix?
+
+or
+
+> Find memos that have incomplete task lists.
+
+or even
+
+> Here's an article about agentic authorization and credential management.
+Summarize it, create a memo with the key takeaways, and link it to my existing
+memos on AI tooling.
+
+From here, it's up to your imagination.

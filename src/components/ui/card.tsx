@@ -1,5 +1,6 @@
 import {
   ActivityIcon,
+  BotMessageSquareIcon,
   AlertTriangleIcon,
   ArrowRightIcon,
   ArrowUpIcon,
@@ -94,6 +95,7 @@ const iconMap: Record<string, LucideIcon> = {
   Puzzle: PuzzleIcon,
   Terminal: TerminalIcon,
   Rss: RssIcon,
+  BotMessageSquare: BotMessageSquareIcon,
 };
 
 interface CardsProps {
