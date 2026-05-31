@@ -12,7 +12,6 @@ import { buildBreadcrumbJsonLd } from "@/shared/lib/seo";
 import { Breadcrumbs } from "@/shared/ui/breadcrumbs";
 
 export const dynamic = "force-static";
-export const revalidate = 3600;
 
 export default async function Page() {
   const page = source.getPage([]);
