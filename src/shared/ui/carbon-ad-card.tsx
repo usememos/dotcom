@@ -8,8 +8,8 @@ const CARBON_SCRIPT_URL = "https://cdn.carbonads.com/carbon.js?serve=CWBD4K7E&pl
 const SPONSOR_URL = "https://github.com/sponsors/usememos";
 
 const CONTAINER_STYLES = {
-  default: "w-full max-h-80 rounded-lg border bg-muted/30 dark:bg-muted/10 p-3 overflow-auto",
-  compact: "w-full max-h-24 overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 p-2 dark:border-white/10 dark:bg-white/5",
+  default: "h-56 w-full overflow-auto rounded-lg border bg-muted/30 p-3 dark:bg-muted/10",
+  compact: "h-24 w-full overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 p-2 dark:border-white/10 dark:bg-white/5",
   sponsor: cn("h-full w-full min-h-[200px] overflow-auto", "bg-transparent p-0"),
 } as const;
 

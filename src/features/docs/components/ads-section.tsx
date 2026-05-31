@@ -5,6 +5,8 @@ import { DocsSponsorCard } from "@/features/docs/components/docs-sponsor-card";
 import { useMediaQuery } from "@/features/docs/hooks/use-media-query";
 import { CarbonAdCard } from "@/shared/ui/carbon-ad-card";
 
+const ADS_SECTION_SPACE = "min-h-[26rem]";
+
 function useIsDesktopReady() {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
   const [isReady, setIsReady] = useState(false);
@@ -16,6 +18,12 @@ function useIsDesktopReady() {
   return { isDesktop, isReady };
 }
 
+function AdsSectionPlaceholder({ viewport }: { viewport: "mobile" | "desktop" }) {
+  const className = viewport === "mobile" ? `lg:hidden mt-8 ${ADS_SECTION_SPACE}` : `hidden lg:flex flex-col gap-2 ${ADS_SECTION_SPACE}`;
+
+  return <div aria-hidden="true" className={className} />;
+}
+
 /**
  * Shared ads section component for mobile content area
  * Shows sponsor card and Carbon ads consistently across all pages
@@ -23,12 +31,16 @@ function useIsDesktopReady() {
 export function AdsSectionMobile() {
   const { isDesktop, isReady } = useIsDesktopReady();
 
-  if (!isReady || isDesktop) {
+  if (!isReady) {
+    return <AdsSectionPlaceholder viewport="mobile" />;
+  }
+
+  if (isDesktop) {
     return null;
   }
 
   return (
-    <div className="lg:hidden mt-8 space-y-4">
+    <div className={`lg:hidden mt-8 space-y-4 ${ADS_SECTION_SPACE}`}>
       <DocsSponsorCard />
       <CarbonAdCard />
     </div>
@@ -42,12 +54,16 @@ export function AdsSectionMobile() {
 export function AdsSectionDesktop() {
   const { isDesktop, isReady } = useIsDesktopReady();
 
-  if (!isReady || !isDesktop) {
+  if (!isReady) {
+    return <AdsSectionPlaceholder viewport="desktop" />;
+  }
+
+  if (!isDesktop) {
     return null;
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className={`flex flex-col gap-2 ${ADS_SECTION_SPACE}`}>
       <DocsSponsorCard />
       <CarbonAdCard />
     </div>

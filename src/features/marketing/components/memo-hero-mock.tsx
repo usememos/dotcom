@@ -1,6 +1,5 @@
 import { CheckIcon, MessageCircleIcon, SmilePlusIcon } from "lucide-react";
 import type { ReactNode } from "react";
-import { CarbonAdCard } from "@/shared/ui/carbon-ad-card";
 
 const FEATURE_LINES = [
   "No title, folder, or template required.",
@@ -149,11 +148,6 @@ export function MemoHeroMock() {
                   <span>Comments</span>
                 </div>
                 <Comment name="Steven">The note stays readable even before it becomes a system.</Comment>
-              </div>
-
-              <div className="border-t border-zinc-200 pt-3 dark:border-white/10">
-                <p className="mb-1.5 text-[10px] font-semibold tracking-[0.16em] text-zinc-400 uppercase dark:text-zinc-500">Sponsored</p>
-                <CarbonAdCard variant="compact" />
               </div>
             </div>
           }
