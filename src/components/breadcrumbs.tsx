@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { BreadcrumbItem } from "@/lib/seo";
 
 interface BreadcrumbsProps {
-  items: BreadcrumbItem[];
+  items: readonly BreadcrumbItem[];
   className?: string;
 }
 
