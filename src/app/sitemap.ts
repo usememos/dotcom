@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next";
-import { latestApiDocsVersion } from "@/lib/api-docs";
-import { getAllFeatureSlugs } from "@/lib/features";
-import { blogSource, changelogSource, source } from "@/lib/source";
-import { getAllUseCaseSlugs } from "@/lib/use-cases";
+import { latestApiDocsVersion } from "@/features/docs/lib/api-docs";
+import { getAllFeatureSlugs } from "@/features/marketing/data/features";
+import { getAllUseCaseSlugs } from "@/features/marketing/data/use-cases";
+import { blogSource, changelogSource, source } from "@/shared/content/source";
 
 export const dynamic = "force-static";
 export const revalidate = 3600; // regenerate once per hour

@@ -1,0 +1,138 @@
+import { createRelativeLink } from "fumadocs-ui/mdx";
+import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/page";
+import type { Metadata } from "next";
+import { notFound, redirect } from "next/navigation";
+import { AdsSectionMobile } from "@/features/docs/components/ads-section";
+import { getApiDocsVersionFromSlug, getApiDocsVersionLabel, normalizeApiDocsSlug } from "@/features/docs/lib/api-docs";
+import { getDocsSocialPreview } from "@/features/docs/lib/social-preview";
+import { tocConfig } from "@/features/docs/lib/toc-config";
+import { getMDXComponents } from "@/mdx-components";
+import { getOpenGraphImages, getTwitterImages } from "@/shared/content/social-preview";
+import { source } from "@/shared/content/source";
+import { buildBreadcrumbJsonLd } from "@/shared/lib/seo";
+import { Breadcrumbs } from "@/shared/ui/breadcrumbs";
+
+export const dynamic = "force-static";
+export const revalidate = 3600;
+
+export default async function Page(props: { params: Promise<{ slug: string[] }> }) {
+  const params = await props.params;
+  const normalizedSlug = normalizeApiDocsSlug(params.slug);
+
+  if (normalizedSlug.join("/") !== params.slug.join("/")) {
+    redirect(`/docs/${normalizedSlug.join("/")}`);
+  }
+
+  const page = source.getPage(normalizedSlug);
+  if (!page) notFound();
+
+  const MDXContent = page.data.body;
+  const isApi = page.url.startsWith("/docs/api");
+  const apiVersion = isApi ? getApiDocsVersionFromSlug(normalizedSlug) : undefined;
+  const apiVersionLabel = apiVersion ? getApiDocsVersionLabel(apiVersion) : undefined;
+
+  // For API pages, don't pass empty TOC - let fumadocs-openapi generate it
+  // Also don't use full-width layout for API pages to show TOC
+  const tocProps = isApi && (!page.data.toc || page.data.toc.length === 0) ? {} : { toc: page.data.toc };
+  const fullProp = isApi ? {} : { full: page.data.full };
+
+  // Build breadcrumb items from URL path
+  const pathParts = page.url.split("/").filter(Boolean);
+  const uiBreadcrumbItems = [
+    { href: "/", name: "Home" },
+    ...pathParts.map((part, index) => {
+      const path = `/${pathParts.slice(0, index + 1).join("/")}`;
+      const name =
+        index === pathParts.length - 1
+          ? page.data.title
+          : index === 0
+            ? "Documentation"
+            : index === 1
+              ? "API"
+              : index === 2 && apiVersionLabel
+                ? apiVersionLabel
+                : part.charAt(0).toUpperCase() + part.slice(1);
+
+      return { href: path, name };
+    }),
+  ];
+  const breadcrumbItems = uiBreadcrumbItems.map((item) => ({
+    href: item.href,
+    name: item.name,
+  }));
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
+
+  const jsonLd = isApi
+    ? {
+        "@context": "https://schema.org",
+        "@type": "APIReference",
+        name: page.data.title,
+        description: page.data.description,
+        url: `https://usememos.com${page.url}`,
+        assemblyVersion: apiVersionLabel ?? "latest",
+        executableLibraryName: "Memos API",
+      }
+    : {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        headline: page.data.title,
+        description: page.data.description,
+        url: `https://usememos.com${page.url}`,
+        author: {
+          "@type": "Organization",
+          name: "Memos Team",
+        },
+      };
+
+  return (
+    <DocsPage {...fullProp} {...tocProps} {...tocConfig}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <Breadcrumbs items={breadcrumbItems} className="mb-6" />
+      <DocsTitle>{page.data.title}</DocsTitle>
+      <DocsDescription>{page.data.description}</DocsDescription>
+      <DocsBody>
+        <MDXContent
+          components={getMDXComponents({
+            // this allows you to link to other pages with relative file paths
+            a: createRelativeLink(source, page),
+          })}
+        />
+        <AdsSectionMobile />
+      </DocsBody>
+    </DocsPage>
+  );
+}
+
+export async function generateStaticParams() {
+  return source.generateParams().filter((param) => param.slug && param.slug.length > 0);
+}
+
+export async function generateMetadata(props: { params: Promise<{ slug: string[] }> }): Promise<Metadata> {
+  const params = await props.params;
+  const normalizedSlug = normalizeApiDocsSlug(params.slug);
+  const page = source.getPage(normalizedSlug);
+  if (!page) notFound();
+
+  const preview = getDocsSocialPreview(page);
+  return {
+    title: page.data.title,
+    description: page.data.description,
+    alternates: {
+      canonical: preview.url,
+    },
+    openGraph: {
+      title: preview.title,
+      description: preview.description,
+      type: "article",
+      url: preview.url,
+      images: getOpenGraphImages(preview),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: preview.title,
+      description: preview.description,
+      images: getTwitterImages(preview),
+    },
+  };
+}

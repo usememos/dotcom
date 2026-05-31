@@ -2,8 +2,8 @@ import { createOpenAPI } from "fumadocs-openapi/server";
 import { createAPIPage } from "fumadocs-openapi/ui";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 import type { MDXComponents } from "mdx/types";
-import { Card, Cards } from "@/components/ui/card";
-import { apiDocsVersions } from "@/lib/api-docs";
+import { apiDocsVersions } from "@/features/docs/lib/api-docs";
+import { Card, Cards } from "@/shared/ui/card";
 
 const APIPage = createAPIPage(
   createOpenAPI({

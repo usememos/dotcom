@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import { getChangelogIndexSocialPreview, getChangelogSocialPreview } from "@/lib/social-preview";
-import { createSocialPreviewImage } from "@/lib/social-preview-image";
-import { changelogSource } from "@/lib/source";
+import { getChangelogIndexSocialPreview, getChangelogSocialPreview } from "@/features/editorial/lib/social-preview";
+import { createSocialPreviewImage } from "@/shared/content/social-preview-image";
+import { changelogSource } from "@/shared/content/source";
 
 export const runtime = "nodejs";
 export const dynamic = "force-static";

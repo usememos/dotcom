@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
-import { normalizeApiDocsSlug } from "@/lib/api-docs";
-import { getDocsSocialPreview } from "@/lib/social-preview";
-import { createSocialPreviewImage } from "@/lib/social-preview-image";
-import { source } from "@/lib/source";
+import { normalizeApiDocsSlug } from "@/features/docs/lib/api-docs";
+import { getDocsSocialPreview } from "@/features/docs/lib/social-preview";
+import { createSocialPreviewImage } from "@/shared/content/social-preview-image";
+import { source } from "@/shared/content/source";
 
 export const runtime = "nodejs";
 export const dynamic = "force-static";

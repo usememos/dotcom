@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { generateFiles } from "fumadocs-openapi";
 import { createOpenAPI } from "fumadocs-openapi/server";
-import apiDocsVersions from "../src/lib/api-docs-versions.json" with { type: "json" };
+import apiDocsVersions from "../src/features/docs/lib/api-docs-versions.json" with { type: "json" };
 
 const OUTPUT_DIR = "./content/docs/api";
 const SPEC_DIR = "./openapi";

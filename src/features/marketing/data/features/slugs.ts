@@ -1,0 +1,32 @@
+/**
+ * All available feature slugs - used for static generation and routing
+ */
+export const FEATURE_SLUGS = [
+  "self-hosted",
+  "data-ownership",
+  "open-source",
+  "no-fees",
+  "no-dependencies",
+  "instant-save",
+  "quick-capture",
+  "markdown-support",
+  "media-integration",
+  "universal-search",
+  "tags",
+  "timeline-view",
+  "public-sharing",
+  "microblog",
+  "beautiful-design",
+  "pwa-support",
+  "customizable-ui",
+  "cross-platform",
+  "performance",
+  "lightweight",
+  "database-support",
+  "api-first",
+  "community",
+  "multi-language",
+  "keyboard-shortcuts",
+  "import",
+  "export",
+] as const;

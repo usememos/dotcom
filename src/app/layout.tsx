@@ -3,7 +3,7 @@ import { RootProvider } from "fumadocs-ui/provider/next";
 import type { Metadata, Viewport } from "next";
 import { Inter, Source_Serif_4 } from "next/font/google";
 import type { ReactNode } from "react";
-import { buildSiteNavigationJsonLd, DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_ALT } from "@/lib/seo";
+import { buildSiteNavigationJsonLd, DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_ALT } from "@/shared/lib/seo";
 
 const inter = Inter({
   subsets: ["latin"],

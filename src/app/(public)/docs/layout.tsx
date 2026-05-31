@@ -1,0 +1,27 @@
+import type * as PageTree from "fumadocs-core/page-tree";
+import type { ReactNode } from "react";
+import { baseOptions } from "@/shared/config/layout";
+import { source } from "@/shared/content/source";
+import { ClientLayout } from "./layout.client";
+
+export default function Layout({ children }: { children: ReactNode }) {
+  const root = source.pageTree;
+
+  const apiNode = root.children.find((node) => node.name === "API Reference" && node.type === "folder");
+
+  const mainTree = {
+    ...root,
+    children: root.children.filter((node) => node.name !== "API Reference"),
+  };
+
+  const apiTree = {
+    name: "API Reference",
+    children: apiNode && "children" in apiNode ? (apiNode.children as PageTree.Node[]) : [],
+  };
+
+  return (
+    <ClientLayout baseOptions={baseOptions} mainTree={mainTree} apiTree={apiTree}>
+      {children}
+    </ClientLayout>
+  );
+}

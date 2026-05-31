@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import { getBlogIndexSocialPreview, getBlogSocialPreview } from "@/lib/social-preview";
-import { createSocialPreviewImage } from "@/lib/social-preview-image";
-import { blogSource } from "@/lib/source";
+import { getBlogIndexSocialPreview, getBlogSocialPreview } from "@/features/editorial/lib/social-preview";
+import { createSocialPreviewImage } from "@/shared/content/social-preview-image";
+import { blogSource } from "@/shared/content/source";
 
 export const runtime = "nodejs";
 export const dynamic = "force-static";
