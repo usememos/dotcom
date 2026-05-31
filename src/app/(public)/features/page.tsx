@@ -135,6 +135,7 @@ export default function FeaturesPage() {
                         <Link
                           key={slug}
                           href={`/features/${slug}`}
+                          prefetch={false}
                           className="group rounded-lg border border-zinc-200 p-5 transition-colors hover:bg-zinc-50 dark:border-white/10 dark:hover:bg-white/5"
                         >
                           <div className="mb-5 flex items-center justify-between gap-4 text-zinc-400 dark:text-zinc-500">

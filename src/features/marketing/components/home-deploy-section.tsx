@@ -18,6 +18,7 @@ export function HomeDeploySection() {
             />
             <Link
               href="/docs/getting-started"
+              prefetch={false}
               className="inline-flex items-center gap-2 text-sm font-semibold text-zinc-950 transition-colors hover:text-zinc-600 dark:text-zinc-100 dark:hover:text-zinc-300 sm:text-base"
             >
               View all deployment options

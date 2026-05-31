@@ -79,6 +79,7 @@ export function HomeUseCasesSection() {
             />
             <Link
               href="/use-cases"
+              prefetch={false}
               className="inline-flex items-center gap-2 text-sm font-semibold text-zinc-950 transition-colors hover:text-zinc-600 dark:text-zinc-100 dark:hover:text-zinc-300 sm:text-base"
             >
               Explore Use Cases
@@ -94,6 +95,7 @@ export function HomeUseCasesSection() {
                 <Link
                   key={useCase.title}
                   href={`/use-cases/${useCase.slug}`}
+                  prefetch={false}
                   className="group grid gap-3 border-b border-zinc-200 py-5 transition-colors last:border-b-0 hover:text-zinc-700 dark:border-white/10 dark:hover:text-zinc-200 sm:grid-cols-[5rem_minmax(0,13rem)_minmax(0,1fr)] sm:items-center"
                 >
                   <div className="flex items-center gap-3 text-[11px] font-semibold tracking-[0.18em] text-zinc-400 uppercase dark:text-zinc-500">

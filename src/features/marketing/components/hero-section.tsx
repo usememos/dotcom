@@ -28,6 +28,7 @@ export function HeroSection({ version = "0.29.0", title, subtitle, primaryCta, s
               {version && (
                 <Link
                   href={`/changelog/${version.replace(/\./g, "-")}`}
+                  prefetch={false}
                   className="inline-flex items-center gap-2 text-xs font-medium tracking-[0.14em] uppercase transition-colors hover:text-zinc-950 dark:hover:text-zinc-100"
                 >
                   <SparklesIcon className="h-3.5 w-3.5" />
@@ -55,6 +56,7 @@ export function HeroSection({ version = "0.29.0", title, subtitle, primaryCta, s
             <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
               <Link
                 href={primaryCta.href}
+                prefetch={false}
                 className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors duration-300 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white sm:w-auto"
               >
                 {primaryCta.text}
@@ -62,6 +64,7 @@ export function HeroSection({ version = "0.29.0", title, subtitle, primaryCta, s
               </Link>
               <Link
                 href={secondaryCta.href}
+                prefetch={false}
                 target={secondaryCta.external ? "_blank" : undefined}
                 rel={secondaryCta.external ? "noopener noreferrer" : undefined}
                 className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-white/15 dark:bg-transparent dark:text-zinc-100 dark:hover:bg-white/8 sm:w-auto"

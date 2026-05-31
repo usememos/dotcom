@@ -25,6 +25,7 @@ export function HomeCtaSection() {
           <div className="mx-auto flex max-w-sm flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center sm:gap-4">
             <Link
               href="/docs/getting-started"
+              prefetch={false}
               className="group inline-flex items-center justify-center gap-3 rounded-md bg-zinc-950 px-6 py-3.5 text-sm font-semibold text-white transition-colors duration-300 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white sm:px-8 sm:text-base"
             >
               <DownloadIcon className="h-4 w-4 transition-transform group-hover:scale-110 sm:h-5 sm:w-5" />

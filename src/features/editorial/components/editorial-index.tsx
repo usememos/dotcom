@@ -99,7 +99,11 @@ export function EditorialList({ children }: EditorialListProps) {
 export function EditorialListItem({ actionLabel, description, href, labels = [], meta, title }: EditorialListItemProps) {
   return (
     <article className="group">
-      <Link href={href} className="-mx-4 block rounded-lg px-4 py-5 transition-colors hover:bg-zinc-50 dark:hover:bg-white/5">
+      <Link
+        href={href}
+        prefetch={false}
+        className="-mx-4 block rounded-lg px-4 py-5 transition-colors hover:bg-zinc-50 dark:hover:bg-white/5"
+      >
         {labels.length > 0 ? (
           <div className="mb-4 flex flex-wrap items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.14em]">
             {labels.map((item, index) => (

@@ -127,6 +127,7 @@ export default function HomePage() {
                 <Link
                   key={link.href}
                   href={link.href}
+                  prefetch={false}
                   className="rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 transition-colors hover:bg-zinc-100 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10"
                 >
                   {link.label}

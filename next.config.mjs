@@ -2,8 +2,28 @@ import { createMDX } from "fumadocs-mdx/next";
 
 const withMDX = createMDX();
 
+const SECURITY_HEADERS = [
+  {
+    key: "X-Content-Type-Options",
+    value: "nosniff",
+  },
+  {
+    key: "X-Frame-Options",
+    value: "DENY",
+  },
+  {
+    key: "Referrer-Policy",
+    value: "strict-origin-when-cross-origin",
+  },
+  {
+    key: "Permissions-Policy",
+    value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
+  },
+];
+
 /** @type {import('next').NextConfig} */
 const config = {
+  poweredByHeader: false,
   reactStrictMode: true,
   images: {
     formats: ["image/avif", "image/webp"],
@@ -13,6 +33,14 @@ const config = {
     remotePatterns: [], // Prevent external image loading
     unoptimized: true, // Disable built-in image optimization
     qualities: [75, 85], // Support both default (75) and higher quality (85)
+  },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: SECURITY_HEADERS,
+      },
+    ];
   },
 };
 

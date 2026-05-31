@@ -78,7 +78,12 @@ export function Footer({ compact = false }: FooterProps = {}) {
                   {link.label}
                 </a>
               ) : (
-                <Link key={link.href} href={link.href} className="transition-colors hover:text-zinc-950 dark:hover:text-zinc-100">
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  prefetch={false}
+                  className="transition-colors hover:text-zinc-950 dark:hover:text-zinc-100"
+                >
                   {link.label}
                 </Link>
               ),
@@ -100,6 +105,7 @@ export function Footer({ compact = false }: FooterProps = {}) {
               <li>
                 <Link
                   href="/docs"
+                  prefetch={false}
                   className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
                 >
                   <BookOpenIcon className="w-4 h-4" />
@@ -109,6 +115,7 @@ export function Footer({ compact = false }: FooterProps = {}) {
               <li>
                 <Link
                   href="/blog"
+                  prefetch={false}
                   className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
                 >
                   <NewspaperIcon className="w-4 h-4" />
@@ -118,6 +125,7 @@ export function Footer({ compact = false }: FooterProps = {}) {
               <li>
                 <Link
                   href="/changelog"
+                  prefetch={false}
                   className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
                 >
                   <HistoryIcon className="w-4 h-4" />
@@ -127,6 +135,7 @@ export function Footer({ compact = false }: FooterProps = {}) {
               <li>
                 <Link
                   href="/features"
+                  prefetch={false}
                   className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
                 >
                   <SparklesIcon className="w-4 h-4" />
@@ -136,6 +145,7 @@ export function Footer({ compact = false }: FooterProps = {}) {
               <li>
                 <Link
                   href="/pricing"
+                  prefetch={false}
                   className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
                 >
                   <DollarSignIcon className="w-4 h-4" />
@@ -145,6 +155,7 @@ export function Footer({ compact = false }: FooterProps = {}) {
               <li>
                 <Link
                   href="/use-cases"
+                  prefetch={false}
                   className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
                 >
                   <LightbulbIcon className="w-4 h-4" />
@@ -164,6 +175,7 @@ export function Footer({ compact = false }: FooterProps = {}) {
                   <li key={slug}>
                     <Link
                       href={`/features/${slug}`}
+                      prefetch={false}
                       className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
                     >
                       <Icon className="w-4 h-4" />
@@ -175,6 +187,7 @@ export function Footer({ compact = false }: FooterProps = {}) {
               <li>
                 <Link
                   href="/features"
+                  prefetch={false}
                   className="inline-flex items-center gap-2 text-fd-muted-foreground font-medium transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
                 >
                   <SparklesIcon className="w-4 h-4" />
@@ -191,6 +204,7 @@ export function Footer({ compact = false }: FooterProps = {}) {
               <li>
                 <Link
                   href="/docs/api"
+                  prefetch={false}
                   className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
                 >
                   <CodeIcon className="w-4 h-4" />
@@ -243,6 +257,7 @@ export function Footer({ compact = false }: FooterProps = {}) {
               <li>
                 <Link
                   href="/privacy"
+                  prefetch={false}
                   className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
                 >
                   <ShieldCheckIcon className="w-4 h-4" />
@@ -259,6 +274,7 @@ export function Footer({ compact = false }: FooterProps = {}) {
               <li>
                 <Link
                   href="/brand"
+                  prefetch={false}
                   className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
                 >
                   <PaletteIcon className="w-4 h-4" />
@@ -268,6 +284,7 @@ export function Footer({ compact = false }: FooterProps = {}) {
               <li>
                 <Link
                   href="/sponsors"
+                  prefetch={false}
                   className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
                 >
                   <HeartIcon className="w-4 h-4" />

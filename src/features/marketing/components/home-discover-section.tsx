@@ -84,6 +84,7 @@ export function HomeDiscoverSection() {
           <div>
             <Link
               href={FEATURED_DISCOVER_LINK.href}
+              prefetch={false}
               className="group block border-b border-zinc-200 pb-8 transition-colors hover:bg-zinc-50/70 dark:border-white/10 dark:hover:bg-white/5 sm:px-5 sm:pt-5"
             >
               <div className="flex items-center justify-between gap-4">
@@ -109,6 +110,7 @@ export function HomeDiscoverSection() {
                   <Link
                     key={item.href}
                     href={item.href}
+                    prefetch={false}
                     className="group grid gap-3 py-5 transition-colors hover:bg-zinc-50/70 dark:hover:bg-white/5 sm:grid-cols-[10rem_minmax(0,1fr)_auto] sm:items-center sm:px-5"
                   >
                     <div className="flex items-center gap-3 text-[11px] font-semibold tracking-[0.18em] text-zinc-400 uppercase dark:text-zinc-500">

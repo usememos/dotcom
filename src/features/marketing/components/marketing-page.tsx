@@ -84,7 +84,7 @@ export function MarketingActionLink({
   }
 
   return (
-    <Link href={action.href} className={className}>
+    <Link href={action.href} prefetch={false} className={className}>
       {content}
     </Link>
   );
