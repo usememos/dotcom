@@ -1,5 +1,6 @@
 "use client";
 
+import { useUser } from "@clerk/nextjs";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { HomeIcon, MonitorIcon, MoonIcon, SaveIcon, SettingsIcon, SunIcon, TrashIcon } from "lucide-react";
 import Image from "next/image";
@@ -7,6 +8,7 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import type { MemoInstance } from "@/features/scratchpad/types";
+import { useIsClerkConfigured } from "@/shared/auth/clerk-config";
 import { ScratchpadAccountMenuSection } from "./scratchpad-account-menu-section";
 
 interface ScratchpadToolbarProps {
@@ -19,6 +21,26 @@ interface ScratchpadToolbarProps {
   onDeleteSelected: () => void;
   onOpenInstanceSettings: () => void;
   onSaveSelected: () => void;
+}
+
+function ScratchpadMenuTriggerImage() {
+  const isClerkConfigured = useIsClerkConfigured();
+
+  if (!isClerkConfigured) {
+    return <Image src="/logo-rounded.png" alt="Memos" width={28} height={28} />;
+  }
+
+  return <ClerkScratchpadMenuTriggerImage />;
+}
+
+function ClerkScratchpadMenuTriggerImage() {
+  const { isLoaded, isSignedIn, user } = useUser();
+
+  if (isLoaded && isSignedIn && user?.imageUrl) {
+    return <img src={user.imageUrl} alt="" className="h-7 w-7 rounded-full object-cover" />;
+  }
+
+  return <Image src="/logo-rounded.png" alt="Memos" width={28} height={28} />;
 }
 
 export function ScratchpadToolbar({
@@ -72,7 +94,7 @@ export function ScratchpadToolbar({
             className="flex h-9 w-9 items-center justify-center rounded-full border border-white/70 bg-white/78 text-[#5c8e86] shadow-[0_10px_26px_rgba(109,92,68,0.1)] transition hover:bg-white"
             title="Memos menu"
           >
-            <Image src="/logo-rounded.png" alt="Memos" width={28} height={28} />
+            <ScratchpadMenuTriggerImage />
           </button>
         </DropdownMenu.Trigger>
 
