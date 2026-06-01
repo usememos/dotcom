@@ -3,6 +3,7 @@
 import { useClerk, useUser } from "@clerk/nextjs";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { LogInIcon, LogOutIcon, UserCogIcon } from "lucide-react";
+import { useIsClerkConfigured } from "@/shared/auth/clerk-config";
 
 function getUserDisplayName(user: ReturnType<typeof useUser>["user"]): string {
   if (!user) {
@@ -82,7 +83,9 @@ function ClerkAccountMenuSection() {
 }
 
 export function ScratchpadAccountMenuSection() {
-  if (!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
+  const isClerkConfigured = useIsClerkConfigured();
+
+  if (!isClerkConfigured) {
     return null;
   }
 

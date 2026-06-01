@@ -4,6 +4,8 @@ import { ScratchpadViewportLock } from "@/features/scratchpad/components/scratch
 import { ThemeProvider } from "@/features/scratchpad/components/theme-provider";
 import { buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/shared/lib/seo";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Scratchpad - Memos",
   description:

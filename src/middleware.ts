@@ -1,7 +1,8 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { getClerkPublishableKey, getClerkSecretKey } from "@/shared/auth/env";
 
-const isClerkConfigured = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY && process.env.CLERK_SECRET_KEY);
+const isClerkConfigured = Boolean(getClerkPublishableKey() && getClerkSecretKey());
 
 export default isClerkConfigured ? clerkMiddleware() : () => NextResponse.next();
 
