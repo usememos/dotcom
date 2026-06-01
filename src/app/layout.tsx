@@ -1,4 +1,5 @@
 import "@/app/global.css";
+import { ClerkProvider } from "@clerk/nextjs";
 import { RootProvider } from "fumadocs-ui/provider/next";
 import type { Metadata, Viewport } from "next";
 import { Inter, Source_Serif_4 } from "next/font/google";
@@ -88,6 +89,7 @@ export const viewport: Viewport = {
 };
 
 export default function Layout({ children }: { children: ReactNode }) {
+  const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
   const softwareJsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -150,6 +152,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     url: "https://usememos.com",
   };
   const siteNavigationJsonLd = buildSiteNavigationJsonLd();
+  const app = <RootProvider theme={{ defaultTheme: "system", enableSystem: true }}>{children}</RootProvider>;
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -164,7 +167,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteNavigationJsonLd) }} />
       </head>
       <body className={`${inter.variable} ${displaySerif.variable} flex min-h-screen flex-col antialiased`}>
-        <RootProvider theme={{ defaultTheme: "system", enableSystem: true }}>{children}</RootProvider>
+        {clerkPublishableKey ? <ClerkProvider publishableKey={clerkPublishableKey}>{app}</ClerkProvider> : app}
       </body>
     </html>
   );

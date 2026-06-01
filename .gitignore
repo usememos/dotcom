@@ -38,3 +38,6 @@ openapi.yaml
 # cloudflare
 .open-next/
 .wrangler/
+
+# clerk configuration (can include secrets)
+/.clerk/

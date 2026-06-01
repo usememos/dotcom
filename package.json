@@ -21,6 +21,7 @@
     "check": "biome check --write"
   },
   "dependencies": {
+    "@clerk/nextjs": "^7.4.2",
     "@opennextjs/cloudflare": "1.19.11",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-dropdown-menu": "^2.1.16",

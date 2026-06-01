@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import type { MemoInstance } from "@/features/scratchpad/types";
+import { ScratchpadAccountMenuSection } from "./scratchpad-account-menu-section";
 
 interface ScratchpadToolbarProps {
   defaultInstance: MemoInstance | null;
@@ -81,6 +82,8 @@ export function ScratchpadToolbar({
             sideOffset={5}
             align="end"
           >
+            <ScratchpadAccountMenuSection />
+
             <DropdownMenu.Item
               className="flex cursor-pointer items-center space-x-2 rounded-[14px] px-3 py-2 text-sm text-stone-600 outline-none hover:bg-stone-100/80"
               onSelect={onOpenInstanceSettings}
