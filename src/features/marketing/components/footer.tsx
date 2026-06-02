@@ -41,10 +41,10 @@ interface FooterProps {
 
 const COMPACT_LINKS: Array<{ href: string; label: string; external?: boolean }> = [
   { href: "/docs", label: "Docs" },
-  { href: "/blog", label: "Blog" },
   { href: "/scratchpad", label: "Scratchpad" },
-  { href: "/changelog", label: "Changelog" },
   { href: "/features", label: "Features" },
+  { href: "/changelog", label: "Changelog" },
+  { href: "/blog", label: "Blog" },
   { href: "https://github.com/usememos/memos", label: "GitHub", external: true },
 ];
 
@@ -116,16 +116,6 @@ export function Footer({ compact = false }: FooterProps = {}) {
               </li>
               <li>
                 <Link
-                  href="/blog"
-                  prefetch={false}
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <NewspaperIcon className="w-4 h-4" />
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/scratchpad"
                   prefetch={false}
                   className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
@@ -136,22 +126,22 @@ export function Footer({ compact = false }: FooterProps = {}) {
               </li>
               <li>
                 <Link
-                  href="/changelog"
-                  prefetch={false}
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <HistoryIcon className="w-4 h-4" />
-                  Changelog
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/features"
                   prefetch={false}
                   className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
                 >
                   <SparklesIcon className="w-4 h-4" />
                   Features
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/changelog"
+                  prefetch={false}
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
+                >
+                  <HistoryIcon className="w-4 h-4" />
+                  Changelog
                 </Link>
               </li>
               <li>
@@ -266,16 +256,6 @@ export function Footer({ compact = false }: FooterProps = {}) {
                   <TwitterIcon className="w-4 h-4" />X / Twitter
                 </a>
               </li>
-              <li>
-                <Link
-                  href="/privacy"
-                  prefetch={false}
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <ShieldCheckIcon className="w-4 h-4" />
-                  Privacy Policy
-                </Link>
-              </li>
             </ul>
           </div>
 
@@ -304,6 +284,16 @@ export function Footer({ compact = false }: FooterProps = {}) {
                 </Link>
               </li>
               <li>
+                <Link
+                  href="/blog"
+                  prefetch={false}
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
+                >
+                  <NewspaperIcon className="w-4 h-4" />
+                  Blog
+                </Link>
+              </li>
+              <li>
                 <a
                   href="https://github.com/usememos/memos/blob/main/LICENSE"
                   target="_blank"
@@ -324,6 +314,16 @@ export function Footer({ compact = false }: FooterProps = {}) {
                   <FileTextIcon className="w-4 h-4" />
                   Report an Issue
                 </a>
+              </li>
+              <li>
+                <Link
+                  href="/privacy"
+                  prefetch={false}
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
+                >
+                  <ShieldCheckIcon className="w-4 h-4" />
+                  Privacy Policy
+                </Link>
               </li>
             </ul>
           </div>

@@ -6,10 +6,10 @@ export const DEFAULT_OG_IMAGE = `${BASE_URL}/og-image.png`;
 export const DEFAULT_OG_IMAGE_ALT = "Memos - Open-source self-hosted notes";
 
 export const SITE_NAV_ITEMS = [
-  { name: "Documentation", href: "/docs" },
-  { name: "Blog", href: "/blog" },
-  { name: "Changelog", href: "/changelog" },
   { name: "Features", href: "/features" },
+  { name: "Docs", href: "/docs" },
+  { name: "Scratchpad", href: "/scratchpad" },
+  { name: "Changelog", href: "/changelog" },
 ] as const;
 
 export interface BreadcrumbItem {
