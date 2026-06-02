@@ -2,13 +2,15 @@
 
 import { useClerk, useUser } from "@clerk/nextjs";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { LogInIcon, LogOutIcon, UserCogIcon } from "lucide-react";
+import { ExternalLinkIcon, LogInIcon, LogOutIcon, ShieldCheckIcon, UserCogIcon } from "lucide-react";
 import { useIsClerkConfigured } from "@/shared/auth/clerk-config";
 
 const menuItemClassName =
   "flex h-8 cursor-default select-none items-center gap-2 rounded-sm px-2 text-sm text-stone-700 outline-none data-[highlighted]:bg-stone-100 data-[highlighted]:text-stone-950 dark:text-stone-300 dark:data-[highlighted]:bg-stone-800 dark:data-[highlighted]:text-stone-50";
 
 const menuSeparatorClassName = "my-1 h-px bg-stone-200 dark:bg-white/10";
+
+const scratchpadFeedbackUrl = "https://github.com/usememos/dotcom/issues";
 
 function getUserDisplayName(user: ReturnType<typeof useUser>["user"]): string {
   if (!user) {
@@ -54,6 +56,31 @@ function ClerkAccountMenuSection() {
         <div className="min-w-0 flex-1">
           <div className="truncate text-sm font-semibold text-stone-700 dark:text-stone-200">{displayName}</div>
           <div className="truncate text-xs text-stone-400 dark:text-stone-500">{emailAddress || "Signed in"}</div>
+        </div>
+      </div>
+
+      <DropdownMenu.Separator className={menuSeparatorClassName} />
+
+      <div className="m-1 rounded-md border border-teal-200/80 bg-teal-50/80 p-2.5 dark:border-teal-900/60 dark:bg-teal-950/35">
+        <div className="flex gap-2.5">
+          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white text-teal-700 shadow-sm shadow-teal-950/5 dark:bg-teal-900/60 dark:text-teal-200 dark:shadow-black/20">
+            <ShieldCheckIcon className="h-4 w-4" />
+          </div>
+          <div className="min-w-0">
+            <div className="text-sm font-semibold text-stone-800 dark:text-stone-100">Local-only scratchpad</div>
+            <p className="mt-1 text-xs leading-5 text-stone-600 dark:text-stone-400">
+              Signing in only verifies your account. Scratchpad does not access or store your cards.
+            </p>
+            <DropdownMenu.Item
+              className="mt-2 w-fit rounded-sm text-xs font-medium text-teal-700 outline-none hover:text-teal-900 data-[highlighted]:text-teal-900 dark:text-teal-300 dark:hover:text-teal-100 dark:data-[highlighted]:text-teal-100"
+              asChild
+            >
+              <a href={scratchpadFeedbackUrl} target="_blank" rel="noreferrer">
+                <span>Vote or send feedback</span>
+                <ExternalLinkIcon className="ml-1 inline h-3 w-3 align-[-2px]" />
+              </a>
+            </DropdownMenu.Item>
+          </div>
         </div>
       </div>
 
