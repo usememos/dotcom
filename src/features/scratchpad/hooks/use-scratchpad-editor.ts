@@ -14,7 +14,7 @@ import {
 import { createFileData, deleteFile, saveFile } from "@/features/scratchpad/lib/indexeddb";
 import { itemStorage, viewportStorage } from "@/features/scratchpad/lib/storage";
 import { clampScratchpadScale } from "@/features/scratchpad/lib/viewport";
-import type { ScratchpadAttachmentRef, ScratchpadItem, ScratchpadViewport } from "@/features/scratchpad/types";
+import type { ScratchpadAttachmentRef, ScratchpadItemLayout, ScratchpadItemPatch, ScratchpadViewport } from "@/features/scratchpad/types";
 
 type ViewportUpdater = ScratchpadViewport | ((current: ScratchpadViewport) => ScratchpadViewport);
 
@@ -66,7 +66,7 @@ export function useScratchpadEditor() {
     if (!state.lastTransaction.changes.items && !state.lastTransaction.changes.viewport) return;
 
     const persist = () => {
-      itemStorage.save(state.items);
+      itemStorage.save(state.document.items);
       viewportStorage.save(state.viewport);
     };
 
@@ -77,7 +77,7 @@ export function useScratchpadEditor() {
 
     const timeoutId = window.setTimeout(persist, 300);
     return () => window.clearTimeout(timeoutId);
-  }, [isClient, state.items, state.lastTransaction, state.viewport]);
+  }, [isClient, state.document.items, state.lastTransaction, state.viewport]);
 
   const runTransaction = (
     reason: string,
@@ -117,7 +117,7 @@ export function useScratchpadEditor() {
 
   const patchItem = (
     id: string,
-    patch: Partial<ScratchpadItem>,
+    patch: ScratchpadItemPatch,
     persistence: ScratchpadTransactionPersistence = "debounced",
     reason: string = "item.patch",
   ) => {
@@ -141,11 +141,15 @@ export function useScratchpadEditor() {
     const originY = y - Math.min(preferredHeight / 2, SCRATCHPAD_ITEM_VERTICAL_OFFSET);
     const clampedX = clamp(originX, leftBound, Math.max(leftBound, rightBound - width));
     const clampedY = clamp(originY, topBound, Math.max(topBound, bottomBound - preferredHeight));
+    const item = createScratchpadItem(clampedX, clampedY, getNextScratchpadZIndex(stateRef.current.document.items), attachments);
 
     return {
-      ...createScratchpadItem(clampedX, clampedY, getNextScratchpadZIndex(stateRef.current.items), attachments),
-      width,
-      height: preferredHeight,
+      ...item,
+      layout: {
+        ...item.layout,
+        width,
+        height: preferredHeight,
+      },
     };
   };
 
@@ -153,22 +157,19 @@ export function useScratchpadEditor() {
     runTransaction("item.create", [{ type: "add-item", item: createPositionedItem(x, y) }], "immediate");
   };
 
-  const updateItemLayout = (
-    id: string,
-    updates: Pick<ScratchpadItem, "x" | "y" | "width" | "height" | "zIndex"> | Partial<ScratchpadItem>,
-  ) => {
-    patchItem(id, updates, "immediate", "item.layout");
+  const updateItemLayout = (id: string, updates: Partial<ScratchpadItemLayout>) => {
+    patchItem(id, { layout: updates }, "immediate", "item.layout");
   };
 
   const updateItemBody = (id: string, body: string) => {
-    const item = getScratchpadItem(stateRef.current.items, id);
+    const item = getScratchpadItem(stateRef.current.document.items, id);
     if (!item) return;
 
     patchItem(
       id,
       {
-        body,
-        updatedAt: new Date(),
+        content: { body },
+        timestamps: { updatedAt: new Date() },
         sync: markScratchpadItemDirty(item.sync),
       },
       "debounced",
@@ -178,9 +179,9 @@ export function useScratchpadEditor() {
 
   const deleteItems = async (ids: string[]) => {
     const deleteSet = new Set(ids);
-    const deletedAttachments = stateRef.current.items
+    const deletedAttachments = stateRef.current.document.items
       .filter((item) => deleteSet.has(item.id))
-      .flatMap((item) => item.attachments.map((attachment) => attachment.id));
+      .flatMap((item) => item.content.attachments.map((attachment) => attachment.id));
 
     await Promise.all(deletedAttachments.map((attachmentId) => deleteFile(attachmentId)));
     runTransaction("item.delete", [{ type: "delete-items", ids }], "immediate");
@@ -191,15 +192,17 @@ export function useScratchpadEditor() {
   };
 
   const removeAttachment = async (id: string, attachmentId: string) => {
-    const item = getScratchpadItem(stateRef.current.items, id);
+    const item = getScratchpadItem(stateRef.current.document.items, id);
     if (!item) return;
 
     await deleteFile(attachmentId);
     patchItem(
       id,
       {
-        attachments: item.attachments.filter((attachment) => attachment.id !== attachmentId),
-        updatedAt: new Date(),
+        content: {
+          attachments: item.content.attachments.filter((attachment) => attachment.id !== attachmentId),
+        },
+        timestamps: { updatedAt: new Date() },
         sync: markScratchpadItemDirty(item.sync),
       },
       "immediate",
@@ -223,13 +226,15 @@ export function useScratchpadEditor() {
     }
 
     if (targetItemId) {
-      const targetItem = getScratchpadItem(stateRef.current.items, targetItemId);
+      const targetItem = getScratchpadItem(stateRef.current.document.items, targetItemId);
       if (targetItem) {
         patchItem(
           targetItemId,
           {
-            attachments: [...targetItem.attachments, ...attachmentRefs],
-            updatedAt: new Date(),
+            content: {
+              attachments: [...targetItem.content.attachments, ...attachmentRefs],
+            },
+            timestamps: { updatedAt: new Date() },
             sync: markScratchpadItemDirty(targetItem.sync),
           },
           "immediate",
@@ -272,7 +277,7 @@ export function useScratchpadEditor() {
 
   return {
     isClient,
-    items: state.items,
+    items: state.document.items,
     selectedItemIds: state.selectedItemIds,
     viewport: state.viewport,
     setViewport,

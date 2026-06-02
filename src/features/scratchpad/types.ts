@@ -33,11 +33,10 @@ export type ScratchSyncStatus = "local" | "saving" | "synced" | "dirty" | "error
 export interface MemoInstance {
   id: string;
   name: string; // e.g., "Personal Notes"
-  url: string; // https://memo.example.com
+  baseUrl: string; // https://memo.example.com
   accessToken: string; // Encrypted
-  isDefault: boolean;
-  lastConnected: Date | null;
-  status: ScratchInstanceStatus;
+  connectionStatus: ScratchInstanceStatus;
+  lastConnectedAt: Date | null;
   serverProfile?: ScratchServerProfile;
 }
 
@@ -62,18 +61,45 @@ export interface ScratchpadViewport {
   scale: number;
 }
 
-export interface ScratchpadItem {
-  id: string;
+export interface ScratchpadItemLayout {
   x: number;
   y: number;
   width: number;
   height: number;
   zIndex: number; // Stacking order (higher = on top)
+}
+
+export interface ScratchpadItemContent {
   body: string;
   attachments: ScratchpadAttachmentRef[];
+}
+
+export interface ScratchpadItemTimestamps {
   createdAt: Date;
   updatedAt: Date;
+}
+
+export type ScratchpadCardTone = "yellow" | "pink" | "blue" | "green" | "purple";
+
+export interface ScratchpadItem {
+  id: string;
+  layout: ScratchpadItemLayout;
+  content: ScratchpadItemContent;
   sync: ScratchpadSyncState;
+  timestamps: ScratchpadItemTimestamps;
+  tone?: ScratchpadCardTone;
+}
+
+export interface ScratchpadDocument {
+  items: ScratchpadItem[];
+}
+
+export interface ScratchpadItemPatch {
+  layout?: Partial<ScratchpadItemLayout>;
+  content?: Partial<ScratchpadItemContent>;
+  sync?: Partial<ScratchpadSyncState>;
+  timestamps?: Partial<ScratchpadItemTimestamps>;
+  tone?: ScratchpadCardTone;
 }
 
 export interface FileData {

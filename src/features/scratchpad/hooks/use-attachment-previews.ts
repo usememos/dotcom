@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { getFile } from "../lib/indexeddb";
-import type { FileData, ScratchpadItem } from "../types";
+import type { FileData, ScratchpadAttachmentRef } from "../types";
 
 interface AttachmentPreview {
   id: string;
@@ -8,7 +8,7 @@ interface AttachmentPreview {
   previewUrl: string | null;
 }
 
-export function useAttachmentPreviews(attachments: ScratchpadItem["attachments"]): Map<string, AttachmentPreview> {
+export function useAttachmentPreviews(attachments: ScratchpadAttachmentRef[]): Map<string, AttachmentPreview> {
   const [attachmentPreviews, setAttachmentPreviews] = useState<AttachmentPreview[]>([]);
 
   useEffect(() => {

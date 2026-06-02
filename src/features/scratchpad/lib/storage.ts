@@ -1,12 +1,15 @@
 /**
- * LocalStorage utilities for managing instances and scratchpad items
+ * LocalStorage utilities for managing the instance setting and scratchpad items
  */
 
-import type { MemoInstance, ScratchpadItem, ScratchpadViewport } from "../types";
+import type { MemoInstance, ScratchpadDocument, ScratchpadItem, ScratchpadItemPatch, ScratchpadViewport } from "../types";
 import { decryptToken, encryptToken } from "./encryption";
+import { migrateLegacyInstanceSetting, normalizeInstanceSettingInput } from "./instance-setting";
+import { normalizeScratchpadItems, patchScratchpadItem } from "./item-model";
 import { DEFAULT_SCRATCHPAD_VIEWPORT } from "./viewport";
 
 const STORAGE_KEYS = {
+  INSTANCE_SETTING: "memos-scratch-instance-setting",
   INSTANCES: "memos-scratch-instances",
   ITEMS: "memos-scratch-items",
   VIEWPORT: "memos-scratch-viewport",
@@ -14,7 +17,8 @@ const STORAGE_KEYS = {
   SETTINGS: "memos-scratch-settings",
 } as const;
 
-const ITEM_STORAGE_VERSION = 2;
+const INSTANCE_SETTING_STORAGE_VERSION = 1;
+const ITEM_STORAGE_VERSION = 3;
 
 interface LegacyScratchpadItem {
   id: string;
@@ -37,188 +41,145 @@ interface LegacyScratchpadItem {
   createdAt: string | Date;
 }
 
-interface ScratchpadItemEnvelope {
+interface LegacyScratchpadItemEnvelope {
   version: number;
   items: ScratchpadItem[];
 }
 
-function createEmptySyncState(): ScratchpadItem["sync"] {
-  return {
-    status: "local",
-  };
+interface ScratchpadDocumentEnvelope {
+  version: number;
+  document: ScratchpadDocument;
 }
 
-function hydrateScratchpadItem(item: ScratchpadItem): ScratchpadItem {
-  return {
-    ...item,
-    attachments: item.attachments || [],
-    createdAt: new Date(item.createdAt),
-    updatedAt: new Date(item.updatedAt),
-    sync: {
-      status: item.sync?.status || "local",
-      instanceId: item.sync?.instanceId,
-      memoRef: item.sync?.memoRef,
-      lastError: item.sync?.lastError,
-      lastSyncedAt: item.sync?.lastSyncedAt ? new Date(item.sync.lastSyncedAt) : undefined,
-    },
-  };
+interface MemoInstanceSettingEnvelope {
+  version: number;
+  instance: MemoInstance | null;
 }
 
-function migrateLegacyItem(item: LegacyScratchpadItem, index: number): ScratchpadItem {
-  const createdAt = new Date(item.createdAt);
-  const savedMemoRef = item.savedMemoRef ?? (item.savedMemoId ? { resourceName: item.savedMemoId } : undefined);
-
-  return {
-    id: item.id,
-    x: item.x,
-    y: item.y,
-    width: item.width,
-    height: item.height,
-    zIndex: item.zIndex ?? index + 1,
-    body: item.type === "text" ? (item.content ?? "") : "",
-    attachments: item.type === "file" && item.fileRef ? [item.fileRef] : [],
-    createdAt,
-    updatedAt: createdAt,
-    sync:
-      item.savedToInstance || savedMemoRef
-        ? {
-            instanceId: item.savedToInstance,
-            memoRef: savedMemoRef,
-            status: "synced",
-          }
-        : createEmptySyncState(),
-  };
+function hydrateMemoInstance(instance: MemoInstance): MemoInstance {
+  return normalizeInstanceSettingInput({
+    ...instance,
+    lastConnectedAt: instance.lastConnectedAt ? new Date(instance.lastConnectedAt) : null,
+    connectionStatus: instance.serverProfile ? instance.connectionStatus : "untested",
+    serverProfile: instance.serverProfile
+      ? {
+          ...instance.serverProfile,
+          detectedAt: new Date(instance.serverProfile.detectedAt),
+        }
+      : undefined,
+  });
 }
 
-function parseStoredItems(data: string): { items: ScratchpadItem[]; migrated: boolean } {
-  const parsed = JSON.parse(data) as ScratchpadItemEnvelope | LegacyScratchpadItem[];
+function parseStoredItems(data: string): { document: ScratchpadDocument; migrated: boolean } {
+  const parsed = JSON.parse(data) as ScratchpadDocumentEnvelope | LegacyScratchpadItemEnvelope | LegacyScratchpadItem[];
 
   if (Array.isArray(parsed)) {
     return {
-      items: parsed.map((item, index) => migrateLegacyItem(item, index)),
+      document: {
+        items: normalizeScratchpadItems(parsed),
+      },
       migrated: true,
     };
   }
 
-  if (parsed.version === ITEM_STORAGE_VERSION && Array.isArray(parsed.items)) {
+  if (parsed.version === 2 && "items" in parsed && Array.isArray(parsed.items)) {
     return {
-      items: parsed.items.map(hydrateScratchpadItem),
+      document: {
+        items: normalizeScratchpadItems(parsed.items),
+      },
+      migrated: true,
+    };
+  }
+
+  if (parsed.version === ITEM_STORAGE_VERSION && "document" in parsed && parsed.document && Array.isArray(parsed.document.items)) {
+    return {
+      document: {
+        items: normalizeScratchpadItems(parsed.document.items),
+      },
       migrated: false,
     };
   }
 
   return {
-    items: [],
+    document: {
+      items: [],
+    },
     migrated: false,
   };
 }
 
 /**
- * Storage for Memos instances
+ * Storage for the configured Memos instance
  */
 export const instanceStorage = {
-  async getAll(): Promise<MemoInstance[]> {
-    if (typeof window === "undefined") return [];
+  async get(): Promise<MemoInstance | null> {
+    if (typeof window === "undefined") return null;
 
-    const data = localStorage.getItem(STORAGE_KEYS.INSTANCES);
-    if (!data) return [];
+    const data = localStorage.getItem(STORAGE_KEYS.INSTANCE_SETTING);
+
+    if (data) {
+      try {
+        const payload = JSON.parse(data) as MemoInstanceSettingEnvelope;
+        if (payload.version !== INSTANCE_SETTING_STORAGE_VERSION || !payload.instance) return null;
+
+        return hydrateMemoInstance({
+          ...payload.instance,
+          accessToken: await decryptToken(payload.instance.accessToken),
+        });
+      } catch (error) {
+        console.error("Failed to load instance setting:", error);
+        localStorage.removeItem(STORAGE_KEYS.INSTANCE_SETTING);
+        return null;
+      }
+    }
+
+    const legacyData = localStorage.getItem(STORAGE_KEYS.INSTANCES);
+    if (!legacyData) return null;
 
     try {
-      const instances = JSON.parse(data) as MemoInstance[];
-      // Decrypt tokens, filtering out any that fail
-      const decryptedInstances = await Promise.allSettled(
-        instances.map(async (instance) => ({
-          ...instance,
-          lastConnected: instance.lastConnected ? new Date(instance.lastConnected) : null,
-          status: instance.serverProfile ? instance.status : "untested",
-          serverProfile: instance.serverProfile
-            ? {
-                ...instance.serverProfile,
-                detectedAt: new Date(instance.serverProfile.detectedAt),
-              }
-            : undefined,
-          accessToken: await decryptToken(instance.accessToken),
-        })),
-      );
+      const legacyInstances = JSON.parse(legacyData) as MemoInstance[];
+      const legacySetting = migrateLegacyInstanceSetting(legacyInstances);
+      if (!legacySetting) return null;
 
-      const validInstances: MemoInstance[] = [];
-      const failedCount = decryptedInstances.filter((result) => result.status === "rejected").length;
+      const instance = hydrateMemoInstance({
+        ...legacySetting,
+        accessToken: await decryptToken(legacySetting.accessToken),
+      });
 
-      for (const result of decryptedInstances) {
-        if (result.status === "fulfilled") {
-          validInstances.push(result.value);
-        }
-      }
-
-      // If some instances failed to decrypt, clean up localStorage
-      if (failedCount > 0) {
-        console.warn(`Failed to decrypt ${failedCount} instance(s). Removing corrupted data.`);
-        // Save only the valid instances back
-        if (validInstances.length > 0) {
-          await this.save(validInstances);
-        } else {
-          // No valid instances, clear the storage
-          localStorage.removeItem(STORAGE_KEYS.INSTANCES);
-        }
-      }
-
-      return validInstances;
+      await this.save(instance);
+      localStorage.removeItem(STORAGE_KEYS.INSTANCES);
+      return instance;
     } catch (error) {
-      console.error("Failed to load instances:", error);
-      return [];
+      console.error("Failed to migrate instance setting:", error);
+      localStorage.removeItem(STORAGE_KEYS.INSTANCES);
+      return null;
     }
   },
 
-  async save(instances: MemoInstance[]): Promise<void> {
+  async save(instance: MemoInstance): Promise<void> {
     if (typeof window === "undefined") return;
 
     try {
-      // Encrypt tokens before saving
-      const encrypted = await Promise.all(
-        instances.map(async (instance) => ({
-          ...instance,
-          accessToken: await encryptToken(instance.accessToken),
-        })),
-      );
-      localStorage.setItem(STORAGE_KEYS.INSTANCES, JSON.stringify(encrypted));
+      const normalized = normalizeInstanceSettingInput(instance);
+      const payload: MemoInstanceSettingEnvelope = {
+        version: INSTANCE_SETTING_STORAGE_VERSION,
+        instance: {
+          ...normalized,
+          accessToken: await encryptToken(normalized.accessToken),
+        },
+      };
+      localStorage.setItem(STORAGE_KEYS.INSTANCE_SETTING, JSON.stringify(payload));
+      localStorage.removeItem(STORAGE_KEYS.INSTANCES);
     } catch (error) {
-      console.error("Failed to save instances:", error);
-      throw new Error("Failed to save instances");
+      console.error("Failed to save instance setting:", error);
+      throw new Error("Failed to save instance setting");
     }
   },
 
-  async add(instance: MemoInstance): Promise<void> {
-    const instances = await this.getAll();
-    instances.push(instance);
-    await this.save(instances);
-  },
-
-  async update(id: string, updates: Partial<MemoInstance>): Promise<void> {
-    const instances = await this.getAll();
-    const index = instances.findIndex((i) => i.id === id);
-    if (index === -1) throw new Error("Instance not found");
-
-    instances[index] = { ...instances[index], ...updates };
-    await this.save(instances);
-  },
-
-  async remove(id: string): Promise<void> {
-    const instances = await this.getAll();
-    const filtered = instances.filter((i) => i.id !== id);
-    await this.save(filtered);
-  },
-
-  async getDefault(): Promise<MemoInstance | null> {
-    const instances = await this.getAll();
-    return instances.find((i) => i.isDefault) || instances[0] || null;
-  },
-
-  async setDefault(id: string): Promise<void> {
-    const instances = await this.getAll();
-    instances.forEach((instance) => {
-      instance.isDefault = instance.id === id;
-    });
-    await this.save(instances);
+  clear(): void {
+    if (typeof window === "undefined") return;
+    localStorage.removeItem(STORAGE_KEYS.INSTANCE_SETTING);
+    localStorage.removeItem(STORAGE_KEYS.INSTANCES);
   },
 };
 
@@ -233,11 +194,11 @@ export const itemStorage = {
     if (!data) return [];
 
     try {
-      const { items, migrated } = parseStoredItems(data);
+      const { document, migrated } = parseStoredItems(data);
       if (migrated) {
-        this.save(items);
+        this.save(document.items);
       }
-      return items;
+      return document.items;
     } catch (error) {
       console.error("Failed to load items:", error);
       return [];
@@ -246,9 +207,11 @@ export const itemStorage = {
 
   save(items: ScratchpadItem[]): void {
     if (typeof window === "undefined") return;
-    const payload: ScratchpadItemEnvelope = {
+    const payload: ScratchpadDocumentEnvelope = {
       version: ITEM_STORAGE_VERSION,
-      items,
+      document: {
+        items,
+      },
     };
     localStorage.setItem(STORAGE_KEYS.ITEMS, JSON.stringify(payload));
   },
@@ -259,12 +222,12 @@ export const itemStorage = {
     this.save(items);
   },
 
-  update(id: string, updates: Partial<ScratchpadItem>): void {
+  update(id: string, patch: ScratchpadItemPatch): void {
     const items = this.getAll();
     const index = items.findIndex((i) => i.id === id);
     if (index === -1) throw new Error("Item not found");
 
-    items[index] = { ...items[index], ...updates };
+    items[index] = patchScratchpadItem(items[index], patch);
     this.save(items);
   },
 
@@ -290,7 +253,7 @@ export const itemStorage = {
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - daysOld);
 
-    const recent = items.filter((i) => i.createdAt > cutoffDate);
+    const recent = items.filter((i) => i.timestamps.createdAt > cutoffDate);
     this.save(recent);
   },
 };

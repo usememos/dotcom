@@ -21,15 +21,19 @@ import {
   zoomScratchpadViewportAtPoint,
   zoomScratchpadViewportFromCenter,
 } from "@/features/scratchpad/lib/viewport";
-import type { ScratchpadItem, ScratchpadViewport } from "@/features/scratchpad/types";
+import type { ScratchpadItem, ScratchpadItemLayout, ScratchpadViewport } from "@/features/scratchpad/types";
 import { CardItem } from "./card-item";
+import { ScratchpadCanvasBackground } from "./scratchpad-canvas-background";
+import { ScratchpadDropOverlay } from "./scratchpad-drop-overlay";
+import { ScratchpadEmptyState } from "./scratchpad-empty-state";
+import { ScratchpadZoomControls } from "./scratchpad-zoom-controls";
 
 interface WorkspaceProps {
   items: ScratchpadItem[];
   viewport: ScratchpadViewport;
   onViewportChange: (updater: ScratchpadViewport | ((current: ScratchpadViewport) => ScratchpadViewport)) => void;
   onUpdateItemBody: (id: string, body: string) => void;
-  onUpdateItemLayout: (id: string, updates: Partial<ScratchpadItem>) => void;
+  onUpdateItemLayout: (id: string, updates: Partial<ScratchpadItemLayout>) => void;
   onRemoveAttachment: (id: string, attachmentId: string) => void;
   onCreateTextItem: (x: number, y: number) => void;
   onFileUpload: (files: FileList, x: number, y: number, targetItemId?: string) => void;
@@ -380,10 +384,6 @@ export function Workspace({
   };
 
   const zoomLabel = `${Math.round(viewport.scale * 100)}%`;
-  const gridOffsetX = `${viewport.x}px`;
-  const gridOffsetY = `${viewport.y}px`;
-  const minorGrid = `${32 * viewport.scale}px`;
-  const majorGrid = `${160 * viewport.scale}px`;
 
   return (
     <div
@@ -398,19 +398,12 @@ export function Workspace({
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      className={`relative h-full w-full overflow-hidden bg-[#ece8dc] dark:bg-[#171411] ${
+      className={`relative h-full w-full overflow-hidden ${
         isPanning ? "cursor-grabbing" : "cursor-grab"
       } ${isDraggingOver ? "ring-4 ring-teal-400 ring-inset" : ""}`}
-      style={{
-        backgroundImage:
-          "linear-gradient(to right, rgba(130,118,94,0.04) 1px, transparent 1px), " +
-          "linear-gradient(to bottom, rgba(130,118,94,0.04) 1px, transparent 1px), " +
-          "linear-gradient(to right, rgba(112,100,78,0.05) 1px, transparent 1px), " +
-          "linear-gradient(to bottom, rgba(112,100,78,0.05) 1px, transparent 1px)",
-        backgroundPosition: `${gridOffsetX} ${gridOffsetY}, ${gridOffsetX} ${gridOffsetY}, ${gridOffsetX} ${gridOffsetY}, ${gridOffsetX} ${gridOffsetY}`,
-        backgroundSize: `${minorGrid} ${minorGrid}, ${minorGrid} ${minorGrid}, ${majorGrid} ${majorGrid}, ${majorGrid} ${majorGrid}`,
-      }}
     >
+      <ScratchpadCanvasBackground viewport={viewport} />
+
       <div
         className="absolute inset-0 origin-top-left"
         style={{
@@ -431,53 +424,16 @@ export function Workspace({
         ))}
       </div>
 
-      {items.length === 0 && (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="rounded-2xl border border-white/55 bg-white/68 px-6 py-5 text-center shadow-[0_18px_52px_rgba(107,91,65,0.1)] backdrop-blur-sm">
-            <p className="text-lg font-medium text-stone-800">Double-click to create a note</p>
-            <p className="mt-2 text-sm leading-6 text-stone-500">Drag to pan. Ctrl or Cmd + wheel to zoom. Paste or drop files anywhere.</p>
-          </div>
-        </div>
-      )}
+      {items.length === 0 && <ScratchpadEmptyState />}
 
-      {isDraggingOver && (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-[#79a89d]/10">
-          <div className="rounded-2xl border border-[#98bdb4] bg-white/92 px-5 py-3 text-center shadow-[0_20px_60px_rgba(79,108,101,0.14)] backdrop-blur">
-            <p className="text-lg font-semibold text-[#5a8a83]">Drop files here</p>
-            <p className="mt-1 text-sm text-[#6d9a93]/90">They can land on the canvas or attach to an existing card.</p>
-          </div>
-        </div>
-      )}
+      {isDraggingOver && <ScratchpadDropOverlay />}
 
-      <div
-        data-scratchpad-ui="true"
-        className="absolute right-4 bottom-4 flex items-center gap-1.5 rounded-full border border-white/60 bg-white/74 p-1.5 shadow-[0_12px_30px_rgba(109,92,68,0.12)] backdrop-blur-sm"
-      >
-        <button
-          type="button"
-          onClick={() => zoomFromViewportCenter(1 / 1.15)}
-          className="inline-flex h-8 w-8 items-center justify-center rounded-full text-base font-medium text-stone-500 transition hover:bg-stone-100/80"
-          title="Zoom out"
-        >
-          -
-        </button>
-        <button
-          type="button"
-          onClick={() => updateViewport(DEFAULT_SCRATCHPAD_VIEWPORT)}
-          className="rounded-full px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-500 transition hover:bg-stone-100/80"
-          title="Reset view"
-        >
-          {zoomLabel}
-        </button>
-        <button
-          type="button"
-          onClick={() => zoomFromViewportCenter(1.15)}
-          className="inline-flex h-8 w-8 items-center justify-center rounded-full text-base font-medium text-stone-500 transition hover:bg-stone-100/80"
-          title="Zoom in"
-        >
-          +
-        </button>
-      </div>
+      <ScratchpadZoomControls
+        zoomLabel={zoomLabel}
+        onZoomOut={() => zoomFromViewportCenter(1 / 1.15)}
+        onReset={() => updateViewport(DEFAULT_SCRATCHPAD_VIEWPORT)}
+        onZoomIn={() => zoomFromViewportCenter(1.15)}
+      />
     </div>
   );
 }

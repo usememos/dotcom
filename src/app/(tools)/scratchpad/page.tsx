@@ -63,7 +63,12 @@ export default function ScratchPage() {
         />
       </div>
 
-      <InstanceSetupForm open={showInstanceForm} onSave={handleInstanceSave} onCancel={() => setShowInstanceForm(false)} />
+      <InstanceSetupForm
+        open={showInstanceForm}
+        existingInstance={defaultInstance ?? undefined}
+        onSave={handleInstanceSave}
+        onCancel={() => setShowInstanceForm(false)}
+      />
     </div>
   );
 }

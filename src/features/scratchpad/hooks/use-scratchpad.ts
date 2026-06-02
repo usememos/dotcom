@@ -13,15 +13,15 @@ function getInstanceStatusLabel(instance: MemoInstance | null): string {
     return "No instance connected";
   }
 
-  if (instance.status === "connected") {
+  if (instance.connectionStatus === "connected") {
     return "Supported";
   }
 
-  if (instance.status === "unsupported") {
+  if (instance.connectionStatus === "unsupported") {
     return "Unsupported";
   }
 
-  if (instance.status === "error") {
+  if (instance.connectionStatus === "error") {
     return "Error";
   }
 
@@ -30,81 +30,48 @@ function getInstanceStatusLabel(instance: MemoInstance | null): string {
 
 export function useScratchpad() {
   const editor = useScratchpadEditor();
-  const [instances, setInstances] = useState<MemoInstance[]>([]);
+  const [instance, setInstance] = useState<MemoInstance | null>(null);
   const [showInstanceForm, setShowInstanceForm] = useState(false);
-  const instancesRef = useRef(instances);
+  const instanceRef = useRef(instance);
 
   useEffect(() => {
-    instancesRef.current = instances;
-  }, [instances]);
+    instanceRef.current = instance;
+  }, [instance]);
 
-  const loadInstances = async () => {
-    const storedData = localStorage.getItem("memos-scratch-instances");
-    const instanceCountBefore = storedData ? (JSON.parse(storedData) as MemoInstance[]).length : 0;
-    const loadedInstances = await instanceStorage.getAll();
-    const instanceCountAfter = loadedInstances.length;
-
-    setInstances(loadedInstances);
-
-    if (instanceCountBefore > instanceCountAfter) {
-      const lostCount = instanceCountBefore - instanceCountAfter;
-      alert(
-        `⚠️ ${lostCount} Memos ${lostCount === 1 ? "instance" : "instances"} couldn't be loaded due to encryption issues.\n\n` +
-          "This can happen after browser updates or window resizing. Please re-add your Memos instance(s).",
-      );
-    }
+  const loadInstance = async () => {
+    setInstance(await instanceStorage.get());
   };
 
   useEffect(() => {
     if (!editor.isClient) return;
-    void loadInstances();
+    void loadInstance();
   }, [editor.isClient]);
 
-  const updateInstances = async (nextInstances: MemoInstance[]) => {
-    await instanceStorage.save(nextInstances);
-    setInstances(nextInstances);
-  };
-
   const replaceInstance = async (instance: MemoInstance) => {
-    const nextInstances = instancesRef.current.map((current) => (current.id === instance.id ? instance : current));
-    await updateInstances(nextInstances);
+    await instanceStorage.save(instance);
+    setInstance(instance);
   };
 
-  const defaultInstance = useMemo(() => instances.find((instance) => instance.isDefault) || instances[0] || null, [instances]);
   const selectedItems = useMemo(
     () =>
       getSelectedScratchpadItems({
-        items: editor.items,
+        document: { items: editor.items },
         selectedItemIds: editor.selectedItemIds,
       }),
     [editor.items, editor.selectedItemIds],
   );
-  const selectedItemsRequireFiles = selectedItems.some((item) => item.attachments.length > 0);
-  const selectedSaveBlockReason = getSaveBlockReason(defaultInstance, selectedItemsRequireFiles);
-
-  const getPreferredInstanceForItem = (itemId: string): MemoInstance | null => {
-    const item = getScratchpadItem(editor.items, itemId);
-    if (!item) return defaultInstance;
-
-    if (item.sync.instanceId) {
-      const savedInstance = instances.find((instance) => instance.id === item.sync.instanceId);
-      if (savedInstance) {
-        return savedInstance;
-      }
-    }
-
-    return defaultInstance;
-  };
+  const selectedItemsRequireFiles = selectedItems.some((item) => item.content.attachments.length > 0);
+  const selectedSaveBlockReason = getSaveBlockReason(instance, selectedItemsRequireFiles);
 
   const handleInstanceSave = async (instance: MemoInstance) => {
-    await instanceStorage.add(instance);
+    await instanceStorage.save(instance);
+    setInstance(instance);
     setShowInstanceForm(false);
-    await loadInstances();
   };
 
   const ensureInstanceReadyForSave = async (instance: MemoInstance, requiresFiles: boolean): Promise<MemoInstance | null> => {
     const preparedInstance =
-      !instance.serverProfile || instance.status === "untested" ? await refreshMemoInstanceProfile(instance) : instance;
+      !instance.serverProfile || instance.connectionStatus === "untested" ? await refreshMemoInstanceProfile(instance) : instance;
 
     if (preparedInstance !== instance) {
       await replaceInstance(preparedInstance);
@@ -123,13 +90,13 @@ export function useScratchpad() {
     const item = getScratchpadItem(editor.items, id);
     if (!item) return;
 
-    const targetInstance = resolvedInstance || getPreferredInstanceForItem(id);
+    const targetInstance = resolvedInstance || instanceRef.current;
     if (!targetInstance) {
       setShowInstanceForm(true);
       return;
     }
 
-    if (!item.body.trim() && item.attachments.length === 0) {
+    if (!item.content.body.trim() && item.content.attachments.length === 0) {
       alert("Cannot save an empty card to Memos.");
       return;
     }
@@ -150,14 +117,14 @@ export function useScratchpad() {
     try {
       const files = (
         await Promise.all(
-          item.attachments.map(async (attachment) => {
+          item.content.attachments.map(async (attachment) => {
             const fileData = await getFile(attachment.id);
             return fileData ? { blob: fileData.blob, name: fileData.name } : null;
           }),
         )
       ).filter((file): file is { blob: Blob; name: string } => file !== null);
 
-      const readyInstance = resolvedInstance || (await ensureInstanceReadyForSave(targetInstance, item.attachments.length > 0));
+      const readyInstance = resolvedInstance || (await ensureInstanceReadyForSave(targetInstance, item.content.attachments.length > 0));
       if (!readyInstance) {
         editor.patchItem(
           id,
@@ -181,7 +148,7 @@ export function useScratchpad() {
       editor.patchItem(
         id,
         {
-          updatedAt: syncedAt,
+          timestamps: { updatedAt: syncedAt },
           sync: {
             instanceId: readyInstance.id,
             memoRef: memo.memoRef,
@@ -195,8 +162,8 @@ export function useScratchpad() {
 
       await replaceInstance({
         ...readyInstance,
-        lastConnected: new Date(),
-        status: "connected",
+        lastConnectedAt: new Date(),
+        connectionStatus: "connected",
       });
     } catch (error) {
       console.error("Failed to save:", error);
@@ -231,7 +198,7 @@ export function useScratchpad() {
   const handleSaveSelected = async () => {
     if (editor.selectedItemIds.length === 0) return;
 
-    if (!defaultInstance && instances.length === 0) {
+    if (!instance) {
       setShowInstanceForm(true);
       return;
     }
@@ -244,9 +211,9 @@ export function useScratchpad() {
   };
 
   return {
-    defaultInstance,
-    defaultInstanceStatusLabel: getInstanceStatusLabel(defaultInstance),
-    defaultInstanceVersion: defaultInstance?.serverProfile?.rawVersion || "Unknown version",
+    defaultInstance: instance,
+    defaultInstanceStatusLabel: getInstanceStatusLabel(instance),
+    defaultInstanceVersion: instance?.serverProfile?.rawVersion || "Unknown version",
     handleCreateTextItem: editor.createTextItem,
     handleDeleteItem: editor.deleteItem,
     handleDeleteSelected,
@@ -262,7 +229,7 @@ export function useScratchpad() {
     items: editor.items,
     selectedItemIds: editor.selectedItemIds,
     selectedSaveBlockReason,
-    selectedSaveTitle: !defaultInstance ? "Save selected to Memos" : selectedSaveBlockReason || "Save selected to Memos",
+    selectedSaveTitle: !instance ? "Save selected to Memos" : selectedSaveBlockReason || "Save selected to Memos",
     setShowInstanceForm,
     showInstanceForm,
     viewport: editor.viewport,

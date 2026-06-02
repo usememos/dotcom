@@ -1,9 +1,8 @@
 "use client";
 
-import { FileIcon, LoaderIcon, XIcon } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useAttachmentPreviews } from "../hooks/use-attachment-previews";
-import { CARD_TEXT_CLASS_NAME, getCardRingClass, getCardRotation } from "../lib/card-style";
+import { getCardRingClass, getCardRotation, getCardToneClassNames } from "../lib/card-style";
 import {
   beginPointerInteraction,
   cancelPointerInteraction,
@@ -17,13 +16,16 @@ import {
   type PointerInteractionMap,
   type PointerSession,
 } from "../lib/interactions";
-import type { ScratchpadItem } from "../types";
+import type { ScratchpadItem, ScratchpadItemLayout } from "../types";
+import { ScratchpadAttachmentGrid } from "./scratchpad-attachment-grid";
+import { ScratchpadCardBody } from "./scratchpad-card-body";
+import { ScratchpadSyncBadge } from "./scratchpad-sync-badge";
 
 interface CardItemProps {
   item: ScratchpadItem;
   canvasScale: number;
   onUpdateBody: (id: string, body: string) => void;
-  onUpdateLayout: (id: string, updates: Partial<ScratchpadItem>) => void;
+  onUpdateLayout: (id: string, updates: Partial<ScratchpadItemLayout>) => void;
   onRemoveAttachment: (id: string, attachmentId: string) => void;
   isSelected?: boolean;
   onSelect: (ctrlKey: boolean) => void;
@@ -46,13 +48,15 @@ interface CardInteractionMap extends PointerInteractionMap {
 }
 
 export function CardItem({ item, canvasScale, onUpdateBody, onUpdateLayout, onRemoveAttachment, isSelected, onSelect }: CardItemProps) {
+  const { content, layout, timestamps } = item;
+  const { body, attachments } = content;
   const [isDragging, setIsDragging] = useState(false);
   const [isEditing, setIsEditing] = useState(
-    () => item.body.trim().length === 0 && item.attachments.length === 0 && Date.now() - item.createdAt.getTime() < 5_000,
+    () => body.trim().length === 0 && attachments.length === 0 && Date.now() - timestamps.createdAt.getTime() < 5_000,
   );
   const [isResizing, setIsResizing] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-  const [liveSize, setLiveSize] = useState({ width: item.width, height: item.height });
+  const [liveSize, setLiveSize] = useState({ width: layout.width, height: layout.height });
   const cardRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const dragOriginRef = useRef({ x: 0, y: 0 });
@@ -62,15 +66,15 @@ export function CardItem({ item, canvasScale, onUpdateBody, onUpdateLayout, onRe
   const MIN_WIDTH = 220;
   const MIN_HEIGHT = 170;
   const cardRotation = useMemo(() => getCardRotation(item), [item]);
-  const previewMap = useAttachmentPreviews(item.attachments);
-  const hasImageAttachment = item.attachments.some((attachment) => attachment.type.startsWith("image/"));
-  const hasBody = item.body.trim().length > 0;
+  const previewMap = useAttachmentPreviews(attachments);
+  const hasImageAttachment = attachments.some((attachment) => attachment.type.startsWith("image/"));
+  const hasBody = body.trim().length > 0;
 
   useEffect(() => {
     if (!textareaRef.current) return;
     textareaRef.current.style.height = "auto";
     textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-  }, [item.body]);
+  }, [body]);
 
   useEffect(() => {
     if (!isEditing || !textareaRef.current) return;
@@ -104,11 +108,11 @@ export function CardItem({ item, canvasScale, onUpdateBody, onUpdateLayout, onRe
   useEffect(() => {
     if (!isResizing) {
       setLiveSize({
-        width: item.width,
-        height: item.height,
+        width: layout.width,
+        height: layout.height,
       });
     }
-  }, [isResizing, item.height, item.width]);
+  }, [isResizing, layout.height, layout.width]);
 
   const handleContainerClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -184,8 +188,8 @@ export function CardItem({ item, canvasScale, onUpdateBody, onUpdateLayout, onRe
     onSelect(e.ctrlKey || e.metaKey);
 
     dragOriginRef.current = {
-      x: item.x,
-      y: item.y,
+      x: layout.x,
+      y: layout.y,
     };
     beginPointerInteraction(interactionRef, e.currentTarget, "dragging", {
       ...createPointerSession(e.pointerId, e.clientX, e.clientY),
@@ -240,8 +244,8 @@ export function CardItem({ item, canvasScale, onUpdateBody, onUpdateLayout, onRe
 
   const cancelResize = () => {
     setLiveSize({
-      width: item.width,
-      height: item.height,
+      width: layout.width,
+      height: layout.height,
     });
     setIsResizing(false);
   };
@@ -251,14 +255,14 @@ export function CardItem({ item, canvasScale, onUpdateBody, onUpdateLayout, onRe
     e.preventDefault();
     beginPointerInteraction(interactionRef, e.currentTarget, "resizing", {
       ...createPointerSession(e.pointerId, e.clientX, e.clientY),
-      startWidth: item.width,
-      startHeight: item.height,
-      latestWidth: item.width,
-      latestHeight: item.height,
+      startWidth: layout.width,
+      startHeight: layout.height,
+      latestWidth: layout.width,
+      latestHeight: layout.height,
     });
     setLiveSize({
-      width: item.width,
-      height: item.height,
+      width: layout.width,
+      height: layout.height,
     });
     setIsResizing(true);
   };
@@ -317,15 +321,15 @@ export function CardItem({ item, canvasScale, onUpdateBody, onUpdateLayout, onRe
       onPointerCancel={handleCardPointerCancel}
       onClick={handleContainerClick}
       onDoubleClick={handleDoubleClick}
-      className={`absolute flex flex-col overflow-hidden rounded-[4px] border border-[#e5d57d] bg-[#fff2a8] text-stone-700 transition-shadow duration-150 focus:outline-none ${
+      className={`group/card absolute flex flex-col overflow-hidden rounded-[4px] border transition-shadow duration-150 focus:outline-none ${getCardToneClassNames(item)} ${
         isEditing ? "cursor-default" : isDragging ? "cursor-grabbing" : "cursor-grab"
       } ${getCardRingClass(item, isSelected)}`}
       style={{
-        left: item.x,
-        top: item.y,
+        left: layout.x,
+        top: layout.y,
         width: liveSize.width,
         minHeight: liveSize.height,
-        zIndex: item.zIndex || 1,
+        zIndex: layout.zIndex || 1,
         transform: `translate3d(${dragOffset.x}px, ${dragOffset.y}px, 0) rotate(${rotation}deg)`,
         touchAction: isEditing ? "auto" : "none",
       }}
@@ -337,7 +341,7 @@ export function CardItem({ item, canvasScale, onUpdateBody, onUpdateLayout, onRe
           onFocus={handleKeyboardTargetFocus}
           onKeyDown={handleKeyboardTargetKeyDown}
           className="absolute inset-0 z-0"
-          aria-label={hasBody ? `Edit note: ${item.body.slice(0, 60)}` : "Edit note"}
+          aria-label={hasBody ? `Edit note: ${body.slice(0, 60)}` : "Edit note"}
         >
           <span className="sr-only">Select note. Press Enter to edit.</span>
         </button>
@@ -345,94 +349,31 @@ export function CardItem({ item, canvasScale, onUpdateBody, onUpdateLayout, onRe
 
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,250,210,0.28),rgba(255,240,157,0.95))]" />
 
-      {item.attachments.length > 0 && (
-        <div className="relative px-4 pt-4 pb-2.5">
-          <div className="grid grid-cols-2 gap-2">
-            {item.attachments.map((attachment) => {
-              const preview = previewMap.get(attachment.id);
-              const isImage = attachment.type.startsWith("image/");
-
-              return (
-                <div
-                  key={attachment.id}
-                  className={`group relative overflow-hidden rounded-[3px] border border-[#eadb8f]/85 bg-[#fff6bf]/72 p-1.5 ${
-                    isImage ? "pb-3" : ""
-                  }`}
-                >
-                  <button
-                    type="button"
-                    onPointerDown={(e) => e.stopPropagation()}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      void onRemoveAttachment(item.id, attachment.id);
-                    }}
-                    className="absolute right-1.5 top-1.5 z-10 inline-flex h-5 w-5 items-center justify-center rounded-full bg-stone-900/45 text-white opacity-0 transition group-hover:opacity-100"
-                    title="Remove attachment"
-                  >
-                    <XIcon className="h-3 w-3" />
-                  </button>
-
-                  {isImage && preview?.previewUrl ? (
-                    <>
-                      <div className="overflow-hidden rounded-[2px] bg-[#fff9d8]">
-                        <img
-                          src={preview.previewUrl}
-                          alt={attachment.name}
-                          className="h-24 w-full object-cover pointer-events-none opacity-92"
-                        />
-                      </div>
-                      <div className="pt-1.5 text-center text-[9px] italic tracking-[0.02em] text-[#b7a45e]">{attachment.name}</div>
-                    </>
-                  ) : (
-                    <div className="flex h-24 flex-col items-center justify-center gap-2 px-2 text-center">
-                      <FileIcon className="h-7 w-7 text-[#c8b668]" />
-                      <div className="line-clamp-2 text-[10px] leading-4.5 text-[#9a8740]">{attachment.name}</div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
+      <ScratchpadAttachmentGrid
+        itemId={item.id}
+        attachments={attachments}
+        previewMap={previewMap}
+        onRemoveAttachment={onRemoveAttachment}
+      />
 
       <div className="relative flex-1 px-4 pt-3 pb-3.5">
-        {!hasImageAttachment && item.body.trim() && (
-          <div className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-[#dccb75]/75 to-transparent" />
+        {!hasImageAttachment && body.trim() && (
+          <div className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-current/20 to-transparent" />
         )}
-        {isEditing ? (
-          <textarea
-            ref={textareaRef}
-            value={item.body}
-            onBlur={() => setIsEditing(false)}
-            onChange={handleBodyChange}
-            onKeyDown={handleTextareaKeyDown}
-            onPointerDown={handleTextareaPointerDown}
-            placeholder={item.attachments.length > 0 ? "Add context for these attachments..." : "Type here..."}
-            className={`w-full min-h-[150px] resize-none border-none bg-transparent px-0 pt-0 pb-1.5 outline-none placeholder:text-[#c8bb7e] cursor-text ${CARD_TEXT_CLASS_NAME}`}
-          />
-        ) : (
-          <div
-            className={`min-h-[150px] px-0 pt-0 pb-1.5 ${CARD_TEXT_CLASS_NAME} ${
-              hasBody ? "whitespace-pre-wrap break-words" : "select-none text-[#c8bb7e]"
-            }`}
-          >
-            {hasBody ? item.body : item.attachments.length > 0 ? "Double-click to describe these attachments..." : "Double-click to type"}
-          </div>
-        )}
+        <ScratchpadCardBody
+          body={body}
+          hasAttachments={attachments.length > 0}
+          isEditing={isEditing}
+          textClassName=""
+          placeholderClassName="text-stone-500"
+          textareaRef={textareaRef}
+          onBlur={() => setIsEditing(false)}
+          onChange={handleBodyChange}
+          onKeyDown={handleTextareaKeyDown}
+          onPointerDown={handleTextareaPointerDown}
+        />
 
-        {item.sync.status === "saving" && (
-          <div className="pointer-events-none absolute right-0 bottom-0 inline-flex items-center gap-1 rounded-full bg-[#f8e693] px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#947d2d]">
-            <LoaderIcon className="h-3 w-3 animate-spin" />
-            Saving
-          </div>
-        )}
-
-        {item.sync.status === "error" && item.sync.lastError && (
-          <div className="pointer-events-none absolute right-0 bottom-0 max-w-[78%] rounded-full bg-red-50/90 px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.12em] text-red-600">
-            {item.sync.lastError}
-          </div>
-        )}
+        <ScratchpadSyncBadge sync={item.sync} isRevealed={Boolean(isSelected)} />
       </div>
 
       <div

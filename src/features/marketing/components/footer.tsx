@@ -13,6 +13,7 @@ import {
   ScaleIcon,
   ShieldCheckIcon,
   SparklesIcon,
+  StickyNoteIcon,
 } from "lucide-react";
 import Link from "next/link";
 import type { SVGProps } from "react";
@@ -41,6 +42,7 @@ interface FooterProps {
 const COMPACT_LINKS: Array<{ href: string; label: string; external?: boolean }> = [
   { href: "/docs", label: "Docs" },
   { href: "/blog", label: "Blog" },
+  { href: "/scratchpad", label: "Scratchpad" },
   { href: "/changelog", label: "Changelog" },
   { href: "/features", label: "Features" },
   { href: "https://github.com/usememos/memos", label: "GitHub", external: true },
@@ -120,6 +122,16 @@ export function Footer({ compact = false }: FooterProps = {}) {
                 >
                   <NewspaperIcon className="w-4 h-4" />
                   Blog
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/scratchpad"
+                  prefetch={false}
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
+                >
+                  <StickyNoteIcon className="w-4 h-4" />
+                  Scratchpad
                 </Link>
               </li>
               <li>

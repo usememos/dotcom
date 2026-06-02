@@ -226,7 +226,7 @@ async function fetchInstanceProfile(url: string, accessToken: string): Promise<R
 }
 
 async function uploadAttachment(instance: MemoInstance, file: Blob, filename: string): Promise<ScratchAttachment> {
-  const normalizedUrl = normalizeUrl(instance.url);
+  const normalizedUrl = normalizeUrl(instance.baseUrl);
   const arrayBuffer = await file.arrayBuffer();
   const bytes = new Uint8Array(arrayBuffer);
   let binary = "";
@@ -259,7 +259,7 @@ async function uploadAttachment(instance: MemoInstance, file: Blob, filename: st
 }
 
 async function createMemo(instance: MemoInstance, content: string, options?: SaveToMemosOptions): Promise<ScratchMemo> {
-  const normalizedUrl = normalizeUrl(instance.url);
+  const normalizedUrl = normalizeUrl(instance.baseUrl);
   const data = await requestJson<RawMemo>(
     `${normalizedUrl}/api/v1/memos`,
     {
@@ -288,7 +288,7 @@ async function updateMemo(
   content: string,
   options?: SaveToMemosOptions,
 ): Promise<ScratchMemo> {
-  const normalizedUrl = normalizeUrl(instance.url);
+  const normalizedUrl = normalizeUrl(instance.baseUrl);
   const updateMask = encodeURIComponent("content,visibility,state");
 
   const data = await requestJson<RawMemo>(
@@ -315,7 +315,7 @@ async function updateMemo(
 }
 
 async function setMemoAttachments(instance: MemoInstance, memoRef: ScratchMemoRef, attachments: ScratchAttachment[]): Promise<void> {
-  const normalizedUrl = normalizeUrl(instance.url);
+  const normalizedUrl = normalizeUrl(instance.baseUrl);
   const response = await fetch(`${normalizedUrl}/api/v1/${memoRef.resourceName}/attachments`, {
     method: "PATCH",
     headers: {
@@ -364,14 +364,14 @@ export async function detectServerProfile(
 }
 
 export async function refreshMemoInstanceProfile(instance: MemoInstance): Promise<MemoInstance> {
-  const { serverProfile } = await detectServerProfile(instance.url, instance.accessToken);
+  const { serverProfile } = await detectServerProfile(instance.baseUrl, instance.accessToken);
 
   return {
     ...instance,
-    url: normalizeUrl(instance.url),
+    baseUrl: normalizeUrl(instance.baseUrl),
     serverProfile,
-    status: serverProfile.supportStatus === "supported" ? "connected" : "unsupported",
-    lastConnected: new Date(),
+    connectionStatus: serverProfile.supportStatus === "supported" ? "connected" : "unsupported",
+    lastConnectedAt: new Date(),
   };
 }
 
@@ -432,7 +432,7 @@ export async function saveScratchpadItemToMemos(
 
   assertSupportedProfile(profile);
 
-  const trimmedBody = item.body.trim();
+  const trimmedBody = item.content.body.trim();
   const attachmentSummary = files.map((file) => file.name);
   const content =
     trimmedBody ||

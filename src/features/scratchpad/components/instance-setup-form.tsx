@@ -2,8 +2,9 @@
 
 import * as Dialog from "@radix-ui/react-dialog";
 import { CheckCircleIcon, HelpCircleIcon, LoaderIcon, XCircleIcon, XIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { testConnection } from "@/features/scratchpad/lib/api";
+import { normalizeInstanceSettingInput } from "@/features/scratchpad/lib/instance-setting";
 import type { MemoInstance } from "@/features/scratchpad/types";
 
 interface InstanceSetupFormProps {
@@ -15,7 +16,7 @@ interface InstanceSetupFormProps {
 
 export function InstanceSetupForm({ open, onSave, onCancel, existingInstance }: InstanceSetupFormProps) {
   const [name, setName] = useState(existingInstance?.name || "");
-  const [url, setUrl] = useState(existingInstance?.url || "");
+  const [url, setUrl] = useState(existingInstance?.baseUrl || "");
   const [token, setToken] = useState(existingInstance?.accessToken || "");
   const [testing, setTesting] = useState(false);
   const [testResult, setTestResult] = useState<{
@@ -24,6 +25,15 @@ export function InstanceSetupForm({ open, onSave, onCancel, existingInstance }: 
     statusTone?: "success" | "warning" | "error";
     serverProfile?: MemoInstance["serverProfile"];
   } | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+
+    setName(existingInstance?.name || "");
+    setUrl(existingInstance?.baseUrl || "");
+    setToken(existingInstance?.accessToken || "");
+    setTestResult(null);
+  }, [existingInstance, open]);
 
   const handleTest = async () => {
     if (!url || !token) {
@@ -78,16 +88,27 @@ export function InstanceSetupForm({ open, onSave, onCancel, existingInstance }: 
       return;
     }
 
-    const instance: MemoInstance = {
+    const draft = normalizeInstanceSettingInput({
       id: existingInstance?.id || `instance-${Date.now()}`,
-      name: name || "My Memos Instance",
-      url: url.replace(/\/$/, ""),
+      name,
+      baseUrl: url,
       accessToken: token,
-      isDefault: existingInstance?.isDefault || false,
-      lastConnected: null,
-      status: testResult?.success ? (testResult.serverProfile?.supportStatus === "supported" ? "connected" : "unsupported") : "untested",
-      serverProfile: testResult?.serverProfile,
-    };
+    });
+    const connectionChanged =
+      Boolean(existingInstance) && (draft.baseUrl !== existingInstance?.baseUrl || draft.accessToken !== existingInstance?.accessToken);
+
+    const instance: MemoInstance = normalizeInstanceSettingInput({
+      ...draft,
+      lastConnectedAt: connectionChanged ? null : existingInstance?.lastConnectedAt || null,
+      connectionStatus: testResult?.success
+        ? testResult.serverProfile?.supportStatus === "supported"
+          ? "connected"
+          : "unsupported"
+        : connectionChanged
+          ? "untested"
+          : existingInstance?.connectionStatus || "untested",
+      serverProfile: testResult?.serverProfile ?? (connectionChanged ? undefined : existingInstance?.serverProfile),
+    });
 
     onSave(instance);
   };
