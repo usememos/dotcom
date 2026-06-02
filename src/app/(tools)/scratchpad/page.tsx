@@ -1,32 +1,23 @@
 "use client";
 
-import { InstanceSetupForm } from "@/features/scratchpad/components/instance-setup-form";
 import { ScratchpadToolbar } from "@/features/scratchpad/components/scratchpad-toolbar";
 import { Workspace } from "@/features/scratchpad/components/workspace";
 import { useScratchpad } from "@/features/scratchpad/hooks/use-scratchpad";
 
 export default function ScratchPage() {
   const {
-    defaultInstance,
-    defaultInstanceStatusLabel,
-    defaultInstanceVersion,
     handleCreateTextItem,
-    handleDeleteSelected,
+    handleDeleteItem,
     handleFileUpload,
-    handleInstanceSave,
     handleRemoveAttachment,
-    handleSaveSelected,
     handleSelectItem,
     handleUpdateItemBody,
     handleUpdateItemLayout,
     isClient,
     items,
+    lastActiveItemId,
     selectedItemIds,
-    selectedSaveBlockReason,
-    selectedSaveTitle,
-    setShowInstanceForm,
     setViewport,
-    showInstanceForm,
     viewport,
   } = useScratchpad();
 
@@ -36,17 +27,7 @@ export default function ScratchPage() {
 
   return (
     <div className="relative h-screen bg-gray-50 dark:bg-gray-900">
-      <ScratchpadToolbar
-        defaultInstance={defaultInstance}
-        defaultInstanceStatusLabel={defaultInstanceStatusLabel}
-        defaultInstanceVersion={defaultInstanceVersion}
-        selectedCount={selectedItemIds.length}
-        selectedSaveTitle={selectedSaveTitle}
-        saveDisabled={Boolean(defaultInstance && selectedSaveBlockReason)}
-        onDeleteSelected={handleDeleteSelected}
-        onOpenInstanceSettings={() => setShowInstanceForm(true)}
-        onSaveSelected={handleSaveSelected}
-      />
+      <ScratchpadToolbar />
 
       <div className="h-screen">
         <Workspace
@@ -55,20 +36,15 @@ export default function ScratchPage() {
           onViewportChange={setViewport}
           onUpdateItemBody={handleUpdateItemBody}
           onUpdateItemLayout={handleUpdateItemLayout}
+          onDeleteItem={handleDeleteItem}
           onRemoveAttachment={handleRemoveAttachment}
           onCreateTextItem={handleCreateTextItem}
           onFileUpload={handleFileUpload}
           selectedItemIds={selectedItemIds}
+          lastActiveItemId={lastActiveItemId}
           onSelectItem={handleSelectItem}
         />
       </div>
-
-      <InstanceSetupForm
-        open={showInstanceForm}
-        existingInstance={defaultInstance ?? undefined}
-        onSave={handleInstanceSave}
-        onCancel={() => setShowInstanceForm(false)}
-      />
     </div>
   );
 }

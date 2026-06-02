@@ -39,8 +39,8 @@ export function ScratchpadCardBody({
         onChange={onChange}
         onKeyDown={onKeyDown}
         onPointerDown={onPointerDown}
-        placeholder={hasAttachments ? "Add context for these attachments..." : "Type here..."}
-        className={`w-full min-h-[150px] resize-none border-none bg-transparent px-0 pt-0 pb-1.5 outline-none cursor-text placeholder:text-stone-500 ${textClassName} ${CARD_TEXT_CLASS_NAME}`}
+        placeholder={hasAttachments ? "Add a note..." : "Write something..."}
+        className={`block w-full min-h-[150px] resize-none border-none bg-transparent px-0 pt-0 pb-1.5 outline-none cursor-text placeholder:text-stone-400 dark:placeholder:text-stone-500 ${textClassName} ${CARD_TEXT_CLASS_NAME}`}
       />
     );
   }
@@ -51,7 +51,7 @@ export function ScratchpadCardBody({
         hasBody ? `whitespace-pre-wrap break-words ${textClassName}` : `select-none ${placeholderClassName}`
       }`}
     >
-      {hasBody ? body : hasAttachments ? "Double-click to describe these attachments..." : "Double-click to type"}
+      {hasBody ? body : hasAttachments ? "Double-click to add a note" : "Double-click to write"}
     </div>
   );
 }

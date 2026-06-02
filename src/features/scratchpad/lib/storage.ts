@@ -1,23 +1,18 @@
 /**
- * LocalStorage utilities for managing the instance setting and scratchpad items
+ * LocalStorage utilities for managing scratchpad items and viewport state.
  */
 
-import type { MemoInstance, ScratchpadDocument, ScratchpadItem, ScratchpadItemPatch, ScratchpadViewport } from "../types";
-import { decryptToken, encryptToken } from "./encryption";
-import { migrateLegacyInstanceSetting, normalizeInstanceSettingInput } from "./instance-setting";
+import type { ScratchpadDocument, ScratchpadItem, ScratchpadItemPatch, ScratchpadViewport } from "../types";
 import { normalizeScratchpadItems, patchScratchpadItem } from "./item-model";
 import { DEFAULT_SCRATCHPAD_VIEWPORT } from "./viewport";
 
 const STORAGE_KEYS = {
-  INSTANCE_SETTING: "memos-scratch-instance-setting",
-  INSTANCES: "memos-scratch-instances",
   ITEMS: "memos-scratch-items",
   VIEWPORT: "memos-scratch-viewport",
   FIRST_VISIT: "memos-scratch-first-visit",
   SETTINGS: "memos-scratch-settings",
 } as const;
 
-const INSTANCE_SETTING_STORAGE_VERSION = 1;
 const ITEM_STORAGE_VERSION = 3;
 
 interface LegacyScratchpadItem {
@@ -49,25 +44,6 @@ interface LegacyScratchpadItemEnvelope {
 interface ScratchpadDocumentEnvelope {
   version: number;
   document: ScratchpadDocument;
-}
-
-interface MemoInstanceSettingEnvelope {
-  version: number;
-  instance: MemoInstance | null;
-}
-
-function hydrateMemoInstance(instance: MemoInstance): MemoInstance {
-  return normalizeInstanceSettingInput({
-    ...instance,
-    lastConnectedAt: instance.lastConnectedAt ? new Date(instance.lastConnectedAt) : null,
-    connectionStatus: instance.serverProfile ? instance.connectionStatus : "untested",
-    serverProfile: instance.serverProfile
-      ? {
-          ...instance.serverProfile,
-          detectedAt: new Date(instance.serverProfile.detectedAt),
-        }
-      : undefined,
-  });
 }
 
 function parseStoredItems(data: string): { document: ScratchpadDocument; migrated: boolean } {
@@ -107,81 +83,6 @@ function parseStoredItems(data: string): { document: ScratchpadDocument; migrate
     migrated: false,
   };
 }
-
-/**
- * Storage for the configured Memos instance
- */
-export const instanceStorage = {
-  async get(): Promise<MemoInstance | null> {
-    if (typeof window === "undefined") return null;
-
-    const data = localStorage.getItem(STORAGE_KEYS.INSTANCE_SETTING);
-
-    if (data) {
-      try {
-        const payload = JSON.parse(data) as MemoInstanceSettingEnvelope;
-        if (payload.version !== INSTANCE_SETTING_STORAGE_VERSION || !payload.instance) return null;
-
-        return hydrateMemoInstance({
-          ...payload.instance,
-          accessToken: await decryptToken(payload.instance.accessToken),
-        });
-      } catch (error) {
-        console.error("Failed to load instance setting:", error);
-        localStorage.removeItem(STORAGE_KEYS.INSTANCE_SETTING);
-        return null;
-      }
-    }
-
-    const legacyData = localStorage.getItem(STORAGE_KEYS.INSTANCES);
-    if (!legacyData) return null;
-
-    try {
-      const legacyInstances = JSON.parse(legacyData) as MemoInstance[];
-      const legacySetting = migrateLegacyInstanceSetting(legacyInstances);
-      if (!legacySetting) return null;
-
-      const instance = hydrateMemoInstance({
-        ...legacySetting,
-        accessToken: await decryptToken(legacySetting.accessToken),
-      });
-
-      await this.save(instance);
-      localStorage.removeItem(STORAGE_KEYS.INSTANCES);
-      return instance;
-    } catch (error) {
-      console.error("Failed to migrate instance setting:", error);
-      localStorage.removeItem(STORAGE_KEYS.INSTANCES);
-      return null;
-    }
-  },
-
-  async save(instance: MemoInstance): Promise<void> {
-    if (typeof window === "undefined") return;
-
-    try {
-      const normalized = normalizeInstanceSettingInput(instance);
-      const payload: MemoInstanceSettingEnvelope = {
-        version: INSTANCE_SETTING_STORAGE_VERSION,
-        instance: {
-          ...normalized,
-          accessToken: await encryptToken(normalized.accessToken),
-        },
-      };
-      localStorage.setItem(STORAGE_KEYS.INSTANCE_SETTING, JSON.stringify(payload));
-      localStorage.removeItem(STORAGE_KEYS.INSTANCES);
-    } catch (error) {
-      console.error("Failed to save instance setting:", error);
-      throw new Error("Failed to save instance setting");
-    }
-  },
-
-  clear(): void {
-    if (typeof window === "undefined") return;
-    localStorage.removeItem(STORAGE_KEYS.INSTANCE_SETTING);
-    localStorage.removeItem(STORAGE_KEYS.INSTANCES);
-  },
-};
 
 /**
  * Storage for scratchpad items
@@ -240,12 +141,6 @@ export const itemStorage = {
   clear(): void {
     if (typeof window === "undefined") return;
     this.save([]);
-  },
-
-  clearSaved(): void {
-    const items = this.getAll();
-    const unsaved = items.filter((i) => !i.sync.instanceId);
-    this.save(unsaved);
   },
 
   clearOld(daysOld: number = 30): void {

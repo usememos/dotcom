@@ -1,4 +1,4 @@
-import type { ScratchpadDocument, ScratchpadItem, ScratchpadItemPatch, ScratchpadSyncState, ScratchpadViewport } from "../types";
+import type { ScratchpadDocument, ScratchpadItem, ScratchpadItemPatch, ScratchpadViewport } from "../types";
 import { normalizeScratchpadItems, patchScratchpadItem } from "./item-model";
 import { DEFAULT_SCRATCHPAD_VIEWPORT } from "./viewport";
 
@@ -20,6 +20,7 @@ export interface ScratchpadEditorTransaction {
 export interface ScratchpadEditorState {
   document: ScratchpadDocument;
   selectedItemIds: string[];
+  lastActiveItemId: string | null;
   viewport: ScratchpadViewport;
   lastTransaction: ScratchpadEditorTransaction | null;
 }
@@ -42,20 +43,13 @@ type ScratchpadEditorAction =
       operations: ScratchpadEditorOperation[];
     };
 
-export function markScratchpadItemDirty(sync: ScratchpadSyncState): ScratchpadSyncState {
-  return {
-    ...sync,
-    status: sync.memoRef ? "dirty" : "local",
-    lastError: undefined,
-  };
-}
-
 export function createScratchpadEditorState(): ScratchpadEditorState {
   return {
     document: {
       items: [],
     },
     selectedItemIds: [],
+    lastActiveItemId: null,
     viewport: DEFAULT_SCRATCHPAD_VIEWPORT,
     lastTransaction: null,
   };
@@ -110,6 +104,7 @@ function applyScratchpadEditorOperation(state: ScratchpadEditorState, operation:
           ...state.document,
           items: [...state.document.items, operation.item],
         },
+        lastActiveItemId: operation.item.id,
       };
     case "patch-item":
       return {
@@ -128,6 +123,7 @@ function applyScratchpadEditorOperation(state: ScratchpadEditorState, operation:
           items: state.document.items.filter((item) => !deletedIds.has(item.id)),
         },
         selectedItemIds: state.selectedItemIds.filter((id) => !deletedIds.has(id)),
+        lastActiveItemId: state.lastActiveItemId && deletedIds.has(state.lastActiveItemId) ? null : state.lastActiveItemId,
       };
     }
     case "select-item": {
@@ -142,6 +138,7 @@ function applyScratchpadEditorOperation(state: ScratchpadEditorState, operation:
           selectedItemIds: state.selectedItemIds.includes(operation.id)
             ? state.selectedItemIds.filter((id) => id !== operation.id)
             : [...state.selectedItemIds, operation.id],
+          lastActiveItemId: operation.id,
         };
       }
 
@@ -152,6 +149,7 @@ function applyScratchpadEditorOperation(state: ScratchpadEditorState, operation:
           items,
         },
         selectedItemIds: [operation.id],
+        lastActiveItemId: operation.id,
       };
     }
     case "clear-selection":
@@ -170,6 +168,7 @@ export function scratchpadEditorReducer(state: ScratchpadEditorState, action: Sc
           items: normalizeScratchpadItems(action.items),
         },
         selectedItemIds: [],
+        lastActiveItemId: null,
         viewport: action.viewport,
         lastTransaction: null,
       };

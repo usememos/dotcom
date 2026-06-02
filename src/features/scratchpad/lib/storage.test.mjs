@@ -55,7 +55,6 @@ test("itemStorage.update applies nested grouped item patches", () => {
   itemStorage.update(item.id, {
     layout: { x: 40 },
     content: { body: "Updated body" },
-    sync: { status: "dirty", lastError: "Retry later" },
   });
 
   const [updated] = itemStorage.getAll();
@@ -66,11 +65,6 @@ test("itemStorage.update applies nested grouped item patches", () => {
   assert.deepEqual(updated.content, {
     ...item.content,
     body: "Updated body",
-  });
-  assert.deepEqual(updated.sync, {
-    ...item.sync,
-    status: "dirty",
-    lastError: "Retry later",
   });
 });
 

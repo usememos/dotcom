@@ -61,3 +61,17 @@ export function zoomScratchpadViewportAtPoint(
 export function zoomScratchpadViewportFromCenter(viewport: ScratchpadViewport, rect: ViewportRect, factor: number): ScratchpadViewport {
   return zoomScratchpadViewportAtPoint(viewport, rect.width / 2, rect.height / 2, viewport.scale * factor);
 }
+
+export function centerScratchpadViewportOnCanvasPoint(
+  rect: ViewportRect,
+  point: { x: number; y: number },
+  nextScale: number,
+): ScratchpadViewport {
+  const clampedScale = clampScratchpadScale(nextScale);
+
+  return {
+    x: rect.width / 2 - point.x * clampedScale,
+    y: rect.height / 2 - point.y * clampedScale,
+    scale: clampedScale,
+  };
+}

@@ -1,4 +1,12 @@
-import type { ScratchpadAttachmentRef, ScratchpadCardTone, ScratchpadItem, ScratchpadItemPatch, ScratchpadSyncState } from "../types";
+import type { ScratchpadAttachmentRef, ScratchpadCardTone, ScratchpadItem, ScratchpadItemPatch } from "../types";
+
+type LegacyScratchpadSyncInput = {
+  instanceId?: string;
+  memoRef?: { resourceName: string };
+  status?: string;
+  lastSyncedAt?: Date | string;
+  lastError?: string;
+};
 
 type LegacyScratchpadItemInput = {
   id?: string;
@@ -14,15 +22,15 @@ type LegacyScratchpadItemInput = {
   type?: "text" | "file";
   createdAt?: Date | string;
   updatedAt?: Date | string;
-  sync?: Partial<ScratchpadSyncState> & { lastSyncedAt?: Date | string };
+  sync?: LegacyScratchpadSyncInput;
   savedToInstance?: string;
   savedMemoRef?: { resourceName: string };
   savedMemoId?: string;
   tone?: ScratchpadCardTone;
 };
 
-type GroupedScratchpadItemInput = Omit<ScratchpadItem, "sync" | "timestamps"> & {
-  sync?: Partial<ScratchpadSyncState> & { lastSyncedAt?: Date | string };
+type GroupedScratchpadItemInput = Omit<ScratchpadItem, "timestamps"> & {
+  sync?: LegacyScratchpadSyncInput;
   timestamps: {
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -39,29 +47,6 @@ function toDate(value: Date | string | undefined, fallback: Date): Date {
   if (!value) return fallback;
   const date = value instanceof Date ? value : new Date(value);
   return Number.isNaN(date.getTime()) ? fallback : date;
-}
-
-function normalizeSyncState(input: LegacyScratchpadItemInput | GroupedScratchpadItemInput): ScratchpadSyncState {
-  const savedMemoRef =
-    "savedMemoRef" in input && input.savedMemoRef
-      ? input.savedMemoRef
-      : "savedMemoId" in input && input.savedMemoId
-        ? { resourceName: input.savedMemoId }
-        : undefined;
-
-  const sync = input.sync ?? {};
-  const status = sync.status ?? ("savedToInstance" in input && (input.savedToInstance || savedMemoRef) ? "synced" : "local");
-  const normalized: ScratchpadSyncState = { status };
-
-  const instanceId = sync.instanceId ?? ("savedToInstance" in input ? input.savedToInstance : undefined);
-  const memoRef = sync.memoRef ?? savedMemoRef;
-
-  if (instanceId) normalized.instanceId = instanceId;
-  if (memoRef) normalized.memoRef = memoRef;
-  if (sync.lastSyncedAt) normalized.lastSyncedAt = toDate(sync.lastSyncedAt, new Date());
-  if (sync.lastError) normalized.lastError = sync.lastError;
-
-  return normalized;
 }
 
 function isGroupedScratchpadItemInput(item: LegacyScratchpadItemInput | GroupedScratchpadItemInput): item is GroupedScratchpadItemInput {
@@ -87,9 +72,6 @@ export function createScratchpadItem(x: number, y: number, zIndex: number, attac
     content: {
       body: "",
       attachments,
-    },
-    sync: {
-      status: "local",
     },
     timestamps: {
       createdAt: now,
@@ -117,7 +99,6 @@ export function normalizeScratchpadItem(item: LegacyScratchpadItemInput | Groupe
         body: item.content.body ?? "",
         attachments: item.content.attachments ?? [],
       },
-      sync: normalizeSyncState(item),
       timestamps: {
         createdAt,
         updatedAt: toDate(item.timestamps.updatedAt, createdAt),
@@ -142,7 +123,6 @@ export function normalizeScratchpadItem(item: LegacyScratchpadItemInput | Groupe
       body: item.body ?? (typeof item.content === "string" ? item.content : item.content?.body) ?? "",
       attachments: typeof item.content === "object" ? (item.content.attachments ?? attachments) : attachments,
     },
-    sync: normalizeSyncState(item),
     timestamps: {
       createdAt,
       updatedAt: toDate(item.updatedAt, createdAt),
@@ -160,7 +140,6 @@ export function patchScratchpadItem(item: ScratchpadItem, patch: ScratchpadItemP
     ...item,
     layout: patch.layout ? { ...item.layout, ...patch.layout } : item.layout,
     content: patch.content ? { ...item.content, ...patch.content } : item.content,
-    sync: patch.sync ? { ...item.sync, ...patch.sync } : item.sync,
     timestamps: patch.timestamps ? { ...item.timestamps, ...patch.timestamps } : item.timestamps,
     tone: patch.tone ?? item.tone,
   };

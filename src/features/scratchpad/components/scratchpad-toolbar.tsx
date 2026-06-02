@@ -2,26 +2,23 @@
 
 import { useUser } from "@clerk/nextjs";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { HomeIcon, MonitorIcon, MoonIcon, SaveIcon, SettingsIcon, SunIcon, TrashIcon } from "lucide-react";
+import { CheckIcon, HomeIcon, MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import type { MemoInstance } from "@/features/scratchpad/types";
 import { useIsClerkConfigured } from "@/shared/auth/clerk-config";
 import { ScratchpadAccountMenuSection } from "./scratchpad-account-menu-section";
 
-interface ScratchpadToolbarProps {
-  defaultInstance: MemoInstance | null;
-  defaultInstanceStatusLabel: string;
-  defaultInstanceVersion: string;
-  selectedCount: number;
-  selectedSaveTitle: string;
-  saveDisabled: boolean;
-  onDeleteSelected: () => void;
-  onOpenInstanceSettings: () => void;
-  onSaveSelected: () => void;
-}
+const menuItemClassName =
+  "flex h-8 cursor-default select-none items-center gap-2 rounded-sm px-2 text-sm text-stone-700 outline-none data-[highlighted]:bg-stone-100 data-[highlighted]:text-stone-950 dark:text-stone-300 dark:data-[highlighted]:bg-stone-800 dark:data-[highlighted]:text-stone-50";
+
+const menuLabelClassName = "px-2 py-1.5 text-xs font-medium text-stone-500 dark:text-stone-500";
+
+const menuSeparatorClassName = "my-1 h-px bg-stone-200 dark:bg-white/10";
+
+const menuRadioItemClassName =
+  "relative flex h-8 cursor-default select-none items-center gap-2 rounded-sm py-1 pr-2 pl-7 text-sm text-stone-700 outline-none data-[highlighted]:bg-stone-100 data-[highlighted]:text-stone-950 dark:text-stone-300 dark:data-[highlighted]:bg-stone-800 dark:data-[highlighted]:text-stone-50";
 
 function ScratchpadMenuTriggerImage() {
   const isClerkConfigured = useIsClerkConfigured();
@@ -43,17 +40,7 @@ function ClerkScratchpadMenuTriggerImage() {
   return <Image src="/logo-rounded.png" alt="Memos" width={28} height={28} />;
 }
 
-export function ScratchpadToolbar({
-  defaultInstance,
-  defaultInstanceStatusLabel,
-  defaultInstanceVersion,
-  selectedCount,
-  selectedSaveTitle,
-  saveDisabled,
-  onDeleteSelected,
-  onOpenInstanceSettings,
-  onSaveSelected,
-}: ScratchpadToolbarProps) {
+export function ScratchpadToolbar() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -62,36 +49,12 @@ export function ScratchpadToolbar({
   }, []);
 
   return (
-    <div className="absolute top-4 right-4 z-10 flex items-center space-x-2">
-      {selectedCount > 0 && (
-        <div className="flex items-center space-x-2 rounded-full border border-white/70 bg-white/76 px-3 py-1.5 shadow-[0_10px_26px_rgba(109,92,68,0.1)] backdrop-blur-sm">
-          <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-stone-500">{selectedCount} selected</span>
-          <div className="h-4 w-px bg-stone-200" />
-          <button
-            type="button"
-            onClick={onSaveSelected}
-            disabled={saveDisabled}
-            className="rounded-full p-1.5 text-[#5c8e86] transition hover:bg-[#edf5f3] disabled:cursor-not-allowed disabled:opacity-50"
-            title={selectedSaveTitle}
-          >
-            <SaveIcon className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            onClick={onDeleteSelected}
-            className="rounded-full p-1.5 text-[#bf6f5d] transition hover:bg-[#fbefea]"
-            title="Delete selected"
-          >
-            <TrashIcon className="h-4 w-4" />
-          </button>
-        </div>
-      )}
-
+    <div className="absolute top-4 right-4 z-10">
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
           <button
             type="button"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/70 bg-white/78 text-[#5c8e86] shadow-[0_10px_26px_rgba(109,92,68,0.1)] transition hover:bg-white"
+            className="flex h-8 w-8 items-center justify-center rounded-md border border-stone-200/80 bg-white/88 text-stone-500 shadow-sm transition hover:bg-white hover:text-stone-900 dark:border-white/10 dark:bg-stone-900/88 dark:text-stone-400 dark:hover:bg-stone-800 dark:hover:text-stone-100"
             title="Memos menu"
           >
             <ScratchpadMenuTriggerImage />
@@ -100,75 +63,40 @@ export function ScratchpadToolbar({
 
         <DropdownMenu.Portal>
           <DropdownMenu.Content
-            className="z-50 min-w-[220px] rounded-[18px] border border-white/70 bg-[#fffdf8]/96 p-1.5 shadow-[0_18px_52px_rgba(103,87,64,0.14)] backdrop-blur"
-            sideOffset={5}
+            className="z-50 w-56 rounded-md border border-stone-200 bg-white p-1.5 shadow-md shadow-stone-900/10 dark:border-stone-800 dark:bg-stone-950 dark:shadow-black/40"
+            sideOffset={8}
             align="end"
           >
             <ScratchpadAccountMenuSection />
 
-            <DropdownMenu.Item
-              className="flex cursor-pointer items-center space-x-2 rounded-[14px] px-3 py-2 text-sm text-stone-600 outline-none hover:bg-stone-100/80"
-              onSelect={onOpenInstanceSettings}
-            >
-              <SettingsIcon className="h-4 w-4" />
-              <span>Instance Settings</span>
-            </DropdownMenu.Item>
+            <DropdownMenu.Label className={menuLabelClassName}>Theme</DropdownMenu.Label>
+            <DropdownMenu.RadioGroup value={mounted ? theme : "system"} onValueChange={setTheme}>
+              <DropdownMenu.RadioItem className={menuRadioItemClassName} value="light">
+                <DropdownMenu.ItemIndicator className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+                  <CheckIcon className="h-3.5 w-3.5" />
+                </DropdownMenu.ItemIndicator>
+                <SunIcon className="h-4 w-4 text-stone-500 dark:text-stone-400" />
+                <span>Light</span>
+              </DropdownMenu.RadioItem>
+              <DropdownMenu.RadioItem className={menuRadioItemClassName} value="dark">
+                <DropdownMenu.ItemIndicator className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+                  <CheckIcon className="h-3.5 w-3.5" />
+                </DropdownMenu.ItemIndicator>
+                <MoonIcon className="h-4 w-4 text-stone-500 dark:text-stone-400" />
+                <span>Dark</span>
+              </DropdownMenu.RadioItem>
+              <DropdownMenu.RadioItem className={menuRadioItemClassName} value="system">
+                <DropdownMenu.ItemIndicator className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+                  <CheckIcon className="h-3.5 w-3.5" />
+                </DropdownMenu.ItemIndicator>
+                <MonitorIcon className="h-4 w-4 text-stone-500 dark:text-stone-400" />
+                <span>System</span>
+              </DropdownMenu.RadioItem>
+            </DropdownMenu.RadioGroup>
 
-            <div className="px-3 py-2 text-xs text-stone-400">
-              <div className="font-semibold uppercase tracking-[0.16em] text-stone-500">
-                {defaultInstance?.name || "No instance connected"}
-              </div>
-              {defaultInstance && (
-                <>
-                  <div>{defaultInstanceStatusLabel}</div>
-                  <div>{defaultInstanceVersion}</div>
-                </>
-              )}
-            </div>
+            <DropdownMenu.Separator className={menuSeparatorClassName} />
 
-            <DropdownMenu.Separator className="my-1 h-px bg-stone-200/80" />
-
-            <DropdownMenu.Sub>
-              <DropdownMenu.SubTrigger className="flex cursor-pointer items-center space-x-2 rounded-[14px] px-3 py-2 text-sm text-stone-600 outline-none hover:bg-stone-100/80">
-                {mounted && theme === "light" && <SunIcon className="h-4 w-4" />}
-                {mounted && theme === "dark" && <MoonIcon className="h-4 w-4" />}
-                {mounted && theme === "system" && <MonitorIcon className="h-4 w-4" />}
-                {!mounted && <MonitorIcon className="h-4 w-4" />}
-                <span>Theme</span>
-              </DropdownMenu.SubTrigger>
-              <DropdownMenu.Portal>
-                <DropdownMenu.SubContent className="z-50 min-w-[160px] rounded-[16px] border border-white/70 bg-[#fffdf8]/96 p-1.5 shadow-[0_18px_52px_rgba(103,87,64,0.14)] backdrop-blur">
-                  <DropdownMenu.Item
-                    className="flex cursor-pointer items-center space-x-2 rounded-[12px] px-3 py-2 text-sm text-stone-600 outline-none hover:bg-stone-100/80"
-                    onSelect={() => setTheme("light")}
-                  >
-                    <SunIcon className="h-4 w-4" />
-                    <span>Light</span>
-                  </DropdownMenu.Item>
-                  <DropdownMenu.Item
-                    className="flex cursor-pointer items-center space-x-2 rounded-[12px] px-3 py-2 text-sm text-stone-600 outline-none hover:bg-stone-100/80"
-                    onSelect={() => setTheme("dark")}
-                  >
-                    <MoonIcon className="h-4 w-4" />
-                    <span>Dark</span>
-                  </DropdownMenu.Item>
-                  <DropdownMenu.Item
-                    className="flex cursor-pointer items-center space-x-2 rounded-[12px] px-3 py-2 text-sm text-stone-600 outline-none hover:bg-stone-100/80"
-                    onSelect={() => setTheme("system")}
-                  >
-                    <MonitorIcon className="h-4 w-4" />
-                    <span>System</span>
-                  </DropdownMenu.Item>
-                </DropdownMenu.SubContent>
-              </DropdownMenu.Portal>
-            </DropdownMenu.Sub>
-
-            <DropdownMenu.Separator className="my-1 h-px bg-stone-200/80" />
-
-            <DropdownMenu.Item
-              className="flex cursor-pointer items-center space-x-2 rounded-[14px] px-3 py-2 text-sm text-stone-600 outline-none hover:bg-stone-100/80"
-              asChild
-            >
+            <DropdownMenu.Item className={menuItemClassName} asChild>
               <Link href="/">
                 <HomeIcon className="h-4 w-4" />
                 <span>Back to Main Site</span>

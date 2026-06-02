@@ -14,6 +14,7 @@ import {
   type PointerSession,
 } from "@/features/scratchpad/lib/interactions";
 import {
+  centerScratchpadViewportOnCanvasPoint,
   DEFAULT_SCRATCHPAD_VIEWPORT,
   panScratchpadViewport,
   SCRATCHPAD_ZOOM_INTENSITY,
@@ -21,6 +22,7 @@ import {
   zoomScratchpadViewportAtPoint,
   zoomScratchpadViewportFromCenter,
 } from "@/features/scratchpad/lib/viewport";
+import { shouldShowZoomControls, ZOOM_CONTROLS_HIDE_DELAY_MS } from "@/features/scratchpad/lib/zoom-visibility";
 import type { ScratchpadItem, ScratchpadItemLayout, ScratchpadViewport } from "@/features/scratchpad/types";
 import { CardItem } from "./card-item";
 import { ScratchpadCanvasBackground } from "./scratchpad-canvas-background";
@@ -34,10 +36,12 @@ interface WorkspaceProps {
   onViewportChange: (updater: ScratchpadViewport | ((current: ScratchpadViewport) => ScratchpadViewport)) => void;
   onUpdateItemBody: (id: string, body: string) => void;
   onUpdateItemLayout: (id: string, updates: Partial<ScratchpadItemLayout>) => void;
+  onDeleteItem: (id: string) => void;
   onRemoveAttachment: (id: string, attachmentId: string) => void;
   onCreateTextItem: (x: number, y: number) => void;
   onFileUpload: (files: FileList, x: number, y: number, targetItemId?: string) => void;
   selectedItemIds: string[];
+  lastActiveItemId: string | null;
   onSelectItem: (id: string | null, ctrlKey?: boolean) => void;
 }
 
@@ -51,11 +55,19 @@ interface WorkspaceInteractionMap extends PointerInteractionMap {
 }
 
 const PAN_THRESHOLD = 4;
+const SCRATCHPAD_BUTTON_ZOOM_FACTOR = 1.15;
 
 interface BrowserGestureEvent extends Event {
   clientX: number;
   clientY: number;
   scale: number;
+}
+
+function getScratchpadItemCenter(item: ScratchpadItem) {
+  return {
+    x: item.layout.x + item.layout.width / 2,
+    y: item.layout.y + item.layout.height / 2,
+  };
 }
 
 export function Workspace({
@@ -64,10 +76,12 @@ export function Workspace({
   onViewportChange,
   onUpdateItemBody,
   onUpdateItemLayout,
+  onDeleteItem,
   onRemoveAttachment,
   onCreateTextItem,
   onFileUpload,
   selectedItemIds,
+  lastActiveItemId,
   onSelectItem,
 }: WorkspaceProps) {
   const workspaceRef = useRef<HTMLDivElement>(null);
@@ -78,6 +92,10 @@ export function Workspace({
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [isPanning, setIsPanning] = useState(false);
   const [lastCanvasPos, setLastCanvasPos] = useState({ x: 320, y: 240 });
+  const [zoomControlsHovered, setZoomControlsHovered] = useState(false);
+  const [zoomControlsFocused, setZoomControlsFocused] = useState(false);
+  const [lastZoomInteractionAt, setLastZoomInteractionAt] = useState<number | null>(null);
+  const [zoomVisibilityClock, setZoomVisibilityClock] = useState(() => Date.now());
 
   useEffect(() => {
     viewportRef.current = viewport;
@@ -86,6 +104,24 @@ export function Workspace({
   const updateViewport = (updater: ScratchpadViewport | ((current: ScratchpadViewport) => ScratchpadViewport)) => {
     onViewportChange(updater);
   };
+
+  const revealZoomControls = () => {
+    const now = Date.now();
+    setLastZoomInteractionAt(now);
+    setZoomVisibilityClock(now);
+  };
+
+  useEffect(() => {
+    if (lastZoomInteractionAt === null || zoomControlsHovered || zoomControlsFocused) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setZoomVisibilityClock(Date.now());
+    }, ZOOM_CONTROLS_HIDE_DELAY_MS);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [lastZoomInteractionAt, zoomControlsFocused, zoomControlsHovered]);
 
   const getDropTargetItemId = (target: EventTarget | null): string | undefined => {
     let element = target as HTMLElement | null;
@@ -138,8 +174,41 @@ export function Workspace({
     if (!workspaceRef.current) return;
 
     const rect = workspaceRef.current.getBoundingClientRect();
+    revealZoomControls();
     updateViewport((current) => zoomScratchpadViewportFromCenter(current, rect, factor));
   };
+
+  const getLastActiveItemCenter = () => {
+    const lastActiveItem = lastActiveItemId ? items.find((item) => item.id === lastActiveItemId) : null;
+    return lastActiveItem ? getScratchpadItemCenter(lastActiveItem) : null;
+  };
+
+  const centerViewportTowardLastActiveItem = (getNextScale: (current: ScratchpadViewport) => number, fallback: (rect: DOMRect) => void) => {
+    if (!workspaceRef.current) return;
+
+    const rect = workspaceRef.current.getBoundingClientRect();
+    const itemCenter = getLastActiveItemCenter();
+
+    revealZoomControls();
+    if (!itemCenter) {
+      fallback(rect);
+      return;
+    }
+
+    updateViewport((current) => centerScratchpadViewportOnCanvasPoint(rect, itemCenter, getNextScale(current)));
+  };
+
+  const zoomInTowardLastActiveItem = () =>
+    centerViewportTowardLastActiveItem(
+      (current) => current.scale * SCRATCHPAD_BUTTON_ZOOM_FACTOR,
+      (rect) => updateViewport((current) => zoomScratchpadViewportFromCenter(current, rect, SCRATCHPAD_BUTTON_ZOOM_FACTOR)),
+    );
+
+  const resetViewportTowardLastActiveItem = () =>
+    centerViewportTowardLastActiveItem(
+      () => DEFAULT_SCRATCHPAD_VIEWPORT.scale,
+      () => updateViewport(DEFAULT_SCRATCHPAD_VIEWPORT),
+    );
 
   const shouldHandleBrowserZoomGesture = useEffectEvent((event: Event) => {
     if (!workspaceRef.current) return false;
@@ -189,6 +258,7 @@ export function Workspace({
     }
 
     const rect = workspaceRef.current.getBoundingClientRect();
+    revealZoomControls();
     updateViewport((current) =>
       zoomScratchpadViewportAtPoint(current, clientX - rect.left, clientY - rect.top, current.scale * zoomFactor),
     );
@@ -298,6 +368,7 @@ export function Workspace({
       setIsPanning(true);
     }
 
+    revealZoomControls();
     updateViewport(panScratchpadViewport(panSession.startViewport, delta.x, delta.y));
   };
 
@@ -355,6 +426,7 @@ export function Workspace({
     }
 
     e.preventDefault();
+    revealZoomControls();
     updateViewport((current) => panScratchpadViewport(current, -e.deltaX, -e.deltaY));
   };
 
@@ -384,6 +456,12 @@ export function Workspace({
   };
 
   const zoomLabel = `${Math.round(viewport.scale * 100)}%`;
+  const zoomControlsVisible = shouldShowZoomControls({
+    hovered: zoomControlsHovered,
+    focused: zoomControlsFocused,
+    lastInteractionAt: lastZoomInteractionAt,
+    now: zoomVisibilityClock,
+  });
 
   return (
     <div
@@ -417,6 +495,7 @@ export function Workspace({
             canvasScale={viewport.scale}
             onUpdateBody={onUpdateItemBody}
             onUpdateLayout={onUpdateItemLayout}
+            onDelete={onDeleteItem}
             onRemoveAttachment={onRemoveAttachment}
             isSelected={selectedItemIds.includes(item.id)}
             onSelect={(ctrlKey) => onSelectItem(item.id, ctrlKey)}
@@ -430,9 +509,12 @@ export function Workspace({
 
       <ScratchpadZoomControls
         zoomLabel={zoomLabel}
-        onZoomOut={() => zoomFromViewportCenter(1 / 1.15)}
-        onReset={() => updateViewport(DEFAULT_SCRATCHPAD_VIEWPORT)}
-        onZoomIn={() => zoomFromViewportCenter(1.15)}
+        visible={zoomControlsVisible}
+        onHoverChange={setZoomControlsHovered}
+        onFocusChange={setZoomControlsFocused}
+        onZoomOut={() => zoomFromViewportCenter(1 / SCRATCHPAD_BUTTON_ZOOM_FACTOR)}
+        onReset={resetViewportTowardLastActiveItem}
+        onZoomIn={zoomInTowardLastActiveItem}
       />
     </div>
   );

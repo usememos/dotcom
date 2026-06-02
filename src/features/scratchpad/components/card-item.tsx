@@ -1,8 +1,16 @@
 "use client";
 
+import { TrashIcon } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useAttachmentPreviews } from "../hooks/use-attachment-previews";
-import { getCardRingClass, getCardRotation, getCardToneClassNames } from "../lib/card-style";
+import {
+  getCardChromeClassNames,
+  getCardResizeHandleClassNames,
+  getCardRingClass,
+  getCardRotation,
+  getCardToneClassNames,
+} from "../lib/card-style";
 import {
   beginPointerInteraction,
   cancelPointerInteraction,
@@ -19,13 +27,13 @@ import {
 import type { ScratchpadItem, ScratchpadItemLayout } from "../types";
 import { ScratchpadAttachmentGrid } from "./scratchpad-attachment-grid";
 import { ScratchpadCardBody } from "./scratchpad-card-body";
-import { ScratchpadSyncBadge } from "./scratchpad-sync-badge";
 
 interface CardItemProps {
   item: ScratchpadItem;
   canvasScale: number;
   onUpdateBody: (id: string, body: string) => void;
   onUpdateLayout: (id: string, updates: Partial<ScratchpadItemLayout>) => void;
+  onDelete: (id: string) => void;
   onRemoveAttachment: (id: string, attachmentId: string) => void;
   isSelected?: boolean;
   onSelect: (ctrlKey: boolean) => void;
@@ -47,7 +55,25 @@ interface CardInteractionMap extends PointerInteractionMap {
   resizing: ResizeSession;
 }
 
-export function CardItem({ item, canvasScale, onUpdateBody, onUpdateLayout, onRemoveAttachment, isSelected, onSelect }: CardItemProps) {
+interface CardContextMenuState {
+  x: number;
+  y: number;
+}
+
+const CARD_CONTEXT_MENU_WIDTH = 128;
+const CARD_CONTEXT_MENU_HEIGHT = 44;
+const CARD_CONTEXT_MENU_GUTTER = 8;
+
+export function CardItem({
+  item,
+  canvasScale,
+  onUpdateBody,
+  onUpdateLayout,
+  onDelete,
+  onRemoveAttachment,
+  isSelected,
+  onSelect,
+}: CardItemProps) {
   const { content, layout, timestamps } = item;
   const { body, attachments } = content;
   const [isDragging, setIsDragging] = useState(false);
@@ -58,10 +84,12 @@ export function CardItem({ item, canvasScale, onUpdateBody, onUpdateLayout, onRe
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [liveSize, setLiveSize] = useState({ width: layout.width, height: layout.height });
   const cardRef = useRef<HTMLDivElement>(null);
+  const contextMenuRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const dragOriginRef = useRef({ x: 0, y: 0 });
   const shouldSelectOnMountRef = useRef(isEditing);
   const interactionRef = useRef(createIdlePointerInteractionState<CardInteractionMap>());
+  const [contextMenu, setContextMenu] = useState<CardContextMenuState | null>(null);
 
   const MIN_WIDTH = 220;
   const MIN_HEIGHT = 170;
@@ -308,7 +336,56 @@ export function CardItem({ item, canvasScale, onUpdateBody, onUpdateLayout, onRe
     };
   }, []);
 
+  useEffect(() => {
+    if (!contextMenu) {
+      return;
+    }
+
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target;
+      if (target instanceof Node && contextMenuRef.current?.contains(target)) {
+        return;
+      }
+
+      setContextMenu(null);
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setContextMenu(null);
+      }
+    };
+
+    window.addEventListener("pointerdown", handlePointerDown, true);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("pointerdown", handlePointerDown, true);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [contextMenu]);
+
   const rotation = isSelected ? 0 : cardRotation;
+
+  const handleCardContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isEditing) {
+      return;
+    }
+
+    e.preventDefault();
+    e.stopPropagation();
+    onSelect(false);
+    setContextMenu({
+      x: Math.min(e.clientX, window.innerWidth - CARD_CONTEXT_MENU_WIDTH - CARD_CONTEXT_MENU_GUTTER),
+      y: Math.min(e.clientY, window.innerHeight - CARD_CONTEXT_MENU_HEIGHT - CARD_CONTEXT_MENU_GUTTER),
+    });
+  };
+
+  const handleContextMenuDelete = (event: React.MouseEvent<HTMLButtonElement> | React.PointerEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setContextMenu(null);
+    onDelete(item.id);
+  };
 
   return (
     <div
@@ -321,9 +398,10 @@ export function CardItem({ item, canvasScale, onUpdateBody, onUpdateLayout, onRe
       onPointerCancel={handleCardPointerCancel}
       onClick={handleContainerClick}
       onDoubleClick={handleDoubleClick}
-      className={`group/card absolute flex flex-col overflow-hidden rounded-[4px] border transition-shadow duration-150 focus:outline-none ${getCardToneClassNames(item)} ${
+      onContextMenu={handleCardContextMenu}
+      className={`group/card absolute flex flex-col overflow-hidden transition-shadow duration-150 focus:outline-none ${getCardChromeClassNames()} ${getCardToneClassNames(item)} ${
         isEditing ? "cursor-default" : isDragging ? "cursor-grabbing" : "cursor-grab"
-      } ${getCardRingClass(item, isSelected)}`}
+      } ${getCardRingClass(isSelected)}`}
       style={{
         left: layout.x,
         top: layout.y,
@@ -333,7 +411,7 @@ export function CardItem({ item, canvasScale, onUpdateBody, onUpdateLayout, onRe
         transform: `translate3d(${dragOffset.x}px, ${dragOffset.y}px, 0) rotate(${rotation}deg)`,
         touchAction: isEditing ? "auto" : "none",
       }}
-      title={item.sync.status === "synced" ? "Saved to Memos" : "Select and click save to save to Memos"}
+      title="Double-click to edit"
     >
       {!isEditing && (
         <button
@@ -347,7 +425,7 @@ export function CardItem({ item, canvasScale, onUpdateBody, onUpdateLayout, onRe
         </button>
       )}
 
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,250,210,0.28),rgba(255,240,157,0.95))]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.2),rgba(255,255,255,0.02))] dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0))]" />
 
       <ScratchpadAttachmentGrid
         itemId={item.id}
@@ -356,7 +434,7 @@ export function CardItem({ item, canvasScale, onUpdateBody, onUpdateLayout, onRe
         onRemoveAttachment={onRemoveAttachment}
       />
 
-      <div className="relative flex-1 px-4 pt-3 pb-3.5">
+      <div className="relative flex-1 px-4 pt-3.5 pb-4">
         {!hasImageAttachment && body.trim() && (
           <div className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-current/20 to-transparent" />
         )}
@@ -372,8 +450,6 @@ export function CardItem({ item, canvasScale, onUpdateBody, onUpdateLayout, onRe
           onKeyDown={handleTextareaKeyDown}
           onPointerDown={handleTextareaPointerDown}
         />
-
-        <ScratchpadSyncBadge sync={item.sync} isRevealed={Boolean(isSelected)} />
       </div>
 
       <div
@@ -381,11 +457,34 @@ export function CardItem({ item, canvasScale, onUpdateBody, onUpdateLayout, onRe
         onPointerMove={handleResizePointerMove}
         onPointerUp={handleResizePointerUp}
         onPointerCancel={handleResizePointerCancel}
-        className="absolute bottom-0 right-0 h-6 w-6 cursor-se-resize group"
-        title="Drag to resize"
+        className={getCardResizeHandleClassNames()}
+        title="Resize"
       >
-        <div className="absolute bottom-1.5 right-1.5 h-3 w-3 border-r border-b border-[#c1a73b] opacity-55 transition-opacity group-hover:opacity-100" />
+        <div className="absolute bottom-2 right-2 h-3 w-3 border-r border-b border-stone-500/25 transition-colors group-hover/card:border-stone-600/45 group-hover:border-stone-700/70 dark:border-stone-300/20 dark:group-hover/card:border-stone-100/40 dark:group-hover:border-stone-100/70" />
       </div>
+
+      {contextMenu &&
+        createPortal(
+          <div
+            ref={contextMenuRef}
+            data-scratchpad-ui="true"
+            role="menu"
+            className="fixed z-[100] w-32 rounded-md border border-stone-200 bg-white p-1.5 shadow-md shadow-stone-900/10 dark:border-stone-800 dark:bg-stone-950 dark:shadow-black/40"
+            style={{ left: contextMenu.x, top: contextMenu.y }}
+          >
+            <button
+              type="button"
+              role="menuitem"
+              onPointerDown={handleContextMenuDelete}
+              onClick={handleContextMenuDelete}
+              className="flex h-8 w-full cursor-default select-none items-center gap-2 rounded-sm px-2 text-left text-sm text-stone-700 outline-none hover:bg-stone-100 hover:text-red-600 focus-visible:bg-stone-100 focus-visible:text-red-600 dark:text-stone-300 dark:hover:bg-stone-800 dark:hover:text-red-300 dark:focus-visible:bg-stone-800 dark:focus-visible:text-red-300"
+            >
+              <TrashIcon className="h-4 w-4" />
+              <span>Delete</span>
+            </button>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }

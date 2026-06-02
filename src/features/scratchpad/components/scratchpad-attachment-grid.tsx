@@ -29,7 +29,7 @@ export function ScratchpadAttachmentGrid({ itemId, attachments, previewMap, onRe
           return (
             <div
               key={attachment.id}
-              className={`group relative overflow-hidden rounded-[3px] border border-black/10 bg-white/25 p-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] ${
+              className={`group relative overflow-hidden rounded-[5px] border border-stone-900/10 bg-white/35 p-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.22)] dark:border-white/10 dark:bg-white/5 ${
                 isImage ? "pb-3" : ""
               }`}
             >
@@ -40,7 +40,8 @@ export function ScratchpadAttachmentGrid({ itemId, attachments, previewMap, onRe
                   event.stopPropagation();
                   void onRemoveAttachment(itemId, attachment.id);
                 }}
-                className="absolute right-1.5 top-1.5 z-10 inline-flex h-5 w-5 items-center justify-center rounded-full bg-stone-900/45 text-white opacity-0 transition group-hover:opacity-100"
+                aria-label="Remove attachment"
+                className="absolute right-1.5 top-1.5 z-10 inline-flex h-5 w-5 items-center justify-center rounded-full bg-stone-900/55 text-white opacity-0 transition hover:bg-stone-900/75 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 dark:bg-stone-100/20 dark:hover:bg-stone-100/30 dark:focus-visible:ring-stone-200/60"
                 title="Remove attachment"
               >
                 <XIcon className="h-3 w-3" />
@@ -52,7 +53,7 @@ export function ScratchpadAttachmentGrid({ itemId, attachments, previewMap, onRe
                     <img
                       src={preview.previewUrl}
                       alt={attachment.name}
-                      className="h-24 w-full object-cover pointer-events-none opacity-92"
+                      className="h-24 w-full object-cover pointer-events-none opacity-95"
                     />
                   </div>
                   <div className="pt-1.5 text-center text-[9px] italic tracking-[0.02em] text-current opacity-55">{attachment.name}</div>

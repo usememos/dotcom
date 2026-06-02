@@ -11,10 +11,10 @@ export function getScratchpadCanvasBackgroundStyle(viewport: ScratchpadViewport)
 
   return {
     backgroundImage:
-      "linear-gradient(to right, rgba(130,118,94,0.04) 1px, transparent 1px), " +
-      "linear-gradient(to bottom, rgba(130,118,94,0.04) 1px, transparent 1px), " +
-      "linear-gradient(to right, rgba(112,100,78,0.05) 1px, transparent 1px), " +
-      "linear-gradient(to bottom, rgba(112,100,78,0.05) 1px, transparent 1px)",
+      "linear-gradient(to right, rgba(82,82,82,0.055) 1px, transparent 1px), " +
+      "linear-gradient(to bottom, rgba(82,82,82,0.055) 1px, transparent 1px), " +
+      "linear-gradient(to right, rgba(82,82,82,0.075) 1px, transparent 1px), " +
+      "linear-gradient(to bottom, rgba(82,82,82,0.075) 1px, transparent 1px)",
     backgroundPosition: `${gridOffsetX} ${gridOffsetY}, ${gridOffsetX} ${gridOffsetY}, ${gridOffsetX} ${gridOffsetY}, ${gridOffsetX} ${gridOffsetY}`,
     backgroundSize: `${minorGrid} ${minorGrid}, ${minorGrid} ${minorGrid}, ${majorGrid} ${majorGrid}, ${majorGrid} ${majorGrid}`,
   };
@@ -27,7 +27,7 @@ interface ScratchpadCanvasBackgroundProps {
 export function ScratchpadCanvasBackground({ viewport }: ScratchpadCanvasBackgroundProps) {
   return (
     <div
-      className="pointer-events-none absolute inset-0 bg-[#ece8dc] dark:bg-[#171411]"
+      className="pointer-events-none absolute inset-0 bg-stone-100 dark:bg-[#191919]"
       style={getScratchpadCanvasBackgroundStyle(viewport)}
     />
   );

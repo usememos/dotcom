@@ -31,10 +31,77 @@ test("editor reducer stores items under document", () => {
   });
 
   assert.deepEqual(state.document.items, [item]);
+  assert.equal(state.lastActiveItemId, item.id);
   assert.equal(state.lastTransaction?.changes.items, true);
 });
 
-test("editor reducer patches layout, content, and sync independently", () => {
+test("editor reducer tracks the last active selected item", () => {
+  const first = createScratchpadItem(0, 0, 1);
+  const second = createScratchpadItem(10, 10, 2);
+  const initial = scratchpadEditorReducer(createScratchpadEditorState(), {
+    type: "hydrate",
+    items: [first, second],
+    viewport: { x: 0, y: 0, scale: 1 },
+  });
+
+  const selected = scratchpadEditorReducer(initial, {
+    type: "run-transaction",
+    id: 2,
+    reason: "selection.set",
+    persistence: "none",
+    operations: [{ type: "select-item", id: second.id, additive: false }],
+  });
+
+  const cleared = scratchpadEditorReducer(selected, {
+    type: "run-transaction",
+    id: 3,
+    reason: "selection.clear",
+    persistence: "none",
+    operations: [{ type: "clear-selection" }],
+  });
+
+  assert.deepEqual(selected.selectedItemIds, [second.id]);
+  assert.equal(selected.lastActiveItemId, second.id);
+  assert.deepEqual(cleared.selectedItemIds, []);
+  assert.equal(cleared.lastActiveItemId, second.id);
+});
+
+test("editor reducer clears last active item when it is deleted", () => {
+  const first = createScratchpadItem(0, 0, 1);
+  const second = createScratchpadItem(10, 10, 2);
+  const initial = scratchpadEditorReducer(createScratchpadEditorState(), {
+    type: "hydrate",
+    items: [first, second],
+    viewport: { x: 0, y: 0, scale: 1 },
+  });
+  const selected = scratchpadEditorReducer(initial, {
+    type: "run-transaction",
+    id: 2,
+    reason: "selection.set",
+    persistence: "none",
+    operations: [{ type: "select-item", id: first.id, additive: false }],
+  });
+
+  const unrelatedDeleted = scratchpadEditorReducer(selected, {
+    type: "run-transaction",
+    id: 3,
+    reason: "item.delete",
+    persistence: "immediate",
+    operations: [{ type: "delete-items", ids: [second.id] }],
+  });
+  const activeDeleted = scratchpadEditorReducer(unrelatedDeleted, {
+    type: "run-transaction",
+    id: 4,
+    reason: "item.delete",
+    persistence: "immediate",
+    operations: [{ type: "delete-items", ids: [first.id] }],
+  });
+
+  assert.equal(unrelatedDeleted.lastActiveItemId, first.id);
+  assert.equal(activeDeleted.lastActiveItemId, null);
+});
+
+test("editor reducer patches layout and content independently", () => {
   const item = createScratchpadItem(12, 24, 1);
   const initial = scratchpadEditorReducer(createScratchpadEditorState(), {
     type: "hydrate",
@@ -54,7 +121,6 @@ test("editor reducer patches layout, content, and sync independently", () => {
         patch: {
           layout: { x: 40 },
           content: { body: "Updated body" },
-          sync: { status: "dirty", lastError: "Retry later" },
         },
       },
     ],
@@ -67,11 +133,6 @@ test("editor reducer patches layout, content, and sync independently", () => {
   assert.deepEqual(state.document.items[0].content, {
     ...item.content,
     body: "Updated body",
-  });
-  assert.deepEqual(state.document.items[0].sync, {
-    ...item.sync,
-    status: "dirty",
-    lastError: "Retry later",
   });
   assert.deepEqual(state.document.items[0].timestamps, item.timestamps);
 });

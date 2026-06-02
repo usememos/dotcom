@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { createScratchpadItem, normalizeScratchpadItem } from "./item-model.ts";
 
-test("legacy flat item normalizes to grouped item fields", () => {
+test("legacy flat item normalizes to grouped local item fields", () => {
   const createdAt = "2026-01-01T00:00:00.000Z";
   const updatedAt = "2026-01-02T00:00:00.000Z";
   const item = normalizeScratchpadItem(
@@ -20,6 +20,8 @@ test("legacy flat item normalizes to grouped item fields", () => {
         status: "synced",
         lastSyncedAt: "2026-01-03T00:00:00.000Z",
       },
+      savedToInstance: "instance-1",
+      savedMemoRef: { resourceName: "memos/1" },
     },
     4,
   );
@@ -35,8 +37,7 @@ test("legacy flat item normalizes to grouped item fields", () => {
     body: "Legacy content",
     attachments: [{ id: "file-1", name: "note.txt", type: "text/plain", size: 128 }],
   });
-  assert.equal(item.sync.status, "synced");
-  assert.ok(item.sync.lastSyncedAt instanceof Date);
+  assert.equal("sync" in item, false);
   assert.ok(item.timestamps.createdAt instanceof Date);
   assert.ok(item.timestamps.updatedAt instanceof Date);
   assert.equal(item.timestamps.createdAt.toISOString(), createdAt);
@@ -71,7 +72,8 @@ test("grouped item normalizes without data changes", () => {
     tone: "blue",
   };
 
-  assert.deepEqual(normalizeScratchpadItem(item), item);
+  const { sync: _sync, ...expected } = item;
+  assert.deepEqual(normalizeScratchpadItem(item), expected);
 });
 
 test("createScratchpadItem returns grouped default content/timestamps", () => {
@@ -101,9 +103,7 @@ test("createScratchpadItem returns grouped default content/timestamps", () => {
     body: "",
     attachments: [{ id: "file-3", name: "photo.jpg", type: "image/jpeg", size: 512 }],
   });
-  assert.deepEqual(item.sync, {
-    status: "local",
-  });
+  assert.equal("sync" in item, false);
   assert.ok(item.timestamps.createdAt instanceof Date);
   assert.ok(item.timestamps.updatedAt instanceof Date);
   assert.equal(item.timestamps.createdAt.toISOString(), item.timestamps.updatedAt.toISOString());
@@ -127,6 +127,5 @@ test("invalid date strings normalize to fallback dates", () => {
 
   assert.notEqual(item.timestamps.createdAt.toString(), "Invalid Date");
   assert.equal(item.timestamps.updatedAt.toISOString(), item.timestamps.createdAt.toISOString());
-  assert.ok(item.sync.lastSyncedAt instanceof Date);
-  assert.notEqual(item.sync.lastSyncedAt.toString(), "Invalid Date");
+  assert.equal("sync" in item, false);
 });
