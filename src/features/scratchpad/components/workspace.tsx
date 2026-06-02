@@ -23,8 +23,9 @@ import {
   zoomScratchpadViewportFromCenter,
 } from "@/features/scratchpad/lib/viewport";
 import { shouldShowZoomControls, ZOOM_CONTROLS_HIDE_DELAY_MS } from "@/features/scratchpad/lib/zoom-visibility";
-import type { ScratchpadItem, ScratchpadItemLayout, ScratchpadViewport } from "@/features/scratchpad/types";
+import type { ScratchpadAttachmentRef, ScratchpadItem, ScratchpadItemLayout, ScratchpadViewport } from "@/features/scratchpad/types";
 import { CardItem } from "./card-item";
+import { ScratchpadAttachmentViewer } from "./scratchpad-attachment-viewer";
 import { ScratchpadCanvasBackground } from "./scratchpad-canvas-background";
 import { ScratchpadDropOverlay } from "./scratchpad-drop-overlay";
 import { ScratchpadEmptyState } from "./scratchpad-empty-state";
@@ -96,6 +97,7 @@ export function Workspace({
   const [zoomControlsFocused, setZoomControlsFocused] = useState(false);
   const [lastZoomInteractionAt, setLastZoomInteractionAt] = useState<number | null>(null);
   const [zoomVisibilityClock, setZoomVisibilityClock] = useState(() => Date.now());
+  const [openAttachment, setOpenAttachment] = useState<ScratchpadAttachmentRef | null>(null);
 
   useEffect(() => {
     viewportRef.current = viewport;
@@ -264,6 +266,23 @@ export function Workspace({
     );
   });
 
+  const handleWheel = useEffectEvent((event: WheelEvent) => {
+    if (event.ctrlKey || event.metaKey) {
+      if (!shouldHandleBrowserZoomGesture(event)) {
+        return;
+      }
+
+      event.preventDefault();
+      const zoomFactor = Math.exp(-event.deltaY * SCRATCHPAD_ZOOM_INTENSITY);
+      applyZoomFactorAtPoint(event.clientX, event.clientY, zoomFactor);
+      return;
+    }
+
+    event.preventDefault();
+    revealZoomControls();
+    updateViewport((current) => panScratchpadViewport(current, -event.deltaX, -event.deltaY));
+  });
+
   useEffect(() => {
     const handlePaste = (e: ClipboardEvent) => {
       if (e.clipboardData?.files && e.clipboardData.files.length > 0) {
@@ -311,11 +330,13 @@ export function Workspace({
     workspaceElement.addEventListener("gesturestart", handleGestureStart as EventListener, { passive: false });
     workspaceElement.addEventListener("gesturechange", handleGestureChange as EventListener, { passive: false });
     workspaceElement.addEventListener("gestureend", handleGestureEnd, { passive: false });
+    workspaceElement.addEventListener("wheel", handleWheel, { passive: false });
 
     return () => {
       workspaceElement.removeEventListener("gesturestart", handleGestureStart as EventListener);
       workspaceElement.removeEventListener("gesturechange", handleGestureChange as EventListener);
       workspaceElement.removeEventListener("gestureend", handleGestureEnd);
+      workspaceElement.removeEventListener("wheel", handleWheel);
     };
   }, []);
 
@@ -413,23 +434,6 @@ export function Workspace({
     onCreateTextItem(point.x, point.y);
   };
 
-  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
-    if (e.ctrlKey || e.metaKey) {
-      if (!shouldHandleBrowserZoomGesture(e.nativeEvent)) {
-        return;
-      }
-
-      e.preventDefault();
-      const zoomFactor = Math.exp(-e.deltaY * SCRATCHPAD_ZOOM_INTENSITY);
-      applyZoomFactorAtPoint(e.clientX, e.clientY, zoomFactor);
-      return;
-    }
-
-    e.preventDefault();
-    revealZoomControls();
-    updateViewport((current) => panScratchpadViewport(current, -e.deltaX, -e.deltaY));
-  };
-
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -472,7 +476,6 @@ export function Workspace({
       onPointerCancel={handleWorkspacePointerCancel}
       onClick={handleWorkspaceClick}
       onDoubleClick={handleWorkspaceDoubleClick}
-      onWheel={handleWheel}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
@@ -497,6 +500,7 @@ export function Workspace({
             onUpdateLayout={onUpdateItemLayout}
             onDelete={onDeleteItem}
             onRemoveAttachment={onRemoveAttachment}
+            onOpenAttachment={setOpenAttachment}
             isSelected={selectedItemIds.includes(item.id)}
             onSelect={(ctrlKey) => onSelectItem(item.id, ctrlKey)}
           />
@@ -516,6 +520,8 @@ export function Workspace({
         onReset={resetViewportTowardLastActiveItem}
         onZoomIn={zoomInTowardLastActiveItem}
       />
+
+      <ScratchpadAttachmentViewer attachment={openAttachment} onClose={() => setOpenAttachment(null)} />
     </div>
   );
 }

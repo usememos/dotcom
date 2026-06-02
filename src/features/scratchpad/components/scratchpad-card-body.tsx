@@ -5,7 +5,6 @@ import { CARD_TEXT_CLASS_NAME } from "../lib/card-style";
 
 interface ScratchpadCardBodyProps {
   body: string;
-  hasAttachments: boolean;
   isEditing: boolean;
   textClassName: string;
   placeholderClassName: string;
@@ -18,7 +17,6 @@ interface ScratchpadCardBodyProps {
 
 export function ScratchpadCardBody({
   body,
-  hasAttachments,
   isEditing,
   textClassName,
   placeholderClassName,
@@ -39,7 +37,7 @@ export function ScratchpadCardBody({
         onChange={onChange}
         onKeyDown={onKeyDown}
         onPointerDown={onPointerDown}
-        placeholder={hasAttachments ? "Add a note..." : "Write something..."}
+        placeholder="Add a note..."
         className={`block w-full min-h-[150px] resize-none border-none bg-transparent px-0 pt-0 pb-1.5 outline-none cursor-text placeholder:text-stone-400 dark:placeholder:text-stone-500 ${textClassName} ${CARD_TEXT_CLASS_NAME}`}
       />
     );
@@ -51,7 +49,7 @@ export function ScratchpadCardBody({
         hasBody ? `whitespace-pre-wrap break-words ${textClassName}` : `select-none ${placeholderClassName}`
       }`}
     >
-      {hasBody ? body : hasAttachments ? "Double-click to add a note" : "Double-click to write"}
+      {hasBody ? body : "Double-click to add a note"}
     </div>
   );
 }

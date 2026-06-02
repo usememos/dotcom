@@ -24,7 +24,7 @@ import {
   type PointerInteractionMap,
   type PointerSession,
 } from "../lib/interactions";
-import type { ScratchpadItem, ScratchpadItemLayout } from "../types";
+import type { ScratchpadAttachmentRef, ScratchpadItem, ScratchpadItemLayout } from "../types";
 import { ScratchpadAttachmentGrid } from "./scratchpad-attachment-grid";
 import { ScratchpadCardBody } from "./scratchpad-card-body";
 
@@ -35,6 +35,7 @@ interface CardItemProps {
   onUpdateLayout: (id: string, updates: Partial<ScratchpadItemLayout>) => void;
   onDelete: (id: string) => void;
   onRemoveAttachment: (id: string, attachmentId: string) => void;
+  onOpenAttachment: (attachment: ScratchpadAttachmentRef) => void;
   isSelected?: boolean;
   onSelect: (ctrlKey: boolean) => void;
 }
@@ -71,6 +72,7 @@ export function CardItem({
   onUpdateLayout,
   onDelete,
   onRemoveAttachment,
+  onOpenAttachment,
   isSelected,
   onSelect,
 }: CardItemProps) {
@@ -411,7 +413,7 @@ export function CardItem({
         transform: `translate3d(${dragOffset.x}px, ${dragOffset.y}px, 0) rotate(${rotation}deg)`,
         touchAction: isEditing ? "auto" : "none",
       }}
-      title="Double-click to edit"
+      title={hasBody ? "Double-click to edit note" : "Double-click to add a note"}
     >
       {!isEditing && (
         <button
@@ -419,9 +421,9 @@ export function CardItem({
           onFocus={handleKeyboardTargetFocus}
           onKeyDown={handleKeyboardTargetKeyDown}
           className="absolute inset-0 z-0"
-          aria-label={hasBody ? `Edit note: ${body.slice(0, 60)}` : "Edit note"}
+          aria-label={hasBody ? `Edit note: ${body.slice(0, 60)}` : "Add note"}
         >
-          <span className="sr-only">Select note. Press Enter to edit.</span>
+          <span className="sr-only">{hasBody ? "Select note. Press Enter to edit." : "Select note. Press Enter to add a note."}</span>
         </button>
       )}
 
@@ -431,6 +433,7 @@ export function CardItem({
         itemId={item.id}
         attachments={attachments}
         previewMap={previewMap}
+        onOpenAttachment={onOpenAttachment}
         onRemoveAttachment={onRemoveAttachment}
       />
 
@@ -440,7 +443,6 @@ export function CardItem({
         )}
         <ScratchpadCardBody
           body={body}
-          hasAttachments={attachments.length > 0}
           isEditing={isEditing}
           textClassName=""
           placeholderClassName="text-stone-500"

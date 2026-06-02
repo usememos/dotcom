@@ -24,7 +24,7 @@ function ScratchpadMenuTriggerImage() {
   const isClerkConfigured = useIsClerkConfigured();
 
   if (!isClerkConfigured) {
-    return <Image src="/logo-rounded.png" alt="Memos" width={28} height={28} />;
+    return <Image src="/logo.png" alt="Memos" width={32} height={32} className="h-full w-full rounded-full object-cover" />;
   }
 
   return <ClerkScratchpadMenuTriggerImage />;
@@ -34,10 +34,10 @@ function ClerkScratchpadMenuTriggerImage() {
   const { isLoaded, isSignedIn, user } = useUser();
 
   if (isLoaded && isSignedIn && user?.imageUrl) {
-    return <img src={user.imageUrl} alt="" className="h-7 w-7 rounded-full object-cover" />;
+    return <img src={user.imageUrl} alt="" className="h-full w-full rounded-full object-cover" />;
   }
 
-  return <Image src="/logo-rounded.png" alt="Memos" width={28} height={28} />;
+  return <Image src="/logo.png" alt="Memos" width={32} height={32} className="h-full w-full rounded-full object-cover" />;
 }
 
 export function ScratchpadToolbar() {
@@ -54,7 +54,7 @@ export function ScratchpadToolbar() {
         <DropdownMenu.Trigger asChild>
           <button
             type="button"
-            className="flex h-8 w-8 items-center justify-center rounded-md border border-stone-200/80 bg-white/88 text-stone-500 shadow-sm transition hover:bg-white hover:text-stone-900 dark:border-white/10 dark:bg-stone-900/88 dark:text-stone-400 dark:hover:bg-stone-800 dark:hover:text-stone-100"
+            className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border border-stone-200/80 bg-white/88 text-stone-500 shadow-sm transition hover:bg-white hover:text-stone-900 dark:border-white/10 dark:bg-stone-900/88 dark:text-stone-400 dark:hover:bg-stone-800 dark:hover:text-stone-100"
             title="Memos menu"
           >
             <ScratchpadMenuTriggerImage />
