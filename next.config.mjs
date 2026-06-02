@@ -21,6 +21,17 @@ const SECURITY_HEADERS = [
   },
 ];
 
+const OG_IMAGE_CORS_HEADERS = [
+  {
+    key: "Access-Control-Allow-Origin",
+    value: "*",
+  },
+  {
+    key: "Access-Control-Allow-Methods",
+    value: "GET, HEAD, OPTIONS",
+  },
+];
+
 /** @type {import('next').NextConfig} */
 const config = {
   poweredByHeader: false,
@@ -36,6 +47,14 @@ const config = {
   },
   async headers() {
     return [
+      {
+        source: "/og-image.png",
+        headers: OG_IMAGE_CORS_HEADERS,
+      },
+      {
+        source: "/og/:path*",
+        headers: OG_IMAGE_CORS_HEADERS,
+      },
       {
         source: "/:path*",
         headers: SECURITY_HEADERS,
