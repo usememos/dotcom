@@ -14,7 +14,7 @@ import type { ContentSocialPreview, SocialPreviewImageKind } from "@/shared/cont
 import { blogSource, changelogSource, source } from "@/shared/content/source";
 
 export const dynamic = "force-static";
-export const revalidate = 3600;
+export const revalidate = false;
 
 export const metadata: Metadata = {
   title: "Social Preview Audit",

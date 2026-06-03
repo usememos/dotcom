@@ -13,7 +13,7 @@ interface FeaturePageProps {
 }
 
 export const dynamic = "force-static";
-export const revalidate = 86400;
+export const revalidate = false;
 
 export default async function FeaturePage({ params }: FeaturePageProps) {
   const { slug } = await params;

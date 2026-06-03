@@ -17,7 +17,7 @@ import { changelogSource } from "@/shared/content/source";
 import { buildBreadcrumbJsonLd } from "@/shared/lib/seo";
 
 export const dynamic = "force-static";
-export const revalidate = 1800;
+export const revalidate = false;
 
 const socialPreview = getChangelogIndexSocialPreview();
 

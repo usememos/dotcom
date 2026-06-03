@@ -16,7 +16,7 @@
     "smoke": "node scripts/smoke-test.mjs",
     "og:audit": "node scripts/og-audit.mjs",
     "postinstall": "node scripts/generate-openapi.mjs && fumadocs-mdx && pnpm format",
-    "lint": "node scripts/metadata-title-audit.mjs && biome check",
+    "lint": "node scripts/static-revalidate-audit.mjs && node scripts/metadata-title-audit.mjs && biome check",
     "metadata:audit": "node scripts/metadata-title-audit.mjs",
     "format": "biome format --write",
     "check": "biome check --write"

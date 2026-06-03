@@ -14,7 +14,7 @@ import { baseOptions } from "@/shared/config/layout";
 import { buildBreadcrumbJsonLd, buildMarketingMetadata } from "@/shared/lib/seo";
 
 export const dynamic = "force-static";
-export const revalidate = 86400;
+export const revalidate = false;
 
 export const metadata: Metadata = {
   ...buildMarketingMetadata({

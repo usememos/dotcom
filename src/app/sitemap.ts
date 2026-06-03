@@ -5,7 +5,7 @@ import { getAllUseCaseSlugs } from "@/features/marketing/data/use-cases";
 import { blogSource, changelogSource, source } from "@/shared/content/source";
 
 export const dynamic = "force-static";
-export const revalidate = 3600; // regenerate once per hour
+export const revalidate = false;
 
 const BASE_URL = "https://usememos.com";
 

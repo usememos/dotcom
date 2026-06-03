@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  ArrowRightIcon,
-  BookOpenIcon,
-  FileSearchIcon,
-  HomeIcon,
-  MessageCircleIcon,
-  RotateCcwIcon,
-} from "lucide-react";
+import { ArrowRightIcon, BookOpenIcon, FileSearchIcon, HomeIcon, MessageCircleIcon, RotateCcwIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 type FallbackVariant = "error" | "not-found";
