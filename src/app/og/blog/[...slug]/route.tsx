@@ -5,6 +5,7 @@ import { blogSource } from "@/shared/content/source";
 
 export const runtime = "nodejs";
 export const dynamic = "force-static";
+export const dynamicParams = false;
 export const revalidate = false;
 
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string[] }> }) {

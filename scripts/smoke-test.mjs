@@ -17,6 +17,7 @@ const checks = [
   { path: "/sitemap.xml", type: "text", contains: "<urlset" },
   { path: "/blog/feed.xml", type: "text", contains: "<rss" },
   { path: "/og/blog/best-practices-to-write-tag/image.png", type: "png" },
+  { path: "/og/blog/20k-github-stars-in-2-years/image.png", status: 404, type: "html" },
 ];
 
 function buildUrl(path) {
@@ -30,7 +31,10 @@ async function readBody(response, type) {
 }
 
 function assertCheck(check, response, body) {
-  if (!response.ok) throw new Error(`${check.path} returned ${response.status}`);
+  const expectedStatus = check.status ?? 200;
+  if (response.status !== expectedStatus) {
+    throw new Error(`${check.path} returned ${response.status}; expected ${expectedStatus}`);
+  }
   const contentType = response.headers.get("content-type") ?? "";
   if (check.type === "html" && !contentType.includes("text/html")) {
     throw new Error(`${check.path} expected HTML, got ${contentType}`);
@@ -59,7 +63,10 @@ for (const check of checks) {
   } catch (error) {
     throw new Error(`${check.path} request failed for ${url}`, { cause: error });
   }
-  if (!response.ok) throw new Error(`${check.path} returned ${response.status}`);
+  const expectedStatus = check.status ?? 200;
+  if (response.status !== expectedStatus) {
+    throw new Error(`${check.path} returned ${response.status}; expected ${expectedStatus}`);
+  }
   let body;
   try {
     body = await readBody(response, check.type);
