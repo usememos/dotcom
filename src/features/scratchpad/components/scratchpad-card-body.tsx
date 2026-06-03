@@ -37,7 +37,7 @@ export function ScratchpadCardBody({
         onChange={onChange}
         onKeyDown={onKeyDown}
         onPointerDown={onPointerDown}
-        placeholder="Add a note..."
+        placeholder="Any thoughts..."
         className={`block w-full min-h-[150px] resize-none border-none bg-transparent px-0 pt-0 pb-1.5 outline-none cursor-text placeholder:text-stone-400 dark:placeholder:text-stone-500 ${textClassName} ${CARD_TEXT_CLASS_NAME}`}
       />
     );
@@ -49,7 +49,7 @@ export function ScratchpadCardBody({
         hasBody ? `whitespace-pre-wrap break-words ${textClassName}` : `select-none ${placeholderClassName}`
       }`}
     >
-      {hasBody ? body : "Double-click to add a note"}
+      {hasBody ? body : "Any thoughts..."}
     </div>
   );
 }

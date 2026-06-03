@@ -6,10 +6,10 @@ const accountMenuSource = readFileSync(new URL("./scratchpad-account-menu-sectio
 const toolbarSource = readFileSync(new URL("./scratchpad-toolbar.tsx", import.meta.url), "utf8");
 
 test("signed-in scratchpad account menu shows a full-width local-only notice", () => {
-  assert.match(accountMenuSource, /Local-only scratchpad/);
-  assert.match(accountMenuSource, /Signing in only verifies your account/);
-  assert.match(accountMenuSource, /Scratchpad does not access or store your cards/);
-  assert.match(accountMenuSource, /Vote or send feedback/);
+  assert.match(accountMenuSource, /Always Local-only/);
+  assert.doesNotMatch(accountMenuSource, /Signing in only verifies your account/);
+  assert.match(accountMenuSource, /Your cards stay on this device and are not uploaded to the cloud/);
+  assert.match(accountMenuSource, /Any other thoughts\?/);
   assert.match(accountMenuSource, /w-full rounded-md border border-teal-200/);
   assert.match(accountMenuSource, /mt-1\.5 text-xs leading-4/);
   assert.match(accountMenuSource, /mt-1 inline-flex/);

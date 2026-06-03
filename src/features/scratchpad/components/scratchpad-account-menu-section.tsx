@@ -66,17 +66,17 @@ function ClerkAccountMenuSection() {
           <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white text-teal-700 shadow-sm shadow-teal-950/5 dark:bg-teal-900/60 dark:text-teal-200 dark:shadow-black/20">
             <ShieldCheckIcon className="h-3.5 w-3.5" />
           </span>
-          <div className="text-sm font-semibold leading-5 text-stone-800 dark:text-stone-100">Local-only scratchpad</div>
+          <div className="text-sm font-semibold leading-5 text-stone-800 dark:text-stone-100">Always Local-only</div>
         </div>
         <p className="mt-1.5 text-xs leading-4 text-stone-600 dark:text-stone-400">
-          Signing in only verifies your account. Scratchpad does not access or store your cards.
+          Your cards stay on this device and are not uploaded to the cloud.
         </p>
         <DropdownMenu.Item
           className="mt-1 inline-flex h-6 w-fit items-center gap-1 rounded-sm text-xs font-medium text-teal-700 outline-none data-[highlighted]:text-teal-900 dark:text-teal-300 dark:data-[highlighted]:text-teal-100"
           asChild
         >
           <a href={scratchpadFeedbackUrl} target="_blank" rel="noreferrer">
-            <span>Vote or send feedback</span>
+            <span>Any other thoughts?</span>
             <ExternalLinkIcon className="h-3 w-3" />
           </a>
         </DropdownMenu.Item>

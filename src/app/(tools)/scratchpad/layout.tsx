@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 const scratchpadTitle = "Scratchpad";
 const scratchpadSocialTitle = "Scratchpad - Memos";
 const scratchpadDescription =
-  "A local-first visual canvas for quick notes, cards, files, and loose ideas. Sign-in only verifies your account; Scratchpad does not access or store your cards.";
+  "A local-first visual canvas for quick notes, cards, files, and loose ideas. Your cards stay on this device and are not uploaded to the cloud.";
 
 export const metadata: Metadata = {
   title: scratchpadTitle,
