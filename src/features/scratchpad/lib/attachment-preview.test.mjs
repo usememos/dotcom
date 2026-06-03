@@ -26,7 +26,7 @@ test("classifies browser-native media preview types", () => {
 });
 
 test("classifies text-like files for inline text preview", () => {
-  assert.equal(getAttachmentPreviewMode("text/plain", "note.txt"), "text");
+  assert.equal(getAttachmentPreviewMode("text/plain", "card.txt"), "text");
   assert.equal(getAttachmentPreviewMode("application/json", "data.json"), "text");
   assert.equal(getAttachmentPreviewMode("application/xml", "feed.xml"), "text");
   assert.equal(getAttachmentPreviewMode("", "README.md"), "text");

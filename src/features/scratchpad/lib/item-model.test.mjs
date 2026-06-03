@@ -13,7 +13,7 @@ test("legacy flat item normalizes to grouped local item fields", () => {
       width: 320,
       height: 180,
       body: "Legacy content",
-      attachments: [{ id: "file-1", name: "note.txt", type: "text/plain", size: 128 }],
+      attachments: [{ id: "file-1", name: "card.txt", type: "text/plain", size: 128 }],
       createdAt,
       updatedAt,
       sync: {
@@ -35,7 +35,7 @@ test("legacy flat item normalizes to grouped local item fields", () => {
   });
   assert.deepEqual(item.content, {
     body: "Legacy content",
-    attachments: [{ id: "file-1", name: "note.txt", type: "text/plain", size: 128 }],
+    attachments: [{ id: "file-1", name: "card.txt", type: "text/plain", size: 128 }],
   });
   assert.equal("sync" in item, false);
   assert.ok(item.timestamps.createdAt instanceof Date);

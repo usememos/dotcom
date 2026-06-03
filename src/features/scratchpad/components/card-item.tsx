@@ -413,7 +413,7 @@ export function CardItem({
         transform: `translate3d(${dragOffset.x}px, ${dragOffset.y}px, 0) rotate(${rotation}deg)`,
         touchAction: isEditing ? "auto" : "none",
       }}
-      title={hasBody ? "Double-click to edit note" : "Click to edit note"}
+      title={hasBody ? "Double-click to edit card" : "Click to edit card"}
     >
       {!isEditing && (
         <button
@@ -421,9 +421,9 @@ export function CardItem({
           onFocus={handleKeyboardTargetFocus}
           onKeyDown={handleKeyboardTargetKeyDown}
           className="absolute inset-0 z-0"
-          aria-label={hasBody ? `Edit note: ${body.slice(0, 60)}` : "Edit note"}
+          aria-label={hasBody ? `Edit card: ${body.slice(0, 60)}` : "Edit card"}
         >
-          <span className="sr-only">Select note. Press Enter to edit.</span>
+          <span className="sr-only">Select card. Press Enter to edit.</span>
         </button>
       )}
 

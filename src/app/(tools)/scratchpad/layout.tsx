@@ -9,12 +9,12 @@ export const dynamic = "force-dynamic";
 const scratchpadTitle = "Scratchpad";
 const scratchpadSocialTitle = "Scratchpad - Memos";
 const scratchpadDescription =
-  "A local-first visual canvas for quick notes, cards, files, and loose ideas. Your cards stay on this device and are not uploaded to the cloud.";
+  "A local-first visual canvas for quick cards, files, and loose ideas. Your cards stay on this device and are not uploaded to the cloud.";
 
 export const metadata: Metadata = {
   title: scratchpadTitle,
   description: scratchpadDescription,
-  keywords: ["scratchpad", "brainstorming", "notes", "visual notes", "canvas notes", "local-first", "cards", "memos"],
+  keywords: ["scratchpad", "brainstorming", "cards", "visual cards", "canvas cards", "local-first", "memos"],
   robots: {
     index: false,
     follow: false,

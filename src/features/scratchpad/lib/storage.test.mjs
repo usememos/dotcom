@@ -49,7 +49,7 @@ beforeEach(() => {
 });
 
 test("itemStorage.update applies nested grouped item patches", () => {
-  const item = createScratchpadItem(12, 24, 1, [{ id: "file-1", name: "note.txt", type: "text/plain", size: 128 }]);
+  const item = createScratchpadItem(12, 24, 1, [{ id: "file-1", name: "card.txt", type: "text/plain", size: 128 }]);
   itemStorage.save([item]);
 
   itemStorage.update(item.id, {
