@@ -17,7 +17,7 @@ export const dynamic = "force-static";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Social Preview Audit - Memos",
+  title: "Social Preview Audit",
   description: "Internal social preview audit for Memos content pages.",
   robots: {
     index: false,

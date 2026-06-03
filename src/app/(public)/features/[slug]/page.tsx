@@ -133,7 +133,7 @@ export async function generateMetadata({ params }: FeaturePageProps): Promise<Me
 
   if (!feature) {
     return {
-      title: "Feature Not Found - Memos",
+      title: "Feature Not Found",
     };
   }
 

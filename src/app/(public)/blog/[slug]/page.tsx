@@ -154,7 +154,7 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
 
   if (!page) {
     return {
-      title: "Blog Post Not Found - Memos",
+      title: "Blog Post Not Found",
     };
   }
 

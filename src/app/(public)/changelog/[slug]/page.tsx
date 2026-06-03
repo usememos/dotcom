@@ -131,7 +131,7 @@ export async function generateMetadata({ params }: ChangelogPageProps): Promise<
   const { slug } = await params;
   const page = changelogSource.getPage([slug]);
   if (!page) {
-    return { title: "Changelog Entry Not Found - Memos" };
+    return { title: "Changelog Entry Not Found" };
   }
   const { data } = page;
   const version = getChangelogVersion(data.title);

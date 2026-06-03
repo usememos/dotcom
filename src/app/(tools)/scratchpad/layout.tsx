@@ -6,7 +6,8 @@ import { buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/shared/lib/seo"
 
 export const dynamic = "force-dynamic";
 
-const scratchpadTitle = "Scratchpad - Memos";
+const scratchpadTitle = "Scratchpad";
+const scratchpadSocialTitle = "Scratchpad - Memos";
 const scratchpadDescription =
   "A local-first visual canvas for quick notes, cards, files, and loose ideas. Sign-in only verifies your account; Scratchpad does not access or store your cards.";
 
@@ -23,14 +24,14 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: scratchpadTitle,
+    title: scratchpadSocialTitle,
     description: scratchpadDescription,
     url: "https://usememos.com/scratchpad",
-    images: buildDefaultOpenGraphImages(scratchpadTitle),
+    images: buildDefaultOpenGraphImages(scratchpadSocialTitle),
   },
   twitter: {
     card: "summary_large_image",
-    title: scratchpadTitle,
+    title: scratchpadSocialTitle,
     description: scratchpadDescription,
     images: [DEFAULT_OG_IMAGE],
   },
