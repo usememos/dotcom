@@ -65,7 +65,6 @@ export default function UseCasesPage() {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
         <MarketingPageHero
-          breadcrumbs={breadcrumbItems}
           eyebrow="Use Cases"
           title="Use Memos where quick notes actually happen."
           description="Memos fits the small workflows that do not need a full workspace: journals, server logs, snippets, private updates, and notes you want to keep."

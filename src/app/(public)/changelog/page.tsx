@@ -41,7 +41,6 @@ export default function ChangelogPage() {
         <JsonLdScript data={breadcrumbJsonLd} />
         <EditorialIndexShell>
           <EditorialIndexHeader
-            breadcrumbs={breadcrumbItems}
             eyebrow="Release History"
             title="Changelog"
             description="Stay up to date with new features, improvements, and bug fixes in Memos."

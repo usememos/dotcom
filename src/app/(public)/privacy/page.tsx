@@ -79,7 +79,6 @@ export default function PrivacyPage() {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
         <MarketingPageHero
-          breadcrumbs={breadcrumbItems}
           eyebrow="Privacy"
           title="Private by default. Verifiable in code."
           description="Privacy is part of the deployment model. Memos is built so your notes stay on infrastructure you control."

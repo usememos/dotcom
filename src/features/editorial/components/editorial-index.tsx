@@ -11,7 +11,7 @@ export interface EditorialIndexMetric {
 }
 
 export interface EditorialIndexHeaderProps {
-  breadcrumbs: readonly BreadcrumbItem[];
+  breadcrumbs?: readonly BreadcrumbItem[];
   description: ReactNode;
   eyebrow: string;
   metrics?: readonly EditorialIndexMetric[];
@@ -69,7 +69,7 @@ export function EditorialIndexShell({ children }: EditorialIndexShellProps) {
 export function EditorialIndexHeader({ breadcrumbs, description, eyebrow, metrics = [], title }: EditorialIndexHeaderProps) {
   return (
     <div className="mb-12 border-b border-zinc-200 pb-10 dark:border-white/10 sm:mb-16">
-      <Breadcrumbs items={breadcrumbs} className="mb-10" />
+      {breadcrumbs ? <Breadcrumbs items={breadcrumbs} className="mb-10" /> : null}
       <p className="mb-5 text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">{eyebrow}</p>
       <h1 className="text-balance font-serif text-4xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-6xl">
         {title}

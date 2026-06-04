@@ -35,7 +35,6 @@ export default function SponsorsPage() {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
         <MarketingPageHero
-          breadcrumbs={breadcrumbItems}
           eyebrow="Sponsors"
           title="Back the project."
           description="Sponsorship helps keep Memos maintained, documented, and available for self-hosters."

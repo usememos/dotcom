@@ -16,7 +16,6 @@ import { baseOptions } from "@/shared/config/layout";
 import { buildContentMetadata } from "@/shared/content/social-preview";
 import { blogSource } from "@/shared/content/source";
 import { buildBreadcrumbItems, buildBreadcrumbJsonLd } from "@/shared/lib/seo";
-import { Breadcrumbs } from "@/shared/ui/breadcrumbs";
 import { JsonLdScript } from "@/shared/ui/json-ld-script";
 
 interface BlogPageProps {
@@ -80,7 +79,6 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
           <div className={BLOG_DETAIL_LAYOUT_CLASS}>
             <div className="min-w-0">
               <div className={BLOG_ARTICLE_COLUMN_CLASS}>
-                <Breadcrumbs items={breadcrumbItems} className="mb-6" />
                 <Link
                   href="/blog"
                   className="group mb-8 inline-flex items-center gap-2 text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-700 dark:text-zinc-300 dark:hover:text-zinc-700 sm:mb-12"

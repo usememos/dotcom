@@ -21,7 +21,6 @@ import { baseOptions } from "@/shared/config/layout";
 import { buildContentMetadata } from "@/shared/content/social-preview";
 import { changelogSource } from "@/shared/content/source";
 import { buildBreadcrumbItems, buildBreadcrumbJsonLd } from "@/shared/lib/seo";
-import { Breadcrumbs } from "@/shared/ui/breadcrumbs";
 import { JsonLdScript } from "@/shared/ui/json-ld-script";
 
 interface ChangelogPageProps {
@@ -59,7 +58,6 @@ export default async function ChangelogEntryPage({ params }: ChangelogPageProps)
           <div className={CHANGELOG_DETAIL_LAYOUT_CLASS}>
             <div className="min-w-0">
               <div className={CHANGELOG_ARTICLE_COLUMN_CLASS}>
-                <Breadcrumbs items={breadcrumbItems} className="mb-6" />
                 <Link
                   href="/changelog"
                   className="group mb-8 inline-flex items-center gap-2 text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-700 dark:text-zinc-300 dark:hover:text-zinc-700 sm:mb-12"

@@ -40,7 +40,6 @@ export default function BrandPage() {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
         <MarketingPageHero
-          breadcrumbs={breadcrumbItems}
           eyebrow="Brand"
           title="Memos brand assets."
           description="Download official logos and use them with clear, consistent presentation."

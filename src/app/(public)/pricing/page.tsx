@@ -61,7 +61,6 @@ export default function PricingPage() {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
         <MarketingPageHero
-          breadcrumbs={breadcrumbItems}
           eyebrow="Pricing"
           title="Free to use. Yours to run."
           description="Memos has no subscriptions, seat pricing, or paid unlocks. You run the product and choose the infrastructure."

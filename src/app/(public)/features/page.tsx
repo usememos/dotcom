@@ -95,7 +95,6 @@ export default function FeaturesPage() {
         <JsonLdScript data={breadcrumbJsonLd} />
 
         <MarketingPageHero
-          breadcrumbs={breadcrumbItems}
           eyebrow="Features"
           title="Everything Memos needs. Nothing that slows capture down."
           description="Memos keeps the product surface small: quick notes, a private timeline, Markdown, tags, search, and self-hosted ownership."

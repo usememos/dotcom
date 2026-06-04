@@ -43,7 +43,6 @@ export default function BlogPage() {
         <JsonLdScript data={breadcrumbJsonLd} />
         <EditorialIndexShell>
           <EditorialIndexHeader
-            breadcrumbs={breadcrumbItems}
             eyebrow="Blog"
             title="Notes from the project."
             description="Product thinking, self-hosting notes, and updates from the people building Memos."
