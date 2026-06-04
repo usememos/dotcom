@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo";
+import { absoluteUrl, DEFAULT_OG_IMAGE, SITE_NAME } from "@/shared/lib/seo";
 
 export const SOCIAL_PREVIEW_IMAGE_SIZE = {
   width: 1200,
@@ -64,4 +64,48 @@ export function getOpenGraphImages(preview: ContentSocialPreview): NonNullable<N
 
 export function getTwitterImages(preview: ContentSocialPreview): NonNullable<NonNullable<Metadata["twitter"]>["images"]> {
   return [preview.imageUrl];
+}
+
+interface BuildContentMetadataOptions {
+  title?: string;
+  openGraphTitle?: string;
+  twitterTitle?: string;
+  type?: "website" | "article";
+  publishedTime?: string;
+  siteName?: string;
+}
+
+export function buildContentMetadata(
+  preview: ContentSocialPreview,
+  {
+    title = preview.title,
+    openGraphTitle = preview.title,
+    twitterTitle = openGraphTitle,
+    type = "website",
+    publishedTime,
+    siteName = SITE_NAME,
+  }: BuildContentMetadataOptions = {},
+): Metadata {
+  return {
+    title,
+    description: preview.description,
+    alternates: {
+      canonical: preview.url,
+    },
+    openGraph: {
+      title: openGraphTitle,
+      description: preview.description,
+      type,
+      url: preview.url,
+      siteName,
+      ...(publishedTime ? { publishedTime } : {}),
+      images: getOpenGraphImages(preview),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: twitterTitle,
+      description: preview.description,
+      images: getTwitterImages(preview),
+    },
+  };
 }

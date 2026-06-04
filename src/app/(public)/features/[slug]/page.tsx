@@ -6,7 +6,8 @@ import { Footer } from "@/features/marketing/components/footer";
 import { MarketingCtaSection, MarketingPageHero, MarketingSectionHeader } from "@/features/marketing/components/marketing-page";
 import { getAllFeatureSlugs, getFeature } from "@/features/marketing/data/features";
 import { baseOptions } from "@/shared/config/layout";
-import { buildBreadcrumbJsonLd, buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/shared/lib/seo";
+import { buildBreadcrumbItems, buildBreadcrumbJsonLd, buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/shared/lib/seo";
+import { JsonLdScript } from "@/shared/ui/json-ld-script";
 
 interface FeaturePageProps {
   params: Promise<{ slug: string }>;
@@ -23,18 +24,17 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
     notFound();
   }
 
-  const breadcrumbItems = [
-    { href: "/", name: "Home" },
+  const breadcrumbItems = buildBreadcrumbItems([
     { href: "/features", name: "Features" },
     { href: `/features/${slug}`, name: feature.title },
-  ];
+  ]);
   const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
   const Icon = feature.icon;
 
   return (
     <HomeLayout {...baseOptions}>
       <main className="flex flex-1 flex-col bg-white dark:bg-zinc-950">
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+        <JsonLdScript data={breadcrumbJsonLd} />
 
         <MarketingPageHero
           breadcrumbs={breadcrumbItems}

@@ -1,6 +1,7 @@
 "use client";
 
 import { type DragEvent, useEffect, useEffectEvent, useRef, useState } from "react";
+import { findScratchpadItemId, isWithinScratchpadItem, isWithinScratchpadUi } from "@/features/scratchpad/lib/dom-targets";
 import {
   beginPointerInteraction,
   cancelPointerInteraction,
@@ -124,46 +125,6 @@ export function Workspace({
 
     return () => window.clearTimeout(timeoutId);
   }, [lastZoomInteractionAt, zoomControlsFocused, zoomControlsHovered]);
-
-  const getDropTargetItemId = (target: EventTarget | null): string | undefined => {
-    let element = target as HTMLElement | null;
-
-    while (element && element !== workspaceRef.current) {
-      const itemId = element.dataset.scratchpadItemId;
-      if (itemId) {
-        return itemId;
-      }
-      element = element.parentElement;
-    }
-
-    return undefined;
-  };
-
-  const isTargetWithinItem = (target: EventTarget | null): boolean => {
-    let element = target as HTMLElement | null;
-
-    while (element && element !== workspaceRef.current) {
-      if (element.dataset.scratchpadItem === "true") {
-        return true;
-      }
-      element = element.parentElement;
-    }
-
-    return false;
-  };
-
-  const isTargetWithinCanvasUi = (target: EventTarget | null): boolean => {
-    let element = target as HTMLElement | null;
-
-    while (element && element !== workspaceRef.current) {
-      if (element.dataset.scratchpadUi === "true") {
-        return true;
-      }
-      element = element.parentElement;
-    }
-
-    return false;
-  };
 
   const getCanvasPoint = (clientX: number, clientY: number, nextViewport = viewportRef.current) => {
     if (!workspaceRef.current) return null;
@@ -350,7 +311,11 @@ export function Workspace({
   };
 
   const handleWorkspacePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    if ((e.button !== 0 && e.button !== 1) || isTargetWithinItem(e.target) || isTargetWithinCanvasUi(e.target)) {
+    if (
+      (e.button !== 0 && e.button !== 1) ||
+      isWithinScratchpadItem(e.target, workspaceRef.current) ||
+      isWithinScratchpadUi(e.target, workspaceRef.current)
+    ) {
       return;
     }
 
@@ -416,7 +381,7 @@ export function Workspace({
       return;
     }
 
-    if (isTargetWithinItem(e.target) || isTargetWithinCanvasUi(e.target)) {
+    if (isWithinScratchpadItem(e.target, workspaceRef.current) || isWithinScratchpadUi(e.target, workspaceRef.current)) {
       return;
     }
 
@@ -424,7 +389,7 @@ export function Workspace({
   };
 
   const handleWorkspaceDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (isTargetWithinItem(e.target) || isTargetWithinCanvasUi(e.target)) {
+    if (isWithinScratchpadItem(e.target, workspaceRef.current) || isWithinScratchpadUi(e.target, workspaceRef.current)) {
       return;
     }
 
@@ -455,7 +420,7 @@ export function Workspace({
       const point = getCanvasPoint(e.clientX, e.clientY);
       if (!point) return;
 
-      onFileUpload(e.dataTransfer.files, point.x, point.y, getDropTargetItemId(e.target));
+      onFileUpload(e.dataTransfer.files, point.x, point.y, findScratchpadItemId(e.target, workspaceRef.current));
     }
   };
 

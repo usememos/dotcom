@@ -5,16 +5,16 @@ import type { UseCaseDefinition, UseCaseSlug } from "./types";
 export type { UseCaseDefinition, UseCaseSlug };
 export { USE_CASE_SLUGS, USE_CASES };
 
-/**
- * Get use case definition by slug
- */
-export function getUseCase(slug: string): UseCaseDefinition | null {
-  return USE_CASES[slug as UseCaseSlug] || null;
+const USE_CASE_SLUG_SET = new Set<string>(USE_CASE_SLUGS);
+
+export function isUseCaseSlug(slug: string): slug is UseCaseSlug {
+  return USE_CASE_SLUG_SET.has(slug);
 }
 
-/**
- * Get all use case slugs for static generation
- */
+export function getUseCase(slug: string): UseCaseDefinition | null {
+  return isUseCaseSlug(slug) ? USE_CASES[slug] : null;
+}
+
 export function getAllUseCaseSlugs(): readonly UseCaseSlug[] {
   return USE_CASE_SLUGS;
 }

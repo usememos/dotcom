@@ -5,16 +5,16 @@ import type { FeatureDefinition, FeatureSlug } from "./types";
 export type { FeatureDefinition, FeatureSlug };
 export { FEATURE_SLUGS, FEATURES };
 
-/**
- * Get feature definition by slug
- */
-export function getFeature(slug: string): FeatureDefinition | null {
-  return FEATURES[slug as FeatureSlug] || null;
+const FEATURE_SLUG_SET = new Set<string>(FEATURE_SLUGS);
+
+export function isFeatureSlug(slug: string): slug is FeatureSlug {
+  return FEATURE_SLUG_SET.has(slug);
 }
 
-/**
- * Get all feature slugs for static generation
- */
+export function getFeature(slug: string): FeatureDefinition | null {
+  return isFeatureSlug(slug) ? FEATURES[slug] : null;
+}
+
 export function getAllFeatureSlugs(): readonly FeatureSlug[] {
   return FEATURE_SLUGS;
 }

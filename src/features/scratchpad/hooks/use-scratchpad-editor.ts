@@ -11,23 +11,12 @@ import {
   scratchpadEditorReducer,
 } from "@/features/scratchpad/lib/editor";
 import { createFileData, deleteFile, saveFile } from "@/features/scratchpad/lib/indexeddb";
+import { calculateScratchpadItemLayout } from "@/features/scratchpad/lib/item-positioning";
 import { itemStorage, viewportStorage } from "@/features/scratchpad/lib/storage";
 import { clampScratchpadScale } from "@/features/scratchpad/lib/viewport";
 import type { ScratchpadAttachmentRef, ScratchpadItemLayout, ScratchpadItemPatch, ScratchpadViewport } from "@/features/scratchpad/types";
 
 type ViewportUpdater = ScratchpadViewport | ((current: ScratchpadViewport) => ScratchpadViewport);
-
-const SCRATCHPAD_MIN_ITEM_WIDTH = 220;
-const SCRATCHPAD_ITEM_SCREEN_GUTTER = 24;
-const SCRATCHPAD_TEXT_ITEM_WIDTH = 280;
-const SCRATCHPAD_TEXT_ITEM_HEIGHT = 180;
-const SCRATCHPAD_ATTACHMENT_ITEM_WIDTH = 320;
-const SCRATCHPAD_ATTACHMENT_ITEM_HEIGHT = 300;
-const SCRATCHPAD_ITEM_VERTICAL_OFFSET = 88;
-
-function clamp(value: number, min: number, max: number) {
-  return Math.min(Math.max(value, min), max);
-}
 
 export function useScratchpadEditor() {
   const [isClient, setIsClient] = useState(false);
@@ -124,31 +113,22 @@ export function useScratchpadEditor() {
   };
 
   const createPositionedItem = (x: number, y: number, attachments: ScratchpadAttachmentRef[] = []) => {
-    const preferredWidth = attachments.length > 0 ? SCRATCHPAD_ATTACHMENT_ITEM_WIDTH : SCRATCHPAD_TEXT_ITEM_WIDTH;
-    const preferredHeight = attachments.length > 0 ? SCRATCHPAD_ATTACHMENT_ITEM_HEIGHT : SCRATCHPAD_TEXT_ITEM_HEIGHT;
-    const viewport = viewportRef.current;
-    const availableWidth = Math.max(
-      SCRATCHPAD_MIN_ITEM_WIDTH,
-      Math.floor((window.innerWidth - SCRATCHPAD_ITEM_SCREEN_GUTTER * 2) / viewport.scale),
-    );
-    const width = Math.min(preferredWidth, availableWidth);
-    const leftBound = (SCRATCHPAD_ITEM_SCREEN_GUTTER - viewport.x) / viewport.scale;
-    const topBound = (SCRATCHPAD_ITEM_SCREEN_GUTTER - viewport.y) / viewport.scale;
-    const rightBound = (window.innerWidth - SCRATCHPAD_ITEM_SCREEN_GUTTER - viewport.x) / viewport.scale;
-    const bottomBound = (window.innerHeight - SCRATCHPAD_ITEM_SCREEN_GUTTER - viewport.y) / viewport.scale;
-    const originX = x - width / 2;
-    const originY = y - Math.min(preferredHeight / 2, SCRATCHPAD_ITEM_VERTICAL_OFFSET);
-    const clampedX = clamp(originX, leftBound, Math.max(leftBound, rightBound - width));
-    const clampedY = clamp(originY, topBound, Math.max(topBound, bottomBound - preferredHeight));
-    const item = createScratchpadItem(clampedX, clampedY, getNextScratchpadZIndex(stateRef.current.document.items), attachments);
+    const zIndex = getNextScratchpadZIndex(stateRef.current.document.items);
+    const item = createScratchpadItem(x, y, zIndex, attachments);
 
     return {
       ...item,
-      layout: {
-        ...item.layout,
-        width,
-        height: preferredHeight,
-      },
+      layout: calculateScratchpadItemLayout({
+        x,
+        y,
+        hasAttachments: attachments.length > 0,
+        viewport: viewportRef.current,
+        viewportSize: {
+          width: window.innerWidth,
+          height: window.innerHeight,
+        },
+        zIndex,
+      }),
     };
   };
 

@@ -12,41 +12,21 @@ import { formatBlogDate } from "@/features/editorial/lib/blog";
 import { getBlogIndexSocialPreview } from "@/features/editorial/lib/social-preview";
 import { Footer } from "@/features/marketing/components/footer";
 import { baseOptions } from "@/shared/config/layout";
-import { getOpenGraphImages, getTwitterImages } from "@/shared/content/social-preview";
+import { buildContentMetadata } from "@/shared/content/social-preview";
 import { blogSource } from "@/shared/content/source";
-import { buildBreadcrumbJsonLd } from "@/shared/lib/seo";
+import { buildBreadcrumbItems, buildBreadcrumbJsonLd } from "@/shared/lib/seo";
+import { JsonLdScript } from "@/shared/ui/json-ld-script";
 
 export const dynamic = "force-static";
 export const revalidate = false;
 
 const socialPreview = getBlogIndexSocialPreview();
 
-export const metadata: Metadata = {
-  title: socialPreview.title,
-  description: socialPreview.description,
-  alternates: {
-    canonical: socialPreview.url,
-  },
-  openGraph: {
-    title: `${socialPreview.title} - Memos`,
-    description: socialPreview.description,
-    type: "website",
-    url: socialPreview.url,
-    siteName: "Memos",
-    images: getOpenGraphImages(socialPreview),
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${socialPreview.title} - Memos`,
-    description: socialPreview.description,
-    images: getTwitterImages(socialPreview),
-  },
-};
+export const metadata: Metadata = buildContentMetadata(socialPreview, {
+  openGraphTitle: `${socialPreview.title} - Memos`,
+});
 
-const breadcrumbItems = [
-  { href: "/", name: "Home" },
-  { href: "/blog", name: "Blog" },
-];
+const breadcrumbItems = buildBreadcrumbItems([{ href: "/blog", name: "Blog" }]);
 
 const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
 
@@ -60,7 +40,7 @@ export default function BlogPage() {
   return (
     <HomeLayout {...baseOptions}>
       <main className="flex flex-1 flex-col bg-white dark:bg-zinc-950">
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+        <JsonLdScript data={breadcrumbJsonLd} />
         <EditorialIndexShell>
           <EditorialIndexHeader
             breadcrumbs={breadcrumbItems}

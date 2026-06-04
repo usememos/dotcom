@@ -11,7 +11,8 @@ import {
 } from "@/features/marketing/components/marketing-page";
 import { FEATURES, type FeatureSlug } from "@/features/marketing/data/features";
 import { baseOptions } from "@/shared/config/layout";
-import { buildBreadcrumbJsonLd, buildMarketingMetadata } from "@/shared/lib/seo";
+import { buildBreadcrumbItems, buildBreadcrumbJsonLd, buildMarketingMetadata } from "@/shared/lib/seo";
+import { JsonLdScript } from "@/shared/ui/json-ld-script";
 
 export const dynamic = "force-static";
 export const revalidate = false;
@@ -36,10 +37,7 @@ export const metadata: Metadata = {
   ],
 };
 
-const breadcrumbItems = [
-  { href: "/", name: "Home" },
-  { href: "/features", name: "Features" },
-];
+const breadcrumbItems = buildBreadcrumbItems([{ href: "/features", name: "Features" }]);
 
 const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
 
@@ -94,7 +92,7 @@ export default function FeaturesPage() {
   return (
     <HomeLayout {...baseOptions}>
       <main className="flex flex-1 flex-col bg-white dark:bg-zinc-950">
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+        <JsonLdScript data={breadcrumbJsonLd} />
 
         <MarketingPageHero
           breadcrumbs={breadcrumbItems}

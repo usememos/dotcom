@@ -17,6 +17,15 @@ export interface BreadcrumbItem {
   name: string;
 }
 
+export const HOME_BREADCRUMB_ITEM = {
+  href: "/",
+  name: "Home",
+} as const satisfies BreadcrumbItem;
+
+export function buildBreadcrumbItems(items: readonly BreadcrumbItem[]): BreadcrumbItem[] {
+  return [HOME_BREADCRUMB_ITEM, ...items];
+}
+
 export function absoluteUrl(path: string): string {
   return path.startsWith("http://") || path.startsWith("https://") ? path : `${BASE_URL}${path}`;
 }

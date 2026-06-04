@@ -11,6 +11,7 @@ import {
   getCardRotation,
   getCardToneClassNames,
 } from "../lib/card-style";
+import { clampContextMenuPosition } from "../lib/context-menu-position";
 import {
   beginPointerInteraction,
   cancelPointerInteraction,
@@ -376,10 +377,17 @@ export function CardItem({
     e.preventDefault();
     e.stopPropagation();
     onSelect(false);
-    setContextMenu({
-      x: Math.min(e.clientX, window.innerWidth - CARD_CONTEXT_MENU_WIDTH - CARD_CONTEXT_MENU_GUTTER),
-      y: Math.min(e.clientY, window.innerHeight - CARD_CONTEXT_MENU_HEIGHT - CARD_CONTEXT_MENU_GUTTER),
-    });
+    setContextMenu(
+      clampContextMenuPosition({
+        x: e.clientX,
+        y: e.clientY,
+        menuWidth: CARD_CONTEXT_MENU_WIDTH,
+        menuHeight: CARD_CONTEXT_MENU_HEIGHT,
+        gutter: CARD_CONTEXT_MENU_GUTTER,
+        viewportWidth: window.innerWidth,
+        viewportHeight: window.innerHeight,
+      }),
+    );
   };
 
   const handleContextMenuDelete = (event: React.MouseEvent<HTMLButtonElement> | React.PointerEvent<HTMLButtonElement>) => {

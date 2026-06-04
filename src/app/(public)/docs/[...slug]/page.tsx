@@ -7,10 +7,11 @@ import { getApiDocsVersionFromSlug, getApiDocsVersionLabel, normalizeApiDocsSlug
 import { getDocsSocialPreview } from "@/features/docs/lib/social-preview";
 import { tocConfig } from "@/features/docs/lib/toc-config";
 import { getMDXComponents } from "@/mdx-components";
-import { getOpenGraphImages, getTwitterImages } from "@/shared/content/social-preview";
+import { buildContentMetadata } from "@/shared/content/social-preview";
 import { source } from "@/shared/content/source";
-import { buildBreadcrumbJsonLd } from "@/shared/lib/seo";
+import { buildBreadcrumbItems, buildBreadcrumbJsonLd } from "@/shared/lib/seo";
 import { Breadcrumbs } from "@/shared/ui/breadcrumbs";
+import { JsonLdScript } from "@/shared/ui/json-ld-script";
 
 export const dynamic = "force-static";
 
@@ -37,9 +38,8 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
 
   // Build breadcrumb items from URL path
   const pathParts = page.url.split("/").filter(Boolean);
-  const uiBreadcrumbItems = [
-    { href: "/", name: "Home" },
-    ...pathParts.map((part, index) => {
+  const uiBreadcrumbItems = buildBreadcrumbItems(
+    pathParts.map((part, index) => {
       const path = `/${pathParts.slice(0, index + 1).join("/")}`;
       const name =
         index === pathParts.length - 1
@@ -54,7 +54,7 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
 
       return { href: path, name };
     }),
-  ];
+  );
   const breadcrumbItems = uiBreadcrumbItems.map((item) => ({
     href: item.href,
     name: item.name,
@@ -85,8 +85,8 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
 
   return (
     <DocsPage {...fullProp} {...tocProps} {...tocConfig}>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <JsonLdScript data={jsonLd} />
+      <JsonLdScript data={breadcrumbJsonLd} />
       <Breadcrumbs items={breadcrumbItems} className="mb-6" />
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
@@ -114,24 +114,8 @@ export async function generateMetadata(props: { params: Promise<{ slug: string[]
   if (!page) notFound();
 
   const preview = getDocsSocialPreview(page);
-  return {
+  return buildContentMetadata(preview, {
     title: page.data.title,
-    description: page.data.description,
-    alternates: {
-      canonical: preview.url,
-    },
-    openGraph: {
-      title: preview.title,
-      description: preview.description,
-      type: "article",
-      url: preview.url,
-      images: getOpenGraphImages(preview),
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: preview.title,
-      description: preview.description,
-      images: getTwitterImages(preview),
-    },
-  };
+    type: "article",
+  });
 }

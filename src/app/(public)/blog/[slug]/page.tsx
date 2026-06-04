@@ -13,10 +13,11 @@ import { BLOG_ARTICLE_COLUMN_CLASS, BLOG_DETAIL_LAYOUT_CLASS, formatBlogDate } f
 import { getBlogSocialPreview } from "@/features/editorial/lib/social-preview";
 import { Footer } from "@/features/marketing/components/footer";
 import { baseOptions } from "@/shared/config/layout";
-import { getOpenGraphImages, getTwitterImages } from "@/shared/content/social-preview";
+import { buildContentMetadata } from "@/shared/content/social-preview";
 import { blogSource } from "@/shared/content/source";
-import { buildBreadcrumbJsonLd } from "@/shared/lib/seo";
+import { buildBreadcrumbItems, buildBreadcrumbJsonLd } from "@/shared/lib/seo";
 import { Breadcrumbs } from "@/shared/ui/breadcrumbs";
+import { JsonLdScript } from "@/shared/ui/json-ld-script";
 
 interface BlogPageProps {
   params: Promise<{ slug: string }>;
@@ -36,11 +37,10 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 
   const { data } = page;
   const Content = page.data.body;
-  const breadcrumbItems = [
-    { href: "/", name: "Home" },
+  const breadcrumbItems = buildBreadcrumbItems([
     { href: "/blog", name: "Blog" },
     { href: `/blog/${slug}`, name: data.title },
-  ];
+  ]);
   const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
   const preview = getBlogSocialPreview(page);
 
@@ -73,8 +73,8 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 
   return (
     <HomeLayout {...baseOptions}>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <JsonLdScript data={jsonLd} />
+      <JsonLdScript data={breadcrumbJsonLd} />
       <main className="flex flex-1 flex-col bg-white dark:bg-zinc-950">
         <section className="px-4 pb-8 pt-8 sm:pt-12 lg:pb-10">
           <div className={BLOG_DETAIL_LAYOUT_CLASS}>
@@ -162,25 +162,9 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
   const { data } = page;
   const preview = getBlogSocialPreview(page);
 
-  return {
+  return buildContentMetadata(preview, {
     title: data.title,
-    description: data.description,
-    alternates: {
-      canonical: preview.url,
-    },
-    openGraph: {
-      title: preview.title,
-      description: preview.description,
-      type: "article",
-      publishedTime: data.published_at,
-      url: preview.url,
-      images: getOpenGraphImages(preview),
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: preview.title,
-      description: preview.description,
-      images: getTwitterImages(preview),
-    },
-  };
+    type: "article",
+    publishedTime: data.published_at,
+  });
 }
