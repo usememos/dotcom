@@ -12,7 +12,7 @@ const checks = [
     type: "html",
     contains: "Best practices to write a TAG",
   },
-  { path: "/changelog/0-29-0", type: "html", contains: "Link previews" },
+  { path: "/changelog/0-29-1", type: "html", contains: "Mobile video posters" },
   { path: "/api/search?query=memo", type: "json-array" },
   { path: "/sitemap.xml", type: "text", contains: "<urlset" },
   { path: "/blog/feed.xml", type: "text", contains: "<rss" },
