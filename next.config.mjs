@@ -2,6 +2,17 @@ import { createMDX } from "fumadocs-mdx/next";
 
 const withMDX = createMDX();
 
+const CORS_HEADERS = [
+  {
+    key: "Access-Control-Allow-Origin",
+    value: "*",
+  },
+  {
+    key: "Access-Control-Allow-Methods",
+    value: "GET, HEAD, OPTIONS",
+  },
+];
+
 const SECURITY_HEADERS = [
   {
     key: "X-Content-Type-Options",
@@ -19,17 +30,7 @@ const SECURITY_HEADERS = [
     key: "Permissions-Policy",
     value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
   },
-];
-
-const OG_IMAGE_CORS_HEADERS = [
-  {
-    key: "Access-Control-Allow-Origin",
-    value: "*",
-  },
-  {
-    key: "Access-Control-Allow-Methods",
-    value: "GET, HEAD, OPTIONS",
-  },
+  ...CORS_HEADERS,
 ];
 
 /** @type {import('next').NextConfig} */
@@ -49,11 +50,11 @@ const config = {
     return [
       {
         source: "/og-image.png",
-        headers: OG_IMAGE_CORS_HEADERS,
+        headers: CORS_HEADERS,
       },
       {
         source: "/og/:path*",
-        headers: OG_IMAGE_CORS_HEADERS,
+        headers: CORS_HEADERS,
       },
       {
         source: "/:path*",
