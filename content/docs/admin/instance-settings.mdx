@@ -7,6 +7,20 @@ Instance settings control authentication, storage, and memo policies. Admins can
 
 Common areas include:
 
-- Registration and password auth controls
-- Storage backend and upload limits
-- Memo visibility policies
+- General access controls: user registration, password auth, username and nickname changes, week start day, and custom instance profile.
+- Storage settings: database, local filesystem, or S3-compatible attachment storage, file path templates, and upload limits.
+- Memo-related settings: content length limits, double-click editing, and allowed reaction values.
+- Tag metadata: per-tag color and blur rules using exact names or anchored regular expression patterns.
+- Notification settings: SMTP email delivery, sender details, reply-to address, and the email test endpoint.
+- AI settings: instance-level OpenAI or Gemini providers and speech-to-text transcription defaults.
+
+## Sensitive settings
+
+Storage, notification, and AI settings can contain credentials. API responses do not return stored S3 secrets, SMTP passwords, or AI provider API keys in plaintext. When updating those settings, submit a new secret only when you intend to replace it.
+
+## Related API
+
+- [Get Instance Setting](/docs/api/latest/instanceservice/GetInstanceSetting)
+- [Batch Get Instance Settings](/docs/api/latest/instanceservice/BatchGetInstanceSettings)
+- [Update Instance Setting](/docs/api/latest/instanceservice/UpdateInstanceSetting)
+- [Test Instance Email Setting](/docs/api/latest/instanceservice/TestInstanceEmailSetting)

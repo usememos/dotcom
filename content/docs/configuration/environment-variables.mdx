@@ -19,6 +19,8 @@ All flags and their corresponding environment variables:
 | `--dsn` | `MEMOS_DSN` | auto | Database connection string |
 | `--instance-url` | `MEMOS_INSTANCE_URL` | `` | Public instance URL |
 | `--demo` | `MEMOS_DEMO` | `false` | Demo mode |
+| `--allow-private-webhooks` | `MEMOS_ALLOW_PRIVATE_WEBHOOKS` | `false` | Allow webhook URLs that resolve to private or reserved IP ranges |
+| `--log-level` | `MEMOS_LOG_LEVEL` | `info` | Log verbosity (`debug`, `info`, `warn`, `error`) |
 
 ### Data directory defaults
 
@@ -44,6 +46,7 @@ An explicit flag always wins over the environment variable for the same setting.
 
 - set `MEMOS_INSTANCE_URL` whenever the app sits behind a proxy
 - prefer explicit `MEMOS_DRIVER` and `MEMOS_DSN` when you are not using SQLite defaults
+- leave `MEMOS_ALLOW_PRIVATE_WEBHOOKS` disabled unless your webhook targets intentionally live on a trusted private network
 - keep secrets such as database credentials outside committed compose files
 - treat these values as part of deployment config and back them up accordingly
 

@@ -1,6 +1,6 @@
 ---
 title: Webhooks
-description: Receive events when memos are created, updated, or deleted.
+description: Receive events when memos are created, updated, deleted, or commented on.
 ---
 
 Memos can send webhooks when memos change. Webhooks are configured per user in the Settings page.
@@ -12,9 +12,18 @@ Webhooks are dispatched on:
 - Memo created
 - Memo updated
 - Memo deleted
+- Memo comment created
 
 ## Payload
 
 Memos sends a JSON payload with the event type and memo data. The exact schema is versioned with the API.
 
 Refer to the [API reference](/docs/api) for the current webhook-related endpoints.
+
+## Network safety
+
+Webhook URLs must use `http` or `https` and must resolve successfully when they are created or updated.
+
+By default, Memos rejects webhook targets that resolve to reserved or private IP ranges, including loopback, RFC 1918 private networks, link-local addresses, and IPv6 local ranges. This protects the instance from server-side request forgery.
+
+If your deployment intentionally sends webhooks to trusted services on a private network, start Memos with `--allow-private-webhooks` or set `MEMOS_ALLOW_PRIVATE_WEBHOOKS=true`. Keep this disabled for public or multi-user instances unless you control every webhook target.
