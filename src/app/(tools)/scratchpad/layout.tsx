@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { ScratchpadViewportLock } from "@/features/scratchpad/components/scratchpad-viewport-lock";
-import { ThemeProvider } from "@/features/scratchpad/components/theme-provider";
 import { buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/shared/lib/seo";
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
 
 const scratchpadTitle = "Scratchpad";
 const scratchpadSocialTitle = "Scratchpad - Memos";
@@ -39,9 +38,9 @@ export const metadata: Metadata = {
 
 export default function ScratchLayout({ children }: { children: ReactNode }) {
   return (
-    <ThemeProvider>
+    <>
       <ScratchpadViewportLock />
       {children}
-    </ThemeProvider>
+    </>
   );
 }
