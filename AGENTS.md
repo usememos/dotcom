@@ -1,143 +1,116 @@
 # AGENTS.md
 
-## Project overview
+## Project Snapshot
 
-This is the official website for Memos (usememos.com), built with Next.js, TypeScript, and Tailwind CSS. It serves as a marketing site, documentation hub, blog, changelog, and features showcase.
+This repository is the official website for Memos at `usememos.com`. It is a static marketing and documentation site built with Next.js, TypeScript, Tailwind CSS, Fumadocs, and MDX content.
 
-This is a **Next.js 16 static marketing/docs website**. No external services, databases, or environment variables are required.
+Treat it as a **Next.js 16 static marketing/docs website**. Do not introduce external services, databases, runtime auth, or environment-variable requirements unless the task explicitly asks for that integration.
 
-### Tech stack
+## Tech Stack
 
-- **Framework**: Next.js 16 with App Router
-- **Content**: Fumadocs for documentation, MDX for blogs/changelogs
-- **Styling**: Tailwind CSS 4.x with custom design system
-- **Icons**: Lucide React (use `XxxIcon` naming convention)
-- **Database**: File-based content (MDX files in `/content/`)
-- **Node**: Requires Node.js 22.0.0 or higher
+- **Framework**: Next.js 16 App Router
+- **Runtime target**: Cloudflare Workers through OpenNext
+- **Content**: Fumadocs, MDX, and file-based content under `content/`
+- **Styling**: Tailwind CSS 4.x with the local design system
+- **Icons**: Lucide React using the `XxxIcon` naming convention
+- **Validation**: Zod schemas in `source.config.ts`
+- **Node.js**: 22.0.0 or newer
 
-### Services
+## Common Commands
 
-| Service | Command | Port | Notes |
-|---------|---------|------|-------|
-| Dev server | `pnpm dev` | 3000 | Uses Turbopack; hot-reloads on file changes |
-| Cloudflare preview | `pnpm run preview` | 8788 | Builds through OpenNext and runs in the Workers runtime |
+Use `pnpm` for all package scripts.
 
-### Key commands
+| Task | Command | Notes |
+| --- | --- | --- |
+| Install dependencies | `pnpm install` | Runs `postinstall` automatically |
+| Develop locally | `pnpm dev` | Starts Next.js with Turbopack on port 3000 |
+| Build | `pnpm build` | Full production build for the static site |
+| Start production server | `pnpm start` | Runs the local Next.js production server |
+| Lint | `pnpm lint` | Runs static revalidation audit, metadata audit, and Biome |
+| Format | `pnpm format` | Runs Biome format with `--write` |
+| Check and write fixes | `pnpm check` | Runs `biome check --write` |
+| Generate Cloudflare types | `pnpm typegen` | Writes `cloudflare-env.d.ts` |
+| Cloudflare preview | `pnpm run preview` | Builds with OpenNext and serves the Workers runtime on port 8788 |
+| Cloudflare deploy | `pnpm run deploy` | Builds and deploys with Wrangler, preserving existing vars |
+| Cloudflare dry run | `pnpm run deploy:dry-run` | Builds and packages through Wrangler without deploying |
+| Smoke test | `SMOKE_BASE_URL=http://localhost:8788 pnpm run smoke` | Run against `pnpm run preview` |
+| Metadata audit | `pnpm run metadata:audit` | Checks metadata title rules |
+| Open Graph audit | `pnpm run og:audit` | Audits OG output |
 
-Refer to `package.json` scripts for the full list. Quick reference:
+For day-to-day work, use `pnpm dev`. Before deployment-sensitive changes, prefer `pnpm run preview` because it runs the built app in the Cloudflare Workers runtime instead of the local Node.js server.
 
-- **Install**: `pnpm install`
-- **Lint**: `pnpm lint` (runs Biome)
-- **Format**: `pnpm format` (runs Biome format with `--write`)
-- **Build**: `pnpm build` (full production build, generates 300+ static pages)
-- **Dev**: `pnpm dev` (starts on port 3000 with Turbopack)
-- **Start**: `pnpm start` (runs the local Next.js production server)
-- **Postinstall**: `pnpm postinstall` (processes MDX content; runs automatically on install)
-- **Cloudflare preview**: `pnpm run preview` (OpenNext build + local Workers runtime)
-- **Cloudflare deploy**: `pnpm run deploy` (OpenNext build + Cloudflare deploy)
-- **Cloudflare dry run**: `pnpm run deploy:dry-run` (OpenNext build + Wrangler dry-run packaging)
-- **Smoke test**: `SMOKE_BASE_URL=http://localhost:8788 pnpm run smoke`
-
-Use `pnpm dev` for day-to-day local development. Use `pnpm run preview` before deployment because it runs the built app in the Workers runtime instead of the local Node.js Next server.
-
-OpenNext is configured with static-assets incremental cache for this mostly static site. Treat content updates as rebuild/redeploy events. If future runtime ISR/revalidation is required, design a persistent cache backend such as R2/KV first.
+There is no `test` script. Standard verification is `pnpm lint` and `pnpm build`, with `pnpm run preview` plus smoke tests when the change could affect production routing or runtime behavior.
 
 ## Architecture
 
-### Page structure
+### Routes
 
-- `src/app/(public)/` - Unauthenticated public site routes
-- `src/app/(public)/docs/` - Documentation using Fumadocs
-- `src/app/(public)/blog/` - Blog posts from `/content/blog/`
-- `src/app/(public)/changelog/` - Release notes from `/content/changelog/`
-- `src/app/(public)/features/` - SEO feature pages with individual `/features/[slug]` routes
-- `src/app/(public)/brand/`, `src/app/(public)/pricing/`, `src/app/(public)/privacy/`, `src/app/(public)/sponsors/`, `src/app/(public)/use-cases/` - Static marketing pages
-- `src/app/(tools)/scratchpad/` - Standalone client-side scratchpad tool
-- `src/app/(auth)/` and `src/app/(app)/` - Future-facing route boundaries; do not add runtime auth/database behavior without an explicit integration task
+- `src/app/(public)/` contains unauthenticated public routes.
+- `src/app/(public)/docs/` serves Fumadocs documentation.
+- `src/app/(public)/blog/` serves blog posts from `content/blog/`.
+- `src/app/(public)/changelog/` serves release notes from `content/changelog/`.
+- `src/app/(public)/features/` contains the feature index and SEO pages at `/features/[slug]`.
+- `src/app/(public)/brand/`, `pricing/`, `privacy/`, `sponsors/`, and `use-cases/` contain static marketing pages.
+- `src/app/(tools)/scratchpad/` contains the standalone client-side scratchpad tool.
+- `src/app/(auth)/` and `src/app/(app)/` are future-facing route boundaries. Do not add runtime auth or database behavior there without an explicit task.
 
-### Content management
+### Content
 
-- **Documentation**: MDX files in `/content/docs/` with frontmatter schemas
-- **Blog posts**: MDX files in `/content/blog/` with author, date, tags
-- **Changelogs**: MDX files in `/content/changelog/` with version, features, fixes
-- **Configuration**: `source.config.ts` defines MDX schemas and processing with Zod validation
-- **Source loaders**: `src/shared/content/source.ts` configures Fumadocs loaders for docs, blog, and changelog
-- **Feature pages**: Static feature data lives under `src/features/marketing/data/features/`
-- **Use-case pages**: Static use-case data lives under `src/features/marketing/data/use-cases/`
+- Documentation MDX lives in `content/docs/`.
+- Blog MDX lives in `content/blog/`.
+- Changelog MDX lives in `content/changelog/`.
+- `source.config.ts` defines content schemas and MDX processing.
+- `src/shared/content/source.ts` configures Fumadocs loaders for docs, blog, and changelog content.
+- `.source/` is generated by `fumadocs-mdx`; never edit it directly.
 
-### Component system
+### Feature and Use-Case Data
 
-- **Marketing components**: `src/features/marketing/components/`
-- **Docs components and helpers**: `src/features/docs/components/` and `src/features/docs/lib/`
-- **Editorial components and helpers**: `src/features/editorial/components/` and `src/features/editorial/lib/`
-- **Scratchpad components, hooks, and helpers**: `src/features/scratchpad/`
-- **Shared UI primitives**: `src/shared/ui/`
-- **Layout/config**: `src/shared/config/layout.tsx` defines baseOptions for navigation and branding
+- Feature page data lives under `src/features/marketing/data/features/`.
+- Use-case page data lives under `src/features/marketing/data/use-cases/`.
+- Feature SEO pages are statically generated from feature slugs with `generateStaticParams`.
+- To add a feature page, update the relevant slug, data, and accessor modules together.
 
-### Styling patterns
+### Components
 
-- Use `py-24` for section padding and `rounded-2xl` for cards
-- Use the teal/cyan color scheme (`teal-600`, `cyan-600`) for primary actions
-- Maintain dark mode support with `dark:` prefixes
+- Marketing components: `src/features/marketing/components/`
+- Docs components and helpers: `src/features/docs/components/` and `src/features/docs/lib/`
+- Editorial components and helpers: `src/features/editorial/components/` and `src/features/editorial/lib/`
+- Scratchpad components, hooks, and helpers: `src/features/scratchpad/`
+- Shared UI primitives: `src/shared/ui/`
+- Shared layout and navigation config: `src/shared/config/layout.tsx`
+- Shared utilities, including `cn()`: `src/shared/lib/utils.ts`
 
-### Feature pages system
+## Coding Conventions
 
-Individual SEO pages at `/features/[slug]` are generated from `src/features/marketing/data/features/`:
+- Prefer existing feature-folder patterns over creating new top-level structures.
+- Use the `@/*` alias for imports from `src/*`.
+- Use `@/.source` only for generated Fumadocs output from `.source/server.ts`.
+- Import Lucide icons as `XxxIcon`, for example `import { ShieldIcon } from "lucide-react"`.
+- Pass icons as React elements to components, not as string names.
+- Keep MDX components registered through `getMDXComponents` in `src/mdx-components.tsx`.
+- Maintain dark mode support with `dark:` classes when changing UI.
+- Use `py-24` for standard marketing section padding and `rounded-2xl` for card-like surfaces unless the surrounding component uses a different local pattern.
+- Use the teal/cyan palette, especially `teal-600` and `cyan-600`, for primary marketing actions.
+- Remove emojis from marketing content; use Lucide icons instead.
+- Keep pages mobile-first and responsive.
 
-- Feature data is split into type, slug, data, and accessor modules
-- Static generation at build time uses `generateStaticParams` with feature slugs
-- Hero sections include titles/subtitles
-- Benefits lists use `CheckCircleIcon` from lucide-react
-- Use cases use `StarIcon`
-- Technical details appear in gradient cards
-- To add a new feature: add the slug, data, and any accessor updates in the feature data modules
+## SEO and Metadata
 
-## Key conventions
+- Preserve comprehensive Open Graph and Twitter card metadata.
+- Keep feature pages search-oriented with clear titles, descriptions, benefits, use cases, and technical details.
+- Update `src/app/sitemap.ts` when adding routes that should be discoverable.
+- Run metadata or OG audits when changing metadata structure.
 
-### Icon usage
+## Cloudflare Notes
 
-- Import Lucide icons with `XxxIcon` naming: `import { ShieldIcon } from "lucide-react"`
-- Pass icons as React elements to components, not strings
+OpenNext is configured with static-assets incremental caching for this mostly static site. Treat content updates as rebuild and redeploy events. If future ISR or runtime revalidation is required, design a persistent cache backend such as R2 or KV before enabling it.
 
-### MDX components
+Use `pnpm run preview` or `pnpm run deploy:dry-run` to validate Cloudflare production behavior. `pnpm start` only validates the local Next.js production server.
 
-- Custom components available in MDX: Card, Cards, Callout, CodeBlock
-- Register new components in `src/mdx-components.tsx` via `getMDXComponents`
-- Components are automatically available in all MDX files (docs, blog, changelog)
+## Gotchas
 
-### Path aliases
-
-- `@/*` maps to `src/*` (for example, `@/components/ui/card`)
-- `@/.source` maps to `.source/server.ts` (generated by fumadocs-mdx for content)
-
-### Metadata and SEO
-
-- Comprehensive OpenGraph tags on all pages
-- Twitter card support
-- Feature pages optimized for search with detailed descriptions
-- Sitemap generation in `src/app/sitemap.ts`
-
-## Important files
-
-- `next.config.mjs` - Next.js configuration with Fumadocs MDX integration
-- `source.config.ts` - MDX content schemas and processing configuration (docs, blog, changelog)
-- `src/shared/content/source.ts` - Fumadocs loaders for content collections
-- `src/features/marketing/data/features/` - Feature page data and accessors
-- `src/features/marketing/data/use-cases/` - Use-case page data and accessors
-- `src/mdx-components.tsx` - Custom MDX component registration
-- `src/shared/config/layout.tsx` - Shared navigation and branding configuration
-- `src/shared/lib/utils.ts` - Utility functions including `cn()` for className merging
-
-## Content guidelines
-
-- Remove emojis from marketing content and use Lucide icons instead
-- Use consistent gradient backgrounds and shadow patterns
-- Maintain responsive design with a mobile-first approach
-
-### Gotchas
-
-- The `postinstall` script downloads OpenAPI specs from GitHub (`raw.githubusercontent.com`) and generates MDX + Fumadocs source files. If the network fetch fails during `pnpm install`, the generated API docs will be missing. Rerun `pnpm install` to retry.
-- pnpm may warn about ignored build scripts for `esbuild` and `sharp`. This warning is cosmetic and does not block development or builds.
-- There are no automated test suites (no `test` script in `package.json`). Verification is done via `pnpm lint` and `pnpm build`.
-- The `.source/` directory is auto-generated by `fumadocs-mdx` during `postinstall`. Do not edit files in it directly.
-- `pnpm start` runs the local Next.js production server. Use `pnpm run preview` or `pnpm run deploy:dry-run` to validate Cloudflare production behavior.
+- `postinstall` downloads OpenAPI specs from `raw.githubusercontent.com`, generates MDX/Fumadocs source files, and runs formatting. If the network fetch fails during install, rerun `pnpm install`.
+- pnpm may warn about ignored build scripts for `esbuild` and `sharp`; this is cosmetic for normal development.
+- The production build generates hundreds of static pages, so `pnpm build` can take a while.
+- Do not edit generated files in `.source/`.
+- Do not add external service, database, auth, or runtime environment dependencies unless explicitly requested.
