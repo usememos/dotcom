@@ -6,7 +6,6 @@ import { Inter, Source_Serif_4 } from "next/font/google";
 import Script from "next/script";
 import type { ReactNode } from "react";
 import { ClerkConfigProvider } from "@/shared/auth/clerk-config";
-import { getClerkPublishableKey } from "@/shared/auth/env";
 import { buildSiteNavigationJsonLd, DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_ALT } from "@/shared/lib/seo";
 
 const inter = Inter({
@@ -92,7 +91,7 @@ export const viewport: Viewport = {
 };
 
 export default function Layout({ children }: { children: ReactNode }) {
-  const clerkPublishableKey = getClerkPublishableKey();
+  const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
   const isClerkConfigured = Boolean(clerkPublishableKey);
   const softwareJsonLd = {
     "@context": "https://schema.org",
