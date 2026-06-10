@@ -13,7 +13,7 @@ https://<your-instance>/mcp
 
 ## Connecting a client
 
-The server uses the **Streamable HTTP** transport. Point any MCP client that supports it at your instance's `/mcp` endpoint and authenticate with a [personal access token](/docs/admin/tokens) as a Bearer credential:
+The server uses the **Streamable HTTP** transport. Point any MCP client that supports it at your instance's `/mcp` endpoint and authenticate with a [personal access token](/docs/integrations/api-access) as a Bearer credential:
 
 ```json
 {
@@ -44,7 +44,7 @@ Tool calls run against the same REST API as the web app, with the same permissio
 - Mutating tools (create, update, delete) require a valid token.
 - Public reads may work without a token, exactly as the REST API allows.
 
-Create and revoke personal access tokens from your user settings in the app. See [Tokens](/docs/admin/tokens).
+Create and revoke personal access tokens from your user settings in the app. See [API Access](/docs/integrations/api-access).
 
 ## Available tools
 

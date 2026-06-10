@@ -9,29 +9,28 @@ In practice:
 
 - use Docker for the fastest single-instance setup
 - use Docker Compose when you want repeatable config and easier upgrades
-- build from source when developing or customizing Memos
+- use the binary when you already have host-level service management in place
 - use Kubernetes only when you already operate a cluster
+- build from source when customizing or pinning a specific revision of Memos
 - put production traffic behind a reverse proxy and HTTPS
 
 <Cards>
-  <Card title="Binary" href="/docs/deploy/binary" icon="Download">
-    Install and supervise Memos without Docker.
-  </Card>
   <Card title="Docker" href="/docs/deploy/docker" icon="Container">
     Quick single-container setup.
   </Card>
   <Card title="Docker Compose" href="/docs/deploy/docker-compose" icon="Container">
     A structured deployment for local or small production setups.
   </Card>
+  <Card title="Binary" href="/docs/deploy/binary" icon="Download">
+    Install and supervise Memos without Docker.
+  </Card>
   <Card title="Kubernetes" href="/docs/deploy/kubernetes" icon="Cloud">
     Deploy Memos on a cluster with manifests and persistent storage.
   </Card>
   <Card title="Build From Source" href="/docs/deploy/development" icon="Code">
-    Compile Memos yourself for custom builds and development workflows.
+    Compile Memos yourself for forks, custom patches, and pinned deployments.
   </Card>
   <Card title="Reverse Proxy" href="/docs/deploy/reverse-proxy" icon="Shield">
     Put Memos behind HTTPS.
   </Card>
 </Cards>
-
-Binary installs are also supported and fit well when you already have host-level service management in place.

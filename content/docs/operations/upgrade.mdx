@@ -1,0 +1,52 @@
+---
+title: Upgrade
+description: Upgrade Memos safely across Docker, Docker Compose, and binary deployments.
+---
+
+Memos applies database migrations automatically on startup, so an upgrade is: back up, replace the version, start, verify. Downgrading after a migration has run is not supported — your backup is the rollback path.
+
+## Before every upgrade
+
+1. Back up the database and attachments — see [Backup & Restore](/docs/operations/backup-restore).
+2. Read the [changelog](/changelog) for the versions you are skipping, especially across minor versions (0.x → 0.y), which can contain breaking changes.
+3. Note your current version so you can report it if something goes wrong.
+
+## Docker
+
+```bash
+docker pull neosmemo/memos:stable
+docker stop memos
+docker rm memos
+# re-run your original docker run command — the data volume keeps your data
+```
+
+The exact `docker run` flags are in the [Docker guide](/docs/deploy/docker).
+
+## Docker Compose
+
+```bash
+docker compose pull
+docker compose up -d
+```
+
+## Binary
+
+1. Stop the service (`systemctl stop memos` or your supervisor's equivalent).
+2. Replace the binary with the new release from [GitHub releases](https://github.com/usememos/memos/releases).
+3. Start the service and watch the logs for migration output.
+
+See the [Binary guide](/docs/deploy/binary) for service setup.
+
+## Pinning versions
+
+`neosmemo/memos:stable` tracks the latest stable release, which is convenient but upgrades implicitly on every pull. For production, pin a specific version tag (for example `neosmemo/memos:0.29.1`) and upgrade deliberately.
+
+## Verify after upgrading
+
+- the UI loads and you can sign in
+- a new memo can be created and an existing one opens
+- attachments load (storage config survived the upgrade)
+
+## Rolling back
+
+Restore the pre-upgrade backup and start the previous version. Do not point an old version at a database that a newer version has already migrated.

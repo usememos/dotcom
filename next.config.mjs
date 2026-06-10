@@ -46,6 +46,20 @@ const config = {
     unoptimized: true, // Disable built-in image optimization
     qualities: [75, 85], // Support both default (75) and higher quality (85)
   },
+  async redirects() {
+    return [
+      {
+        source: "/docs/troubleshooting/common-issues",
+        destination: "/docs/troubleshooting",
+        permanent: true,
+      },
+      {
+        source: "/docs/admin/tokens",
+        destination: "/docs/integrations/api-access",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

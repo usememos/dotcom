@@ -1,62 +1,34 @@
 ---
 title: Build From Source
-description: Build Memos locally for development, testing, and custom deployments.
+description: Produce your own Memos build and run it as a deployment.
 ---
 
-Building from source is the right path when you want to contribute to Memos, test local changes, or produce a custom build.
+Build from source when you deploy a fork, a custom patch, or a build pinned to an exact revision. If you want to work on the Memos codebase itself, start with the [Development](/docs/development) section instead — this page only covers turning a source build into a deployment.
 
-## Prerequisites
+## Produce a release build
 
-- Go 1.25+
-- Node.js 22+
-- pnpm 10+
-- Git
+Follow [Setup](/docs/development/setup) for the toolchain, then [Building](/docs/development/building) for the build commands. A release build embeds the frontend assets into a single binary, so the result deploys exactly like a downloaded release.
 
-## Typical workflow
+For deployments, always build from a tagged or pinned revision rather than `main`:
 
 ```bash
 git clone https://github.com/usememos/memos.git
 cd memos
-cd web
-pnpm install
-pnpm release
-cd ..
-go build -o build/memos ./cmd/memos
+git checkout v0.29.1  # pin the version you intend to run
 ```
 
-Run the result:
+## Run the result as a deployment
 
-```bash
-./build/memos
-```
+The self-built binary behaves like the official release binary. Memos listens on `http://localhost:8081` by default.
 
-Memos listens on `http://localhost:8081` by default.
+Follow the [Binary](/docs/deploy/binary) guide for the production concerns:
 
-## What the build is doing
-
-- frontend assets are produced first
-- the backend binary is built afterward
-- release-oriented builds embed frontend assets into the binary
-
-## Local development
-
-Common development flow:
-
-- run the backend locally with `go run ./cmd/memos`
-- run the frontend dev server if the upstream repo expects it
-- use SQLite first unless you are actively testing MySQL or PostgreSQL behavior
-- run tests before opening a PR
-
-## When source builds make sense
-
-- you need a custom patch or fork
-- you want to debug or profile the application
-- you are contributing code or docs
-- you want to embed a frontend build tied to a specific backend change
+- process supervision (systemd or similar)
+- data directory ownership and permissions
+- reverse proxy and HTTPS
 
 ## Before production use
 
-- build from a tagged or pinned revision
 - set explicit environment variables for instance URL and database
-- run a smoke test after build
-- keep backups before deploying a new binary
+- run a smoke test against the new binary before switching traffic
+- keep a backup before deploying a new build — see [Backup & Restore](/docs/operations/backup-restore)

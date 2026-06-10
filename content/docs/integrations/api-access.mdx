@@ -1,0 +1,28 @@
+---
+title: API Access
+description: Authenticate against the Memos API with personal access tokens.
+---
+
+Every Memos feature is available over the API. To call it programmatically, create a personal access token and send it as a Bearer credential.
+
+## Create a personal access token
+
+Create and revoke tokens from your **user settings** in the app. Tokens use the `memos_pat_` prefix, and the plain token value is shown only once at creation — store it somewhere safe.
+
+Tokens are scoped to your user: API calls made with a token can do what your user can do.
+
+## Call the API
+
+Pass the token in the `Authorization` header:
+
+```bash
+curl -H "Authorization: Bearer memos_pat_..." \
+  https://memos.example.com/api/v1/memos
+```
+
+## Where to go next
+
+- [API Reference](/docs/api) — every service and method, REST and gRPC
+- [Webhooks](/docs/integrations/webhooks) — push events instead of polling
+- [MCP Server](/docs/integrations/mcp) — connect AI assistants using the same tokens
+- [Security](/docs/configuration/security) — the full token security model

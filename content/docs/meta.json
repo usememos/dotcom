@@ -5,13 +5,13 @@
     "getting-started",
     "deploy",
     "configuration",
-    "usage",
-    "operations",
-    "development",
-    "integrations",
     "admin",
+    "usage",
+    "integrations",
+    "operations",
     "troubleshooting",
+    "faq",
     "api",
-    "faq"
+    "development"
   ]
 }
