@@ -27,6 +27,25 @@ SQLite works for a single replica and is the easiest option, but it ties you to 
 - TLS termination at the ingress layer
 - standard forwarded headers preserved
 
+## Avoid the `MEMOS_PORT` collision
+
+If your `Service` is named `memos`, Kubernetes injects link-style environment variables into pods in the same namespace — including `MEMOS_PORT=tcp://10.x.x.x:5230`. Memos reads `MEMOS_PORT` as its listen port, fails to parse the injected value, and falls back to port `0`, so the server starts on a random port and logs `Server running on port 0`.
+
+Prevent this in the pod spec — either disable service links, set the port explicitly, or both:
+
+```yaml
+spec:
+  enableServiceLinks: false
+  containers:
+    - name: memos
+      image: neosmemo/memos:stable
+      env:
+        - name: MEMOS_PORT
+          value: "5230"
+```
+
+An explicit container `env` entry always overrides the injected variable. Renaming the `Service` to something that does not expand to a `MEMOS_*` prefix also works.
+
 ## Practical guidance
 
 - prefer external MySQL or PostgreSQL before attempting multi-replica patterns
