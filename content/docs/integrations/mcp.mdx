@@ -1,0 +1,83 @@
+---
+title: MCP Server
+description: Connect AI assistants to Memos with the built-in Model Context Protocol server.
+---
+
+Memos includes a built-in [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) server, available since v0.27.0. It lets AI assistants such as Claude search, create, and update your memos through a curated set of tools.
+
+The server is part of the main Memos binary — there is nothing extra to install or enable. It runs at:
+
+```
+https://<your-instance>/mcp
+```
+
+## Connecting a client
+
+The server uses the **Streamable HTTP** transport. Point any MCP client that supports it at your instance's `/mcp` endpoint and authenticate with a [personal access token](/docs/admin/tokens) as a Bearer credential:
+
+```json
+{
+  "mcpServers": {
+    "memos": {
+      "type": "http",
+      "url": "https://<your-instance>/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-personal-access-token>"
+      }
+    }
+  }
+}
+```
+
+With Claude Code, the equivalent one-liner is:
+
+```bash
+claude mcp add --transport http memos https://<your-instance>/mcp \
+  --header "Authorization: Bearer <your-personal-access-token>"
+```
+
+## Authentication
+
+Tool calls run against the same REST API as the web app, with the same permissions:
+
+- The token identifies you; tools can only see and change what your account can.
+- Mutating tools (create, update, delete) require a valid token.
+- Public reads may work without a token, exactly as the REST API allows.
+
+Create and revoke personal access tokens from your user settings in the app. See [Tokens](/docs/admin/tokens).
+
+## Available tools
+
+The server exposes a curated, memo-focused toolset:
+
+| Tool | Description |
+| --- | --- |
+| `memo_list_memos` | List and search memos |
+| `memo_create_memo` | Create a memo |
+| `memo_get_memo` | Get a single memo |
+| `memo_update_memo` | Update a memo |
+| `memo_delete_memo` | Delete a memo |
+| `memo_list_memo_comments` | List comments on a memo |
+| `memo_create_memo_comment` | Comment on a memo |
+| `memo_list_memo_attachments` | List a memo's attachments |
+| `memo_set_memo_attachments` | Set a memo's attachments |
+| `memo_list_memo_reactions` | List reactions on a memo |
+| `memo_upsert_memo_reaction` | Add or update a reaction |
+| `memo_delete_memo_reaction` | Remove a reaction |
+| `memo_list_memo_relations` | List a memo's relations |
+| `memo_set_memo_relations` | Set a memo's relations |
+| `attachment_list_attachments` | List attachments |
+| `attachment_get_attachment` | Get an attachment |
+| `attachment_delete_attachment` | Delete an attachment |
+
+Each tool maps to an endpoint of the [REST API](/docs/api), so request and response shapes match the API reference. Tools carry standard MCP annotations (read-only, destructive, idempotent) so clients can ask for confirmation before destructive actions.
+
+## Browser clients and origins
+
+Desktop MCP clients work out of the box. Browser-based clients are subject to an origin check: requests are accepted when the `Origin` header is absent, matches the instance's own host, or matches the configured instance URL. Anything else is rejected with `403` to protect against DNS rebinding.
+
+## Troubleshooting
+
+- **`401` / permission errors** — the token is missing, expired, or lacks access to the resource. Create a fresh token in your user settings.
+- **`403` on connect** — your client sends an `Origin` header that doesn't match the instance. Use a desktop client, or set the instance URL so it matches.
+- **Tool errors** — API failures are returned as tool errors with the HTTP status and message (for example `404 Not Found: memo not found`), so the assistant can read and react to them.
