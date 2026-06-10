@@ -8,13 +8,14 @@ const CARBON_SCRIPT_URL = "https://cdn.carbonads.com/carbon.js?serve=CWBD4K7E&pl
 const SPONSOR_URL = "https://github.com/sponsors/usememos";
 
 const CONTAINER_STYLES = {
-  default: "h-56 w-full overflow-auto rounded-lg border bg-muted/30 p-3 dark:bg-muted/10",
+  default: "w-full overflow-hidden rounded-lg border bg-muted/30 px-3 py-2 dark:bg-muted/10",
   compact: "h-24 w-full overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 p-2 dark:border-white/10 dark:bg-white/5",
   sponsor: cn("h-full w-full min-h-[200px] overflow-auto", "bg-transparent p-0"),
 } as const;
 
 const FALLBACK_STYLES = {
-  default: "flex w-full items-center justify-center py-1 text-sm text-muted-foreground hover:opacity-80",
+  default:
+    "flex w-full items-center justify-center text-sm font-medium leading-5 text-muted-foreground transition-colors hover:text-foreground",
   compact:
     "flex w-full items-center justify-center py-1 text-xs text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100",
   sponsor: "flex h-full flex-col gap-3 sm:gap-4",
@@ -73,7 +74,17 @@ export function CarbonAdCard({ variant = "default" }: CarbonAdCardProps) {
 }
 
 function FallbackContent({ variant }: { variant: keyof typeof CONTAINER_STYLES }) {
-  if (variant === "sponsor") {
+  if (variant === "compact") {
+    return (
+      <a href={SPONSOR_URL} target="_blank" rel="noopener noreferrer" className={FALLBACK_STYLES.compact}>
+        Support Memos
+      </a>
+    );
+  }
+
+  const isSponsor = variant === "sponsor";
+
+  if (isSponsor) {
     return (
       <a
         href={SPONSOR_URL}
@@ -95,7 +106,7 @@ function FallbackContent({ variant }: { variant: keyof typeof CONTAINER_STYLES }
   }
 
   return (
-    <a href={SPONSOR_URL} target="_blank" rel="noopener noreferrer" className={FALLBACK_STYLES[variant]}>
+    <a href={SPONSOR_URL} target="_blank" rel="noopener noreferrer" className={FALLBACK_STYLES.default}>
       Support Memos
     </a>
   );
