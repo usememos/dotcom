@@ -2,8 +2,12 @@
 
 import { useClerk, useUser } from "@clerk/nextjs";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { ExternalLinkIcon, LogInIcon, LogOutIcon, ShieldCheckIcon, UserCogIcon } from "lucide-react";
+import { ExternalLinkIcon, LogInIcon, LogOutIcon, PlugIcon, ShieldCheckIcon, UserCogIcon } from "lucide-react";
+import { useEffect } from "react";
 import { useIsClerkConfigured } from "@/shared/auth/clerk-config";
+import type { SafeMemosSettings } from "@/shared/settings/memos-settings";
+import { getMemosSettings } from "@/shared/settings/memos-settings-client";
+import { connectionMenuLabel } from "../lib/memos-connection";
 
 const menuItemClassName =
   "flex h-8 cursor-default select-none items-center gap-2 rounded-sm px-2 text-sm text-stone-700 outline-none data-[highlighted]:bg-stone-100 data-[highlighted]:text-stone-950 dark:text-stone-300 dark:data-[highlighted]:bg-stone-800 dark:data-[highlighted]:text-stone-50";
@@ -20,9 +24,35 @@ function getUserDisplayName(user: ReturnType<typeof useUser>["user"]): string {
   return user.username || user.fullName || user.primaryEmailAddress?.emailAddress || "Account";
 }
 
-function ClerkAccountMenuSection() {
+type AccountMenuSectionProps = {
+  onOpenMemosConnection: () => void;
+  /** Shared settings state owned by the toolbar; null until first loaded. */
+  memosSettings: SafeMemosSettings | null;
+  onMemosSettingsLoaded: (settings: SafeMemosSettings) => void;
+};
+
+function ClerkAccountMenuSection({ onOpenMemosConnection, memosSettings, onMemosSettingsLoaded }: AccountMenuSectionProps) {
   const { openSignIn, openUserProfile, signOut } = useClerk();
   const { isLoaded, isSignedIn, user } = useUser();
+
+  useEffect(() => {
+    if (!isSignedIn || memosSettings !== null) {
+      return;
+    }
+    let cancelled = false;
+    getMemosSettings()
+      .then((settings) => {
+        if (!cancelled) {
+          onMemosSettingsLoaded(settings);
+        }
+      })
+      .catch(() => {
+        // Menu falls back to the disconnected label; the dialog surfaces errors.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [isSignedIn, memosSettings, onMemosSettingsLoaded]);
 
   if (!isLoaded) {
     return null;
@@ -48,6 +78,7 @@ function ClerkAccountMenuSection() {
 
   const displayName = getUserDisplayName(user);
   const emailAddress = user.primaryEmailAddress?.emailAddress;
+  const isConnected = memosSettings?.hasAccessToken === true;
 
   return (
     <>
@@ -86,6 +117,27 @@ function ClerkAccountMenuSection() {
 
       <DropdownMenu.Item
         className={menuItemClassName}
+        onSelect={() => {
+          // Defer to the next macrotask so the dropdown's modal layer finishes
+          // unmounting before the dialog's mounts. Opening synchronously overlaps
+          // the two Radix DismissableLayers, and the dialog captures the menu's
+          // `body { pointer-events: none }` as its restore value — leaving the page
+          // unclickable after the dialog closes.
+          setTimeout(onOpenMemosConnection, 0);
+        }}
+      >
+        <PlugIcon className="h-4 w-4" />
+        <span>{connectionMenuLabel(isConnected)}</span>
+        {isConnected ? (
+          <>
+            <span className="ml-auto h-1.5 w-1.5 rounded-full bg-teal-500" aria-hidden="true" />
+            <span className="sr-only">Connected</span>
+          </>
+        ) : null}
+      </DropdownMenu.Item>
+
+      <DropdownMenu.Item
+        className={menuItemClassName}
         onSelect={(event) => {
           event.preventDefault();
           openUserProfile();
@@ -111,12 +163,12 @@ function ClerkAccountMenuSection() {
   );
 }
 
-export function ScratchpadAccountMenuSection() {
+export function ScratchpadAccountMenuSection(props: AccountMenuSectionProps) {
   const isClerkConfigured = useIsClerkConfigured();
 
   if (!isClerkConfigured) {
     return null;
   }
 
-  return <ClerkAccountMenuSection />;
+  return <ClerkAccountMenuSection {...props} />;
 }

@@ -5,8 +5,6 @@
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
-  Access-Control-Allow-Origin: *
-  Access-Control-Allow-Methods: GET, HEAD, OPTIONS
 
 /_next/static/*
   Cache-Control: public,max-age=31536000,immutable
@@ -17,8 +15,12 @@
 /favicon.ico
   Cache-Control: public,max-age=604800,stale-while-revalidate=86400
 
+# CORS for OG images: keep in sync with CORS_HEADERS in next.config.mjs,
+# which covers the dynamic /og/:path* routes.
 /og-image.png
   Cache-Control: public,max-age=86400,stale-while-revalidate=604800
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, HEAD, OPTIONS
 
 /content/*
   Cache-Control: public,max-age=604800,stale-while-revalidate=604800

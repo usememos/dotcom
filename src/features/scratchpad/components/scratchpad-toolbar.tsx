@@ -8,6 +8,8 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { useIsClerkConfigured } from "@/shared/auth/clerk-config";
+import type { SafeMemosSettings } from "@/shared/settings/memos-settings";
+import { MemosConnectionDialog } from "./memos-connection-dialog";
 import { ScratchpadAccountMenuSection } from "./scratchpad-account-menu-section";
 
 const menuItemClassName =
@@ -43,6 +45,11 @@ function ClerkScratchpadMenuTriggerImage() {
 export function ScratchpadToolbar() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [memosConnectionOpen, setMemosConnectionOpen] = useState(false);
+  // Single owner of the connection status shared by the account menu (the
+  // "Connected" indicator) and the connection dialog, so it is fetched once
+  // and stays fresh after the dialog saves or disconnects.
+  const [memosSettings, setMemosSettings] = useState<SafeMemosSettings | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -67,7 +74,11 @@ export function ScratchpadToolbar() {
             sideOffset={8}
             align="end"
           >
-            <ScratchpadAccountMenuSection />
+            <ScratchpadAccountMenuSection
+              onOpenMemosConnection={() => setMemosConnectionOpen(true)}
+              memosSettings={memosSettings}
+              onMemosSettingsLoaded={setMemosSettings}
+            />
 
             <DropdownMenu.Label className={menuLabelClassName}>Theme</DropdownMenu.Label>
             <DropdownMenu.RadioGroup value={mounted ? theme : "system"} onValueChange={setTheme}>
@@ -105,6 +116,13 @@ export function ScratchpadToolbar() {
           </DropdownMenu.Content>
         </DropdownMenu.Portal>
       </DropdownMenu.Root>
+
+      <MemosConnectionDialog
+        open={memosConnectionOpen}
+        onOpenChange={setMemosConnectionOpen}
+        settings={memosSettings}
+        onSettingsChange={setMemosSettings}
+      />
     </div>
   );
 }

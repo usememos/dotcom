@@ -2,6 +2,8 @@ import { createMDX } from "fumadocs-mdx/next";
 
 const withMDX = createMDX();
 
+// Applied only to the OG image routes below. Cloudflare serves the static
+// /og-image.png from public/_headers — keep that file's CORS block in sync.
 const CORS_HEADERS = [
   {
     key: "Access-Control-Allow-Origin",
@@ -30,7 +32,6 @@ const SECURITY_HEADERS = [
     key: "Permissions-Policy",
     value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
   },
-  ...CORS_HEADERS,
 ];
 
 /** @type {import('next').NextConfig} */
