@@ -21,29 +21,21 @@ test("scratchpad account dropdown keeps the standard compact menu width", () => 
   assert.doesNotMatch(toolbarSource, /w-\[min\(calc\(100vw-1rem\),18rem\)\]/);
 });
 
-test("the signed-in menu offers the memos connection entry with a connected indicator", () => {
-  assert.match(accountMenuSource, /connectionMenuLabel/);
-  assert.match(accountMenuSource, /onOpenMemosConnection/);
-  assert.match(accountMenuSource, /PlugIcon/);
-  assert.match(accountMenuSource, /bg-teal-500/);
+test("the signed-in menu links to the dashboard and offers sign out", () => {
+  assert.match(accountMenuSource, /href="\/dashboard"/);
+  assert.match(accountMenuSource, /SignOutItem/);
 });
 
-test("the connected indicator is announced to screen readers", () => {
-  // The teal dot is decorative; a visually-hidden label carries the meaning.
-  assert.match(accountMenuSource, /bg-teal-500" aria-hidden="true"/);
-  assert.match(accountMenuSource, /<span className="sr-only">Connected<\/span>/);
-  assert.doesNotMatch(accountMenuSource, /bg-teal-500" title="Connected"/);
+test("connection and account management are delegated to the dashboard", () => {
+  assert.doesNotMatch(accountMenuSource, /connectionMenuLabel/);
+  assert.doesNotMatch(accountMenuSource, /Connect Memos instance/);
+  assert.doesNotMatch(accountMenuSource, /Manage account/);
+  assert.doesNotMatch(accountMenuSource, /AccountActionItems/);
+  assert.doesNotMatch(accountMenuSource, /PlugIcon/);
 });
 
-test("opening the dialog is deferred so it does not overlap the closing dropdown layer", () => {
-  // A synchronous open overlaps the dropdown's and dialog's Radix DismissableLayers,
-  // leaving `body { pointer-events: none }` stuck after the dialog closes. Deferring
-  // to the next macrotask lets the menu's modal layer unmount first.
-  assert.match(accountMenuSource, /setTimeout\(onOpenMemosConnection, 0\)/);
-});
-
-test("the toolbar owns the dialog so it survives the menu closing", () => {
-  assert.match(toolbarSource, /MemosConnectionDialog/);
-  assert.match(toolbarSource, /memosConnectionOpen/);
+test("the toolbar no longer mounts the connection dialog", () => {
+  assert.doesNotMatch(toolbarSource, /useMemosConnection/);
+  assert.doesNotMatch(toolbarSource, /connection\.dialog/);
   assert.doesNotMatch(accountMenuSource, /MemosConnectionDialog/);
 });

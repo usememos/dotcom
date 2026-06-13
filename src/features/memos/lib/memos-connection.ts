@@ -14,10 +14,6 @@ export function canSubmitConnectionForm(values: ConnectionFormValues, busy: bool
   return !busy && values.instanceUrl.trim().length > 0 && values.accessToken.trim().length > 0;
 }
 
-export function connectionMenuLabel(isConnected: boolean): string {
-  return isConnected ? "Memos instance" : "Connect Memos instance";
-}
-
 export function describeTestResult(result: MemosConnectionTestResult): TestMessage {
   if (result.ok) {
     return { tone: "success", message: `Connected as ${result.user.name}` };

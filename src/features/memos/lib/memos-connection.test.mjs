@@ -16,7 +16,7 @@ registerHooks({
   },
 });
 
-const { canSubmitConnectionForm, connectionMenuLabel, describeSaveError, describeTestResult } = await import("./memos-connection.ts");
+const { canSubmitConnectionForm, describeSaveError, describeTestResult } = await import("./memos-connection.ts");
 const { MemosSettingsRequestError } = await import("../../../shared/settings/memos-settings-client.ts");
 
 test("canSubmitConnectionForm requires both fields and an idle form", () => {
@@ -24,11 +24,6 @@ test("canSubmitConnectionForm requires both fields and an idle form", () => {
   assert.equal(canSubmitConnectionForm({ instanceUrl: "https://memos.example.com", accessToken: "token" }, true), false);
   assert.equal(canSubmitConnectionForm({ instanceUrl: "  ", accessToken: "token" }, false), false);
   assert.equal(canSubmitConnectionForm({ instanceUrl: "https://memos.example.com", accessToken: "  " }, false), false);
-});
-
-test("connectionMenuLabel reflects the connection state", () => {
-  assert.equal(connectionMenuLabel(false), "Connect Memos instance");
-  assert.equal(connectionMenuLabel(true), "Memos instance");
 });
 
 test("describeTestResult maps every outcome to a friendly message", () => {

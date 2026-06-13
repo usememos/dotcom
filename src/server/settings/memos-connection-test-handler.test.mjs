@@ -144,6 +144,15 @@ test("redirect responses map to redirected (manual redirect surfaces the 3xx sta
   }
 });
 
+test("opaque-redirect responses (Cloudflare manual redirect) map to redirected", async () => {
+  // The Workers runtime yields a filtered response with status 0 and type
+  // "opaqueredirect" instead of a 3xx; the handler only reads .ok/.status/.type/.body/.json.
+  const { deps } = createDeps(async () => ({ ok: false, status: 0, type: "opaqueredirect", body: null }));
+  const response = await createMemosConnectionTestHandler(deps).POST(postRequest(VALID_BODY));
+  assert.equal(response.status, 200);
+  assert.deepEqual(await response.json(), { ok: false, reason: "redirected" });
+});
+
 test("non-Memos responses map to invalid-response", async () => {
   const cases = [
     async () => new Response("<html>not json</html>", { status: 200 }),

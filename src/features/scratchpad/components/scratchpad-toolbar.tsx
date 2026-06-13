@@ -2,25 +2,13 @@
 
 import { useUser } from "@clerk/nextjs";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { CheckIcon, HomeIcon, MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
+import { HomeIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { ThemeMenuItems } from "@/features/account/components/theme-menu-items";
+import { menuItemClassName, menuSeparatorClassName } from "@/features/account/lib/menu-styles";
 import { useIsClerkConfigured } from "@/shared/auth/clerk-config";
-import type { SafeMemosSettings } from "@/shared/settings/memos-settings";
-import { MemosConnectionDialog } from "./memos-connection-dialog";
 import { ScratchpadAccountMenuSection } from "./scratchpad-account-menu-section";
-
-const menuItemClassName =
-  "flex h-8 cursor-default select-none items-center gap-2 rounded-sm px-2 text-sm text-stone-700 outline-none data-[highlighted]:bg-stone-100 data-[highlighted]:text-stone-950 dark:text-stone-300 dark:data-[highlighted]:bg-stone-800 dark:data-[highlighted]:text-stone-50";
-
-const menuLabelClassName = "px-2 py-1.5 text-xs font-medium text-stone-500 dark:text-stone-500";
-
-const menuSeparatorClassName = "my-1 h-px bg-stone-200 dark:bg-white/10";
-
-const menuRadioItemClassName =
-  "relative flex h-8 cursor-default select-none items-center gap-2 rounded-sm py-1 pr-2 pl-7 text-sm text-stone-700 outline-none data-[highlighted]:bg-stone-100 data-[highlighted]:text-stone-950 dark:text-stone-300 dark:data-[highlighted]:bg-stone-800 dark:data-[highlighted]:text-stone-50";
 
 function ScratchpadMenuTriggerImage() {
   const isClerkConfigured = useIsClerkConfigured();
@@ -43,18 +31,6 @@ function ClerkScratchpadMenuTriggerImage() {
 }
 
 export function ScratchpadToolbar() {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const [memosConnectionOpen, setMemosConnectionOpen] = useState(false);
-  // Single owner of the connection status shared by the account menu (the
-  // "Connected" indicator) and the connection dialog, so it is fetched once
-  // and stays fresh after the dialog saves or disconnects.
-  const [memosSettings, setMemosSettings] = useState<SafeMemosSettings | null>(null);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   return (
     <div className="absolute top-4 right-4 z-10">
       <DropdownMenu.Root>
@@ -74,36 +50,9 @@ export function ScratchpadToolbar() {
             sideOffset={8}
             align="end"
           >
-            <ScratchpadAccountMenuSection
-              onOpenMemosConnection={() => setMemosConnectionOpen(true)}
-              memosSettings={memosSettings}
-              onMemosSettingsLoaded={setMemosSettings}
-            />
+            <ScratchpadAccountMenuSection />
 
-            <DropdownMenu.Label className={menuLabelClassName}>Theme</DropdownMenu.Label>
-            <DropdownMenu.RadioGroup value={mounted ? theme : "system"} onValueChange={setTheme}>
-              <DropdownMenu.RadioItem className={menuRadioItemClassName} value="light">
-                <DropdownMenu.ItemIndicator className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-                  <CheckIcon className="h-3.5 w-3.5" />
-                </DropdownMenu.ItemIndicator>
-                <SunIcon className="h-4 w-4 text-stone-500 dark:text-stone-400" />
-                <span>Light</span>
-              </DropdownMenu.RadioItem>
-              <DropdownMenu.RadioItem className={menuRadioItemClassName} value="dark">
-                <DropdownMenu.ItemIndicator className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-                  <CheckIcon className="h-3.5 w-3.5" />
-                </DropdownMenu.ItemIndicator>
-                <MoonIcon className="h-4 w-4 text-stone-500 dark:text-stone-400" />
-                <span>Dark</span>
-              </DropdownMenu.RadioItem>
-              <DropdownMenu.RadioItem className={menuRadioItemClassName} value="system">
-                <DropdownMenu.ItemIndicator className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-                  <CheckIcon className="h-3.5 w-3.5" />
-                </DropdownMenu.ItemIndicator>
-                <MonitorIcon className="h-4 w-4 text-stone-500 dark:text-stone-400" />
-                <span>System</span>
-              </DropdownMenu.RadioItem>
-            </DropdownMenu.RadioGroup>
+            <ThemeMenuItems />
 
             <DropdownMenu.Separator className={menuSeparatorClassName} />
 
@@ -116,13 +65,6 @@ export function ScratchpadToolbar() {
           </DropdownMenu.Content>
         </DropdownMenu.Portal>
       </DropdownMenu.Root>
-
-      <MemosConnectionDialog
-        open={memosConnectionOpen}
-        onOpenChange={setMemosConnectionOpen}
-        settings={memosSettings}
-        onSettingsChange={setMemosSettings}
-      />
     </div>
   );
 }

@@ -1,58 +1,17 @@
 "use client";
 
-import { useClerk, useUser } from "@clerk/nextjs";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { ExternalLinkIcon, LogInIcon, LogOutIcon, PlugIcon, ShieldCheckIcon, UserCogIcon } from "lucide-react";
-import { useEffect } from "react";
+import { ExternalLinkIcon, LayoutDashboardIcon, LogInIcon, ShieldCheckIcon } from "lucide-react";
+import { SignOutItem } from "@/features/account/components/account-action-items";
+import { UserIdentity } from "@/features/account/components/user-identity";
+import { useAccountActions } from "@/features/account/hooks/use-account-actions";
+import { menuItemClassName, menuSeparatorClassName } from "@/features/account/lib/menu-styles";
 import { useIsClerkConfigured } from "@/shared/auth/clerk-config";
-import type { SafeMemosSettings } from "@/shared/settings/memos-settings";
-import { getMemosSettings } from "@/shared/settings/memos-settings-client";
-import { connectionMenuLabel } from "../lib/memos-connection";
-
-const menuItemClassName =
-  "flex h-8 cursor-default select-none items-center gap-2 rounded-sm px-2 text-sm text-stone-700 outline-none data-[highlighted]:bg-stone-100 data-[highlighted]:text-stone-950 dark:text-stone-300 dark:data-[highlighted]:bg-stone-800 dark:data-[highlighted]:text-stone-50";
-
-const menuSeparatorClassName = "my-1 h-px bg-stone-200 dark:bg-white/10";
 
 const scratchpadFeedbackUrl = "https://github.com/usememos/dotcom/issues";
 
-function getUserDisplayName(user: ReturnType<typeof useUser>["user"]): string {
-  if (!user) {
-    return "Account";
-  }
-
-  return user.username || user.fullName || user.primaryEmailAddress?.emailAddress || "Account";
-}
-
-type AccountMenuSectionProps = {
-  onOpenMemosConnection: () => void;
-  /** Shared settings state owned by the toolbar; null until first loaded. */
-  memosSettings: SafeMemosSettings | null;
-  onMemosSettingsLoaded: (settings: SafeMemosSettings) => void;
-};
-
-function ClerkAccountMenuSection({ onOpenMemosConnection, memosSettings, onMemosSettingsLoaded }: AccountMenuSectionProps) {
-  const { openSignIn, openUserProfile, signOut } = useClerk();
-  const { isLoaded, isSignedIn, user } = useUser();
-
-  useEffect(() => {
-    if (!isSignedIn || memosSettings !== null) {
-      return;
-    }
-    let cancelled = false;
-    getMemosSettings()
-      .then((settings) => {
-        if (!cancelled) {
-          onMemosSettingsLoaded(settings);
-        }
-      })
-      .catch(() => {
-        // Menu falls back to the disconnected label; the dialog surfaces errors.
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [isSignedIn, memosSettings, onMemosSettingsLoaded]);
+function ClerkAccountMenuSection() {
+  const { isLoaded, isSignedIn, user, signIn } = useAccountActions();
 
   if (!isLoaded) {
     return null;
@@ -65,7 +24,7 @@ function ClerkAccountMenuSection({ onOpenMemosConnection, memosSettings, onMemos
           className={menuItemClassName}
           onSelect={(event) => {
             event.preventDefault();
-            openSignIn();
+            signIn();
           }}
         >
           <LogInIcon className="h-4 w-4" />
@@ -76,18 +35,12 @@ function ClerkAccountMenuSection({ onOpenMemosConnection, memosSettings, onMemos
     );
   }
 
-  const displayName = getUserDisplayName(user);
   const emailAddress = user.primaryEmailAddress?.emailAddress;
-  const isConnected = memosSettings?.hasAccessToken === true;
 
   return (
     <>
-      <div className="flex items-start gap-3 rounded-md px-2.5 py-2.5">
-        <img src={user.imageUrl} alt="" className="h-8 w-8 rounded-full bg-stone-100 object-cover dark:bg-stone-800" />
-        <div className="min-w-0 flex-1">
-          <div className="truncate text-sm font-semibold text-stone-700 dark:text-stone-200">{displayName}</div>
-          <div className="truncate text-xs text-stone-400 dark:text-stone-500">{emailAddress || "Signed in"}</div>
-        </div>
+      <div className="px-2.5 py-2.5">
+        <UserIdentity user={user} size="sm" secondary={emailAddress || "Signed in"} />
       </div>
 
       <DropdownMenu.Separator className={menuSeparatorClassName} />
@@ -115,60 +68,26 @@ function ClerkAccountMenuSection({ onOpenMemosConnection, memosSettings, onMemos
 
       <DropdownMenu.Separator className={menuSeparatorClassName} />
 
-      <DropdownMenu.Item
-        className={menuItemClassName}
-        onSelect={() => {
-          // Defer to the next macrotask so the dropdown's modal layer finishes
-          // unmounting before the dialog's mounts. Opening synchronously overlaps
-          // the two Radix DismissableLayers, and the dialog captures the menu's
-          // `body { pointer-events: none }` as its restore value — leaving the page
-          // unclickable after the dialog closes.
-          setTimeout(onOpenMemosConnection, 0);
-        }}
-      >
-        <PlugIcon className="h-4 w-4" />
-        <span>{connectionMenuLabel(isConnected)}</span>
-        {isConnected ? (
-          <>
-            <span className="ml-auto h-1.5 w-1.5 rounded-full bg-teal-500" aria-hidden="true" />
-            <span className="sr-only">Connected</span>
-          </>
-        ) : null}
+      <DropdownMenu.Item className={menuItemClassName} asChild>
+        <a href="/dashboard">
+          <LayoutDashboardIcon className="h-4 w-4" />
+          <span>Dashboard</span>
+        </a>
       </DropdownMenu.Item>
 
-      <DropdownMenu.Item
-        className={menuItemClassName}
-        onSelect={(event) => {
-          event.preventDefault();
-          openUserProfile();
-        }}
-      >
-        <UserCogIcon className="h-4 w-4" />
-        <span>Manage account</span>
-      </DropdownMenu.Item>
-
-      <DropdownMenu.Item
-        className={menuItemClassName}
-        onSelect={(event) => {
-          event.preventDefault();
-          void signOut({ redirectUrl: "/scratchpad" });
-        }}
-      >
-        <LogOutIcon className="h-4 w-4" />
-        <span>Sign out</span>
-      </DropdownMenu.Item>
+      <SignOutItem signOutRedirectUrl="/scratchpad" />
 
       <DropdownMenu.Separator className={menuSeparatorClassName} />
     </>
   );
 }
 
-export function ScratchpadAccountMenuSection(props: AccountMenuSectionProps) {
+export function ScratchpadAccountMenuSection() {
   const isClerkConfigured = useIsClerkConfigured();
 
   if (!isClerkConfigured) {
     return null;
   }
 
-  return <ClerkAccountMenuSection {...props} />;
+  return <ClerkAccountMenuSection />;
 }

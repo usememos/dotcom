@@ -47,6 +47,12 @@ async function testConnection(deps: MemosConnectionTestDeps, settings: MemosSett
 
   if (!response.ok) {
     void response.body?.cancel();
+    // The Cloudflare Workers runtime returns an opaque-redirect filtered response
+    // (status 0, type "opaqueredirect") for a manual redirect, whereas Node/undici
+    // surfaces the real 3xx status. Handle both as "redirected".
+    if (response.type === "opaqueredirect" || response.status === 0) {
+      return { ok: false, reason: "redirected" };
+    }
     if (response.status === 401 || response.status === 403) {
       return { ok: false, reason: "unauthorized" };
     }

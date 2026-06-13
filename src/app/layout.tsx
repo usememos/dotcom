@@ -191,7 +191,17 @@ export default function Layout({ children }: { children: ReactNode }) {
       </head>
       <body className={`${inter.variable} ${displaySerif.variable} flex min-h-screen flex-col antialiased`}>
         <ClerkConfigProvider enabled={isClerkConfigured}>
-          {clerkPublishableKey ? <ClerkProvider publishableKey={clerkPublishableKey}>{app}</ClerkProvider> : app}
+          {clerkPublishableKey ? (
+            <ClerkProvider
+              publishableKey={clerkPublishableKey}
+              signInFallbackRedirectUrl="/dashboard"
+              signUpFallbackRedirectUrl="/dashboard"
+            >
+              {app}
+            </ClerkProvider>
+          ) : (
+            app
+          )}
         </ClerkConfigProvider>
       </body>
     </html>

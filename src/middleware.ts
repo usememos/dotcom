@@ -5,5 +5,5 @@ import { isClerkConfigured } from "@/server/auth/clerk";
 export default isClerkConfigured() ? clerkMiddleware() : () => NextResponse.next();
 
 export const config = {
-  matcher: ["/api/settings/:path*"],
+  matcher: ["/api/settings/:path*", "/api/memos/:path*"],
 };

@@ -1,4 +1,5 @@
 import type { MemosConnectionTestResult, SafeMemosSettings } from "./memos-settings";
+import type { MemosStatsResult } from "./memos-stats";
 
 const SETTINGS_ENDPOINT = "/api/settings/memos";
 
@@ -60,4 +61,29 @@ export async function deleteMemosSettings(): Promise<void> {
 export async function testMemosConnection(input: { instanceUrl: string; accessToken: string }): Promise<MemosConnectionTestResult> {
   const response = await settingsRequest("/test", jsonInit("POST", input));
   return (await response.json()) as MemosConnectionTestResult;
+}
+
+const STATS_ENDPOINT = "/api/memos/stats";
+
+/**
+ * Fetches the signed-in user's Memos activity stats from the server-side proxy.
+ * Optional `hints` (resolved userId + version, cached in the browser) let the
+ * proxy skip its discovery calls and fetch stats directly. Throws
+ * MemosSettingsRequestError on 401/503/5xx; a 200 always carries a MemosStatsResult
+ * (including not-connected and instance-error states).
+ */
+export async function getMemosStats(hints?: { userId: string; version: string | null }): Promise<MemosStatsResult> {
+  const params = new URLSearchParams();
+  if (hints?.userId) {
+    params.set("userId", hints.userId);
+  }
+  if (hints?.version) {
+    params.set("version", hints.version);
+  }
+  const query = params.toString();
+  const response = await fetch(query ? `${STATS_ENDPOINT}?${query}` : STATS_ENDPOINT, { method: "GET" });
+  if (!response.ok) {
+    throw await toRequestError(response);
+  }
+  return (await response.json()) as MemosStatsResult;
 }
