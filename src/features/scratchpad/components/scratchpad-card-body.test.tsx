@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createRef } from "react";
@@ -13,6 +16,29 @@ const baseProps = {
   onKeyDown: vi.fn(),
   onPointerDown: vi.fn(),
 };
+
+describe("card terminology", () => {
+  it("scratchpad card copy consistently refers to cards, not notes", () => {
+    const dir = dirname(fileURLToPath(import.meta.url));
+    const cardBodySource = readFileSync(join(dir, "scratchpad-card-body.tsx"), "utf8");
+    const cardItemSource = readFileSync(join(dir, "card-item.tsx"), "utf8");
+    const scratchpadLayoutSource = readFileSync(join(dir, "..", "..", "..", "app", "(tools)", "scratchpad", "layout.tsx"), "utf8");
+
+    expect(cardBodySource).toMatch(/Any thoughts\.\.\./);
+    expect(cardItemSource).toMatch(/Click to edit card/);
+    expect(cardItemSource).toMatch(/Edit card/);
+    expect(cardItemSource).toMatch(/Select card\. Press Enter to edit\./);
+    expect(scratchpadLayoutSource).toMatch(/quick cards/);
+    expect(scratchpadLayoutSource).toMatch(/visual cards/);
+    expect(cardBodySource).not.toMatch(/create card/i);
+    expect(cardItemSource).not.toMatch(/create card/i);
+    expect(cardBodySource).not.toMatch(/Double-click to add a card/);
+    expect(cardItemSource).not.toMatch(/Double-click to add a card/);
+    expect(cardItemSource).not.toMatch(/Press Enter to add a card/);
+    expect(cardItemSource).not.toMatch(new RegExp("\\bno" + "te\\b", "i"));
+    expect(scratchpadLayoutSource).not.toMatch(new RegExp("\\bno" + "tes\\b", "i"));
+  });
+});
 
 describe("ScratchpadCardBody", () => {
   it("renders the body text in display mode", () => {

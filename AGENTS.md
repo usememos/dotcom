@@ -2,9 +2,9 @@
 
 ## Project Snapshot
 
-This repository is the official website for Memos at `usememos.com`. It is a static marketing and documentation site built with Next.js, TypeScript, Tailwind CSS, Fumadocs, and MDX content.
+This repository is the official website for Memos at `usememos.com`. It is a Next.js + TypeScript + Tailwind app that serves a static marketing/documentation site (Fumadocs + MDX) **and** an authenticated product surface (a Clerk-gated dashboard and `/api` handlers).
 
-Treat it as a **Next.js 16 static marketing/docs website**. Do not introduce external services, databases, runtime auth, or environment-variable requirements unless the task explicitly asks for that integration.
+Treat it as a **Next.js 16 marketing/docs site plus an authenticated product app**. The marketing/docs surface stays static; the authenticated surface is dynamic. Before adding persistence, a new Cloudflare binding, or a new external dependency, follow the conventions in `docs/architecture.md` rather than introducing them ad-hoc.
 
 ## Tech Stack
 
@@ -13,8 +13,9 @@ Treat it as a **Next.js 16 static marketing/docs website**. Do not introduce ext
 - **Content**: Fumadocs, MDX, and file-based content under `content/`
 - **Styling**: Tailwind CSS 4.x with the local design system
 - **Icons**: Lucide React using the `XxxIcon` naming convention
-- **Validation**: Zod schemas in `source.config.ts`
-- **Node.js**: 22.0.0 or newer
+- **Validation**: Zod schemas in `source.config.ts` and server route schemas
+- **Auth**: Clerk (`@clerk/nextjs`), optional and env-gated via `isClerkConfigured()`
+- **Node.js**: 24.0.0 or newer (pinned in `.nvmrc`)
 
 ## Common Commands
 
@@ -24,6 +25,7 @@ Use `pnpm` for all package scripts.
 | --- | --- | --- |
 | Install dependencies | `pnpm install` | Runs `postinstall` automatically |
 | Develop locally | `pnpm dev` | Starts Next.js with Turbopack on port 3000 |
+| Run tests | `pnpm test` | Vitest (`*.test.ts`/`*.test.tsx`); `pnpm test:watch` to watch |
 | Build | `pnpm build` | Full production build for the static site |
 | Start production server | `pnpm start` | Runs the local Next.js production server |
 | Lint | `pnpm lint` | Runs static revalidation audit, metadata audit, and Biome |
@@ -39,9 +41,11 @@ Use `pnpm` for all package scripts.
 
 For day-to-day work, use `pnpm dev`. Before deployment-sensitive changes, prefer `pnpm run preview` because it runs the built app in the Cloudflare Workers runtime instead of the local Node.js server.
 
-There is no `test` script. Standard verification is `pnpm lint` and `pnpm build`, with `pnpm run preview` plus smoke tests when the change could affect production routing or runtime behavior.
+Standard verification is `pnpm test`, `pnpm lint`, and `pnpm build`, with `pnpm run preview` plus smoke tests when the change could affect production routing or runtime behavior. CI currently runs `lint` and `build`; run `pnpm test` locally.
 
 ## Architecture
+
+See `docs/architecture.md` for the full architecture and the conventions for expanding the authenticated app (route groups, server-domain layout, the data-access store seam, runtime/caching rules, the auth seam, and a step-by-step for adding an authed feature).
 
 ### Routes
 
@@ -52,7 +56,7 @@ There is no `test` script. Standard verification is `pnpm lint` and `pnpm build`
 - `src/app/(public)/features/` contains the feature index and SEO pages at `/features/[slug]`.
 - `src/app/(public)/brand/`, `pricing/`, `privacy/`, `sponsors/`, and `use-cases/` contain static marketing pages.
 - `src/app/(tools)/scratchpad/` contains the standalone client-side scratchpad tool.
-- `src/app/(auth)/` and `src/app/(app)/` are future-facing route boundaries. Do not add runtime auth or database behavior there without an explicit task.
+- `src/app/(app)/` is the authenticated product surface (Clerk-gated, noindex, dynamic); the dashboard lives here. `src/app/(auth)/` holds sign-in/sign-up boundaries. Add authed features following `docs/architecture.md`.
 
 ### Content
 
@@ -113,4 +117,4 @@ Use `pnpm run preview` or `pnpm run deploy:dry-run` to validate Cloudflare produ
 - pnpm may warn about ignored build scripts for `esbuild` and `sharp`; this is cosmetic for normal development.
 - The production build generates hundreds of static pages, so `pnpm build` can take a while.
 - Do not edit generated files in `.source/`.
-- Do not add external service, database, auth, or runtime environment dependencies unless explicitly requested.
+- Auth (Clerk) and `/api` handlers already exist; the required env vars are `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` (auth is inert when unset). Do not add a database, a new Cloudflare binding, or a new external dependency ad-hoc — follow the sanctioned path in `docs/architecture.md` ("Future data layer").

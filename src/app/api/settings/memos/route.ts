@@ -1,21 +1,15 @@
-import { clerkClient } from "@clerk/nextjs/server";
 import { clerkRouteAuthDeps } from "@/server/auth/clerk";
 import { createMemosSettingsHandlers } from "@/server/settings/memos-settings-handlers";
-import type { MemosSettings } from "@/server/settings/memos-settings-schema";
+import { createClerkMemosSettingsStore } from "@/server/settings/memos-settings-store";
 
 export const runtime = "nodejs";
 
+const store = createClerkMemosSettingsStore();
+
 const handlers = createMemosSettingsHandlers({
   ...clerkRouteAuthDeps,
-  readMemosMetadata: async (userId: string) => {
-    const client = await clerkClient();
-    const user = await client.users.getUser(userId);
-    return user.privateMetadata?.memos ?? null;
-  },
-  writeMemosMetadata: async (userId: string, memos: MemosSettings | null) => {
-    const client = await clerkClient();
-    await client.users.updateUserMetadata(userId, { privateMetadata: { memos } });
-  },
+  readMemosMetadata: store.read,
+  writeMemosMetadata: store.write,
 });
 
 export const GET = handlers.GET;
