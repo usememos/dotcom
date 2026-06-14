@@ -1,14 +1,8 @@
 "use client";
 
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { PlugIcon, SettingsIcon } from "lucide-react";
 import { notFound } from "next/navigation";
 import { type ReactNode, useCallback, useEffect, useState } from "react";
-import { AccountActionItems } from "@/features/account/components/account-action-items";
-import { ThemeMenuItems } from "@/features/account/components/theme-menu-items";
-import { UserIdentity } from "@/features/account/components/user-identity";
 import { useAccountActions } from "@/features/account/hooks/use-account-actions";
-import { menuItemClassName, menuSeparatorClassName } from "@/features/account/lib/menu-styles";
 import { useMemosConnection } from "@/features/memos/hooks/use-memos-connection";
 import { useIsClerkConfigured } from "@/shared/auth/clerk-config";
 import type { SafeMemosSettings } from "@/shared/settings/memos-settings";
@@ -17,16 +11,14 @@ import type { MemosStatsFailureReason, MemosStatsResult } from "@/shared/setting
 import { classifyStatsFailure, connectedHeaderLabel, describeStatsError } from "../lib/stats";
 import { clearDashboardStatsCache, readDashboardStatsCache, writeDashboardStatsCache } from "../lib/stats-cache";
 import { ActivityHeatmap } from "./activity-heatmap";
+import { ConnectPrompt } from "./connect-prompt";
+import { DashboardHeader } from "./dashboard-header";
 import { StatTiles } from "./stat-tiles";
 
 const primaryButtonClassName =
   "inline-flex h-9 items-center rounded-md bg-teal-600 px-4 text-sm font-medium text-white transition hover:bg-teal-700 dark:bg-teal-500 dark:text-stone-950 dark:hover:bg-teal-400";
 const secondaryButtonClassName =
   "inline-flex h-8 items-center rounded-md border border-stone-300 bg-white px-3 text-sm font-medium text-stone-700 transition hover:bg-stone-50 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-200 dark:hover:bg-stone-800";
-const iconButtonClassName =
-  "inline-flex h-8 w-8 items-center justify-center rounded-md border border-stone-300 bg-white text-stone-600 transition hover:bg-stone-50 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-300 dark:hover:bg-stone-800";
-const menuContentClassName =
-  "z-50 w-56 rounded-md border border-stone-200 bg-white p-1.5 shadow-md shadow-stone-900/10 dark:border-stone-800 dark:bg-stone-950 dark:shadow-black/40";
 
 type OkStats = Extract<MemosStatsResult, { status: "ok" }>;
 type NonOk = { kind: "not-connected" } | { kind: "error"; reason: MemosStatsFailureReason } | { kind: "signed-out" } | { kind: "failed" };
@@ -125,34 +117,7 @@ function DashboardContent() {
   if (data) {
     return (
       <DashboardShell>
-        <div className="flex items-center justify-between gap-3">
-          <UserIdentity user={user ?? null} size="md" secondary={headerLabel(connection.settings, data)} />
-          <DropdownMenu.Root>
-            <DropdownMenu.Trigger asChild>
-              <button type="button" className={iconButtonClassName} aria-label="Account and connection">
-                <SettingsIcon className="h-4 w-4" />
-              </button>
-            </DropdownMenu.Trigger>
-            <DropdownMenu.Portal>
-              <DropdownMenu.Content className={menuContentClassName} sideOffset={8} align="end">
-                <DropdownMenu.Item
-                  className={menuItemClassName}
-                  onSelect={() => {
-                    // Defer so the dropdown layer unmounts before the dialog mounts.
-                    setTimeout(connection.open, 0);
-                  }}
-                >
-                  <PlugIcon className="h-4 w-4" />
-                  <span>Manage connection</span>
-                </DropdownMenu.Item>
-                <DropdownMenu.Separator className={menuSeparatorClassName} />
-                <AccountActionItems signOutRedirectUrl="/" />
-                <DropdownMenu.Separator className={menuSeparatorClassName} />
-                <ThemeMenuItems />
-              </DropdownMenu.Content>
-            </DropdownMenu.Portal>
-          </DropdownMenu.Root>
-        </div>
+        <DashboardHeader user={user ?? null} secondary={headerLabel(connection.settings, data)} onManageConnection={connection.open} />
         <StatTiles stats={data.stats} />
         <div className="rounded-2xl border border-stone-200 bg-white p-4 dark:border-stone-800 dark:bg-stone-900">
           <ActivityHeatmap days={data.stats.days} />
@@ -177,15 +142,8 @@ function DashboardContent() {
   if (nonOk?.kind === "not-connected") {
     return (
       <DashboardShell>
-        <CenteredCard>
-          <h1 className="text-lg font-semibold text-stone-900 dark:text-stone-100">Connect your Memos instance</h1>
-          <p className="mt-2 text-sm text-stone-500 dark:text-stone-400">
-            Link your self-hosted instance to see your activity heatmap and stats.
-          </p>
-          <button type="button" className={`${primaryButtonClassName} mt-5`} onClick={() => connection.open()}>
-            Connect Memos instance
-          </button>
-        </CenteredCard>
+        <DashboardHeader user={user ?? null} secondary="Not connected" onManageConnection={connection.open} />
+        <ConnectPrompt settings={connection.settings} onComplete={handleSettingsChanged} />
         {connection.dialog}
       </DashboardShell>
     );
@@ -195,6 +153,7 @@ function DashboardContent() {
     const message = nonOk.kind === "error" ? describeStatsError(nonOk.reason) : "Couldn't load your stats. Try again.";
     return (
       <DashboardShell>
+        <DashboardHeader user={user ?? null} secondary={nonOkHeaderLabel(connection.settings)} onManageConnection={connection.open} />
         <InlineError message={message} onRetry={reload} onManage={() => connection.open()} />
         {connection.dialog}
       </DashboardShell>
@@ -209,6 +168,14 @@ function headerLabel(settings: SafeMemosSettings | null, result: OkStats): strin
     return result.instanceVersion ? `Connected · v${result.instanceVersion}` : "Connected";
   }
   return connectedHeaderLabel(settings.instanceUrl, result.instanceVersion);
+}
+
+/** Header label for authed states without live stats (not-connected / error). */
+function nonOkHeaderLabel(settings: SafeMemosSettings | null): string {
+  if (!settings?.hasAccessToken) {
+    return "Not connected";
+  }
+  return settings.instanceUrl ? connectedHeaderLabel(settings.instanceUrl, null) : "Connected";
 }
 
 function DashboardShell({ children }: { children: ReactNode }) {

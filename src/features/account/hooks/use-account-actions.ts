@@ -16,7 +16,13 @@ export function useAccountActions(options: AccountActionsOptions = {}) {
     isLoaded,
     isSignedIn,
     user,
-    signIn: () => openSignIn(options.signInForceRedirectUrl ? { forceRedirectUrl: options.signInForceRedirectUrl } : undefined),
+    signIn: () => {
+      // Default to keeping the user on the page they signed in from; an explicit
+      // signInForceRedirectUrl still wins (e.g. the dashboard CTA).
+      const forceRedirectUrl =
+        options.signInForceRedirectUrl ?? (typeof window !== "undefined" ? window.location.pathname + window.location.search : undefined);
+      openSignIn(forceRedirectUrl ? { forceRedirectUrl } : undefined);
+    },
     manageAccount: () => openUserProfile(),
     signOut: () => void signOut(options.signOutRedirectUrl ? { redirectUrl: options.signOutRedirectUrl } : undefined),
   };

@@ -7,8 +7,10 @@
   },
   "scripts": {
     "build": "next build",
-    "dev": "next dev --turbo",
+    "dev": "NODE_OPTIONS=--max-old-space-size=4096 next dev --turbo",
     "start": "next start",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "node scripts/verify-deploy-env.mjs && opennextjs-cloudflare build && opennextjs-cloudflare deploy -- --keep-vars",
     "deploy:dry-run": "opennextjs-cloudflare build && wrangler deploy --dry-run",
@@ -45,13 +47,19 @@
     "@biomejs/biome": "2.4.16",
     "@next/env": "16.2.6",
     "@tailwindcss/postcss": "^4.3.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/mdx": "^2.0.13",
     "@types/node": "^25.9.1",
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^4.7.0",
+    "jsdom": "^25.0.1",
     "postcss": "^8.5.15",
     "tailwindcss": "^4.3.0",
     "typescript": "^6.0.3",
+    "vitest": "^3.2.6",
     "wrangler": "4.95.0"
   }
 }
