@@ -4,6 +4,7 @@ import { TrashIcon } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useAttachmentPreviews } from "../hooks/use-attachment-previews";
+import { computeCardDragPosition, computeCardResizeSize, shouldStartEditingNewCard } from "../lib/card-interactions";
 import {
   getCardChromeClassNames,
   getCardResizeHandleClassNames,
@@ -80,8 +81,8 @@ export function CardItem({
   const { content, layout, timestamps } = item;
   const { body, attachments } = content;
   const [isDragging, setIsDragging] = useState(false);
-  const [isEditing, setIsEditing] = useState(
-    () => body.trim().length === 0 && attachments.length === 0 && Date.now() - timestamps.createdAt.getTime() < 5_000,
+  const [isEditing, setIsEditing] = useState(() =>
+    shouldStartEditingNewCard({ body, attachmentCount: attachments.length, createdAt: timestamps.createdAt }, Date.now()),
   );
   const [isResizing, setIsResizing] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
@@ -191,14 +192,8 @@ export function CardItem({
   };
 
   const finishDrag = (session: DragSession, clientX: number, clientY: number) => {
-    const deltaX = (clientX - session.startClientX) / canvasScale;
-    const deltaY = (clientY - session.startClientY) / canvasScale;
-
     if (session.moved) {
-      onUpdateLayout(item.id, {
-        x: dragOriginRef.current.x + deltaX,
-        y: dragOriginRef.current.y + deltaY,
-      });
+      onUpdateLayout(item.id, computeCardDragPosition(dragOriginRef.current, session, clientX, clientY, canvasScale));
     }
 
     setDragOffset({ x: 0, y: 0 });
@@ -304,15 +299,12 @@ export function CardItem({
       return;
     }
 
-    const delta = getPointerSessionDelta(session, e.clientX, e.clientY);
-    const nextWidth = Math.max(MIN_WIDTH, session.startWidth + delta.x / canvasScale);
-    const nextHeight = Math.max(MIN_HEIGHT, session.startHeight + delta.y / canvasScale);
-
-    session.latestWidth = nextWidth;
-    session.latestHeight = nextHeight;
+    const next = computeCardResizeSize(session, e.clientX, e.clientY, canvasScale, MIN_WIDTH, MIN_HEIGHT);
+    session.latestWidth = next.width;
+    session.latestHeight = next.height;
     setLiveSize({
-      width: nextWidth,
-      height: nextHeight,
+      width: next.width,
+      height: next.height,
     });
   };
 

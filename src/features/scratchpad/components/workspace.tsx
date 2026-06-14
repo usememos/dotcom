@@ -23,6 +23,12 @@ import {
   zoomScratchpadViewportAtPoint,
   zoomScratchpadViewportFromCenter,
 } from "@/features/scratchpad/lib/viewport";
+import {
+  formatScratchpadZoomLabel,
+  getScratchpadItemCenter,
+  getScratchpadWheelZoomFactor,
+  isZoomGestureTargetAllowed,
+} from "@/features/scratchpad/lib/workspace-geometry";
 import { shouldShowZoomControls, ZOOM_CONTROLS_HIDE_DELAY_MS } from "@/features/scratchpad/lib/zoom-visibility";
 import type { ScratchpadAttachmentRef, ScratchpadItem, ScratchpadItemLayout, ScratchpadViewport } from "@/features/scratchpad/types";
 import { CardItem } from "./card-item";
@@ -63,13 +69,6 @@ interface BrowserGestureEvent extends Event {
   clientX: number;
   clientY: number;
   scale: number;
-}
-
-function getScratchpadItemCenter(item: ScratchpadItem) {
-  return {
-    x: item.layout.x + item.layout.width / 2,
-    y: item.layout.y + item.layout.height / 2,
-  };
 }
 
 export function Workspace({
@@ -182,33 +181,7 @@ export function Workspace({
     }
 
     const path = typeof event.composedPath === "function" ? event.composedPath() : [];
-
-    for (const candidate of path) {
-      if (!(candidate instanceof HTMLElement)) {
-        continue;
-      }
-
-      if (candidate.dataset.scratchpadUi === "true") {
-        return false;
-      }
-
-      if (
-        candidate.tagName === "BUTTON" ||
-        candidate.tagName === "INPUT" ||
-        candidate.tagName === "SELECT" ||
-        candidate.tagName === "TEXTAREA" ||
-        candidate.isContentEditable
-      ) {
-        return false;
-      }
-
-      const role = candidate.getAttribute("role");
-      if (role === "dialog" || role === "menu" || role === "listbox") {
-        return false;
-      }
-    }
-
-    return true;
+    return isZoomGestureTargetAllowed(path);
   });
 
   const applyZoomFactorAtPoint = useEffectEvent((clientX: number, clientY: number, zoomFactor: number) => {
@@ -234,7 +207,7 @@ export function Workspace({
       }
 
       event.preventDefault();
-      const zoomFactor = Math.exp(-event.deltaY * SCRATCHPAD_ZOOM_INTENSITY);
+      const zoomFactor = getScratchpadWheelZoomFactor(event.deltaY, SCRATCHPAD_ZOOM_INTENSITY);
       applyZoomFactorAtPoint(event.clientX, event.clientY, zoomFactor);
       return;
     }
@@ -424,7 +397,7 @@ export function Workspace({
     }
   };
 
-  const zoomLabel = `${Math.round(viewport.scale * 100)}%`;
+  const zoomLabel = formatScratchpadZoomLabel(viewport.scale);
   const zoomControlsVisible = shouldShowZoomControls({
     hovered: zoomControlsHovered,
     focused: zoomControlsFocused,
