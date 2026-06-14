@@ -1,11 +1,8 @@
 import "@/app/global.css";
-import { ClerkProvider } from "@clerk/nextjs";
 import { RootProvider } from "fumadocs-ui/provider/next";
 import type { Metadata, Viewport } from "next";
 import { Inter, Source_Serif_4 } from "next/font/google";
-import Script from "next/script";
 import type { ReactNode } from "react";
-import { ClerkConfigProvider } from "@/shared/auth/clerk-config";
 import { buildSiteNavigationJsonLd, DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_ALT } from "@/shared/lib/seo";
 
 const inter = Inter({
@@ -91,8 +88,6 @@ export const viewport: Viewport = {
 };
 
 export default function Layout({ children }: { children: ReactNode }) {
-  const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-  const isClerkConfigured = Boolean(clerkPublishableKey);
   const softwareJsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -164,46 +159,12 @@ export default function Layout({ children }: { children: ReactNode }) {
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <Script
-          id="software-json-ld"
-          type="application/ld+json"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }}
-        />
-        <Script
-          id="organization-json-ld"
-          type="application/ld+json"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-        />
-        <Script
-          id="website-json-ld"
-          type="application/ld+json"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
-        />
-        <Script
-          id="site-navigation-json-ld"
-          type="application/ld+json"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteNavigationJsonLd) }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteNavigationJsonLd) }} />
       </head>
-      <body className={`${inter.variable} ${displaySerif.variable} flex min-h-screen flex-col antialiased`}>
-        <ClerkConfigProvider enabled={isClerkConfigured}>
-          {clerkPublishableKey ? (
-            <ClerkProvider
-              publishableKey={clerkPublishableKey}
-              signInFallbackRedirectUrl="/dashboard"
-              signUpFallbackRedirectUrl="/dashboard"
-            >
-              {app}
-            </ClerkProvider>
-          ) : (
-            app
-          )}
-        </ClerkConfigProvider>
-      </body>
+      <body className={`${inter.variable} ${displaySerif.variable} flex min-h-screen flex-col antialiased`}>{app}</body>
     </html>
   );
 }
