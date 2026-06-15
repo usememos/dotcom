@@ -2,6 +2,7 @@ import { HomeLayout } from "fumadocs-ui/layouts/home";
 import type { Metadata } from "next";
 import type { SVGProps } from "react";
 import { Footer } from "@/features/marketing/components/footer";
+import { HeroAccent } from "@/features/marketing/components/hero-accent";
 import {
   MarketingCtaSection,
   MarketingPageHero,
@@ -80,7 +81,11 @@ export default function PrivacyPage() {
 
         <MarketingPageHero
           eyebrow="Privacy"
-          title="Private by default. Verifiable in code."
+          title={
+            <>
+              Private by default. <HeroAccent>Verifiable in code.</HeroAccent>
+            </>
+          }
           description="Privacy is part of the deployment model. Memos is built so your notes stay on infrastructure you control."
           actions={[
             { label: "Read the Source", href: "https://github.com/usememos/memos", icon: <GithubIcon className="h-4 w-4" /> },

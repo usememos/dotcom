@@ -1,6 +1,7 @@
 import { ArrowRight, PlayCircleIcon, SparklesIcon } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { HeroAmbient } from "@/features/marketing/components/hero-ambient";
 import { MemoHeroMock } from "@/features/marketing/components/memo-hero-mock";
 
 interface HeroSectionProps {
@@ -21,6 +22,7 @@ interface HeroSectionProps {
 export function HeroSection({ version = "0.29.1", title, subtitle, primaryCta, secondaryCta }: HeroSectionProps) {
   return (
     <section className="relative isolate overflow-hidden border-b border-zinc-200 bg-white dark:border-white/10 dark:bg-zinc-950">
+      <HeroAmbient />
       <div className="mx-auto w-full max-w-(--fd-layout-width) px-4 pt-12 sm:px-6 lg:pt-18">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto w-full max-w-[calc(100vw-2rem)] text-center sm:max-w-4xl">

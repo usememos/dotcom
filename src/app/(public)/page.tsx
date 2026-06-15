@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/features/marketing/components/footer";
+import { HeroAccent } from "@/features/marketing/components/hero-accent";
 import { HeroSection } from "@/features/marketing/components/hero-section";
 import { HomeDeploySection } from "@/features/marketing/components/home-deploy-section";
 import { HomeDiscoverSection } from "@/features/marketing/components/home-discover-section";
@@ -81,7 +82,9 @@ export default function HomePage() {
           title={
             <>
               <span className="block">Capture first.</span>
-              <span className="block">Keep it yours.</span>
+              <span className="block">
+                <HeroAccent>Keep it yours.</HeroAccent>
+              </span>
             </>
           }
           subtitle="A self-hosted timeline for quick notes, daily logs, links, and snippets. Open it, write in Markdown, and move on."

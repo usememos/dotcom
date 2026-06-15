@@ -3,6 +3,7 @@ import { ArrowRightIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/features/marketing/components/footer";
+import { HeroAccent } from "@/features/marketing/components/hero-accent";
 import {
   MarketingCtaSection,
   MarketingPageHero,
@@ -96,7 +97,11 @@ export default function FeaturesPage() {
 
         <MarketingPageHero
           eyebrow="Features"
-          title="Everything Memos needs. Nothing that slows capture down."
+          title={
+            <>
+              Everything Memos needs. <HeroAccent>Nothing that slows capture down.</HeroAccent>
+            </>
+          }
           description="Memos keeps the product surface small: quick notes, a private timeline, Markdown, tags, search, and self-hosted ownership."
           actions={[
             { label: "Install Memos", href: "/docs/getting-started", showArrow: true },

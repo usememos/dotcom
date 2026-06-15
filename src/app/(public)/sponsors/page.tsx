@@ -2,6 +2,7 @@ import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { ArrowRightIcon, HeartIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { Footer } from "@/features/marketing/components/footer";
+import { HeroAccent } from "@/features/marketing/components/hero-accent";
 import { MarketingPageHero, MarketingSectionHeader } from "@/features/marketing/components/marketing-page";
 import { baseOptions } from "@/shared/config/layout";
 import { COMMUNITY_SPONSORS, FEATURED_SPONSORS } from "@/shared/data/sponsors";
@@ -36,7 +37,11 @@ export default function SponsorsPage() {
 
         <MarketingPageHero
           eyebrow="Sponsors"
-          title="Back the project."
+          title={
+            <>
+              Back <HeroAccent>the project.</HeroAccent>
+            </>
+          }
           description="Sponsorship helps keep Memos maintained, documented, and available for self-hosters."
           actions={[{ label: "Become a Sponsor", href: "https://github.com/sponsors/usememos", icon: <HeartIcon className="h-4 w-4" /> }]}
         />

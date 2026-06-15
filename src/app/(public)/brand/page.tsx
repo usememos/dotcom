@@ -3,6 +3,7 @@ import { DownloadIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Footer } from "@/features/marketing/components/footer";
+import { HeroAccent } from "@/features/marketing/components/hero-accent";
 import { MarketingPageHero, MarketingSectionHeader, MarketingSummaryBand } from "@/features/marketing/components/marketing-page";
 import { baseOptions } from "@/shared/config/layout";
 import { buildBreadcrumbJsonLd, buildMarketingMetadata } from "@/shared/lib/seo";
@@ -41,7 +42,11 @@ export default function BrandPage() {
 
         <MarketingPageHero
           eyebrow="Brand"
-          title="Memos brand assets."
+          title={
+            <>
+              Memos <HeroAccent>brand assets.</HeroAccent>
+            </>
+          }
           description="Download official logos and use them with clear, consistent presentation."
         />
 

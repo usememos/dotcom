@@ -3,6 +3,7 @@ import { HeartIcon } from "lucide-react";
 import type { Metadata } from "next";
 import type { SVGProps } from "react";
 import { Footer } from "@/features/marketing/components/footer";
+import { HeroAccent } from "@/features/marketing/components/hero-accent";
 import {
   MarketingCtaSection,
   MarketingPageHero,
@@ -62,7 +63,11 @@ export default function PricingPage() {
 
         <MarketingPageHero
           eyebrow="Pricing"
-          title="Free to use. Yours to run."
+          title={
+            <>
+              Free to use. <HeroAccent>Yours to run.</HeroAccent>
+            </>
+          }
           description="Memos has no subscriptions, seat pricing, or paid unlocks. You run the product and choose the infrastructure."
           actions={[
             { label: "Install Memos", href: "/docs/getting-started", showArrow: true },

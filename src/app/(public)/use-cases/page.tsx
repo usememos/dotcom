@@ -2,6 +2,7 @@ import { HomeLayout } from "fumadocs-ui/layouts/home";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/features/marketing/components/footer";
+import { HeroAccent } from "@/features/marketing/components/hero-accent";
 import {
   MarketingCtaSection,
   MarketingPageHero,
@@ -66,7 +67,11 @@ export default function UseCasesPage() {
 
         <MarketingPageHero
           eyebrow="Use Cases"
-          title="Use Memos where quick notes actually happen."
+          title={
+            <>
+              Use Memos where quick notes <HeroAccent>actually happen.</HeroAccent>
+            </>
+          }
           description="Memos fits the small workflows that do not need a full workspace: journals, server logs, snippets, private updates, and notes you want to keep."
         />
 
