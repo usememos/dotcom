@@ -1,29 +1,41 @@
 ---
 title: Sharing
-description: Understand memo visibility, public links, and discoverability.
+description: Control who can see a memo with visibility, share links, and image exports.
 ---
 
-Sharing in Memos is controlled primarily through memo visibility.
+Sharing in Memos has two layers: **visibility**, which decides who can reach a memo through the app, and **share links**, which create a standalone URL for a single memo.
 
 ## Visibility levels
 
+Every memo has one of three visibility levels, set from the editor before or after posting:
+
 - `PRIVATE`: only you can read the memo
-- `PROTECTED`: authenticated users on the instance can read it
-- `PUBLIC`: anyone with the link or public access to the instance can read it
+- `PROTECTED`: any signed-in user on the instance can read it
+- `PUBLIC`: anyone with the link, including anonymous visitors, can read it
+
+Public memos also appear in the instance-wide **Explore** feed and on your public profile, so they are discoverable beyond the direct URL.
+
+## Share links
+
+Open a memo's detail page and use the **Share** section in the sidebar to create a public link for that single memo:
+
+- **Open share panel** — create, list, and revoke share links. Each link can be set to expire **never, after 1 day, 7 days, or 30 days**.
+- A share link resolves without sign-in, even for memos that are not `PUBLIC`, and signs attachment URLs so images and files load for anonymous viewers.
+- Revoke a link at any time to immediately stop access.
+
+Share-link management is available to the memo's owner (and admins), and only on top-level memos — not on comments.
+
+## Share as image
+
+The same **Share** section offers **Open image**, which renders the memo as a self-contained image you can download and post anywhere — handy for chat apps or social media where a link would not render the content.
+
+## What viewers can and can't do
+
+Anonymous viewers (via a `PUBLIC` memo or a share link) can read the content, attachments, and reactions, but cannot edit, react, comment, or manage shares. Those actions require signing in and, for editing, ownership.
 
 ## Safe sharing habits
 
-- choose visibility intentionally before posting
-- avoid making operational or sensitive notes public by default
-- review attachments before publishing a memo openly
-- disable public memo features entirely if your instance is private
-
-## Explore and discoverability
-
-Public content is easier to discover and share, which is useful for team knowledge bases or public writing. It also raises the bar for review, tagging, and privacy hygiene.
-
-## Typical use cases
-
-- `PRIVATE` for drafts and personal notes
-- `PROTECTED` for team-internal knowledge
-- `PUBLIC` for public docs, announcements, and openly shared references
+- choose visibility intentionally before posting, especially for operational or sensitive notes
+- review attachments before publishing a memo openly or minting a share link
+- prefer time-limited share links over `PUBLIC` when you only need to share temporarily
+- disable public memos entirely (Admin → Instance Settings) if your instance is private

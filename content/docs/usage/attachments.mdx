@@ -1,6 +1,6 @@
 ---
 title: Attachments
-description: Add files to memos and choose the right storage model for them.
+description: Add files to memos, browse them in the attachment library, and clean up unused files.
 ---
 
 Attachments let you keep files close to the notes they belong to. This is useful for screenshots, design references, PDFs, exported data, and other supporting material.
@@ -17,6 +17,36 @@ Attachments let you keep files close to the notes they belong to. This is useful
 - PDFs and documents
 - audio or video files when your storage policy allows them
 - exported artifacts such as logs or data files
+
+## Transcribing audio
+
+If an admin has configured an AI provider with transcription (Admin → Instance Settings → AI), audio attachments can be transcribed into text.
+
+- transcription is off until a provider is configured, so the option only appears on instances that have AI enabled
+- run it on an audio attachment to convert speech into text you can keep with the memo
+- providers are bring-your-own-key (OpenAI or Gemini), so transcription uses the instance's own AI account
+
+This is useful for voice notes and recorded snippets you want to search later as plain text.
+
+## The attachment library
+
+The Attachments page is a library of every file you've uploaded, separate from the memos they live in. Open it to browse, preview, and manage your files in one place.
+
+- files are grouped into **Media**, **Audio**, and **Documents** tabs, each with a live count
+- media is shown as a grid grouped by month; images, videos, and motion photos open in a full-screen lightbox
+- audio files play inline, and documents are listed as rows you can open in a new tab
+- every attachment links back to the memo it belongs to, or is flagged when it isn't linked to any memo
+- long lists load in pages with a **Load more** button
+
+There is no upload control here — attachments are added from the memo editor. The library is for browsing, previewing, and cleanup.
+
+## Cleaning up unused attachments
+
+An attachment becomes **unused** when it isn't linked to any memo — for example, if you uploaded a file but deleted the memo, or removed the file from a memo's body.
+
+When you have unused attachments, the library shows an expandable **Unused** panel listing them. From there you can **Delete all unused** in one action (with a confirmation step) to reclaim storage.
+
+Deleting unused attachments is permanent, so review the list before confirming. Attachments that are still linked to a memo are never touched.
 
 ## Storage implications
 
