@@ -124,10 +124,21 @@ export async function generateMetadata(props: { params: Promise<{ slug: string[]
     type: "article",
   });
 
+  const isApi = normalizedSlug[0] === "api";
+
+  // Advertise the clean Markdown version of prose docs for AI crawlers.
+  if (!isApi) {
+    metadata.alternates = {
+      canonical: preview.url,
+      types: {
+        "text/markdown": `https://usememos.com/llms.mdx${page.url}`,
+      },
+    };
+  }
+
   // Keep only the "latest" API reference indexable. Older version snapshots are
   // near-duplicates that dilute crawl budget and split ranking authority, so we
   // noindex them while still letting crawlers follow their links.
-  const isApi = normalizedSlug[0] === "api";
   const apiVersion = isApi ? getApiDocsVersionFromSlug(normalizedSlug) : undefined;
   if (apiVersion && apiVersion !== latestApiDocsVersion) {
     return {

@@ -4,6 +4,9 @@ import { z } from "zod";
 // Enhanced schemas for Memos documentation
 export const docs = defineDocs({
   docs: {
+    // Expose clean Markdown via page.data.getText("processed") for the AI
+    // discovery routes (/llms.txt, /llms-full.txt, /llms.mdx/*).
+    postprocess: { includeProcessedMarkdown: true },
     schema: frontmatterSchema.extend({
       category: z
         .enum(["installation", "guides", "configuration", "integrations", "api", "troubleshooting", "contributing", "faq"])
@@ -25,6 +28,7 @@ export const docs = defineDocs({
 export const blog = defineDocs({
   dir: "content/blog",
   docs: {
+    postprocess: { includeProcessedMarkdown: true },
     schema: frontmatterSchema.extend({
       description: z.string(),
       published_at: z.string(),
@@ -39,6 +43,7 @@ export const blog = defineDocs({
 export const changelog = defineDocs({
   dir: "content/changelog",
   docs: {
+    postprocess: { includeProcessedMarkdown: true },
     schema: frontmatterSchema.extend({
       version: z.string().optional(),
       date: z.string().optional(),

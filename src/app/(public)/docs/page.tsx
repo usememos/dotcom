@@ -78,6 +78,9 @@ export async function generateMetadata(): Promise<Metadata> {
     description: page.data.description,
     alternates: {
       canonical: preview.url,
+      types: {
+        "text/markdown": "https://usememos.com/llms.mdx/docs",
+      },
     },
     openGraph: {
       title: preview.title,
