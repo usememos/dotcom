@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: "%s - Memos",
   },
   description:
-    "Open-source, self-hosted timeline for quick notes, daily logs, links, and snippets. Markdown-native, lightweight, and yours to run.",
+    "Memos is an open-source, self-hosted note-taking app — a Markdown-native timeline for quick notes, daily logs, links, and snippets. Lightweight, private, and yours to run.",
   keywords: [
     "note taking app",
     "self-hosted notes",
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     siteName: "Memos",
     title: "Memos - Capture first. Keep it yours.",
     description:
-      "Open-source, self-hosted timeline for quick notes, daily logs, links, and snippets. Markdown-native, lightweight, and yours to run.",
+      "Memos is an open-source, self-hosted note-taking app — a Markdown-native timeline for quick notes, daily logs, links, and snippets. Lightweight, private, and yours to run.",
     images: [
       {
         url: DEFAULT_OG_IMAGE,
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Memos - Capture first. Keep it yours.",
     description:
-      "Open-source, self-hosted timeline for quick notes, daily logs, links, and snippets. Markdown-native, lightweight, and yours to run.",
+      "Memos is an open-source, self-hosted note-taking app — a Markdown-native timeline for quick notes, daily logs, links, and snippets. Lightweight, private, and yours to run.",
     images: [DEFAULT_OG_IMAGE],
   },
   icons: {

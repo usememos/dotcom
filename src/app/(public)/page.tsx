@@ -5,6 +5,7 @@ import { HeroAccent } from "@/features/marketing/components/hero-accent";
 import { HeroSection } from "@/features/marketing/components/hero-section";
 import { HomeDeploySection } from "@/features/marketing/components/home-deploy-section";
 import { HomeDiscoverSection } from "@/features/marketing/components/home-discover-section";
+import { HomeFaqSection } from "@/features/marketing/components/home-faq-section";
 import { HomeFeaturesSection } from "@/features/marketing/components/home-features-section";
 import { HomeUseCasesSection } from "@/features/marketing/components/home-use-cases-section";
 import { MarketingSiteLayout } from "@/features/marketing/components/marketing-site-layout";
@@ -37,11 +38,14 @@ const START_LINKS = [
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Memos - Open-Source Self-Hosted Notes",
+    absolute: "Memos - Open-Source, Self-Hosted Note-Taking App",
   },
   description:
-    "Memos is an open-source, self-hosted timeline for quick notes, daily logs, links, and snippets. Capture first, organize later, and keep every memo yours.",
+    "Memos is an open-source, self-hosted note-taking app — a Markdown-native timeline for quick notes, daily logs, links, and snippets. Self-host with Docker in minutes; private and free.",
   keywords: [
+    "note-taking app",
+    "open source note taking app",
+    "self-hosted note-taking app",
     "open source self hosted note-taking tool",
     "self-hosted note-taking tool",
     "open source note taking",
@@ -118,6 +122,7 @@ export default function HomePage() {
         <HomeDeploySection />
         <HomeUseCasesSection />
         <HomeDiscoverSection />
+        <HomeFaqSection />
 
         <section className="bg-white px-4 py-16 dark:bg-zinc-950 sm:px-6 lg:py-22">
           <div className="mx-auto max-w-2xl text-center">

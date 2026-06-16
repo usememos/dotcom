@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
-import { latestApiDocsVersion } from "@/features/docs/lib/api-docs";
+import { isApiDocsVersion, latestApiDocsVersion } from "@/features/docs/lib/api-docs";
+import { getAllComparisonSlugs } from "@/features/marketing/data/comparisons";
 import { getAllFeatureSlugs } from "@/features/marketing/data/features";
 import { getAllUseCaseSlugs } from "@/features/marketing/data/use-cases";
 import { blogSource, changelogSource, source } from "@/shared/content/source";
@@ -20,6 +21,22 @@ function parseDate(value: string | undefined): Date | undefined {
 
 function dedupeSitemap(sitemap: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
   return Array.from(new Map(sitemap.map((item) => [item.url, item])).values());
+}
+
+function isIndexableDocPage(pageUrl: string): boolean {
+  const segments = pageUrl.split("/").filter(Boolean);
+  if (segments[0] !== "docs" || segments[1] !== "api") {
+    return true;
+  }
+
+  const version = segments[2];
+  // Keep the API index and the "latest" tree; drop older version snapshots so
+  // the sitemap matches the noindex applied to those near-duplicate pages.
+  if (!version || !isApiDocsVersion(version)) {
+    return true;
+  }
+
+  return version === latestApiDocsVersion;
 }
 
 function getDocSitemapEntry(pageUrl: string) {
@@ -87,6 +104,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: `${BASE_URL}/compare`,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
       url: `${BASE_URL}/brand`,
       changeFrequency: "monthly" as const,
       priority: 0.5,
@@ -123,17 +145,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   sitemap.push(...useCasePages);
 
+  // Individual comparison pages
+  const comparisonPages = getAllComparisonSlugs().map((slug) => ({
+    url: `${BASE_URL}/compare/${slug}`,
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
+
+  sitemap.push(...comparisonPages);
+
   // Documentation pages
   try {
-    const docPages = source.getPages().map((page) => {
-      const lastModified = parseDate(page.data.lastUpdated);
+    const docPages = source
+      .getPages()
+      .filter((page) => isIndexableDocPage(page.url))
+      .map((page) => {
+        const lastModified = parseDate(page.data.lastUpdated);
 
-      return {
-        url: `${BASE_URL}${page.url}`,
-        ...(lastModified ? { lastModified } : {}),
-        ...getDocSitemapEntry(page.url),
-      };
-    });
+        return {
+          url: `${BASE_URL}${page.url}`,
+          ...(lastModified ? { lastModified } : {}),
+          ...getDocSitemapEntry(page.url),
+        };
+      });
 
     sitemap.push(...docPages);
   } catch (error) {

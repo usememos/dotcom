@@ -3,7 +3,12 @@ import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/page
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { AdsSectionMobile } from "@/features/docs/components/ads-section";
-import { getApiDocsVersionFromSlug, getApiDocsVersionLabel, normalizeApiDocsSlug } from "@/features/docs/lib/api-docs";
+import {
+  getApiDocsVersionFromSlug,
+  getApiDocsVersionLabel,
+  latestApiDocsVersion,
+  normalizeApiDocsSlug,
+} from "@/features/docs/lib/api-docs";
 import { getDocsSocialPreview } from "@/features/docs/lib/social-preview";
 import { tocConfig } from "@/features/docs/lib/toc-config";
 import { getMDXComponents } from "@/mdx-components";
@@ -114,8 +119,22 @@ export async function generateMetadata(props: { params: Promise<{ slug: string[]
   if (!page) notFound();
 
   const preview = getDocsSocialPreview(page);
-  return buildContentMetadata(preview, {
+  const metadata = buildContentMetadata(preview, {
     title: page.data.title,
     type: "article",
   });
+
+  // Keep only the "latest" API reference indexable. Older version snapshots are
+  // near-duplicates that dilute crawl budget and split ranking authority, so we
+  // noindex them while still letting crawlers follow their links.
+  const isApi = normalizedSlug[0] === "api";
+  const apiVersion = isApi ? getApiDocsVersionFromSlug(normalizedSlug) : undefined;
+  if (apiVersion && apiVersion !== latestApiDocsVersion) {
+    return {
+      ...metadata,
+      robots: { index: false, follow: true },
+    };
+  }
+
+  return metadata;
 }

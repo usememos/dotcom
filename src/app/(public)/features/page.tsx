@@ -21,10 +21,12 @@ export const revalidate = false;
 export const metadata: Metadata = {
   ...buildMarketingMetadata({
     title: "Features",
-    description: "Explore the focused Memos feature set for quick capture, Markdown notes, timeline browsing, and self-hosted ownership.",
+    description:
+      "Everything Memos does and nothing it doesn't — quick capture, Markdown notes, tags, universal search, a private timeline, and self-hosted ownership. Free and open source.",
     path: "/features",
   }),
-  description: "Explore the focused Memos feature set for quick capture, Markdown notes, timeline browsing, and self-hosted ownership.",
+  description:
+    "Everything Memos does and nothing it doesn't — quick capture, Markdown notes, tags, universal search, a private timeline, and self-hosted ownership. Free and open source.",
   keywords: [
     "note taking features",
     "self-hosted",

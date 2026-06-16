@@ -4,6 +4,7 @@ import {
   DollarSignIcon,
   ExternalLinkIcon,
   FileTextIcon,
+  GitCompareIcon,
   HeartIcon,
   HistoryIcon,
   LightbulbIcon,
@@ -126,16 +127,6 @@ export function Footer({ compact = false }: FooterProps = {}) {
               </li>
               <li>
                 <Link
-                  href="/features"
-                  prefetch={false}
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <SparklesIcon className="w-4 h-4" />
-                  Features
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/changelog"
                   prefetch={false}
                   className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
@@ -162,6 +153,16 @@ export function Footer({ compact = false }: FooterProps = {}) {
                 >
                   <LightbulbIcon className="w-4 h-4" />
                   Use Cases
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/compare"
+                  prefetch={false}
+                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
+                >
+                  <GitCompareIcon className="w-4 h-4" />
+                  Compare
                 </Link>
               </li>
             </ul>

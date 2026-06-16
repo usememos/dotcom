@@ -22,9 +22,13 @@ export const revalidate = false;
 
 const socialPreview = getChangelogIndexSocialPreview();
 
-export const metadata: Metadata = buildContentMetadata(socialPreview, {
-  openGraphTitle: `${socialPreview.title} - Memos`,
-});
+export const metadata: Metadata = {
+  ...buildContentMetadata(socialPreview, {
+    openGraphTitle: `${socialPreview.title} - Memos`,
+  }),
+  description:
+    "Memos changelog: every release with new features, improvements, and fixes. Track version history and see what changed before upgrading your self-hosted instance.",
+};
 
 const breadcrumbItems = buildBreadcrumbItems([{ href: "/changelog", name: "Changelog" }]);
 

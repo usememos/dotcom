@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { absoluteUrl, buildBreadcrumbItems, SITE_NAV_ITEMS } from "./seo";
+import { absoluteUrl, buildBreadcrumbItems, buildFaqJsonLd, SITE_NAV_ITEMS } from "./seo";
 
 describe("seo", () => {
   it("primary site navigation prioritizes product paths over the blog", () => {
@@ -22,5 +22,18 @@ describe("seo", () => {
   it("absoluteUrl preserves absolute URLs and expands site paths", () => {
     expect(absoluteUrl("/docs")).toBe("https://usememos.com/docs");
     expect(absoluteUrl("https://demo.usememos.com/")).toBe("https://demo.usememos.com/");
+  });
+
+  it("buildFaqJsonLd emits a FAQPage with one Question per item", () => {
+    const jsonLd = buildFaqJsonLd([{ question: "Is Memos free?", answer: "Yes, it is open source." }]);
+
+    expect(jsonLd["@type"]).toBe("FAQPage");
+    expect(jsonLd.mainEntity).toEqual([
+      {
+        "@type": "Question",
+        name: "Is Memos free?",
+        acceptedAnswer: { "@type": "Answer", text: "Yes, it is open source." },
+      },
+    ]);
   });
 });
