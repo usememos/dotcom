@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { getFile } from "../lib/indexeddb";
+import { getLocalBlob } from "../sync/blobs";
 import type { FileData, ScratchpadAttachmentRef } from "../types";
 
 interface AttachmentPreview {
@@ -18,7 +19,20 @@ export function useAttachmentPreviews(attachments: ScratchpadAttachmentRef[]): M
     const loadAttachments = async () => {
       const previews = await Promise.all(
         attachments.map(async (attachment) => {
-          const fileData = await getFile(attachment.id);
+          let fileData = await getFile(attachment.id);
+          if (!fileData && attachment.hash) {
+            const local = await getLocalBlob(attachment.hash);
+            if (local) {
+              fileData = {
+                id: attachment.id,
+                name: local.name,
+                type: local.type,
+                size: local.size,
+                blob: local.blob,
+                uploadedAt: new Date(),
+              };
+            }
+          }
           if (cancelled || !fileData) {
             return {
               id: attachment.id,

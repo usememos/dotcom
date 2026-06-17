@@ -1,38 +1,15 @@
 /**
- * IndexedDB utilities for storing file blobs
+ * IndexedDB utilities for storing file blobs.
+ * Schema/versioning lives in sync/store.ts (the unified `memos-scratch` DB).
  */
 
+import { openScratchpadDB } from "../sync/store";
 import type { FileData } from "../types";
 
-const DB_NAME = "memos-scratch";
-const DB_VERSION = 1;
 const STORE_NAME = "files";
 
-/**
- * Open IndexedDB connection
- */
 function openDB(): Promise<IDBDatabase> {
-  return new Promise((resolve, reject) => {
-    if (typeof window === "undefined") {
-      reject(new Error("IndexedDB not available"));
-      return;
-    }
-
-    const request = indexedDB.open(DB_NAME, DB_VERSION);
-
-    request.onerror = () => reject(request.error);
-    request.onsuccess = () => resolve(request.result);
-
-    request.onupgradeneeded = (event) => {
-      const db = (event.target as IDBOpenDBRequest).result;
-
-      // Create object store if it doesn't exist
-      if (!db.objectStoreNames.contains(STORE_NAME)) {
-        const store = db.createObjectStore(STORE_NAME, { keyPath: "id" });
-        store.createIndex("uploadedAt", "uploadedAt", { unique: false });
-      }
-    };
-  });
+  return openScratchpadDB();
 }
 
 /**

@@ -7,6 +7,7 @@ export interface ScratchpadAttachmentRef {
   name: string;
   type: string; // MIME type
   size: number;
+  hash?: string; // SHA-256 content hash for content-addressed blob sync
 }
 
 export interface ScratchpadViewport {
