@@ -14,8 +14,6 @@
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "node scripts/verify-deploy-env.mjs && opennextjs-cloudflare build && opennextjs-cloudflare deploy -- --keep-vars",
     "deploy:dry-run": "opennextjs-cloudflare build && wrangler deploy --dry-run",
-    "build:web": "node scripts/build-web-static.mjs",
-    "deploy:web": "node scripts/build-web-static.mjs && wrangler deploy --config wrangler.web.jsonc",
     "typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "smoke": "node scripts/smoke-test.mjs",
     "og:audit": "node scripts/og-audit.mjs",

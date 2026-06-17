@@ -41,6 +41,3 @@ openapi.yaml
 
 # clerk configuration (can include secrets)
 /.clerk/
-
-# static-split: web export build (out/ already ignored above) + build stash
-/.web-static-stash

@@ -34,6 +34,32 @@ const SECURITY_HEADERS = [
   },
 ];
 
+// Edge-cache the static public pages so Cloudflare's CDN can serve repeat hits
+// to the same URL without invoking the Worker (zero CPU/request). Content is
+// immutable until redeploy (pages are `revalidate = false`); s-maxage keeps it
+// fresh for an hour and stale-while-revalidate serves instantly while the edge
+// refreshes in the background. Scoped to public routes only — never /api,
+// /dashboard, /sign-in, /sign-up, or /scratchpad (those stay no-store/dynamic).
+const PUBLIC_CACHE_HEADERS = [
+  {
+    key: "Cache-Control",
+    value: "public, s-maxage=3600, stale-while-revalidate=86400",
+  },
+];
+const PUBLIC_CACHEABLE_PATHS = [
+  "/",
+  "/docs/:path*",
+  "/blog/:path*",
+  "/changelog/:path*",
+  "/features/:path*",
+  "/use-cases/:path*",
+  "/compare/:path*",
+  "/pricing",
+  "/brand",
+  "/privacy",
+  "/sponsors",
+];
+
 /** @type {import('next').NextConfig} */
 const config = {
   poweredByHeader: false,
@@ -85,6 +111,10 @@ const config = {
         source: "/:path*",
         headers: SECURITY_HEADERS,
       },
+      ...PUBLIC_CACHEABLE_PATHS.map((source) => ({
+        source,
+        headers: PUBLIC_CACHE_HEADERS,
+      })),
     ];
   },
 };
