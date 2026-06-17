@@ -1,0 +1,29 @@
+{
+  // Static-split: PUBLIC surface.
+  //
+  // Deploys the static export (out/, built by `node scripts/build-web-static.mjs`)
+  // as an ASSETS-ONLY Workers project — there is no `main` Worker script, so these
+  // pages are served directly from Cloudflare's edge and NEVER invoke a Worker
+  // (zero CPU per request, free + unlimited).
+  //
+  // The dynamic surface stays on the existing `memos-dotcom` OpenNext Worker
+  // (wrangler.jsonc). Traffic is split by path via Workers Routes:
+  //
+  //   memos-dotcom      (dynamic Worker):  usememos.com/api/*, /dashboard*,
+  //                                        /sign-in*, /sign-up*, /scratchpad*,
+  //                                        /llms.mdx/*
+  //   memos-dotcom-web  (this, static):    usememos.com/*  (catch-all; more
+  //                                        specific Worker routes win)
+  //
+  // Deploy:  wrangler deploy --config wrangler.web.jsonc
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "memos-dotcom-web",
+  "compatibility_date": "2026-05-30",
+  "workers_dev": false,
+  "assets": {
+    "directory": "./out"
+  },
+  "observability": {
+    "enabled": true
+  }
+}
