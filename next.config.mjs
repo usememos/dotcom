@@ -50,6 +50,16 @@ const config = {
   async redirects() {
     return [
       {
+        // Bare /docs/api normalizes to the "latest" version. Doing it here (routing
+        // layer) instead of via redirect() inside the docs page avoids loading the
+        // heavy fumadocs-openapi route module just to emit the 307 — that in-page
+        // redirect was ~408ms CPU/hit (~2M CPU-ms/7d on Workers). The page-level
+        // normalizeApiDocsSlug() stays as the fallback for other /docs/api/* cases.
+        source: "/docs/api",
+        destination: "/docs/api/latest",
+        permanent: false,
+      },
+      {
         source: "/docs/troubleshooting/common-issues",
         destination: "/docs/troubleshooting",
         permanent: true,
