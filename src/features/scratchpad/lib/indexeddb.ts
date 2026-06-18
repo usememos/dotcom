@@ -1,9 +1,9 @@
 /**
  * IndexedDB utilities for storing file blobs.
- * Schema/versioning lives in sync/store.ts (the unified `memos-scratch` DB).
+ * Schema/versioning lives in persistence/db.ts (the unified `memos-scratch` DB).
  */
 
-import { openScratchpadDB } from "../sync/store";
+import { openScratchpadDB } from "../persistence/db";
 import type { FileData } from "../types";
 
 const STORE_NAME = "files";

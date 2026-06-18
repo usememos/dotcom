@@ -35,7 +35,6 @@ export type ScratchpadEditorOperation =
 
 type ScratchpadEditorAction =
   | { type: "hydrate"; items: ScratchpadItem[]; viewport: ScratchpadViewport }
-  | { type: "merge-cards"; upserts: ScratchpadItem[]; removedIds: string[] }
   | {
       type: "run-transaction";
       id: number;
@@ -173,20 +172,6 @@ export function scratchpadEditorReducer(state: ScratchpadEditorState, action: Sc
         viewport: action.viewport,
         lastTransaction: null,
       };
-    case "merge-cards": {
-      const removed = new Set(action.removedIds);
-      const upserts = new Map(action.upserts.map((card) => [card.id, card]));
-      const kept = state.document.items.filter((item) => !removed.has(item.id)).map((item) => upserts.get(item.id) ?? item);
-      const keptIds = new Set(kept.map((item) => item.id));
-      const added = action.upserts.filter((card) => !keptIds.has(card.id) && !removed.has(card.id));
-      return {
-        ...state,
-        document: { items: [...kept, ...added] },
-        selectedItemIds: state.selectedItemIds.filter((id) => !removed.has(id)),
-        lastActiveItemId: state.lastActiveItemId && removed.has(state.lastActiveItemId) ? null : state.lastActiveItemId,
-        lastTransaction: null,
-      };
-    }
     case "run-transaction": {
       const nextState = action.operations.reduce(applyScratchpadEditorOperation, state);
       const changes = {

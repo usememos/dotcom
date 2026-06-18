@@ -11,41 +11,13 @@ import {
   scratchpadEditorReducer,
 } from "@/features/scratchpad/lib/editor";
 import { calculateScratchpadItemLayout } from "@/features/scratchpad/lib/item-positioning";
-import { clampScratchpadScale, DEFAULT_SCRATCHPAD_VIEWPORT } from "@/features/scratchpad/lib/viewport";
-import { createMockBackend } from "@/features/scratchpad/sync/backend-mock";
-import { hashBlob, putLocalBlob } from "@/features/scratchpad/sync/blobs";
-import { getOrCreateDeviceId } from "@/features/scratchpad/sync/device";
-import { createSyncEngine, type SyncEngine } from "@/features/scratchpad/sync/engine";
-import { runScratchpadMigration } from "@/features/scratchpad/sync/migration";
-import { isCardDeleted } from "@/features/scratchpad/sync/reconcile";
-import { getAllStoredCards, getMeta, setMeta } from "@/features/scratchpad/sync/store";
-import type { StoredCard } from "@/features/scratchpad/sync/types";
-import type {
-  ScratchpadAttachmentRef,
-  ScratchpadItem,
-  ScratchpadItemLayout,
-  ScratchpadItemPatch,
-  ScratchpadViewport,
-} from "@/features/scratchpad/types";
-
-const BROADCAST_CHANNEL = "memos-scratch-sync";
+import { viewportStorage } from "@/features/scratchpad/lib/storage";
+import { clampScratchpadScale } from "@/features/scratchpad/lib/viewport";
+import { hashBlob, putLocalBlob } from "@/features/scratchpad/persistence/blobs";
+import { loadDocument, migrateScratchpadStorage, saveDocument } from "@/features/scratchpad/persistence/document";
+import type { ScratchpadAttachmentRef, ScratchpadItemLayout, ScratchpadItemPatch, ScratchpadViewport } from "@/features/scratchpad/types";
 
 type ViewportUpdater = ScratchpadViewport | ((current: ScratchpadViewport) => ScratchpadViewport);
-
-interface CardsBroadcast {
-  upserts: ScratchpadItem[];
-  removedIds: string[];
-}
-
-function toScratchpadItem(card: StoredCard): ScratchpadItem {
-  return {
-    id: card.id,
-    layout: card.layout,
-    content: card.content,
-    timestamps: card.timestamps,
-    ...(card.tone ? { tone: card.tone } : {}),
-  };
-}
 
 async function persistUploadedFile(file: File | Blob): Promise<ScratchpadAttachmentRef> {
   const name = file instanceof File ? file.name : "untitled";
@@ -61,8 +33,6 @@ export function useScratchpadEditor() {
   const stateRef = useRef(state);
   const viewportRef = useRef(state.viewport);
   const nextTransactionIdRef = useRef(1);
-  const engineRef = useRef<SyncEngine | null>(null);
-  const channelRef = useRef<BroadcastChannel | null>(null);
 
   useEffect(() => {
     stateRef.current = state;
@@ -72,62 +42,42 @@ export function useScratchpadEditor() {
     viewportRef.current = state.viewport;
   }, [state.viewport]);
 
-  // Mount: migrate once, hydrate from IndexedDB, start the engine, listen cross-tab.
+  // Mount: migrate once, then hydrate the document and viewport from local storage.
   useEffect(() => {
     let active = true;
-    const deviceId = getOrCreateDeviceId();
-    const channel = typeof BroadcastChannel !== "undefined" ? new BroadcastChannel(BROADCAST_CHANNEL) : null;
-    channelRef.current = channel;
-
-    const applyBroadcast = (payload: CardsBroadcast) => {
-      dispatch({ type: "merge-cards", upserts: payload.upserts, removedIds: payload.removedIds });
-    };
-    if (channel) channel.onmessage = (event: MessageEvent<CardsBroadcast>) => applyBroadcast(event.data);
-
-    const engine = createSyncEngine({
-      backend: createMockBackend(),
-      deviceId,
-      onCardsChanged: (cards) => {
-        const removedIds = cards.filter(isCardDeleted).map((c) => c.id);
-        const upserts = cards.filter((c) => !isCardDeleted(c)).map(toScratchpadItem);
-        const payload: CardsBroadcast = { upserts, removedIds };
-        applyBroadcast(payload);
-        channel?.postMessage(payload);
-      },
-    });
-    engineRef.current = engine;
-
     const boot = async () => {
-      await runScratchpadMigration(deviceId);
-      const cards = await getAllStoredCards();
-      const items = cards.filter((c) => !isCardDeleted(c)).map(toScratchpadItem);
-      const savedViewport = (await getMeta<ScratchpadViewport>("viewport")) ?? DEFAULT_SCRATCHPAD_VIEWPORT;
+      await migrateScratchpadStorage();
+      const document = loadDocument();
+      const savedViewport = viewportStorage.get();
       if (!active) return;
       dispatch({
         type: "hydrate",
-        items,
+        items: document.items,
         viewport: { ...savedViewport, scale: clampScratchpadScale(savedViewport.scale) },
       });
       setIsClient(true);
-      await engine.start();
-      engine.requestSync(); // initial pull-on-load (debounced)
     };
     void boot();
 
     return () => {
       active = false;
-      engine.stop();
-      channel?.close();
-      engineRef.current = null;
-      channelRef.current = null;
     };
   }, []);
 
-  // Device-local viewport persists to meta (never synced).
+  // Persist the document (debounced) whenever it changes.
   useEffect(() => {
     if (!isClient) return;
     const timeoutId = window.setTimeout(() => {
-      void setMeta("viewport", stateRef.current.viewport);
+      saveDocument(stateRef.current.document);
+    }, 300);
+    return () => window.clearTimeout(timeoutId);
+  }, [isClient, state.document]);
+
+  // Device-local viewport persists to localStorage.
+  useEffect(() => {
+    if (!isClient) return;
+    const timeoutId = window.setTimeout(() => {
+      viewportStorage.save(stateRef.current.viewport);
     }, 300);
     return () => window.clearTimeout(timeoutId);
   }, [isClient, state.viewport]);
@@ -179,42 +129,33 @@ export function useScratchpadEditor() {
   const createTextItem = (x: number, y: number) => {
     const item = createPositionedItem(x, y);
     runTransaction("item.create", [{ type: "add-item", item }], "immediate");
-    void engineRef.current?.recordMutation({ cardId: item.id, field: "create", value: item });
   };
 
   const updateItemLayout = (id: string, updates: Partial<ScratchpadItemLayout>) => {
     const item = getScratchpadItem(stateRef.current.document.items, id);
     if (!item) return;
-    const layout = { ...item.layout, ...updates };
     patchItem(id, { layout: updates }, "immediate", "item.layout");
-    void engineRef.current?.recordMutation({ cardId: id, field: "layout", value: layout });
   };
 
   const updateItemBody = (id: string, body: string) => {
     const item = getScratchpadItem(stateRef.current.document.items, id);
     if (!item) return;
     patchItem(id, { content: { body }, timestamps: { updatedAt: new Date() } }, "debounced", "item.body");
-    void engineRef.current?.recordMutation({ cardId: id, field: "body", value: body });
   };
 
-  const deleteItems = async (ids: string[]) => {
-    // Commit the tombstones before removing the cards from the in-memory view, so
-    // a concurrent sync's mergeChanges never reads a still-live card and echoes it
-    // back as an upsert (a transient "ghost" of a card the user just deleted).
-    await Promise.all(ids.map((id) => engineRef.current?.recordMutation({ cardId: id, field: "delete", value: null })));
+  const deleteItems = (ids: string[]) => {
     runTransaction("item.delete", [{ type: "delete-items", ids }], "immediate");
   };
 
-  const deleteItem = async (id: string) => {
-    await deleteItems([id]);
+  const deleteItem = (id: string) => {
+    deleteItems([id]);
   };
 
-  const removeAttachment = async (id: string, attachmentId: string) => {
+  const removeAttachment = (id: string, attachmentId: string) => {
     const item = getScratchpadItem(stateRef.current.document.items, id);
     if (!item) return;
     const attachments = item.content.attachments.filter((a) => a.id !== attachmentId);
     patchItem(id, { content: { attachments }, timestamps: { updatedAt: new Date() } }, "immediate", "item.remove-attachment");
-    await engineRef.current?.recordMutation({ cardId: id, field: "attachments", value: attachments });
   };
 
   const uploadFiles = async (files: FileList, x: number, y: number, targetItemId?: string) => {
@@ -226,14 +167,12 @@ export function useScratchpadEditor() {
       if (target) {
         const attachments = [...target.content.attachments, ...refs];
         patchItem(targetItemId, { content: { attachments }, timestamps: { updatedAt: new Date() } }, "immediate", "item.attach-files");
-        await engineRef.current?.recordMutation({ cardId: targetItemId, field: "attachments", value: attachments });
         return;
       }
     }
 
     const item = createPositionedItem(x, y, refs);
     runTransaction("item.create-with-files", [{ type: "add-item", item }], "immediate");
-    await engineRef.current?.recordMutation({ cardId: item.id, field: "create", value: item });
   };
 
   const selectItem = (id: string | null, additive: boolean = false) => {
@@ -251,7 +190,7 @@ export function useScratchpadEditor() {
 
       if ((e.key === "Delete" || e.key === "Backspace") && stateRef.current.selectedItemIds.length > 0 && !isTyping) {
         e.preventDefault();
-        void deleteItems(stateRef.current.selectedItemIds);
+        deleteItems(stateRef.current.selectedItemIds);
       }
 
       if (e.key === "Escape") {

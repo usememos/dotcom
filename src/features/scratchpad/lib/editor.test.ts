@@ -100,31 +100,3 @@ describe("scratchpadEditorReducer", () => {
     expect(next).toBe(start);
   });
 });
-
-describe("merge-cards", () => {
-  const hydrated = () =>
-    scratchpadEditorReducer(createScratchpadEditorState(), {
-      type: "hydrate",
-      items: [makeItem("a"), makeItem("b")],
-      viewport: { x: 0, y: 0, scale: 1 },
-    });
-
-  it("upserts new and existing cards and removes deleted ones", () => {
-    const updatedA: ScratchpadItem = { ...makeItem("a"), content: { body: "new", attachments: [] } };
-    const next = scratchpadEditorReducer(hydrated(), {
-      type: "merge-cards",
-      upserts: [updatedA, makeItem("c")],
-      removedIds: ["b"],
-    });
-    expect(next.document.items.map((i) => i.id).sort()).toEqual(["a", "c"]);
-    expect(getScratchpadItem(next.document.items, "a")?.content.body).toBe("new");
-    expect(next.lastTransaction).toBeNull();
-  });
-
-  it("clears selection and lastActive for removed cards", () => {
-    const selected = run(hydrated(), [{ type: "select-item", id: "a", additive: false }]);
-    const next = scratchpadEditorReducer(selected, { type: "merge-cards", upserts: [], removedIds: ["a"] });
-    expect(next.selectedItemIds).toEqual([]);
-    expect(next.lastActiveItemId).toBeNull();
-  });
-});

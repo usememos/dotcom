@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { getFile } from "../lib/indexeddb";
-import { getLocalBlob } from "../sync/blobs";
+import { getLocalBlob } from "../persistence/blobs";
 import type { FileData, ScratchpadAttachmentRef } from "../types";
 
 interface AttachmentPreview {

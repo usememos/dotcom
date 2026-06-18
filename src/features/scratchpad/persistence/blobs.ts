@@ -1,6 +1,4 @@
-import type { ScratchpadAttachmentRef } from "../types";
-import type { SyncBackend } from "./backend";
-import { runScratchpadTx } from "./store";
+import { runScratchpadTx } from "./db";
 
 export interface StoredBlob {
   hash: string;
@@ -73,28 +71,4 @@ export async function deleteLocalBlob(hash: string): Promise<void> {
 
 export async function allLocalBlobHashes(): Promise<string[]> {
   return (await runScratchpadTx<string[]>(["blobs"], "readonly", (tx) => tx.objectStore("blobs").getAllKeys())) ?? [];
-}
-
-export async function uploadMissingBlobs(backend: SyncBackend, refs: ScratchpadAttachmentRef[]): Promise<void> {
-  const seen = new Set<string>();
-  for (const ref of refs) {
-    if (!ref.hash || seen.has(ref.hash)) continue;
-    seen.add(ref.hash);
-    if (await backend.hasBlob(ref.hash)) continue;
-    const local = await getLocalBlob(ref.hash);
-    if (local) await backend.putBlob(ref.hash, local.blob);
-  }
-}
-
-export async function loadAttachmentBlob(backend: SyncBackend, ref: ScratchpadAttachmentRef): Promise<Blob | null> {
-  if (!ref.hash) return null;
-  const local = await getLocalBlob(ref.hash);
-  if (local) return local.blob;
-  try {
-    const blob = await backend.getBlob(ref.hash);
-    await putLocalBlob({ hash: ref.hash, name: ref.name, type: ref.type, size: ref.size, blob });
-    return blob;
-  } catch {
-    return null;
-  }
 }
