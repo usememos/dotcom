@@ -1,0 +1,108 @@
+/** The distinguishable ways a direct browser→instance call can fail. */
+export type InstanceErrorKind =
+  | "mixed-content"
+  | "cors"
+  | "unreachable"
+  | "unauthorized"
+  | "timeout"
+  | "bad-response"
+  | "unsupported-version";
+
+export type InstanceErrorDetail = {
+  kind: InstanceErrorKind;
+  /** Short headline. */
+  title: string;
+  /** One sentence on why it happened. */
+  why: string;
+  /** Ordered, actionable remediation steps. */
+  howToFix: string[];
+};
+
+/** Thrown by the instance client; carries the classified kind. */
+export class InstanceError extends Error {
+  readonly kind: InstanceErrorKind;
+  /** The instance version in play, when known (used for unsupported-version copy). */
+  readonly instanceVersion?: string;
+  constructor(kind: InstanceErrorKind, instanceVersion?: string) {
+    super(kind);
+    this.name = "InstanceError";
+    this.kind = kind;
+    this.instanceVersion = instanceVersion;
+  }
+}
+
+export type DescribeContext = {
+  /** This site's origin, for CORS remediation copy. Defaults to "this site". */
+  origin?: string;
+  instanceVersion?: string;
+  latestSupportedVersion?: string;
+};
+
+/** Maps an error kind to user-facing copy (title / why / how to fix). */
+export function describeInstanceError(kind: InstanceErrorKind, context: DescribeContext = {}): InstanceErrorDetail {
+  const origin = context.origin ?? "this site";
+  switch (kind) {
+    case "mixed-content":
+      return {
+        kind,
+        title: "Your instance uses http://",
+        why: "This site is served over https, and browsers block https pages from calling http:// addresses.",
+        howToFix: [
+          "Serve your Memos instance over https (e.g. behind a TLS reverse proxy).",
+          "Update the instance URL to the https:// address, then try again.",
+        ],
+      };
+    case "cors":
+      return {
+        kind,
+        title: "Your instance blocked this site (CORS)",
+        why: `Your Memos server is reachable, but it didn't allow ${origin} to read the response from the browser.`,
+        howToFix: [
+          `Allow the origin ${origin} on your Memos server or its reverse proxy.`,
+          `nginx example: add_header 'Access-Control-Allow-Origin' '${origin}' always; and allow the GET/OPTIONS methods and the Authorization header.`,
+          "Reload your proxy, then click Test connection again.",
+        ],
+      };
+    case "unreachable":
+      return {
+        kind,
+        title: "Couldn't reach your instance",
+        why: "The request never got a response from the server.",
+        howToFix: ["Check the instance URL is correct and the server is online.", "Open the URL in a new browser tab to confirm it loads."],
+      };
+    case "unauthorized":
+      return {
+        kind,
+        title: "Access token rejected",
+        why: "The instance returned 401/403 — the token is invalid or expired.",
+        howToFix: ["Open Memos → Settings → Access Tokens and create a new token.", "Paste the new token here and save."],
+      };
+    case "timeout":
+      return {
+        kind,
+        title: "Your instance timed out",
+        why: "The server didn't respond within 8 seconds.",
+        howToFix: ["Check the server is online and not overloaded.", "Try again in a moment."],
+      };
+    case "unsupported-version": {
+      const version = context.instanceVersion ?? "your version";
+      const latest = context.latestSupportedVersion ?? "the latest documented version";
+      return {
+        kind,
+        title: "Unsupported Memos version",
+        why: `Your instance reports ${version}, which is newer than this site knows how to read.`,
+        howToFix: [`This site supports Memos up to ${latest}.`, "Stats may be unavailable until the site is updated for your version."],
+      };
+    }
+    default:
+      return {
+        kind: "bad-response",
+        title: "Unexpected response",
+        why: "The instance returned something that isn't a valid API response — possibly a redirect or a login page.",
+        howToFix: [
+          "Confirm the instance URL points at your Memos server's API (not a login or proxy page).",
+          "If your server redirects (http→https or apex→www), use the final URL.",
+        ],
+      };
+  }
+}

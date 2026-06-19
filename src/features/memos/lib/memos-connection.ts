@@ -1,4 +1,5 @@
-import type { MemosConnectionTestResult } from "../../../shared/settings/memos-settings";
+import type { InstanceErrorDetail } from "@/shared/memos/errors";
+import type { ConnectionTestResult } from "@/shared/memos/instance-stats";
 import { MemosSettingsRequestError } from "../../../shared/settings/memos-settings-client";
 
 export type ConnectionFormValues = {
@@ -6,7 +7,7 @@ export type ConnectionFormValues = {
   accessToken: string;
 };
 
-export type TestMessage = { tone: "success" | "error"; message: string };
+export type TestMessage = { tone: "success"; message: string } | { tone: "error"; detail: InstanceErrorDetail };
 
 export type SaveErrorMessages = { instanceUrl?: string; accessToken?: string; form?: string };
 
@@ -14,22 +15,11 @@ export function canSubmitConnectionForm(values: ConnectionFormValues, busy: bool
   return !busy && values.instanceUrl.trim().length > 0 && values.accessToken.trim().length > 0;
 }
 
-export function describeTestResult(result: MemosConnectionTestResult): TestMessage {
+export function describeTestResult(result: ConnectionTestResult): TestMessage {
   if (result.ok) {
-    return { tone: "success", message: `Connected as ${result.user.name}` };
+    return { tone: "success", message: `Connected as ${result.name}` };
   }
-  switch (result.reason) {
-    case "unauthorized":
-      return { tone: "error", message: "Token was rejected by the instance." };
-    case "timeout":
-      return { tone: "error", message: "Connection timed out." };
-    case "redirected":
-      return { tone: "error", message: "The instance redirected — use the URL it redirects to." };
-    case "invalid-response":
-      return { tone: "error", message: "The URL doesn't look like a Memos instance." };
-    default:
-      return { tone: "error", message: "Instance couldn't be reached." };
-  }
+  return { tone: "error", detail: result.error };
 }
 
 export function describeSaveError(error: unknown, fallbackMessage = "Couldn't save settings. Try again."): SaveErrorMessages {

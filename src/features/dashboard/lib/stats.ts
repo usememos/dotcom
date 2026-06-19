@@ -1,4 +1,4 @@
-import type { MemosActivityDay, MemosStatsFailureReason } from "@/shared/settings/memos-stats";
+import type { MemosActivityDay } from "@/shared/settings/memos-stats";
 import { toUtcDateKey } from "../../../shared/lib/date";
 import { MemosSettingsRequestError } from "../../../shared/settings/memos-settings-client";
 
@@ -25,18 +25,6 @@ export function currentStreak(days: MemosActivityDay[], now: Date): number {
     cursor = new Date(cursor.getTime() - 86400000);
   }
   return streak;
-}
-
-const ERROR_MESSAGES: Record<MemosStatsFailureReason, string> = {
-  unauthorized: "Your instance rejected the saved token. Reconnect to refresh it.",
-  unreachable: "Couldn't reach your Memos instance.",
-  timeout: "Your instance took too long to respond.",
-  "invalid-response": "That URL doesn't look like a supported Memos instance.",
-  redirected: "Your instance redirected the request. Reconnect using the URL it redirects to.",
-};
-
-export function describeStatsError(reason: MemosStatsFailureReason): string {
-  return ERROR_MESSAGES[reason];
 }
 
 /** "host · vX.Y.Z" when both are known; degrades gracefully. */

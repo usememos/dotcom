@@ -18,7 +18,8 @@ const mocks = vi.hoisted(() => {
     useIsClerkConfigured: vi.fn(() => true),
     signIn: vi.fn(),
     connectionOpen: vi.fn(),
-    getMemosStats: vi.fn(),
+    getMemosCredentials: vi.fn(),
+    fetchInstanceStats: vi.fn(),
     MemosSettingsRequestError,
   };
 });
@@ -37,9 +38,10 @@ vi.mock("@/features/memos/hooks/use-memos-connection", () => ({
   }),
 }));
 vi.mock("@/shared/settings/memos-settings-client", () => ({
-  getMemosStats: mocks.getMemosStats,
+  getMemosCredentials: mocks.getMemosCredentials,
   MemosSettingsRequestError: mocks.MemosSettingsRequestError,
 }));
+vi.mock("@/shared/memos/instance-stats", () => ({ fetchInstanceStats: mocks.fetchInstanceStats }));
 
 vi.mock("../lib/stats-cache", () => ({
   readDashboardStatsCache: vi.fn(() => null),
@@ -54,7 +56,10 @@ vi.mock("./stat-tiles", () => ({ StatTiles: () => <div data-testid="stat-tiles" 
 vi.mock("./activity-heatmap", () => ({ ActivityHeatmap: () => <div data-testid="heatmap" /> }));
 vi.mock("./connect-prompt", () => ({ ConnectPrompt: () => <div data-testid="connect-prompt" /> }));
 
+import { describeInstanceError } from "@/shared/memos/errors";
 import { Dashboard } from "./dashboard";
+
+const CREDS = { instanceUrl: "https://memos.example.com", accessToken: "tok" };
 
 const okResult = {
   status: "ok" as const,
@@ -79,7 +84,8 @@ describe("Dashboard", () => {
   });
 
   it("renders the live dashboard on an ok result", async () => {
-    mocks.getMemosStats.mockResolvedValue(okResult);
+    mocks.getMemosCredentials.mockResolvedValue(CREDS);
+    mocks.fetchInstanceStats.mockResolvedValue(okResult);
     render(<Dashboard />);
     expect(await screen.findByTestId("stat-tiles")).toBeInTheDocument();
     expect(screen.getByTestId("heatmap")).toBeInTheDocument();
@@ -87,32 +93,33 @@ describe("Dashboard", () => {
   });
 
   it("shows the connect prompt when not connected", async () => {
-    mocks.getMemosStats.mockResolvedValue({ status: "not-connected" });
+    mocks.getMemosCredentials.mockResolvedValue(null);
     render(<Dashboard />);
     expect(await screen.findByTestId("connect-prompt")).toBeInTheDocument();
   });
 
-  it("shows a reason-specific error for an error result", async () => {
-    mocks.getMemosStats.mockResolvedValue({ status: "error", reason: "unreachable" });
+  it("shows the classified error notice for an error result", async () => {
+    mocks.getMemosCredentials.mockResolvedValue(CREDS);
+    mocks.fetchInstanceStats.mockResolvedValue({ status: "error", error: describeInstanceError("unreachable") });
     render(<Dashboard />);
-    expect(await screen.findByText("Couldn't reach your Memos instance.")).toBeInTheDocument();
+    expect(await screen.findByText(describeInstanceError("unreachable").title)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Retry" })).toBeInTheDocument();
   });
 
-  it("shows the signed-out card when the fetch rejects with a 401", async () => {
-    mocks.getMemosStats.mockRejectedValue(new mocks.MemosSettingsRequestError("unauthorized", 401));
+  it("shows the signed-out card when the credentials fetch rejects with a 401", async () => {
+    mocks.getMemosCredentials.mockRejectedValue(new mocks.MemosSettingsRequestError("unauthorized", 401));
     render(<Dashboard />);
     expect(await screen.findByRole("button", { name: "Sign in" })).toBeInTheDocument();
   });
 
   it("shows a generic failure for an unknown rejection", async () => {
-    mocks.getMemosStats.mockRejectedValue(new Error("boom"));
+    mocks.getMemosCredentials.mockRejectedValue(new Error("boom"));
     render(<Dashboard />);
     expect(await screen.findByText("Couldn't load your stats. Try again.")).toBeInTheDocument();
   });
 
   it("renders the skeleton until the fetch resolves", () => {
-    mocks.getMemosStats.mockReturnValue(new Promise(() => {})); // never resolves
+    mocks.getMemosCredentials.mockReturnValue(new Promise(() => {})); // never resolves
     const { container } = render(<Dashboard />);
     expect(container.querySelector(".animate-pulse")).not.toBeNull();
   });

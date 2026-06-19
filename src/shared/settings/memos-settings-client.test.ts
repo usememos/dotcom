@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import {
   deleteMemosSettings,
+  getMemosCredentials,
   getMemosSettings,
   MemosSettingsRequestError,
   saveMemosSettings,
-  testMemosConnection,
 } from "./memos-settings-client";
 
 const calls: { url: string; init: RequestInit }[] = [];
@@ -87,38 +87,30 @@ describe("memos-settings-client", () => {
     });
   });
 
-  it("testMemosConnection POSTs the candidate settings and returns the result", async () => {
-    nextResponse = Response.json({ ok: true, user: { name: "Steven" } });
-
-    const result = await testMemosConnection({ instanceUrl: "https://memos.example.com", accessToken: "token-123" });
-
-    expect(result).toEqual({ ok: true, user: { name: "Steven" } });
-    expect(calls.length).toBe(1);
-    expect(calls[0].url).toBe("/api/settings/memos/test");
-    expect(calls[0].init.method).toBe("POST");
-    expect((calls[0].init.headers as Record<string, string>)["Content-Type"]).toBe("application/json");
-    expect(JSON.parse(calls[0].init.body as string)).toEqual({ instanceUrl: "https://memos.example.com", accessToken: "token-123" });
+  it("getMemosCredentials returns credentials when connected", async () => {
+    nextResponse = Response.json({ instanceUrl: "https://memos.example.com", accessToken: "tok" });
+    const creds = await getMemosCredentials();
+    expect(creds).toEqual({ instanceUrl: "https://memos.example.com", accessToken: "tok" });
+    expect(calls[0].url).toBe("/api/settings/memos/credentials");
+    expect(calls[0].init.method).toBe("GET");
   });
 
-  it("testMemosConnection passes failure results through and throws on transport errors", async () => {
-    nextResponse = Response.json({ ok: false, reason: "unauthorized" });
-    expect(await testMemosConnection({ instanceUrl: "https://memos.example.com", accessToken: "bad" })).toEqual({
-      ok: false,
-      reason: "unauthorized",
-    });
+  it("getMemosCredentials returns null when not connected", async () => {
+    nextResponse = Response.json({ instanceUrl: null, accessToken: null });
+    expect(await getMemosCredentials()).toBeNull();
+  });
 
-    nextResponse = Response.json(
-      { error: "Invalid settings.", fieldErrors: { instanceUrl: ["Instance URL must be a publicly reachable host."] } },
-      { status: 400 },
-    );
-    await expect(testMemosConnection({ instanceUrl: "http://localhost:5230", accessToken: "token" })).rejects.toSatisfy(
-      (error: unknown) => {
-        expect(error instanceof MemosSettingsRequestError).toBe(true);
-        const err = error as MemosSettingsRequestError;
-        expect(err.status).toBe(400);
-        expect(err.fieldErrors).toEqual({ instanceUrl: ["Instance URL must be a publicly reachable host."] });
-        return true;
-      },
-    );
+  it("getMemosCredentials throws on 401", async () => {
+    nextResponse = Response.json({ error: "Sign in to manage Memos settings." }, { status: 401 });
+    await expect(getMemosCredentials()).rejects.toMatchObject({ status: 401 });
+  });
+
+  it("getMemosCredentials surfaces field-less request errors with their status", async () => {
+    nextResponse = Response.json({ error: "Failed to load settings." }, { status: 502 });
+    await expect(getMemosCredentials()).rejects.toSatisfy((error: unknown) => {
+      expect(error instanceof MemosSettingsRequestError).toBe(true);
+      expect((error as MemosSettingsRequestError).status).toBe(502);
+      return true;
+    });
   });
 });

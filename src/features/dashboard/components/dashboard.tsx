@@ -3,12 +3,14 @@
 import { notFound } from "next/navigation";
 import { type ReactNode, useCallback, useEffect, useState } from "react";
 import { useAccountActions } from "@/features/account/hooks/use-account-actions";
+import { InstanceErrorNotice } from "@/features/memos/components/instance-error-notice";
 import { useMemosConnection } from "@/features/memos/hooks/use-memos-connection";
 import { useIsClerkConfigured } from "@/shared/auth/clerk-config";
+import type { InstanceErrorDetail } from "@/shared/memos/errors";
+import { fetchInstanceStats, type InstanceStatsResult } from "@/shared/memos/instance-stats";
 import type { SafeMemosSettings } from "@/shared/settings/memos-settings";
-import { getMemosStats } from "@/shared/settings/memos-settings-client";
-import type { MemosStatsFailureReason, MemosStatsResult } from "@/shared/settings/memos-stats";
-import { classifyStatsFailure, connectedHeaderLabel, describeStatsError } from "../lib/stats";
+import { getMemosCredentials } from "@/shared/settings/memos-settings-client";
+import { classifyStatsFailure, connectedHeaderLabel } from "../lib/stats";
 import { clearDashboardStatsCache, readDashboardStatsCache, writeDashboardStatsCache } from "../lib/stats-cache";
 import { ActivityHeatmap } from "./activity-heatmap";
 import { ConnectPrompt } from "./connect-prompt";
@@ -20,8 +22,8 @@ const primaryButtonClassName =
 const secondaryButtonClassName =
   "inline-flex h-8 items-center rounded-md border border-stone-300 bg-white px-3 text-sm font-medium text-stone-700 transition hover:bg-stone-50 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-200 dark:hover:bg-stone-800";
 
-type OkStats = Extract<MemosStatsResult, { status: "ok" }>;
-type NonOk = { kind: "not-connected" } | { kind: "error"; reason: MemosStatsFailureReason } | { kind: "signed-out" } | { kind: "failed" };
+type OkStats = Extract<InstanceStatsResult, { status: "ok" }>;
+type NonOk = { kind: "not-connected" } | { kind: "error"; detail: InstanceErrorDetail } | { kind: "signed-out" } | { kind: "failed" };
 
 /** "users/7" -> "7". */
 function deriveUserId(name: string): string {
@@ -74,8 +76,18 @@ function DashboardContent() {
     let cancelled = false;
     const cached = readDashboardStatsCache();
     const hints = cached ? { userId: cached.userId, version: cached.version } : undefined;
-    getMemosStats(hints)
-      .then((next) => {
+    getMemosCredentials()
+      .then(async (creds) => {
+        if (cancelled) {
+          return;
+        }
+        if (creds === null) {
+          setData(null);
+          clearDashboardStatsCache();
+          setNonOk({ kind: "not-connected" });
+          return;
+        }
+        const next = await fetchInstanceStats(creds, hints);
         if (cancelled) {
           return;
         }
@@ -88,12 +100,8 @@ function DashboardContent() {
             stats: next.stats,
             fetchedAt: Date.now(),
           });
-        } else if (next.status === "not-connected") {
-          setData(null);
-          clearDashboardStatsCache();
-          setNonOk({ kind: "not-connected" });
         } else {
-          setNonOk({ kind: "error", reason: next.reason });
+          setNonOk({ kind: "error", detail: next.error });
         }
       })
       .catch((error) => {
@@ -149,12 +157,31 @@ function DashboardContent() {
     );
   }
 
-  if (nonOk?.kind === "error" || nonOk?.kind === "failed") {
-    const message = nonOk.kind === "error" ? describeStatsError(nonOk.reason) : "Couldn't load your stats. Try again.";
+  if (nonOk?.kind === "error") {
     return (
       <DashboardShell>
         <DashboardHeader user={user ?? null} secondary={nonOkHeaderLabel(connection.settings)} onManageConnection={connection.open} />
-        <InlineError message={message} onRetry={reload} onManage={() => connection.open()} />
+        <div className="rounded-2xl border border-stone-200 bg-white p-4 dark:border-stone-800 dark:bg-stone-900">
+          <InstanceErrorNotice detail={nonOk.detail} />
+          <div className="mt-4 flex gap-2">
+            <button type="button" className={secondaryButtonClassName} onClick={reload}>
+              Retry
+            </button>
+            <button type="button" className={secondaryButtonClassName} onClick={() => connection.open()}>
+              Manage connection
+            </button>
+          </div>
+        </div>
+        {connection.dialog}
+      </DashboardShell>
+    );
+  }
+
+  if (nonOk?.kind === "failed") {
+    return (
+      <DashboardShell>
+        <DashboardHeader user={user ?? null} secondary={nonOkHeaderLabel(connection.settings)} onManageConnection={connection.open} />
+        <InlineError message="Couldn't load your stats. Try again." onRetry={reload} onManage={() => connection.open()} />
         {connection.dialog}
       </DashboardShell>
     );

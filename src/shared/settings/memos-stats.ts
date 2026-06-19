@@ -1,6 +1,4 @@
-// Client-safe stats types shared by the proxy, the fetch wrapper, and the dashboard.
-
-export type MemosStatsFailureReason = "unauthorized" | "unreachable" | "timeout" | "invalid-response" | "redirected";
+// Client-safe stats types shared by the instance client and the dashboard.
 
 /** A single UTC day with a memo count. date is "YYYY-MM-DD". */
 export type MemosActivityDay = { date: string; count: number };
@@ -13,8 +11,3 @@ export type MemosStatsData = {
   /** Days with count > 0 within the trailing window, ascending by date. */
   days: MemosActivityDay[];
 };
-
-export type MemosStatsResult =
-  | { status: "not-connected" }
-  | { status: "error"; reason: MemosStatsFailureReason }
-  | { status: "ok"; instanceVersion: string | null; user: { name: string }; stats: MemosStatsData };

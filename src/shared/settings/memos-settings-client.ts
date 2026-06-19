@@ -1,5 +1,5 @@
-import type { MemosConnectionTestResult, SafeMemosSettings } from "./memos-settings";
-import type { MemosStatsResult } from "./memos-stats";
+import type { MemosCredentials } from "../memos/instance-client";
+import type { SafeMemosSettings } from "./memos-settings";
 
 const SETTINGS_ENDPOINT = "/api/settings/memos";
 
@@ -40,7 +40,7 @@ async function settingsRequest(path: string, init: RequestInit): Promise<Respons
   return response;
 }
 
-function jsonInit(method: "PUT" | "POST", body: unknown): RequestInit {
+function jsonInit(method: "PUT", body: unknown): RequestInit {
   return { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) };
 }
 
@@ -58,32 +58,21 @@ export async function deleteMemosSettings(): Promise<void> {
   await settingsRequest("", { method: "DELETE" });
 }
 
-export async function testMemosConnection(input: { instanceUrl: string; accessToken: string }): Promise<MemosConnectionTestResult> {
-  const response = await settingsRequest("/test", jsonInit("POST", input));
-  return (await response.json()) as MemosConnectionTestResult;
-}
-
-const STATS_ENDPOINT = "/api/memos/stats";
-
 /**
- * Fetches the signed-in user's Memos activity stats from the server-side proxy.
- * Optional `hints` (resolved userId + version, cached in the browser) let the
- * proxy skip its discovery calls and fetch stats directly. Throws
- * MemosSettingsRequestError on 401/503/5xx; a 200 always carries a MemosStatsResult
- * (including not-connected and instance-error states).
+ * Fetches the signed-in user's Memos credentials (instanceUrl + token) so the
+ * browser can call the instance directly. Returns null when no connection is
+ * configured. Throws MemosSettingsRequestError on 401/503/5xx.
  */
-export async function getMemosStats(hints?: { userId: string; version: string | null }): Promise<MemosStatsResult> {
-  const params = new URLSearchParams();
-  if (hints?.userId) {
-    params.set("userId", hints.userId);
+export async function getMemosCredentials(): Promise<MemosCredentials | null> {
+  const response = await settingsRequest("/credentials", { method: "GET" });
+  const data = (await response.json()) as { instanceUrl: string | null; accessToken: string | null };
+  if (
+    typeof data.instanceUrl === "string" &&
+    data.instanceUrl.length > 0 &&
+    typeof data.accessToken === "string" &&
+    data.accessToken.length > 0
+  ) {
+    return { instanceUrl: data.instanceUrl, accessToken: data.accessToken };
   }
-  if (hints?.version) {
-    params.set("version", hints.version);
-  }
-  const query = params.toString();
-  const response = await fetch(query ? `${STATS_ENDPOINT}?${query}` : STATS_ENDPOINT, { method: "GET" });
-  if (!response.ok) {
-    throw await toRequestError(response);
-  }
-  return (await response.json()) as MemosStatsResult;
+  return null;
 }

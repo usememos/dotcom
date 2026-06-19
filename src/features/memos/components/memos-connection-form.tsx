@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { testInstanceConnection } from "@/shared/memos/instance-stats";
 import type { SafeMemosSettings } from "@/shared/settings/memos-settings";
-import { deleteMemosSettings, getMemosSettings, saveMemosSettings, testMemosConnection } from "@/shared/settings/memos-settings-client";
+import { deleteMemosSettings, getMemosSettings, saveMemosSettings } from "@/shared/settings/memos-settings-client";
 import {
   canSubmitConnectionForm,
   describeSaveError,
@@ -10,6 +11,7 @@ import {
   type SaveErrorMessages,
   type TestMessage,
 } from "../lib/memos-connection";
+import { InstanceErrorNotice } from "./instance-error-notice";
 
 const fieldLabelClassName = "block text-xs font-medium text-stone-600 dark:text-stone-400";
 
@@ -113,7 +115,7 @@ export function MemosConnectionForm({ settings, onSettingsChange, onSaved }: Mem
 
   function handleTest() {
     return runAction("test", "Couldn't test the connection. Try again.", async () => {
-      const result = await testMemosConnection({ instanceUrl, accessToken });
+      const result = await testInstanceConnection({ instanceUrl, accessToken });
       return () => setTestMessage(describeTestResult(result));
     });
   }
@@ -206,17 +208,15 @@ export function MemosConnectionForm({ settings, onSettingsChange, onSaved }: Mem
       </div>
 
       {testMessage ? (
-        <p
-          role="status"
-          aria-live="polite"
-          className={
-            testMessage.tone === "success"
-              ? "text-xs font-medium text-teal-700 dark:text-teal-300"
-              : "text-xs font-medium text-red-600 dark:text-red-400"
-          }
-        >
-          {testMessage.message}
-        </p>
+        testMessage.tone === "success" ? (
+          <p role="status" aria-live="polite" className="text-xs font-medium text-teal-700 dark:text-teal-300">
+            {testMessage.message}
+          </p>
+        ) : (
+          <div role="status" aria-live="polite">
+            <InstanceErrorNotice detail={testMessage.detail} />
+          </div>
+        )
       ) : null}
       {saveErrors.form ? (
         <p role="alert" className={fieldErrorClassName}>

@@ -1,12 +1,12 @@
 import { clerkRouteAuthDeps } from "@/server/auth/clerk";
-import { createMemosStatsHandler } from "@/server/memos/stats-handler";
+import { createMemosCredentialsHandler } from "@/server/settings/memos-credentials-handler";
 import { createClerkMemosSettingsStore } from "@/server/settings/memos-settings-store";
 
 export const runtime = "nodejs";
 
 const store = createClerkMemosSettingsStore();
 
-const handler = createMemosStatsHandler({
+const handler = createMemosCredentialsHandler({
   ...clerkRouteAuthDeps,
   readMemosMetadata: store.read,
 });

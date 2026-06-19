@@ -3,7 +3,6 @@ import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@/shared/settings/memos-settings-client", () => ({
   saveMemosSettings: vi.fn(),
-  testMemosConnection: vi.fn(),
   getMemosSettings: vi.fn(),
   deleteMemosSettings: vi.fn(),
   MemosSettingsRequestError: class MemosSettingsRequestError extends Error {},

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { describeInstanceError } from "@/shared/memos/errors";
 import { MemosSettingsRequestError } from "@/shared/settings/memos-settings-client";
 import { canSubmitConnectionForm, describeSaveError, describeTestResult } from "./memos-connection";
 
@@ -10,22 +11,13 @@ describe("memos-connection", () => {
     expect(canSubmitConnectionForm({ instanceUrl: "https://memos.example.com", accessToken: "  " }, false)).toBe(false);
   });
 
-  it("describeTestResult maps every outcome to a friendly message", () => {
-    expect(describeTestResult({ ok: true, user: { name: "Steven" } })).toEqual({ tone: "success", message: "Connected as Steven" });
-    expect(describeTestResult({ ok: false, reason: "unauthorized" })).toEqual({
-      tone: "error",
-      message: "Token was rejected by the instance.",
-    });
-    expect(describeTestResult({ ok: false, reason: "timeout" })).toEqual({ tone: "error", message: "Connection timed out." });
-    expect(describeTestResult({ ok: false, reason: "redirected" })).toEqual({
-      tone: "error",
-      message: "The instance redirected — use the URL it redirects to.",
-    });
-    expect(describeTestResult({ ok: false, reason: "invalid-response" })).toEqual({
-      tone: "error",
-      message: "The URL doesn't look like a Memos instance.",
-    });
-    expect(describeTestResult({ ok: false, reason: "unreachable" })).toEqual({ tone: "error", message: "Instance couldn't be reached." });
+  it("describeTestResult returns a success message", () => {
+    expect(describeTestResult({ ok: true, name: "Steven" })).toEqual({ tone: "success", message: "Connected as Steven" });
+  });
+
+  it("describeTestResult carries the error detail", () => {
+    const detail = describeInstanceError("unauthorized");
+    expect(describeTestResult({ ok: false, error: detail })).toEqual({ tone: "error", detail });
   });
 
   it("describeSaveError maps 400 field errors to per-field messages", () => {

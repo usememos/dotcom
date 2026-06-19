@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { MemosSettingsRequestError } from "@/shared/settings/memos-settings-client";
 import type { MemosActivityDay } from "@/shared/settings/memos-stats";
-import { classifyStatsFailure, connectedHeaderLabel, countDaysActive, currentStreak, describeStatsError, sumActivity } from "./stats";
+import { classifyStatsFailure, connectedHeaderLabel, countDaysActive, currentStreak, sumActivity } from "./stats";
 
 const days = (entries: Array<[string, number]>): MemosActivityDay[] => entries.map(([date, count]) => ({ date, count }));
 
@@ -74,16 +74,6 @@ describe("currentStreak", () => {
   });
   it("returns 0 when there is no activity", () => {
     expect(currentStreak([], now)).toBe(0);
-  });
-});
-
-describe("describeStatsError", () => {
-  it("maps each failure reason to a message", () => {
-    expect(describeStatsError("unauthorized")).toMatch(/rejected the saved token/);
-    expect(describeStatsError("unreachable")).toBe("Couldn't reach your Memos instance.");
-    expect(describeStatsError("timeout")).toMatch(/too long/);
-    expect(describeStatsError("invalid-response")).toMatch(/doesn't look like/);
-    expect(describeStatsError("redirected")).toMatch(/redirected/);
   });
 });
 

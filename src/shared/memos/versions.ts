@@ -15,7 +15,7 @@ const GEN_B = buildAdapter("gen-b", ["memoCreatedTimestamps"]);
 const FALLBACK = buildAdapter("fallback", ["memoCreatedTimestamps", "memoDisplayTimestamps"]);
 
 /** Extracts the minor version from a string like "0.29.1" or "v0.29.1"; null when absent. */
-function parseMinor(version: string): number | null {
+export function parseMinor(version: string): number | null {
   const match = version.match(/(\d+)\.(\d+)/);
   return match ? Number(match[2]) : null;
 }

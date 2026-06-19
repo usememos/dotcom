@@ -1,10 +1,6 @@
 // Client-safe types and mappers only. The settings schema and its SSRF host
 // guard are server-only and live in src/server/settings/memos-settings-schema.ts.
 
-export type MemosConnectionFailureReason = "unauthorized" | "unreachable" | "timeout" | "invalid-response" | "redirected";
-
-export type MemosConnectionTestResult = { ok: true; user: { name: string } } | { ok: false; reason: MemosConnectionFailureReason };
-
 export type SafeMemosSettings = {
   instanceUrl: string | null;
   hasAccessToken: boolean;

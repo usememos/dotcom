@@ -1,4 +1,4 @@
-import { isRecord } from "../../../shared/settings/memos-settings";
+import { isRecord } from "../settings/memos-settings";
 import type { NormalizedStats } from "./types";
 
 function readNumber(value: unknown): number {
