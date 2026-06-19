@@ -5,8 +5,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 vi.mock("@/features/account/components/account-action-items", () => ({
   AccountActionItems: () => <div data-testid="account-actions" />,
 }));
-vi.mock("@/features/account/components/theme-menu-items", () => ({
-  ThemeMenuItems: () => <div data-testid="theme-items" />,
+vi.mock("@/features/account/components/theme-toggle", () => ({
+  ThemeToggle: () => <div data-testid="theme-items" />,
 }));
 
 import { DashboardHeader } from "./dashboard-header";

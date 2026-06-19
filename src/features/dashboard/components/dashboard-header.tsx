@@ -4,7 +4,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { PlugIcon, SettingsIcon } from "lucide-react";
 import type { ComponentProps } from "react";
 import { AccountActionItems } from "@/features/account/components/account-action-items";
-import { ThemeMenuItems } from "@/features/account/components/theme-menu-items";
+import { ThemeToggle } from "@/features/account/components/theme-toggle";
 import { UserIdentity } from "@/features/account/components/user-identity";
 import { menuItemClassName, menuSeparatorClassName } from "@/features/account/lib/menu-styles";
 
@@ -46,7 +46,7 @@ export function DashboardHeader({ user, secondary, onManageConnection }: Dashboa
             <DropdownMenu.Separator className={menuSeparatorClassName} />
             <AccountActionItems signOutRedirectUrl="/" />
             <DropdownMenu.Separator className={menuSeparatorClassName} />
-            <ThemeMenuItems />
+            <ThemeToggle />
           </DropdownMenu.Content>
         </DropdownMenu.Portal>
       </DropdownMenu.Root>

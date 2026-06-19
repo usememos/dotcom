@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 
 const { useIsClerkConfigured } = vi.hoisted(() => ({ useIsClerkConfigured: vi.fn(() => false) }));
 vi.mock("@/shared/auth/clerk-config", () => ({ useIsClerkConfigured }));
-vi.mock("@/features/account/components/theme-menu-items", () => ({ ThemeMenuItems: () => null }));
+vi.mock("@/features/account/components/theme-toggle", () => ({ ThemeToggle: () => null }));
 
 import { ScratchpadToolbar } from "./scratchpad-toolbar";
 

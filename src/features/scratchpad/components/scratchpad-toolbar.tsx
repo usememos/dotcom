@@ -5,7 +5,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { HomeIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { ThemeMenuItems } from "@/features/account/components/theme-menu-items";
+import { ThemeToggle } from "@/features/account/components/theme-toggle";
 import { menuItemClassName, menuSeparatorClassName } from "@/features/account/lib/menu-styles";
 import { useIsClerkConfigured } from "@/shared/auth/clerk-config";
 import { ScratchpadAccountMenuSection } from "./scratchpad-account-menu-section";
@@ -52,16 +52,16 @@ export function ScratchpadToolbar() {
           >
             <ScratchpadAccountMenuSection />
 
-            <ThemeMenuItems />
-
-            <DropdownMenu.Separator className={menuSeparatorClassName} />
-
             <DropdownMenu.Item className={menuItemClassName} asChild>
               <Link href="/">
                 <HomeIcon className="h-4 w-4" />
                 <span>Back to Main Site</span>
               </Link>
             </DropdownMenu.Item>
+
+            <DropdownMenu.Separator className={menuSeparatorClassName} />
+
+            <ThemeToggle />
           </DropdownMenu.Content>
         </DropdownMenu.Portal>
       </DropdownMenu.Root>
