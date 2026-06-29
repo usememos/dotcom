@@ -25,8 +25,9 @@ describe("MemosConnectionForm", () => {
     vi.clearAllMocks();
   });
 
-  it("saves the entered URL + token and reports the saved settings via onSaved", async () => {
+  it("tests then saves the connection in one Connect action, then closes via onSaved", async () => {
     const saved = { instanceUrl: "https://memos.example.com", hasAccessToken: true };
+    vi.mocked(testInstanceConnection).mockResolvedValue({ ok: true, name: "Steven" });
     vi.mocked(saveMemosSettings).mockResolvedValue(saved);
     const onSaved = vi.fn();
     const onSettingsChange = vi.fn();
@@ -36,11 +37,32 @@ describe("MemosConnectionForm", () => {
 
     await user.type(screen.getByLabelText("Instance URL"), "https://memos.example.com");
     await user.type(screen.getByLabelText("Access token"), "tok_123");
-    await user.click(screen.getByRole("button", { name: "Save" }));
+    await user.click(screen.getByRole("button", { name: "Connect" }));
 
+    // The live test runs first, and only on success is the connection persisted.
+    expect(testInstanceConnection).toHaveBeenCalledWith({ instanceUrl: "https://memos.example.com", accessToken: "tok_123" });
     expect(saveMemosSettings).toHaveBeenCalledWith({ instanceUrl: "https://memos.example.com", accessToken: "tok_123" });
     expect(onSettingsChange).toHaveBeenCalledWith(saved);
-    expect(onSaved).toHaveBeenCalledWith(saved);
+
+    // Success state is shown; the user acknowledges it to close.
+    expect(await screen.findByText("Connected as Steven")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Done" }));
+    expect(onSaved).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not save when the live test fails, surfacing the classified error (CORS)", async () => {
+    const detail = describeInstanceError("cors", { origin: "https://www.usememos.com" });
+    vi.mocked(testInstanceConnection).mockResolvedValue({ ok: false, error: detail });
+    const onSettingsChange = vi.fn();
+    const user = userEvent.setup();
+
+    render(<MemosConnectionForm settings={notConnected} onSettingsChange={onSettingsChange} />);
+    await user.type(screen.getByLabelText("Instance URL"), "https://memos.example.com");
+    await user.type(screen.getByLabelText("Access token"), "tok_123");
+    await user.click(screen.getByRole("button", { name: "Connect" }));
+
+    expect(await screen.findByText(detail.title)).toBeInTheDocument();
+    expect(saveMemosSettings).not.toHaveBeenCalled();
   });
 
   it("shows a token help hint during first-time setup", () => {
@@ -48,29 +70,12 @@ describe("MemosConnectionForm", () => {
     expect(screen.getByText(/Settings → Access Tokens/)).toBeInTheDocument();
   });
 
-  it("tests the connection directly against the instance and shows success", async () => {
-    vi.mocked(testInstanceConnection).mockResolvedValue({ ok: true, name: "Steven" });
+  it("links to the instance's token settings once a URL is entered", async () => {
     const user = userEvent.setup();
-
     render(<MemosConnectionForm settings={notConnected} onSettingsChange={vi.fn()} />);
+
     await user.type(screen.getByLabelText("Instance URL"), "https://memos.example.com");
-    await user.type(screen.getByLabelText("Access token"), "tok_123");
-    await user.click(screen.getByRole("button", { name: "Test connection" }));
-
-    expect(testInstanceConnection).toHaveBeenCalledWith({ instanceUrl: "https://memos.example.com", accessToken: "tok_123" });
-    expect(await screen.findByText("Connected as Steven")).toBeInTheDocument();
-  });
-
-  it("renders the classified error notice when the test fails (CORS)", async () => {
-    const detail = describeInstanceError("cors", { origin: "https://www.usememos.com" });
-    vi.mocked(testInstanceConnection).mockResolvedValue({ ok: false, error: detail });
-    const user = userEvent.setup();
-
-    render(<MemosConnectionForm settings={notConnected} onSettingsChange={vi.fn()} />);
-    await user.type(screen.getByLabelText("Instance URL"), "https://memos.example.com");
-    await user.type(screen.getByLabelText("Access token"), "tok_123");
-    await user.click(screen.getByRole("button", { name: "Test connection" }));
-
-    expect(await screen.findByText(detail.title)).toBeInTheDocument();
+    const link = screen.getByRole("link", { name: /memos\.example\.com\/setting/ });
+    expect(link).toHaveAttribute("href", "https://memos.example.com/setting");
   });
 });

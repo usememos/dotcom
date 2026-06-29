@@ -24,12 +24,14 @@ describe("MemosConnectionForm — token security + actions", () => {
     expect(screen.getByText(/A token is already saved\. Enter it again \(or a new one\) to save changes\./)).toBeInTheDocument();
   });
 
-  it("offers test, save, and disconnect actions when connected", () => {
+  it("offers a single connect action plus disconnect when connected", () => {
     render(<MemosConnectionForm settings={connected} onSettingsChange={vi.fn()} />);
 
-    expect(screen.getByRole("button", { name: "Test connection" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Save" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Connect" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Disconnect" })).toBeInTheDocument();
+    // The separate "Test connection" / "Save" buttons are merged into Connect.
+    expect(screen.queryByRole("button", { name: "Test connection" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Save" })).not.toBeInTheDocument();
   });
 
   it("hides disconnect until an instance is connected", () => {
@@ -39,8 +41,8 @@ describe("MemosConnectionForm — token security + actions", () => {
 });
 
 describe("MemosConnectionDialog", () => {
-  it("states that the token is stored server-side, not in the browser", () => {
+  it("states that the token is stored privately with the user's account", () => {
     render(<MemosConnectionDialog open onOpenChange={vi.fn()} settings={notConnected} onSettingsChange={vi.fn()} />);
-    expect(screen.getByText(/stored server-side and never sent to the browser/)).toBeInTheDocument();
+    expect(screen.getByText(/stored privately with your account/)).toBeInTheDocument();
   });
 });

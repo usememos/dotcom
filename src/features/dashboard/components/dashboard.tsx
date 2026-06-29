@@ -151,7 +151,7 @@ function DashboardContent() {
     return (
       <DashboardShell>
         <DashboardHeader user={user ?? null} secondary="Not connected" onManageConnection={connection.open} />
-        <ConnectPrompt settings={connection.settings} onComplete={handleSettingsChanged} />
+        <ConnectPrompt onSetUp={connection.open} />
         {connection.dialog}
       </DashboardShell>
     );
