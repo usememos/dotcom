@@ -15,6 +15,7 @@
     "GetUser",
     "GetUserSetting",
     "GetUserStats",
+    "GetUserWebhookSigningSecret",
     "ListAllUserStats",
     "ListLinkedIdentities",
     "ListPersonalAccessTokens",
