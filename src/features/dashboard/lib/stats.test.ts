@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { MemosSettingsRequestError } from "@/shared/settings/memos-settings-client";
 import type { MemosActivityDay } from "@/shared/settings/memos-stats";
-import { classifyStatsFailure, connectedHeaderLabel, countDaysActive, currentStreak, sumActivity } from "./stats";
+import { connectedHeaderLabel, countDaysActive, currentStreak, sumActivity } from "./stats";
 
 const days = (entries: Array<[string, number]>): MemosActivityDay[] => entries.map(([date, count]) => ({ date, count }));
 
@@ -86,18 +85,5 @@ describe("connectedHeaderLabel", () => {
   });
   it("falls back to 'Connected' for an unparseable URL", () => {
     expect(connectedHeaderLabel("not a url", "9")).toBe("Connected · v9");
-  });
-});
-
-describe("classifyStatsFailure", () => {
-  it("treats 401 as signed-out", () => {
-    expect(classifyStatsFailure(new MemosSettingsRequestError("no", 401))).toBe("signed-out");
-  });
-  it("treats 503 as not-configured", () => {
-    expect(classifyStatsFailure(new MemosSettingsRequestError("no", 503))).toBe("not-configured");
-  });
-  it("treats other request errors and unknown throwables as failed", () => {
-    expect(classifyStatsFailure(new MemosSettingsRequestError("no", 500))).toBe("failed");
-    expect(classifyStatsFailure(new Error("boom"))).toBe("failed");
   });
 });

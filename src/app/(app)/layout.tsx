@@ -4,7 +4,7 @@ import { AuthProviders } from "@/shared/auth/auth-providers";
 
 // Shell for the authenticated product surface. Every route under `(app)` is
 // signed-in, noindex, and dynamic — add new authed pages here, with their UI in
-// `src/features/<domain>` and server logic in `src/server/<domain>`.
+// `src/features/<domain>`.
 // See docs/architecture.md ("Route groups" and "Adding an authenticated feature").
 export const metadata: Metadata = {
   robots: { index: false, follow: false, googleBot: { index: false, follow: false } },

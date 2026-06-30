@@ -7,20 +7,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ThemeToggle } from "@/features/account/components/theme-toggle";
 import { menuItemClassName, menuSeparatorClassName } from "@/features/account/lib/menu-styles";
-import { useIsClerkConfigured } from "@/shared/auth/clerk-config";
 import { ScratchpadAccountMenuSection } from "./scratchpad-account-menu-section";
 
 function ScratchpadMenuTriggerImage() {
-  const isClerkConfigured = useIsClerkConfigured();
-
-  if (!isClerkConfigured) {
-    return <Image src="/logo.png" alt="Memos" width={32} height={32} className="h-full w-full rounded-full object-cover" />;
-  }
-
-  return <ClerkScratchpadMenuTriggerImage />;
-}
-
-function ClerkScratchpadMenuTriggerImage() {
   const { isLoaded, isSignedIn, user } = useUser();
 
   if (isLoaded && isSignedIn && user?.imageUrl) {

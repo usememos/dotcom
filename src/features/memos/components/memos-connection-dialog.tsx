@@ -2,18 +2,21 @@
 
 import * as Dialog from "@radix-ui/react-dialog";
 import { PlugIcon, XIcon } from "lucide-react";
-import type { SafeMemosSettings } from "@/shared/settings/memos-settings";
+import type { MemosCredentials } from "@/shared/memos/instance-client";
 import { MemosConnectionForm } from "./memos-connection-form";
 
 type MemosConnectionDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  /** Shared settings state owned by the host; null until first loaded. */
-  settings: SafeMemosSettings | null;
-  onSettingsChange: (settings: SafeMemosSettings) => void;
+  /** The saved instance URL to prefill, or null. */
+  instanceUrl: string | null;
+  /** Whether a token is already saved (drives the disconnect action + hint). */
+  connected: boolean;
+  onSave: (credentials: MemosCredentials) => Promise<void>;
+  onDisconnect: () => Promise<void>;
 };
 
-export function MemosConnectionDialog({ open, onOpenChange, settings, onSettingsChange }: MemosConnectionDialogProps) {
+export function MemosConnectionDialog({ open, onOpenChange, instanceUrl, connected, onSave, onDisconnect }: MemosConnectionDialogProps) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
@@ -40,7 +43,13 @@ export function MemosConnectionDialog({ open, onOpenChange, settings, onSettings
           </div>
 
           <div className="mt-4">
-            <MemosConnectionForm settings={settings} onSettingsChange={onSettingsChange} onSaved={() => onOpenChange(false)} />
+            <MemosConnectionForm
+              instanceUrl={instanceUrl}
+              connected={connected}
+              onSave={onSave}
+              onDisconnect={onDisconnect}
+              onDone={() => onOpenChange(false)}
+            />
           </div>
         </Dialog.Content>
       </Dialog.Portal>

@@ -1,6 +1,6 @@
+import { parseInstanceUrl } from "@/shared/settings/instance-url";
 import type { MemosActivityDay } from "@/shared/settings/memos-stats";
 import { toUtcDateKey } from "../../../shared/lib/date";
-import { MemosSettingsRequestError } from "../../../shared/settings/memos-settings-client";
 
 export function countDaysActive(days: MemosActivityDay[]): number {
   return days.filter((day) => day.count > 0).length;
@@ -29,27 +29,6 @@ export function currentStreak(days: MemosActivityDay[], now: Date): number {
 
 /** "host · vX.Y.Z" when both are known; degrades gracefully. */
 export function connectedHeaderLabel(instanceUrl: string, version: string | null): string {
-  let host: string | null = null;
-  try {
-    host = new URL(instanceUrl).host;
-  } catch {
-    host = null;
-  }
-  const base = host ?? "Connected";
+  const base = parseInstanceUrl(instanceUrl)?.host ?? "Connected";
   return version ? `${base} · v${version}` : base;
-}
-
-export type StatsFailureKind = "signed-out" | "not-configured" | "failed";
-
-/** Maps a thrown stats-fetch error to the dashboard's failure UI state. */
-export function classifyStatsFailure(error: unknown): StatsFailureKind {
-  if (error instanceof MemosSettingsRequestError) {
-    if (error.status === 401) {
-      return "signed-out";
-    }
-    if (error.status === 503) {
-      return "not-configured";
-    }
-  }
-  return "failed";
 }

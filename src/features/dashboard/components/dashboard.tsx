@@ -1,16 +1,12 @@
 "use client";
 
-import { notFound } from "next/navigation";
 import { type ReactNode, useCallback, useEffect, useState } from "react";
 import { useAccountActions } from "@/features/account/hooks/use-account-actions";
 import { InstanceErrorNotice } from "@/features/memos/components/instance-error-notice";
 import { useMemosConnection } from "@/features/memos/hooks/use-memos-connection";
-import { useIsClerkConfigured } from "@/shared/auth/clerk-config";
 import type { InstanceErrorDetail } from "@/shared/memos/errors";
 import { fetchInstanceStats, type InstanceStatsResult } from "@/shared/memos/instance-stats";
-import type { SafeMemosSettings } from "@/shared/settings/memos-settings";
-import { getMemosCredentials } from "@/shared/settings/memos-settings-client";
-import { classifyStatsFailure, connectedHeaderLabel } from "../lib/stats";
+import { connectedHeaderLabel } from "../lib/stats";
 import { clearDashboardStatsCache, readDashboardStatsCache, writeDashboardStatsCache } from "../lib/stats-cache";
 import { ActivityHeatmap } from "./activity-heatmap";
 import { ConnectPrompt } from "./connect-prompt";
@@ -39,27 +35,16 @@ function CenteredCard({ children }: { children: ReactNode }) {
 }
 
 export function Dashboard() {
-  const isClerkConfigured = useIsClerkConfigured();
-  if (!isClerkConfigured) {
-    notFound();
-  }
-  return <DashboardContent />;
-}
-
-function DashboardContent() {
   const { user, signIn } = useAccountActions({ signInForceRedirectUrl: "/dashboard" });
+  const connection = useMemosConnection();
+  const { credentials, isConnected, isLoaded, isSignedIn, instanceUrl } = connection;
   const [data, setData] = useState<OkStats | null>(null);
   const [nonOk, setNonOk] = useState<NonOk | null>(null);
   const [reloadKey, setReloadKey] = useState(0);
 
   const reload = useCallback(() => setReloadKey((key) => key + 1), []);
-  const handleSettingsChanged = useCallback(() => {
-    clearDashboardStatsCache();
-    setData(null);
-    reload();
-  }, [reload]);
-  const connection = useMemosConnection({ onSettingsChange: handleSettingsChanged });
 
+  // Instant paint from the last-known stats while the live fetch runs.
   useEffect(() => {
     const cached = readDashboardStatsCache();
     if (cached) {
@@ -73,21 +58,26 @@ function DashboardContent() {
   }, []);
 
   useEffect(() => {
+    if (!isLoaded) {
+      return;
+    }
+    if (!isSignedIn) {
+      setData(null);
+      clearDashboardStatsCache();
+      setNonOk({ kind: "signed-out" });
+      return;
+    }
+    if (!credentials) {
+      setData(null);
+      clearDashboardStatsCache();
+      setNonOk({ kind: "not-connected" });
+      return;
+    }
     let cancelled = false;
     const cached = readDashboardStatsCache();
     const hints = cached ? { userId: cached.userId, version: cached.version } : undefined;
-    getMemosCredentials()
-      .then(async (creds) => {
-        if (cancelled) {
-          return;
-        }
-        if (creds === null) {
-          setData(null);
-          clearDashboardStatsCache();
-          setNonOk({ kind: "not-connected" });
-          return;
-        }
-        const next = await fetchInstanceStats(creds, hints);
+    fetchInstanceStats(credentials, hints)
+      .then((next) => {
         if (cancelled) {
           return;
         }
@@ -104,28 +94,20 @@ function DashboardContent() {
           setNonOk({ kind: "error", detail: next.error });
         }
       })
-      .catch((error) => {
-        if (cancelled) {
-          return;
-        }
-        const kind = classifyStatsFailure(error);
-        if (kind === "signed-out" || kind === "not-configured") {
-          setData(null);
-          clearDashboardStatsCache();
-          setNonOk({ kind: "signed-out" });
-        } else {
+      .catch(() => {
+        if (!cancelled) {
           setNonOk({ kind: "failed" });
         }
       });
     return () => {
       cancelled = true;
     };
-  }, [reloadKey]);
+  }, [isLoaded, isSignedIn, credentials, reloadKey]);
 
   if (data) {
     return (
       <DashboardShell>
-        <DashboardHeader user={user ?? null} secondary={headerLabel(connection.settings, data)} onManageConnection={connection.open} />
+        <DashboardHeader user={user ?? null} secondary={headerLabel(instanceUrl, data)} onManageConnection={connection.open} />
         <StatTiles stats={data.stats} />
         <div className="rounded-2xl border border-stone-200 bg-white p-4 dark:border-stone-800 dark:bg-stone-900">
           <ActivityHeatmap days={data.stats.days} />
@@ -160,7 +142,7 @@ function DashboardContent() {
   if (nonOk?.kind === "error") {
     return (
       <DashboardShell>
-        <DashboardHeader user={user ?? null} secondary={nonOkHeaderLabel(connection.settings)} onManageConnection={connection.open} />
+        <DashboardHeader user={user ?? null} secondary={nonOkHeaderLabel(instanceUrl, isConnected)} onManageConnection={connection.open} />
         <div className="rounded-2xl border border-stone-200 bg-white p-4 dark:border-stone-800 dark:bg-stone-900">
           <InstanceErrorNotice detail={nonOk.detail} />
           <div className="mt-4 flex gap-2">
@@ -180,7 +162,7 @@ function DashboardContent() {
   if (nonOk?.kind === "failed") {
     return (
       <DashboardShell>
-        <DashboardHeader user={user ?? null} secondary={nonOkHeaderLabel(connection.settings)} onManageConnection={connection.open} />
+        <DashboardHeader user={user ?? null} secondary={nonOkHeaderLabel(instanceUrl, isConnected)} onManageConnection={connection.open} />
         <InlineError message="Couldn't load your stats. Try again." onRetry={reload} onManage={() => connection.open()} />
         {connection.dialog}
       </DashboardShell>
@@ -190,19 +172,19 @@ function DashboardContent() {
   return <DashboardSkeleton />;
 }
 
-function headerLabel(settings: SafeMemosSettings | null, result: OkStats): string {
-  if (!settings?.instanceUrl) {
+function headerLabel(instanceUrl: string | null, result: OkStats): string {
+  if (!instanceUrl) {
     return result.instanceVersion ? `Connected · v${result.instanceVersion}` : "Connected";
   }
-  return connectedHeaderLabel(settings.instanceUrl, result.instanceVersion);
+  return connectedHeaderLabel(instanceUrl, result.instanceVersion);
 }
 
 /** Header label for authed states without live stats (not-connected / error). */
-function nonOkHeaderLabel(settings: SafeMemosSettings | null): string {
-  if (!settings?.hasAccessToken) {
+function nonOkHeaderLabel(instanceUrl: string | null, isConnected: boolean): string {
+  if (!isConnected) {
     return "Not connected";
   }
-  return settings.instanceUrl ? connectedHeaderLabel(settings.instanceUrl, null) : "Connected";
+  return instanceUrl ? connectedHeaderLabel(instanceUrl, null) : "Connected";
 }
 
 function DashboardShell({ children }: { children: ReactNode }) {

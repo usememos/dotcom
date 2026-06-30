@@ -6,11 +6,10 @@ import { SignOutItem } from "@/features/account/components/account-action-items"
 import { UserIdentity } from "@/features/account/components/user-identity";
 import { useAccountActions } from "@/features/account/hooks/use-account-actions";
 import { menuItemClassName, menuSeparatorClassName } from "@/features/account/lib/menu-styles";
-import { useIsClerkConfigured } from "@/shared/auth/clerk-config";
 
 const scratchpadFeedbackUrl = "https://github.com/usememos/dotcom/issues";
 
-function ClerkAccountMenuSection() {
+export function ScratchpadAccountMenuSection() {
   const { isLoaded, isSignedIn, user, signIn } = useAccountActions();
 
   if (!isLoaded) {
@@ -80,14 +79,4 @@ function ClerkAccountMenuSection() {
       <DropdownMenu.Separator className={menuSeparatorClassName} />
     </>
   );
-}
-
-export function ScratchpadAccountMenuSection() {
-  const isClerkConfigured = useIsClerkConfigured();
-
-  if (!isClerkConfigured) {
-    return null;
-  }
-
-  return <ClerkAccountMenuSection />;
 }

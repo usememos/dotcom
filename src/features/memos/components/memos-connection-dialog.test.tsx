@@ -1,22 +1,14 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
-
-vi.mock("@/shared/settings/memos-settings-client", () => ({
-  saveMemosSettings: vi.fn(),
-  getMemosSettings: vi.fn(),
-  deleteMemosSettings: vi.fn(),
-  MemosSettingsRequestError: class MemosSettingsRequestError extends Error {},
-}));
+import { describe, expect, it } from "vitest";
 
 import { MemosConnectionDialog } from "./memos-connection-dialog";
 import { MemosConnectionForm } from "./memos-connection-form";
 
-const connected = { instanceUrl: "https://memos.example.com", hasAccessToken: true };
-const notConnected = { instanceUrl: null, hasAccessToken: false };
+const noop = () => Promise.resolve();
 
 describe("MemosConnectionForm — token security + actions", () => {
   it("renders the access token as a password field that is never prefilled", () => {
-    render(<MemosConnectionForm settings={connected} onSettingsChange={vi.fn()} />);
+    render(<MemosConnectionForm instanceUrl="https://memos.example.com" connected onSave={noop} onDisconnect={noop} />);
 
     const token = screen.getByLabelText("Access token");
     expect(token).toHaveAttribute("type", "password");
@@ -25,24 +17,23 @@ describe("MemosConnectionForm — token security + actions", () => {
   });
 
   it("offers a single connect action plus disconnect when connected", () => {
-    render(<MemosConnectionForm settings={connected} onSettingsChange={vi.fn()} />);
+    render(<MemosConnectionForm instanceUrl="https://memos.example.com" connected onSave={noop} onDisconnect={noop} />);
 
     expect(screen.getByRole("button", { name: "Connect" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Disconnect" })).toBeInTheDocument();
-    // The separate "Test connection" / "Save" buttons are merged into Connect.
     expect(screen.queryByRole("button", { name: "Test connection" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Save" })).not.toBeInTheDocument();
   });
 
   it("hides disconnect until an instance is connected", () => {
-    render(<MemosConnectionForm settings={notConnected} onSettingsChange={vi.fn()} />);
+    render(<MemosConnectionForm instanceUrl={null} connected={false} onSave={noop} onDisconnect={noop} />);
     expect(screen.queryByRole("button", { name: "Disconnect" })).not.toBeInTheDocument();
   });
 });
 
 describe("MemosConnectionDialog", () => {
   it("states that the token is stored privately with the user's account", () => {
-    render(<MemosConnectionDialog open onOpenChange={vi.fn()} settings={notConnected} onSettingsChange={vi.fn()} />);
+    render(<MemosConnectionDialog open onOpenChange={() => {}} instanceUrl={null} connected={false} onSave={noop} onDisconnect={noop} />);
     expect(screen.getByText(/stored privately with your account/)).toBeInTheDocument();
   });
 });

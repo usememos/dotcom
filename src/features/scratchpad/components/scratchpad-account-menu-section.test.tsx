@@ -4,14 +4,14 @@ import { fileURLToPath } from "node:url";
 import { render } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-const { useIsClerkConfigured } = vi.hoisted(() => ({ useIsClerkConfigured: vi.fn() }));
-vi.mock("@/shared/auth/clerk-config", () => ({ useIsClerkConfigured }));
+const { useAccountActions } = vi.hoisted(() => ({ useAccountActions: vi.fn() }));
+vi.mock("@/features/account/hooks/use-account-actions", () => ({ useAccountActions }));
 
 import { ScratchpadAccountMenuSection } from "./scratchpad-account-menu-section";
 
 describe("ScratchpadAccountMenuSection", () => {
-  it("renders nothing when Clerk is not configured", () => {
-    useIsClerkConfigured.mockReturnValue(false);
+  it("renders nothing until Clerk has loaded", () => {
+    useAccountActions.mockReturnValue({ isLoaded: false });
     const { container } = render(<ScratchpadAccountMenuSection />);
     expect(container).toBeEmptyDOMElement();
   });

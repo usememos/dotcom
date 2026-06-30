@@ -3,11 +3,12 @@
 import { CheckIcon, ClipboardPasteIcon, EyeIcon, EyeOffIcon, GlobeIcon, KeyRoundIcon, Loader2Icon, LockIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { InstanceErrorDetail } from "@/shared/memos/errors";
+import type { MemosCredentials } from "@/shared/memos/instance-client";
 import { testInstanceConnection } from "@/shared/memos/instance-stats";
-import type { SafeMemosSettings } from "@/shared/settings/memos-settings";
-import { deleteMemosSettings, getMemosSettings, saveMemosSettings } from "@/shared/settings/memos-settings-client";
-import { canSubmitConnectionForm, describeSaveError, type SaveErrorMessages } from "../lib/memos-connection";
+import { normalizeInstanceUrl, parseInstanceUrl } from "@/shared/settings/instance-url";
 import { InstanceErrorNotice } from "./instance-error-notice";
+
+type SaveErrorMessages = { instanceUrl?: string; accessToken?: string; form?: string };
 
 const fieldLabelClassName = "flex items-center gap-1.5 text-xs font-medium text-stone-600 dark:text-stone-400";
 
@@ -22,37 +23,27 @@ const primaryButtonClassName =
   "inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-md bg-teal-600 px-3 text-sm font-medium text-white transition hover:bg-teal-700 disabled:pointer-events-none disabled:opacity-50 dark:bg-teal-500 dark:text-stone-950 dark:hover:bg-teal-400";
 
 type MemosConnectionFormProps = {
-  /** Shared settings state owned by the host; null until first loaded. */
-  settings: SafeMemosSettings | null;
-  onSettingsChange: (settings: SafeMemosSettings) => void;
-  /**
-   * Fired when the user dismisses the success state (the host closes the dialog).
-   * The saved settings are already delivered via onSettingsChange.
-   */
-  onSaved?: () => void;
+  /** The saved instance URL to prefill, or null. */
+  instanceUrl: string | null;
+  /** Whether a token is already saved (shows the disconnect action + re-enter hint). */
+  connected: boolean;
+  /** Persists the connection (writes Clerk unsafeMetadata). */
+  onSave: (credentials: MemosCredentials) => Promise<void>;
+  /** Clears the saved connection. */
+  onDisconnect: () => Promise<void>;
+  /** Fired when the user dismisses the success state (the host closes the dialog). */
+  onDone?: () => void;
 };
 
 type Phase = "idle" | "connecting" | "disconnecting" | "connected";
 
-/** Returns the instance's access-token settings URL, or null if the URL isn't a usable http(s) origin yet. */
+/** The instance's access-token settings URL, or null if the URL isn't a usable http(s) origin yet. */
 function instanceSettingsUrl(raw: string): string | null {
-  const trimmed = raw.trim();
-  if (!trimmed) {
-    return null;
-  }
-  try {
-    const url = new URL(trimmed);
-    if (url.protocol !== "http:" && url.protocol !== "https:") {
-      return null;
-    }
-    return `${url.origin}/setting`;
-  } catch {
-    return null;
-  }
+  const url = parseInstanceUrl(raw);
+  return url === null ? null : `${url.origin}/setting`;
 }
 
-export function MemosConnectionForm({ settings, onSettingsChange, onSaved }: MemosConnectionFormProps) {
-  const [loading, setLoading] = useState(false);
+export function MemosConnectionForm({ instanceUrl, connected, onSave, onDisconnect, onDone }: MemosConnectionFormProps) {
   // null = untouched; the field falls back to the saved instance URL.
   const [editedInstanceUrl, setEditedInstanceUrl] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState("");
@@ -72,43 +63,12 @@ export function MemosConnectionForm({ settings, onSettingsChange, onSaved }: Mem
     };
   }, []);
 
-  const instanceUrl = editedInstanceUrl ?? settings?.instanceUrl ?? "";
-  const hasSavedToken = settings?.hasAccessToken === true;
+  const urlValue = editedInstanceUrl ?? instanceUrl ?? "";
+  const busy = phase === "connecting" || phase === "disconnecting";
+  const canSubmit = !busy && urlValue.trim().length > 0 && accessToken.trim().length > 0;
+  const settingsUrl = instanceSettingsUrl(urlValue);
 
-  // Loads the shared settings if the form mounts before the host populated them.
-  useEffect(() => {
-    if (settings !== null) {
-      return;
-    }
-    let cancelled = false;
-    setLoading(true);
-    getMemosSettings()
-      .then((fetched) => {
-        if (!cancelled) {
-          onSettingsChange(fetched);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setSaveErrors({ form: "Couldn't load settings. Try again." });
-        }
-      })
-      .finally(() => {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [settings, onSettingsChange]);
-
-  const busy = loading || phase === "connecting" || phase === "disconnecting";
-  const canSubmit = canSubmitConnectionForm({ instanceUrl, accessToken }, busy);
-  const settingsUrl = instanceSettingsUrl(instanceUrl);
-
-  // Clears any stale result when the user edits a field, so success/error notices
-  // never linger over changed inputs.
+  // Clears any stale result when the user edits a field.
   function clearResult() {
     if (errorNotice) {
       setErrorNotice(null);
@@ -118,18 +78,25 @@ export function MemosConnectionForm({ settings, onSettingsChange, onSaved }: Mem
     }
   }
 
-  // A single action: test the connection against the instance, then persist it.
-  // Saving only happens once the live test succeeds, so a bad token never gets stored.
+  // A single action: validate the URL, test the connection against the instance,
+  // then persist it. Saving only happens once the live test succeeds, so a bad
+  // token never gets stored.
   async function handleConnect() {
     if (!canSubmit) {
       return;
     }
+    const normalized = normalizeInstanceUrl(urlValue);
+    if (normalized === null) {
+      setSaveErrors({ instanceUrl: "Enter a valid URL, e.g. https://memos.example.com." });
+      return;
+    }
+    const credentials: MemosCredentials = { instanceUrl: normalized, accessToken: accessToken.trim() };
     setPhase("connecting");
     setErrorNotice(null);
     setSaveErrors({});
     setConnectedName(null);
     try {
-      const result = await testInstanceConnection({ instanceUrl, accessToken });
+      const result = await testInstanceConnection(credentials);
       if (!mountedRef.current) {
         return;
       }
@@ -138,16 +105,15 @@ export function MemosConnectionForm({ settings, onSettingsChange, onSaved }: Mem
         setPhase("idle");
         return;
       }
-      const saved = await saveMemosSettings({ instanceUrl, accessToken });
+      await onSave(credentials);
       if (!mountedRef.current) {
         return;
       }
       setConnectedName(result.name);
       setPhase("connected");
-      onSettingsChange(saved);
-    } catch (error) {
+    } catch {
       if (mountedRef.current) {
-        setSaveErrors(describeSaveError(error, "Couldn't connect. Try again."));
+        setSaveErrors({ form: "Couldn't save the connection. Try again." });
         setPhase("idle");
       }
     }
@@ -158,17 +124,16 @@ export function MemosConnectionForm({ settings, onSettingsChange, onSaved }: Mem
     setErrorNotice(null);
     setSaveErrors({});
     try {
-      await deleteMemosSettings();
+      await onDisconnect();
       if (!mountedRef.current) {
         return;
       }
       setEditedInstanceUrl(null);
       setAccessToken("");
-      onSettingsChange({ instanceUrl: null, hasAccessToken: false });
       setPhase("idle");
-    } catch (error) {
+    } catch {
       if (mountedRef.current) {
-        setSaveErrors(describeSaveError(error, "Couldn't disconnect. Try again."));
+        setSaveErrors({ form: "Couldn't disconnect. Try again." });
         setPhase("idle");
       }
     }
@@ -198,10 +163,10 @@ export function MemosConnectionForm({ settings, onSettingsChange, onSaved }: Mem
             <p className="text-sm font-medium text-teal-800 dark:text-teal-200">
               {connectedName ? `Connected as ${connectedName}` : "Connected"}
             </p>
-            <p className="truncate text-xs text-teal-700/70 dark:text-teal-300/70">{instanceUrl}</p>
+            <p className="truncate text-xs text-teal-700/70 dark:text-teal-300/70">{urlValue}</p>
           </div>
         </div>
-        <button type="button" className={primaryButtonClassName} onClick={() => onSaved?.()}>
+        <button type="button" className={primaryButtonClassName} onClick={() => onDone?.()}>
           Done
         </button>
       </div>
@@ -226,7 +191,7 @@ export function MemosConnectionForm({ settings, onSettingsChange, onSaved }: Mem
           type="text"
           inputMode="url"
           placeholder="https://memos.example.com"
-          value={instanceUrl}
+          value={urlValue}
           onChange={(event) => {
             setEditedInstanceUrl(event.target.value);
             clearResult();
@@ -310,7 +275,7 @@ export function MemosConnectionForm({ settings, onSettingsChange, onSaved }: Mem
             ) : (
               <>Find this in Memos → Settings → Access Tokens</>
             )}
-            {hasSavedToken ? (
+            {connected ? (
               <span className="mt-1 block text-stone-400 dark:text-stone-500">
                 A token is already saved. Enter it again (or a new one) to save changes.
               </span>
@@ -348,7 +313,7 @@ export function MemosConnectionForm({ settings, onSettingsChange, onSaved }: Mem
           <LockIcon className="h-3 w-3" />
           Your token is stored privately with your account and only used to reach your own instance.
         </p>
-        {hasSavedToken ? (
+        {connected ? (
           <button
             type="button"
             onClick={() => void handleDisconnect()}

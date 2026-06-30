@@ -1,45 +1,25 @@
 import { render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-// vi.mock factories are hoisted above module-level declarations, so the shared
-// mock state they reference must be created with vi.hoisted (also hoisted).
-const mocks = vi.hoisted(() => {
-  class MemosSettingsRequestError extends Error {
-    status: number;
-    constructor(message: string, status: number) {
-      super(message);
-      this.status = status;
-    }
-  }
-  return {
-    notFoundMock: vi.fn(() => {
-      throw new Error("NEXT_NOT_FOUND");
-    }),
-    useIsClerkConfigured: vi.fn(() => true),
-    signIn: vi.fn(),
-    connectionOpen: vi.fn(),
-    getMemosCredentials: vi.fn(),
-    fetchInstanceStats: vi.fn(),
-    MemosSettingsRequestError,
-  };
-});
+const mocks = vi.hoisted(() => ({
+  signIn: vi.fn(),
+  fetchInstanceStats: vi.fn(),
+  connection: {
+    credentials: null as null | { instanceUrl: string; accessToken: string },
+    isConnected: false,
+    isLoaded: true,
+    isSignedIn: true,
+    instanceUrl: null as string | null,
+    open: vi.fn(),
+    dialog: null,
+  },
+}));
 
-vi.mock("next/navigation", () => ({ notFound: mocks.notFoundMock }));
-vi.mock("@/shared/auth/clerk-config", () => ({ useIsClerkConfigured: mocks.useIsClerkConfigured }));
 vi.mock("@/features/account/hooks/use-account-actions", () => ({
   useAccountActions: () => ({ user: { fullName: "Ada Lovelace" }, signIn: mocks.signIn }),
 }));
 vi.mock("@/features/memos/hooks/use-memos-connection", () => ({
-  useMemosConnection: () => ({
-    settings: { instanceUrl: "https://memos.example.com", hasAccessToken: true },
-    isConnected: true,
-    open: mocks.connectionOpen,
-    dialog: null,
-  }),
-}));
-vi.mock("@/shared/settings/memos-settings-client", () => ({
-  getMemosCredentials: mocks.getMemosCredentials,
-  MemosSettingsRequestError: mocks.MemosSettingsRequestError,
+  useMemosConnection: () => mocks.connection,
 }));
 vi.mock("@/shared/memos/instance-stats", () => ({ fetchInstanceStats: mocks.fetchInstanceStats }));
 
@@ -70,21 +50,21 @@ const okResult = {
 
 beforeEach(() => {
   vi.clearAllMocks();
-  mocks.useIsClerkConfigured.mockReturnValue(true);
+  mocks.connection.credentials = null;
+  mocks.connection.isConnected = false;
+  mocks.connection.isLoaded = true;
+  mocks.connection.isSignedIn = true;
+  mocks.connection.instanceUrl = null;
 });
 afterEach(() => {
   window.localStorage.clear();
 });
 
 describe("Dashboard", () => {
-  it("calls notFound when Clerk is not configured", () => {
-    mocks.useIsClerkConfigured.mockReturnValue(false);
-    expect(() => render(<Dashboard />)).toThrow("NEXT_NOT_FOUND");
-    expect(mocks.notFoundMock).toHaveBeenCalled();
-  });
-
   it("renders the live dashboard on an ok result", async () => {
-    mocks.getMemosCredentials.mockResolvedValue(CREDS);
+    mocks.connection.credentials = CREDS;
+    mocks.connection.isConnected = true;
+    mocks.connection.instanceUrl = CREDS.instanceUrl;
     mocks.fetchInstanceStats.mockResolvedValue(okResult);
     render(<Dashboard />);
     expect(await screen.findByTestId("stat-tiles")).toBeInTheDocument();
@@ -92,34 +72,39 @@ describe("Dashboard", () => {
     expect(screen.getByTestId("header")).toBeInTheDocument();
   });
 
-  it("shows the connect prompt when not connected", async () => {
-    mocks.getMemosCredentials.mockResolvedValue(null);
+  it("shows the connect prompt when signed in but not connected", async () => {
+    mocks.connection.credentials = null;
     render(<Dashboard />);
     expect(await screen.findByTestId("connect-prompt")).toBeInTheDocument();
   });
 
   it("shows the classified error notice for an error result", async () => {
-    mocks.getMemosCredentials.mockResolvedValue(CREDS);
+    mocks.connection.credentials = CREDS;
+    mocks.connection.isConnected = true;
     mocks.fetchInstanceStats.mockResolvedValue({ status: "error", error: describeInstanceError("unreachable") });
     render(<Dashboard />);
     expect(await screen.findByText(describeInstanceError("unreachable").title)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Retry" })).toBeInTheDocument();
   });
 
-  it("shows the signed-out card when the credentials fetch rejects with a 401", async () => {
-    mocks.getMemosCredentials.mockRejectedValue(new mocks.MemosSettingsRequestError("unauthorized", 401));
+  it("shows the signed-out card when Clerk reports the user is signed out", async () => {
+    mocks.connection.isSignedIn = false;
     render(<Dashboard />);
     expect(await screen.findByRole("button", { name: "Sign in" })).toBeInTheDocument();
   });
 
-  it("shows a generic failure for an unknown rejection", async () => {
-    mocks.getMemosCredentials.mockRejectedValue(new Error("boom"));
+  it("shows a generic failure when the stats fetch rejects", async () => {
+    mocks.connection.credentials = CREDS;
+    mocks.connection.isConnected = true;
+    mocks.fetchInstanceStats.mockRejectedValue(new Error("boom"));
     render(<Dashboard />);
     expect(await screen.findByText("Couldn't load your stats. Try again.")).toBeInTheDocument();
   });
 
   it("renders the skeleton until the fetch resolves", () => {
-    mocks.getMemosCredentials.mockReturnValue(new Promise(() => {})); // never resolves
+    mocks.connection.credentials = CREDS;
+    mocks.connection.isConnected = true;
+    mocks.fetchInstanceStats.mockReturnValue(new Promise(() => {})); // never resolves
     const { container } = render(<Dashboard />);
     expect(container.querySelector(".animate-pulse")).not.toBeNull();
   });
