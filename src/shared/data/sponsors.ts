@@ -16,13 +16,6 @@ export const FEATURED_SPONSORS: Sponsor[] = [
     description: "Cut code review time & bugs in half, instantly.",
   },
   {
-    name: "Warp",
-    url: "https://go.warp.dev/memos",
-    logo: "https://raw.githubusercontent.com/warpdotdev/brand-assets/refs/heads/main/Logos/Warp-Wordmark-Black.png",
-    logoDark: "https://raw.githubusercontent.com/warpdotdev/brand-assets/refs/heads/main/Logos/Warp-Wordmark-White.png",
-    description: "The best way to code with Al agents. Prompt, review, edit, and ship.",
-  },
-  {
     name: "SSD Nodes",
     url: "https://www.ssdnodes.com/?utm_source=memos&utm_medium=sponsor",
     logo: "/sponsors/ssd-nodes.svg",
