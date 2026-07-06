@@ -3,6 +3,7 @@ import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/page
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { AdsSectionMobile } from "@/features/docs/components/ads-section";
+import { MarkdownCopyButton, ViewOptionsPopover } from "@/features/docs/components/page-actions";
 import {
   getApiDocsVersionFromSlug,
   getApiDocsVersionLabel,
@@ -33,6 +34,9 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
 
   const MDXContent = page.data.body;
   const isApi = page.url.startsWith("/docs/api");
+  // Clean Markdown is served from /llms.mdx/* for prose docs only; API reference
+  // pages are excluded from that route, so their page actions would 404.
+  const markdownUrl = isApi ? undefined : `/llms.mdx${page.url}`;
   const apiVersion = isApi ? getApiDocsVersionFromSlug(normalizedSlug) : undefined;
   const apiVersionLabel = apiVersion ? getApiDocsVersionLabel(apiVersion) : undefined;
 
@@ -95,6 +99,12 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
       <Breadcrumbs items={breadcrumbItems} className="mb-6" />
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
+      {markdownUrl && (
+        <div className="mb-4 flex flex-row flex-wrap items-center gap-2">
+          <MarkdownCopyButton markdownUrl={markdownUrl} />
+          <ViewOptionsPopover markdownUrl={markdownUrl} />
+        </div>
+      )}
       <DocsBody>
         <MDXContent
           components={getMDXComponents({
