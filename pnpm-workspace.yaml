@@ -1,0 +1,7 @@
+allowBuilds:
+  '@clerk/shared': true
+  esbuild: true
+  sharp: true
+  workerd: true
+patchedDependencies:
+  '@opennextjs/aws@4.0.2': patches/@opennextjs__aws@4.0.2.patch

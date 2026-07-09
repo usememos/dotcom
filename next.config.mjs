@@ -95,6 +95,41 @@ const config = {
         destination: "/docs/integrations/api-access",
         permanent: true,
       },
+      // Dead docs URLs (no matching content file) that still draw crawler/inbound
+      // traffic. An unmatched /docs/[...slug] loads the full fumadocs+MDX+shiki
+      // route module only to call notFound() — ~450-510ms CPU/hit, and the
+      // read-only incremental cache can never persist it, so every hit re-pays.
+      // Redirecting at the routing layer costs ~0 CPU and recovers link equity.
+      {
+        source: "/docs/installation/docker",
+        destination: "/docs/deploy/docker",
+        permanent: true,
+      },
+      {
+        source: "/docs/getting-started/content-syntax",
+        destination: "/docs/usage/writing-markdown",
+        permanent: true,
+      },
+      {
+        source: "/docs/guides/shortcuts",
+        destination: "/docs/usage/shortcuts",
+        permanent: true,
+      },
+      {
+        source: "/docs/security/access-tokens",
+        destination: "/docs/integrations/api-access",
+        permanent: true,
+      },
+      // API service-index paths (e.g. /docs/api/latest/memoservice) have no
+      // index.mdx — only per-operation leaves are pages — so a direct hit is an
+      // expensive on-demand 404 (~300-440ms CPU, uncached). Send the service
+      // level to its version overview. Exact 4-segment match, so per-operation
+      // leaf pages (/docs/api/:version/:service/:operation) are unaffected.
+      {
+        source: "/docs/api/:version/:service",
+        destination: "/docs/api/:version",
+        permanent: false,
+      },
     ];
   },
   async headers() {

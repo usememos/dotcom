@@ -1,0 +1,21 @@
+diff --git a/dist/core/routing/cacheInterceptor.js b/dist/core/routing/cacheInterceptor.js
+index b88e58ff1f1e13e8f8db628e824451e333c95978..71f917ad2602a7cacffe411e027d1b6706327d15 100644
+--- a/dist/core/routing/cacheInterceptor.js
++++ b/dist/core/routing/cacheInterceptor.js
+@@ -206,6 +206,16 @@ export async function cacheInterceptor(event) {
+     localizedPath = localizedPath.replace(/\/$/, "");
+     // Then we decode the path params
+     localizedPath = decodePathParams(localizedPath);
++    // Root-route fix (OpenNext): the trailing-slash strip above turns "/" into
++    // "". The isISR check and incrementalCache.get() below fall back with
++    // `?? "/"` and `?? "/index"`, but `??` only triggers on null/undefined, not
++    // "". Left as "", the homepage fails isISR and is never cache-intercepted —
++    // it falls through to NextServer (~106ms/hit) with s-maxage=1 (near-zero
++    // edge caching). Normalizing empty -> undefined lets the existing fallbacks
++    // fire so "/" resolves to the manifest route "/" and cache key "/index".
++    if (localizedPath === "") {
++        localizedPath = undefined;
++    }
+     debug("Checking cache for", localizedPath, PrerenderManifest);
+     const isISR = Object.keys(PrerenderManifest?.routes ?? {}).includes(localizedPath ?? "/") ||
+         Object.values(PrerenderManifest?.dynamicRoutes ?? {}).some((dr) => new RegExp(dr.routeRegex).test(localizedPath));
