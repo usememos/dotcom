@@ -150,7 +150,11 @@ export default function Layout({ children }: { children: ReactNode }) {
     url: "https://usememos.com",
   };
   const siteNavigationJsonLd = buildSiteNavigationJsonLd();
-  const app = <RootProvider theme={{ defaultTheme: "system", enableSystem: true }}>{children}</RootProvider>;
+  const app = (
+    <RootProvider theme={{ defaultTheme: "system", enableSystem: true }} search={{ options: { type: "static" } }}>
+      {children}
+    </RootProvider>
+  );
 
   return (
     <html lang="en" suppressHydrationWarning>

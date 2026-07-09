@@ -57,24 +57,37 @@ function ensureDirectory(dir) {
 async function downloadOpenAPISpec(version) {
   const url = getOpenAPIUrl(version);
   const localPath = getLocalSpecPath(version);
-
-  console.log(`Downloading OpenAPI spec for ${version.slug} from ${url}...`);
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`Failed to fetch OpenAPI spec for ${version.slug}: ${res.statusText}`);
-  }
-  const text = await res.text();
-  const augmentedSpec = `${text}\n${DEMO_SERVER}`;
   ensureDirectory(path.dirname(localPath));
-  fs.writeFileSync(localPath, augmentedSpec);
-  console.log(`Saved OpenAPI spec to ${localPath}`);
+
+  try {
+    console.log(`Downloading OpenAPI spec for ${version.slug} from ${url}...`);
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status} ${res.statusText}`);
+    }
+    const text = await res.text();
+    fs.writeFileSync(localPath, `${text}\n${DEMO_SERVER}`);
+    console.log(`Saved OpenAPI spec to ${localPath}`);
+  } catch (error) {
+    // A transient network failure (e.g. raw.githubusercontent.com unreachable
+    // during a Cloudflare deploy) must not break the build. cleanSpecDirectory()
+    // deliberately leaves the committed openapi/*.yaml in place, so fall back to
+    // it when the fetch fails; only hard-fail if there is no committed copy.
+    if (fs.existsSync(localPath)) {
+      console.warn(`⚠ Could not fetch ${version.slug} (${error.message}); using committed ${localPath}`);
+      return;
+    }
+    throw new Error(`Failed to fetch OpenAPI spec for ${version.slug} and no committed fallback exists at ${localPath}: ${error.message}`);
+  }
 }
 
 /**
  * Cleans generated OpenAPI specs
  */
 function cleanSpecDirectory() {
-  fs.rmSync(SPEC_DIR, { recursive: true, force: true });
+  // Intentionally keep the committed openapi/*.yaml specs in place: they are the
+  // offline fallback for downloadOpenAPISpec() when the network fetch fails.
+  // Successful fetches overwrite each spec in place, so this stays fresh.
   fs.rmSync("./openapi.yaml", { force: true });
   ensureDirectory(SPEC_DIR);
 }
