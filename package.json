@@ -2,6 +2,7 @@
   "name": "memos-dotcom",
   "version": "0.0.0",
   "private": true,
+  "packageManager": "pnpm@11.10.0",
   "engines": {
     "node": ">=24.0.0"
   },
