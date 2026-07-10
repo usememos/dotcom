@@ -9,6 +9,10 @@ import { baseOptions } from "@/shared/config/layout";
 import { buildBreadcrumbItems, buildBreadcrumbJsonLd, buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/shared/lib/seo";
 import { JsonLdScript } from "@/shared/ui/json-ld-script";
 
+export const dynamic = "force-static";
+export const dynamicParams = false;
+export const revalidate = false;
+
 export async function generateStaticParams() {
   return getAllUseCaseSlugs().map((slug) => ({
     slug,

@@ -14,6 +14,7 @@ interface FeaturePageProps {
 }
 
 export const dynamic = "force-static";
+export const dynamicParams = false;
 export const revalidate = false;
 
 export default async function FeaturePage({ params }: FeaturePageProps) {

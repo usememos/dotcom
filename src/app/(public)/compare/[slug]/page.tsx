@@ -10,6 +10,7 @@ import { buildBreadcrumbItems, buildBreadcrumbJsonLd, buildDefaultOpenGraphImage
 import { JsonLdScript } from "@/shared/ui/json-ld-script";
 
 export const dynamic = "force-static";
+export const dynamicParams = false;
 export const revalidate = false;
 
 export async function generateStaticParams() {

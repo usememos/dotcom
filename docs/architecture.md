@@ -86,6 +86,26 @@ for the current user). When a feature needs more, add a new store implementation
   Object tag cache — a deliberate future change, not enabled now. If the marketing
   surface ever needs revalidating ISR, that (or splitting the dashboard to its own
   worker) is the escape hatch — not a default.
+- **Public responses are cached before Worker execution.** Wrangler's Workers
+  Caching is enabled, so eligible responses are served without invoking OpenNext.
+  Public static routes opt in with long-lived `s-maxage` headers. Cache keys
+  are Worker-version isolated, so each deployment starts with a fresh cache and
+  cannot serve output from the previous build. Tradeoff: OpenNext runs as one
+  gateway entrypoint, so with caching on, `no-store`/dynamic routes (`/dashboard`,
+  `/api/*`, and 404s such as `/api/version`) pay a cache-tier lookup before the
+  Worker runs — no benefit for them, and Cloudflare's per-entrypoint opt-out
+  can't be applied to a single-entrypoint Worker. Watch dynamic-route latency
+  after rollout.
+- **Caching is opt-out, not opt-in — a `200` without `Cache-Control` is stored.**
+  Workers Caching applies RFC 9111 heuristic freshness (a `200` with no
+  `Cache-Control` is cached for 2h), and a request `Cookie` (Clerk's `__session`)
+  does *not* trigger a cache bypass — only a `Set-Cookie` response header or an
+  `Authorization` request header does. So an authenticated route MUST explicitly
+  return `no-store`; it is not automatic. `force-dynamic` **pages** already emit
+  `no-store`, but **route handlers do not** — an `/api/*` handler must set it
+  itself. As a safety net, `next.config.mjs` forces `Cache-Control: private,
+  no-store` on all `/api/*` except the public `/api/search` index; put any
+  authenticated non-`/api` route on that list too.
 - **Middleware matcher** (`src/middleware.ts`) currently covers `/api/settings/*`
   and `/api/memos/*`. Add new authenticated API namespaces there.
 

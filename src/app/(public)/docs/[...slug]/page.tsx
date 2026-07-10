@@ -20,6 +20,10 @@ import { Breadcrumbs } from "@/shared/ui/breadcrumbs";
 import { JsonLdScript } from "@/shared/ui/json-ld-script";
 
 export const dynamic = "force-static";
+// Every docs URL is known from the file/OpenAPI sources at build time. Reject
+// unknown slugs at the route boundary instead of loading the large MDX/OpenAPI
+// module to discover the page is missing at request time.
+export const dynamicParams = false;
 
 export default async function Page(props: { params: Promise<{ slug: string[] }> }) {
   const params = await props.params;

@@ -1,6 +1,14 @@
+import { readFileSync } from "node:fs";
+
 import { createMDX } from "fumadocs-mdx/next";
 
 const withMDX = createMDX();
+
+// API reference versions, kept in sync with src/features/docs/lib/api-docs.ts.
+// Used to build the version-aware /docs/api redirects below.
+const API_DOCS_VERSIONS = JSON.parse(readFileSync(new URL("./src/features/docs/lib/api-docs-versions.json", import.meta.url), "utf8"));
+const API_DOCS_VERSION_PATTERN = API_DOCS_VERSIONS.map((version) => version.slug).join("|");
+const API_DOCS_LATEST_VERSION = API_DOCS_VERSIONS.find((version) => version.isLatest)?.slug ?? "latest";
 
 // Applied only to the OG image routes below. Cloudflare serves the static
 // /og-image.png from public/_headers — keep that file's CORS block in sync.
@@ -36,14 +44,19 @@ const SECURITY_HEADERS = [
 
 // Edge-cache the static public pages so Cloudflare's CDN can serve repeat hits
 // to the same URL without invoking the Worker (zero CPU/request). Content is
-// immutable until redeploy (pages are `revalidate = false`); s-maxage keeps it
-// fresh for an hour and stale-while-revalidate serves instantly while the edge
-// refreshes in the background. Scoped to public routes only — never /api,
-// /dashboard, /sign-in, /sign-up, or /scratchpad (those stay no-store/dynamic).
+// immutable until redeploy (pages are `revalidate = false`). Workers Caching
+// keys entries by Worker version, so a deploy replaces the cache namespace;
+// the long s-maxage avoids needless hourly Worker invocations between deploys.
+// No stale-while-revalidate: the version-keyed cache is discarded on every
+// deploy (far more often than yearly), so the post-s-maxage stale window is
+// never reached. Scoped here to marketing/docs routes. Routes not listed here
+// (e.g. /scratchpad, /api/search) set no explicit Cache-Control and fall back
+// to Workers Caching's heuristic freshness; authenticated routes such as
+// /dashboard are force-dynamic and return no-store, which bypasses the cache.
 const PUBLIC_CACHE_HEADERS = [
   {
     key: "Cache-Control",
-    value: "public, s-maxage=3600, stale-while-revalidate=86400",
+    value: "public, s-maxage=31536000",
   },
 ];
 const PUBLIC_CACHEABLE_PATHS = [
@@ -79,8 +92,10 @@ const config = {
         // Bare /docs/api normalizes to the "latest" version. Doing it here (routing
         // layer) instead of via redirect() inside the docs page avoids loading the
         // heavy fumadocs-openapi route module just to emit the 307 — that in-page
-        // redirect was ~408ms CPU/hit (~2M CPU-ms/7d on Workers). The page-level
-        // normalizeApiDocsSlug() stays as the fallback for other /docs/api/* cases.
+        // redirect was ~408ms CPU/hit (~2M CPU-ms/7d on Workers). Other version-less
+        // /docs/api/* URLs are normalized by the version-aware redirect below —
+        // `dynamicParams = false` on the docs route 404s unknown slugs before the
+        // page's normalizeApiDocsSlug() fallback can run.
         source: "/docs/api",
         destination: "/docs/api/latest",
         permanent: false,
@@ -123,11 +138,23 @@ const config = {
       // API service-index paths (e.g. /docs/api/latest/memoservice) have no
       // index.mdx — only per-operation leaves are pages — so a direct hit is an
       // expensive on-demand 404 (~300-440ms CPU, uncached). Send the service
-      // level to its version overview. Exact 4-segment match, so per-operation
-      // leaf pages (/docs/api/:version/:service/:operation) are unaffected.
+      // level to its version overview. The :version guard restricts this to real
+      // versions so it does not mis-fire on version-less operation URLs like
+      // /docs/api/memoservice/ListMemos (handled by the redirect below).
       {
-        source: "/docs/api/:version/:service",
+        source: `/docs/api/:version(${API_DOCS_VERSION_PATTERN})/:service`,
         destination: "/docs/api/:version",
+        permanent: false,
+      },
+      // Version-less API URLs — the first segment after /api is not a known
+      // version, e.g. /docs/api/memoservice/ListMemos — normalize to the latest
+      // version at the routing boundary. This replaces the in-page
+      // normalizeApiDocsSlug() redirect, which `dynamicParams = false` makes
+      // unreachable (unknown slugs 404 before the page runs). `permanent: false`
+      // because "latest" is a moving target.
+      {
+        source: `/docs/api/:segment((?!(?:${API_DOCS_VERSION_PATTERN})(?:/|$))[^/]+)/:rest*`,
+        destination: `/docs/api/${API_DOCS_LATEST_VERSION}/:segment/:rest*`,
         permanent: false,
       },
     ];
@@ -145,6 +172,16 @@ const config = {
       {
         source: "/:path*",
         headers: SECURITY_HEADERS,
+      },
+      {
+        // Guardrail: Workers Caching heuristically stores any 200 without an
+        // explicit Cache-Control (2h), and a request Cookie (Clerk's `__session`)
+        // does NOT trigger a cache bypass — so an authenticated API handler that
+        // forgets `no-store` would be cached and cross-served to other users.
+        // Force no-store on all /api/* except the public static /api/search index.
+        // Handlers should still set their own no-store; this is defense-in-depth.
+        source: "/api/:path((?!search$).*)",
+        headers: [{ key: "Cache-Control", value: "private, no-store" }],
       },
       ...PUBLIC_CACHEABLE_PATHS.map((source) => ({
         source,

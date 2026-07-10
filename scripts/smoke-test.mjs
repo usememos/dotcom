@@ -1,7 +1,7 @@
 const baseUrl = process.env.SMOKE_BASE_URL ?? "http://localhost:8788";
 
 const checks = [
-  { path: "/", type: "html", contains: "Capture first." },
+  { path: "/", type: "html", contains: "Capture first.", cacheControlIncludes: "s-maxage=31536000" },
   {
     path: "/docs/faq",
     type: "html",
@@ -13,7 +13,8 @@ const checks = [
     contains: "Best practices to write a TAG",
   },
   { path: "/changelog/0-29-1", type: "html", contains: "Mobile video posters" },
-  { path: "/api/search?query=memo", type: "json-array" },
+  { path: "/dashboard", type: "html", cacheControlIncludes: "no-store" },
+  { path: "/api/search", type: "search-index" },
   { path: "/sitemap.xml", type: "text", contains: "<urlset" },
   { path: "/blog/feed.xml", type: "text", contains: "<rss" },
   { path: "/og/blog/best-practices-to-write-tag/image.png", type: "png" },
@@ -26,7 +27,7 @@ function buildUrl(path) {
 
 async function readBody(response, type) {
   if (type === "png") return new Uint8Array(await response.arrayBuffer());
-  if (type === "json-array") return response.json();
+  if (type === "search-index") return response.json();
   return response.text();
 }
 
@@ -36,11 +37,15 @@ function assertCheck(check, response, body) {
     throw new Error(`${check.path} returned ${response.status}; expected ${expectedStatus}`);
   }
   const contentType = response.headers.get("content-type") ?? "";
+  const cacheControl = response.headers.get("cache-control") ?? "";
+  if (check.cacheControlIncludes && !cacheControl.includes(check.cacheControlIncludes)) {
+    throw new Error(`${check.path} expected Cache-Control to include ${JSON.stringify(check.cacheControlIncludes)}, got ${cacheControl}`);
+  }
   if (check.type === "html" && !contentType.includes("text/html")) {
     throw new Error(`${check.path} expected HTML, got ${contentType}`);
   }
-  if (check.type === "json-array" && !Array.isArray(body)) {
-    throw new Error(`${check.path} expected a JSON array`);
+  if (check.type === "search-index" && (body?.type !== "advanced" || !Array.isArray(body?.internalDocumentIDStore?.internalIdToId))) {
+    throw new Error(`${check.path} expected a static Orama search index`);
   }
   if (check.type === "png") {
     if (!contentType.includes("image/png")) {
