@@ -23,7 +23,7 @@ Use `pnpm` for all package scripts.
 
 | Task | Command | Notes |
 | --- | --- | --- |
-| Install dependencies | `pnpm install` | Runs `postinstall` automatically |
+| Install dependencies | `pnpm install` | Runs Fumadocs source generation automatically |
 | Develop locally | `pnpm dev` | Starts Next.js with Turbopack on port 3000 |
 | Run tests | `pnpm test` | Vitest (`*.test.ts`/`*.test.tsx`); `pnpm test:watch` to watch |
 | Build | `pnpm build` | Full production build for the static site |
@@ -31,9 +31,13 @@ Use `pnpm` for all package scripts.
 | Lint | `pnpm lint` | Runs static revalidation audit, metadata audit, and Biome |
 | Format | `pnpm format` | Runs Biome format with `--write` |
 | Check and write fixes | `pnpm check` | Runs `biome check --write` |
+| Refresh generated docs | `pnpm docs:refresh` | Downloads OpenAPI specs, regenerates API MDX, formats it, and rebuilds Fumadocs source |
+| Generate Fumadocs source | `pnpm docs:generate:source` | Rebuilds ignored `.source/` files without downloading API specs |
 | Generate Cloudflare types | `pnpm typegen` | Writes `cloudflare-env.d.ts` |
+| Build Cloudflare Worker | `pnpm run build:worker` | Generates Fumadocs source and builds the OpenNext artifact |
 | Cloudflare preview | `pnpm run preview` | Builds with OpenNext and serves the Workers runtime on port 8788 |
-| Cloudflare deploy | `pnpm run deploy` | Builds and deploys with Wrangler, preserving existing vars |
+| Cloudflare deploy | `pnpm run deploy` | Deploys an existing OpenNext artifact, preserving existing vars |
+| Cloudflare version upload | `pnpm run upload` | Uploads an existing OpenNext artifact without promoting it |
 | Cloudflare dry run | `pnpm run deploy:dry-run` | Builds and packages through Wrangler without deploying |
 | Smoke test | `SMOKE_BASE_URL=http://localhost:8788 pnpm run smoke` | Run against `pnpm run preview` |
 | Metadata audit | `pnpm run metadata:audit` | Checks metadata title rules |
@@ -41,7 +45,7 @@ Use `pnpm` for all package scripts.
 
 For day-to-day work, use `pnpm dev`. Before deployment-sensitive changes, prefer `pnpm run preview` because it runs the built app in the Cloudflare Workers runtime instead of the local Node.js server.
 
-Standard verification is `pnpm test`, `pnpm lint`, and `pnpm build`, with `pnpm run preview` plus smoke tests when the change could affect production routing or runtime behavior. CI currently runs `lint` and `build`; run `pnpm test` locally.
+Standard verification is `pnpm test`, `pnpm lint`, and `pnpm build`, with `pnpm run preview` plus smoke tests when the change could affect production routing or runtime behavior. CI runs `test`, `lint`, and the Cloudflare dry-run build.
 
 ## Architecture
 
@@ -109,11 +113,19 @@ See `docs/architecture.md` for the full architecture and the conventions for exp
 
 OpenNext is configured with static-assets incremental caching for this mostly static site. Treat content updates as rebuild and redeploy events. If future ISR or runtime revalidation is required, design a persistent cache backend such as R2 or KV before enabling it.
 
+Cloudflare Workers Builds uses the repository root with these commands:
+
+- Build command: `pnpm run build:worker`
+- Deploy command: `pnpm run deploy`
+- Version command: `pnpm run upload`
+
+The build command creates `.open-next/` once. The deploy command promotes that artifact to production, while the version command uploads it without promotion for non-production builds.
+
 Use `pnpm run preview` or `pnpm run deploy:dry-run` to validate Cloudflare production behavior. `pnpm start` only validates the local Next.js production server.
 
 ## Gotchas
 
-- `postinstall` downloads OpenAPI specs from `raw.githubusercontent.com`, generates MDX/Fumadocs source files, and runs formatting. If the network fetch fails during install, rerun `pnpm install`.
+- `postinstall` only regenerates the ignored Fumadocs `.source/` files. Run `pnpm docs:refresh` explicitly when refreshing the committed OpenAPI specs and generated API MDX. The refresh falls back to committed `openapi/*.yaml` files if the network fetch fails.
 - pnpm may warn about ignored build scripts for `esbuild` and `sharp`; this is cosmetic for normal development.
 - The production build generates hundreds of static pages, so `pnpm build` can take a while.
 - Do not edit generated files in `.source/`.

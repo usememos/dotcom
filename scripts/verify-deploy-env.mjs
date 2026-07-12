@@ -13,6 +13,6 @@ if (missingEnvNames.length > 0) {
   for (const name of missingEnvNames) {
     console.error(`- ${name}`);
   }
-  console.error("Set these before running pnpm run deploy so static routes are built with the correct public config.");
+  console.error("Set these before building the Worker so static routes use the correct public config.");
   process.exitCode = 1;
 }

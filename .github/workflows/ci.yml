@@ -91,11 +91,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
 
-      - name: Generate MDX source
-        run: pnpm exec fumadocs-mdx
-
-      - name: Build application
-        run: pnpm build
-
       - name: Validate Cloudflare deployment package
         run: pnpm run deploy:dry-run
