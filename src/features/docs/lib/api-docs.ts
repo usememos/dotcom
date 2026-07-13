@@ -3,7 +3,9 @@ import apiDocsVersionsData from "./api-docs-versions.json";
 export interface ApiDocsVersion {
   slug: string;
   label: string;
-  ref: string;
+  sourceRef: string;
+  snapshotVersion: string;
+  legacySlugs?: string[];
   isLatest?: boolean;
 }
 

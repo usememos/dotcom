@@ -36,7 +36,7 @@ const SERVICE_TITLES = {
 };
 
 function getOpenAPIUrl(version) {
-  return `https://raw.githubusercontent.com/usememos/memos/${version.ref}/proto/gen/openapi.yaml`;
+  return `https://raw.githubusercontent.com/usememos/memos/${version.sourceRef}/proto/gen/openapi.yaml`;
 }
 
 function getLocalSpecPath(version) {
@@ -49,6 +49,23 @@ function getVersionOutputDir(version) {
 
 function ensureDirectory(dir) {
   fs.mkdirSync(dir, { recursive: true });
+}
+
+/**
+ * Replaces the placeholder metadata emitted by protoc-gen-openapi with metadata
+ * for the documented compatibility series while retaining the exact source tag.
+ */
+function enrichOpenAPISpec(text, version) {
+  const infoBlock = /^info:\n {4}title:.*\n {4}version:.*\n/m;
+  const documentVersion = version.isLatest ? version.snapshotVersion : version.label;
+  const replacement = `info:\n    title: "Memos API"\n    version: ${JSON.stringify(documentVersion)}\n    x-memos-source-version: ${JSON.stringify(version.snapshotVersion)}\n`;
+  const enriched = text.replace(infoBlock, replacement);
+
+  if (enriched === text) {
+    throw new Error(`Could not locate the OpenAPI info block for ${version.slug}`);
+  }
+
+  return enriched;
 }
 
 /**
@@ -65,7 +82,7 @@ async function downloadOpenAPISpec(version) {
     if (!res.ok) {
       throw new Error(`HTTP ${res.status} ${res.statusText}`);
     }
-    const text = await res.text();
+    const text = enrichOpenAPISpec(await res.text(), version);
     fs.writeFileSync(localPath, `${text}\n${DEMO_SERVER}`);
     console.log(`Saved OpenAPI spec to ${localPath}`);
   } catch (error) {
@@ -85,11 +102,16 @@ async function downloadOpenAPISpec(version) {
  * Cleans generated OpenAPI specs
  */
 function cleanSpecDirectory() {
-  // Intentionally keep the committed openapi/*.yaml specs in place: they are the
-  // offline fallback for downloadOpenAPISpec() when the network fetch fails.
-  // Successful fetches overwrite each spec in place, so this stays fresh.
+  // Keep only configured openapi/*.yaml specs in place: they are the offline
+  // fallback when a download fails. Successful fetches overwrite them in place.
   fs.rmSync("./openapi.yaml", { force: true });
   ensureDirectory(SPEC_DIR);
+  const configuredSpecs = new Set(apiDocsVersions.map((version) => path.basename(getLocalSpecPath(version))));
+  for (const file of fs.readdirSync(SPEC_DIR)) {
+    if (file.endsWith(".yaml") && !configuredSpecs.has(file)) {
+      fs.rmSync(path.join(SPEC_DIR, file));
+    }
+  }
 }
 
 /**
@@ -177,7 +199,7 @@ function getServiceEntryPage(dir, pages) {
 
 /**
  * Generates the version overview page
- * @param {{ slug: string, label: string, isLatest?: boolean }} version - API docs version
+ * @param {{ slug: string, label: string, snapshotVersion: string, isLatest?: boolean }} version - API docs version
  * @param {string[]} serviceDirs - List of service directory names
  */
 function generateVersionIndex(version, serviceDirs) {
@@ -197,7 +219,7 @@ function generateVersionIndex(version, serviceDirs) {
 
   const versionNote = version.isLatest
     ? "This reference tracks the latest API schema from the `main` branch."
-    : `This reference matches the Memos \`${version.label}\` release.`;
+    : `This reference applies to Memos \`${version.label}\`. It is generated from the OpenAPI schema in \`v${version.snapshotVersion}\`.`;
 
   const content = `---
 title: API Reference
@@ -311,7 +333,7 @@ function generateRootMeta() {
 
 /**
  * Generates docs for a single API version
- * @param {{ slug: string, label: string, ref: string, isLatest?: boolean }} version - API docs version
+ * @param {{ slug: string, label: string, sourceRef: string, snapshotVersion: string, isLatest?: boolean }} version - API docs version
  */
 async function generateVersion(version) {
   const localSpecPath = getLocalSpecPath(version);

@@ -2,27 +2,36 @@
   {
     "slug": "latest",
     "label": "Latest",
-    "ref": "main",
+    "sourceRef": "main",
+    "snapshotVersion": "main",
     "isLatest": true
   },
   {
-    "slug": "0-29-1",
+    "slug": "0-29",
     "label": "0.29.x",
-    "ref": "refs/tags/v0.29.1"
+    "sourceRef": "refs/tags/v0.29.1",
+    "snapshotVersion": "0.29.1",
+    "legacySlugs": ["0-29-1"]
   },
   {
-    "slug": "0-28-0",
+    "slug": "0-28",
     "label": "0.28.x",
-    "ref": "refs/tags/v0.28.0"
+    "sourceRef": "refs/tags/v0.28.0",
+    "snapshotVersion": "0.28.0",
+    "legacySlugs": ["0-28-0"]
   },
   {
-    "slug": "0-27-1",
+    "slug": "0-27",
     "label": "0.27.x",
-    "ref": "refs/tags/v0.27.1"
+    "sourceRef": "refs/tags/v0.27.1",
+    "snapshotVersion": "0.27.1",
+    "legacySlugs": ["0-27-1"]
   },
   {
-    "slug": "0-26-2",
+    "slug": "0-26",
     "label": "0.26.x",
-    "ref": "refs/tags/v0.26.2"
+    "sourceRef": "refs/tags/v0.26.2",
+    "snapshotVersion": "0.26.2",
+    "legacySlugs": ["0-26-2"]
   }
 ]

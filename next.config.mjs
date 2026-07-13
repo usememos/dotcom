@@ -9,6 +9,20 @@ const withMDX = createMDX();
 const API_DOCS_VERSIONS = JSON.parse(readFileSync(new URL("./src/features/docs/lib/api-docs-versions.json", import.meta.url), "utf8"));
 const API_DOCS_VERSION_PATTERN = API_DOCS_VERSIONS.map((version) => version.slug).join("|");
 const API_DOCS_LATEST_VERSION = API_DOCS_VERSIONS.find((version) => version.isLatest)?.slug ?? "latest";
+const API_DOCS_LEGACY_REDIRECTS = API_DOCS_VERSIONS.flatMap((version) =>
+  (version.legacySlugs ?? []).flatMap((legacySlug) => [
+    {
+      source: `/docs/api/${legacySlug}`,
+      destination: `/docs/api/${version.slug}`,
+      permanent: true,
+    },
+    {
+      source: `/docs/api/${legacySlug}/:rest*`,
+      destination: `/docs/api/${version.slug}/:rest*`,
+      permanent: true,
+    },
+  ]),
+);
 
 // Applied only to the OG image routes below. Cloudflare serves the static
 // /og-image.png from public/_headers — keep that file's CORS block in sync.
@@ -135,6 +149,9 @@ const config = {
         destination: "/docs/integrations/api-access",
         permanent: true,
       },
+      // Historical API docs originally exposed the exact source patch in their
+      // URLs even though each reference covers the full minor release series.
+      ...API_DOCS_LEGACY_REDIRECTS,
       // API service-index paths (e.g. /docs/api/latest/memoservice) have no
       // index.mdx — only per-operation leaves are pages — so a direct hit is an
       // expensive on-demand 404 (~300-440ms CPU, uncached). Send the service
