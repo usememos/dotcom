@@ -18,7 +18,7 @@ const inactiveButtonClassName =
 /**
  * Compact theme switcher: a single row of icon actions (light/dark/system).
  * Plain buttons keep the dropdown open while toggling for a live preview.
- * Render at the bottom of a Radix DropdownMenu.Content.
+ * Render at the bottom of a DropdownMenuContent.
  */
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();

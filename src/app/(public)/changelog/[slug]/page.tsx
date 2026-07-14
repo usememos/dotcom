@@ -5,9 +5,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AdsSectionDesktop, AdsSectionMobile } from "@/features/docs/components/ads-section";
 import { TOCSidebar } from "@/features/docs/components/toc-sidebar";
-import { ChangelogArticleBody } from "@/features/editorial/components/changelog-article-body";
 import { ChangelogFooter } from "@/features/editorial/components/changelog-footer";
 import { ChangelogHeader } from "@/features/editorial/components/changelog-header";
+import { EditorialArticleBody } from "@/features/editorial/components/editorial-article-body";
 import {
   CHANGELOG_ARTICLE_COLUMN_CLASS,
   CHANGELOG_DETAIL_LAYOUT_CLASS,
@@ -79,7 +79,7 @@ export default async function ChangelogEntryPage({ params }: ChangelogPageProps)
         <section className="px-4 pb-16 pt-2 sm:pb-20">
           <div className={CHANGELOG_DETAIL_LAYOUT_CLASS}>
             <div className="min-w-0">
-              <ChangelogArticleBody content={Content} />
+              <EditorialArticleBody content={Content} columnClassName={CHANGELOG_ARTICLE_COLUMN_CLASS} />
               <AdsSectionMobile />
               <ChangelogFooter version={version} date={data.date} />
             </div>

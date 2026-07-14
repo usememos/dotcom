@@ -5,10 +5,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AdsSectionDesktop, AdsSectionMobile } from "@/features/docs/components/ads-section";
 import { TOCSidebar } from "@/features/docs/components/toc-sidebar";
-import { BlogArticleBody } from "@/features/editorial/components/blog-article-body";
 import { BlogPostFooter } from "@/features/editorial/components/blog-post-footer";
 import { BlogPostHeader } from "@/features/editorial/components/blog-post-header";
 import { BlogPostHeroImage } from "@/features/editorial/components/blog-post-hero-image";
+import { EditorialArticleBody } from "@/features/editorial/components/editorial-article-body";
 import { BLOG_ARTICLE_COLUMN_CLASS, BLOG_DETAIL_LAYOUT_CLASS, formatBlogDate } from "@/features/editorial/lib/blog";
 import { getBlogSocialPreview } from "@/features/editorial/lib/social-preview";
 import { Footer } from "@/features/marketing/components/footer";
@@ -96,7 +96,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
         <section className="px-4 pb-16 pt-2 sm:pb-20">
           <div className={BLOG_DETAIL_LAYOUT_CLASS}>
             <div className="min-w-0">
-              <BlogArticleBody content={Content} />
+              <EditorialArticleBody content={Content} columnClassName={BLOG_ARTICLE_COLUMN_CLASS} />
               <AdsSectionMobile />
               <BlogPostFooter />
             </div>

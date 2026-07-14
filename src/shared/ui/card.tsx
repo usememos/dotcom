@@ -118,7 +118,7 @@ interface CardProps {
 }
 
 export function Cards({ children }: CardsProps) {
-  return <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-6 mb-6 not-prose">{children}</div>;
+  return <div className="not-typeset not-prose mt-6 mb-6 grid grid-cols-1 gap-3 md:grid-cols-2">{children}</div>;
 }
 
 export function Card({ title, href, icon, children }: CardProps) {

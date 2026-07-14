@@ -1,8 +1,38 @@
 @import "tailwindcss";
+@import "./typeset.css";
+@import "tw-animate-css";
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
 
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
 :root {
+  --radius: 0.625rem;
+  /* Resolved by typeset.css's `--typeset-font-mono: var(--font-mono)` default. */
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --background: oklch(0.995 0 0);
   --foreground: oklch(0.22 0.006 250);
   --card: oklch(1 0 0);
@@ -17,7 +47,9 @@
   --muted-foreground: oklch(0.5 0.01 250);
   --accent: oklch(0.955 0.018 165);
   --accent-foreground: oklch(0.28 0.055 165);
+  --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.9 0.006 250);
+  --input: oklch(0.9 0.006 250);
   --ring: oklch(0.48 0.09 165);
 
   --color-fd-background: var(--background);
@@ -53,7 +85,9 @@
   --muted-foreground: oklch(0.7 0.008 250);
   --accent: oklch(0.25 0.035 165);
   --accent-foreground: oklch(0.9 0.045 165);
+  --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(0.34 0.01 250 / 0.6);
+  --input: oklch(1 0 0 / 0.15);
   --ring: oklch(0.72 0.09 165);
 }
 
@@ -72,242 +106,85 @@ body {
   font-family: var(--font-display-serif), Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
-.blog-article-shell {
-  position: relative;
+.typeset-docs {
+  --typeset-font-body: var(--font-inter);
+  --typeset-font-heading: var(--font-inter);
+  --typeset-size: 0.9375rem;
+  --typeset-leading: 1.75;
+  --typeset-flow: 1.25em;
 }
 
-.blog-article-body {
-  --blog-copy: rgb(55 65 81);
-  --blog-heading: rgb(3 7 18);
-  --blog-strong: rgb(17 24 39);
-  --blog-muted: rgb(107 114 128);
-  --blog-rule: rgba(148, 163, 184, 0.22);
-  --blog-link: rgb(13 148 136);
-  --blog-link-hover: rgb(15 118 110);
-  --blog-inline-code-bg: rgba(15, 23, 42, 0.055);
-  --blog-quote-border: rgba(13, 148, 136, 0.72);
-  --blog-quote-bg: linear-gradient(180deg, rgba(240, 253, 250, 0.9), rgba(236, 253, 245, 0.56));
-  --blog-code-shadow: 0 20px 44px rgba(15, 23, 42, 0.12);
-  --blog-image-shadow: 0 22px 52px rgba(15, 23, 42, 0.14);
-  max-width: none;
-  color: var(--blog-copy);
-}
-
-.dark .blog-article-body {
-  --blog-copy: rgb(209 213 219);
-  --blog-heading: rgb(249 250 251);
-  --blog-strong: rgb(243 244 246);
-  --blog-muted: rgb(156 163 175);
-  --blog-rule: rgba(71, 85, 105, 0.44);
-  --blog-link: rgb(94 234 212);
-  --blog-link-hover: rgb(153 246 228);
-  --blog-inline-code-bg: rgba(255, 255, 255, 0.08);
-  --blog-quote-border: rgba(45, 212, 191, 0.78);
-  --blog-quote-bg: linear-gradient(180deg, rgba(19, 78, 74, 0.28), rgba(17, 24, 39, 0.18));
-  --blog-code-shadow: 0 20px 48px rgba(0, 0, 0, 0.3);
-  --blog-image-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
-}
-
-.blog-article-body :where(* + *) {
-  margin-top: 0;
-}
-
-.blog-article-body > :where(* + *) {
-  margin-top: 1.5rem;
-}
-
-.blog-article-body > :where(h2, h3, h4) {
-  margin-top: 3.5rem;
-}
-
-.blog-article-body > :where(figure, pre, table, blockquote, hr) {
-  margin-top: 2.5rem;
-}
-
-.blog-article-body > :where(:first-child) {
-  margin-top: 0;
-}
-
-.blog-article-body :where(p, li) {
-  font-size: 1.0625rem;
-  line-height: 1.95;
-  letter-spacing: -0.01em;
-  color: var(--blog-copy);
-}
-
-.blog-article-body > :where(p:first-child) {
-  font-size: clamp(1.15rem, 1.05rem + 0.5vw, 1.375rem);
-  line-height: 1.85;
-  color: var(--blog-muted);
-}
-
-.blog-article-body :where(strong, b) {
-  font-weight: 650;
-  color: var(--blog-strong);
-}
-
-.blog-article-body :where(h2, h3, h4) {
-  scroll-margin-top: 5rem;
-  font-family: var(--font-display-serif), Georgia, Cambria, "Times New Roman", Times, serif;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  color: var(--blog-heading);
+.typeset-docs :where(h2, h3, h4, h5, h6) {
+  scroll-margin-block-start: 6rem;
+  letter-spacing: -0.015em;
   text-wrap: balance;
 }
 
-.blog-article-body :where(h2) {
-  margin-bottom: 1rem;
-  font-size: clamp(2rem, 1.65rem + 1vw, 2.55rem);
-  line-height: 1.08;
+.typeset-docs :where(a) {
+  color: var(--primary);
+  text-underline-offset: 0.16em;
 }
 
-.blog-article-body :where(h3) {
-  margin-bottom: 0.75rem;
-  font-size: clamp(1.45rem, 1.28rem + 0.48vw, 1.75rem);
-  line-height: 1.18;
-}
-
-.blog-article-body :where(h4) {
-  margin-bottom: 0.65rem;
-  font-size: 1.125rem;
-  line-height: 1.35;
-  letter-spacing: -0.015em;
-}
-
-.blog-article-body :where(a) {
+.typeset-docs :where(h1, h2, h3, h4, h5, h6) > a {
   color: inherit;
-  text-decoration-line: underline;
-  text-decoration-thickness: 1px;
+  text-decoration: none;
+}
+
+.typeset-docs :where(img) {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.typeset-editorial {
+  --typeset-font-body: var(--font-inter);
+  --typeset-font-heading: var(--font-display-serif);
+  --typeset-size: 1rem;
+  --typeset-leading: 1.85;
+  --typeset-flow: 1.5em;
+}
+
+.typeset-editorial :where(h2, h3, h4) {
+  scroll-margin-block-start: 5rem;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.typeset-editorial :where(h2) {
+  font-size: 1.75em;
+  line-height: 1.25;
+}
+
+.typeset-editorial :where(h3) {
+  font-size: 1.35em;
+  line-height: 1.35;
+}
+
+.typeset-editorial :where(h4) {
+  font-size: 1.1em;
+}
+
+.typeset-editorial :where(a) {
+  color: var(--primary);
   text-underline-offset: 0.18em;
-  text-decoration-color: color-mix(in srgb, var(--blog-link) 38%, transparent);
-  transition:
-    color 160ms ease,
-    text-decoration-color 160ms ease;
 }
 
-.blog-article-body :where(a:hover) {
-  color: var(--blog-link-hover);
-  text-decoration-color: var(--blog-link-hover);
+.typeset-editorial :where(blockquote) {
+  border-inline-start-color: var(--primary);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  background: var(--accent);
+  padding-block: 1em;
+  padding-inline-end: 1em;
 }
 
-.blog-article-body :where(ul, ol) {
-  margin-block: 1.5rem;
-  padding-left: 1.35rem;
+.typeset-editorial :where(img) {
+  border-radius: var(--radius-xl);
+  box-shadow: 0 22px 52px color-mix(in oklab, var(--foreground) 14%, transparent);
 }
 
-.blog-article-body :where(ul) {
-  list-style-type: disc;
+.typeset-editorial :where(pre) {
+  border: 1px solid var(--border);
 }
 
-.blog-article-body :where(ol) {
-  list-style-type: decimal;
-}
-
-.blog-article-body :where(li + li) {
-  margin-top: 0.5rem;
-}
-
-.blog-article-body :where(li)::marker {
-  color: color-mix(in srgb, var(--blog-link) 70%, var(--blog-copy));
-}
-
-.blog-article-body :where(blockquote) {
-  border-left: 3px solid var(--blog-quote-border);
-  background: var(--blog-quote-bg);
-  padding: 1.1rem 1.25rem 1.1rem 1.15rem;
-  color: var(--blog-copy);
-  font-style: italic;
-  border-radius: 0 1rem 1rem 0;
-}
-
-.blog-article-body :where(blockquote p) {
-  font-size: 1.04rem;
-  line-height: 1.9;
-}
-
-.blog-article-body :where(hr) {
-  margin-block: 3rem;
-  border: none;
-  border-top: 1px solid var(--blog-rule);
-}
-
-.blog-article-body :where(img) {
-  margin-block: 2.75rem;
-  overflow: hidden;
-  border-radius: 1.25rem;
-  box-shadow: var(--blog-image-shadow);
-}
-
-.blog-article-body :where(figcaption) {
-  margin-top: 0.9rem;
-  font-size: 0.95rem;
-  line-height: 1.65;
-  text-align: center;
-  color: var(--blog-muted);
-}
-
-.blog-article-body :where(figure.shiki, pre) {
-  margin-block: 2.25rem;
-}
-
-.blog-article-body :where(pre) {
-  overflow-x: auto;
-  border: 1px solid var(--blog-rule);
-  border-radius: 1.25rem;
-  box-shadow: var(--blog-code-shadow);
-}
-
-.blog-article-body :where(:not(pre) > code) {
-  font-size: 0.92em;
-  border-radius: 0.45rem;
-  background: var(--blog-inline-code-bg);
-  padding: 0.18rem 0.42rem;
-}
-
-.blog-article-body :where(table) {
+.typeset-editorial :where(table) {
   width: 100%;
-  border-collapse: collapse;
-  font-size: 0.98rem;
-}
-
-.blog-article-body :where(th, td) {
-  border-bottom: 1px solid var(--blog-rule);
-  padding: 0.8rem 0.85rem;
-  text-align: left;
-  vertical-align: top;
-}
-
-.blog-article-body :where(th) {
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--blog-muted);
-}
-
-.blog-article-body :where(tbody tr:last-child td) {
-  border-bottom: none;
-}
-
-@media (max-width: 640px) {
-  .blog-article-body :where(p, li) {
-    font-size: 1rem;
-    line-height: 1.85;
-  }
-
-  .blog-article-body :where(h2) {
-    font-size: 1.8rem;
-  }
-
-  .blog-article-body :where(h3) {
-    font-size: 1.35rem;
-  }
-
-  .blog-article-body :where(blockquote) {
-    padding-inline: 1rem;
-  }
-
-  .blog-article-body :where(th, td) {
-    padding-inline: 0.7rem;
-  }
 }

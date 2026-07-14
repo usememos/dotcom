@@ -12,6 +12,7 @@ Treat it as a **Next.js 16 marketing/docs site plus an authenticated product app
 - **Runtime target**: Cloudflare Workers through OpenNext
 - **Content**: Fumadocs, MDX, and file-based content under `content/`
 - **Styling**: Tailwind CSS 4.x with the local design system
+- **UI primitives**: shadcn/ui (`base-nova`) backed by Base UI, configured in `components.json`
 - **Icons**: Lucide React using the `XxxIcon` naming convention
 - **Validation**: Zod schemas in `source.config.ts` and server route schemas
 - **Auth**: Clerk (`@clerk/nextjs`), optional and env-gated via `isClerkConfigured()`
@@ -91,6 +92,9 @@ See `docs/architecture.md` for the full architecture and the conventions for exp
 ## Coding Conventions
 
 - Prefer existing feature-folder patterns over creating new top-level structures.
+- Add reusable primitives through shadcn/ui and keep them in `src/shared/ui/`. Application code should import the shadcn wrappers rather than `@base-ui/react` directly.
+- Do not add Radix UI dependencies or direct Radix imports. Radix packages may still exist transitively through Fumadocs.
+- Rendered MDX uses the owned shadcn Typeset stylesheet in `src/app/typeset.css`: blog and changelog use the `typeset-editorial` preset, while documentation uses the denser `typeset-docs` preset. Fumadocs still owns docs layout, navigation, and interactive MDX components.
 - Use the `@/*` alias for imports from `src/*`.
 - Use `@/.source` only for generated Fumadocs output from `.source/server.ts`.
 - Import Lucide icons as `XxxIcon`, for example `import { ShieldIcon } from "lucide-react"`.

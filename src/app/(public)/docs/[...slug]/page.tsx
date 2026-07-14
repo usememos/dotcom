@@ -1,8 +1,9 @@
 import { createRelativeLink } from "fumadocs-ui/mdx";
-import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/page";
+import { DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/page";
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { AdsSectionMobile } from "@/features/docs/components/ads-section";
+import { DocsArticleBody } from "@/features/docs/components/docs-article-body";
 import { MarkdownCopyButton, ViewOptionsPopover } from "@/features/docs/components/page-actions";
 import {
   getApiDocsVersionFromSlug,
@@ -109,15 +110,15 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
           <ViewOptionsPopover markdownUrl={markdownUrl} />
         </div>
       )}
-      <DocsBody>
+      <DocsArticleBody>
         <MDXContent
           components={getMDXComponents({
             // this allows you to link to other pages with relative file paths
             a: createRelativeLink(source, page),
           })}
         />
-        <AdsSectionMobile />
-      </DocsBody>
+      </DocsArticleBody>
+      <AdsSectionMobile />
     </DocsPage>
   );
 }

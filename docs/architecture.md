@@ -38,6 +38,14 @@ UI and client logic are vertical slices: `components/`, `hooks/`, `lib/`, and
 co-located tests, per domain (`marketing`, `docs`, `editorial`, `scratchpad`,
 `dashboard`, `memos`, `account`). Cross-domain primitives live in `src/shared`.
 
+## UI primitives
+
+Reusable interactive primitives use shadcn/ui's `base-nova` style backed by Base UI. The CLI configuration is `components.json`, generated components live in `src/shared/ui`, and their shared utility import resolves to `src/shared/lib/utils.ts`.
+
+Feature and application code should consume the wrappers in `src/shared/ui` instead of importing `@base-ui/react` directly. Do not introduce direct Radix UI dependencies or imports. Fumadocs currently owns some transitive Radix dependencies internally; those are part of the documentation framework rather than the application's UI layer.
+
+Rendered MDX uses the owned shadcn Typeset stylesheet at `src/app/typeset.css`. Blog and changelog pages use the spacious `typeset-editorial` preset in `src/app/global.css`; documentation pages use the denser `typeset-docs` preset while retaining Fumadocs for layout, navigation, code blocks, callouts, cards, and generated API reference components. Complex Fumadocs widgets opt out with `not-typeset`, and MDX tables use a `typeset-scroll` wrapper so narrow viewports scroll the table instead of the page.
+
 ## Server domains (`src/server/<domain>`)
 
 Server logic is grouped by domain, each containing:

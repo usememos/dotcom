@@ -3,6 +3,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { render } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import { menuContentClassName } from "@/features/account/lib/menu-styles";
 
 const { useAccountActions } = vi.hoisted(() => ({ useAccountActions: vi.fn() }));
 vi.mock("@/features/account/hooks/use-account-actions", () => ({ useAccountActions }));
@@ -34,7 +35,8 @@ describe("source guards", () => {
   });
 
   it("scratchpad account dropdown keeps the standard compact menu width", () => {
-    expect(toolbarSource).toMatch(/className="z-50 w-56 /);
+    expect(toolbarSource).toMatch(/className=\{menuContentClassName\}/);
+    expect(menuContentClassName).toMatch(/\bw-56\b/);
     expect(toolbarSource).not.toMatch(/w-\[min\(calc\(100vw-1rem\),18rem\)\]/);
   });
 

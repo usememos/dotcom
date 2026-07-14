@@ -1,8 +1,9 @@
 import { createRelativeLink } from "fumadocs-ui/mdx";
-import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/page";
+import { DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/page";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { AdsSectionMobile } from "@/features/docs/components/ads-section";
+import { DocsArticleBody } from "@/features/docs/components/docs-article-body";
 import { getDocsSocialPreview } from "@/features/docs/lib/social-preview";
 import { tocConfig } from "@/features/docs/lib/toc-config";
 import { getMDXComponents } from "@/mdx-components";
@@ -54,15 +55,15 @@ export default async function Page() {
       <Breadcrumbs items={breadcrumbItems} className="mb-6" />
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
-      <DocsBody>
+      <DocsArticleBody>
         <MDXContent
           components={getMDXComponents({
             // this allows you to link to other pages with relative file paths
             a: createRelativeLink(source, page),
           })}
         />
-        <AdsSectionMobile />
-      </DocsBody>
+      </DocsArticleBody>
+      <AdsSectionMobile />
     </DocsPage>
   );
 }

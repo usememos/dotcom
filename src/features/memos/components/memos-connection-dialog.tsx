@@ -1,8 +1,8 @@
 "use client";
 
-import * as Dialog from "@radix-ui/react-dialog";
-import { PlugIcon, XIcon } from "lucide-react";
+import { PlugIcon } from "lucide-react";
 import type { MemosCredentials } from "@/shared/memos/instance-client";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/shared/ui/dialog";
 import { MemosConnectionForm } from "./memos-connection-form";
 
 type MemosConnectionDialogProps = {
@@ -18,41 +18,28 @@ type MemosConnectionDialogProps = {
 
 export function MemosConnectionDialog({ open, onOpenChange, instanceUrl, connected, onSave, onDisconnect }: MemosConnectionDialogProps) {
   return (
-    <Dialog.Root open={open} onOpenChange={onOpenChange}>
-      <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-50 bg-stone-950/40" />
-        <Dialog.Content className="fixed top-1/2 left-1/2 z-50 w-[min(calc(100vw-2rem),26rem)] -translate-x-1/2 -translate-y-1/2 rounded-lg border border-stone-200 bg-white p-5 shadow-lg shadow-stone-900/10 focus:outline-none dark:border-stone-800 dark:bg-stone-950 dark:shadow-black/40">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <span className="mb-2 flex h-9 w-9 items-center justify-center rounded-lg bg-teal-50 text-teal-600 dark:bg-teal-950/50 dark:text-teal-400">
-                <PlugIcon className="h-5 w-5" />
-              </span>
-              <Dialog.Title className="text-base font-semibold text-stone-900 dark:text-stone-100">
-                Connect your Memos instance
-              </Dialog.Title>
-              <Dialog.Description className="mt-1 text-xs leading-5 text-stone-500 dark:text-stone-400">
-                Link your self-hosted instance to power your activity heatmap and writing stats.
-              </Dialog.Description>
-            </div>
-            <Dialog.Close
-              className="flex h-6 w-6 shrink-0 items-center justify-center rounded-sm text-stone-400 transition hover:text-stone-700 dark:hover:text-stone-200"
-              aria-label="Close"
-            >
-              <XIcon className="h-4 w-4" />
-            </Dialog.Close>
-          </div>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="w-[min(calc(100vw-2rem),26rem)] gap-0 rounded-lg border border-stone-200 bg-white p-5 shadow-lg shadow-stone-900/10 dark:border-stone-800 dark:bg-stone-950 dark:shadow-black/40 sm:max-w-none">
+        <div>
+          <span className="mb-2 flex h-9 w-9 items-center justify-center rounded-lg bg-teal-50 text-teal-600 dark:bg-teal-950/50 dark:text-teal-400">
+            <PlugIcon className="h-5 w-5" />
+          </span>
+          <DialogTitle className="text-base font-semibold text-stone-900 dark:text-stone-100">Connect your Memos instance</DialogTitle>
+          <DialogDescription className="mt-1 text-xs leading-5 text-stone-500 dark:text-stone-400">
+            Link your self-hosted instance to power your activity heatmap and writing stats.
+          </DialogDescription>
+        </div>
 
-          <div className="mt-4">
-            <MemosConnectionForm
-              instanceUrl={instanceUrl}
-              connected={connected}
-              onSave={onSave}
-              onDisconnect={onDisconnect}
-              onDone={() => onOpenChange(false)}
-            />
-          </div>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
+        <div className="mt-4">
+          <MemosConnectionForm
+            instanceUrl={instanceUrl}
+            connected={connected}
+            onSave={onSave}
+            onDisconnect={onDisconnect}
+            onDone={() => onOpenChange(false)}
+          />
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }
