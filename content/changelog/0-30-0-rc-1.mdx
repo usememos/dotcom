@@ -1,0 +1,75 @@
+---
+title: Release v0.30.0-rc.1
+description: A rebuilt Markdown editor, OpenAPI-driven MCP tools, flexible memo feeds, and signed webhooks
+date: "2026-07-14"
+---
+
+> This release candidate rebuilds the Markdown editing experience, introduces a stateless OpenAPI-driven MCP server, and adds flexible memo feed layouts, signed webhooks, file-backed deployment settings, and more powerful filters. It also includes breaking changes to public access, CEL time filters, and MCP clients.
+
+## Breaking Changes
+
+- **Private mode by default** - Instances without `--instance-url` or `MEMOS_INSTANCE_URL` now run in private mode. Anonymous visitors are redirected to sign-in, and anonymous API access is limited to setup, authentication, and shared-memo routes. Set the instance URL to retain the previous public behavior.
+- **CEL timestamp filters** - The `now()` function has been replaced by the `now` timestamp variable, and time fields now use CEL timestamps. Update saved shortcuts to use expressions such as `created_ts >= now - duration("24h")` or `timestamp(<epoch>)` instead of comparing time fields with bare epoch values.
+- **New MCP endpoint and tool names** - The MCP server is now a stateless, tools-only endpoint generated from the OpenAPI schema. Clients must use `/mcp` and the new service-prefixed tool names. The previous prompts, resources, tool-filtering headers, route aliases, and unprefixed tool names have been removed.
+
+## New Features
+
+### Markdown Editing
+
+- **Decorated-source editor** - The editor has been rebuilt with CodeMirror 6, preserving Markdown verbatim while styling headings, formatting, tags, and mentions in place.
+- **Formatting toolbar** - A toggleable toolbar provides controls for headings, lists, task lists, code blocks, bold, italic, strikethrough, and inline code.
+- **Smarter authoring** - Tag completion and list indentation make it faster to write and organize memos.
+- **GFM footnotes** - Markdown rendering now supports GitHub Flavored Markdown footnotes with footnote navigation.
+
+### MCP and API Tools
+
+- **OpenAPI-driven MCP server** - The hand-written MCP implementation has been replaced by a curated tool surface generated from the public API schema.
+- **Expanded operations** - MCP tools cover memos, comments, relations, reactions, shortcuts, identities, and attachments, including attachment uploads.
+- **Shared authorization** - MCP reuses the public API's authentication and authorization behavior for more consistent access control.
+
+### Memo Feed Customization
+
+- **Flexible columns** - Memo feeds support one, two, three, or automatically fitted columns, with balanced layouts as cards resize.
+- **Persisted display preferences** - Column count, compact mode, and link preview settings are saved between visits.
+- **Predictable memo placement** - Newly created memos remain easy to find above pinned content.
+- **Full content by default** - Compact rendering is now opt-in for single-column feeds.
+
+### Webhooks and Deployment
+
+- **Signed webhooks** - Standard Webhooks HMAC-SHA256 secrets can be generated, revealed, and used to verify webhook payloads.
+- **Webhook management** - Existing webhooks can be edited, and the interface shows whether signing is configured.
+- **File-backed settings** - Identity providers and supported instance settings can be supplied as validated JSON files under `/etc/secrets`.
+- **Protected runtime overrides** - File-backed settings cannot be changed through the UI or API until their files are removed.
+- **Self-signed S3 support** - S3-compatible storage can use the `insecure_skip_tls_verify` option when connecting with self-signed certificates.
+
+### Filters, Tags, and Localization
+
+- **More powerful CEL shortcuts** - Filters now support string matching, regular expressions, collection predicates, timestamp accessors, set operations, and an untagged-memos example.
+- **Per-user tag settings** - Tag colors and content-blur rules are now user-specific. Existing instance tag settings are copied to current users during migration.
+- **Searchable locale picker** - The locale selector is easier to navigate, European locale coverage has expanded, and missing Japanese and Simplified Chinese translations are complete.
+
+## Improvements and Bug Fixes
+
+### Authentication and Security
+
+- **More reliable SSO setup** - SSO option loading is more stable, and OAuth client authentication can be detected automatically.
+- **Clearer instance setup state** - Setup now distinguishes new instances from populated instances that no longer have an administrator.
+- **Cross-origin bearer authentication** - Cross-origin API requests work with bearer tokens while cookie authentication remains restricted to same-origin requests.
+- **Consistent user pagination** - `ListUsers` now returns predictable paginated results.
+
+### Editor and Memo Reliability
+
+- **Editor polish** - Formatting toggles, keyboard shortcuts, file paste and drop handling, focus-mode layout, empty-space caret behavior, and CodeMirror spacing are improved.
+- **Persistent task expansion** - Expanded task-list state is preserved.
+- **Complete comment loading** - Memo detail views load every page of comments.
+- **Richer webhook payloads** - Comment webhook events include the parent memo relation.
+
+### Tags and Interface
+
+- **More accurate tag parsing** - Tags inside links are ignored, literal tags can be escaped with a backslash, and tag names support Unicode combining marks.
+- **Refreshed account pages** - Sign-in, sign-up, and About pages have updated layouts, with common controls aligned across the app.
+- **Improved loading feedback** - Mismatched memo skeletons have been replaced by a delayed spinner.
+- **Mobile and location polish** - Mobile control spacing is improved, and long location labels are truncated without hiding the full address.
+- **Container startup fix** - The container entrypoint no longer restarts indefinitely when `MEMOS_UID=0`.
+
+**Full Changelog**: [v0.29.1...v0.30.0-rc.1](https://github.com/usememos/memos/compare/v0.29.1...v0.30.0-rc.1)
