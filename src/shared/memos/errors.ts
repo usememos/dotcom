@@ -1,3 +1,5 @@
+import { LATEST_SUPPORTED_VERSION, MINIMUM_SUPPORTED_VERSION } from "./supported-versions";
+
 /** The distinguishable ways a direct browser→instance call can fail. */
 export type InstanceErrorKind =
   | "mixed-content"
@@ -18,16 +20,21 @@ export type InstanceErrorDetail = {
   howToFix: string[];
 };
 
+/** For unsupported-version: which side of the supported range the instance is on. */
+export type VersionIssue = "below-minimum" | "above-latest";
+
 /** Thrown by the instance client; carries the classified kind. */
 export class InstanceError extends Error {
   readonly kind: InstanceErrorKind;
   /** The instance version in play, when known (used for unsupported-version copy). */
   readonly instanceVersion?: string;
-  constructor(kind: InstanceErrorKind, instanceVersion?: string) {
+  readonly versionIssue?: VersionIssue;
+  constructor(kind: InstanceErrorKind, instanceVersion?: string, versionIssue?: VersionIssue) {
     super(kind);
     this.name = "InstanceError";
     this.kind = kind;
     this.instanceVersion = instanceVersion;
+    this.versionIssue = versionIssue;
   }
 }
 
@@ -35,7 +42,7 @@ export type DescribeContext = {
   /** This site's origin, for CORS remediation copy. Defaults to "this site". */
   origin?: string;
   instanceVersion?: string;
-  latestSupportedVersion?: string;
+  versionIssue?: VersionIssue;
 };
 
 /** Maps an error kind to user-facing copy (title / why / how to fix). */
@@ -86,12 +93,25 @@ export function describeInstanceError(kind: InstanceErrorKind, context: Describe
       };
     case "unsupported-version": {
       const version = context.instanceVersion ?? "your version";
-      const latest = context.latestSupportedVersion ?? "the latest documented version";
+      if (context.versionIssue === "below-minimum") {
+        return {
+          kind,
+          title: "Unsupported Memos version",
+          why: `Your instance reports ${version}. Connections require Memos ${MINIMUM_SUPPORTED_VERSION} or newer.`,
+          howToFix: [
+            `Update the instance to Memos ${MINIMUM_SUPPORTED_VERSION} or newer.`,
+            "Test the connection again after the update finishes.",
+          ],
+        };
+      }
       return {
         kind,
         title: "Unsupported Memos version",
         why: `Your instance reports ${version}, which is newer than this site knows how to read.`,
-        howToFix: [`This site supports Memos up to ${latest}.`, "Stats may be unavailable until the site is updated for your version."],
+        howToFix: [
+          `This site supports Memos up to ${LATEST_SUPPORTED_VERSION}.`,
+          "Stats may be unavailable until the site is updated for your version.",
+        ],
       };
     }
     default:

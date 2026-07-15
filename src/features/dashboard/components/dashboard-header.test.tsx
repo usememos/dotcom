@@ -1,9 +1,9 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("@/features/account/components/account-action-items", () => ({
-  AccountActionItems: () => <div data-testid="account-actions" />,
+vi.mock("@/features/account/components/sign-out-item", () => ({
+  SignOutItem: () => <div data-testid="sign-out-item" />,
 }));
 vi.mock("@/features/account/components/theme-toggle", () => ({
   ThemeToggle: () => <div data-testid="theme-items" />,
@@ -17,23 +17,19 @@ beforeEach(() => {
 
 describe("DashboardHeader", () => {
   it("renders the user identity and secondary label", () => {
-    render(<DashboardHeader user={{ fullName: "Ada Lovelace" }} secondary="memos.example.com · v1" onManageConnection={vi.fn()} />);
+    render(<DashboardHeader user={{ fullName: "Ada Lovelace" }} secondary="memos.example.com · v1" />);
 
     expect(screen.getByText("Ada Lovelace")).toBeInTheDocument();
     expect(screen.getByText("memos.example.com · v1")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Account and connection" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Account and settings" })).toBeInTheDocument();
   });
 
-  it("calls onManageConnection (deferred) when the menu item is selected", async () => {
-    const onManageConnection = vi.fn();
+  it("links Connections to the canonical settings page", async () => {
     const user = userEvent.setup();
 
-    render(<DashboardHeader user={null} secondary="Not connected" onManageConnection={onManageConnection} />);
+    render(<DashboardHeader user={null} secondary="No connections yet" />);
 
-    await user.click(screen.getByRole("button", { name: "Account and connection" }));
-    await user.click(await screen.findByText("Manage connection"));
-
-    // onSelect defers via setTimeout(_, 0) so the dropdown unmounts before the dialog.
-    await waitFor(() => expect(onManageConnection).toHaveBeenCalledTimes(1));
+    await user.click(screen.getByRole("button", { name: "Account and settings" }));
+    expect(await screen.findByRole("menuitem", { name: "Connections" })).toHaveAttribute("href", "/settings/connections");
   });
 });

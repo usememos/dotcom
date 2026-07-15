@@ -7,9 +7,9 @@ type AccountActionsOptions = {
   signInForceRedirectUrl?: string;
 };
 
-/** Wraps Clerk sign-in / manage-account / sign-out with redirect targets baked in. */
+/** Wraps Clerk sign-in and sign-out with redirect targets baked in. */
 export function useAccountActions(options: AccountActionsOptions = {}) {
-  const { openSignIn, openUserProfile, signOut } = useClerk();
+  const { openSignIn, signOut } = useClerk();
   const { isLoaded, isSignedIn, user } = useUser();
 
   return {
@@ -23,7 +23,6 @@ export function useAccountActions(options: AccountActionsOptions = {}) {
         options.signInForceRedirectUrl ?? (typeof window !== "undefined" ? window.location.pathname + window.location.search : undefined);
       openSignIn(forceRedirectUrl ? { forceRedirectUrl } : undefined);
     },
-    manageAccount: () => openUserProfile(),
     signOut: () => void signOut(options.signOutRedirectUrl ? { redirectUrl: options.signOutRedirectUrl } : undefined),
   };
 }

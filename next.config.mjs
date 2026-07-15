@@ -149,6 +149,27 @@ const config = {
         destination: "/docs/integrations/api-access",
         permanent: true,
       },
+      // Legacy Web Clipper deep link (/dashboard?setup=memos[&source=...]) now
+      // lands on the canonical connections settings page. Routing layer for the
+      // same reason as /docs/api above: the redirect never loads the dashboard
+      // route module, and the page stays free of legacy searchParams handling.
+      // The source-carrying rule must come first; its explicit destination query
+      // also drops the consumed setup param.
+      {
+        source: "/dashboard",
+        has: [
+          { type: "query", key: "setup", value: "memos" },
+          { type: "query", key: "source", value: "(?<source>.+)" },
+        ],
+        destination: "/settings/connections?source=:source",
+        permanent: true,
+      },
+      {
+        source: "/dashboard",
+        has: [{ type: "query", key: "setup", value: "memos" }],
+        destination: "/settings/connections",
+        permanent: true,
+      },
       // Historical API docs originally exposed the exact source patch in their
       // URLs even though each reference covers the full minor release series.
       ...API_DOCS_LEGACY_REDIRECTS,

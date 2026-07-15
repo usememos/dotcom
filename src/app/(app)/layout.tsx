@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function AppLayout({ children }: { children: ReactNode }) {
   return (
     <AuthProviders>
-      <div className="min-h-screen bg-stone-50 dark:bg-stone-950">{children}</div>
+      <div className="min-h-screen bg-background">{children}</div>
     </AuthProviders>
   );
 }

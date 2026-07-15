@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { ConnectPrompt } from "./connect-prompt";
@@ -10,19 +9,22 @@ describe("ConnectPrompt", () => {
   });
 
   it("shows the setup notice over blurred sample stats", () => {
-    render(<ConnectPrompt onSetUp={vi.fn()} />);
+    render(<ConnectPrompt />);
 
-    expect(screen.getByText("Set up your Memos instance")).toBeInTheDocument();
+    expect(screen.getByText("Connect Memos to your account")).toBeInTheDocument();
     // Sample stat tiles render behind the blur.
     expect(screen.getByText("Total memos")).toBeInTheDocument();
   });
 
-  it("opens the connection dialog from the notice", async () => {
-    const onSetUp = vi.fn();
-    const user = userEvent.setup();
-    render(<ConnectPrompt onSetUp={onSetUp} />);
+  it("links setup to the canonical connections page", () => {
+    render(<ConnectPrompt />);
+    expect(screen.getByRole("link", { name: "Connect instance" })).toHaveAttribute("href", "/settings/connections");
+  });
 
-    await user.click(screen.getByRole("button", { name: "Set up instance" }));
-    expect(onSetUp).toHaveBeenCalledTimes(1);
+  it("previews the upcoming browser extension as a secondary capability", () => {
+    render(<ConnectPrompt />);
+    expect(screen.getByText("Browser extension")).toBeInTheDocument();
+    expect(screen.getByText("Coming soon")).toBeInTheDocument();
+    expect(screen.getByText("Save pages to Memos from your browser.")).toBeInTheDocument();
   });
 });

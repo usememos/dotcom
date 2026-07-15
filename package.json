@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
-    "@clerk/nextjs": "^7.4.2",
+    "@clerk/nextjs": "^7.5.18",
     "@opennextjs/cloudflare": "1.19.11",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

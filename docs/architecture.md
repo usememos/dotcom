@@ -26,7 +26,7 @@ the research basis behind this direction and the conventions below.
 | `(public)` | Marketing + docs + blog + changelog | Static |
 | `(tools)` | Standalone client tools (the scratchpad) | Client, browser-local |
 | `(auth)` | Sign-in / sign-up boundaries | — |
-| `(app)` | Authenticated product surface (dashboard, future authed pages) | Dynamic, noindex |
+| `(app)` | Authenticated product surface (dashboard, settings, future authed pages) | Dynamic, noindex |
 | `api/` | Route handlers (settings, stats, search, OG) | `nodejs` runtime |
 
 `(app)` is the home for new authenticated pages. Its layout sets `robots: noindex`
@@ -64,21 +64,29 @@ dependencies (store, auth deps) and wires them into the factory.
 ## Data access (the store seam)
 
 Persistence is reached only through a per-domain **store interface**, never by
-calling a backend client directly from a handler. The worked example is
-`src/server/settings/memos-settings-store.ts`:
+calling a backend client directly from a handler.
 
-```ts
-export interface MemosSettingsStore {
-  read(userId: string): Promise<unknown>;
-  write(userId: string, settings: MemosSettings | null): Promise<void>;
-}
-export function createClerkMemosSettingsStore(getClient = clerkClient): MemosSettingsStore { /* ... */ }
-```
+The account-level Memos connection is the deliberate small-data exception: it
+lives in Clerk `unsafeMetadata.memos` because first-party browser clients need to
+read it through OAuth userinfo. Only usememos.com writes this key, through
+`useMemosConnection`; the Web Clipper is read-only. Connection writes reload and
+compare the latest value before updating so another settings page is not silently
+overwritten. Clip templates stay in browser storage and never enter Clerk.
 
-Today the only store is Clerk-backed (Memos connection settings live in Clerk
-`privateMetadata` — appropriate because they are a small, per-user blob read only
-for the current user). When a feature needs more, add a new store implementation
-(e.g. a D1-backed one) behind the same interface; handlers and routes do not change.
+Features that need server-side persistence still add a per-domain store seam as
+described below. Do not copy the Clerk metadata exception for larger or
+server-owned data.
+
+## Connection route contract
+
+- `/settings/connections` is the canonical account connection resource.
+- `?source=web-clipper` changes return guidance only; it does not select a
+  different workflow or trigger a write.
+- The legacy `/dashboard?setup=memos&source=web-clipper` entry permanently
+  redirects to the canonical route.
+- Dashboard and clients link to this page; they do not implement separate
+  connection dialogs.
+- Sign-in uses the current pathname and query as its forced return URL.
 
 ## Runtime & caching boundary
 

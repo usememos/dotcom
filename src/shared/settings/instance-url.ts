@@ -20,15 +20,14 @@ export function parseInstanceUrl(raw: string): URL | null {
 }
 
 /**
- * Normalizes a Memos instance URL to origin + pathname with trailing slashes
- * removed (an instance may be served under a subpath). Returns null when the
- * value is not a valid http(s) URL.
+ * Normalizes a Memos instance URL to its origin. Connection settings intentionally
+ * store a stable instance root rather than an API, settings, or browser-specific
+ * path. Returns null when the value is not a valid http(s) URL.
  */
 export function normalizeInstanceUrl(raw: string): string | null {
   const url = parseInstanceUrl(raw);
   if (url === null) {
     return null;
   }
-  const pathname = url.pathname.replace(/\/+$/, "");
-  return `${url.origin}${pathname}`;
+  return url.origin;
 }

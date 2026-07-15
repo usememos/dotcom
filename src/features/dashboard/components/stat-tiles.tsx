@@ -1,18 +1,17 @@
 "use client";
 
 import type { MemosStatsData } from "@/shared/settings/memos-stats";
+import { Card, CardContent } from "@/shared/ui/app-card";
 import { countDaysActive, currentStreak } from "../lib/stats";
-
-const tileClassName = "rounded-2xl border border-stone-200 bg-white px-4 py-3 dark:border-stone-800 dark:bg-stone-900";
-const valueClassName = "text-2xl font-semibold text-stone-900 dark:text-stone-100";
-const labelClassName = "mt-1 text-xs font-medium text-stone-500 dark:text-stone-400";
 
 function Tile({ value, label }: { value: number; label: string }) {
   return (
-    <div className={tileClassName}>
-      <div className={valueClassName}>{value.toLocaleString("en-US")}</div>
-      <div className={labelClassName}>{label}</div>
-    </div>
+    <Card size="sm">
+      <CardContent>
+        <div className="text-2xl font-semibold tracking-tight">{value.toLocaleString("en-US")}</div>
+        <div className="mt-1 text-xs font-medium text-muted-foreground">{label}</div>
+      </CardContent>
+    </Card>
   );
 }
 

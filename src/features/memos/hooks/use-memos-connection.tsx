@@ -1,78 +1,68 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
-import { type ReactNode, useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import type { MemosCredentials } from "@/shared/memos/instance-client";
-import { isRecord } from "@/shared/settings/memos-settings";
-import { MemosConnectionDialog } from "../components/memos-connection-dialog";
+import { MemosConnectionConflictError, readMemosCredentials, sameMemosCredentials } from "@/shared/settings/memos-settings";
 
 type UseMemosConnection = {
-  /** The saved connection (instanceUrl + token), or null when not connected. */
   credentials: MemosCredentials | null;
   isConnected: boolean;
-  /** Clerk has finished loading the user. */
   isLoaded: boolean;
   isSignedIn: boolean;
   instanceUrl: string | null;
-  /** Opens the connection dialog (callers opening from a Radix dropdown should defer with setTimeout). */
-  open: () => void;
-  /** Pre-wired <MemosConnectionDialog>; render once in the consuming tree. */
-  dialog: ReactNode;
+  save: (credentials: MemosCredentials) => Promise<void>;
+  disconnect: () => Promise<void>;
 };
 
-/** Reads the stored Memos connection from Clerk `unsafeMetadata.memos`. */
-function readCredentials(metadata: unknown): MemosCredentials | null {
-  const memos = isRecord(metadata) ? metadata.memos : null;
-  if (!isRecord(memos)) {
-    return null;
-  }
-  const { instanceUrl, accessToken } = memos;
-  if (typeof instanceUrl === "string" && instanceUrl.length > 0 && typeof accessToken === "string" && accessToken.length > 0) {
-    return { instanceUrl, accessToken };
-  }
-  return null;
-}
-
 /**
- * Owns the Memos connection, stored in Clerk `unsafeMetadata` and read/written
- * directly from the browser. Also owns the dialog open state and a ready-to-render
- * dialog wired to save/disconnect.
+ * Reads and mutates the account-level Memos connection in Clerk unsafe metadata.
+ * Writes first reload the user and compare the last-seen connection so another
+ * settings page cannot be silently overwritten, then reload again so consumers
+ * see the written state without their own refresh.
  */
 export function useMemosConnection(): UseMemosConnection {
   const { user, isLoaded, isSignedIn } = useUser();
-  const [isOpen, setIsOpen] = useState(false);
+  // Clerk hands out a new metadata reference on every user refresh; keep the
+  // credentials object identity stable while its values are unchanged so
+  // effects keyed on it don't refire (and refetch) spuriously.
+  const credentialsRef = useRef<MemosCredentials | null>(null);
+  const credentials = useMemo(() => {
+    const next = readMemosCredentials(user?.unsafeMetadata);
+    if (!sameMemosCredentials(next, credentialsRef.current)) {
+      credentialsRef.current = next;
+    }
+    return credentialsRef.current;
+  }, [user?.unsafeMetadata]);
 
-  const credentials = useMemo(() => readCredentials(user?.unsafeMetadata), [user?.unsafeMetadata]);
-
-  const save = useCallback(
-    async (creds: MemosCredentials) => {
+  const assertUnchanged = useCallback(
+    async (expected: MemosCredentials | null) => {
       if (!user) {
-        return;
+        throw new Error("Sign in before changing the connection.");
       }
-      await user.update({ unsafeMetadata: { ...user.unsafeMetadata, memos: creds } });
+      const latest = await user.reload();
+      if (!sameMemosCredentials(readMemosCredentials(latest.unsafeMetadata), expected)) {
+        throw new MemosConnectionConflictError();
+      }
+      return latest;
     },
     [user],
   );
 
-  const disconnect = useCallback(async () => {
-    if (!user) {
-      return;
-    }
-    const next = { ...(user.unsafeMetadata as Record<string, unknown>) };
-    delete next.memos;
-    await user.update({ unsafeMetadata: next });
-  }, [user]);
-
-  const dialog: ReactNode = (
-    <MemosConnectionDialog
-      open={isOpen}
-      onOpenChange={setIsOpen}
-      instanceUrl={credentials?.instanceUrl ?? null}
-      connected={credentials !== null}
-      onSave={save}
-      onDisconnect={disconnect}
-    />
+  const save = useCallback(
+    async (next: MemosCredentials) => {
+      const latest = await assertUnchanged(credentials);
+      await latest.updateMetadata({ unsafeMetadata: { memos: next } });
+      await latest.reload();
+    },
+    [assertUnchanged, credentials],
   );
+
+  const disconnect = useCallback(async () => {
+    const latest = await assertUnchanged(credentials);
+    await latest.updateMetadata({ unsafeMetadata: { memos: null } });
+    await latest.reload();
+  }, [assertUnchanged, credentials]);
 
   return {
     credentials,
@@ -80,7 +70,7 @@ export function useMemosConnection(): UseMemosConnection {
     isLoaded,
     isSignedIn: isSignedIn ?? false,
     instanceUrl: credentials?.instanceUrl ?? null,
-    open: useCallback(() => setIsOpen(true), []),
-    dialog,
+    save,
+    disconnect,
   };
 }

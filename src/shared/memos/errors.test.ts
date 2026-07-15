@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { describeInstanceError, InstanceError } from "./errors";
+import { LATEST_SUPPORTED_VERSION, MINIMUM_SUPPORTED_VERSION } from "./supported-versions";
 
 describe("errors", () => {
   it("InstanceError carries its kind", () => {
@@ -23,9 +24,15 @@ describe("errors", () => {
   });
 
   it("unsupported-version names the version and the latest supported one", () => {
-    const detail = describeInstanceError("unsupported-version", { instanceVersion: "0.40.0", latestSupportedVersion: "0.29.1" });
+    const detail = describeInstanceError("unsupported-version", { instanceVersion: "0.40.0", versionIssue: "above-latest" });
     expect(detail.why).toContain("0.40.0");
-    expect(detail.howToFix.join(" ")).toContain("0.29.1");
+    expect(detail.howToFix.join(" ")).toContain(LATEST_SUPPORTED_VERSION);
+  });
+
+  it("unsupported-version gives the detected and minimum versions for an old instance", () => {
+    const detail = describeInstanceError("unsupported-version", { instanceVersion: "0.25.0", versionIssue: "below-minimum" });
+    expect(detail.why).toContain("0.25.0");
+    expect(detail.why).toContain(MINIMUM_SUPPORTED_VERSION);
   });
 
   it("every kind produces non-empty title/why/howToFix", () => {

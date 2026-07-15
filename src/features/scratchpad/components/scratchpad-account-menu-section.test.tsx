@@ -45,11 +45,9 @@ describe("source guards", () => {
     expect(accountMenuSource).toMatch(/SignOutItem/);
   });
 
-  it("connection and account management are delegated to the dashboard", () => {
+  it("connection management is delegated to the dashboard", () => {
     expect(accountMenuSource).not.toMatch(/connectionMenuLabel/);
     expect(accountMenuSource).not.toMatch(/Connect Memos instance/);
-    expect(accountMenuSource).not.toMatch(/Manage account/);
-    expect(accountMenuSource).not.toMatch(/AccountActionItems/);
     expect(accountMenuSource).not.toMatch(/PlugIcon/);
   });
 

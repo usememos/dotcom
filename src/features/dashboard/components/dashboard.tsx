@@ -1,22 +1,24 @@
 "use client";
 
+import Link from "next/link";
 import { type ReactNode, useCallback, useEffect, useState } from "react";
 import { useAccountActions } from "@/features/account/hooks/use-account-actions";
 import { InstanceErrorNotice } from "@/features/memos/components/instance-error-notice";
 import { useMemosConnection } from "@/features/memos/hooks/use-memos-connection";
 import type { InstanceErrorDetail } from "@/shared/memos/errors";
 import { fetchInstanceStats, type InstanceStatsResult } from "@/shared/memos/instance-stats";
+import { CONNECTIONS_SETTINGS_PATH } from "@/shared/routes";
+import { Alert, AlertDescription, AlertTitle } from "@/shared/ui/alert";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/shared/ui/app-card";
+import { Button, buttonVariants } from "@/shared/ui/button";
+import { Skeleton } from "@/shared/ui/skeleton";
 import { connectedHeaderLabel } from "../lib/stats";
 import { clearDashboardStatsCache, readDashboardStatsCache, writeDashboardStatsCache } from "../lib/stats-cache";
 import { ActivityHeatmap } from "./activity-heatmap";
+import { BrowserExtensionPreview } from "./browser-extension-preview";
 import { ConnectPrompt } from "./connect-prompt";
 import { DashboardHeader } from "./dashboard-header";
 import { StatTiles } from "./stat-tiles";
-
-const primaryButtonClassName =
-  "inline-flex h-9 items-center rounded-md bg-teal-600 px-4 text-sm font-medium text-white transition hover:bg-teal-700 dark:bg-teal-500 dark:text-stone-950 dark:hover:bg-teal-400";
-const secondaryButtonClassName =
-  "inline-flex h-8 items-center rounded-md border border-stone-300 bg-white px-3 text-sm font-medium text-stone-700 transition hover:bg-stone-50 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-200 dark:hover:bg-stone-800";
 
 type OkStats = Extract<InstanceStatsResult, { status: "ok" }>;
 type NonOk = { kind: "not-connected" } | { kind: "error"; detail: InstanceErrorDetail } | { kind: "signed-out" } | { kind: "failed" };
@@ -27,11 +29,7 @@ function deriveUserId(name: string): string {
 }
 
 function CenteredCard({ children }: { children: ReactNode }) {
-  return (
-    <div className="mx-auto mt-24 max-w-md rounded-2xl border border-stone-200 bg-white p-8 text-center dark:border-stone-800 dark:bg-stone-900">
-      {children}
-    </div>
-  );
+  return <Card className="mx-auto mt-24 max-w-md text-center">{children}</Card>;
 }
 
 export function Dashboard() {
@@ -107,12 +105,20 @@ export function Dashboard() {
   if (data) {
     return (
       <DashboardShell>
-        <DashboardHeader user={user ?? null} secondary={headerLabel(instanceUrl, data)} onManageConnection={connection.open} />
+        <DashboardHeader user={user ?? null} secondary={headerLabel(instanceUrl, data)} />
         <StatTiles stats={data.stats} />
-        <div className="rounded-2xl border border-stone-200 bg-white p-4 dark:border-stone-800 dark:bg-stone-900">
-          <ActivityHeatmap days={data.stats.days} />
+        <div className="space-y-3">
+          <Card>
+            <CardContent>
+              <ActivityHeatmap days={data.stats.days} />
+            </CardContent>
+          </Card>
+          <Card size="sm">
+            <CardContent>
+              <BrowserExtensionPreview />
+            </CardContent>
+          </Card>
         </div>
-        {connection.dialog}
       </DashboardShell>
     );
   }
@@ -120,11 +126,15 @@ export function Dashboard() {
   if (nonOk?.kind === "signed-out") {
     return (
       <CenteredCard>
-        <h1 className="text-lg font-semibold text-stone-900 dark:text-stone-100">See your Memos activity</h1>
-        <p className="mt-2 text-sm text-stone-500 dark:text-stone-400">Sign in to connect your instance and view your stats.</p>
-        <button type="button" className={`${primaryButtonClassName} mt-5`} onClick={() => signIn()}>
-          Sign in
-        </button>
+        <CardHeader>
+          <CardTitle>Your Memos workspace</CardTitle>
+        </CardHeader>
+        <CardContent className="text-muted-foreground">Sign in to manage connections, activity, and tools from one place.</CardContent>
+        <CardFooter className="justify-center">
+          <Button type="button" onClick={() => signIn()}>
+            Sign in
+          </Button>
+        </CardFooter>
       </CenteredCard>
     );
   }
@@ -132,9 +142,8 @@ export function Dashboard() {
   if (nonOk?.kind === "not-connected") {
     return (
       <DashboardShell>
-        <DashboardHeader user={user ?? null} secondary="Not connected" onManageConnection={connection.open} />
-        <ConnectPrompt onSetUp={connection.open} />
-        {connection.dialog}
+        <DashboardHeader user={user ?? null} secondary="No connections yet" />
+        <ConnectPrompt />
       </DashboardShell>
     );
   }
@@ -142,19 +151,13 @@ export function Dashboard() {
   if (nonOk?.kind === "error") {
     return (
       <DashboardShell>
-        <DashboardHeader user={user ?? null} secondary={nonOkHeaderLabel(instanceUrl, isConnected)} onManageConnection={connection.open} />
-        <div className="rounded-2xl border border-stone-200 bg-white p-4 dark:border-stone-800 dark:bg-stone-900">
-          <InstanceErrorNotice detail={nonOk.detail} />
-          <div className="mt-4 flex gap-2">
-            <button type="button" className={secondaryButtonClassName} onClick={reload}>
-              Retry
-            </button>
-            <button type="button" className={secondaryButtonClassName} onClick={() => connection.open()}>
-              Manage connection
-            </button>
-          </div>
-        </div>
-        {connection.dialog}
+        <DashboardHeader user={user ?? null} secondary={nonOkHeaderLabel(instanceUrl, isConnected)} />
+        <Card>
+          <CardContent>
+            <InstanceErrorNotice detail={nonOk.detail} />
+            <RecoveryActions onRetry={reload} />
+          </CardContent>
+        </Card>
       </DashboardShell>
     );
   }
@@ -162,9 +165,8 @@ export function Dashboard() {
   if (nonOk?.kind === "failed") {
     return (
       <DashboardShell>
-        <DashboardHeader user={user ?? null} secondary={nonOkHeaderLabel(instanceUrl, isConnected)} onManageConnection={connection.open} />
-        <InlineError message="Couldn't load your stats. Try again." onRetry={reload} onManage={() => connection.open()} />
-        {connection.dialog}
+        <DashboardHeader user={user ?? null} secondary={nonOkHeaderLabel(instanceUrl, isConnected)} />
+        <InlineError message="Couldn't load your dashboard. Try again." onRetry={reload} />
       </DashboardShell>
     );
   }
@@ -179,10 +181,10 @@ function headerLabel(instanceUrl: string | null, result: OkStats): string {
   return connectedHeaderLabel(instanceUrl, result.instanceVersion);
 }
 
-/** Header label for authed states without live stats (not-connected / error). */
+/** Header label for authenticated states without live dashboard data. */
 function nonOkHeaderLabel(instanceUrl: string | null, isConnected: boolean): string {
   if (!isConnected) {
-    return "Not connected";
+    return "No connections yet";
   }
   return instanceUrl ? connectedHeaderLabel(instanceUrl, null) : "Connected";
 }
@@ -194,29 +196,37 @@ function DashboardShell({ children }: { children: ReactNode }) {
 function DashboardSkeleton() {
   return (
     <DashboardShell>
-      <div className="h-5 w-32 animate-pulse rounded bg-stone-200/60 dark:bg-stone-800/50" />
+      <Skeleton className="h-5 w-32" />
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {[0, 1, 2, 3].map((index) => (
-          <div key={index} className="h-16 rounded-2xl border border-stone-200/70 dark:border-stone-800/60" />
+          <Skeleton key={index} className="h-16" />
         ))}
       </div>
-      <div className="h-32 animate-pulse rounded-2xl border border-stone-200/70 bg-stone-100/40 dark:border-stone-800/60 dark:bg-stone-800/20" />
+      <Skeleton className="h-32" />
     </DashboardShell>
   );
 }
 
-function InlineError({ message, onRetry, onManage }: { message: string; onRetry: () => void; onManage: () => void }) {
+function InlineError({ message, onRetry }: { message: string; onRetry: () => void }) {
   return (
-    <div className="rounded-2xl border border-red-200 bg-red-50 p-6 dark:border-red-900/50 dark:bg-red-950/30">
-      <p className="text-sm text-red-700 dark:text-red-300">{message}</p>
-      <div className="mt-4 flex gap-2">
-        <button type="button" className={secondaryButtonClassName} onClick={onRetry}>
-          Retry
-        </button>
-        <button type="button" className={secondaryButtonClassName} onClick={onManage}>
-          Manage connection
-        </button>
-      </div>
+    <Alert variant="destructive">
+      <AlertTitle>Couldn’t load dashboard</AlertTitle>
+      <AlertDescription>{message}</AlertDescription>
+      <RecoveryActions onRetry={onRetry} />
+    </Alert>
+  );
+}
+
+/** Retry + Connections escape hatch shown under any dashboard load error. */
+function RecoveryActions({ onRetry }: { onRetry: () => void }) {
+  return (
+    <div className="mt-4 flex gap-2">
+      <Button type="button" variant="outline" onClick={onRetry}>
+        Retry
+      </Button>
+      <Link href={CONNECTIONS_SETTINGS_PATH} className={buttonVariants({ variant: "outline" })}>
+        Connections
+      </Link>
     </div>
   );
 }

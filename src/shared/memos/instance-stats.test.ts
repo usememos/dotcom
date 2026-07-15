@@ -101,16 +101,39 @@ describe("fetchInstanceStats", () => {
 });
 
 describe("testInstanceConnection", () => {
-  it("returns the display name on success", async () => {
-    const deps = router({ "/api/v1/auth/me": async () => Response.json({ user: { displayName: "Steven" } }) });
-    expect(await testInstanceConnection(CREDS, deps)).toEqual({ ok: true, name: "Steven" });
+  it("returns the display name and supported version on success", async () => {
+    const deps = router({
+      "/api/v1/instance/profile": async () => Response.json({ version: "0.30.0" }),
+      "/api/v1/auth/me": async () => Response.json({ user: { displayName: "Steven" } }),
+    });
+    expect(await testInstanceConnection(CREDS, deps)).toEqual({ ok: true, name: "Steven", version: "0.30.0" });
   });
 
   it("returns a classified error detail on failure", async () => {
-    const deps = router({ "/api/v1/auth/me": async () => new Response(null, { status: 401 }) });
+    const deps = router({
+      "/api/v1/instance/profile": async () => Response.json({ version: "0.30.0" }),
+      "/api/v1/auth/me": async () => new Response(null, { status: 401 }),
+    });
     const result = await testInstanceConnection(CREDS, deps);
     expect(result.ok).toBe(false);
     if (result.ok) return;
     expect(result.error.kind).toBe("unauthorized");
+  });
+
+  it("rejects an instance older than the minimum supported version before auth", async () => {
+    let authCalls = 0;
+    const deps = router({
+      "/api/v1/instance/profile": async () => Response.json({ version: "0.25.0" }),
+      "/api/v1/auth/me": async () => {
+        authCalls++;
+        return Response.json({ user: { displayName: "Steven" } });
+      },
+    });
+    const result = await testInstanceConnection(CREDS, deps);
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.error.why).toContain("0.25.0");
+    expect(result.error.howToFix.join(" ")).toContain("0.26.0");
+    expect(authCalls).toBe(0);
   });
 });

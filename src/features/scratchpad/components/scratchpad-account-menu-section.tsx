@@ -2,7 +2,7 @@
 
 import { ExternalLinkIcon, LayoutDashboardIcon, LogInIcon, ShieldCheckIcon } from "lucide-react";
 import type { ComponentProps } from "react";
-import { SignOutItem } from "@/features/account/components/account-action-items";
+import { SignOutItem } from "@/features/account/components/sign-out-item";
 import { UserIdentity } from "@/features/account/components/user-identity";
 import { useAccountActions } from "@/features/account/hooks/use-account-actions";
 import { menuItemClassName, menuSeparatorClassName } from "@/features/account/lib/menu-styles";
@@ -77,7 +77,7 @@ export function ScratchpadAccountMenuSection() {
         <span>Dashboard</span>
       </DropdownMenuItem>
 
-      <SignOutItem signOutRedirectUrl="/scratchpad" />
+      <SignOutItem signOutRedirectUrl="/scratchpad" className={menuItemClassName} />
 
       <DropdownMenuSeparator className={menuSeparatorClassName} />
     </>

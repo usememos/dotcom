@@ -2,9 +2,9 @@ import { describe, expect, it } from "vitest";
 import { normalizeInstanceUrl, parseInstanceUrl } from "./instance-url";
 
 describe("normalizeInstanceUrl", () => {
-  it("strips trailing slashes and keeps a subpath", () => {
+  it("normalizes valid input to the instance origin", () => {
     expect(normalizeInstanceUrl("https://memos.example.com/")).toBe("https://memos.example.com");
-    expect(normalizeInstanceUrl("https://example.com/memos/")).toBe("https://example.com/memos");
+    expect(normalizeInstanceUrl("https://example.com/setting?tab=access-token")).toBe("https://example.com");
     expect(normalizeInstanceUrl("  https://memos.example.com  ")).toBe("https://memos.example.com");
   });
 

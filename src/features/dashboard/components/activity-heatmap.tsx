@@ -16,10 +16,10 @@ const INTENSITY_CLASSES = [
 
 const WEEKDAY_LABELS = ["", "Mon", "", "Wed", "", "Fri", ""];
 
-const labelClassName = "text-[11px] text-stone-500 dark:text-stone-400";
+const labelClassName = "text-[11px] text-muted-foreground";
 // Sticky left column (weekday labels) sits above the scrolling cells with the card
 // background so cells slide cleanly behind it.
-const stickyColumnClassName = "sticky left-0 z-10 shrink-0 bg-white dark:bg-stone-900";
+const stickyColumnClassName = "sticky left-0 z-10 shrink-0 bg-card";
 
 function formatTitle(date: string, count: number): string {
   const label = new Date(`${date}T00:00:00Z`).toLocaleDateString("en-US", {

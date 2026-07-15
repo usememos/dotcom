@@ -70,12 +70,15 @@ describe("Dashboard", () => {
     expect(await screen.findByTestId("stat-tiles")).toBeInTheDocument();
     expect(screen.getByTestId("heatmap")).toBeInTheDocument();
     expect(screen.getByTestId("header")).toBeInTheDocument();
+    expect(screen.getByText("Browser extension")).toBeInTheDocument();
+    expect(screen.getByText("Coming soon")).toBeInTheDocument();
   });
 
   it("shows the connect prompt when signed in but not connected", async () => {
     mocks.connection.credentials = null;
     render(<Dashboard />);
     expect(await screen.findByTestId("connect-prompt")).toBeInTheDocument();
+    expect(screen.getByTestId("header")).toHaveTextContent("No connections yet");
   });
 
   it("shows the classified error notice for an error result", async () => {
@@ -91,6 +94,7 @@ describe("Dashboard", () => {
     mocks.connection.isSignedIn = false;
     render(<Dashboard />);
     expect(await screen.findByRole("button", { name: "Sign in" })).toBeInTheDocument();
+    expect(screen.getByText("Your Memos workspace")).toBeInTheDocument();
   });
 
   it("shows a generic failure when the stats fetch rejects", async () => {
@@ -98,7 +102,7 @@ describe("Dashboard", () => {
     mocks.connection.isConnected = true;
     mocks.fetchInstanceStats.mockRejectedValue(new Error("boom"));
     render(<Dashboard />);
-    expect(await screen.findByText("Couldn't load your stats. Try again.")).toBeInTheDocument();
+    expect(await screen.findByText("Couldn't load your dashboard. Try again.")).toBeInTheDocument();
   });
 
   it("renders the skeleton until the fetch resolves", () => {

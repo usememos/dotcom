@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { LATEST_SUPPORTED_VERSION, SUPPORTED_DOC_VERSIONS } from "./supported-versions";
+import { LATEST_SUPPORTED_MINOR, LATEST_SUPPORTED_VERSION, SUPPORTED_DOC_VERSIONS } from "./supported-versions";
 
 describe("supported-versions", () => {
   const meta = JSON.parse(readFileSync(join(process.cwd(), "content/docs/api/meta.json"), "utf8")) as { pages: string[] };
@@ -19,5 +19,9 @@ describe("supported-versions", () => {
     const newestVersion = versions.find((version) => !version.isLatest);
     expect(newestVersion).toBeDefined();
     expect(LATEST_SUPPORTED_VERSION).toBe(newestVersion?.snapshotVersion);
+  });
+
+  it("LATEST_SUPPORTED_MINOR is parsed from LATEST_SUPPORTED_VERSION", () => {
+    expect(LATEST_SUPPORTED_MINOR).toBe(Number(LATEST_SUPPORTED_VERSION.split(".")[1]));
   });
 });
