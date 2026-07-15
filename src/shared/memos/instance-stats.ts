@@ -7,7 +7,7 @@ import { LATEST_SUPPORTED_VERSION } from "./supported-versions";
 import { parseMinor, resolveAdapter } from "./versions";
 
 /** The newest minor version this site's adapters understand (mirrors LATEST_SUPPORTED_VERSION). */
-const LATEST_SUPPORTED_MINOR = parseMinor(LATEST_SUPPORTED_VERSION) ?? 29;
+const LATEST_SUPPORTED_MINOR = parseMinor(LATEST_SUPPORTED_VERSION) ?? 30;
 
 export type InstanceStatsDeps = InstanceFetchDeps & {
   /** Overridable for tests; defaults to () => new Date(). */

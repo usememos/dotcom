@@ -15,6 +15,7 @@ describe("versions", () => {
     "0.27.1": { ...BASE, memoDisplayTimestamps: TS },
     "0.28.0": { ...BASE, memoCreatedTimestamps: TS },
     "0.29.1": { ...BASE, memoCreatedTimestamps: TS, memoUpdatedTimestamps: TS },
+    "0.30.0-rc.1": { ...BASE, memoCreatedTimestamps: TS, memoUpdatedTimestamps: TS },
     latest: { ...BASE, memoCreatedTimestamps: TS, memoUpdatedTimestamps: TS },
   };
 
@@ -38,6 +39,7 @@ describe("versions", () => {
     expect(resolveAdapter("0.28.0").id).toBe("gen-b");
     expect(resolveAdapter("0.29.1").id).toBe("gen-b");
     expect(resolveAdapter("0.30.0").id).toBe("gen-b");
+    expect(resolveAdapter("0.30.0-rc.1").id).toBe("gen-b");
     expect(resolveAdapter("v0.29.1").id).toBe("gen-b");
   });
 
