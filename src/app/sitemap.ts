@@ -99,6 +99,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: `${BASE_URL}/web-clipper`,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
       url: `${BASE_URL}/use-cases`,
       changeFrequency: "monthly" as const,
       priority: 0.7,

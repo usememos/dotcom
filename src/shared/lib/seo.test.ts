@@ -6,6 +6,7 @@ describe("seo", () => {
     expect(SITE_NAV_ITEMS.map((item) => [item.name, item.href])).toEqual([
       ["Features", "/features"],
       ["Docs", "/docs"],
+      ["Web Clipper", "/web-clipper"],
       ["Scratchpad", "/scratchpad"],
       ["Changelog", "/changelog"],
     ]);

@@ -11,13 +11,14 @@ import {
   MessageCircleIcon,
   NewspaperIcon,
   PaletteIcon,
+  PuzzleIcon,
   ScaleIcon,
   ShieldCheckIcon,
   SparklesIcon,
   StickyNoteIcon,
 } from "lucide-react";
 import Link from "next/link";
-import type { SVGProps } from "react";
+import type { ComponentType, SVGProps } from "react";
 import { FEATURES } from "@/features/marketing/data/features";
 
 function GithubIcon(props: SVGProps<SVGSVGElement>) {
@@ -42,6 +43,7 @@ interface FooterProps {
 
 const COMPACT_LINKS: Array<{ href: string; label: string; external?: boolean }> = [
   { href: "/docs", label: "Docs" },
+  { href: "/web-clipper", label: "Web Clipper" },
   { href: "/scratchpad", label: "Scratchpad" },
   { href: "/features", label: "Features" },
   { href: "/changelog", label: "Changelog" },
@@ -49,15 +51,106 @@ const COMPACT_LINKS: Array<{ href: string; label: string; external?: boolean }> 
   { href: "https://github.com/usememos/memos", label: "GitHub", external: true },
 ];
 
-export function Footer({ compact = false }: FooterProps = {}) {
-  // Select key features to display in footer (top features from each category)
-  const footerFeatures = [
-    { slug: "self-hosted", feature: FEATURES["self-hosted"] },
-    { slug: "open-source", feature: FEATURES["open-source"] },
-    { slug: "markdown-support", feature: FEATURES["markdown-support"] },
-    { slug: "api-first", feature: FEATURES["api-first"] },
-  ];
+interface FooterLink {
+  href: string;
+  label: string;
+  icon: ComponentType<SVGProps<SVGSVGElement>>;
+  external?: boolean;
+}
 
+interface FooterColumn {
+  title: string;
+  links: FooterLink[];
+}
+
+// Key features to surface in the footer (top features from each category).
+const footerFeatures = [
+  { slug: "self-hosted", feature: FEATURES["self-hosted"] },
+  { slug: "open-source", feature: FEATURES["open-source"] },
+  { slug: "markdown-support", feature: FEATURES["markdown-support"] },
+  { slug: "api-first", feature: FEATURES["api-first"] },
+];
+
+const FOOTER_COLUMNS: FooterColumn[] = [
+  {
+    title: "Explore",
+    links: [
+      { href: "/docs", label: "Documentation", icon: BookOpenIcon },
+      { href: "/use-cases", label: "Use Cases", icon: LightbulbIcon },
+      { href: "/compare", label: "Compare", icon: GitCompareIcon },
+      { href: "/pricing", label: "Pricing", icon: DollarSignIcon },
+      { href: "/changelog", label: "Changelog", icon: HistoryIcon },
+    ],
+  },
+  {
+    title: "Tools",
+    links: [
+      { href: "/web-clipper", label: "Web Clipper", icon: PuzzleIcon },
+      { href: "/scratchpad", label: "Scratchpad", icon: StickyNoteIcon },
+      { href: "https://demo.usememos.com/", label: "Live Demo", icon: ExternalLinkIcon, external: true },
+      { href: "/docs/api", label: "API Reference", icon: CodeIcon },
+    ],
+  },
+  {
+    title: "Features",
+    links: [
+      ...footerFeatures.map(({ slug, feature }) => ({
+        href: `/features/${slug}`,
+        label: feature.title,
+        icon: feature.icon,
+      })),
+      { href: "/features", label: "View all features", icon: SparklesIcon },
+    ],
+  },
+  {
+    title: "Community",
+    links: [
+      { href: "https://github.com/usememos/memos", label: "GitHub", icon: GithubIcon, external: true },
+      { href: "https://discord.gg/tfPJa4UmAv", label: "Discord", icon: MessageCircleIcon, external: true },
+      { href: "https://x.com/usememos", label: "X / Twitter", icon: TwitterIcon, external: true },
+      { href: "/sponsors", label: "Sponsors", icon: HeartIcon },
+      { href: "https://github.com/usememos/memos/issues", label: "Report an Issue", icon: FileTextIcon, external: true },
+    ],
+  },
+  {
+    title: "Resources",
+    links: [
+      { href: "/blog", label: "Blog", icon: NewspaperIcon },
+      { href: "/brand", label: "Brand Guidelines", icon: PaletteIcon },
+      { href: "https://github.com/usememos/memos/blob/main/LICENSE", label: "MIT License", icon: ScaleIcon, external: true },
+      { href: "/privacy", label: "Privacy Policy", icon: ShieldCheckIcon },
+    ],
+  },
+];
+
+const FOOTER_LINK_CLASS =
+  "inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200";
+
+function FooterLinkItem({ link }: { link: FooterLink }) {
+  const Icon = link.icon;
+  const content = (
+    <>
+      <Icon className="w-4 h-4" />
+      {link.label}
+    </>
+  );
+
+  if (link.external) {
+    return (
+      <a href={link.href} target="_blank" rel="noopener noreferrer" className={FOOTER_LINK_CLASS}>
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={link.href} prefetch={false} className={FOOTER_LINK_CLASS}>
+      {content}
+    </Link>
+  );
+}
+
+export function Footer({ compact = false }: FooterProps = {}) {
   if (compact) {
     return (
       <footer className="mt-auto border-t border-zinc-200 bg-white dark:border-white/10 dark:bg-zinc-950">
@@ -100,234 +193,19 @@ export function Footer({ compact = false }: FooterProps = {}) {
   return (
     <footer className="mt-auto border-t border-zinc-200 bg-transparent dark:border-white/10">
       <div className="mx-auto w-full max-w-(--fd-layout-width) px-6 py-16 lg:px-8 lg:py-20">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4 lg:gap-16">
-          {/* Explore Column */}
-          <div className="col-span-1">
-            <h3 className="font-semibold text-fd-foreground mb-6 text-sm uppercase tracking-wider">Explore</h3>
-            <ul className="space-y-4 text-sm">
-              <li>
-                <Link
-                  href="/docs"
-                  prefetch={false}
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <BookOpenIcon className="w-4 h-4" />
-                  Documentation
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/scratchpad"
-                  prefetch={false}
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <StickyNoteIcon className="w-4 h-4" />
-                  Scratchpad
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/changelog"
-                  prefetch={false}
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <HistoryIcon className="w-4 h-4" />
-                  Changelog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/pricing"
-                  prefetch={false}
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <DollarSignIcon className="w-4 h-4" />
-                  Pricing
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/use-cases"
-                  prefetch={false}
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <LightbulbIcon className="w-4 h-4" />
-                  Use Cases
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/compare"
-                  prefetch={false}
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <GitCompareIcon className="w-4 h-4" />
-                  Compare
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Features Column */}
-          <div className="col-span-1">
-            <h3 className="font-semibold text-fd-foreground mb-6 text-sm uppercase tracking-wider">Features</h3>
-            <ul className="space-y-4 text-sm">
-              {footerFeatures.map(({ slug, feature }) => {
-                const Icon = feature.icon;
-                return (
-                  <li key={slug}>
-                    <Link
-                      href={`/features/${slug}`}
-                      prefetch={false}
-                      className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                    >
-                      <Icon className="w-4 h-4" />
-                      {feature.title}
-                    </Link>
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 lg:gap-12">
+          {FOOTER_COLUMNS.map((column) => (
+            <div key={column.title} className="col-span-1">
+              <h3 className="font-semibold text-fd-foreground mb-6 text-sm uppercase tracking-wider">{column.title}</h3>
+              <ul className="space-y-4 text-sm">
+                {column.links.map((link) => (
+                  <li key={link.href}>
+                    <FooterLinkItem link={link} />
                   </li>
-                );
-              })}
-              <li>
-                <Link
-                  href="/features"
-                  prefetch={false}
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground font-medium transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <SparklesIcon className="w-4 h-4" />
-                  View all features
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Community Column */}
-          <div className="col-span-1">
-            <h3 className="font-semibold text-fd-foreground mb-6 text-sm uppercase tracking-wider">Community</h3>
-            <ul className="space-y-4 text-sm">
-              <li>
-                <Link
-                  href="/docs/api"
-                  prefetch={false}
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <CodeIcon className="w-4 h-4" />
-                  API Reference
-                </Link>
-              </li>
-              <li>
-                <a
-                  href="https://demo.usememos.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <ExternalLinkIcon className="w-4 h-4" />
-                  Live Demo
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/usememos/memos"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <GithubIcon className="w-4 h-4" />
-                  GitHub
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://discord.gg/tfPJa4UmAv"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <MessageCircleIcon className="w-4 h-4" />
-                  Discord
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://x.com/usememos"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <TwitterIcon className="w-4 h-4" />X / Twitter
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Resources Column */}
-          <div className="col-span-1">
-            <h3 className="font-semibold text-fd-foreground mb-6 text-sm uppercase tracking-wider">Resources</h3>
-            <ul className="space-y-4 text-sm">
-              <li>
-                <Link
-                  href="/brand"
-                  prefetch={false}
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <PaletteIcon className="w-4 h-4" />
-                  Brand Guidelines
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/sponsors"
-                  prefetch={false}
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <HeartIcon className="w-4 h-4" />
-                  Sponsors
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/blog"
-                  prefetch={false}
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <NewspaperIcon className="w-4 h-4" />
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/usememos/memos/blob/main/LICENSE"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <ScaleIcon className="w-4 h-4" />
-                  MIT License
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/usememos/memos/issues"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <FileTextIcon className="w-4 h-4" />
-                  Report an Issue
-                </a>
-              </li>
-              <li>
-                <Link
-                  href="/privacy"
-                  prefetch={false}
-                  className="inline-flex items-center gap-2 text-fd-muted-foreground transition-colors hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  <ShieldCheckIcon className="w-4 h-4" />
-                  Privacy Policy
-                </Link>
-              </li>
-            </ul>
-          </div>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
     </footer>

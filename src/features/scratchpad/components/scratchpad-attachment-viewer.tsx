@@ -2,6 +2,7 @@
 
 import { AlertCircleIcon, DownloadIcon, FileIcon, LoaderCircleIcon, XIcon } from "lucide-react";
 import { useEffect, useId, useState } from "react";
+import { Button } from "@/shared/ui/button";
 import { type AttachmentPreviewMode, formatAttachmentSize, getAttachmentPreviewMode } from "../lib/attachment-preview";
 import { getFile } from "../lib/indexeddb";
 import type { FileData, ScratchpadAttachmentRef } from "../types";
@@ -139,30 +140,32 @@ export function ScratchpadAttachmentViewer({ attachment, onClose }: ScratchpadAt
             </span>
           </div>
 
-          <button
-            type="button"
+          <Button
+            variant="ghost"
+            size="icon-sm"
             disabled={!canDownload}
             onClick={() => {
               if (state.objectUrl) {
                 downloadAttachment(fileName, state.objectUrl);
               }
             }}
-            className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-[5px] text-stone-500 transition hover:bg-stone-100 hover:text-stone-950 disabled:pointer-events-none disabled:opacity-40 dark:text-stone-400 dark:hover:bg-white/10 dark:hover:text-stone-100"
+            className="rounded-[5px] text-stone-500 hover:bg-stone-100 hover:text-stone-950 disabled:opacity-40 dark:text-stone-400 dark:hover:bg-white/10 dark:hover:text-stone-100"
             title="Download"
             aria-label="Download attachment"
           >
             <DownloadIcon className="h-3.5 w-3.5" />
-          </button>
+          </Button>
 
-          <button
-            type="button"
+          <Button
+            variant="ghost"
+            size="icon-sm"
             onClick={onClose}
-            className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-[5px] text-stone-500 transition hover:bg-stone-100 hover:text-stone-950 dark:text-stone-400 dark:hover:bg-white/10 dark:hover:text-stone-100"
+            className="rounded-[5px] text-stone-500 hover:bg-stone-100 hover:text-stone-950 dark:text-stone-400 dark:hover:bg-white/10 dark:hover:text-stone-100"
             title="Close"
             aria-label="Close attachment preview"
           >
             <XIcon className="h-3.5 w-3.5" />
-          </button>
+          </Button>
         </div>
 
         <div className="flex min-h-[240px] flex-1 items-center justify-center overflow-auto bg-stone-50 p-2 dark:bg-stone-900/70 sm:p-3">

@@ -1,6 +1,7 @@
 "use client";
 
 import { MinusIcon, PlusIcon } from "lucide-react";
+import { Button } from "@/shared/ui/button";
 
 interface ScratchpadZoomControlsProps {
   zoomLabel: string;
@@ -38,32 +39,35 @@ export function ScratchpadZoomControls({
         visible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-1 opacity-0"
       }`}
     >
-      <button
-        type="button"
+      <Button
+        variant="ghost"
+        size="icon-xs"
         onClick={onZoomOut}
-        className="inline-flex h-6 w-6 items-center justify-center rounded-full text-stone-500 transition hover:bg-stone-100 dark:text-stone-400 dark:hover:bg-white/10 dark:hover:text-stone-100"
+        className="rounded-full text-stone-500 hover:bg-stone-100 dark:text-stone-400 dark:hover:bg-white/10 dark:hover:text-stone-100"
         aria-label="Zoom out"
         title="Zoom out"
       >
         <MinusIcon className="h-3.5 w-3.5" aria-hidden="true" />
-      </button>
-      <button
-        type="button"
+      </Button>
+      <Button
+        variant="ghost"
+        size="xs"
         onClick={onReset}
-        className="min-w-9 rounded-full px-2 py-1 text-center text-[9px] font-semibold uppercase tracking-[0.08em] text-stone-500 transition hover:bg-stone-100 dark:text-stone-400 dark:hover:bg-white/10 dark:hover:text-stone-100"
+        className="min-w-9 rounded-full px-2 text-center text-[9px] font-semibold uppercase tracking-[0.08em] text-stone-500 hover:bg-stone-100 dark:text-stone-400 dark:hover:bg-white/10 dark:hover:text-stone-100"
         title="Reset view"
       >
         {zoomLabel}
-      </button>
-      <button
-        type="button"
+      </Button>
+      <Button
+        variant="ghost"
+        size="icon-xs"
         onClick={onZoomIn}
-        className="inline-flex h-6 w-6 items-center justify-center rounded-full text-stone-500 transition hover:bg-stone-100 dark:text-stone-400 dark:hover:bg-white/10 dark:hover:text-stone-100"
+        className="rounded-full text-stone-500 hover:bg-stone-100 dark:text-stone-400 dark:hover:bg-white/10 dark:hover:text-stone-100"
         aria-label="Zoom in"
         title="Zoom in"
       >
         <PlusIcon className="h-3.5 w-3.5" aria-hidden="true" />
-      </button>
+      </Button>
     </div>
   );
 }

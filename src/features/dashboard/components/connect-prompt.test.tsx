@@ -21,10 +21,10 @@ describe("ConnectPrompt", () => {
     expect(screen.getByRole("link", { name: "Connect instance" })).toHaveAttribute("href", "/settings/connections");
   });
 
-  it("previews the upcoming browser extension as a secondary capability", () => {
+  it("previews the browser extension as a secondary capability", () => {
     render(<ConnectPrompt />);
     expect(screen.getByText("Browser extension")).toBeInTheDocument();
-    expect(screen.getByText("Coming soon")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Get it/ })).toHaveAttribute("href", "/web-clipper");
     expect(screen.getByText("Save pages to Memos from your browser.")).toBeInTheDocument();
   });
 });

@@ -1,6 +1,7 @@
 "use client";
 
 import { FileIcon, XIcon } from "lucide-react";
+import { Button } from "@/shared/ui/button";
 import type { ScratchpadAttachmentRef } from "../types";
 
 interface ScratchpadAttachmentPreview {
@@ -40,30 +41,31 @@ export function ScratchpadAttachmentGrid({
                 isImage ? "pb-3" : ""
               }`}
             >
-              <button
-                type="button"
+              <Button
+                variant="ghost"
                 onPointerDown={(event) => event.stopPropagation()}
                 onClick={(event) => {
                   event.stopPropagation();
                   onOpenAttachment(attachment);
                 }}
                 aria-label={`Open attachment ${attachment.name}`}
-                className="absolute inset-0 z-0 rounded-[5px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-900/30 dark:focus-visible:ring-stone-100/40"
+                className="absolute inset-0 z-0 h-auto w-auto rounded-[5px] p-0 hover:bg-transparent focus-visible:ring-stone-900/30 dark:hover:bg-transparent dark:focus-visible:ring-stone-100/40"
               />
 
-              <button
-                type="button"
+              <Button
+                variant="ghost"
+                size="icon-xs"
                 onPointerDown={(event) => event.stopPropagation()}
                 onClick={(event) => {
                   event.stopPropagation();
                   void onRemoveAttachment(itemId, attachment.id);
                 }}
                 aria-label="Remove attachment"
-                className="absolute right-1.5 top-1.5 z-10 inline-flex h-5 w-5 items-center justify-center rounded-full bg-stone-900/55 text-white opacity-0 transition hover:bg-stone-900/75 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 dark:bg-stone-100/20 dark:hover:bg-stone-100/30 dark:focus-visible:ring-stone-200/60"
+                className="absolute right-1.5 top-1.5 z-10 size-5 rounded-full bg-stone-900/55 p-0 text-white opacity-0 hover:bg-stone-900/75 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-white/80 dark:bg-stone-100/20 dark:hover:bg-stone-100/30 dark:focus-visible:ring-stone-200/60"
                 title="Remove attachment"
               >
                 <XIcon className="h-3 w-3" />
-              </button>
+              </Button>
 
               <div className="pointer-events-none relative z-[1]">
                 {isImage && preview?.previewUrl ? (

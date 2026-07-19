@@ -71,7 +71,7 @@ describe("Dashboard", () => {
     expect(screen.getByTestId("heatmap")).toBeInTheDocument();
     expect(screen.getByTestId("header")).toBeInTheDocument();
     expect(screen.getByText("Browser extension")).toBeInTheDocument();
-    expect(screen.getByText("Coming soon")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Get it/ })).toHaveAttribute("href", "/web-clipper");
   });
 
   it("shows the connect prompt when signed in but not connected", async () => {

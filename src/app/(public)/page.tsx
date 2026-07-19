@@ -33,6 +33,7 @@ const START_LINKS = [
   { href: "/docs/getting-started", label: "Install Memos" },
   { href: "/features", label: "See Features" },
   { href: "/use-cases", label: "Use Cases" },
+  { href: "/web-clipper", label: "Get the Web Clipper" },
   { href: "/docs", label: "Read Docs" },
 ] as const;
 

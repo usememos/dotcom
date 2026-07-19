@@ -1,4 +1,13 @@
-import { ArrowRightIcon, BookOpenIcon, CircleDollarSignIcon, HistoryIcon, LightbulbIcon, NewspaperIcon, SparklesIcon } from "lucide-react";
+import {
+  ArrowRightIcon,
+  BookOpenIcon,
+  CircleDollarSignIcon,
+  HistoryIcon,
+  LightbulbIcon,
+  NewspaperIcon,
+  PuzzleIcon,
+  SparklesIcon,
+} from "lucide-react";
 import Link from "next/link";
 
 const DISCOVER_LINKS = [
@@ -38,6 +47,12 @@ const DISCOVER_LINKS = [
     description: "Quick notes, private journals, server logs, snippets, and small-team timelines.",
     icon: LightbulbIcon,
   },
+  {
+    href: "/web-clipper",
+    title: "Clip from your browser",
+    description: "Save pages, selections, and images from Chrome or Firefox straight to your instance as Markdown.",
+    icon: PuzzleIcon,
+  },
 ] as const;
 
 const FEATURED_DISCOVER_LINK = DISCOVER_LINKS[0];
@@ -61,6 +76,10 @@ const SECONDARY_DISCOVER_LINKS = [
   {
     ...DISCOVER_LINKS[5],
     label: "Workflows",
+  },
+  {
+    ...DISCOVER_LINKS[6],
+    label: "Web Clipper",
   },
 ] as const;
 

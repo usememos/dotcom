@@ -1,5 +1,5 @@
-import { AppWindowIcon } from "lucide-react";
-import { Badge } from "@/shared/ui/badge";
+import { AppWindowIcon, ArrowRightIcon } from "lucide-react";
+import Link from "next/link";
 
 export function BrowserExtensionPreview() {
   return (
@@ -11,7 +11,14 @@ export function BrowserExtensionPreview() {
           <p className="text-[11px] text-muted-foreground">Save pages to Memos from your browser.</p>
         </div>
       </div>
-      <Badge variant="secondary">Coming soon</Badge>
+      <Link
+        href="/web-clipper"
+        prefetch={false}
+        className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-foreground transition-colors hover:text-muted-foreground"
+      >
+        Get it
+        <ArrowRightIcon className="size-3" />
+      </Link>
     </div>
   );
 }

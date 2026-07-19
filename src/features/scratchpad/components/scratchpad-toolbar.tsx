@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ThemeToggle } from "@/features/account/components/theme-toggle";
 import { menuContentClassName, menuItemClassName, menuSeparatorClassName } from "@/features/account/lib/menu-styles";
+import { Button } from "@/shared/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/shared/ui/dropdown-menu";
 import { ScratchpadAccountMenuSection } from "./scratchpad-account-menu-section";
 
@@ -25,9 +26,11 @@ export function ScratchpadToolbar() {
       <DropdownMenu>
         <DropdownMenuTrigger
           render={
-            <button
-              type="button"
-              className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border border-stone-200/80 bg-white/88 text-stone-500 shadow-sm transition hover:bg-white hover:text-stone-900 dark:border-white/10 dark:bg-stone-900/88 dark:text-stone-400 dark:hover:bg-stone-800 dark:hover:text-stone-100"
+            <Button
+              variant="outline"
+              size="icon"
+              className="overflow-hidden rounded-full border-stone-200/80 bg-white/88 p-0 text-stone-500 shadow-sm hover:bg-white hover:text-stone-900 dark:border-white/10 dark:bg-stone-900/88 dark:text-stone-400 dark:hover:bg-stone-800 dark:hover:text-stone-100"
+              aria-label="Memos menu"
               title="Memos menu"
             />
           }
