@@ -7,7 +7,6 @@ describe("seo", () => {
       ["Features", "/features"],
       ["Docs", "/docs"],
       ["Web Clipper", "/web-clipper"],
-      ["Scratchpad", "/scratchpad"],
       ["Changelog", "/changelog"],
     ]);
     expect(SITE_NAV_ITEMS.some((item) => item.href === "/blog")).toBe(false);

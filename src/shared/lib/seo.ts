@@ -9,7 +9,6 @@ export const SITE_NAV_ITEMS = [
   { name: "Features", href: "/features" },
   { name: "Docs", href: "/docs" },
   { name: "Web Clipper", href: "/web-clipper" },
-  { name: "Scratchpad", href: "/scratchpad" },
   { name: "Changelog", href: "/changelog" },
 ] as const;
 
