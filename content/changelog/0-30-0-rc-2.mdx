@@ -1,0 +1,52 @@
+---
+title: Release v0.30.0-rc.2
+description: Memos Web Clipper, redesigned memo details, faster feeds, and API compatibility improvements
+date: "2026-07-20"
+---
+
+> This release candidate introduces the Memos Web Clipper, redesigns memo details and settings, and makes feeds and Explore faster. It also refreshes the demo experience and improves API compatibility, error messages, and interface polish.
+
+## New Features
+
+### Memos Web Clipper
+
+- **Capture from the browser** - Save pages, selected text, and images as Markdown directly to your Memos instance.
+- **Review before saving** - Edit each clip, choose its visibility, and confirm exactly what will be added to Memos.
+- **Custom Markdown templates** - Control how page content, titles, URLs, descriptions, and default tags are arranged in saved memos.
+- **Chrome and Firefox support** - Install the extension from the [Chrome Web Store](https://chromewebstore.google.com/detail/memos-web-clipper/nebaoebnljalfegiidibihhkebeiklbl) or [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/memos-web-clipper/). The source and setup details are available in the [Memos Web Clipper repository](https://github.com/usememos/web-clipper).
+
+### Memo Details and Navigation
+
+- **Redesigned detail sidebar** - Memo details now use a property rail with quick actions, editable visibility, metadata, attachments, relations, and a scroll-aware outline.
+- **Restored feed position** - Returning to a feed after viewing another page restores the previous scroll position, making it easier to continue where you left off.
+
+### Settings and Access Tokens
+
+- **Refreshed settings navigation** - Settings are reorganized for clearer navigation across account and instance options.
+- **Practical access-token guidance** - The access-token page now includes setup instructions, a copyable API example, security notes, and last-used timestamps.
+- **Web Clipper discovery** - The About page and project documentation now link to the Memos Web Clipper.
+
+## Performance Improvements
+
+- **Faster initial loading** - Fingerprinted assets are cached more effectively, while media and rich renderers are deferred until needed.
+- **Viewport-aware feeds** - Feed content near the viewport is prioritized to reduce initial browser work.
+- **Shared data lookups** - User and memo lookups are reused across creators, reactions, comments, mentions, and relations to reduce duplicate requests and improve Explore performance.
+
+## Improvements and Bug Fixes
+
+### Demo Experience
+
+- **More representative sample data** - Demo memos now showcase nested tags, references, comments, mentions, reactions, locations, attachments, and rich Markdown across public and protected content.
+
+### API Compatibility and Errors
+
+- **AIP-aligned resources** - New resource IDs and annotations follow AIP conventions while remaining compatible with legacy UUID-based identifiers.
+- **Correct user-stat names** - User statistic resources now return canonical resource names.
+- **Cleaner error messages** - User-facing errors no longer expose internal RPC prefixes.
+
+### Interface Polish
+
+- **Radio-group alignment** - Selection indicators are correctly aligned with their controls.
+- **Tooltip arrows** - Tooltip arrows now sit outside their content panels for cleaner positioning.
+
+**Full Changelog**: [v0.30.0-rc.1...v0.30.0-rc.2](https://github.com/usememos/memos/compare/v0.30.0-rc.1...v0.30.0-rc.2)
