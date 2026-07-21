@@ -11,6 +11,11 @@ export function getChangelogVersionParts(title: string) {
   return match ? [Number.parseInt(match[1], 10), Number.parseInt(match[2], 10), Number.parseInt(match[3], 10)] : [0, 0, 0];
 }
 
+function getChangelogPrereleaseParts(title: string) {
+  const match = getChangelogVersion(title).match(/v?\d+\.\d+\.\d+-([0-9A-Za-z.-]+)/);
+  return match?.[1].split(".");
+}
+
 export function compareChangelogVersions(a: string, b: string) {
   const versionA = getChangelogVersionParts(a);
   const versionB = getChangelogVersionParts(b);
@@ -19,6 +24,39 @@ export function compareChangelogVersions(a: string, b: string) {
     if (versionA[index] !== versionB[index]) {
       return versionB[index] - versionA[index];
     }
+  }
+
+  const prereleaseA = getChangelogPrereleaseParts(a);
+  const prereleaseB = getChangelogPrereleaseParts(b);
+
+  if (!prereleaseA || !prereleaseB) {
+    if (!prereleaseA && prereleaseB) return -1;
+    if (prereleaseA && !prereleaseB) return 1;
+    return 0;
+  }
+
+  const identifierCount = Math.max(prereleaseA.length, prereleaseB.length);
+
+  for (let index = 0; index < identifierCount; index += 1) {
+    const identifierA = prereleaseA[index];
+    const identifierB = prereleaseB[index];
+
+    if (identifierA === identifierB) continue;
+    if (identifierA === undefined) return 1;
+    if (identifierB === undefined) return -1;
+
+    const numericA = /^\d+$/.test(identifierA);
+    const numericB = /^\d+$/.test(identifierB);
+
+    if (numericA && numericB) {
+      return Number.parseInt(identifierB, 10) - Number.parseInt(identifierA, 10);
+    }
+
+    if (numericA !== numericB) {
+      return numericA ? 1 : -1;
+    }
+
+    return identifierB.localeCompare(identifierA);
   }
 
   return 0;
