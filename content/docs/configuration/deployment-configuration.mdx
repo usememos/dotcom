@@ -1,0 +1,317 @@
+---
+title: Deployment-Managed Configuration
+description: Manage authentication, storage, notifications, memo behavior, and AI settings from mounted JSON files.
+category: configuration
+tags: ["configuration", "self-hosting", "docker", "kubernetes"]
+difficulty: advanced
+estimatedTime: 15 minutes
+lastUpdated: "2026-07-22"
+---
+
+Memos 0.30 and later can load selected configuration from JSON files mounted under `/etc/secrets`. Use this when settings such as SSO, storage credentials, or registration policy should be controlled by Docker Compose, Kubernetes, GitOps, or a secret manager instead of the admin UI.
+
+File-backed configuration is loaded once at startup and remains authoritative for that server process. Settings not supplied by files continue to use the database and can be managed normally in Memos.
+
+## Quick start with Docker Compose
+
+Create a directory for the configuration files:
+
+```text
+.
+├── compose.yaml
+└── memos-secrets/
+    └── memos-instance-setting-general.json
+```
+
+Add `memos-secrets/memos-instance-setting-general.json`:
+
+```json
+{
+  "key": "GENERAL",
+  "generalSetting": {
+    "disallowUserRegistration": false,
+    "disallowPasswordAuth": false,
+    "additionalScript": "",
+    "additionalStyle": "",
+    "weekStartDayOffset": 1,
+    "disallowChangeUsername": false,
+    "disallowChangeNickname": false,
+    "customProfile": {
+      "title": "Team Memos",
+      "description": "Notes for our team",
+      "logoUrl": "https://example.com/logo.png"
+    }
+  }
+}
+```
+
+Mount the directory read-only at `/etc/secrets`:
+
+```yaml
+services:
+  memos:
+    image: neosmemo/memos:stable
+    ports:
+      - "5230:5230"
+    volumes:
+      - ./memos-data:/var/opt/memos
+      - ./memos-secrets:/etc/secrets:ro
+```
+
+Make sure the files are readable by the Memos container user, then recreate the container:
+
+```bash
+docker compose up -d --force-recreate
+docker compose logs memos
+```
+
+The startup log reports how many identity providers and instance settings were loaded. It does not print configuration values or secrets.
+
+## Supported files
+
+Memos scans direct children of `/etc/secrets` and reads only these filename patterns:
+
+| Resource | Filename | Stable key |
+| --- | --- | --- |
+| OAuth2 identity provider | `memos-idp-<label>.json` | `uid` |
+| General settings | `memos-instance-setting-general.json` | `GENERAL` |
+| Storage settings | `memos-instance-setting-storage.json` | `STORAGE` |
+| Memo behavior | `memos-instance-setting-memo-related.json` | `MEMO_RELATED` |
+| Email notifications | `memos-instance-setting-notification.json` | `NOTIFICATION` |
+| AI providers | `memos-instance-setting-ai.json` | `AI` |
+
+Use lowercase kebab case for `<label>`, such as `primary-sso` or `company-login`. The label makes the filename readable; the `uid` or `key` inside the file identifies the resource.
+
+Each matching file must:
+
+- contain exactly one JSON resource;
+- use the fields shown in this guide, with no unknown fields;
+- be no larger than 1 MiB; and
+- be a regular file or a symlink that resolves to a regular file.
+
+A missing `/etc/secrets` directory is a normal no-op. Unrelated files in the directory are ignored. A matching file that cannot be read or validated prevents Memos from starting.
+
+## OAuth2 identity provider
+
+An identity-provider file contains one OAuth2 provider. The `uid` is required and should remain stable after users begin signing in. Do not include a database-generated `id`.
+
+Example `/etc/secrets/memos-idp-primary-sso.json`:
+
+```json
+{
+  "uid": "primary-sso",
+  "name": "Company SSO",
+  "type": "OAUTH2",
+  "identifierFilter": "",
+  "config": {
+    "oauth2Config": {
+      "clientId": "client-id",
+      "clientSecret": "client-secret",
+      "authUrl": "https://idp.example.com/oauth/authorize",
+      "tokenUrl": "https://idp.example.com/oauth/token",
+      "userInfoUrl": "https://idp.example.com/oauth/userinfo",
+      "scopes": ["openid", "profile", "email"],
+      "fieldMapping": {
+        "identifier": "sub",
+        "displayName": "name",
+        "email": "email",
+        "avatarUrl": "picture"
+      }
+    }
+  }
+}
+```
+
+Required values include `uid`, `name`, the client ID and secret, all three OAuth2 endpoint URLs, at least one scope, and `fieldMapping.identifier`. Duplicate UIDs across files are rejected.
+
+The OAuth2 callback URL remains:
+
+```text
+https://<your-instance>/auth/callback
+```
+
+See [Authentication](/docs/configuration/authentication) for provider setup and identity-mapping guidance.
+
+## Instance settings
+
+Each instance-setting file contains a `key` and the matching settings object. A file supplies the complete effective group: omitted scalar fields use their default values instead of inheriting values from the database. Empty secret fields are also treated as empty values.
+
+### General
+
+Use `memos-instance-setting-general.json` with `key: "GENERAL"`. The complete format is shown in the [Docker Compose quick start](#quick-start-with-docker-compose).
+
+`weekStartDayOffset` accepts `0` for Sunday through `6` for Saturday.
+
+### Storage
+
+Storage types are `DATABASE`, `LOCAL`, and `S3`. S3 requires all credential and location fields shown below.
+
+```json
+{
+  "key": "STORAGE",
+  "storageSetting": {
+    "storageType": "S3",
+    "filepathTemplate": "assets/{timestamp}_{uuid}_{filename}",
+    "uploadSizeLimitMb": "30",
+    "s3Config": {
+      "accessKeyId": "access-key",
+      "accessKeySecret": "secret-key",
+      "endpoint": "https://s3.example.com",
+      "region": "us-east-1",
+      "bucket": "memos-assets",
+      "usePathStyle": false,
+      "insecureSkipTlsVerify": false
+    }
+  }
+}
+```
+
+Only enable `insecureSkipTlsVerify` for a trusted S3-compatible endpoint using a self-signed certificate. It disables TLS certificate verification.
+
+### Memo behavior
+
+```json
+{
+  "key": "MEMO_RELATED",
+  "memoRelatedSetting": {
+    "contentLengthLimit": 1048576,
+    "enableDoubleClickEdit": true,
+    "reactions": ["👍", "❤️", "🎉"]
+  }
+}
+```
+
+`contentLengthLimit` is measured in bytes. `reactions` supplies the allowed reaction values for the instance.
+
+### Notifications
+
+```json
+{
+  "key": "NOTIFICATION",
+  "notificationSetting": {
+    "email": {
+      "enabled": true,
+      "smtpHost": "smtp.example.com",
+      "smtpPort": 587,
+      "smtpUsername": "memos",
+      "smtpPassword": "smtp-secret",
+      "fromEmail": "memos@example.com",
+      "fromName": "Memos",
+      "replyTo": "support@example.com",
+      "useTls": true,
+      "useSsl": false
+    }
+  }
+}
+```
+
+When email is enabled, `smtpHost`, a positive `smtpPort`, and `fromEmail` are required. Do not enable both `useTls` and `useSsl`.
+
+### AI providers
+
+Every provider needs an explicit, unique `id`, a title, a supported type (`OPENAI` or `GEMINI`), and an API key.
+
+```json
+{
+  "key": "AI",
+  "aiSetting": {
+    "providers": [
+      {
+        "id": "openai-main",
+        "title": "OpenAI",
+        "type": "OPENAI",
+        "endpoint": "https://api.openai.com/v1",
+        "apiKey": "api-key"
+      }
+    ],
+    "transcription": {
+      "providerId": "openai-main",
+      "model": "gpt-4o-mini-transcribe",
+      "language": "en",
+      "prompt": ""
+    }
+  }
+}
+```
+
+`transcription.providerId` must reference a provider in the same file. An empty OpenAI endpoint defaults to `https://api.openai.com/v1`; an empty Gemini endpoint defaults to `https://generativelanguage.googleapis.com/v1beta`.
+
+The `BASIC` and `TAGS` setting groups cannot be deployment-managed.
+
+## SSO-only deployment
+
+An SSO-only instance needs both:
+
+1. an identity-provider file such as `memos-idp-primary-sso.json`; and
+2. `memos-instance-setting-general.json` with `disallowPasswordAuth` set to `true`.
+
+Keep `disallowUserRegistration` set to `false` if first-time SSO users should be created automatically. Memos refuses to start if regular password sign-in is disabled without an effective identity provider. The administrator password sign-in path remains available for recovery.
+
+## Precedence and removal
+
+A file-backed identity provider shadows a stored provider with the same `uid`. A file-backed instance-setting group shadows the database row with the same `key`. Other stored resources remain active.
+
+Memos does not copy the file into the database or delete the value underneath it. If you remove a file and restart Memos, the previous database value becomes effective again. Delete or update an obsolete stored value yourself if you do not want it to return.
+
+Updates and deletions of active file-backed resources are rejected by the API. Update the file and restart Memos instead.
+
+## Apply changes
+
+Configuration is loaded once per server process. After editing, adding, or removing a file, restart every Memos replica.
+
+For Docker Compose:
+
+```bash
+docker compose restart memos
+```
+
+For Kubernetes, restart the workload after the mounted Secret changes:
+
+```bash
+kubectl rollout restart deployment/memos
+```
+
+All replicas in one deployment should mount identical files. Avoid routing traffic to replicas using different authentication or storage configurations during a rollout.
+
+## Security
+
+Treat `/etc/secrets` and every matching file as sensitive plaintext:
+
+- mount the directory read-only;
+- restrict host and container file permissions;
+- do not commit real credentials to source control;
+- use Docker secrets, Kubernetes Secrets, or your platform's secret manager; and
+- keep the same files available for disaster recovery without placing them in a public backup.
+
+Memos redacts secrets from API responses, validation errors, and startup summaries. File contents are held only in the private runtime configuration snapshot and are not persisted by the loader.
+
+## Upgrading from the earlier identity-provider bootstrap
+
+Older versions of the `memos-idp-*.json` bootstrap copied identity providers and their client secrets into the database. The current loader does not remove those stored rows automatically.
+
+If startup warns that a file-backed provider shadows a stored provider:
+
+1. Back up the database and confirm administrator password access.
+2. Temporarily remove the identity-provider file and restart Memos.
+3. Delete or update the stored provider through the admin UI or API.
+4. Restore the file and restart Memos again.
+
+Until the stored provider is cleaned up, it can reappear when the file is removed.
+
+## Troubleshooting
+
+### A file is ignored
+
+Check that it is directly under `/etc/secrets`, uses a supported lowercase filename, and ends in lowercase `.json`. Memos warns about unrecognized direct children beginning with `memos-`.
+
+### Memos does not start
+
+Check the startup error for the filename and field name. Common causes include unreadable files, unknown or misspelled fields, a setting object that does not match its `key`, missing S3 or SMTP fields, duplicate stable keys, and disabling password login without an identity provider.
+
+### An API or UI update fails
+
+Active file-backed resources cannot be changed through the API. Edit the corresponding deployment file and restart Memos.
+
+### An old value returns after removing a file
+
+This is expected when a database value was shadowed. Update or delete the stored value if it should no longer be used.

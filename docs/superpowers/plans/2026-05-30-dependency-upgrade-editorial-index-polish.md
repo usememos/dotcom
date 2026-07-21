@@ -281,7 +281,7 @@ Inside `BlogPage`, keep the `posts` sort logic unchanged and replace the returne
             breadcrumbs={breadcrumbItems}
             eyebrow="Blog"
             title="Notes from the project."
-            description="Product thinking, self-hosting notes, and updates from the people building Memos."
+            description="Product thinking, self-hosting notes, and updates from the team building Memos."
           />
 
           {posts.length > 0 ? (

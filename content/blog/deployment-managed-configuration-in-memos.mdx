@@ -1,0 +1,85 @@
+---
+title: "New in Memos: Deployment-Managed Configuration"
+description: A look at the new file-backed configuration in Memos, the demo problem that prompted it, and how to use it in a self-hosted deployment.
+published_at: 2026/7/21 12:00:00
+tags: ["Self-Hosting", "Configuration", "Security"]
+---
+
+A while ago, I redeployed [demo.usememos.com](https://demo.usememos.com) for a reason that had nothing to do with a new release: someone had changed the login settings again.
+
+Our demo is intentionally open so people can explore Memos without installing anything first. In an earlier version of the demo, that also meant a visitor could disable a login method or change an identity provider. The server was still healthy, yet the next person could no longer sign in. One of us then had to restore the configuration and redeploy.
+
+It happened often enough that the problem became obvious: the login policy for our demo was stored in the wrong place.
+
+In Memos 0.30, we added deployment-managed configuration to fix this. Our public demo is already using it, and the same feature is now available to self-hosters.
+
+## What changed
+
+Memos can now load selected configuration from JSON files mounted under `/etc/secrets`. This includes OAuth2 identity providers and instance settings for general policy, storage, memo behavior, notifications, and AI providers.
+
+Memos reads and validates every matching file during startup, before it begins serving requests. A resource supplied by a file takes precedence over the same resource in the database and cannot be changed through the UI or API. Settings not supplied by files continue to work as before.
+
+This follows a familiar self-hosting pattern. [Mastodon](https://docs.joinmastodon.org/admin/config/), our clearest reference, loads deployment configuration when a process starts and keeps it authoritative for that process. The application does not copy it into an administrator-editable database record. Operators using Docker Compose, Kubernetes, or GitOps can therefore keep important policy and credentials with the deployment that owns them.
+
+For a personal Memos instance, the admin UI remains the simplest option. Deployment-managed configuration is for the settings you do not want an in-app change to override.
+
+## Try it with Docker Compose
+
+Create `memos-secrets/memos-instance-setting-general.json`:
+
+```json
+{
+  "key": "GENERAL",
+  "generalSetting": {
+    "disallowUserRegistration": false,
+    "disallowPasswordAuth": false,
+    "customProfile": {
+      "title": "Team Memos",
+      "description": "Notes for our team"
+    }
+  }
+}
+```
+
+Mount the directory read-only at `/etc/secrets`:
+
+```yaml
+services:
+  memos:
+    image: neosmemo/memos:stable
+    ports:
+      - "5230:5230"
+    volumes:
+      - ./memos-data:/var/opt/memos
+      - ./memos-secrets:/etc/secrets:ro
+```
+
+Then recreate the container so Memos loads the file:
+
+```shell
+docker compose up -d --force-recreate
+docker compose logs memos
+```
+
+After startup, the file supplies the effective General settings. An administrator can still edit other, database-backed settings, but an attempt to update General settings is rejected by the API.
+
+For an SSO-only deployment, add an identity-provider file such as `memos-idp-primary-sso.json` and set `disallowPasswordAuth` to `true`. Memos validates the two resources together and refuses to start if password login is disabled without an effective identity provider.
+
+Kubernetes uses the same model: mount Secret-backed files at `/etc/secrets` and restart the workload after a change.
+
+## A few details to remember
+
+- Files are loaded once. Updating one has no effect until Memos restarts.
+- An invalid file stops startup instead of applying a partial configuration.
+- A file-backed setting shadows the database value; it does not delete it. Removing the file and restarting reveals the stored value again.
+- An instance-setting file supplies a complete group. Omitted fields use their defaults rather than values from the database.
+
+There is no extra configuration table and no background reconciliation. Memos keeps one immutable snapshot in the running process and leaves the database untouched.
+
+## Already running on our demo
+
+The public demo now receives its login-related configuration from mounted files. The current demo no longer exposes the administration experience, and the API also rejects attempts to change deployment-managed login resources.
+
+This is the boundary we wanted. People can explore the product without accidentally removing the sign-in path for the next visitor, and every restart produces the same effective login configuration.
+
+The full file formats and supported settings are available in the [deployment-managed configuration guide](/docs/configuration/deployment-configuration).

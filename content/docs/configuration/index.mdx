@@ -3,7 +3,7 @@ title: Configuration
 description: Configure server behavior, storage, authentication, and environment variables.
 ---
 
-Memos can be configured through command-line flags, `MEMOS_*` environment variables, and instance-level settings managed in the UI or API.
+Memos can be configured through command-line flags, `MEMOS_*` environment variables, deployment-managed JSON files, and instance-level settings managed in the UI or API.
 
 ## Common runtime settings
 
@@ -23,12 +23,14 @@ Memos can be configured through command-line flags, `MEMOS_*` environment variab
 ## Configuration layers
 
 - runtime flags and environment variables control server startup
+- deployment-managed files keep selected authentication and instance settings under infrastructure control
 - instance settings control storage, registration, and some auth behavior
 - reverse proxy settings affect HTTPS, cookie behavior, and public URL correctness
 
 ## Related topics
 
 - [Environment Variables](/docs/configuration/environment-variables)
+- [Deployment-Managed Configuration](/docs/configuration/deployment-configuration)
 - [Database](/docs/configuration/database)
 - [Storage](/docs/configuration/storage)
 - [Authentication](/docs/configuration/authentication)
