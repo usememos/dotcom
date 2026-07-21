@@ -39,9 +39,20 @@ describe("MemosConnectionsSettings", () => {
 
   it("shows extension return guidance without changing the route resource", () => {
     render(<MemosConnectionsSettings source="web-clipper" />);
-    expect(screen.getByRole("heading", { name: "Connections" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Connect your Memos instance" })).toBeInTheDocument();
     expect(screen.getByText(/then return to Memos Web Clipper/i)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Dashboard" })).toHaveAttribute("href", "/dashboard");
+    expect(screen.queryByRole("link", { name: "Dashboard" })).not.toBeInTheDocument();
+  });
+
+  it("keeps first-time setup focused on the connection form", () => {
+    render(<MemosConnectionsSettings source={null} />);
+    expect(screen.getByLabelText("Instance URL")).toBeInTheDocument();
+    expect(screen.getByLabelText("Personal access token (PAT)")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Test and save" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Use demo.usememos.com" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Before you connect" })).not.toBeInTheDocument();
+    expect(screen.queryByText("Connection saved to this account")).not.toBeInTheDocument();
+    expect(screen.queryByText("Browser extension")).not.toBeInTheDocument();
   });
 
   it("returns signed-out users to the same page through the account sign-in action", async () => {
@@ -63,6 +74,8 @@ describe("MemosConnectionsSettings", () => {
     expect(screen.getByRole("link", { name: "Open Memos" })).toHaveAttribute("href", "https://memos.example.com");
     expect(screen.getByRole("button", { name: "Edit connection" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Disconnect" })).toBeInTheDocument();
+    expect(screen.getByText("Browser extension")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Get it/ })).toHaveAttribute("href", "/web-clipper");
   });
 
   it("asks for confirmation before disconnecting and keeps the saved connection on failure", async () => {

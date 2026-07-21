@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { AppShell } from "@/features/account/components/app-shell";
 import { AuthProviders } from "@/shared/auth/auth-providers";
 
 // Shell for the authenticated product surface. Every route under `(app)` is
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
 export default function AppLayout({ children }: { children: ReactNode }) {
   return (
     <AuthProviders>
-      <div className="min-h-screen bg-background">{children}</div>
+      <AppShell>{children}</AppShell>
     </AuthProviders>
   );
 }

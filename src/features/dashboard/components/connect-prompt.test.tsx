@@ -8,23 +8,18 @@ describe("ConnectPrompt", () => {
     vi.clearAllMocks();
   });
 
-  it("shows the setup notice over blurred sample stats", () => {
+  it("shows a focused connection empty state without sample dashboard data", () => {
     render(<ConnectPrompt />);
 
-    expect(screen.getByText("Connect Memos to your account")).toBeInTheDocument();
-    // Sample stat tiles render behind the blur.
-    expect(screen.getByText("Total memos")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Connect your Memos instance" })).toBeInTheDocument();
+    expect(screen.getByText(/Your notes stay on your server/)).toBeInTheDocument();
+    expect(screen.getByText("Activity")).toBeInTheDocument();
+    expect(screen.queryByText("Total memos")).not.toBeInTheDocument();
+    expect(screen.queryByText("Browser extension")).not.toBeInTheDocument();
   });
 
   it("links setup to the canonical connections page", () => {
     render(<ConnectPrompt />);
     expect(screen.getByRole("link", { name: "Connect instance" })).toHaveAttribute("href", "/settings/connections");
-  });
-
-  it("previews the browser extension as a secondary capability", () => {
-    render(<ConnectPrompt />);
-    expect(screen.getByText("Browser extension")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /Get it/ })).toHaveAttribute("href", "/web-clipper");
-    expect(screen.getByText("Save pages to Memos from your browser.")).toBeInTheDocument();
   });
 });

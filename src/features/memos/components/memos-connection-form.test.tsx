@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -25,8 +25,8 @@ describe("MemosConnectionForm", () => {
 
     render(<MemosConnectionForm instanceUrl={null} onSave={onSave} onSaved={onSaved} />);
 
-    await user.type(screen.getByLabelText("Instance URL"), "https://memos.example.com");
-    await user.type(screen.getByLabelText("Access token"), "tok_123");
+    fireEvent.change(screen.getByLabelText("Instance URL"), { target: { value: "https://memos.example.com" } });
+    fireEvent.change(screen.getByLabelText("Personal access token (PAT)"), { target: { value: "tok_123" } });
     await user.click(screen.getByRole("button", { name: "Test and save" }));
 
     // The live test runs first, and only on success is the connection persisted.
@@ -44,8 +44,8 @@ describe("MemosConnectionForm", () => {
     const user = userEvent.setup();
 
     render(<MemosConnectionForm instanceUrl={null} onSave={onSave} />);
-    await user.type(screen.getByLabelText("Instance URL"), "https://memos.example.com");
-    await user.type(screen.getByLabelText("Access token"), "tok_123");
+    fireEvent.change(screen.getByLabelText("Instance URL"), { target: { value: "https://memos.example.com" } });
+    fireEvent.change(screen.getByLabelText("Personal access token (PAT)"), { target: { value: "tok_123" } });
     await user.click(screen.getByRole("button", { name: "Test and save" }));
 
     expect(await screen.findByText(detail.title)).toBeInTheDocument();
@@ -57,11 +57,11 @@ describe("MemosConnectionForm", () => {
     const user = userEvent.setup();
 
     render(<MemosConnectionForm instanceUrl={null} onSave={onSave} />);
-    await user.type(screen.getByLabelText("Instance URL"), "not-a-url");
-    await user.type(screen.getByLabelText("Access token"), "tok_123");
+    fireEvent.change(screen.getByLabelText("Instance URL"), { target: { value: "not-a-url" } });
+    fireEvent.change(screen.getByLabelText("Personal access token (PAT)"), { target: { value: "tok_123" } });
     await user.click(screen.getByRole("button", { name: "Test and save" }));
 
-    expect(screen.getByText("Enter the root URL of your Memos instance.")).toBeInTheDocument();
+    expect(screen.getByText("Enter a complete URL starting with https:// (or http:// for local testing).")).toBeInTheDocument();
     expect(testInstanceConnection).not.toHaveBeenCalled();
     expect(onSave).not.toHaveBeenCalled();
   });
@@ -71,12 +71,42 @@ describe("MemosConnectionForm", () => {
     expect(screen.getByText(/Settings → Access Tokens/)).toBeInTheDocument();
   });
 
-  it("links to the instance's token settings once a URL is entered", async () => {
+  it("shows required field errors instead of hiding them behind a disabled action", async () => {
     const user = userEvent.setup();
     render(<MemosConnectionForm instanceUrl={null} onSave={noop} />);
 
-    await user.type(screen.getByLabelText("Instance URL"), "https://memos.example.com");
-    const link = screen.getByRole("link", { name: "Where to create an access token" });
+    await user.click(screen.getByRole("button", { name: "Test and save" }));
+
+    expect(screen.getByText("Enter your Memos instance URL.")).toBeInTheDocument();
+    expect(screen.getByText("Paste a personal access token from this Memos instance.")).toBeInTheDocument();
+    expect(testInstanceConnection).not.toHaveBeenCalled();
+  });
+
+  it("offers the demo setup path and fills its instance URL", async () => {
+    const user = userEvent.setup();
+    render(<MemosConnectionForm instanceUrl={null} onSave={noop} showDemoOption />);
+
+    expect(screen.getByRole("link", { name: "Create demo PAT" })).toHaveAttribute("href", "https://demo.usememos.com/setting");
+    expect(
+      screen.getByLabelText("Instance URL").compareDocumentPosition(screen.getByRole("button", { name: "Use demo.usememos.com" })) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    await user.click(screen.getByRole("button", { name: "Use demo.usememos.com" }));
+
+    expect(screen.getByLabelText("Instance URL")).toHaveValue("https://demo.usememos.com");
+    expect(screen.getByRole("button", { name: "Using demo.usememos.com" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("link", { name: "Open this instance’s access token settings" })).toHaveAttribute(
+      "href",
+      "https://demo.usememos.com/setting",
+    );
+    expect(screen.getByLabelText("Personal access token (PAT)")).toHaveFocus();
+  });
+
+  it("links to the instance's token settings once a URL is entered", () => {
+    render(<MemosConnectionForm instanceUrl={null} onSave={noop} />);
+
+    fireEvent.change(screen.getByLabelText("Instance URL"), { target: { value: "https://memos.example.com" } });
+    const link = screen.getByRole("link", { name: "Open this instance’s access token settings" });
     expect(link).toHaveAttribute("href", "https://memos.example.com/setting");
   });
 
@@ -86,7 +116,7 @@ describe("MemosConnectionForm", () => {
     const user = userEvent.setup();
     render(<MemosConnectionForm instanceUrl="https://memos.example.com" existingAccessToken="saved-token" onSave={onSave} />);
 
-    expect(screen.getByLabelText("Access token")).toHaveValue("");
+    expect(screen.getByLabelText("Personal access token (PAT)")).toHaveValue("");
     await user.click(screen.getByRole("button", { name: "Test and save" }));
     expect(onSave).toHaveBeenCalledWith({ instanceUrl: "https://memos.example.com", accessToken: "saved-token" });
   });
@@ -97,14 +127,13 @@ describe("MemosConnectionForm", () => {
     const user = userEvent.setup();
     render(<MemosConnectionForm instanceUrl="https://old.example.com" existingAccessToken="old-token" onSave={onSave} />);
 
-    await user.clear(screen.getByLabelText("Instance URL"));
-    await user.type(screen.getByLabelText("Instance URL"), "https://new.example.com");
-    await user.type(screen.getByLabelText("Access token"), "new-token");
+    fireEvent.change(screen.getByLabelText("Instance URL"), { target: { value: "https://new.example.com" } });
+    fireEvent.change(screen.getByLabelText("Personal access token (PAT)"), { target: { value: "new-token" } });
     await user.click(screen.getByRole("button", { name: "Test and save" }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(/existing connection is unchanged/i);
     expect(screen.getByLabelText("Instance URL")).toHaveValue("https://new.example.com");
-    expect(screen.getByLabelText("Access token")).toHaveValue("new-token");
+    expect(screen.getByLabelText("Personal access token (PAT)")).toHaveValue("new-token");
     expect(screen.getByRole("button", { name: "Retry" })).toBeInTheDocument();
   });
 });

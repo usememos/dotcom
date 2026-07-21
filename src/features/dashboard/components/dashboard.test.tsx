@@ -32,7 +32,6 @@ vi.mock("../lib/stats-cache", () => ({
 vi.mock("./dashboard-header", () => ({
   DashboardHeader: ({ secondary }: { secondary: string }) => <div data-testid="header">{secondary}</div>,
 }));
-vi.mock("./stat-tiles", () => ({ StatTiles: () => <div data-testid="stat-tiles" /> }));
 vi.mock("./activity-heatmap", () => ({ ActivityHeatmap: () => <div data-testid="heatmap" /> }));
 vi.mock("./connect-prompt", () => ({ ConnectPrompt: () => <div data-testid="connect-prompt" /> }));
 
@@ -67,11 +66,11 @@ describe("Dashboard", () => {
     mocks.connection.instanceUrl = CREDS.instanceUrl;
     mocks.fetchInstanceStats.mockResolvedValue(okResult);
     render(<Dashboard />);
-    expect(await screen.findByTestId("stat-tiles")).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Activity" })).toBeInTheDocument();
     expect(screen.getByTestId("heatmap")).toBeInTheDocument();
     expect(screen.getByTestId("header")).toBeInTheDocument();
-    expect(screen.getByText("Browser extension")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /Get it/ })).toHaveAttribute("href", "/web-clipper");
+    expect(screen.queryByText("Total memos")).not.toBeInTheDocument();
+    expect(screen.queryByText("Browser extension")).not.toBeInTheDocument();
   });
 
   it("shows the connect prompt when signed in but not connected", async () => {
@@ -94,7 +93,9 @@ describe("Dashboard", () => {
     mocks.connection.isSignedIn = false;
     render(<Dashboard />);
     expect(await screen.findByRole("button", { name: "Sign in" })).toBeInTheDocument();
-    expect(screen.getByText("Your Memos workspace")).toBeInTheDocument();
+    const heading = screen.getByText("Your Memos workspace");
+    expect(heading).toBeInTheDocument();
+    expect(heading.parentElement).toHaveClass("rounded-2xl", "border");
   });
 
   it("shows a generic failure when the stats fetch rejects", async () => {

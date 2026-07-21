@@ -120,8 +120,9 @@ export function describeInstanceError(kind: InstanceErrorKind, context: Describe
         title: "Unexpected response",
         why: "The instance returned something that isn't a valid API response — possibly a redirect or a login page.",
         howToFix: [
-          "Confirm the instance URL points at your Memos server's API (not a login or proxy page).",
-          "If your server redirects (http→https or apex→www), use the final URL.",
+          "Enter the root address where Memos opens, without /setting, /api, or another path.",
+          "If a proxy or sign-in gateway intercepts API requests, allow direct access to the Memos API.",
+          "If the server redirects (http→https or apex→www), use the final URL.",
         ],
       };
   }

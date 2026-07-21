@@ -7,6 +7,9 @@ export const MAX_INSTANCE_URL_LENGTH = 2048;
 
 /** Parses an instance URL, returning null when it is not a valid http(s) URL. */
 export function parseInstanceUrl(raw: string): URL | null {
+  if (raw.trim().length === 0 || raw.trim().length > MAX_INSTANCE_URL_LENGTH) {
+    return null;
+  }
   let url: URL;
   try {
     url = new URL(raw.trim());

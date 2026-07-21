@@ -24,7 +24,7 @@ the research basis behind this direction and the conventions below.
 | Group | Purpose | Rendering |
 | --- | --- | --- |
 | `(public)` | Marketing + docs + blog + changelog | Static |
-| `(tools)` | Standalone client tools (the scratchpad) | Client, browser-local |
+| `(tools)` | Standalone unauthenticated tools (the scratchpad; no Clerk provider) | Client, browser-local |
 | `(auth)` | Sign-in / sign-up boundaries | — |
 | `(app)` | Authenticated product surface (dashboard, settings, future authed pages) | Dynamic, noindex |
 | `api/` | Route handlers (settings, stats, search, OG) | `nodejs` runtime |

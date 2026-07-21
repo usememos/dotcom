@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { type ReactNode, useCallback, useEffect, useState } from "react";
+import { AppPage } from "@/features/account/components/app-page";
 import { useAccountActions } from "@/features/account/hooks/use-account-actions";
 import { InstanceErrorNotice } from "@/features/memos/components/instance-error-notice";
 import { useMemosConnection } from "@/features/memos/hooks/use-memos-connection";
@@ -9,16 +10,13 @@ import type { InstanceErrorDetail } from "@/shared/memos/errors";
 import { fetchInstanceStats, type InstanceStatsResult } from "@/shared/memos/instance-stats";
 import { CONNECTIONS_SETTINGS_PATH } from "@/shared/routes";
 import { Alert, AlertDescription, AlertTitle } from "@/shared/ui/alert";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/shared/ui/app-card";
 import { Button, buttonVariants } from "@/shared/ui/button";
 import { Skeleton } from "@/shared/ui/skeleton";
 import { connectedHeaderLabel } from "../lib/stats";
 import { clearDashboardStatsCache, readDashboardStatsCache, writeDashboardStatsCache } from "../lib/stats-cache";
 import { ActivityHeatmap } from "./activity-heatmap";
-import { BrowserExtensionPreview } from "./browser-extension-preview";
 import { ConnectPrompt } from "./connect-prompt";
 import { DashboardHeader } from "./dashboard-header";
-import { StatTiles } from "./stat-tiles";
 
 type OkStats = Extract<InstanceStatsResult, { status: "ok" }>;
 type NonOk = { kind: "not-connected" } | { kind: "error"; detail: InstanceErrorDetail } | { kind: "signed-out" } | { kind: "failed" };
@@ -28,12 +26,12 @@ function deriveUserId(name: string): string {
   return name.split("/").pop() || name;
 }
 
-function CenteredCard({ children }: { children: ReactNode }) {
-  return <Card className="mx-auto mt-24 max-w-md text-center">{children}</Card>;
+function CenteredPanel({ children }: { children: ReactNode }) {
+  return <div className="mx-4 mt-16 max-w-md rounded-2xl border bg-muted/20 p-8 text-center sm:mx-auto sm:mt-24">{children}</div>;
 }
 
 export function Dashboard() {
-  const { user, signIn } = useAccountActions({ signInForceRedirectUrl: "/dashboard" });
+  const { signIn } = useAccountActions({ signInForceRedirectUrl: "/dashboard" });
   const connection = useMemosConnection();
   const { credentials, isConnected, isLoaded, isSignedIn, instanceUrl } = connection;
   const [data, setData] = useState<OkStats | null>(null);
@@ -105,44 +103,43 @@ export function Dashboard() {
   if (data) {
     return (
       <DashboardShell>
-        <DashboardHeader user={user ?? null} secondary={headerLabel(instanceUrl, data)} />
-        <StatTiles stats={data.stats} />
-        <div className="space-y-3">
-          <Card>
-            <CardContent>
-              <ActivityHeatmap days={data.stats.days} />
-            </CardContent>
-          </Card>
-          <Card size="sm">
-            <CardContent>
-              <BrowserExtensionPreview />
-            </CardContent>
-          </Card>
-        </div>
+        <DashboardHeader secondary={headerLabel(instanceUrl, data)} />
+        <section aria-labelledby="activity-heading" className="pt-2">
+          <div className="mb-7 flex items-end justify-between gap-4">
+            <div>
+              <p className="font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-primary">Writing rhythm</p>
+              <h2 id="activity-heading" className="mt-1.5 text-lg font-semibold tracking-[-0.025em]">
+                Activity
+              </h2>
+            </div>
+            <p className="hidden max-w-xs text-right text-xs leading-5 text-muted-foreground sm:block">
+              A year of notes, links, and ideas from your connected instance.
+            </p>
+          </div>
+          <ActivityHeatmap days={data.stats.days} />
+        </section>
       </DashboardShell>
     );
   }
 
   if (nonOk?.kind === "signed-out") {
     return (
-      <CenteredCard>
-        <CardHeader>
-          <CardTitle>Your Memos workspace</CardTitle>
-        </CardHeader>
-        <CardContent className="text-muted-foreground">Sign in to manage connections, activity, and tools from one place.</CardContent>
-        <CardFooter className="justify-center">
+      <CenteredPanel>
+        <h1 className="text-xl font-semibold tracking-[-0.03em]">Your Memos workspace</h1>
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">Sign in to manage connections, activity, and tools from one place.</p>
+        <div className="mt-6 flex justify-center">
           <Button type="button" onClick={() => signIn()}>
             Sign in
           </Button>
-        </CardFooter>
-      </CenteredCard>
+        </div>
+      </CenteredPanel>
     );
   }
 
   if (nonOk?.kind === "not-connected") {
     return (
       <DashboardShell>
-        <DashboardHeader user={user ?? null} secondary="No connections yet" />
+        <DashboardHeader secondary="No connections yet" />
         <ConnectPrompt />
       </DashboardShell>
     );
@@ -151,13 +148,11 @@ export function Dashboard() {
   if (nonOk?.kind === "error") {
     return (
       <DashboardShell>
-        <DashboardHeader user={user ?? null} secondary={nonOkHeaderLabel(instanceUrl, isConnected)} />
-        <Card>
-          <CardContent>
-            <InstanceErrorNotice detail={nonOk.detail} />
-            <RecoveryActions onRetry={reload} />
-          </CardContent>
-        </Card>
+        <DashboardHeader secondary={nonOkHeaderLabel(instanceUrl, isConnected)} />
+        <div className="max-w-2xl">
+          <InstanceErrorNotice detail={nonOk.detail} />
+          <RecoveryActions onRetry={reload} />
+        </div>
       </DashboardShell>
     );
   }
@@ -165,7 +160,7 @@ export function Dashboard() {
   if (nonOk?.kind === "failed") {
     return (
       <DashboardShell>
-        <DashboardHeader user={user ?? null} secondary={nonOkHeaderLabel(instanceUrl, isConnected)} />
+        <DashboardHeader secondary={nonOkHeaderLabel(instanceUrl, isConnected)} />
         <InlineError message="Couldn't load your dashboard. Try again." onRetry={reload} />
       </DashboardShell>
     );
@@ -190,19 +185,21 @@ function nonOkHeaderLabel(instanceUrl: string | null, isConnected: boolean): str
 }
 
 function DashboardShell({ children }: { children: ReactNode }) {
-  return <div className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-4 py-10">{children}</div>;
+  return <AppPage className="flex flex-col gap-9">{children}</AppPage>;
 }
 
 function DashboardSkeleton() {
   return (
     <DashboardShell>
       <Skeleton className="h-5 w-32" />
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {[0, 1, 2, 3].map((index) => (
-          <Skeleton key={index} className="h-16" />
-        ))}
+      <div className="flex items-end justify-between gap-4">
+        <div className="space-y-2">
+          <Skeleton className="h-3 w-24" />
+          <Skeleton className="h-6 w-20" />
+        </div>
+        <Skeleton className="hidden h-8 w-64 sm:block" />
       </div>
-      <Skeleton className="h-32" />
+      <Skeleton className="h-52 w-full" />
     </DashboardShell>
   );
 }

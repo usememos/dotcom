@@ -4,7 +4,7 @@ import { MemosConnectionsSettings } from "@/features/memos/components/memos-conn
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Connections – Settings",
+  title: "Memos Instance – Settings",
 };
 
 type ConnectionsPageProps = {

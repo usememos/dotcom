@@ -2,11 +2,11 @@ import { ClerkProvider } from "@clerk/nextjs";
 import type { ReactNode } from "react";
 
 /**
- * Mounts Clerk for the route groups that use it — (tools) and (app).
+ * Mounts Clerk for the authenticated product surface under (app).
  *
- * Kept out of the root layout on purpose: public marketing/docs pages never use
- * Clerk, so mounting it there would ship Clerk's client JS and open an auth-state
- * connection on every static page for no reason.
+ * Kept out of the root and tools layouts on purpose: public pages and local-only
+ * tools never use Clerk, so they should not ship its client JS or open an
+ * authentication-state connection.
  */
 export function AuthProviders({ children }: { children: ReactNode }) {
   return (

@@ -1,35 +1,14 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { beforeEach, describe, expect, it, vi } from "vitest";
-
-vi.mock("@/features/account/components/sign-out-item", () => ({
-  SignOutItem: () => <div data-testid="sign-out-item" />,
-}));
-vi.mock("@/features/account/components/theme-toggle", () => ({
-  ThemeToggle: () => <div data-testid="theme-items" />,
-}));
+import { describe, expect, it } from "vitest";
 
 import { DashboardHeader } from "./dashboard-header";
 
-beforeEach(() => {
-  vi.clearAllMocks();
-});
-
 describe("DashboardHeader", () => {
-  it("renders the user identity and secondary label", () => {
-    render(<DashboardHeader user={{ fullName: "Ada Lovelace" }} secondary="memos.example.com · v1" />);
+  it("keeps the page title and connection status focused on dashboard context", () => {
+    render(<DashboardHeader secondary="memos.example.com · v1" />);
 
-    expect(screen.getByText("Ada Lovelace")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Overview" })).toBeInTheDocument();
     expect(screen.getByText("memos.example.com · v1")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Account and settings" })).toBeInTheDocument();
-  });
-
-  it("links Connections to the canonical settings page", async () => {
-    const user = userEvent.setup();
-
-    render(<DashboardHeader user={null} secondary="No connections yet" />);
-
-    await user.click(screen.getByRole("button", { name: "Account and settings" }));
-    expect(await screen.findByRole("menuitem", { name: "Connections" })).toHaveAttribute("href", "/settings/connections");
+    expect(screen.queryByRole("button", { name: "Account menu" })).not.toBeInTheDocument();
   });
 });

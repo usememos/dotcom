@@ -102,6 +102,73 @@ body {
   background-image: none;
 }
 
+/* Authenticated product surfaces use a quieter, notebook-like palette without
+   changing the public marketing and documentation themes. */
+.app-surface,
+body:has(.app-surface) [data-slot="dropdown-menu-content"] {
+  --background: oklch(0.995 0.004 145);
+  --foreground: oklch(0.22 0.012 155);
+  --card: oklch(1 0.002 145);
+  --card-foreground: oklch(0.22 0.012 155);
+  --popover: oklch(1 0.002 145);
+  --popover-foreground: oklch(0.22 0.012 155);
+  --primary: oklch(0.49 0.105 166);
+  --primary-foreground: oklch(0.99 0.002 145);
+  --secondary: oklch(0.96 0.006 145);
+  --secondary-foreground: oklch(0.32 0.012 155);
+  --muted: oklch(0.963 0.007 145);
+  --muted-foreground: oklch(0.51 0.015 155);
+  --accent: oklch(0.95 0.025 165);
+  --accent-foreground: oklch(0.31 0.065 166);
+  --border: oklch(0.9 0.008 145);
+  --input: oklch(0.88 0.01 145);
+  --ring: oklch(0.49 0.105 166);
+}
+
+.dark .app-surface,
+.dark body:has(.app-surface) [data-slot="dropdown-menu-content"] {
+  --background: oklch(0.18 0.01 155);
+  --foreground: oklch(0.94 0.006 145);
+  --card: oklch(0.205 0.012 155);
+  --card-foreground: oklch(0.94 0.006 145);
+  --popover: oklch(0.205 0.012 155);
+  --popover-foreground: oklch(0.94 0.006 145);
+  --primary: oklch(0.7 0.1 165);
+  --primary-foreground: oklch(0.17 0.012 155);
+  --secondary: oklch(0.245 0.012 155);
+  --secondary-foreground: oklch(0.9 0.006 145);
+  --muted: oklch(0.225 0.012 155);
+  --muted-foreground: oklch(0.68 0.012 145);
+  --accent: oklch(0.26 0.04 165);
+  --accent-foreground: oklch(0.9 0.05 165);
+  --border: oklch(0.34 0.012 155 / 0.65);
+  --input: oklch(1 0 0 / 0.14);
+  --ring: oklch(0.7 0.1 165);
+}
+
+/* Product pages use immediate state changes and no decorative motion. */
+.app-surface,
+.app-surface * {
+  animation: none;
+  scroll-behavior: auto;
+  transition: none;
+}
+
+/* App popovers render in a body portal rather than inside .app-surface. */
+body:has(.app-surface) [data-slot="dropdown-menu-content"],
+body:has(.app-surface) [data-slot="dropdown-menu-content"] * {
+  animation: none;
+  transition: none;
+}
+
+/* The authenticated app owns its scroll area; the browser window remains fixed. */
+html:has(.app-surface),
+body:has(.app-surface) {
+  height: 100svh;
+  min-height: 0;
+  overflow: hidden;
+}
+
 .font-serif {
   font-family: var(--font-display-serif), Georgia, Cambria, "Times New Roman", Times, serif;
 }

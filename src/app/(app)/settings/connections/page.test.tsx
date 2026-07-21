@@ -20,6 +20,6 @@ describe("ConnectionsPage", () => {
 
   it("is dynamic and noindex through the authenticated app layout", () => {
     expect(dynamic).toBe("force-dynamic");
-    expect(metadata.title).toBe("Connections – Settings");
+    expect(metadata.title).toBe("Memos Instance – Settings");
   });
 });

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { normalizeInstanceUrl, parseInstanceUrl } from "./instance-url";
+import { MAX_INSTANCE_URL_LENGTH, normalizeInstanceUrl, parseInstanceUrl } from "./instance-url";
 
 describe("normalizeInstanceUrl", () => {
   it("normalizes valid input to the instance origin", () => {
@@ -18,6 +18,10 @@ describe("normalizeInstanceUrl", () => {
     expect(normalizeInstanceUrl("memos.example.com")).toBeNull();
     expect(normalizeInstanceUrl("not a url")).toBeNull();
     expect(normalizeInstanceUrl("")).toBeNull();
+  });
+
+  it("rejects URLs beyond the stored length limit", () => {
+    expect(normalizeInstanceUrl(`https://example.com/${"a".repeat(MAX_INSTANCE_URL_LENGTH)}`)).toBeNull();
   });
 
   it("parseInstanceUrl returns a URL for valid input", () => {
