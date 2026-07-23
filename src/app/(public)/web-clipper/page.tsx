@@ -1,16 +1,10 @@
 import { HomeLayout } from "fumadocs-ui/layouts/home";
-import { CodeIcon, EyeIcon, ImageIcon, LayoutTemplateIcon, MousePointerClickIcon, PencilLineIcon } from "lucide-react";
+import { ArrowRightIcon, CodeIcon, EyeIcon, ImageIcon, LanguagesIcon, LockKeyholeIcon, ServerIcon } from "lucide-react";
 import type { Metadata } from "next";
 import type { SVGProps } from "react";
-import { FeatureCard } from "@/features/marketing/components/feature-card";
 import { Footer } from "@/features/marketing/components/footer";
-import { HeroAccent } from "@/features/marketing/components/hero-accent";
-import {
-  MarketingCtaSection,
-  MarketingPageHero,
-  MarketingSectionHeader,
-  MarketingSummaryBand,
-} from "@/features/marketing/components/marketing-page";
+import { ConnectionVisual, TemplateVisual, WebClipperHeroVisual } from "@/features/marketing/components/web-clipper-showcase";
+import styles from "@/features/marketing/components/web-clipper-showcase.module.css";
 import { baseOptions } from "@/shared/config/layout";
 import { buildBreadcrumbJsonLd, buildFaqJsonLd, buildMarketingMetadata, type FaqItem } from "@/shared/lib/seo";
 import { JsonLdScript } from "@/shared/ui/json-ld-script";
@@ -30,7 +24,7 @@ function GithubIcon(props: SVGProps<SVGSVGElement>) {
 export const metadata: Metadata = buildMarketingMetadata({
   title: "Memos Web Clipper - Save Web Pages to Your Memos",
   description:
-    "An open-source browser extension for Chrome and Firefox. Clip pages, selections, and images as Markdown directly into your self-hosted Memos instance.",
+    "An open-source browser extension for Chrome, Edge, Brave, Arc, and Firefox. Save pages, selections, and images as Markdown directly to your Memos instance.",
   path: "/web-clipper",
 });
 
@@ -46,78 +40,49 @@ const softwareJsonLd = {
   "@type": "SoftwareApplication",
   name: "Memos Web Clipper",
   applicationCategory: "BrowserApplication",
-  operatingSystem: "Chrome, Firefox",
+  operatingSystem: "Chromium-based browsers, Firefox",
   description:
-    "Save pages, selections, and images directly to your Memos instance. Converts clips to Markdown and works with self-hosted Memos.",
+    "Save pages, selections, and images directly to your Memos instance. Connect through usememos.com or directly with a personal access token.",
   url: "https://usememos.com/web-clipper",
   downloadUrl: [CHROME_STORE_URL, FIREFOX_ADDON_URL],
   license: "https://github.com/usememos/web-clipper/blob/main/LICENSE",
 };
 
-const SUMMARY = [
-  {
-    title: "Markdown-native clips",
-    description: "Selections, links, lists, code, and tables are converted to clean Markdown instead of pasted HTML.",
-  },
-  {
-    title: "Your instance, your notes",
-    description: "Clips save straight to the Memos server you run, so captured pages live on your own infrastructure.",
-  },
-  {
-    title: "Private by design",
-    description: "No analytics, ads, or telemetry. The extension talks only to usememos.com and your Memos instance.",
-  },
-] as const;
-
-const HOW_IT_WORKS = [
-  "Install the extension from the Chrome Web Store or Firefox Add-ons, then connect your Memos instance.",
-  "Open the clipper on any page to capture the title, URL, and content, or select text and images first for a focused clip.",
-  "Review and edit the Markdown, pick a visibility (Private, Protected, or Public), and save it to your timeline.",
-] as const;
-
-const CLIPPER_FEATURES = [
+const CAPTURE_FEATURES = [
   {
     title: "Clean Markdown conversion",
     description: "Selected text, links, lists, code blocks, and tables become readable Markdown that fits your existing notes.",
     icon: <CodeIcon className="h-5 w-5" />,
   },
   {
-    title: "Image attachments",
-    description: "Pick images from the page and upload them to your instance as Memos attachments alongside the clip.",
+    title: "Images and quick saves",
+    description: "Attach images from a page, or right-click selected text and images to save them privately without opening the popup.",
     icon: <ImageIcon className="h-5 w-5" />,
   },
   {
-    title: "Edit before saving",
-    description: "Every clip opens for review first, so you can trim, annotate, or tag it before it reaches your timeline.",
-    icon: <PencilLineIcon className="h-5 w-5" />,
-  },
-  {
-    title: "Visibility control",
-    description: "Choose Private, Protected, or Public per clip, matching the visibility model you already use in Memos.",
+    title: "Review every memo",
+    description: "Trim, annotate, or tag the Markdown, then choose a clearly explained Private, Protected, or Public visibility.",
     icon: <EyeIcon className="h-5 w-5" />,
   },
-  {
-    title: "Right-click quick save",
-    description: "Save selected text or images from the context menu without opening the popup. Quick saves default to private.",
-    icon: <MousePointerClickIcon className="h-5 w-5" />,
-  },
-  {
-    title: "Custom clip templates",
-    description: "Control how clips are formatted with templates stored locally in your browser, not on a server.",
-    icon: <LayoutTemplateIcon className="h-5 w-5" />,
-  },
 ] as const;
+
+const LANGUAGES = ["English", "简体中文", "繁體中文", "Français", "Deutsch", "日本語", "Español"] as const;
 
 const FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "Which browsers does the Memos Web Clipper support?",
     answer:
-      "The extension is available for Google Chrome via the Chrome Web Store and for Mozilla Firefox (version 142 or later) via Firefox Add-ons.",
+      "The extension works with Chromium-based browsers, including Google Chrome, Microsoft Edge, Brave, and Arc. It is also available for Mozilla Firefox version 142 or later.",
   },
   {
     question: "Does the web clipper work with self-hosted Memos?",
     answer:
-      "Yes. The clipper is built for self-hosted Memos and saves clips directly to your own instance. It requires Memos 0.26.0 or later.",
+      "Yes. Connect through usememos.com or connect directly with your instance URL and a personal access token. Direct connections require no usememos.com account. Memos 0.26.0 or later is required.",
+  },
+  {
+    question: "Where are my connection details and templates stored?",
+    answer:
+      "Direct connection details and custom clip templates stay in your browser. The extension validates your instance URL, supported Memos version, and token before saving the connection.",
   },
   {
     question: "Is the Memos Web Clipper open source?",
@@ -136,70 +101,200 @@ const faqJsonLd = buildFaqJsonLd(FAQ_ITEMS);
 export default function WebClipperPage() {
   return (
     <HomeLayout {...baseOptions}>
-      <main className="flex flex-1 flex-col bg-white dark:bg-zinc-950">
+      <main className="flex flex-1 flex-col overflow-hidden bg-white dark:bg-zinc-950">
         <JsonLdScript data={breadcrumbJsonLd} />
         <JsonLdScript data={softwareJsonLd} />
         <JsonLdScript data={faqJsonLd} />
 
-        <MarketingPageHero
-          eyebrow="Browser Extension"
-          title={
-            <>
-              Clip the web into <HeroAccent>your Memos.</HeroAccent>
-            </>
-          }
-          description="Save pages, selections, and images from any website straight to your self-hosted Memos instance — converted to clean Markdown, reviewed before saving, with no telemetry."
-          actions={[
-            { label: "Add to Chrome", href: CHROME_STORE_URL, showArrow: true },
-            { label: "Add to Firefox", href: FIREFOX_ADDON_URL },
-            { label: "View on GitHub", href: GITHUB_REPO_URL, icon: <GithubIcon className="h-4 w-4" /> },
-          ]}
-        />
-
-        <MarketingSummaryBand items={SUMMARY} />
-
-        <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto max-w-6xl">
-            <MarketingSectionHeader eyebrow="How It Works" title="From page to memo in three steps." align="left" />
-            <div className="border-y border-zinc-200 dark:border-white/10">
-              {HOW_IT_WORKS.map((item, index) => (
-                <div
-                  key={item}
-                  className="grid gap-4 border-b border-zinc-200 py-5 last:border-b-0 dark:border-white/10 sm:grid-cols-[4rem_minmax(0,1fr)]"
+        <section className="relative isolate border-b border-white/10 bg-[#172033] text-white">
+          <div
+            className="pointer-events-none absolute inset-0 opacity-40"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 18% 14%, rgba(56,189,248,.22), transparent 30%), linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px)",
+              backgroundSize: "auto, 42px 42px, 42px 42px",
+            }}
+          />
+          <div className="relative mx-auto grid min-h-[calc(100svh-4rem)] max-w-[90rem] items-center gap-14 px-4 pt-14 pb-24 sm:px-6 sm:pt-16 sm:pb-28 lg:grid-cols-[minmax(0,34rem)_minmax(0,1fr)] lg:gap-16 lg:px-10 lg:py-20 xl:px-16">
+            <div className={`${styles.heroCopy} max-w-xl`}>
+              <div className="mb-7 flex flex-wrap items-center gap-3">
+                <span className="font-mono text-xs tracking-[0.16em] text-sky-100 uppercase">Memos Web Clipper</span>
+                <span className="rounded-full border border-amber-200/30 bg-amber-200/10 px-2.5 py-1 font-mono text-[10px] font-medium text-amber-100">
+                  v0.2.0
+                </span>
+              </div>
+              <h1 className="font-serif text-5xl leading-[0.98] font-semibold tracking-[-0.035em] text-white sm:text-6xl lg:text-7xl">
+                <span className="block sm:whitespace-nowrap">Keep the page.</span>
+                <span className="block sm:whitespace-nowrap">Lose the tab.</span>
+              </h1>
+              <p className="mt-7 max-w-lg text-balance text-base leading-8 text-slate-200/85 sm:text-lg">
+                Turn pages, selections, and images into clean Markdown—then save them straight to the Memos instance you control.
+              </p>
+              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+                <a
+                  href={CHROME_STORE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-[#172033] transition-transform hover:-translate-y-0.5 hover:bg-sky-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 >
-                  <p className="text-xs font-semibold tracking-[0.18em] text-zinc-400">{String(index + 1).padStart(2, "0")}</p>
-                  <p className="text-sm leading-7 text-zinc-600 dark:text-zinc-300 sm:text-base">{item}</p>
+                  Add to Chrome
+                  <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1" />
+                </a>
+                <a
+                  href={FIREFOX_ADDON_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center rounded-lg border border-white/25 bg-white/5 px-5 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                >
+                  Add to Firefox
+                </a>
+              </div>
+              <p className="mt-5 text-xs leading-5 text-slate-300/70">Also works with Edge, Brave, and Arc · Open source · No telemetry</p>
+            </div>
+            <div className="relative pb-8 lg:pb-12">
+              <WebClipperHeroVisual />
+            </div>
+          </div>
+        </section>
+
+        <section className="border-b border-zinc-200 px-4 py-16 dark:border-white/10 sm:px-6 lg:py-24">
+          <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:items-center lg:gap-20">
+            <div>
+              <p className="text-sm font-semibold tracking-[0.16em] text-teal-700 uppercase dark:text-teal-300">New in v0.2.0</p>
+              <h2 className="mt-4 text-balance font-serif text-4xl leading-tight font-semibold tracking-[-0.025em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
+                Your server. Your way in.
+              </h2>
+              <p className="mt-5 text-base leading-8 text-zinc-600 dark:text-zinc-300">
+                Use the guided usememos.com setup, or connect directly with an instance URL and personal access token. Both paths are
+                validated before anything is saved.
+              </p>
+              <a
+                href={`${GITHUB_REPO_URL}/blob/main/CHANGELOG.md`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:text-teal-900 dark:text-teal-300 dark:hover:text-teal-200"
+              >
+                Read the v0.2.0 changelog
+                <ArrowRightIcon className="size-4" />
+              </a>
+            </div>
+            <ConnectionVisual />
+          </div>
+        </section>
+
+        <section className="border-b border-zinc-200 bg-zinc-50 px-4 py-16 dark:border-white/10 dark:bg-zinc-900/40 sm:px-6 lg:py-24">
+          <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,25rem)] lg:items-center lg:gap-20">
+            <TemplateVisual />
+            <div>
+              <p className="text-sm font-semibold tracking-[0.16em] text-teal-700 uppercase dark:text-teal-300">Format it once</p>
+              <h2 className="mt-4 text-balance font-serif text-4xl leading-tight font-semibold tracking-[-0.025em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
+                Every clip, already in your shape.
+              </h2>
+              <p className="mt-5 text-base leading-8 text-zinc-600 dark:text-zinc-300">
+                Build a reusable template from title, URL, date, and captured content. The live preview shows the final Markdown before you
+                save the format locally in your browser.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="border-b border-zinc-200 px-4 py-16 dark:border-white/10 sm:px-6 lg:py-24">
+          <div className="mx-auto max-w-6xl">
+            <div className="grid gap-5 border-b border-zinc-200 pb-10 dark:border-white/10 lg:grid-cols-[minmax(0,23rem)_1fr] lg:items-end lg:gap-20">
+              <div>
+                <p className="text-sm font-semibold tracking-[0.16em] text-teal-700 uppercase dark:text-teal-300">
+                  Capture without cleanup
+                </p>
+                <h2 className="mt-4 text-balance font-serif text-4xl leading-tight font-semibold tracking-[-0.025em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
+                  From webpage to timeline.
+                </h2>
+              </div>
+              <p className="max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 lg:justify-self-end">
+                Select what matters, shape the Markdown, choose visibility, and save. The source stays attached so you can always get back
+                to the full context.
+              </p>
+            </div>
+            <div className="grid divide-y divide-zinc-200 dark:divide-white/10 md:grid-cols-3 md:divide-x md:divide-y-0">
+              {CAPTURE_FEATURES.map((feature) => (
+                <div key={feature.title} className="group py-8 md:px-8 md:first:pl-0 md:last:pr-0">
+                  <span className="flex size-10 items-center justify-center rounded-xl bg-teal-50 text-teal-700 transition-transform group-hover:-translate-y-1 dark:bg-teal-400/10 dark:text-teal-300">
+                    {feature.icon}
+                  </span>
+                  <h3 className="mt-6 text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{feature.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-zinc-600 dark:text-zinc-400">{feature.description}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-          <div className="mx-auto max-w-6xl">
-            <MarketingSectionHeader
-              eyebrow="Features"
-              title="Everything a clipper needs. Nothing it doesn't."
-              description="The clipper stays focused on capture: grab what matters on a page, shape it into Markdown, and file it in your timeline."
-            />
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {CLIPPER_FEATURES.map((feature) => (
-                <FeatureCard key={feature.title} icon={feature.icon} title={feature.title} description={feature.description} />
+        <section className="border-b border-zinc-200 bg-[#f6f2e7] px-4 py-14 dark:border-white/10 dark:bg-zinc-900 sm:px-6 lg:py-18">
+          <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,20rem)_1fr] lg:items-center lg:gap-20">
+            <div>
+              <LanguagesIcon className="size-6 text-teal-700 dark:text-teal-300" />
+              <h2 className="mt-4 font-serif text-3xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">
+                At home in your browser.
+              </h2>
+              <p className="mt-3 text-sm leading-7 text-zinc-600 dark:text-zinc-400">The whole extension now speaks seven languages.</p>
+            </div>
+            <div className="grid grid-cols-2 gap-x-8 gap-y-4 sm:grid-cols-3 lg:grid-cols-4">
+              {LANGUAGES.map((language) => (
+                <div
+                  key={language}
+                  className="border-b border-zinc-300 pb-3 font-medium text-zinc-800 dark:border-white/15 dark:text-zinc-200"
+                >
+                  {language}
+                </div>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
+        <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6">
+          <div className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-3 sm:divide-x sm:divide-zinc-200 dark:sm:divide-white/10">
+            {[
+              {
+                icon: <ServerIcon className="size-5" />,
+                title: "Self-hosted first",
+                text: "Clips go to the Memos instance you choose.",
+              },
+              {
+                icon: <LockKeyholeIcon className="size-5" />,
+                title: "Private by design",
+                text: "No analytics, ads, or telemetry in the extension.",
+              },
+              {
+                icon: <GithubIcon className="size-5" />,
+                title: "Open source",
+                text: "Inspect the code, report issues, or contribute on GitHub.",
+              },
+            ].map((item) => (
+              <div key={item.title} className="sm:px-8 sm:first:pl-0 sm:last:pr-0">
+                <div className="flex items-center gap-3 text-teal-700 dark:text-teal-300">
+                  {item.icon}
+                  <h2 className="font-semibold text-zinc-950 dark:text-zinc-100">{item.title}</h2>
+                </div>
+                <p className="mt-3 text-sm leading-6 text-zinc-600 dark:text-zinc-400">{item.text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="border-b border-zinc-200 px-4 py-16 dark:border-white/10 sm:px-6 lg:py-24">
           <div className="mx-auto grid w-full max-w-6xl gap-10 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
             <div className="lg:sticky lg:top-24 lg:self-start">
-              <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">FAQ</p>
-              <h2 className="mt-4 max-w-[14ch] text-balance font-serif text-3xl font-semibold tracking-[-0.03em] text-zinc-950 dark:text-zinc-100 sm:text-4xl">
-                Web clipper questions.
+              <p className="text-sm font-semibold tracking-[0.16em] text-teal-700 uppercase dark:text-teal-300">FAQ</p>
+              <h2 className="mt-4 max-w-[12ch] text-balance font-serif text-4xl font-semibold tracking-[-0.025em] text-zinc-950 dark:text-zinc-100">
+                Before you start clipping.
               </h2>
-              <p className="mt-4 max-w-md text-balance text-base leading-7 text-zinc-600 dark:text-zinc-300 sm:text-lg">
-                Supported browsers, version requirements, and how the extension works with your instance.
-              </p>
+              <a
+                href={GITHUB_REPO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-zinc-700 hover:text-teal-700 dark:text-zinc-300 dark:hover:text-teal-300"
+              >
+                View source on GitHub <ArrowRightIcon className="size-4" />
+              </a>
             </div>
 
             <dl className="divide-y divide-zinc-200 border-y border-zinc-200 dark:divide-white/10 dark:border-white/10">
@@ -213,14 +308,36 @@ export default function WebClipperPage() {
           </div>
         </section>
 
-        <MarketingCtaSection
-          title="Start clipping in under a minute."
-          description="Install the extension, connect your Memos instance, and the next page worth keeping is one click from your timeline."
-          actions={[
-            { label: "Add to Chrome", href: CHROME_STORE_URL, showArrow: true },
-            { label: "Add to Firefox", href: FIREFOX_ADDON_URL, variant: "secondary" },
-          ]}
-        />
+        <section className="relative isolate overflow-hidden bg-[#172033] px-4 py-16 text-white sm:px-6 lg:py-24">
+          <div className="pointer-events-none absolute top-[-10rem] left-1/2 size-[34rem] -translate-x-1/2 rounded-full bg-sky-300/12 blur-3xl" />
+          <div className="relative mx-auto max-w-4xl text-center">
+            <p className="font-mono text-xs tracking-[0.16em] text-sky-200 uppercase">The next page is worth keeping</p>
+            <h2 className="mx-auto mt-5 max-w-[21ch] text-balance font-serif text-4xl leading-[1.08] font-semibold tracking-[-0.03em] sm:text-5xl lg:text-6xl">
+              Make it a memo before it becomes another tab.
+            </h2>
+            <p className="mx-auto mt-6 max-w-4xl text-base leading-8 text-slate-200/80 sm:text-lg">
+              Install the extension, choose how to connect, and save your first clip in under a minute.
+            </p>
+            <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
+              <a
+                href={CHROME_STORE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-[#172033] transition-transform hover:-translate-y-0.5 hover:bg-sky-50"
+              >
+                Add to Chrome <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1" />
+              </a>
+              <a
+                href={FIREFOX_ADDON_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-lg border border-white/25 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10"
+              >
+                Add to Firefox
+              </a>
+            </div>
+          </div>
+        </section>
       </main>
       <Footer />
     </HomeLayout>
