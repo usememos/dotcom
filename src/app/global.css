@@ -216,6 +216,11 @@ body:has(.app-surface) {
   text-wrap: balance;
 }
 
+.typeset-editorial :where(h1, h2, h3, h4, h5, h6) > a {
+  color: inherit;
+  text-decoration: none;
+}
+
 .typeset-editorial :where(h2) {
   font-size: 1.75em;
   line-height: 1.25;
@@ -233,23 +238,78 @@ body:has(.app-surface) {
 .typeset-editorial :where(a) {
   color: var(--primary);
   text-underline-offset: 0.18em;
+  text-decoration-thickness: 0.06em;
+}
+
+.typeset-editorial :where(:not(pre) > code) {
+  border: 1px solid color-mix(in oklab, var(--border) 82%, transparent);
+  background: color-mix(in oklab, var(--muted) 78%, transparent);
+  color: color-mix(in oklab, var(--foreground) 92%, var(--primary));
+  padding: 0.08em 0.32em;
 }
 
 .typeset-editorial :where(blockquote) {
-  border-inline-start-color: var(--primary);
-  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
-  background: var(--accent);
-  padding-block: 1em;
-  padding-inline-end: 1em;
+  border-inline-start-color: color-mix(in oklab, var(--foreground) 32%, transparent);
+  border-radius: 0;
+  background: transparent;
+  color: color-mix(in oklab, var(--foreground) 72%, transparent);
+  padding-block: 0.125em;
+  padding-inline-start: 1.125em;
+}
+
+.typeset-editorial :where(ul > li)::marker,
+.typeset-editorial :where(ol > li)::marker {
+  color: color-mix(in oklab, var(--foreground) 45%, transparent);
 }
 
 .typeset-editorial :where(img) {
-  border-radius: var(--radius-xl);
-  box-shadow: 0 22px 52px color-mix(in oklab, var(--foreground) 14%, transparent);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1px 2px color-mix(in oklab, var(--foreground) 6%, transparent);
 }
 
-.typeset-editorial :where(pre) {
+.typeset-editorial :where(figure.shiki) {
+  --padding-left: 1.125rem;
+  --padding-right: 2.75rem;
+
   border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: color-mix(in oklab, var(--muted) 58%, var(--background));
+  box-shadow: 0 1px 2px color-mix(in oklab, var(--foreground) 5%, transparent);
+  margin-block-start: var(--typeset-flow);
+}
+
+.typeset-editorial :where(figure.shiki pre) {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+}
+
+.typeset-editorial :where(figure.shiki > div[role="region"]) {
+  scrollbar-color: color-mix(in oklab, var(--foreground) 20%, transparent) transparent;
+}
+
+.typeset-editorial :where(.typeset-scroll) {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: color-mix(in oklab, var(--muted) 28%, var(--background));
+}
+
+.typeset-editorial :where(.typeset-scroll table) {
+  width: 100%;
+  min-width: 32rem;
+  border-block-end: 0;
+}
+
+.typeset-editorial :where(.typeset-scroll thead) {
+  background: color-mix(in oklab, var(--muted) 62%, var(--background));
+}
+
+.typeset-editorial :where(.typeset-scroll th:first-child, .typeset-scroll td:first-child) {
+  padding-inline-start: 1em;
 }
 
 .typeset-editorial :where(table) {
