@@ -1,0 +1,18 @@
+diff --git a/dist/core/routingHandler.js b/dist/core/routingHandler.js
+index eb01dc7690190f06dd71f4f5e199c8ac11ac45de..b4e69b7b7fc660e93ffcc4d76463870b41db9eeb 100644
+--- a/dist/core/routingHandler.js
++++ b/dist/core/routingHandler.js
+@@ -165,8 +165,11 @@ export default async function routingHandler(event, { assetResolver }) {
+             dynamicRouteMatcher(eventOrResult.rawPath).length > 0)) {
+             eventOrResult = {
+                 ...eventOrResult,
+-                rawPath: "/404",
+-                url: constructNextUrl(eventOrResult.url, "/404"),
++                // Next 16 App Router prerenders its global not-found page under
++                // `/_not-found`, not `/404`. Using the actual cache key lets
++                // cache interception return the 404 without loading NextServer.
++                rawPath: "/_not-found",
++                url: constructNextUrl(eventOrResult.url, "/_not-found"),
+                 headers: {
+                     ...eventOrResult.headers,
+                     "x-middleware-response-cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",

@@ -1,4 +1,5 @@
 import { createFromSource } from "fumadocs-core/search/server";
+import { isSearchableDocsPath } from "@/features/docs/lib/api-docs";
 import { source } from "@/shared/content/source";
 
 // Static search: the Orama index is built once at build time and served as a
@@ -13,7 +14,14 @@ import { source } from "@/shared/content/source";
 // API on each keystroke.
 export const revalidate = false;
 
-export const { staticGET: GET } = createFromSource(source, {
+const searchSource: typeof source = {
+  ...source,
+  getPages(language?: string) {
+    return source.getPages(language).filter((page) => isSearchableDocsPath(page.url));
+  },
+};
+
+export const { staticGET: GET } = createFromSource(searchSource, {
   // https://docs.orama.com/docs/orama-js/supported-languages
   language: "english",
 });

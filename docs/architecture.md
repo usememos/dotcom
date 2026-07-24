@@ -26,11 +26,13 @@ the research basis behind this direction and the conventions below.
 | `(public)` | Marketing + docs + blog + changelog | Static |
 | `(tools)` | Standalone unauthenticated tools (the scratchpad; no Clerk provider) | Client, browser-local |
 | `(auth)` | Sign-in / sign-up boundaries | — |
-| `(app)` | Authenticated product surface (dashboard, settings, future authed pages) | Dynamic, noindex |
-| `api/` | Route handlers (settings, stats, search, OG) | `nodejs` runtime |
+| `(app)` | Authenticated product surface (dashboard, settings, future authed pages) | Static or dynamic, noindex |
+| `api/` | Route handlers (currently the static search index) | Static or `nodejs` runtime |
 
-`(app)` is the home for new authenticated pages. Its layout sets `robots: noindex`
-and every route under it is signed-in and dynamic.
+`(app)` is the home for authenticated product pages. Its layout sets
+`robots: noindex`. Pages that only read Clerk and product data in the browser may
+use a static client-auth shell; pages that read request-time or server-side user
+data stay dynamic.
 
 ## Feature folders (`src/features/<domain>`)
 
@@ -93,9 +95,15 @@ server-owned data.
 - **One runtime.** OpenNext runs the whole app in the Cloudflare Workers runtime.
   Do **not** add `export const runtime = "edge"` — it is unsupported. Handlers that
   need Clerk or bindings use `export const runtime = "nodejs"`.
-- **Authenticated/dynamic routes** use `export const dynamic = "force-dynamic"` and
-  return `Cache-Control: no-store`. They opt out of the static cache and coexist
-  with static content.
+- **Static client-auth routes** such as `/dashboard` and `/settings/connections`
+  use `dynamic = "force-static"` and `revalidate = false`. Their HTML contains no
+  user data; Clerk and the connected Memos instance load after hydration in the
+  browser. Route presentation inputs such as the settings page's `source` query
+  are read through a client adapter inside `Suspense`. This lets OpenNext serve
+  the build-time shell without invoking NextServer per visit.
+- **Server-auth or request-dependent routes** use
+  `export const dynamic = "force-dynamic"` and return `Cache-Control: no-store`.
+  They opt out of the static cache and coexist with static content.
 - **Static cache cannot revalidate.** The incremental cache is
   `staticAssetsIncrementalCache` (build-time only). On-demand revalidation / ISR
   would require switching the backend to an R2 incremental cache plus a Durable
@@ -104,14 +112,30 @@ server-owned data.
   worker) is the escape hatch — not a default.
 - **Public responses are cached before Worker execution.** Wrangler's Workers
   Caching is enabled, so eligible responses are served without invoking OpenNext.
-  Public static routes opt in with long-lived `s-maxage` headers. Cache keys
-  are Worker-version isolated, so each deployment starts with a fresh cache and
-  cannot serve output from the previous build. Tradeoff: OpenNext runs as one
-  gateway entrypoint, so with caching on, `no-store`/dynamic routes (`/dashboard`,
-  `/api/*`, and 404s such as `/api/version`) pay a cache-tier lookup before the
-  Worker runs — no benefit for them, and Cloudflare's per-entrypoint opt-out
-  can't be applied to a single-entrypoint Worker. Watch dynamic-route latency
-  after rollout.
+  OpenNext's cache interceptor gives prerendered routes a long `s-maxage`; the
+  marketing/docs routes also declare that policy explicitly in
+  `next.config.mjs`. Cache keys are Worker-version isolated, so each deployment
+  starts with a fresh cache and cannot serve output from the previous build.
+  Tradeoff: OpenNext runs as one gateway entrypoint, so with caching on,
+  `no-store` APIs and any future dynamic server-auth pages pay a cache-tier
+  lookup before the Worker runs — no benefit for them, and Cloudflare's
+  per-entrypoint opt-out can't be applied to a single-entrypoint Worker. Watch
+  dynamic-route latency after rollout.
+- **Unknown routes use the prerendered 404 cache.** Next 16 stores the App Router
+  not-found artifact at `/_not-found`, while OpenNext 4.1.0 still routes unknown
+  URLs to `/404`. The pinned `@opennextjs/aws` patch aligns those paths so cache
+  interception returns a 404 without loading NextServer. OpenNext 4.1.0 already
+  handles the separate root `/` versus `/index` cache-key mismatch upstream, so
+  do not restore that older local patch. The smoke test verifies the 404 status,
+  long-lived cache header, and `x-opennext-cache: HIT`; keep the remaining patch
+  until the upstream adapter handles the Next 16 not-found cache key.
+- **Known browser probe paths are real assets.** The root Apple Web Clip filenames
+  live in `public/` and receive immutable asset headers. Cloudflare serves them
+  before the Worker, avoiding a 404 invocation for legacy clients and crawlers.
+- **Static search only indexes the current API reference.** Historical API
+  snapshots remain directly browsable, but excluding their near-identical pages
+  from `/api/search` keeps the build-time Orama index and client-side search
+  initialization substantially smaller.
 - **Caching is opt-out, not opt-in — a `200` without `Cache-Control` is stored.**
   Workers Caching applies RFC 9111 heuristic freshness (a `200` with no
   `Cache-Control` is cached for 2h), and a request `Cookie` (Clerk's `__session`)
@@ -122,16 +146,18 @@ server-owned data.
   itself. As a safety net, `next.config.mjs` forces `Cache-Control: private,
   no-store` on all `/api/*` except the public `/api/search` index; put any
   authenticated non-`/api` route on that list too.
-- **Middleware matcher** (`src/middleware.ts`) currently covers `/api/settings/*`
-  and `/api/memos/*`. Add new authenticated API namespaces there.
+- **No request middleware is currently needed.** Clerk is consumed by client
+  components, and the only route handler is the public static search index. Add
+  Clerk middleware with a narrow matcher when a future route starts using
+  server-side Clerk auth; do not leave matchers for deleted API namespaces.
 
 ## Auth seam
 
-Clerk is optional and env-gated. `isClerkConfigured()` is true only when both
-`NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` are set; when unset, the
-middleware is a no-op and authed UI is hidden. Route handlers depend on
-`RouteAuthDeps` (`isClerkConfigured`, `getUserId`) and call `requireUserId(deps)` to
-return a 503/401 or the resolved `userId`. Never accept a `userId` from the client.
+Clerk is currently scoped to client components under `(app)`; no route handler
+calls Clerk server auth, so the app has no request middleware. If a future
+feature introduces server-authenticated routes, add the Clerk secret, a narrow
+middleware matcher, and a testable auth dependency seam together. Never accept
+a `userId` from the client.
 
 ## Testing
 
@@ -144,13 +170,15 @@ return a 503/401 or the resolved `userId`. Never accept a `userId` from the clie
 
 ## Adding an authenticated feature
 
-1. Add the page under `src/app/(app)/<feature>/` (signed-in, dynamic).
+1. Add the page under `src/app/(app)/<feature>/`. Use a static client-auth shell
+   when all personalized data loads in the browser; use a dynamic route when the
+   server reads request or authentication state.
 2. Put UI + client logic in `src/features/<feature>/`.
 3. Put server logic in `src/server/<feature>/`: a `*-handlers.ts` factory, a
    `*-store.ts` seam if it persists data, and a `*-schema.ts` for input validation.
 4. Add a thin `src/app/api/<feature>/route.ts` that wires concrete deps into the
    factory; set `runtime = "nodejs"`.
-5. Add the new API path to the middleware matcher.
+5. Add Clerk middleware with a narrow matcher for the new API namespace.
 6. Write Vitest tests against the factory and store using fakes.
 
 ## Future data layer (sanctioned plan — not built yet)

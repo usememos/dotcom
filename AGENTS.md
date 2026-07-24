@@ -2,9 +2,9 @@
 
 ## Project Snapshot
 
-This repository is the official website for Memos at `usememos.com`. It is a Next.js + TypeScript + Tailwind app that serves a static marketing/documentation site (Fumadocs + MDX) **and** an authenticated product surface (a Clerk-gated dashboard and `/api` handlers).
+This repository is the official website for Memos at `usememos.com`. It is a Next.js + TypeScript + Tailwind app that serves a static marketing/documentation site (Fumadocs + MDX) **and** an authenticated product surface (a Clerk-gated dashboard plus a static search route).
 
-Treat it as a **Next.js 16 marketing/docs site plus an authenticated product app**. The marketing/docs surface stays static; the authenticated surface is dynamic. Before adding persistence, a new Cloudflare binding, or a new external dependency, follow the conventions in `docs/architecture.md` rather than introducing them ad-hoc.
+Treat it as a **Next.js 16 marketing/docs site plus an authenticated product app**. The marketing/docs surface stays static; authenticated pages use either a static client-auth shell or dynamic server rendering according to `docs/architecture.md`. Before adding persistence, a new Cloudflare binding, or a new external dependency, follow those conventions rather than introducing them ad-hoc.
 
 ## Tech Stack
 
@@ -15,7 +15,7 @@ Treat it as a **Next.js 16 marketing/docs site plus an authenticated product app
 - **UI primitives**: shadcn/ui (`base-nova`) backed by Base UI, configured in `components.json`
 - **Icons**: Lucide React using the `XxxIcon` naming convention
 - **Validation**: Zod schemas in `source.config.ts` and server route schemas
-- **Auth**: Clerk (`@clerk/nextjs`), optional and env-gated via `isClerkConfigured()`
+- **Auth**: Clerk (`@clerk/nextjs`), currently client-side and scoped to `(app)`
 - **Node.js**: 24.0.0 or newer (pinned in `.nvmrc`)
 
 ## Common Commands
@@ -61,7 +61,7 @@ See `docs/architecture.md` for the full architecture and the conventions for exp
 - `src/app/(public)/features/` contains the feature index and SEO pages at `/features/[slug]`.
 - `src/app/(public)/brand/`, `pricing/`, `privacy/`, `sponsors/`, and `use-cases/` contain static marketing pages.
 - `src/app/(tools)/scratchpad/` contains the standalone client-side scratchpad tool.
-- `src/app/(app)/` is the authenticated product surface (Clerk-gated, noindex, dynamic); the dashboard lives here. `src/app/(auth)/` holds sign-in/sign-up boundaries. Add authed features following `docs/architecture.md`.
+- `src/app/(app)/` is the authenticated product surface (Clerk-gated and noindex); its dashboard and connection settings are static client-auth shells, while request-dependent pages stay dynamic. `src/app/(auth)/` holds sign-in/sign-up boundaries. Add authed features following `docs/architecture.md`.
 
 ### Content
 

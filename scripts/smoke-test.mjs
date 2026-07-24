@@ -13,12 +13,37 @@ const checks = [
     contains: "Best practices to write a TAG",
   },
   { path: "/changelog/0-29-1", type: "html", contains: "Mobile video posters" },
-  { path: "/dashboard", type: "html", cacheControlIncludes: "no-store" },
+  { path: "/dashboard", type: "html", cacheControlIncludes: "s-maxage=31536000" },
+  {
+    path: "/settings/connections?source=web-clipper",
+    type: "html",
+    cacheControlIncludes: "s-maxage=31536000",
+    openNextCache: "HIT",
+  },
   { path: "/api/search", type: "search-index" },
   { path: "/sitemap.xml", type: "text", contains: "<urlset" },
   { path: "/blog/feed.xml", type: "text", contains: "<rss" },
+  {
+    path: "/apple-touch-icon.png",
+    type: "png",
+    cacheControlIncludes: "max-age=31536000",
+    openNextCacheAbsent: true,
+  },
+  {
+    path: "/apple-touch-icon-precomposed.png",
+    type: "png",
+    cacheControlIncludes: "max-age=31536000",
+    openNextCacheAbsent: true,
+  },
   { path: "/og/blog/best-practices-to-write-tag/image.png", type: "png" },
   { path: "/og/blog/20k-github-stars-in-2-years/image.png", status: 404, type: "html" },
+  {
+    path: "/__smoke-test-missing-route__",
+    status: 404,
+    type: "html",
+    cacheControlIncludes: "s-maxage=31536000",
+    openNextCache: "HIT",
+  },
 ];
 
 function buildUrl(path) {
@@ -41,11 +66,22 @@ function assertCheck(check, response, body) {
   if (check.cacheControlIncludes && !cacheControl.includes(check.cacheControlIncludes)) {
     throw new Error(`${check.path} expected Cache-Control to include ${JSON.stringify(check.cacheControlIncludes)}, got ${cacheControl}`);
   }
+  if (check.openNextCache && response.headers.get("x-opennext-cache") !== check.openNextCache) {
+    throw new Error(
+      `${check.path} expected x-opennext-cache ${JSON.stringify(check.openNextCache)}, got ${response.headers.get("x-opennext-cache")}`,
+    );
+  }
+  if (check.openNextCacheAbsent && response.headers.has("x-opennext-cache")) {
+    throw new Error(`${check.path} unexpectedly reached OpenNext cache interception`);
+  }
   if (check.type === "html" && !contentType.includes("text/html")) {
     throw new Error(`${check.path} expected HTML, got ${contentType}`);
   }
   if (check.type === "search-index" && (body?.type !== "advanced" || !Array.isArray(body?.internalDocumentIDStore?.internalIdToId))) {
     throw new Error(`${check.path} expected a static Orama search index`);
+  }
+  if (check.type === "search-index" && body.internalDocumentIDStore.internalIdToId.some((id) => id.startsWith("/docs/api/0-"))) {
+    throw new Error(`${check.path} unexpectedly indexed a historical API snapshot`);
   }
   if (check.type === "png") {
     if (!contentType.includes("image/png")) {

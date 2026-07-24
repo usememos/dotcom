@@ -4,4 +4,4 @@ allowBuilds:
   sharp: true
   workerd: true
 patchedDependencies:
-  '@opennextjs/aws@4.0.2': patches/@opennextjs__aws@4.0.2.patch
+  '@opennextjs/aws@4.1.0': patches/@opennextjs__aws@4.1.0.patch

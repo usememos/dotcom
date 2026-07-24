@@ -5,21 +5,21 @@ vi.mock("@/features/memos/components/memos-connections-settings", () => ({
   MemosConnectionsSettings: ({ source }: { source: string | null }) => <div data-testid="settings-source">{source ?? "direct"}</div>,
 }));
 
-import ConnectionsPage, { dynamic, metadata } from "./page";
+vi.mock("./connections-settings-client", () => ({
+  ConnectionsSettingsClient: () => <div data-testid="settings-client" />,
+}));
+
+import ConnectionsPage, { dynamic, metadata, revalidate } from "./page";
 
 describe("ConnectionsPage", () => {
-  it("recognizes only the Web Clipper source", async () => {
-    render(await ConnectionsPage({ searchParams: Promise.resolve({ source: "web-clipper" }) }));
-    expect(screen.getByTestId("settings-source")).toHaveTextContent("web-clipper");
+  it("renders the client query adapter", () => {
+    render(<ConnectionsPage />);
+    expect(screen.getByTestId("settings-client")).toBeInTheDocument();
   });
 
-  it("ignores unknown and repeated source values", async () => {
-    render(await ConnectionsPage({ searchParams: Promise.resolve({ source: ["web-clipper", "other"] }) }));
-    expect(screen.getByTestId("settings-source")).toHaveTextContent("direct");
-  });
-
-  it("is dynamic and noindex through the authenticated app layout", () => {
-    expect(dynamic).toBe("force-dynamic");
+  it("exports a non-revalidating static shell and a title", () => {
+    expect(dynamic).toBe("force-static");
+    expect(revalidate).toBe(false);
     expect(metadata.title).toBe("Memos Instance – Settings");
   });
 });

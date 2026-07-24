@@ -33,7 +33,7 @@
   "dependencies": {
     "@base-ui/react": "^1.6.0",
     "@clerk/nextjs": "^7.5.18",
-    "@opennextjs/cloudflare": "1.19.11",
+    "@opennextjs/cloudflare": "1.20.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "fumadocs-core": "^16.9.3",
@@ -41,7 +41,7 @@
     "fumadocs-openapi": "^10.9.1",
     "fumadocs-ui": "^16.9.3",
     "lucide-react": "^1.17.0",
-    "next": "16.2.6",
+    "next": "16.2.11",
     "next-themes": "^0.4.6",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.16",
-    "@next/env": "16.2.6",
+    "@next/env": "16.2.11",
     "@tailwindcss/postcss": "^4.3.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",

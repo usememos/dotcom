@@ -50,3 +50,17 @@ export function getApiDocsVersionPath(version: string, segments: string[] = []):
   const suffix = segments.length > 0 ? `/${segments.join("/")}` : "";
   return `/docs/api/${version}${suffix}`;
 }
+
+/**
+ * Search should index the current API reference without mixing near-identical
+ * historical snapshots into every result set. Non-API documentation and the
+ * versionless API landing path remain searchable.
+ */
+export function isSearchableDocsPath(pathname: string): boolean {
+  const segments = pathname.split("/").filter(Boolean);
+  if (segments[0] !== "docs" || segments[1] !== "api" || !isApiDocsVersion(segments[2])) {
+    return true;
+  }
+
+  return segments[2] === latestApiDocsVersion;
+}

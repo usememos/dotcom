@@ -63,10 +63,9 @@ const SECURITY_HEADERS = [
 // the long s-maxage avoids needless hourly Worker invocations between deploys.
 // No stale-while-revalidate: the version-keyed cache is discarded on every
 // deploy (far more often than yearly), so the post-s-maxage stale window is
-// never reached. Scoped here to marketing/docs routes. Routes not listed here
-// (e.g. /scratchpad, /api/search) set no explicit Cache-Control and fall back
-// to Workers Caching's heuristic freshness; authenticated routes such as
-// /dashboard are force-dynamic and return no-store, which bypasses the cache.
+// never reached. Scoped here to marketing/docs routes. OpenNext's cache
+// interceptor also emits a long s-maxage for other prerendered routes such as
+// /scratchpad, /api/search, and the static client-auth shells.
 const PUBLIC_CACHE_HEADERS = [
   {
     key: "Cache-Control",
