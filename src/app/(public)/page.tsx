@@ -1,3 +1,4 @@
+import { ArrowRightIcon, LockKeyholeIcon, PenLineIcon, ServerIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/features/marketing/components/footer";
@@ -13,28 +14,20 @@ import { buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/shared/lib/seo"
 
 const PRINCIPLES = [
   {
-    label: "01",
+    icon: PenLineIcon,
     title: "Open. Write. Done.",
     description: "No folder decision, no workspace setup, no title required before a thought is worth saving.",
   },
   {
-    label: "02",
+    icon: LockKeyholeIcon,
     title: "Private timeline.",
     description: "Memos feels closer to posting into your own quiet feed than maintaining a formal notebook.",
   },
   {
-    label: "03",
+    icon: ServerIcon,
     title: "Yours to run.",
     description: "Self-host it, keep Markdown-native notes, and choose the database and server you trust.",
   },
-] as const;
-
-const START_LINKS = [
-  { href: "/docs/getting-started", label: "Install Memos" },
-  { href: "/features", label: "See Features" },
-  { href: "/use-cases", label: "Use Cases" },
-  { href: "/web-clipper", label: "Get the Web Clipper" },
-  { href: "/docs", label: "Read Docs" },
 ] as const;
 
 export const metadata: Metadata = {
@@ -96,26 +89,36 @@ export default function HomePage() {
           primaryCta={{ text: "Install Memos", href: "/docs/getting-started" }}
           secondaryCta={{ text: "Try Live Demo", href: "https://demo.usememos.com/", external: true }}
         />
-        <section className="border-b border-zinc-200 bg-white px-4 py-14 dark:border-white/10 dark:bg-zinc-950 sm:px-6 lg:py-20">
-          <div className="mx-auto grid w-full max-w-[calc(100vw-2rem)] gap-8 sm:max-w-6xl lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-end">
-            <h2 className="text-balance font-serif text-3xl font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-4xl lg:text-5xl">
-              Not a workspace. Not a second brain.
-            </h2>
-            <p className="max-w-2xl text-balance text-lg leading-8 text-zinc-600 dark:text-zinc-300 lg:justify-self-end">
-              Just a small, self-hosted timeline for notes you want to capture quickly and keep close.
-            </p>
-          </div>
-        </section>
-
-        <section className="border-b border-zinc-200 bg-white px-4 dark:border-white/10 dark:bg-zinc-950 sm:px-6">
-          <div className="mx-auto grid w-full max-w-[calc(100vw-2rem)] divide-y divide-zinc-200 dark:divide-white/10 sm:max-w-6xl lg:grid-cols-3 lg:divide-x lg:divide-y-0">
-            {PRINCIPLES.map((item) => (
-              <div key={item.title} className="py-8 lg:px-8 lg:first:pl-0 lg:last:pr-0">
-                <p className="text-xs font-semibold tracking-[0.18em] text-zinc-400 uppercase dark:text-zinc-500">{item.label}</p>
-                <h3 className="mt-5 text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{item.title}</h3>
-                <p className="mt-4 max-w-md text-sm leading-7 text-zinc-600 dark:text-zinc-300 sm:text-base">{item.description}</p>
+        <section id="why-memos" className="bg-white px-4 py-16 dark:bg-zinc-950 sm:px-6 sm:py-20 lg:py-24">
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="grid gap-7 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.7fr)] lg:items-end lg:gap-12">
+              <div>
+                <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">The idea</p>
+                <h2 className="mt-4 max-w-[17ch] text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl lg:text-[3.35rem]">
+                  Not a workspace. Not a second brain.
+                </h2>
               </div>
-            ))}
+              <p className="max-w-xl text-base leading-7 text-zinc-600 dark:text-zinc-300 sm:text-[1.0625rem] sm:leading-8 lg:justify-self-end">
+                Just a small, self-hosted timeline for notes you want to capture quickly and keep close.
+              </p>
+            </div>
+
+            <div className="mt-12 grid gap-10 sm:mt-14 lg:grid-cols-3 lg:gap-12">
+              {PRINCIPLES.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <article key={item.title}>
+                    <Icon className="size-5 text-teal-700 dark:text-teal-300" />
+                    <h3 className="mt-7 text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100 sm:mt-8 sm:text-[1.375rem]">
+                      {item.title}
+                    </h3>
+                    <p className="mt-3 max-w-md text-sm leading-7 text-zinc-600 dark:text-zinc-300 sm:text-[0.9375rem]">
+                      {item.description}
+                    </p>
+                  </article>
+                );
+              })}
+            </div>
           </div>
         </section>
 
@@ -125,23 +128,34 @@ export default function HomePage() {
         <HomeDiscoverSection />
         <HomeFaqSection />
 
-        <section className="bg-white px-4 py-16 dark:bg-zinc-950 sm:px-6 lg:py-22">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Start here</p>
-            <h2 className="mt-5 text-balance font-serif text-4xl font-semibold tracking-[-0.04em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
-              Start with one memo.
-            </h2>
-            <div className="mt-8 flex flex-wrap justify-center gap-x-5 gap-y-3 text-sm font-semibold text-zinc-950 dark:text-zinc-100">
-              {START_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  prefetch={false}
-                  className="rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 transition-colors hover:bg-zinc-100 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10"
-                >
-                  {link.label}
-                </Link>
-              ))}
+        <section id="start" className="bg-white px-4 py-16 dark:bg-zinc-950 sm:px-6 sm:py-20 lg:py-24">
+          <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-12">
+            <div>
+              <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Start here</p>
+              <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
+                Start with one memo.
+              </h2>
+              <p className="mt-4 max-w-xl text-base leading-7 text-zinc-600 dark:text-zinc-300 sm:text-[1.0625rem] sm:leading-8">
+                Run it yourself or try the public demo before choosing where your timeline will live.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
+              <Link
+                href="/docs/getting-started"
+                prefetch={false}
+                className="group inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-teal-700 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-teal-300"
+              >
+                Install Memos
+                <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <Link
+                href="https://demo.usememos.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-lg border border-zinc-300 px-5 py-3 text-sm font-semibold text-zinc-950 transition-colors hover:bg-stone-50 dark:border-white/15 dark:text-zinc-100 dark:hover:bg-white/5"
+              >
+                Try Live Demo
+              </Link>
             </div>
           </div>
         </section>

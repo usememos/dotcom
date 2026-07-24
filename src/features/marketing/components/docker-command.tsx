@@ -17,19 +17,19 @@ export function DockerCommand() {
   };
 
   return (
-    <div className="group overflow-hidden rounded-lg border border-zinc-200 bg-white transition-colors duration-300 dark:border-white/10 dark:bg-zinc-900/40">
-      <div className="flex items-start justify-between gap-4 border-b border-zinc-200 px-5 py-5 dark:border-white/10 sm:px-6">
+    <div className="group overflow-hidden rounded-2xl border border-white/12 bg-white/6 shadow-[0_30px_80px_rgba(0,0,0,0.28)] backdrop-blur-sm">
+      <div className="flex items-start justify-between gap-4 border-b border-white/10 px-5 py-5 sm:px-6">
         <div>
           <div className="mb-3 flex items-center gap-3">
-            <div className="inline-flex h-10 w-10 items-center justify-center text-zinc-700 transition-transform duration-300 group-hover:-translate-y-0.5 dark:text-zinc-200 sm:h-11 sm:w-11">
+            <div className="inline-flex size-10 items-center justify-center rounded-lg bg-white/8 text-teal-200 transition-transform duration-300 group-hover:-translate-y-0.5 sm:size-11">
               <TerminalIcon className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
-            <h3 className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-100 sm:text-xl">Docker</h3>
+            <h3 className="text-lg font-semibold tracking-tight text-white sm:text-xl">Docker</h3>
           </div>
-          <p className="max-w-md text-sm leading-6 text-zinc-600 dark:text-zinc-400 sm:text-base">One command to start your Memos server</p>
+          <p className="max-w-md text-sm leading-6 text-zinc-400 sm:text-base">One command to start your Memos server</p>
         </div>
       </div>
-      <div className="relative bg-zinc-950 px-5 py-5 sm:px-6">
+      <div className="relative bg-black/25 px-5 py-6 sm:px-6 sm:py-8">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/10" />
         <pre className="overflow-x-auto pr-14 text-sm leading-7 text-slate-100 sm:text-base">
           <code>{dockerCommand}</code>
@@ -41,7 +41,7 @@ export function DockerCommand() {
           title={copied ? "Copied!" : "Copy to clipboard"}
           aria-label={copied ? "Copied to clipboard" : "Copy command to clipboard"}
         >
-          {copied ? <CheckIcon className="h-4 w-4 text-amber-300" /> : <CopyIcon className="h-4 w-4" />}
+          {copied ? <CheckIcon className="h-4 w-4 text-teal-300" /> : <CopyIcon className="h-4 w-4" />}
         </button>
       </div>
     </div>
