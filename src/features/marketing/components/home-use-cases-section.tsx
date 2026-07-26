@@ -64,8 +64,8 @@ const USE_CASES = [
 
 export function HomeUseCasesSection() {
   return (
-    <section id="workflows" className="bg-white px-4 py-16 dark:bg-zinc-950 sm:px-6 sm:py-20 lg:py-24">
-      <div className="mx-auto w-full max-w-6xl">
+    <section id="workflows" className="bg-white py-16 dark:bg-zinc-950 sm:py-20 lg:py-24">
+      <div className="site-container">
         <div className="grid gap-7 lg:grid-cols-[minmax(0,0.9fr)_minmax(18rem,0.55fr)] lg:items-end lg:justify-between lg:gap-12">
           <div>
             <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Use cases</p>

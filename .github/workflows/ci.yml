@@ -64,6 +64,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
 
+      # The scoped Fumadocs stylesheet is generated, not committed, and
+      # `--ignore-scripts` skips the postinstall that normally produces it.
+      - name: Generate scoped Fumadocs stylesheet
+        run: pnpm docs:generate:styles
+
       - name: Run tests
         run: pnpm test
 

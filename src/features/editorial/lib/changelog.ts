@@ -1,6 +1,6 @@
 export const CHANGELOG_COLUMN_CLASS = "mx-auto max-w-[48rem]";
 export const CHANGELOG_ARTICLE_COLUMN_CLASS = "mx-auto min-w-0 max-w-[46rem] sm:max-w-[48rem]";
-export const CHANGELOG_DETAIL_LAYOUT_CLASS = "mx-auto max-w-6xl lg:grid lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-12";
+export const CHANGELOG_DETAIL_LAYOUT_CLASS = "site-container lg:grid lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-12";
 
 export function getChangelogVersion(title: string) {
   return title.replace(/^Release\s+/i, "");

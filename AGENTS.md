@@ -2,7 +2,7 @@
 
 ## Project Snapshot
 
-This repository is the official website for Memos at `usememos.com`. It is a Next.js + TypeScript + Tailwind app that serves a static marketing/documentation site (Fumadocs + MDX) **and** an authenticated product surface (a Clerk-gated dashboard plus a static search route).
+This repository is the official website for Memos at `usememos.com`. It is a Next.js + TypeScript + Tailwind app that serves a static public site with project-owned marketing/editorial UI and Fumadocs-powered documentation, **and** an authenticated product surface (a Clerk-gated dashboard plus a static docs search route).
 
 Treat it as a **Next.js 16 marketing/docs site plus an authenticated product app**. The marketing/docs surface stays static; authenticated pages use either a static client-auth shell or dynamic server rendering according to `docs/architecture.md`. Before adding persistence, a new Cloudflare binding, or a new external dependency, follow those conventions rather than introducing them ad-hoc.
 
@@ -24,7 +24,7 @@ Use `pnpm` for all package scripts.
 
 | Task | Command | Notes |
 | --- | --- | --- |
-| Install dependencies | `pnpm install` | Runs Fumadocs source generation automatically |
+| Install dependencies | `pnpm install` | Regenerates Fumadocs sources and the docs-scoped UI stylesheet |
 | Develop locally | `pnpm dev` | Starts Next.js with Turbopack on port 3000 |
 | Run tests | `pnpm test` | Vitest (`*.test.ts`/`*.test.tsx`); `pnpm test:watch` to watch |
 | Build | `pnpm build` | Full production build for the static site |
@@ -34,6 +34,7 @@ Use `pnpm` for all package scripts.
 | Check and write fixes | `pnpm check` | Runs `biome check --write` |
 | Refresh generated docs | `pnpm docs:refresh` | Downloads OpenAPI specs, regenerates API MDX, formats it, and rebuilds Fumadocs source |
 | Generate Fumadocs source | `pnpm docs:generate:source` | Rebuilds ignored `.source/` files without downloading API specs |
+| Generate scoped docs styles | `pnpm docs:generate:styles` | Rebuilds the generated `/docs`-scoped Fumadocs stylesheet |
 | Generate Cloudflare types | `pnpm typegen` | Writes `cloudflare-env.d.ts` |
 | Build Cloudflare Worker | `pnpm run build:worker` | Generates Fumadocs source and builds the OpenNext artifact |
 | Cloudflare preview | `pnpm run preview` | Builds with OpenNext and serves the Workers runtime on port 8788 |
@@ -54,12 +55,12 @@ See `docs/architecture.md` for the full architecture and the conventions for exp
 
 ### Routes
 
-- `src/app/(public)/` contains unauthenticated public routes.
+- `src/app/(public)/(site)/` contains project-owned marketing, blog, and changelog routes.
 - `src/app/(public)/docs/` serves Fumadocs documentation.
-- `src/app/(public)/blog/` serves blog posts from `content/blog/`.
-- `src/app/(public)/changelog/` serves release notes from `content/changelog/`.
-- `src/app/(public)/features/` contains the feature index and SEO pages at `/features/[slug]`.
-- `src/app/(public)/brand/`, `pricing/`, `privacy/`, `sponsors/`, and `use-cases/` contain static marketing pages.
+- `src/app/(public)/(site)/blog/` serves blog posts from `content/blog/`.
+- `src/app/(public)/(site)/changelog/` serves release notes from `content/changelog/`.
+- `src/app/(public)/(site)/features/` contains the feature index and SEO pages at `/features/[slug]`.
+- `src/app/(public)/(site)/brand/`, `pricing/`, `privacy/`, `sponsors/`, and `use-cases/` contain static marketing pages.
 - `src/app/(tools)/scratchpad/` contains the standalone client-side scratchpad tool.
 - `src/app/(app)/` is the authenticated product surface (Clerk-gated and noindex); its dashboard and connection settings are static client-auth shells, while request-dependent pages stay dynamic. `src/app/(auth)/` holds sign-in/sign-up boundaries. Add authed features following `docs/architecture.md`.
 
@@ -86,7 +87,8 @@ See `docs/architecture.md` for the full architecture and the conventions for exp
 - Editorial components and helpers: `src/features/editorial/components/` and `src/features/editorial/lib/`
 - Scratchpad components, hooks, and helpers: `src/features/scratchpad/`
 - Shared UI primitives: `src/shared/ui/`
-- Shared layout and navigation config: `src/shared/config/layout.tsx`
+- Docs layout options: `src/features/docs/lib/layout-options.tsx`
+- Shared navigation data: `src/shared/lib/seo.ts`
 - Shared utilities, including `cn()`: `src/shared/lib/utils.ts`
 
 ## Coding Conventions
@@ -99,7 +101,9 @@ See `docs/architecture.md` for the full architecture and the conventions for exp
 - Use `@/.source` only for generated Fumadocs output from `.source/server.ts`.
 - Import Lucide icons as `XxxIcon`, for example `import { ShieldIcon } from "lucide-react"`.
 - Pass icons as React elements to components, not as string names.
-- Keep MDX components registered through `getMDXComponents` in `src/mdx-components.tsx`.
+- Keep project-owned baseline MDX components in `src/mdx-components.tsx`; extend them with Fumadocs components only in the docs MDX registry. Element primitives that depend on a typeset preset (`a`, `img`, `pre`) live in the registry that owns that preset — see `src/features/editorial/lib/mdx-components.ts`.
+- Wrap public `(site)` sections in `site-container` for the shared page width. Do not set an outer `max-w-*` on a page shell; `src/features/marketing/site-layout-boundary.test.ts` fails CI on `max-w-5xl`/`max-w-6xl` under `src/app/(public)/(site)`, `src/features/marketing`, and `src/features/editorial`. The width itself is `--site-layout-width` in `src/app/global.css`.
+- Keep `fumadocs-ui`, its provider, CSS, and search UI scoped to `/docs`. Blog and changelog may use the headless `fumadocs-mdx` and `fumadocs-core/source` pipeline.
 - Maintain dark mode support with `dark:` classes when changing UI.
 - Use `py-24` for standard marketing section padding and `rounded-2xl` for card-like surfaces unless the surrounding component uses a different local pattern.
 - Use the teal/cyan palette, especially `teal-600` and `cyan-600`, for primary marketing actions.
@@ -129,7 +133,7 @@ Use `pnpm run preview` or `pnpm run deploy:dry-run` to validate Cloudflare produ
 
 ## Gotchas
 
-- `postinstall` only regenerates the ignored Fumadocs `.source/` files. Run `pnpm docs:refresh` explicitly when refreshing the committed OpenAPI specs and generated API MDX. The refresh falls back to committed `openapi/*.yaml` files if the network fetch fails.
+- `postinstall` regenerates the ignored Fumadocs `.source/` files and the ignored docs-scoped UI stylesheet (`src/app/(public)/docs/fumadocs-scoped.css`). Neither is committed, and `pnpm build` regenerates both. CI installs with `--ignore-scripts`, so the test job regenerates the stylesheet explicitly. Run `pnpm docs:refresh` explicitly when refreshing the committed OpenAPI specs and generated API MDX. The refresh falls back to committed `openapi/*.yaml` files if the network fetch fails.
 - pnpm may warn about ignored build scripts for `esbuild` and `sharp`; this is cosmetic for normal development.
 - The production build generates hundreds of static pages, so `pnpm build` can take a while.
 - Do not edit generated files in `.source/`.

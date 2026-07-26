@@ -9,9 +9,8 @@ import { source } from "@/shared/content/source";
 // which rebuilt the whole index over ~380 docs on every cold isolate
 // (~109ms CPU/hit, ~222K CPU-ms/7d on Workers).
 //
-// Pair with `search={{ options: { type: "static" } }}` on the RootProvider in
-// the root layout so the client uses the static index instead of querying an
-// API on each keystroke.
+// Pair with `search={{ options: { type: "static" } }}` on the docs-only
+// RootProvider so only /docs initializes the client-side search experience.
 export const revalidate = false;
 
 const searchSource: typeof source = {

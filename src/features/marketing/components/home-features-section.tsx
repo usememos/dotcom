@@ -36,8 +36,8 @@ const FEATURES = [
 
 export function HomeFeaturesSection() {
   return (
-    <section id="product" className="bg-stone-50/70 px-4 py-16 dark:bg-zinc-900/35 sm:px-6 sm:py-20 lg:py-24">
-      <div className="mx-auto w-full max-w-6xl">
+    <section id="product" className="bg-stone-50/70 py-16 dark:bg-zinc-900/35 sm:py-20 lg:py-24">
+      <div className="site-container">
         <div className="grid gap-7 lg:grid-cols-[minmax(0,1.2fr)_minmax(18rem,0.8fr)] lg:items-end lg:gap-12">
           <div>
             <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Product</p>

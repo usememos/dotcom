@@ -66,6 +66,28 @@ function getApiTreeForVersion(apiTree: PageTree.Root, version: string): PageTree
   };
 }
 
+/** Static, so the sidebar prop identity does not churn on every navigation. */
+const DOCS_SIDEBAR_TABS = [
+  {
+    title: "Documentation",
+    url: "/docs",
+    icon: (
+      <div className="w-full h-full flex justify-center items-center">
+        <BookOpenIcon size={16} />
+      </div>
+    ),
+  },
+  {
+    title: "API Reference",
+    url: "/docs/api",
+    icon: (
+      <div className="w-full h-full flex justify-center items-center">
+        <CodeIcon size={16} />
+      </div>
+    ),
+  },
+];
+
 export function ClientLayout({
   children,
   baseOptions,
@@ -79,37 +101,16 @@ export function ClientLayout({
 }) {
   const pathname = usePathname();
   const isApi = pathname.startsWith("/docs/api");
-  const apiVersion = getApiDocsVersionFromPathname(pathname);
-  const activeApiTree = getApiTreeForVersion(apiTree, apiVersion);
+  // The version walk is only meaningful under /docs/api; on prose pages its
+  // result is discarded, and on older versions it scans every newer subtree.
+  const tree = isApi ? getApiTreeForVersion(apiTree, getApiDocsVersionFromPathname(pathname)) : mainTree;
 
   return (
     <DocsLayout
-      tree={isApi ? activeApiTree : mainTree}
+      tree={tree}
       {...baseOptions}
       links={[]}
-      sidebar={{
-        banner: isApi ? <ApiVersionSelector /> : undefined,
-        tabs: [
-          {
-            title: "Documentation",
-            url: "/docs",
-            icon: (
-              <div className="w-full h-full flex justify-center items-center">
-                <BookOpenIcon size={16} />
-              </div>
-            ),
-          },
-          {
-            title: "API Reference",
-            url: "/docs/api",
-            icon: (
-              <div className="w-full h-full flex justify-center items-center">
-                <CodeIcon size={16} />
-              </div>
-            ),
-          },
-        ],
-      }}
+      sidebar={{ banner: isApi ? <ApiVersionSelector /> : undefined, tabs: DOCS_SIDEBAR_TABS }}
     >
       {children}
     </DocsLayout>

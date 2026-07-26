@@ -1,8 +1,9 @@
 @import "tailwindcss";
 @import "./typeset.css";
 @import "tw-animate-css";
-@import "fumadocs-ui/css/neutral.css";
-@import "fumadocs-ui/css/preset.css";
+
+/* next-themes toggles the `.dark` class; keep the variant project-owned. */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
   --color-background: var(--background);
@@ -51,23 +52,7 @@
   --border: oklch(0.9 0.006 250);
   --input: oklch(0.9 0.006 250);
   --ring: oklch(0.48 0.09 165);
-
-  --color-fd-background: var(--background);
-  --color-fd-foreground: var(--foreground);
-  --color-fd-muted: var(--muted);
-  --color-fd-muted-foreground: var(--muted-foreground);
-  --color-fd-popover: var(--popover);
-  --color-fd-popover-foreground: var(--popover-foreground);
-  --color-fd-card: var(--card);
-  --color-fd-card-foreground: var(--card-foreground);
-  --color-fd-border: var(--border);
-  --color-fd-primary: var(--primary);
-  --color-fd-primary-foreground: var(--primary-foreground);
-  --color-fd-secondary: var(--secondary);
-  --color-fd-secondary-foreground: var(--secondary-foreground);
-  --color-fd-accent: var(--accent);
-  --color-fd-accent-foreground: var(--accent-foreground);
-  --color-fd-ring: var(--ring);
+  --site-layout-width: 87.5rem;
 }
 
 .dark {
@@ -93,9 +78,19 @@
 
 body {
   font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background-color: var(--color-fd-background);
+  background-color: var(--background);
   background-image: none;
-  color: var(--color-fd-foreground);
+  color: var(--foreground);
+}
+
+/* `@utility` registers this in Tailwind's `utilities` layer so padding/width
+   utilities composed alongside it (e.g. `site-container sm:px-6`) still win. An
+   unlayered `.site-container` rule would silently beat every one of them. */
+@utility site-container {
+  width: 100%;
+  max-width: var(--site-layout-width);
+  margin-inline: auto;
+  padding-inline: 1rem;
 }
 
 .dark body {
@@ -216,11 +211,6 @@ body:has(.app-surface) {
   text-wrap: balance;
 }
 
-.typeset-editorial :where(h1, h2, h3, h4, h5, h6) > a {
-  color: inherit;
-  text-decoration: none;
-}
-
 .typeset-editorial :where(h2) {
   font-size: 1.75em;
   line-height: 1.25;
@@ -286,10 +276,34 @@ body:has(.app-surface) {
   box-shadow: none;
   margin: 0;
   padding: 0;
+  /* typeset.css scrolls every `.typeset pre`; the region wrapper owns it here,
+     so leaving both set would nest two horizontal scrollers. */
+  overflow-x: visible;
 }
 
 .typeset-editorial :where(figure.shiki > div[role="region"]) {
   scrollbar-color: color-mix(in oklab, var(--foreground) 20%, transparent) transparent;
+  overflow-x: auto;
+  padding-block: 0.875rem;
+}
+
+.typeset-editorial :where(figure.shiki .line) {
+  display: inline-block;
+  min-width: 100%;
+  padding-inline: var(--padding-left) var(--padding-right);
+}
+
+/* Fumadocs' Shiki stylesheet is scoped to /docs, so editorial code blocks own
+   their token colors. `fumadocs-core` pins `defaultColor: false`, meaning the
+   highlighter emits only `--shiki-light`/`--shiki-dark` and no inline `color`. */
+.typeset-editorial :where(figure.shiki) code span {
+  color: var(--shiki-light);
+  font-style: var(--shiki-light-font-style);
+}
+
+.dark .typeset-editorial :where(figure.shiki) code span {
+  color: var(--shiki-dark);
+  font-style: var(--shiki-dark-font-style);
 }
 
 .typeset-editorial :where(.typeset-scroll) {

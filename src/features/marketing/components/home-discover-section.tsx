@@ -34,8 +34,8 @@ const NEXT_STEPS = [
 
 export function HomeDiscoverSection() {
   return (
-    <section id="resources" className="bg-stone-50/70 px-4 py-16 dark:bg-zinc-900/35 sm:px-6 sm:py-20 lg:py-24">
-      <div className="mx-auto w-full max-w-6xl">
+    <section id="resources" className="bg-stone-50/70 py-16 dark:bg-zinc-900/35 sm:py-20 lg:py-24">
+      <div className="site-container">
         <div className="flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
           <div>
             <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Next steps</p>

@@ -60,8 +60,10 @@ function getLabelClassName(tone: EditorialLabel["tone"] = "default") {
 
 export function EditorialIndexShell({ children }: EditorialIndexShellProps) {
   return (
-    <section className="px-4 py-14 sm:px-6 lg:py-20">
-      <div className="mx-auto max-w-[48rem]">{children}</div>
+    <section className="py-14 lg:py-20">
+      <div className="site-container">
+        <div className="mx-auto max-w-[48rem]">{children}</div>
+      </div>
     </section>
   );
 }

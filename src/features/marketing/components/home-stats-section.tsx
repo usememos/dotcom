@@ -10,8 +10,8 @@ const STATS = [
 
 export function HomeStatsSection() {
   return (
-    <section className="border-b border-zinc-200 bg-white px-4 py-14 dark:border-white/10 dark:bg-zinc-950 sm:px-6 sm:py-18 lg:py-22">
-      <div className="mx-auto w-full max-w-(--fd-layout-width)">
+    <section className="border-b border-zinc-200 bg-white py-14 dark:border-white/10 dark:bg-zinc-950 sm:py-18 lg:py-22">
+      <div className="site-container">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
           <div>
             <h2 className="mb-4 text-balance font-serif text-3xl font-semibold leading-[1.05] tracking-[-0.03em] text-zinc-950 dark:text-zinc-100 sm:text-4xl lg:text-[3.15rem]">

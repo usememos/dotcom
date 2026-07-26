@@ -4,7 +4,7 @@ The official Memos website is **one Next.js 16 (App Router) application** deploy
 to **Cloudflare Workers via OpenNext**. It serves two surfaces from the same
 codebase:
 
-- a **static marketing/docs** surface (Fumadocs + MDX), and
+- a **static public** surface (project-owned marketing/editorial UI plus Fumadocs documentation), and
 - an **authenticated product** surface (a Clerk-gated dashboard and `/api` handlers).
 
 This document is the source of truth for how the code is organized and how to
@@ -23,7 +23,8 @@ the research basis behind this direction and the conventions below.
 
 | Group | Purpose | Rendering |
 | --- | --- | --- |
-| `(public)` | Marketing + docs + blog + changelog | Static |
+| `(public)/(site)` | Project-owned marketing + blog + changelog shell | Static |
+| `(public)/docs` | Fumadocs documentation and API reference | Static |
 | `(tools)` | Standalone unauthenticated tools (the scratchpad; no Clerk provider) | Client, browser-local |
 | `(auth)` | Sign-in / sign-up boundaries | — |
 | `(app)` | Authenticated product surface (dashboard, settings, future authed pages) | Static or dynamic, noindex |
@@ -45,6 +46,16 @@ co-located tests, per domain (`marketing`, `docs`, `editorial`, `scratchpad`,
 Reusable interactive primitives use shadcn/ui's `base-nova` style backed by Base UI. The CLI configuration is `components.json`, generated components live in `src/shared/ui`, and their shared utility import resolves to `src/shared/lib/utils.ts`.
 
 Feature and application code should consume the wrappers in `src/shared/ui` instead of importing `@base-ui/react` directly. Do not introduce direct Radix UI dependencies or imports. Fumadocs currently owns some transitive Radix dependencies internally; those are part of the documentation framework rather than the application's UI layer.
+
+Fumadocs UI, its provider, CSS, and search are scoped to `/docs`; the marketing/editorial shell is project-owned and does not initialize documentation search. The docs layout owns an independent CSS entry composed of the generated Fumadocs stylesheet and project theme overrides. `pnpm docs:generate:styles` prefixes Fumadocs selectors with `:where(html:has(#nd-docs-layout))`, deriving the boundary from the root rendered by Fumadocs `DocsLayout`. The scope therefore activates in server-rendered HTML, updates automatically during client navigation, and still covers portals such as search dialogs rendered elsewhere under `<html>`.
+
+The `:where()` wrapper is load-bearing, not cosmetic: it contributes zero specificity, so scoping narrows *where* Fumadocs rules apply without changing how they rank against project CSS. A bare `html:has(#nd-docs-layout)` prefix adds the layout ID's specificity to every rule and silently flips cascade winners — Fumadocs' `.dark` palette would outrank the project theme bridge, and its `--radius-*`/`--font-*` would outrank `:root`. A test in `src/features/docs/fumadocs-boundary.test.ts` enforces this. The generated stylesheet is gitignored and produced by `postinstall` and `pnpm build`; because CI installs with `--ignore-scripts`, the test job regenerates it explicitly.
+
+Note the scoping covers rules only. `@property` and `@keyframes` blocks stay document-global, and Next.js retains a route stylesheet after a client-side navigation away — so those at-rules remain in effect on non-docs pages once a visitor has loaded `/docs`.
+
+Blog and changelog keep using `fumadocs-mdx` and `fumadocs-core/source` as a headless build-time content pipeline, but render with the project-owned MDX registry in `src/features/editorial/lib/mdx-components.ts`, which owns the `a`, `img`, and `pre` primitives that the docs registry takes from Fumadocs.
+
+Public marketing and editorial routes live in the `(site)` route group, which applies the shared header and footer. Page shells use the `site-container` utility for width and gutters rather than a per-section `max-w-*`; the width is `--site-layout-width` in `src/app/global.css`, and `src/features/marketing/site-layout-boundary.test.ts` enforces the convention in CI.
 
 Rendered MDX uses the owned shadcn Typeset stylesheet at `src/app/typeset.css`. Blog and changelog pages use the spacious `typeset-editorial` preset in `src/app/global.css`; documentation pages use the denser `typeset-docs` preset while retaining Fumadocs for layout, navigation, code blocks, callouts, cards, and generated API reference components. Complex Fumadocs widgets opt out with `not-typeset`, and MDX tables use a `typeset-scroll` wrapper so narrow viewports scroll the table instead of the page.
 

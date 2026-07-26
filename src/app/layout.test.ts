@@ -19,6 +19,13 @@ describe("root layout", () => {
     expect(toolsLayoutSource).not.toMatch(/@clerk\/nextjs/);
     expect(toolsLayoutSource).not.toMatch(/AuthProviders|ClerkProvider/);
   });
+
+  it("owns the global theme without initializing Fumadocs", () => {
+    expect(layoutSource).toMatch(/from "next-themes"/);
+    expect(layoutSource).toMatch(/<ThemeProvider/);
+    expect(layoutSource).not.toMatch(/fumadocs-ui/);
+    expect(layoutSource).not.toMatch(/RootProvider/);
+  });
 });
 
 describe("auth providers", () => {

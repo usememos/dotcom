@@ -1,18 +1,16 @@
 import {
   BellIcon,
-  CheckIcon,
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   Globe2Icon,
   LibraryIcon,
   LockIcon,
+  MapPinIcon,
   MoreVerticalIcon,
   PaperclipIcon,
   PlusIcon,
   SearchIcon,
-  ServerIcon,
-  SlidersHorizontalIcon,
 } from "lucide-react";
 import Image from "next/image";
 import styles from "@/features/marketing/components/home-hero.module.css";
@@ -105,13 +103,14 @@ function AppRail() {
 function CalendarIndex() {
   return (
     <aside className="hidden border-r border-stone-200/90 bg-[#faf9f6] p-3.5 sm:block dark:border-white/8 dark:bg-zinc-900">
-      <div className="flex h-8 items-center gap-2 rounded-lg border border-stone-200 bg-white px-2.5 text-[10px] text-zinc-400 dark:border-white/10 dark:bg-white/5">
-        <SearchIcon className="size-3.5 shrink-0" />
-        <span className="min-w-0 flex-1 truncate">Search memos...</span>
-        <SlidersHorizontalIcon className="size-3 shrink-0" />
+      <div className="flex h-7 items-center justify-between">
+        <p className="text-[10px] font-medium text-zinc-500 dark:text-zinc-400">Timeline</p>
+        <span className="flex size-6 items-center justify-center rounded-md text-zinc-400 ring-1 ring-stone-200/70 dark:text-zinc-500 dark:ring-white/8">
+          <SearchIcon className="size-3" />
+        </span>
       </div>
 
-      <div className="mt-4 flex items-center justify-between">
+      <div className="mt-3 flex items-center justify-between">
         <p className="text-[11px] font-semibold text-zinc-800 dark:text-zinc-200">July 2026</p>
         <div className="flex gap-1 text-zinc-400">
           <ChevronLeftIcon className="size-3.5" />
@@ -145,10 +144,10 @@ function CalendarIndex() {
             <span className="text-teal-700 dark:text-teal-300">#</span> books
           </p>
           <p className="text-[10px] text-zinc-500 dark:text-zinc-400">
-            <span className="text-teal-700 dark:text-teal-300">#</span> daily-notes
+            <span className="text-teal-700 dark:text-teal-300">#</span> reading
           </p>
           <p className="text-[10px] text-zinc-500 dark:text-zinc-400">
-            <span className="text-teal-700 dark:text-teal-300">#</span> self-hosting
+            <span className="text-teal-700 dark:text-teal-300">#</span> cheatsheet
           </p>
         </div>
       </div>
@@ -187,54 +186,51 @@ function Timeline() {
     <div className="mt-3 space-y-2.5">
       <article className="rounded-xl border border-stone-200 bg-white p-3 dark:border-white/10 dark:bg-zinc-900">
         <div className="flex items-center justify-between text-[9px] text-zinc-400">
-          <span className="flex items-center gap-1.5">
-            now
-            <span className="rounded-full bg-blue-50 px-1.5 py-0.5 font-medium text-blue-700 dark:bg-blue-400/10 dark:text-blue-200">
-              New
-            </span>
-          </span>
+          <span>22 days ago</span>
           <MoreVerticalIcon className="size-3.5" />
         </div>
+        <p className="mt-2 text-[12px] font-semibold text-zinc-800 dark:text-zinc-200">Reading: Deep Work</p>
+        <p className="mt-1.5 text-[10px] leading-4 text-zinc-600 dark:text-zinc-300">
+          Started Cal Newport&apos;s <em>Deep Work</em> this week. This passage stopped me:
+        </p>
         <blockquote className="mt-2 border-l-2 border-teal-200 pl-2.5 text-[11px] leading-5 text-zinc-500 italic dark:border-teal-700 dark:text-zinc-400">
-          “We write to taste life twice, in the moment and in retrospect.”
+          “Human beings are at their best when immersed deeply in something challenging.”
         </blockquote>
-        <p className="mt-2 text-[12px] leading-5 text-zinc-700 dark:text-zinc-200">
-          Kept this for the next essay—the quote matters, but the reason I saved it matters more.
-          <span className="ml-1 rounded-md bg-teal-50 px-1.5 py-0.5 text-[10px] font-medium text-teal-700 dark:bg-teal-400/10 dark:text-teal-200">
+        <div className="mt-2 flex flex-wrap items-center gap-1.5">
+          <span className="rounded-md bg-teal-50 px-1.5 py-0.5 text-[9px] font-medium text-teal-700 dark:bg-teal-400/10 dark:text-teal-200">
             #books
           </span>
-        </p>
+          <span className="rounded-md bg-stone-100 px-1.5 py-0.5 text-[9px] text-zinc-500 dark:bg-white/7 dark:text-zinc-400">
+            #reading
+          </span>
+          <span className="ml-auto flex items-center gap-1 text-[9px] text-zinc-400">
+            <MapPinIcon className="size-2.5" />
+            Sightglass Coffee
+          </span>
+        </div>
       </article>
 
       <article className="rounded-xl border border-stone-200 bg-white p-3 dark:border-white/10 dark:bg-zinc-900">
         <div className="flex items-center justify-between text-[9px] text-zinc-400">
-          <span>9:42 AM</span>
+          <span>17 days ago</span>
           <MoreVerticalIcon className="size-3.5" />
         </div>
-        <div className="mt-2 flex items-center gap-2.5">
-          <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-lg bg-amber-50 text-amber-700 dark:bg-amber-400/10 dark:text-amber-200">
-            <ServerIcon className="size-3.5" />
-          </span>
-          <p className="text-[12px] font-semibold text-zinc-800 dark:text-zinc-200">Homelab maintenance</p>
-        </div>
-        <div className="mt-2 space-y-1.5 text-[10px] leading-4 text-zinc-600 dark:text-zinc-300">
-          <p className="flex items-start gap-2">
-            <span className="mt-0.5 flex size-3.5 shrink-0 items-center justify-center rounded-[4px] bg-teal-700 text-white dark:bg-teal-400 dark:text-zinc-950">
-              <CheckIcon className="size-2.5" />
-            </span>
-            Snapshot <code className="font-mono text-[9px] text-zinc-800 dark:text-zinc-200">/var/opt/memos</code> before upgrading.
-          </p>
-          <p className="flex items-start gap-2">
-            <span className="mt-0.5 size-3.5 shrink-0 rounded-[4px] border border-zinc-300 dark:border-zinc-600" />
-            Pin the container, then verify the health check.
-          </p>
-        </div>
+        <p className="mt-2 text-[12px] font-semibold text-zinc-800 dark:text-zinc-200">Git commands I keep forgetting</p>
+        <p className="mt-1.5 text-[10px] leading-4 text-zinc-600 dark:text-zinc-300">
+          Pinning this so I stop searching for the same commands every week.
+        </p>
+        <pre className="mt-2 overflow-hidden rounded-lg bg-zinc-950 px-2.5 py-2 font-mono text-[8.5px] leading-4 text-zinc-300 dark:bg-black/40">
+          <code>
+            <span className="text-zinc-500"># Find the commit that introduced a string</span>
+            {"\n"}git log -S &quot;function_name&quot; --source --all
+          </code>
+        </pre>
         <div className="mt-2 flex gap-1.5">
           <span className="rounded-md bg-teal-50 px-1.5 py-0.5 text-[9px] font-medium text-teal-700 dark:bg-teal-400/10 dark:text-teal-200">
-            #self-hosting
+            #dev
           </span>
           <span className="rounded-md bg-stone-100 px-1.5 py-0.5 text-[9px] text-zinc-500 dark:bg-white/7 dark:text-zinc-400">
-            #server-log
+            #cheatsheet
           </span>
         </div>
       </article>
@@ -260,10 +256,12 @@ export function MemoHeroMock() {
         <div className="grid min-h-[29rem] grid-cols-1 bg-[#f7f6f2] sm:grid-cols-[2.75rem_10.5rem_minmax(0,1fr)] dark:bg-zinc-950">
           <AppRail />
           <CalendarIndex />
-          <main className="min-w-0 p-3.5 sm:p-4">
-            <Composer />
-            <Timeline />
-          </main>
+          <div className="min-w-0 p-3.5 sm:p-4">
+            <div className="mx-auto w-full max-w-[512px]">
+              <Composer />
+              <Timeline />
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
 import { BLOG_ARTICLE_COLUMN_CLASS } from "@/features/editorial/lib/blog";
+import { GITHUB_REPO_URL } from "@/shared/lib/seo";
 
 export function BlogPostFooter() {
   return (
@@ -19,7 +20,7 @@ export function BlogPostFooter() {
                 More Posts
               </Link>
               <a
-                href="https://github.com/usememos/memos"
+                href={GITHUB_REPO_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group inline-flex items-center gap-2 text-sm font-semibold text-zinc-700 transition-colors hover:text-zinc-700 dark:text-zinc-700 dark:hover:text-zinc-700 sm:text-base"

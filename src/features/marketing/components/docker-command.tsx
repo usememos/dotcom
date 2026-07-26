@@ -1,20 +1,14 @@
 "use client";
 
 import { CheckIcon, CopyIcon, TerminalIcon } from "lucide-react";
-import { useState } from "react";
+import { useCopyToClipboard } from "@/shared/lib/use-copy-to-clipboard";
 
 export function DockerCommand() {
-  const [copied, setCopied] = useState(false);
+  const { copied, copy } = useCopyToClipboard();
   const dockerCommand = `docker run -d --name memos \\
   -p 5230:5230 \\
   -v ~/.memos/:/var/opt/memos \\
   neosmemo/memos:stable`;
-
-  const copyToClipboard = async () => {
-    await navigator.clipboard.writeText(dockerCommand);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   return (
     <div className="group overflow-hidden rounded-2xl border border-white/12 bg-white/6 shadow-[0_30px_80px_rgba(0,0,0,0.28)] backdrop-blur-sm">
@@ -36,7 +30,7 @@ export function DockerCommand() {
         </pre>
         <button
           type="button"
-          onClick={copyToClipboard}
+          onClick={() => copy(dockerCommand)}
           className="absolute right-4 top-4 rounded-md border border-white/10 bg-white/5 p-2.5 text-zinc-300 opacity-100 backdrop-blur transition-colors duration-200 hover:bg-white/10 hover:text-white sm:opacity-0 sm:group-hover:opacity-100"
           title={copied ? "Copied!" : "Copy to clipboard"}
           aria-label={copied ? "Copied to clipboard" : "Copy command to clipboard"}

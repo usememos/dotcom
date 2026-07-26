@@ -22,9 +22,9 @@ interface HeroSectionProps {
 
 export function HeroSection({ version = "0.29.1", title, subtitle, primaryCta, secondaryCta }: HeroSectionProps) {
   return (
-    <section className="relative isolate overflow-hidden bg-white px-4 dark:bg-zinc-950 sm:px-6 lg:px-8 xl:px-0">
+    <section className="relative isolate overflow-hidden bg-white dark:bg-zinc-950">
       <HeroAmbient />
-      <div className="mx-auto grid w-full max-w-6xl gap-12 pt-12 pb-16 sm:pt-14 sm:pb-20 lg:min-h-[calc(100svh-3.5rem)] lg:grid-cols-[minmax(0,29rem)_minmax(0,1fr)] lg:items-center lg:gap-12 lg:py-14">
+      <div className="site-container grid gap-12 pt-12 pb-16 sm:pt-14 sm:pb-20 lg:grid-cols-[minmax(0,29rem)_minmax(0,1fr)] lg:items-center lg:gap-12 lg:py-20">
         <div className={`${styles.copy} max-w-[32rem]`}>
           {version ? (
             <Link
@@ -78,7 +78,7 @@ export function HeroSection({ version = "0.29.1", title, subtitle, primaryCta, s
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-[44rem] lg:mx-0 lg:justify-self-end">
+        <div className="relative mx-auto w-full max-w-[54rem] lg:mx-0 lg:justify-self-end">
           <MemoHeroMock />
         </div>
       </div>

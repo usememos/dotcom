@@ -4,7 +4,7 @@ import { DockerCommand } from "@/features/marketing/components/docker-command";
 
 export function HomeDeploySection() {
   return (
-    <section id="deploy" className="relative overflow-hidden bg-zinc-950 px-4 py-20 text-white sm:px-6 sm:py-24 lg:py-28">
+    <section id="deploy" className="relative overflow-hidden bg-zinc-950 py-20 text-white sm:py-24 lg:py-28">
       <div
         className="pointer-events-none absolute inset-0 opacity-35"
         style={{
@@ -13,7 +13,7 @@ export function HomeDeploySection() {
           maskImage: "linear-gradient(to right, black, transparent 72%)",
         }}
       />
-      <div className="relative mx-auto grid w-full max-w-6xl gap-12 lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] lg:items-center lg:gap-16">
+      <div className="site-container relative grid gap-12 lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] lg:items-center lg:gap-16">
         <div>
           <span className="inline-flex size-11 items-center justify-center rounded-full border border-teal-300/30 bg-teal-300/10 text-teal-200">
             <ContainerIcon className="size-5" />

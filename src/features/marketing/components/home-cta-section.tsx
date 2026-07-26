@@ -1,10 +1,11 @@
 import { ArrowRightIcon, BirdIcon, DownloadIcon } from "lucide-react";
 import Link from "next/link";
+import { GITHUB_REPO_URL } from "@/shared/lib/seo";
 
 export function HomeCtaSection() {
   return (
-    <section className="bg-white px-4 py-14 dark:bg-zinc-950 sm:px-6 sm:py-18 lg:py-22">
-      <div className="mx-auto w-full max-w-(--fd-layout-width)">
+    <section className="bg-white py-14 dark:bg-zinc-950 sm:py-18 lg:py-22">
+      <div className="site-container">
         <div className="text-center">
           <div className="mb-6 inline-flex items-center gap-3 text-sm font-medium text-zinc-600 dark:text-zinc-300">
             <span className="inline-flex h-5 w-5 items-center justify-center text-zinc-700 dark:text-zinc-200">
@@ -32,7 +33,7 @@ export function HomeCtaSection() {
               Install Memos
             </Link>
             <Link
-              href="https://github.com/usememos/memos"
+              href={GITHUB_REPO_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex items-center justify-center gap-3 rounded-md border border-zinc-300 bg-white px-6 py-3.5 text-sm font-semibold text-zinc-800 transition-colors duration-300 hover:bg-zinc-50 dark:border-white/10 dark:bg-transparent dark:text-zinc-200 dark:hover:bg-white/10 sm:px-8 sm:text-base"

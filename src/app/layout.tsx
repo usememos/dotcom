@@ -1,9 +1,9 @@
 import "@/app/global.css";
-import { RootProvider } from "fumadocs-ui/provider/next";
 import type { Metadata, Viewport } from "next";
 import { Inter, Source_Serif_4 } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
-import { buildSiteNavigationJsonLd, DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_ALT } from "@/shared/lib/seo";
+import { buildSiteNavigationJsonLd, DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_ALT, GITHUB_REPO_URL } from "@/shared/lib/seo";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -101,7 +101,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       priceCurrency: "USD",
     },
     url: "https://usememos.com",
-    downloadUrl: "https://github.com/usememos/memos",
+    downloadUrl: GITHUB_REPO_URL,
     author: {
       "@type": "Organization",
       name: "Memos Team",
@@ -134,7 +134,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     name: "Memos",
     url: "https://usememos.com",
     logo: "https://usememos.com/logo-rounded.png",
-    sameAs: ["https://github.com/usememos/memos", "https://twitter.com/usaboringmemos", "https://discord.gg/tfPJa4UmAv"],
+    sameAs: [GITHUB_REPO_URL, "https://twitter.com/usaboringmemos", "https://discord.gg/tfPJa4UmAv"],
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer support",
@@ -150,12 +150,6 @@ export default function Layout({ children }: { children: ReactNode }) {
     url: "https://usememos.com",
   };
   const siteNavigationJsonLd = buildSiteNavigationJsonLd();
-  const app = (
-    <RootProvider theme={{ defaultTheme: "system", enableSystem: true }} search={{ options: { type: "static" } }}>
-      {children}
-    </RootProvider>
-  );
-
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -168,7 +162,11 @@ export default function Layout({ children }: { children: ReactNode }) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteNavigationJsonLd) }} />
       </head>
-      <body className={`${inter.variable} ${displaySerif.variable} flex min-h-screen flex-col antialiased`}>{app}</body>
+      <body className={`${inter.variable} ${displaySerif.variable} flex min-h-screen flex-col antialiased`}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

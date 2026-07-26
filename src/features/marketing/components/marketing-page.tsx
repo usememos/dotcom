@@ -121,8 +121,8 @@ export function MarketingPageHero({
   const isLeft = align === "left";
 
   return (
-    <section className="border-b border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
-      <div className="mx-auto w-full max-w-6xl">
+    <section className="border-b border-zinc-200 py-14 dark:border-white/10 lg:py-20">
+      <div className="site-container">
         {breadcrumbs ? <Breadcrumbs items={breadcrumbs} className="mb-10" /> : null}
         <div className={cn(aside && "grid gap-10 lg:grid-cols-[minmax(0,34rem)_minmax(0,1fr)] lg:items-end lg:gap-16")}>
           <div className={cn(isLeft ? "max-w-2xl" : "mx-auto max-w-3xl text-center")}>
@@ -184,8 +184,8 @@ export function MarketingSectionHeader({ eyebrow, title, description, align = "c
 
 export function MarketingSummaryBand({ items, numbered = false }: MarketingSummaryBandProps) {
   return (
-    <section className="border-b border-zinc-200 px-4 dark:border-white/10 sm:px-6">
-      <div className="mx-auto grid max-w-6xl divide-y divide-zinc-200 dark:divide-white/10 lg:grid-cols-3 lg:divide-x lg:divide-y-0">
+    <section className="border-b border-zinc-200 dark:border-white/10">
+      <div className="site-container grid divide-y divide-zinc-200 dark:divide-white/10 lg:grid-cols-3 lg:divide-x lg:divide-y-0">
         {items.map((item, index) => (
           <div
             key={
@@ -210,13 +210,15 @@ export function MarketingSummaryBand({ items, numbered = false }: MarketingSumma
 
 export function MarketingCtaSection({ title, description, actions = [], borderTop = false }: MarketingCtaSectionProps) {
   return (
-    <section className={cn("px-4 py-14 sm:px-6 lg:py-20", borderTop && "border-t border-zinc-200 dark:border-white/10")}>
-      <div className="mx-auto max-w-4xl text-center">
-        <h2 className="mb-6 text-balance font-serif text-4xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-5xl">
-          {title}
-        </h2>
-        <p className="mx-auto mb-10 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">{description}</p>
-        <MarketingActions actions={actions} />
+    <section className={cn("py-14 lg:py-20", borderTop && "border-t border-zinc-200 dark:border-white/10")}>
+      <div className="site-container">
+        <div className="mx-auto max-w-4xl text-center">
+          <h2 className="mb-6 text-balance font-serif text-4xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-5xl">
+            {title}
+          </h2>
+          <p className="mx-auto mb-10 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">{description}</p>
+          <MarketingActions actions={actions} />
+        </div>
       </div>
     </section>
   );

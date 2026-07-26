@@ -4,9 +4,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { AdsSectionMobile } from "@/features/docs/components/ads-section";
 import { DocsArticleBody } from "@/features/docs/components/docs-article-body";
+import { getDocsMDXComponents } from "@/features/docs/lib/mdx-components";
 import { getDocsSocialPreview } from "@/features/docs/lib/social-preview";
 import { tocConfig } from "@/features/docs/lib/toc-config";
-import { getMDXComponents } from "@/mdx-components";
 import { getOpenGraphImages, getTwitterImages } from "@/shared/content/social-preview";
 import { source } from "@/shared/content/source";
 import { buildBreadcrumbJsonLd } from "@/shared/lib/seo";
@@ -57,7 +57,7 @@ export default async function Page() {
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsArticleBody>
         <MDXContent
-          components={getMDXComponents({
+          components={getDocsMDXComponents({
             // this allows you to link to other pages with relative file paths
             a: createRelativeLink(source, page),
           })}

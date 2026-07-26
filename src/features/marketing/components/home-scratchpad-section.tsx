@@ -10,8 +10,8 @@ const FEATURES = [
 
 export function HomeScratchpadSection() {
   return (
-    <section className="bg-transparent px-4 py-14 sm:px-6 sm:py-18 lg:py-24">
-      <div className="mx-auto w-full max-w-(--fd-layout-width)">
+    <section className="bg-transparent py-14 sm:py-18 lg:py-24">
+      <div className="site-container">
         <div className="grid gap-10 border-t border-stone-300/60 pt-10 dark:border-white/10 lg:grid-cols-[minmax(0,21rem)_minmax(0,1fr)] lg:gap-14 lg:pt-14">
           <div className="lg:sticky lg:top-24 lg:self-start">
             <div className="mb-5 inline-flex items-center gap-3 text-sm font-medium text-stone-600 dark:text-stone-300">

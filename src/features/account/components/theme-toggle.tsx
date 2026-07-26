@@ -14,7 +14,7 @@ const THEMES = [
 /**
  * Compact theme switcher: a single row of icon actions (light/dark/system).
  * Plain buttons keep the dropdown open while toggling for a live preview.
- * Render at the bottom of a DropdownMenuContent.
+ * Render at the bottom of a DropdownMenuContent or in a low-priority settings row.
  */
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
