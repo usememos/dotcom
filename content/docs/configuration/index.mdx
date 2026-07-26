@@ -15,7 +15,7 @@ Memos can be configured through command-line flags, `MEMOS_*` environment variab
 | `--data` | `MEMOS_DATA` | data directory |
 | `--driver` | `MEMOS_DRIVER` | database backend |
 | `--dsn` | `MEMOS_DSN` | database connection string |
-| `--instance-url` | `MEMOS_INSTANCE_URL` | public instance URL |
+| `--instance-url` | `MEMOS_INSTANCE_URL` | public instance URL; empty enables private mode |
 | `--demo` | `MEMOS_DEMO` | demo mode |
 | `--allow-private-webhooks` | `MEMOS_ALLOW_PRIVATE_WEBHOOKS` | allow webhook URLs that resolve to private or reserved IP ranges |
 | `--log-level` | `MEMOS_LOG_LEVEL` | log verbosity (`debug`, `info`, `warn`, `error`) |
@@ -26,6 +26,8 @@ Memos can be configured through command-line flags, `MEMOS_*` environment variab
 - deployment-managed files keep selected authentication and instance settings under infrastructure control
 - instance settings control storage, registration, and some auth behavior
 - reverse proxy settings affect HTTPS, cookie behavior, and public URL correctness
+
+`MEMOS_INSTANCE_URL` is also an access-mode switch in Memos 0.30 and later. Leave it empty for private mode; set it to the canonical external URL to enable anonymous public surfaces such as Explore and RSS.
 
 ## Related topics
 

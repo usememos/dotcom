@@ -3,7 +3,13 @@ title: Writing Markdown
 description: Write rich memos with Markdown, checklists, code blocks, and embedded structure.
 ---
 
-Memos stores memo content as plain text and renders it with Markdown. That keeps content portable while still supporting rich formatting such as checklists, tables, code blocks, and links.
+Memos stores memo content as plain text and renders it with Markdown. That keeps
+content portable while still supporting rich formatting such as checklists,
+tables, code blocks, links, and footnotes.
+
+The editor keeps the Markdown source editable while decorating recognized
+syntax. Use the formatting toolbar or keyboard shortcuts for common formatting,
+and press `Tab` or `Shift+Tab` to indent or outdent list items.
 
 ## Core syntax
 
@@ -50,6 +56,16 @@ Task lists are especially useful in Memos because they turn ordinary notes into 
 - [ ] Draft release notes
 - [ ] Review production config
 - [x] Create backup
+```
+
+## Footnotes
+
+Add a footnote reference in the text and define it elsewhere in the memo:
+
+```markdown
+This statement needs context.[^context]
+
+[^context]: Supporting details can live at the end of the memo.
 ```
 
 ## Writing tips

@@ -17,7 +17,7 @@ Use password sign-in for simple private instances. Use SSO when your team alread
 | --- | --- | --- | --- |
 | Access token (JWT) | 15 min | Client memory | Stateless; verified without a DB query |
 | Refresh token (JWT) | 30 days | HTTP-only cookie | Database-backed, revocable |
-| Personal access token (PAT) | User-defined | SHA-256 hash in DB | Format: `memos_pat_<32 random chars>` |
+| Personal access token (PAT) | User-selected; no expiration by default | SHA-256 hash in DB | Format: `memos_pat_<32 random chars>` |
 
 The plain PAT is shown only once at creation time. Only its SHA-256 hash is stored in the database.
 
@@ -64,7 +64,7 @@ Memos stores local users separately from external SSO accounts. When a user sign
 
 If a matching linked identity already exists, Memos signs in to the same local user. If no match exists and registration is allowed, Memos creates a regular local user and links that external account. If user registration is disabled, first-time SSO sign-in is rejected until an account is created or linked by another flow.
 
-SSO-created users receive a generated local username. Do not assume the local username is the user's email address or provider subject.
+For a new SSO user, Memos first tries to use the mapped external identifier as the local username when it satisfies the username rules and is not reserved. If that value is invalid or already belongs to another account, Memos generates a UUID-based username instead. It never links an SSO identity to an existing account merely because the usernames match.
 
 ### OAuth2 provider fields
 
@@ -169,7 +169,9 @@ Use PATs when:
 
 Operational guidance:
 
-- create narrowly scoped tokens when possible
+- create a separate token for each application or integration
+- choose an expiration when the integration does not need a permanent credential; new tokens default to no expiration
+- review the last-used timestamp to find abandoned credentials
 - rotate tokens periodically
 - delete tokens that are no longer needed
 - do not embed PATs into public clients or front-end code

@@ -13,13 +13,13 @@ Three token types handle authentication:
 | --- | --- | --- | --- |
 | Access token (JWT) | 15 minutes | Client memory | Stateless; no DB query needed to verify |
 | Refresh token (JWT) | 30 days | HTTP-only cookie | Stored in DB, revocable; `SameSite=Lax`, `Secure=true` in production |
-| Personal access token | User-defined | SHA-256 hash in DB | Prefix `memos_pat_`; plain token shown only once at creation |
+| Personal access token | User-selected; no expiration by default | SHA-256 hash in DB | Prefix `memos_pat_`; plain token shown only once at creation |
 
 The JWT secret is auto-generated as a UUID on first run and stored in the database. In demo mode, the fixed secret `usememos` is used — never deploy demo mode as production.
 
 ## Core recommendations
 
-- set a public instance URL with `MEMOS_INSTANCE_URL` when running behind a reverse proxy
+- leave `MEMOS_INSTANCE_URL` empty for private mode; set it only when anonymous public access is intended and to the canonical URL used by your reverse proxy
 - disable user registration if your instance is private
 - disable public memo visibility if you do not want any public content
 - use HTTPS in front of the instance
@@ -30,7 +30,8 @@ The JWT secret is auto-generated as a UUID on first run and stored in the databa
 - protect the host admin account carefully
 - prefer SSO for team deployments when available
 - rotate credentials and tokens that are exposed or no longer needed
-- avoid leaving old PATs active indefinitely
+- use a separate PAT for each integration and review its last-used timestamp
+- add an expiration when an integration does not need a permanent credential
 - never enable demo mode on a production instance (it uses a hardcoded JWT secret)
 
 ## Reverse proxy requirements

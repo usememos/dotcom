@@ -9,6 +9,8 @@ Every Memos feature is available over the API. To call it programmatically, crea
 
 Create and revoke tokens from your **user settings** in the app. Tokens use the `memos_pat_` prefix, and the plain token value is shown only once at creation — store it somewhere safe.
 
+New tokens default to no expiration; you can choose an expiration when creating one. The settings page shows whether each token has ever been used, its last-used time, and its expiration status. Use a separate token for each application so you can revoke one integration without disrupting another.
+
 Tokens are scoped to your user: API calls made with a token can do what your user can do.
 
 ## Call the API
@@ -19,6 +21,8 @@ Pass the token in the `Authorization` header:
 curl -H "Authorization: Bearer memos_pat_..." \
   https://memos.example.com/api/v1/memos
 ```
+
+For browser-based integrations, bearer-token requests may be sent cross-origin. Cookie authentication remains same-origin; do not build third-party API clients around a user's browser session cookie.
 
 ## Where to go next
 

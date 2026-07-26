@@ -16,10 +16,12 @@ describe("sortChangelogPages", () => {
     const pages = [
       { data: { title: "Release v0.30.0-rc.1" } },
       { data: { title: "Release v0.30.0-rc.2" } },
+      { data: { title: "Release v0.30.0" } },
       { data: { title: "Release v0.29.1" } },
     ];
 
     expect(sortChangelogPages(pages).map((page) => page.data.title)).toEqual([
+      "Release v0.30.0",
       "Release v0.30.0-rc.2",
       "Release v0.30.0-rc.1",
       "Release v0.29.1",

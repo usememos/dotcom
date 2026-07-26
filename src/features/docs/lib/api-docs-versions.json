@@ -9,8 +9,8 @@
   {
     "slug": "0-30",
     "label": "0.30.x",
-    "sourceRef": "refs/tags/v0.30.0-rc.1",
-    "snapshotVersion": "0.30.0-rc.1"
+    "sourceRef": "refs/tags/v0.30.0",
+    "snapshotVersion": "0.30.0"
   },
   {
     "slug": "0-29",

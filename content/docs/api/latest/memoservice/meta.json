@@ -10,7 +10,7 @@
     "DeleteMemoShare",
     "GetLinkMetadata",
     "GetMemo",
-    "GetMemoByShare",
+    "GetSharedMemo",
     "ListMemoAttachments",
     "ListMemoComments",
     "ListMemoReactions",

@@ -12,7 +12,7 @@ const checks = [
     type: "html",
     contains: "Best practices to write a TAG",
   },
-  { path: "/changelog/0-29-1", type: "html", contains: "Mobile video posters" },
+  { path: "/changelog/0-30-0", type: "html", contains: "Decorated-source editor" },
   { path: "/dashboard", type: "html", cacheControlIncludes: "s-maxage=31536000" },
   {
     path: "/settings/connections?source=web-clipper",

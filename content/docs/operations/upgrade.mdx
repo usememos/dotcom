@@ -11,6 +11,30 @@ Memos applies database migrations automatically on startup, so an upgrade is: ba
 2. Read the [changelog](/changelog) for the versions you are skipping, especially across minor versions (0.x → 0.y), which can contain breaking changes.
 3. Note your current version so you can report it if something goes wrong.
 
+## Upgrading to 0.30
+
+Version 0.30 changes several public access and integration behaviors. Before
+deploying it:
+
+- Back up the database and attachments.
+- Set `MEMOS_INSTANCE_URL` to the canonical public URL if the instance should
+  remain publicly accessible. An empty value now enables private mode.
+- Update saved CEL shortcut expressions that use `now()` or Unix timestamps.
+  Use the `now` timestamp value, duration arithmetic such as `now - duration`,
+  and CEL timestamps instead.
+- Reconfigure MCP clients to use the `/mcp` endpoint and service-prefixed tool
+  names. The old aliases, prompts, resources, and unprefixed tools were removed.
+- Update clients that read shared memos from
+  `GetMemoByShare` (`/api/v1/shares/{shareId}`) to
+  `GetSharedMemo` (`/api/v1/shares/{shareToken}/memo`).
+- Review shared-memo assumptions: a share token exposes the selected memo,
+  attachments, and reactions, but not its parent, comments, or relations.
+- Review tag display settings after the per-instance tag metadata migration.
+  Tag colors and blur rules are now stored per user.
+
+After the upgrade, verify sign-in, public memo and RSS access if enabled, shared
+links, and any MCP, webhook, or API integrations you operate.
+
 ## Docker
 
 ```bash
@@ -39,7 +63,7 @@ See the [Binary guide](/docs/deploy/binary) for service setup.
 
 ## Pinning versions
 
-`neosmemo/memos:stable` tracks the latest stable release, which is convenient but upgrades implicitly on every pull. For production, pin a specific version tag (for example `neosmemo/memos:0.29.1`) and upgrade deliberately.
+`neosmemo/memos:stable` tracks the latest stable release, which is convenient but upgrades implicitly on every pull. For production, pin a specific version tag (for example `neosmemo/memos:0.30.0`) and upgrade deliberately.
 
 ## Verify after upgrading
 

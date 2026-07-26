@@ -20,7 +20,7 @@ interface HeroSectionProps {
   };
 }
 
-export function HeroSection({ version = "0.29.1", title, subtitle, primaryCta, secondaryCta }: HeroSectionProps) {
+export function HeroSection({ version = "0.30.0", title, subtitle, primaryCta, secondaryCta }: HeroSectionProps) {
   return (
     <section className="relative isolate overflow-hidden bg-white dark:bg-zinc-950">
       <HeroAmbient />

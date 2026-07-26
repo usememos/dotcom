@@ -5,7 +5,7 @@ openapi: 3.0.3
 info:
     title: "Memos API"
     version: "0.30.x"
-    x-memos-source-version: "0.30.0-rc.1"
+    x-memos-source-version: "0.30.0"
 paths:
     /api/v1/ai:transcribe:
         post:
@@ -96,6 +96,7 @@ paths:
                   description: |-
                     Optional. The attachment ID to use for this attachment.
                      If empty, a unique ID will be generated.
+                     Format: ^[a-zA-Z0-9]([a-zA-Z0-9-]{0,34}[a-zA-Z0-9])?$
                   schema:
                     type: string
             requestBody:
@@ -350,6 +351,7 @@ paths:
                   description: |-
                     Optional. The ID to use for the identity provider, which will become the final component of the resource name.
                      If not provided, the system will generate one.
+                     Format: ^[a-zA-Z0-9]([a-zA-Z0-9-]{0,34}[a-zA-Z0-9])?$
                   schema:
                     type: string
             requestBody:
@@ -704,6 +706,7 @@ paths:
                   description: |-
                     Optional. The memo ID to use for this memo.
                      If empty, a unique ID will be generated.
+                     Format: ^[a-zA-Z0-9]([a-zA-Z0-9-]{0,34}[a-zA-Z0-9])?$
                   schema:
                     type: string
             requestBody:
@@ -1264,18 +1267,18 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
-    /api/v1/shares/{shareId}:
+    /api/v1/shares/{shareToken}/memo:
         get:
             tags:
                 - MemoService
             description: |-
-                GetMemoByShare resolves a share token to its memo. No authentication required.
+                GetSharedMemo resolves a share token to its memo. No authentication required.
                  Returns NOT_FOUND if the token is invalid or expired.
-            operationId: MemoService_GetMemoByShare
+            operationId: MemoService_GetSharedMemo
             parameters:
-                - name: shareId
+                - name: shareToken
                   in: path
-                  description: Required. The share token extracted from the share URL (/s/{share_id}).
+                  description: Required. The opaque bearer token extracted from the share URL.
                   required: true
                   schema:
                     type: string
@@ -1352,9 +1355,9 @@ paths:
                 - name: userId
                   in: query
                   description: |-
-                    Optional. The user ID to use for this user.
-                     If empty, a unique ID will be generated.
-                     Must match the pattern [a-z0-9-]+
+                    Optional. The resource ID to use for this user. If set, it must equal
+                     user.username, follow the UID format, and not consist entirely of digits.
+                     Format: ^[a-zA-Z0-9]([a-zA-Z0-9-]{0,34}[a-zA-Z0-9])?$
                   schema:
                     type: string
                 - name: validateOnly
@@ -1394,7 +1397,7 @@ paths:
                 - UserService
             description: |-
                 GetUser gets a user by username.
-                 Format: users/{username} (e.g., users/steven)
+                 Format: users/{user} (e.g., users/steven)
             operationId: UserService_GetUser
             parameters:
                 - name: user
@@ -2639,7 +2642,7 @@ components:
                     type: string
                     description: |-
                         Required. The identity provider to link.
-                         Format: identity-providers/{uid}
+                         Format: identity-providers/{idp}
                 code:
                     type: string
                     description: Required. The authorization code from the identity provider.
@@ -3032,7 +3035,7 @@ components:
                     type: string
                     description: |-
                         The resource name of the identity provider.
-                         Format: identity-providers/{uid}
+                         Format: identity-providers/{idp}
                 externUid:
                     readOnly: true
                     type: string
@@ -3228,7 +3231,7 @@ components:
                     type: string
                     description: |-
                         The resource name of the memo.
-                         Format: memos/{memo}, memo is the user defined id or uuid.
+                         Format: memos/{memo}, where memo is the user-defined UID.
                 state:
                     enum:
                         - STATE_UNSPECIFIED
@@ -3569,7 +3572,7 @@ components:
                     type: string
                     description: |-
                         The resource name of the shortcut.
-                         Format: users/{username}/shortcuts/{shortcut}
+                         Format: users/{user}/shortcuts/{shortcut}
                 title:
                     type: string
                     description: The title of the shortcut.
@@ -3613,7 +3616,7 @@ components:
                     type: string
                     description: |-
                         The resource name of the SSO provider.
-                         Format: identity-providers/{uid}
+                         Format: identity-providers/{idp}
                 code:
                     type: string
                     description: The authorization code from the SSO provider.
@@ -3895,7 +3898,7 @@ components:
                     type: string
                     description: |-
                         The name of the user setting.
-                         Format: users/{username}/settings/{setting}, {setting} is the key for the setting.
+                         Format: users/{user}/settings/{setting}, {setting} is the key for the setting.
                          For example, "users/steven/settings/GENERAL" for general settings.
                 generalSetting:
                     $ref: '#/components/schemas/UserSetting_GeneralSetting'
@@ -3959,8 +3962,8 @@ components:
                 name:
                     type: string
                     description: |-
-                        The resource name of the user whose stats these are.
-                         Format: users/{user}
+                        The resource name of the user statistics singleton.
+                         Format: users/{user}/stats
                 memoTypeStats:
                     allOf:
                         - $ref: '#/components/schemas/UserStats_MemoTypeStats'

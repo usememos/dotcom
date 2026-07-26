@@ -15,7 +15,7 @@ The first time you sign in with an SSO account, one of two things happens:
 - if the external account is new and registration is allowed, Memos creates a regular local user and links the SSO account
 - if registration is disabled, the sign-in is rejected until the account is created or linked another way
 
-An SSO-created Memos user may have a generated local username. Your display name, email, and avatar can still come from the SSO provider when those fields are available.
+For a new SSO user, Memos uses the mapped external identifier as the local username when it is valid, non-reserved, and available. Otherwise it generates a UUID-based username. Your display name, email, and avatar can still come from the SSO provider when those fields are available.
 
 ## Link an SSO account
 

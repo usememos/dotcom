@@ -3,7 +3,7 @@ title: Webhooks
 description: Receive events when memos are created, updated, deleted, or commented on.
 ---
 
-Memos can send webhooks when memos change. Webhooks are configured per user in the Settings page.
+Memos can send webhooks when memos change. Webhooks are configured per user in the Settings page and can be edited or deleted later.
 
 ## Events
 
@@ -16,9 +16,42 @@ Webhooks are dispatched on:
 
 ## Payload
 
-Memos sends a JSON payload with the event type and memo data. The exact schema is versioned with the API.
+Memos sends a JSON payload containing `activityType`, `creator`, and the affected `memo`. Comment-created payloads include the parent relation so receivers can identify the conversation.
 
 Refer to the [API reference](/docs/api) for the current webhook-related endpoints.
+
+## Signing and verification
+
+New webhooks receive a Standard Webhooks-compatible signing secret in the form `whsec_<base64>`. Copy it when the webhook is created and store it as a secret in the receiving service. You can reveal an existing secret later from the edit dialog; older unsigned webhooks can generate one there.
+
+Signed deliveries include:
+
+| Header | Value |
+| --- | --- |
+| `webhook-id` | Unique message ID beginning with `msg_` |
+| `webhook-timestamp` | Unix timestamp in seconds |
+| `webhook-signature` | `v1,<base64 HMAC>` |
+
+Verify the signature before parsing or acting on the payload:
+
+1. Read the raw request body bytes.
+2. Remove the `whsec_` prefix and Base64-decode the remaining secret.
+3. Build the signed content as `<webhook-id>.<webhook-timestamp>.<raw-body>`.
+4. Compute HMAC-SHA256 with the decoded secret and Base64-encode the result.
+5. Compare `v1,<result>` with `webhook-signature` using a constant-time comparison.
+6. Reject timestamps outside a small tolerance window and deduplicate `webhook-id` values to reduce replay risk.
+
+Do not reserialize parsed JSON before verification; even an equivalent JSON representation produces a different signature.
+
+## Delivery response
+
+The receiver must return a `2xx` response with a JSON body whose `code` is `0`, for example:
+
+```json
+{ "code": 0 }
+```
+
+Non-`2xx` responses, invalid JSON, or a nonzero `code` are treated as delivery failures.
 
 ## Network safety
 

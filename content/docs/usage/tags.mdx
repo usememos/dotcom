@@ -14,6 +14,16 @@ This relates to #project-alpha and #development.
 Meeting with #team tomorrow to discuss #roadmap.
 ```
 
+Tags inside Markdown links are ignored. Escape a literal tag with a backslash, such as `\#not-a-tag`. Tag names support Unicode letters and combining marks.
+
+## Personal tag appearance
+
+Open your user settings to assign a background color or content-blur rule to a tag. These rules are personal: each user controls how matching tags and memo content appear in their own account.
+
+Rules accept exact tag names or anchored regular-expression patterns. For example, `project/.*` applies to every tag under that prefix. Memos validates a pattern before saving it.
+
+When upgrading to 0.30, existing instance-level tag metadata is copied to current users during migration. Later changes are stored per user.
+
 ## Good tag habits
 
 - pick a consistent case style

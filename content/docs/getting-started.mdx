@@ -26,6 +26,8 @@ What this gives you:
 - SQLite by default
 - one container that is easy to inspect and replace
 
+Because the command does not set `MEMOS_INSTANCE_URL`, Memos starts in private mode: anonymous visitors are sent to sign-in and public discovery surfaces such as Explore and RSS stay unavailable. This is a safe default for a local or personal instance.
+
 If you want a checked-in deployment file, use [Docker Compose](/docs/deploy/docker-compose). If you need a custom or pinned build, use [Build From Source](/docs/deploy/development). Contributors should start with [Development](/docs/development).
 
 ## 2. Verify the instance
@@ -48,7 +50,7 @@ The first user becomes the host admin and can configure registration, authentica
 Recommended first actions:
 
 - use a strong password
-- confirm the instance URL if the app will sit behind a reverse proxy
+- decide whether to keep private mode or set the canonical instance URL to enable anonymous public access
 - decide whether user registration should remain disabled or be opened later
 - decide whether public memos should be allowed at all
 
@@ -88,9 +90,9 @@ Each memo uses one of three visibility levels:
 
 - `PRIVATE`: only you can read it
 - `PROTECTED`: authenticated users on the instance can read it
-- `PUBLIC`: anyone with access to the URL can read it
+- `PUBLIC`: anonymous visitors can read it when the instance URL is configured and public mode is enabled
 
-For a private team or personal instance, disabling public memos is often the safest default.
+In private mode, `PUBLIC` memos still require sign-in. Explicit share links remain accessible without sign-in and should be treated as bearer credentials.
 
 ## 6. Explore the core workflows
 
@@ -106,4 +108,4 @@ After the first memo, the next high-value workflows are:
 
 - If `http://localhost:5230` does not load, check `docker logs memos`.
 - If the data directory is not writable, verify permissions on `~/.memos`.
-- If you run behind a reverse proxy, set `MEMOS_INSTANCE_URL` to the public URL.
+- If you want anonymous public profiles, Explore, or RSS—or run behind a reverse proxy—set `MEMOS_INSTANCE_URL` to the canonical public URL.

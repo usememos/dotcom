@@ -17,7 +17,7 @@ All flags and their corresponding environment variables:
 | `--data` | `MEMOS_DATA` | auto | Data directory |
 | `--driver` | `MEMOS_DRIVER` | `sqlite` | Database backend (`sqlite`, `mysql`, `postgres`) |
 | `--dsn` | `MEMOS_DSN` | auto | Database connection string |
-| `--instance-url` | `MEMOS_INSTANCE_URL` | `` | Public instance URL |
+| `--instance-url` | `MEMOS_INSTANCE_URL` | `` | Public instance URL; empty enables private mode |
 | `--demo` | `MEMOS_DEMO` | `false` | Demo mode |
 | `--allow-private-webhooks` | `MEMOS_ALLOW_PRIVATE_WEBHOOKS` | `false` | Allow webhook URLs that resolve to private or reserved IP ranges |
 | `--log-level` | `MEMOS_LOG_LEVEL` | `info` | Log verbosity (`debug`, `info`, `warn`, `error`) |
@@ -34,6 +34,12 @@ All flags and their corresponding environment variables:
 
 When `MEMOS_DRIVER=sqlite` and `MEMOS_DSN` is empty, the database file defaults to `{MEMOS_DATA}/memos_prod.db`. For MySQL and PostgreSQL, `MEMOS_DSN` is required.
 
+### Public and private mode
+
+Since Memos 0.30, an empty `MEMOS_INSTANCE_URL` puts the instance in **private mode**. Anonymous visitors are redirected to sign-in, RSS is unavailable, and anonymous API access is limited to setup, authentication, registration when allowed, and shared-memo routes.
+
+Set `MEMOS_INSTANCE_URL` to the canonical external URL when you intentionally want public profiles, public memos, Explore, RSS, and other anonymous reads. The value must include the scheme, for example `https://memos.example.com`.
+
 ## Priority order
 
 1. Command-line flags (highest)
@@ -44,7 +50,8 @@ An explicit flag always wins over the environment variable for the same setting.
 
 ## Practical guidance
 
-- set `MEMOS_INSTANCE_URL` whenever the app sits behind a proxy
+- leave `MEMOS_INSTANCE_URL` empty for a private-only instance
+- set it to the canonical public URL when you want anonymous public access or when the app sits behind a proxy
 - prefer explicit `MEMOS_DRIVER` and `MEMOS_DSN` when you are not using SQLite defaults
 - leave `MEMOS_ALLOW_PRIVATE_WEBHOOKS` disabled unless your webhook targets intentionally live on a trusted private network
 - keep secrets such as database credentials outside committed compose files

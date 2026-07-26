@@ -37,12 +37,12 @@ Shortcuts use CEL (Common Expression Language) filter expressions. A shortcut fi
 | `content` | string | `content.contains("meeting")` |
 | `creator` | string | `creator == "users/john"` |
 | `creator_id` | integer | `creator_id == 42` |
-| `created_ts` | integer | `created_ts >= now() - 86400` |
-| `updated_ts` | integer | `updated_ts >= now() - 3600` |
+| `created_ts` | timestamp | `created_ts >= now - duration("24h")` |
+| `updated_ts` | timestamp | `updated_ts >= timestamp("2026-01-01T00:00:00Z")` |
 | `visibility` | string | `visibility == "PUBLIC"` |
 | `pinned` | boolean | `pinned` |
 | `tags` | string list | `"project/backend" in tags` |
-| `tag` | string list alias | `tag in ["work"]` |
+| `tag` | tag-tree alias | `tag in ["work"]` |
 | `has_task_list` | boolean | `has_task_list` |
 | `has_link` | boolean | `has_link` |
 | `has_code` | boolean | `has_code` |
@@ -53,7 +53,10 @@ Shortcuts use CEL (Common Expression Language) filter expressions. A shortcut fi
 - comparisons: `==`, `!=`, `<`, `<=`, `>`, `>=`
 - logic: `&&`, `||`, `!`, and parentheses `()`
 - membership: `tag in ["work", "team"]`, `"project/backend" in tags`, `visibility in ["PUBLIC", "PROTECTED"]`
-- functions: `content.contains("text")`, `size(tags)`, `now()`
+- string functions: `contains()`, `startsWith()`, `endsWith()`, and `matches()`
+- collection functions: `exists()`, `all()`, `exists_one()`, and `size()`
+- set functions: `sets.contains()`, `sets.intersects()`, and `sets.equivalent()`
+- time values: `now`, `duration("24h")`, and `timestamp(...)`
 
 Boolean fields can be used directly without `== true`:
 
@@ -80,15 +83,57 @@ tags.exists(t, t.endsWith("/bug"))
 tags.exists(t, t.contains("todo"))
 ```
 
-### Time-based filters
-
-Timestamps use Unix seconds. You can compare against fixed values or `now()` arithmetic:
+Other collection predicates and set operations are also available:
 
 ```txt
-created_ts >= now() - 3600
-created_ts >= now() - 7 * 86400
-updated_ts >= now() - 60
+tags.all(t, t.startsWith("work/"))
+tags.exists_one(t, t.startsWith("project/"))
+sets.intersects(tags, ["work", "urgent"])
+sets.equivalent(tags, ["inbox"])
+size(tags) == 0
 ```
+
+`tags.all()` matches only non-empty tag sets. Use `size(tags) == 0` when you specifically want untagged memos.
+
+### String matching
+
+Content matching is case-insensitive for `contains()`, `startsWith()`, and `endsWith()`:
+
+```txt
+content.contains("meeting")
+content.startsWith("TODO")
+content.endsWith("done")
+```
+
+Use `matches()` for regular expressions:
+
+```txt
+content.matches("v[0-9]+")
+```
+
+Regular expressions are validated before a shortcut is saved. Keep patterns portable: SQLite, PostgreSQL, and MySQL use different regular-expression engines.
+
+### Time-based filters
+
+`created_ts` and `updated_ts` are CEL timestamps. `now` is a timestamp variable, not a function. Use durations for relative windows and `timestamp()` for fixed instants or Unix epoch seconds:
+
+```txt
+created_ts >= now - duration("1h")
+created_ts >= now - duration("168h")
+updated_ts >= timestamp("2026-01-01T00:00:00Z")
+created_ts >= timestamp(1767225600)
+```
+
+Timestamp accessors support calendar filters:
+
+```txt
+created_ts.getFullYear() == 2026
+created_ts.getMonth() == 0
+created_ts.getDayOfWeek() == 0
+created_ts.getMonth() == now.getMonth() && created_ts.getDate() == now.getDate()
+```
+
+Months are zero-based (`0` is January), and days of the week are zero-based (`0` is Sunday). Accessors are evaluated in UTC for SQLite and PostgreSQL; MySQL reads timestamp columns in the database session time zone.
 
 ## Example shortcuts
 
@@ -97,11 +142,13 @@ updated_ts >= now() - 60
 | Work TODOs | `tag in ["work"] && has_incomplete_tasks` |
 | Public posts | `visibility == "PUBLIC"` |
 | Posts with links | `has_link` |
-| Recent notes | `created_ts >= now() - 7 * 86400` |
+| Recent notes | `created_ts >= now - duration("168h")` |
 | Team updates | `tag in ["team"] && visibility == "PROTECTED"` |
 | Unfinished tasks | `has_task_list && has_incomplete_tasks` |
 | Pinned references | `pinned && (has_link || has_code)` |
 | Active projects | `tags.exists(t, t.startsWith("project")) && !tags.exists(t, t.startsWith("archive"))` |
+| Untagged | `size(tags) == 0` |
+| Release notes | `content.matches("v[0-9]+\\.[0-9]+")` |
 
 ## Good shortcut patterns
 
@@ -122,4 +169,4 @@ updated_ts >= now() - 60
 
 Shortcuts are personal workflow tools. They are most useful on the home view and should reflect how you naturally revisit content rather than every theoretical filter you could build.
 
-Unsupported patterns include regular expressions, `all()`, `filter()`, `map()`, and date string parsing. Use Unix timestamps or `now()` arithmetic instead.
+Memos supports a deliberate subset of CEL that can be translated consistently to SQLite, MySQL, and PostgreSQL. Use the **Validate** action before saving; it reports unsupported fields, type mismatches, invalid regular expressions, and operations that cannot be translated.

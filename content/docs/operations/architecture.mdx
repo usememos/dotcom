@@ -9,13 +9,13 @@ At a high level, Memos is a lightweight web application with a frontend UI, an A
 
 | Layer | Technology |
 | --- | --- |
-| Backend language | Go 1.25+ |
+| Backend language | Go 1.26.2+ |
 | HTTP router | Echo v5 |
 | API protocol | gRPC + Connect RPC (dual) |
 | Schema | Protocol Buffers v2 |
 | Databases | SQLite (default), MySQL, PostgreSQL |
-| Frontend framework | React 18 + TypeScript |
-| Frontend build | Vite 7 |
+| Frontend framework | React 19 + TypeScript |
+| Frontend build | Vite 8 |
 | State management | React Query v5 + React Context |
 | Frontend API client | Connect RPC |
 | Frontend styling | Tailwind CSS v4 |
@@ -44,7 +44,7 @@ Three token types are in use:
 | --- | --- | --- | --- |
 | Access token (JWT) | 15 minutes | Client memory | Stateless signature check |
 | Refresh token (JWT) | 30 days | HTTP-only cookie | Database lookup (revocable) |
-| Personal access token | User-defined | SHA-256 hash in DB | Database lookup |
+| Personal access token | User-selected; no expiration by default | SHA-256 hash in DB | Database lookup |
 
 Personal access tokens use the prefix `memos_pat_` followed by 32 random characters and are stored only as their SHA-256 hash.
 

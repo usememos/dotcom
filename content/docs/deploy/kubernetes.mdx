@@ -23,7 +23,7 @@ SQLite works for a single replica and is the easiest option, but it ties you to 
 
 - one Memos replica when using SQLite
 - a persistent volume mounted at `/var/opt/memos`
-- `MEMOS_INSTANCE_URL` set to the public URL
+- `MEMOS_INSTANCE_URL` left empty for private mode or set to the canonical public URL when anonymous access is intended
 - TLS termination at the ingress layer
 - standard forwarded headers preserved
 

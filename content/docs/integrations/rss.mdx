@@ -5,6 +5,8 @@ description: RSS feeds for public memos.
 
 Memos exposes RSS feeds for public memos.
 
+RSS is available only when `MEMOS_INSTANCE_URL` is configured and the instance is running in public mode. Private-mode instances return `404` for RSS routes even if they contain memos with `PUBLIC` visibility.
+
 ## Explore feed
 
 ```
@@ -18,3 +20,5 @@ Memos exposes RSS feeds for public memos.
 ```
 
 The user feed contains public memos for that user.
+
+Both feeds include top-level public memos only; comments are excluded.

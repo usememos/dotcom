@@ -14,6 +14,7 @@ describe("HeroSection", () => {
     );
 
     expect(screen.getByRole("heading", { name: "Test headline" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Latest release v0\.30\.0/ })).toHaveAttribute("href", "/changelog/0-30-0");
 
     const ambient = container.querySelector('[aria-hidden="true"].pointer-events-none');
     expect(ambient).not.toBeNull();

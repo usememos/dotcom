@@ -25,8 +25,8 @@ docker run -d \
 Common tag choices:
 
 - `stable`: safest default for production
-- versioned tags such as `0.29.1`: fully pinned deployment
-- branch-like tags such as `0.29`: latest patch in that line
+- versioned tags such as `0.30.0`: fully pinned deployment
+- branch-like tags such as `0.30`: latest patch in that line
 - `latest`: development-oriented and less suitable for production
 
 ## Platform support
@@ -67,7 +67,7 @@ All `MEMOS_*` variables correspond directly to command-line flags. Common ones:
 | `MEMOS_DATA` | `/var/opt/memos` | Data directory |
 | `MEMOS_DRIVER` | `sqlite` | Database backend |
 | `MEMOS_DSN` | auto | Database connection string |
-| `MEMOS_INSTANCE_URL` | `` | Public instance URL |
+| `MEMOS_INSTANCE_URL` | `` | Public instance URL; empty enables private mode |
 | `MEMOS_DEMO` | `false` | Demo mode |
 | `MEMOS_ALLOW_PRIVATE_WEBHOOKS` | `false` | Allow webhook URLs that resolve to private or reserved IP ranges |
 | `MEMOS_LOG_LEVEL` | `info` | Log verbosity (`debug`, `info`, `warn`, `error`) |
@@ -85,6 +85,8 @@ docker run -d \
   -e MEMOS_INSTANCE_URL=https://memos.example.com \
   neosmemo/memos:stable
 ```
+
+The quick-start command at the top of this page omits `MEMOS_INSTANCE_URL`, so it runs in private mode. The example above enables public mode and anonymous public surfaces by setting the canonical external URL.
 
 ## External databases
 

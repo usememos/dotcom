@@ -49,7 +49,7 @@ docker compose up -d
 
 - keep your data directory on persistent storage
 - place Memos behind a reverse proxy for HTTPS
-- set `MEMOS_INSTANCE_URL` to the public URL
+- leave `MEMOS_INSTANCE_URL` empty for private mode, or set it to the canonical public URL to enable anonymous public access
 - back up both the database and any local assets if you do not use database-backed attachment storage
 
 ## When to add more services

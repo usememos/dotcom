@@ -1,0 +1,70 @@
+---
+title: Release v0.30.0
+description: A rebuilt Markdown editor, richer memo workflows, flexible feeds, OpenAPI-driven MCP tools, and stronger access controls
+date: "2026-07-26"
+breaking: true
+---
+
+> Memos 0.30 delivers a major writing and navigation refresh centered on a rebuilt Markdown editor, richer memo details, configurable multi-column feeds, and faster feed rendering. It also replaces the MCP integration with an OpenAPI-driven tool surface, expands deployment-time configuration, and strengthens authentication, sharing, and private-instance access boundaries.
+
+## Breaking Changes
+
+- **Private mode by default** - Instances without `--instance-url` or `MEMOS_INSTANCE_URL` now run in private mode. Anonymous visitors are redirected to sign-in, anonymous API access is limited to setup, authentication, and shared-memo routes, and RSS feeds are unavailable. Set the instance URL to retain the previous public behavior.
+- **Shared memo API** - `GetMemoByShare` and `GET /api/v1/shares/{shareId}` have been replaced by `GetSharedMemo` and `GET /api/v1/shares/{shareToken}/memo`. Share-token responses are now limited to the shared memo, attachments, and reactions; parent memos, comments, and relations are no longer exposed through the token.
+- **CEL timestamp filters** - The `now()` function has been replaced by the `now` timestamp variable, and time fields now use CEL timestamps. Update saved shortcuts to use expressions such as `created_ts >= now - duration("24h")`.
+- **New MCP endpoint and tool names** - MCP is now a stateless, tools-only endpoint generated from the OpenAPI schema. Clients must use `/mcp` and the new service-prefixed tool names. The previous prompts, resources, tool-filtering headers, route aliases, and unprefixed tool names have been removed.
+
+## New Features
+
+### Markdown Editing
+
+- **Decorated-source editor** - The editor has been rebuilt with CodeMirror 6, preserving Markdown verbatim while styling headings, formatting, tags, and mentions in place.
+- **Formatting toolbar** - A toggleable toolbar provides controls for headings, lists, task lists, code blocks, bold, italic, strikethrough, and inline code.
+- **Smarter authoring** - Tag completion, list indentation, improved keyboard shortcuts, and focus mode make it faster to write and organize memos.
+- **GFM footnotes** - Markdown rendering now supports GitHub Flavored Markdown footnotes with footnote navigation.
+
+### Memo Details and Feeds
+
+- **Redesigned detail sidebar** - Memo details now use a property rail with quick actions, editable visibility, metadata, attachments, relations, and a scroll-aware outline.
+- **Flexible columns** - Memo feeds support one, two, three, or automatically fitted columns, with balanced layouts as cards resize.
+- **Persisted display preferences** - Column count, compact mode, and link preview settings are saved between visits.
+- **Restored feed position** - Returning to a feed after viewing another page restores the previous scroll position.
+
+### MCP and API Tools
+
+- **OpenAPI-driven MCP server** - The hand-written MCP implementation has been replaced by a curated tool surface generated from the public API schema.
+- **Expanded operations** - MCP tools cover memos, comments, relations, reactions, shortcuts, identities, and attachments, including attachment uploads.
+- **Canonical resource names** - Canonical and nested resource names can be passed directly to follow-up tools.
+
+### Webhooks and Deployment
+
+- **Signed webhooks** - Standard Webhooks HMAC-SHA256 secrets can be generated, revealed, and used to verify webhook payloads.
+- **Webhook management** - Existing webhooks can be edited, and the interface shows whether signing is configured.
+- **File-backed settings** - Identity providers and supported instance settings can be supplied as validated JSON files under `/etc/secrets`.
+- **Protected runtime overrides** - File-backed settings cannot be changed through the UI or API until their files are removed.
+- **Self-signed S3 support** - S3-compatible storage can use `insecureSkipTlsVerify` when connecting with self-signed certificates.
+
+### Filters, Tags, and Settings
+
+- **More powerful CEL shortcuts** - Filters now support string matching, regular expressions, collection predicates, timestamp accessors, set operations, and an untagged-memos example.
+- **Per-user tag settings** - Tag colors and content-blur rules are now user-specific. Existing instance tag settings are copied to current users during migration.
+- **Refreshed settings** - Settings navigation and the access-token page now provide clearer guidance, safety notes, and last-used timestamps.
+- **Searchable locale picker** - The locale selector is easier to navigate, European locale coverage has expanded, and missing Japanese and Simplified Chinese translations are complete.
+
+## Improvements and Bug Fixes
+
+- **Authentication and SSO** - First-time SSO provisioning is now atomic across supported databases, valid external identifiers can become local usernames, and concurrent sign-ins no longer leave orphaned users.
+- **Private-instance boundaries** - Access policy is consistently enforced across Connect, REST Gateway, files, RSS, and share-token routes.
+- **MCP reliability** - Tool schemas, nested resource routing, error results, destructive-operation annotations, and oversized request handling have been hardened.
+- **API compatibility** - New resource IDs and annotations follow AIP conventions while remaining compatible with legacy UUID identifiers, and user-stat resources now return canonical names.
+- **Comments and tasks** - Memo details load every page of comments, expanded task-list state is preserved, and comment webhooks include the parent memo relation.
+- **Tag parsing** - Tags inside links are ignored, literal tags can be escaped with a backslash, and tag names support Unicode combining marks.
+- **Interface polish** - Loading feedback, mobile control spacing, long location labels, radio-group alignment, and tooltip positioning are improved.
+- **Container startup** - The container entrypoint no longer restarts indefinitely when `MEMOS_UID=0`.
+
+## Performance Improvements
+
+- **Faster feeds and Explore** - Fingerprinted assets are cached more effectively, media and rich renderers are deferred until needed, and feed content near the viewport is prioritized.
+- **Shared data lookups** - User and memo lookups are reused across creators, reactions, comments, mentions, and relations to reduce duplicate requests.
+
+**Full Changelog**: [v0.29.1...v0.30.0](https://github.com/usememos/memos/compare/v0.29.1...v0.30.0)

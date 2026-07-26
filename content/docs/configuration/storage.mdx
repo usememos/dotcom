@@ -46,6 +46,12 @@ Use S3-compatible storage when:
 - you expect many uploads or larger files
 - you want storage behavior that is easier to scale operationally
 
+For an S3-compatible endpoint that uses a self-signed certificate, enable
+`insecureSkipTlsVerify` in the storage configuration. This disables TLS
+certificate verification for that connection, so use it only for an endpoint
+you control and trust. Prefer installing a trusted certificate whenever
+possible.
+
 ## Operational reminders
 
 - set an upload limit appropriate for your environment

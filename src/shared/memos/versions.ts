@@ -14,13 +14,13 @@ const GEN_A = buildAdapter("gen-a", ["memoDisplayTimestamps"]);
 const GEN_B = buildAdapter("gen-b", ["memoCreatedTimestamps"]);
 const FALLBACK = buildAdapter("fallback", ["memoCreatedTimestamps", "memoDisplayTimestamps"]);
 
-/** Parses "0.29.1" / "v0.29" into [major, minor, patch]; null when no version is present. */
+/** Parses "0.30.0" / "v0.30" into [major, minor, patch]; null when no version is present. */
 function parseVersionParts(value: string): [number, number, number] | null {
   const match = value.match(/v?(\d+)\.(\d+)(?:\.(\d+))?/i);
   return match ? [Number(match[1]), Number(match[2]), Number(match[3] ?? 0)] : null;
 }
 
-/** Extracts the minor version from a string like "0.29.1" or "v0.29.1"; null when absent. */
+/** Extracts the minor version from a string like "0.30.0" or "v0.30.0"; null when absent. */
 export function parseMinor(version: string): number | null {
   return parseVersionParts(version)?.[1] ?? null;
 }

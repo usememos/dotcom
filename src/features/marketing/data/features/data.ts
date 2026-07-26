@@ -572,7 +572,7 @@ export const FEATURES = {
       "Clean, minimal design focused on simplicity and usability",
       "Responsive design optimized for both mobile and desktop experiences",
       "Dark mode support with system preference detection for comfortable viewing",
-      "TypeScript and React 18 for enhanced reliability and developer experience",
+      "TypeScript and React 19 for enhanced reliability and developer experience",
       "Fast page loads with optimized bundle splitting and lazy loading",
       "Real-time updates without page refreshes and accessible WCAG-compliant design",
     ],
@@ -591,7 +591,7 @@ export const FEATURES = {
       },
     ],
     techDetails: [
-      "React 18 with concurrent features",
+      "React 19 with concurrent features",
       "TypeScript for type safety",
       "Tailwind CSS for consistent styling",
       "Dark mode with system preference detection",
