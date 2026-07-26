@@ -11,6 +11,7 @@ import {
   PaperclipIcon,
   PlusIcon,
   SearchIcon,
+  SlidersHorizontalIcon,
 } from "lucide-react";
 import Image from "next/image";
 import styles from "@/features/marketing/components/home-hero.module.css";
@@ -102,15 +103,14 @@ function AppRail() {
 
 function CalendarIndex() {
   return (
-    <aside className="hidden border-r border-stone-200/90 bg-[#faf9f6] p-3.5 sm:block dark:border-white/8 dark:bg-zinc-900">
-      <div className="flex h-7 items-center justify-between">
-        <p className="text-[10px] font-medium text-zinc-500 dark:text-zinc-400">Timeline</p>
-        <span className="flex size-6 items-center justify-center rounded-md text-zinc-400 ring-1 ring-stone-200/70 dark:text-zinc-500 dark:ring-white/8">
-          <SearchIcon className="size-3" />
-        </span>
+    <aside className="hidden border-r border-stone-200/90 bg-[#faf9f6] px-3.5 py-3 sm:block dark:border-white/8 dark:bg-zinc-900">
+      <div className="flex h-7 items-center gap-1.5 rounded-md border border-stone-200 bg-white/70 px-2 text-zinc-400 shadow-[0_1px_1px_rgba(28,25,23,0.02)] dark:border-white/10 dark:bg-white/5 dark:text-zinc-500">
+        <SearchIcon className="size-2.5 shrink-0" />
+        <span className="min-w-0 flex-1 truncate text-[9px] leading-none">Search memos...</span>
+        <SlidersHorizontalIcon className="size-2.5 shrink-0" />
       </div>
 
-      <div className="mt-3 flex items-center justify-between">
+      <div className="mt-3.5 flex items-center justify-between">
         <p className="text-[11px] font-semibold text-zinc-800 dark:text-zinc-200">July 2026</p>
         <div className="flex gap-1 text-zinc-400">
           <ChevronLeftIcon className="size-3.5" />
@@ -134,7 +134,7 @@ function CalendarIndex() {
         ))}
       </div>
 
-      <div className="mt-5 border-t border-stone-200/80 pt-4 dark:border-white/8">
+      <div className="mt-4 border-t border-stone-200/80 pt-3.5 dark:border-white/8">
         <div className="flex items-center justify-between">
           <p className="text-[10px] font-semibold text-zinc-700 dark:text-zinc-300">Tags</p>
           <MoreVerticalIcon className="size-3 text-zinc-400" />
@@ -157,8 +157,8 @@ function CalendarIndex() {
 
 function Composer() {
   return (
-    <div className="rounded-xl border border-stone-200 bg-white p-3 shadow-[0_8px_24px_rgba(28,25,23,0.035)] dark:border-white/10 dark:bg-zinc-900">
-      <p className="min-h-12 text-[12px] leading-5 text-zinc-500 dark:text-zinc-300">
+    <div className="rounded-xl border border-stone-200 bg-white px-3 py-2.5 shadow-[0_8px_24px_rgba(28,25,23,0.035)] dark:border-white/10 dark:bg-zinc-900">
+      <p className="min-h-10 text-[12px] leading-5 text-zinc-500 dark:text-zinc-300">
         A quiet place for the thoughts worth keeping.
         <span className={`${styles.caret} ml-0.5 inline-block h-3 w-px translate-y-0.5 bg-teal-600`} />
       </p>
@@ -183,20 +183,20 @@ function Composer() {
 
 function Timeline() {
   return (
-    <div className="mt-3 space-y-2.5">
-      <article className="rounded-xl border border-stone-200 bg-white p-3 dark:border-white/10 dark:bg-zinc-900">
+    <div className="mt-2.5 space-y-2.5">
+      <article className="rounded-xl border border-stone-200 bg-white px-3 py-2.5 dark:border-white/10 dark:bg-zinc-900">
         <div className="flex items-center justify-between text-[9px] text-zinc-400">
           <span>22 days ago</span>
           <MoreVerticalIcon className="size-3.5" />
         </div>
-        <p className="mt-2 text-[12px] font-semibold text-zinc-800 dark:text-zinc-200">Reading: Deep Work</p>
-        <p className="mt-1.5 text-[10px] leading-4 text-zinc-600 dark:text-zinc-300">
+        <p className="mt-1.5 text-[12px] font-semibold text-zinc-800 dark:text-zinc-200">Reading: Deep Work</p>
+        <p className="mt-1 text-[10px] leading-4 text-zinc-600 dark:text-zinc-300">
           Started Cal Newport&apos;s <em>Deep Work</em> this week. This passage stopped me:
         </p>
-        <blockquote className="mt-2 border-l-2 border-teal-200 pl-2.5 text-[11px] leading-5 text-zinc-500 italic dark:border-teal-700 dark:text-zinc-400">
+        <blockquote className="mt-1.5 border-l-2 border-teal-200 pl-2.5 text-[11px] leading-5 text-zinc-500 italic dark:border-teal-700 dark:text-zinc-400">
           “Human beings are at their best when immersed deeply in something challenging.”
         </blockquote>
-        <div className="mt-2 flex flex-wrap items-center gap-1.5">
+        <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
           <span className="rounded-md bg-teal-50 px-1.5 py-0.5 text-[9px] font-medium text-teal-700 dark:bg-teal-400/10 dark:text-teal-200">
             #books
           </span>
@@ -210,22 +210,22 @@ function Timeline() {
         </div>
       </article>
 
-      <article className="rounded-xl border border-stone-200 bg-white p-3 dark:border-white/10 dark:bg-zinc-900">
+      <article className="rounded-xl border border-stone-200 bg-white px-3 py-2.5 dark:border-white/10 dark:bg-zinc-900">
         <div className="flex items-center justify-between text-[9px] text-zinc-400">
           <span>17 days ago</span>
           <MoreVerticalIcon className="size-3.5" />
         </div>
-        <p className="mt-2 text-[12px] font-semibold text-zinc-800 dark:text-zinc-200">Git commands I keep forgetting</p>
-        <p className="mt-1.5 text-[10px] leading-4 text-zinc-600 dark:text-zinc-300">
+        <p className="mt-1.5 text-[12px] font-semibold text-zinc-800 dark:text-zinc-200">Git commands I keep forgetting</p>
+        <p className="mt-1 text-[10px] leading-4 text-zinc-600 dark:text-zinc-300">
           Pinning this so I stop searching for the same commands every week.
         </p>
-        <pre className="mt-2 overflow-hidden rounded-lg bg-zinc-950 px-2.5 py-2 font-mono text-[8.5px] leading-4 text-zinc-300 dark:bg-black/40">
+        <pre className="mt-1.5 overflow-hidden rounded-lg bg-zinc-950 px-2.5 py-1.5 font-mono text-[8.5px] leading-4 text-zinc-300 dark:bg-black/40">
           <code>
             <span className="text-zinc-500"># Find the commit that introduced a string</span>
             {"\n"}git log -S &quot;function_name&quot; --source --all
           </code>
         </pre>
-        <div className="mt-2 flex gap-1.5">
+        <div className="mt-1.5 flex gap-1.5">
           <span className="rounded-md bg-teal-50 px-1.5 py-0.5 text-[9px] font-medium text-teal-700 dark:bg-teal-400/10 dark:text-teal-200">
             #dev
           </span>
@@ -256,7 +256,7 @@ export function MemoHeroMock() {
         <div className="grid min-h-[29rem] grid-cols-1 bg-[#f7f6f2] sm:grid-cols-[2.75rem_10.5rem_minmax(0,1fr)] dark:bg-zinc-950">
           <AppRail />
           <CalendarIndex />
-          <div className="min-w-0 p-3.5 sm:p-4">
+          <div className="min-w-0 px-3.5 py-3 sm:px-4 sm:py-3.5">
             <div className="mx-auto w-full max-w-[512px]">
               <Composer />
               <Timeline />
