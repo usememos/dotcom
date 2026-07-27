@@ -7,12 +7,64 @@ export const GITHUB_STAR_COUNT_PLACEHOLDER = "60K+";
 export const DEFAULT_OG_IMAGE = `${BASE_URL}/og-image.png`;
 export const DEFAULT_OG_IMAGE_ALT = "Memos - Open-source self-hosted notes";
 
+export interface SiteNavLink {
+  name: string;
+  href: string;
+  description: string;
+  external?: boolean;
+  indexable?: boolean;
+}
+
+export interface SiteNavGroup {
+  name: string;
+  items: readonly SiteNavLink[];
+}
+
 export const SITE_NAV_ITEMS = [
-  { name: "Features", href: "/features" },
-  { name: "Docs", href: "/docs" },
-  { name: "Web Clipper", href: "/web-clipper" },
-  { name: "Changelog", href: "/changelog" },
-] as const;
+  {
+    name: "Product",
+    items: [
+      { name: "Features", href: "/features", description: "Explore self-hosted note-taking features" },
+      { name: "Use Cases", href: "/use-cases", description: "Discover workflows for personal notes" },
+      { name: "Compare", href: "/compare", description: "Compare Memos with note-taking alternatives" },
+    ],
+  },
+  {
+    name: "Tools",
+    items: [
+      { name: "Web Clipper", href: "/web-clipper", description: "Save web pages and selections to Memos" },
+      {
+        name: "Scratchpad",
+        href: "/scratchpad",
+        description: "Write locally in a private browser canvas",
+        indexable: false,
+      },
+      {
+        name: "Live Demo",
+        href: "https://demo.usememos.com/",
+        description: "Try Memos in a public demo workspace",
+        external: true,
+      },
+    ],
+  },
+  { name: "Docs", href: "/docs", description: "Install, configure, and self-host Memos" },
+  {
+    name: "Resources",
+    items: [
+      { name: "API Reference", href: "/docs/api", description: "Build integrations with the Memos API" },
+      { name: "Blog", href: "/blog", description: "Read Memos guides and project updates" },
+      { name: "Changelog", href: "/changelog", description: "Follow new Memos releases and improvements" },
+    ],
+  },
+] as const satisfies readonly (SiteNavGroup | SiteNavLink)[];
+
+export const SITE_NAV_LINKS = SITE_NAV_ITEMS.flatMap<SiteNavLink>((item) => ("items" in item ? [...item.items] : [item]));
+
+export const SITE_NAV_CTA = {
+  name: "Get Started",
+  href: "/docs/getting-started",
+  description: "Start with the Memos documentation",
+} as const;
 
 export interface BreadcrumbItem {
   href: string;
@@ -83,12 +135,19 @@ export function buildBreadcrumbJsonLd(items: BreadcrumbItem[]) {
 }
 
 export function buildSiteNavigationJsonLd() {
+  const links = [...SITE_NAV_LINKS, SITE_NAV_CTA].filter(
+    (item) => item.href.startsWith("/") && (!("indexable" in item) || item.indexable !== false),
+  );
+
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    itemListElement: SITE_NAV_ITEMS.map((item) => ({
+    name: `${SITE_NAME} site navigation`,
+    numberOfItems: links.length,
+    itemListElement: links.map((item) => ({
       "@type": "SiteNavigationElement",
       name: item.name,
+      description: item.description,
       url: absoluteUrl(item.href),
     })),
   };

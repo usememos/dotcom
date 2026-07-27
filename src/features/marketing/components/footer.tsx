@@ -83,7 +83,6 @@ const FOOTER_COLUMNS: FooterColumn[] = [
       { href: "/web-clipper", label: "Web Clipper", icon: PuzzleIcon },
       { href: "/scratchpad", label: "Scratchpad", icon: StickyNoteIcon },
       { href: "https://demo.usememos.com/", label: "Live Demo", icon: ExternalLinkIcon, external: true },
-      { href: "/docs/api", label: "API Reference", icon: CodeIcon },
     ],
   },
   {
@@ -111,6 +110,7 @@ const FOOTER_COLUMNS: FooterColumn[] = [
     title: "Resources",
     links: [
       { href: "/blog", label: "Blog", icon: NewspaperIcon },
+      { href: "/docs/api", label: "API Reference", icon: CodeIcon },
       { href: "/brand", label: "Brand Guidelines", icon: PaletteIcon },
       { href: "https://github.com/usememos/memos/blob/main/LICENSE", label: "MIT License", icon: ScaleIcon, external: true },
       { href: "/privacy", label: "Privacy Policy", icon: ShieldCheckIcon },

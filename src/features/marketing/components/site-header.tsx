@@ -1,51 +1,123 @@
 "use client";
 
-import { MenuIcon, StarIcon, XIcon } from "lucide-react";
+import { ArrowRightIcon, ArrowUpRightIcon, ChevronDownIcon, MenuIcon, StarIcon, XIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useGithubStarCount } from "@/features/marketing/hooks/use-github-star-count";
-import { GITHUB_REPO_URL, SITE_NAV_ITEMS } from "@/shared/lib/seo";
+import { GITHUB_REPO_URL, SITE_NAV_CTA, SITE_NAV_ITEMS, SITE_NAV_LINKS, type SiteNavGroup, type SiteNavLink } from "@/shared/lib/seo";
 import { cn } from "@/shared/lib/utils";
 import { buttonVariants } from "@/shared/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/ui/dropdown-menu";
 import { GithubIcon } from "@/shared/ui/github-icon";
 
 const MOBILE_NAV_ID = "site-mobile-navigation";
+const DESKTOP_NAV_ITEM_CLASS =
+  "inline-flex h-8 items-center gap-1 rounded-md px-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
-interface SiteNavLinkProps {
-  item: (typeof SITE_NAV_ITEMS)[number];
+interface MobileSiteNavLinkProps {
+  item: SiteNavLink;
   pathname: string;
-  className: string;
-  activeClassName: string;
+  activeHref: string | undefined;
 }
 
-/**
- * One nav item, shared by the desktop bar and the mobile panel.
- *
- * `aria-current` needs an exact match — a section index is not the current page
- * — while the active styling deliberately covers the whole section.
- */
-function SiteNavLink({ item, pathname, className, activeClassName }: SiteNavLinkProps) {
+function getActiveNavHref(pathname: string): string | undefined {
+  return SITE_NAV_LINKS.filter(
+    (item) => item.href.startsWith("/") && (pathname === item.href || pathname.startsWith(`${item.href}/`)),
+  ).sort((a, b) => b.href.length - a.href.length)[0]?.href;
+}
+
+function MobileSiteNavLink({ item, pathname, activeHref }: MobileSiteNavLinkProps) {
   const isCurrent = pathname === item.href;
-  const inSection = isCurrent || pathname.startsWith(`${item.href}/`);
+  const isActive = activeHref === item.href;
+  const className = cn(
+    "flex items-start rounded-lg px-3 py-2.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
+    isActive && "bg-accent text-accent-foreground",
+  );
+
+  const content = (
+    <>
+      <span className="min-w-0">
+        <span className="block font-semibold text-foreground">{item.name}</span>
+        <span className="mt-0.5 block text-xs leading-5 text-muted-foreground">{item.description}</span>
+      </span>
+      {item.external ? <ArrowUpRightIcon aria-hidden="true" className="ml-auto mt-0.5 size-3.5" /> : null}
+    </>
+  );
+
+  if (item.external) {
+    return (
+      <a href={item.href} target="_blank" rel="noopener noreferrer" className={className}>
+        {content}
+      </a>
+    );
+  }
 
   return (
-    <Link
-      href={item.href}
-      // Prefetching every nav target pulls in each route's CSS chunk — including
-      // the docs-only Fumadocs sheet — on marketing pages.
-      prefetch={false}
-      aria-current={isCurrent ? "page" : undefined}
-      className={cn(className, inSection && activeClassName)}
-    >
-      {item.name}
+    <Link href={item.href} prefetch={false} aria-current={isCurrent ? "page" : undefined} className={className}>
+      {content}
     </Link>
+  );
+}
+
+function DesktopNavGroup({ group, pathname, activeHref }: { group: SiteNavGroup; pathname: string; activeHref?: string }) {
+  const isActive = group.items.some((item) => item.href === activeHref);
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        openOnHover
+        delay={75}
+        closeDelay={150}
+        onMouseDown={(event) => event.preventBaseUIHandler()}
+        render={
+          <button
+            type="button"
+            className={cn(
+              DESKTOP_NAV_ITEM_CLASS,
+              "cursor-pointer data-popup-open:bg-muted data-popup-open:text-foreground data-popup-open:[&_svg]:rotate-180",
+              isActive && "text-primary",
+            )}
+          />
+        }
+      >
+        {group.name}
+        <ChevronDownIcon aria-hidden="true" className="size-3.5 transition-transform" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-64 space-y-1 p-1.5" sideOffset={8} align="start">
+        {group.items.map((item) => {
+          const isCurrent = pathname === item.href;
+
+          return (
+            <DropdownMenuItem
+              key={item.href}
+              className={cn("cursor-pointer items-start gap-3 px-2.5 py-2", activeHref === item.href && "bg-accent")}
+              render={
+                item.external ? (
+                  // biome-ignore lint/a11y/useAnchorContent: Base UI merges the menu item children into this rendered anchor.
+                  <a href={item.href} target="_blank" rel="noopener noreferrer" aria-label={item.name} />
+                ) : (
+                  <Link href={item.href} prefetch={false} aria-current={isCurrent ? "page" : undefined} />
+                )
+              }
+            >
+              <span className="min-w-0">
+                <span className="block font-semibold text-foreground">{item.name}</span>
+                <span className="mt-0.5 block text-xs leading-5 text-muted-foreground">{item.description}</span>
+              </span>
+              {item.external ? <ArrowUpRightIcon aria-hidden="true" className="ml-auto mt-0.5 text-muted-foreground" /> : null}
+            </DropdownMenuItem>
+          );
+        })}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const activeHref = getActiveNavHref(pathname);
   const githubStarCount = useGithubStarCount();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
@@ -88,20 +160,26 @@ export function SiteHeader() {
           <span>Memos</span>
         </Link>
 
-        <ul className="ml-6 hidden items-center gap-2 sm:flex">
+        <ul className="ml-5 hidden items-center gap-1 md:flex">
           {SITE_NAV_ITEMS.map((item) => (
-            <li key={item.href}>
-              <SiteNavLink
-                item={item}
-                pathname={pathname}
-                className="inline-flex rounded-md p-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                activeClassName="text-primary"
-              />
+            <li key={item.name}>
+              {"items" in item ? (
+                <DesktopNavGroup group={item} pathname={pathname} activeHref={activeHref} />
+              ) : (
+                <Link
+                  href={item.href}
+                  prefetch={false}
+                  aria-current={pathname === item.href ? "page" : undefined}
+                  className={cn(DESKTOP_NAV_ITEM_CLASS, activeHref === item.href && "text-primary")}
+                >
+                  {item.name}
+                </Link>
+              )}
             </li>
           ))}
         </ul>
 
-        <div className="ml-auto hidden items-center sm:flex">
+        <div className="ml-auto hidden items-center gap-2 md:flex">
           <a
             href={GITHUB_REPO_URL}
             target="_blank"
@@ -119,12 +197,16 @@ export function SiteHeader() {
               {githubStarCount}
             </span>
           </a>
+          <Link href={SITE_NAV_CTA.href} prefetch={false} className={cn(buttonVariants({ size: "sm" }), "h-8 rounded-full px-3")}>
+            {SITE_NAV_CTA.name}
+            <ArrowRightIcon aria-hidden="true" />
+          </Link>
         </div>
 
         <button
           ref={toggleRef}
           type="button"
-          className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "ml-auto sm:hidden")}
+          className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "ml-auto md:hidden")}
           aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
           aria-controls={MOBILE_NAV_ID}
           aria-expanded={mobileMenuOpen}
@@ -138,32 +220,42 @@ export function SiteHeader() {
         <div
           id={MOBILE_NAV_ID}
           hidden={!mobileMenuOpen}
-          className="absolute inset-x-0 top-14 border-b border-border bg-background/95 py-4 shadow-lg backdrop-blur-lg sm:hidden"
+          className="absolute inset-x-0 top-14 max-h-[calc(100dvh-3.5rem)] overflow-y-auto overscroll-contain border-b border-border bg-background/95 py-4 shadow-lg backdrop-blur-lg md:hidden"
         >
-          <div className="site-container flex flex-col">
-            {SITE_NAV_ITEMS.map((item) => (
-              <SiteNavLink
-                key={item.href}
-                item={item}
-                pathname={pathname}
-                className="rounded-lg px-3 py-2.5 text-sm font-semibold text-muted-foreground hover:bg-muted hover:text-foreground"
-                activeClassName="bg-accent text-accent-foreground"
-              />
-            ))}
-            <a
-              href={GITHUB_REPO_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold text-muted-foreground hover:bg-muted hover:text-foreground"
-            >
-              <GithubIcon className="size-4" />
-              GitHub
-              <span className="ml-auto inline-flex items-center gap-1 text-xs font-medium tabular-nums text-muted-foreground">
-                <StarIcon aria-hidden="true" className="size-3.5 fill-current" />
-                {githubStarCount}
-                <span className="sr-only"> stars</span>
-              </span>
-            </a>
+          <div className="site-container flex flex-col gap-4">
+            {SITE_NAV_ITEMS.map((item) =>
+              "items" in item ? (
+                <div key={item.name}>
+                  <p className="px-3 pb-1 text-[0.6875rem] font-semibold tracking-[0.14em] text-muted-foreground uppercase">{item.name}</p>
+                  <div className="flex flex-col">
+                    {item.items.map((child) => (
+                      <MobileSiteNavLink key={child.href} item={child} pathname={pathname} activeHref={activeHref} />
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <MobileSiteNavLink key={item.href} item={item} pathname={pathname} activeHref={activeHref} />
+              ),
+            )}
+            <div className="grid grid-cols-2 gap-2 border-t border-border pt-4">
+              <Link href={SITE_NAV_CTA.href} prefetch={false} className={cn(buttonVariants({ size: "default" }), "rounded-full")}>
+                {SITE_NAV_CTA.name}
+                <ArrowRightIcon aria-hidden="true" />
+              </Link>
+              <a
+                href={GITHUB_REPO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Memos on GitHub, ${githubStarCount} stars`}
+                className={cn(buttonVariants({ variant: "outline", size: "default" }), "rounded-full")}
+              >
+                <GithubIcon className="size-4" />
+                <span className="inline-flex items-center gap-1 text-xs font-semibold tabular-nums">
+                  <StarIcon aria-hidden="true" className="size-3.5 fill-current text-muted-foreground" />
+                  {githubStarCount}
+                </span>
+              </a>
+            </div>
           </div>
         </div>
       </nav>

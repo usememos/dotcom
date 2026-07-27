@@ -1,15 +1,45 @@
 import { describe, expect, it } from "vitest";
-import { absoluteUrl, buildBreadcrumbItems, buildFaqJsonLd, SITE_NAV_ITEMS } from "./seo";
+import { absoluteUrl, buildBreadcrumbItems, buildFaqJsonLd, buildSiteNavigationJsonLd, SITE_NAV_ITEMS, SITE_NAV_LINKS } from "./seo";
 
 describe("seo", () => {
-  it("primary site navigation prioritizes product paths over the blog", () => {
-    expect(SITE_NAV_ITEMS.map((item) => [item.name, item.href])).toEqual([
-      ["Features", "/features"],
-      ["Docs", "/docs"],
-      ["Web Clipper", "/web-clipper"],
-      ["Changelog", "/changelog"],
+  it("groups the primary site navigation around visitor tasks", () => {
+    expect(SITE_NAV_ITEMS.map((item) => item.name)).toEqual(["Product", "Tools", "Docs", "Resources"]);
+    expect(SITE_NAV_LINKS.map((item) => item.name)).toEqual([
+      "Features",
+      "Use Cases",
+      "Compare",
+      "Web Clipper",
+      "Scratchpad",
+      "Live Demo",
+      "Docs",
+      "API Reference",
+      "Blog",
+      "Changelog",
     ]);
-    expect(SITE_NAV_ITEMS.some((item) => item.href === "/blog")).toBe(false);
+    expect(SITE_NAV_LINKS.some((item) => item.href === "/pricing")).toBe(false);
+  });
+
+  it("keeps the API reference in Resources", () => {
+    const resources = SITE_NAV_ITEMS.find((item) => item.name === "Resources");
+    const tools = SITE_NAV_ITEMS.find((item) => item.name === "Tools");
+
+    expect(resources && "items" in resources ? resources.items.map((item) => item.name) : []).toContain("API Reference");
+    expect(tools && "items" in tools ? tools.items.map((item) => item.name) : []).not.toContain("API Reference");
+  });
+
+  it("emits internal navigation destinations as structured data", () => {
+    const jsonLd = buildSiteNavigationJsonLd();
+    const names = jsonLd.itemListElement.map((item) => item.name);
+
+    expect(jsonLd.name).toBe("Memos site navigation");
+    expect(jsonLd.numberOfItems).toBe(jsonLd.itemListElement.length);
+    expect(names).toContain("Get Started");
+    expect(names).not.toContain("Live Demo");
+    expect(names).not.toContain("Scratchpad");
+    expect(jsonLd.itemListElement.find((item) => item.name === "Features")).toMatchObject({
+      description: "Explore self-hosted note-taking features",
+      url: "https://usememos.com/features",
+    });
   });
 
   it("buildBreadcrumbItems always prepends home", () => {
