@@ -82,7 +82,7 @@ export function WebClipperHeroVisual() {
 export function ConnectionVisual() {
   return (
     <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-[#fbfaf7] shadow-[0_22px_60px_rgba(24,24,27,0.08)] dark:border-white/10 dark:bg-zinc-900">
-      <div className="flex items-center justify-between border-b border-zinc-200 px-5 py-4 dark:border-white/10">
+      <div className="flex items-center border-b border-zinc-200 px-5 py-4 dark:border-white/10">
         <div className="flex items-center gap-2.5">
           <Image src="/logo-rounded.png" alt="" width={28} height={28} className="rounded-full" />
           <div>
@@ -90,9 +90,6 @@ export function ConnectionVisual() {
             <p className="text-[11px] text-zinc-500 dark:text-zinc-400">Choose how you want to connect</p>
           </div>
         </div>
-        <span className="rounded-md bg-amber-100 px-2 py-1 font-mono text-[10px] font-medium text-amber-900 dark:bg-amber-300/10 dark:text-amber-200">
-          v0.2.0
-        </span>
       </div>
       <div className="divide-y divide-zinc-200 dark:divide-white/10">
         <div className="group grid gap-4 bg-white p-5 transition-colors hover:bg-teal-50/60 dark:bg-zinc-950 dark:hover:bg-teal-950/20 sm:grid-cols-[2.5rem_1fr_auto] sm:items-center">
@@ -156,12 +153,12 @@ export function TemplateVisual() {
               </span>
             </p>
             <p>
-              <span className="text-zinc-500">Captured: </span>
-              <span className="text-amber-300">{"{{date}}"}</span>
+              <span className="text-zinc-500">Description: </span>
+              <span className="text-amber-300">{"{{description}}"}</span>
             </p>
           </div>
           <div className="mt-7 flex flex-wrap gap-1.5">
-            {["content", "title", "url", "date"].map((token) => (
+            {["content", "title", "url", "description"].map((token) => (
               <span key={token} className="rounded bg-amber-300/10 px-2 py-1 font-mono text-[9px] text-amber-200">
                 {`{{${token}}}`}
               </span>
@@ -179,7 +176,7 @@ export function TemplateVisual() {
                 Designing a personal archive
               </span>
             </p>
-            <p className="text-zinc-400">Captured: Jul 23, 2026</p>
+            <p className="text-zinc-400">Description: A practical guide to keeping useful ideas close.</p>
           </div>
         </div>
       </div>

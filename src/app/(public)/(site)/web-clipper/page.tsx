@@ -148,7 +148,7 @@ export default function WebClipperPage() {
       <section className="border-b border-zinc-200 py-16 dark:border-white/10 lg:py-24">
         <div className="site-container grid gap-12 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:items-center lg:gap-20">
           <div>
-            <p className="text-sm font-semibold tracking-[0.16em] text-teal-700 uppercase dark:text-teal-300">New in v0.2.0</p>
+            <p className="text-sm font-semibold tracking-[0.16em] text-teal-700 uppercase dark:text-teal-300">Connection options</p>
             <h2 className="mt-4 text-balance font-serif text-4xl leading-tight font-semibold tracking-[-0.025em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
               Your server. Your way in.
             </h2>
@@ -156,15 +156,6 @@ export default function WebClipperPage() {
               Use the guided usememos.com setup, or connect directly with an instance URL and personal access token. Both paths are
               validated before anything is saved.
             </p>
-            <a
-              href={`${GITHUB_REPO_URL}/blob/main/CHANGELOG.md`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-teal-700 underline decoration-teal-300 underline-offset-4 hover:text-teal-900 dark:text-teal-300 dark:hover:text-teal-200"
-            >
-              Read the v0.2.0 changelog
-              <ArrowRightIcon className="size-4" />
-            </a>
           </div>
           <ConnectionVisual />
         </div>
@@ -179,8 +170,8 @@ export default function WebClipperPage() {
               Every clip, already in your shape.
             </h2>
             <p className="mt-5 text-base leading-8 text-zinc-600 dark:text-zinc-300">
-              Build a reusable template from title, URL, date, and captured content. The live preview shows the final Markdown before you
-              save the format locally in your browser.
+              Build a reusable template from captured content, title, URL, and page description. The live preview shows the final Markdown
+              before you save the format locally in your browser.
             </p>
           </div>
         </div>
