@@ -2,11 +2,11 @@ import type { ScratchpadCardTone, ScratchpadItem } from "../types";
 import { getScratchpadCardTone } from "./item-model";
 
 export const SCRATCHPAD_CARD_TONE_CLASS_NAMES: Record<ScratchpadCardTone, string> = {
-  yellow: "border-[#e3d99f] bg-[#f7f0c6] text-stone-900 dark:border-[#514b36] dark:bg-[#343126] dark:text-stone-100",
-  pink: "border-rose-200 bg-rose-50 text-stone-900 dark:border-rose-900/50 dark:bg-[#35282d] dark:text-rose-50",
-  blue: "border-sky-200 bg-sky-50 text-stone-900 dark:border-sky-900/50 dark:bg-[#25313a] dark:text-sky-50",
-  green: "border-emerald-200 bg-emerald-50 text-stone-900 dark:border-emerald-900/50 dark:bg-[#26342d] dark:text-emerald-50",
-  purple: "border-violet-200 bg-violet-50 text-stone-900 dark:border-violet-900/50 dark:bg-[#302b3b] dark:text-violet-50",
+  yellow: "border border-[#e3d99f] bg-[#f7f0c6] text-stone-900 dark:border-[#514b36] dark:bg-[#343126] dark:text-stone-100",
+  pink: "border border-rose-200 bg-rose-50 text-stone-900 dark:border-rose-900/50 dark:bg-[#35282d] dark:text-rose-50",
+  blue: "border border-sky-200 bg-sky-50 text-stone-900 dark:border-sky-900/50 dark:bg-[#25313a] dark:text-sky-50",
+  green: "border border-emerald-200 bg-emerald-50 text-stone-900 dark:border-emerald-900/50 dark:bg-[#26342d] dark:text-emerald-50",
+  purple: "border border-violet-200 bg-violet-50 text-stone-900 dark:border-violet-900/50 dark:bg-[#302b3b] dark:text-violet-50",
 };
 
 function hashString(value: string): number {
@@ -32,7 +32,7 @@ export function getCardToneClassNames(item: ScratchpadItem): string {
 }
 
 export function getCardChromeClassNames(): string {
-  return "rounded-[6px] border shadow-[0_10px_26px_rgba(28,25,23,0.08)] dark:shadow-[0_18px_44px_rgba(0,0,0,0.28)]";
+  return "rounded-[6px] shadow-[0_10px_26px_rgba(28,25,23,0.08)] dark:shadow-[0_18px_44px_rgba(0,0,0,0.28)]";
 }
 
 export function getCardResizeHandleClassNames(): string {

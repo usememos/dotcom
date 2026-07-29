@@ -11,6 +11,7 @@ describe("CarbonAdCard", () => {
 
     const region = screen.getByRole("complementary", { name: "Sponsored content" });
     expect(region.className).toMatch(/\bpy-2\b/);
+    expect(region.className).toMatch(/\bborder-border\b/);
     expect(region.className).not.toMatch(/\bh-\d/);
 
     const link = screen.getByRole("link", { name: "Support Memos" });

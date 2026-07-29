@@ -50,7 +50,7 @@ describe("getCardRingClass", () => {
 describe("getCardChromeClassNames", () => {
   it("keeps compact rounded corners and a shadow", () => {
     expect(getCardChromeClassNames()).toBe(
-      "rounded-[6px] border shadow-[0_10px_26px_rgba(28,25,23,0.08)] dark:shadow-[0_18px_44px_rgba(0,0,0,0.28)]",
+      "rounded-[6px] shadow-[0_10px_26px_rgba(28,25,23,0.08)] dark:shadow-[0_18px_44px_rgba(0,0,0,0.28)]",
     );
   });
 });
@@ -73,10 +73,12 @@ describe("CARD_TEXT_CLASS_NAME", () => {
 });
 
 describe("SCRATCHPAD_CARD_TONE_CLASS_NAMES", () => {
-  it("all five tones include base bg-, text-, dark:bg-, and dark:text- classes", () => {
+  it("all five tones include an explicitly colored border and complete light and dark colors", () => {
     const tones = ["yellow", "pink", "blue", "green", "purple"] as const;
     for (const tone of tones) {
       const classNames = SCRATCHPAD_CARD_TONE_CLASS_NAMES[tone];
+      expect(classNames, `${tone} should include a border width class`).toMatch(/(^|\s)border(\s|$)/);
+      expect(classNames, `${tone} should include a base border color class`).toMatch(/(^|\s)border-(?!0|2|4|8)(?!\[\d)[^\s]+/);
       expect(classNames, `${tone} should include a base background class`).toContain("bg-");
       expect(classNames, `${tone} should include a base text class`).toContain("text-");
       expect(classNames, `${tone} should include a dark background class`).toContain("dark:bg-");

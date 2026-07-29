@@ -59,6 +59,7 @@ describe("MemosConnectionsSettings", () => {
     mocks.connection.isSignedIn = false;
     const user = userEvent.setup();
     render(<MemosConnectionsSettings source={null} />);
+    expect(screen.getByRole("heading", { name: "Sign in to manage this connection" }).parentElement).toHaveClass("border", "border-border");
     await user.click(screen.getByRole("button", { name: "Sign in" }));
     expect(mocks.signIn).toHaveBeenCalledTimes(1);
   });

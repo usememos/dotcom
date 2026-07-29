@@ -16,6 +16,7 @@ describe("ConnectPrompt", () => {
     expect(screen.getByText("Activity")).toBeInTheDocument();
     expect(screen.queryByText("Total memos")).not.toBeInTheDocument();
     expect(screen.queryByText("Browser extension")).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Connect your Memos instance" }).parentElement).toHaveClass("border", "border-border");
   });
 
   it("links setup to the canonical connections page", () => {

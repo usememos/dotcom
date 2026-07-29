@@ -116,7 +116,7 @@ export function MemosConnectionsSettings({ source }: MemosConnectionsSettingsPro
               </div>
             </div>
           ) : !connection.isSignedIn ? (
-            <div className="rounded-2xl border bg-muted/20 p-6">
+            <div className="rounded-2xl border border-border bg-muted/20 p-6">
               <h3 className="text-base font-semibold tracking-[-0.02em]">Sign in to manage this connection</h3>
               <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
                 Your Memos instance belongs to your usememos.com account. After sign-in, you’ll return to this settings page.
@@ -153,7 +153,7 @@ export function MemosConnectionsSettings({ source }: MemosConnectionsSettingsPro
             </div>
           ) : (
             <Card className="rounded-2xl" size="sm">
-              <CardHeader className="border-b pb-4">
+              <CardHeader className="border-b border-border pb-4">
                 <CardTitle className="flex min-w-0 items-center gap-2">
                   <CheckCircle2Icon className="size-4 shrink-0 text-primary" />
                   <span className="truncate">{parseInstanceUrl(credentials.instanceUrl)?.host ?? credentials.instanceUrl}</span>

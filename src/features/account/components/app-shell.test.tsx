@@ -22,6 +22,7 @@ describe("AppShell", () => {
     expect(sidebar).toHaveClass("grid-rows-[auto_auto_minmax(0,1fr)_auto]");
     expect(within(sidebar).getByRole("navigation", { name: "Workspace" }).parentElement).toHaveClass("min-h-0", "overflow-y-auto");
     expect(within(sidebar).getByRole("button", { name: "Account" }).parentElement).toHaveClass("h-11");
+    expect(screen.getByRole("banner")).toHaveClass("border-b", "border-border");
   });
 
   it("switches mobile navigation labels to screen-reader-only before narrow layouts collide", () => {

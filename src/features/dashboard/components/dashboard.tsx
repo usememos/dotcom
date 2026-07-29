@@ -27,7 +27,9 @@ function deriveUserId(name: string): string {
 }
 
 function CenteredPanel({ children }: { children: ReactNode }) {
-  return <div className="mx-4 mt-16 max-w-md rounded-2xl border bg-muted/20 p-8 text-center sm:mx-auto sm:mt-24">{children}</div>;
+  return (
+    <div className="mx-4 mt-16 max-w-md rounded-2xl border border-border bg-muted/20 p-8 text-center sm:mx-auto sm:mt-24">{children}</div>
+  );
 }
 
 export function Dashboard() {

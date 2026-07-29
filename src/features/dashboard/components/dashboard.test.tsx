@@ -95,7 +95,7 @@ describe("Dashboard", () => {
     expect(await screen.findByRole("button", { name: "Sign in" })).toBeInTheDocument();
     const heading = screen.getByText("Your Memos workspace");
     expect(heading).toBeInTheDocument();
-    expect(heading.parentElement).toHaveClass("rounded-2xl", "border");
+    expect(heading.parentElement).toHaveClass("rounded-2xl", "border", "border-border");
   });
 
   it("shows a generic failure when the stats fetch rejects", async () => {

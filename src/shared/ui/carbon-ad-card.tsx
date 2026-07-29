@@ -8,7 +8,7 @@ const CARBON_SCRIPT_URL = "https://cdn.carbonads.com/carbon.js?serve=CWBD4K7E&pl
 const SPONSOR_URL = "https://github.com/sponsors/usememos";
 
 const CONTAINER_STYLES = {
-  default: "w-full overflow-hidden rounded-lg border bg-muted/30 px-3 py-2 dark:bg-muted/10",
+  default: "w-full overflow-hidden rounded-lg border border-border bg-muted/30 px-3 py-2 dark:bg-muted/10",
   compact: "h-24 w-full overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 p-2 dark:border-white/10 dark:bg-white/5",
   sponsor: cn("h-full w-full min-h-[200px] overflow-auto", "bg-transparent p-0"),
 } as const;

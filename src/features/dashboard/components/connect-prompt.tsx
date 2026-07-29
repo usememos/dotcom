@@ -28,7 +28,7 @@ export function ConnectPrompt() {
       <div aria-hidden="true" className="absolute inset-0 bg-background/30" />
 
       <div className="relative z-10 flex min-h-[420px] items-center justify-center px-3 py-10 sm:min-h-[460px] sm:px-8">
-        <div className="w-full max-w-xl rounded-2xl border bg-background/95 px-6 py-8 text-center shadow-xl shadow-black/5 sm:px-10 sm:py-10 dark:shadow-black/20">
+        <div className="w-full max-w-xl rounded-2xl border border-border bg-background/95 px-6 py-8 text-center shadow-xl shadow-black/5 sm:px-10 sm:py-10 dark:shadow-black/20">
           <h2 id="connect-instance-heading" className="text-xl font-semibold tracking-[-0.035em] sm:text-2xl">
             Connect your Memos instance
           </h2>

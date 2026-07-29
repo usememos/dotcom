@@ -73,7 +73,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       </aside>
 
       <div className="h-svh min-w-0 overflow-hidden lg:p-2 lg:pl-0">
-        <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b bg-background/90 px-4 backdrop-blur-xl lg:hidden">
+        <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-border bg-background/90 px-4 backdrop-blur-xl lg:hidden">
           <WorkspaceMark />
           <div className="flex items-center gap-1">
             <WorkspaceNavigation mobile />
