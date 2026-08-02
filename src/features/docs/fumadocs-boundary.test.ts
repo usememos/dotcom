@@ -61,10 +61,12 @@ describe("Fumadocs UI boundary", () => {
     expect(scopedDocsCssSource.replaceAll(":where(html:has(#nd-docs-layout))", "")).not.toMatch(/html:has\(#nd-docs-layout\)/);
     // Keyframe stops are positions, not selectors, so they must stay unscoped.
     expect(scopedDocsCssSource).not.toMatch(/:where\(html:has\(#nd-docs-layout\)\)\s+(?:from|to|\d+%)/);
-    // Tailwind's `layout:` variant uses an ancestor selector with `:has(&)`.
-    // Scope that ancestor, not the utility substituted into `&`, or all docs
-    // layout widths remain at their zero-value mobile defaults.
-    expect(scopedDocsCssSource).toContain(":where(html:has(#nd-docs-layout)) #nd-docs-layout:has(&)");
+    // Tailwind compiles the `layout:` variant's `:has(&)` ancestor into a
+    // concrete utility selector. Scope that ancestor, not the utility inside
+    // `:has()`, or all docs layout widths remain at their mobile defaults.
+    expect(scopedDocsCssSource).toContain(
+      ":where(html:has(#nd-docs-layout)) #nd-docs-layout:has(.xl\\:layout\\:\\[--fd-toc-width\\:268px\\])",
+    );
     expect(scopedDocsCssSource).not.toContain(":where(html:has(#nd-docs-layout)) .md\\:layout\\:");
     // The rewriter only visits rules, so an at-rule-scoped sheet would slip past it.
     expect(scopedDocsCssSource).not.toMatch(/@scope/);

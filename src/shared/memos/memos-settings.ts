@@ -1,4 +1,4 @@
-import type { MemosCredentials } from "../memos/instance-client";
+import type { MemosCredentials } from "./instance-client";
 
 // Shared helpers for the Memos connection stored in Clerk `unsafeMetadata.memos`.
 

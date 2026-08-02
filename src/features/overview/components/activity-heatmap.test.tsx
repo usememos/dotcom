@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import type { MemosActivityDay } from "@/shared/settings/memos-stats";
+import type { MemosActivityDay } from "@/shared/memos/memos-stats";
 import { ActivityHeatmap } from "./activity-heatmap";
 
 const now = new Date("2026-06-14T12:00:00Z");

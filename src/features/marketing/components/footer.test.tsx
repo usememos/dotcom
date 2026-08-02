@@ -2,7 +2,7 @@ import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { Footer } from "./footer";
 
-vi.mock("@/features/account/components/theme-toggle", () => ({
+vi.mock("@/shared/ui/theme-toggle", () => ({
   ThemeToggle: () => <div data-testid="theme-toggle">Theme controls</div>,
 }));
 

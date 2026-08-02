@@ -18,7 +18,7 @@ export function useAccountActions(options: AccountActionsOptions = {}) {
     user,
     signIn: () => {
       // Default to keeping the user on the page they signed in from; an explicit
-      // signInForceRedirectUrl still wins (e.g. the dashboard CTA).
+      // signInForceRedirectUrl still wins (e.g. the overview CTA).
       const forceRedirectUrl =
         options.signInForceRedirectUrl ?? (typeof window !== "undefined" ? window.location.pathname + window.location.search : undefined);
       openSignIn(forceRedirectUrl ? { forceRedirectUrl } : undefined);

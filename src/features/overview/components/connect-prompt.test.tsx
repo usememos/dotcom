@@ -8,7 +8,7 @@ describe("ConnectPrompt", () => {
     vi.clearAllMocks();
   });
 
-  it("shows a focused connection empty state without sample dashboard data", () => {
+  it("shows a focused connection empty state without sample overview data", () => {
     render(<ConnectPrompt />);
 
     expect(screen.getByRole("heading", { name: "Connect your Memos instance" })).toBeInTheDocument();

@@ -1,7 +1,7 @@
-import { isRecord } from "../settings/memos-settings";
-import type { MemosStatsData } from "../settings/memos-stats";
 import { describeInstanceError, InstanceError, type InstanceErrorDetail } from "./errors";
 import { getAuthMe, getProfile, getStats, type InstanceFetchDeps, type MemosCredentials } from "./instance-client";
+import { isRecord } from "./memos-settings";
+import type { MemosStatsData } from "./memos-stats";
 import { bucketByUtcDay } from "./stats-bucketing";
 import { LATEST_SUPPORTED_MINOR, MINIMUM_SUPPORTED_VERSION } from "./supported-versions";
 import { compareVersion, parseMinor, resolveAdapter } from "./versions";

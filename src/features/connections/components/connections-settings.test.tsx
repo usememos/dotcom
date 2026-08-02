@@ -18,17 +18,17 @@ const mocks = vi.hoisted(() => ({
 vi.mock("@/features/account/hooks/use-account-actions", () => ({
   useAccountActions: () => ({ user: null, signIn: mocks.signIn }),
 }));
-vi.mock("@/features/memos/hooks/use-memos-connection", async (importOriginal) => {
-  const original = await importOriginal<typeof import("@/features/memos/hooks/use-memos-connection")>();
+vi.mock("@/features/connections/hooks/use-memos-connection", async (importOriginal) => {
+  const original = await importOriginal<typeof import("@/features/connections/hooks/use-memos-connection")>();
   return { ...original, useMemosConnection: () => mocks.connection };
 });
 vi.mock("@/shared/memos/instance-stats", () => ({
   testInstanceConnection: mocks.testConnection,
 }));
 
-import { MemosConnectionsSettings } from "./memos-connections-settings";
+import { ConnectionsSettings } from "./connections-settings";
 
-describe("MemosConnectionsSettings", () => {
+describe("ConnectionsSettings", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.connection.credentials = null;
@@ -38,14 +38,14 @@ describe("MemosConnectionsSettings", () => {
   });
 
   it("shows extension return guidance without changing the route resource", () => {
-    render(<MemosConnectionsSettings source="web-clipper" />);
+    render(<ConnectionsSettings source="web-clipper" />);
     expect(screen.getByRole("heading", { name: "Connect your Memos instance" })).toBeInTheDocument();
     expect(screen.getByText(/then return to Memos Web Clipper/i)).toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "Dashboard" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Overview" })).not.toBeInTheDocument();
   });
 
   it("keeps first-time setup focused on the connection form", () => {
-    render(<MemosConnectionsSettings source={null} />);
+    render(<ConnectionsSettings source={null} />);
     expect(screen.getByLabelText("Instance URL")).toBeInTheDocument();
     expect(screen.getByLabelText("Personal access token (PAT)")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Test and save" })).toBeInTheDocument();
@@ -58,7 +58,7 @@ describe("MemosConnectionsSettings", () => {
   it("returns signed-out users to the same page through the account sign-in action", async () => {
     mocks.connection.isSignedIn = false;
     const user = userEvent.setup();
-    render(<MemosConnectionsSettings source={null} />);
+    render(<ConnectionsSettings source={null} />);
     expect(screen.getByRole("heading", { name: "Sign in to manage this connection" }).parentElement).toHaveClass("border", "border-border");
     await user.click(screen.getByRole("button", { name: "Sign in" }));
     expect(mocks.signIn).toHaveBeenCalledTimes(1);
@@ -68,7 +68,7 @@ describe("MemosConnectionsSettings", () => {
     mocks.connection.credentials = { instanceUrl: "https://memos.example.com", accessToken: "tok" };
     mocks.connection.instanceUrl = "https://memos.example.com";
     mocks.testConnection.mockResolvedValue({ ok: true, name: "Steven", version: "0.30.0" });
-    render(<MemosConnectionsSettings source={null} />);
+    render(<ConnectionsSettings source={null} />);
 
     expect(await screen.findByText("0.30.0")).toBeInTheDocument();
     expect(screen.getByText("Just now")).toBeInTheDocument();
@@ -85,7 +85,7 @@ describe("MemosConnectionsSettings", () => {
     mocks.testConnection.mockResolvedValue({ ok: true, name: "Steven", version: "0.30.0" });
     mocks.connection.disconnect.mockRejectedValue(new Error("save failed"));
     const user = userEvent.setup();
-    render(<MemosConnectionsSettings source={null} />);
+    render(<ConnectionsSettings source={null} />);
 
     await screen.findByText("0.30.0");
     await user.click(screen.getByRole("button", { name: "Disconnect" }));

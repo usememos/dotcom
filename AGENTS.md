@@ -2,7 +2,7 @@
 
 ## Project Snapshot
 
-This repository is the official website for Memos at `usememos.com`. It is a Next.js + TypeScript + Tailwind app that serves a static public site with project-owned marketing/editorial UI and Fumadocs-powered documentation, **and** an authenticated product surface (a Clerk-gated dashboard plus a static docs search route).
+This repository is the official website for Memos at `usememos.com`. It is a Next.js + TypeScript + Tailwind app that serves a static public site with project-owned marketing/editorial UI and Fumadocs-powered documentation, **and** an authenticated product surface (a Clerk-gated overview at `/dashboard` plus a static docs search route).
 
 Treat it as a **Next.js 16 marketing/docs site plus an authenticated product app**. The marketing/docs surface stays static; authenticated pages use either a static client-auth shell or dynamic server rendering according to `docs/architecture.md`. Before adding persistence, a new Cloudflare binding, or a new external dependency, follow those conventions rather than introducing them ad-hoc.
 
@@ -61,7 +61,7 @@ See `docs/architecture.md` for the full architecture and the conventions for exp
 - `src/app/(public)/(site)/changelog/` serves release notes from `content/changelog/`.
 - `src/app/(public)/(site)/features/` contains the feature index and SEO pages at `/features/[slug]`.
 - `src/app/(public)/(site)/brand/`, `pricing/`, `privacy/`, `sponsors/`, and `use-cases/` contain static marketing pages.
-- `src/app/(app)/` is the authenticated product surface (Clerk-gated and noindex); its dashboard and connection settings are static client-auth shells, while request-dependent pages stay dynamic. `src/app/(auth)/` holds sign-in/sign-up boundaries. Add authed features following `docs/architecture.md`.
+- `src/app/(app)/` is the authenticated product surface (Clerk-gated and noindex); its overview (`/dashboard`) and connection settings are static client-auth shells, while request-dependent pages stay dynamic. `src/app/(auth)/` holds sign-in/sign-up boundaries. Add authed features following `docs/architecture.md`.
 
 ### Content
 
@@ -84,6 +84,10 @@ See `docs/architecture.md` for the full architecture and the conventions for exp
 - Marketing components: `src/features/marketing/components/`
 - Docs components and helpers: `src/features/docs/components/` and `src/features/docs/lib/`
 - Editorial components and helpers: `src/features/editorial/components/` and `src/features/editorial/lib/`
+- Product overview components and helpers: `src/features/overview/`
+- Connection settings components and hooks: `src/features/connections/`
+- Account shell and Clerk provider: `src/features/account/`
+- Client-safe Memos protocol and connection data helpers: `src/shared/memos/`
 - Shared UI primitives: `src/shared/ui/`
 - Docs layout options: `src/features/docs/lib/layout-options.tsx`
 - Shared navigation data: `src/shared/lib/seo.ts`

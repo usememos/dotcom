@@ -4,12 +4,12 @@ import { CheckCircle2Icon, ExternalLinkIcon, PlugZapIcon, RefreshCwIcon, UnplugI
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AppPage } from "@/features/account/components/app-page";
 import { useAccountActions } from "@/features/account/hooks/use-account-actions";
-import { useMemosConnection } from "@/features/memos/hooks/use-memos-connection";
+import { useMemosConnection } from "@/features/connections/hooks/use-memos-connection";
 import type { InstanceErrorDetail } from "@/shared/memos/errors";
 import type { MemosCredentials } from "@/shared/memos/instance-client";
 import { type ConnectionTestResult, testInstanceConnection } from "@/shared/memos/instance-stats";
-import { parseInstanceUrl } from "@/shared/settings/instance-url";
-import { describeConnectionWriteError, sameMemosCredentials } from "@/shared/settings/memos-settings";
+import { parseInstanceUrl } from "@/shared/memos/instance-url";
+import { describeConnectionWriteError, sameMemosCredentials } from "@/shared/memos/memos-settings";
 import { Alert, AlertDescription, AlertTitle } from "@/shared/ui/alert";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/shared/ui/app-card";
 import { Button, buttonVariants } from "@/shared/ui/button";
@@ -23,11 +23,11 @@ type CheckState =
   | { status: "ok"; result: Extract<ConnectionTestResult, { ok: true }> }
   | { status: "error"; detail: InstanceErrorDetail };
 
-type MemosConnectionsSettingsProps = {
+type ConnectionsSettingsProps = {
   source: "web-clipper" | null;
 };
 
-export function MemosConnectionsSettings({ source }: MemosConnectionsSettingsProps) {
+export function ConnectionsSettings({ source }: ConnectionsSettingsProps) {
   const account = useAccountActions();
   const connection = useMemosConnection();
   const [editing, setEditing] = useState(false);

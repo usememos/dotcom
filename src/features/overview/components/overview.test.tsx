@@ -18,25 +18,25 @@ const mocks = vi.hoisted(() => ({
 vi.mock("@/features/account/hooks/use-account-actions", () => ({
   useAccountActions: () => ({ user: { fullName: "Ada Lovelace" }, signIn: mocks.signIn }),
 }));
-vi.mock("@/features/memos/hooks/use-memos-connection", () => ({
+vi.mock("@/features/connections/hooks/use-memos-connection", () => ({
   useMemosConnection: () => mocks.connection,
 }));
 vi.mock("@/shared/memos/instance-stats", () => ({ fetchInstanceStats: mocks.fetchInstanceStats }));
 
 vi.mock("../lib/stats-cache", () => ({
-  readDashboardStatsCache: vi.fn(() => null),
-  writeDashboardStatsCache: vi.fn(),
-  clearDashboardStatsCache: vi.fn(),
+  readOverviewStatsCache: vi.fn(() => null),
+  writeOverviewStatsCache: vi.fn(),
+  clearOverviewStatsCache: vi.fn(),
 }));
 
-vi.mock("./dashboard-header", () => ({
-  DashboardHeader: ({ secondary }: { secondary: string }) => <div data-testid="header">{secondary}</div>,
+vi.mock("./overview-header", () => ({
+  OverviewHeader: ({ secondary }: { secondary: string }) => <div data-testid="header">{secondary}</div>,
 }));
 vi.mock("./activity-heatmap", () => ({ ActivityHeatmap: () => <div data-testid="heatmap" /> }));
 vi.mock("./connect-prompt", () => ({ ConnectPrompt: () => <div data-testid="connect-prompt" /> }));
 
 import { describeInstanceError } from "@/shared/memos/errors";
-import { Dashboard } from "./dashboard";
+import { Overview } from "./overview";
 
 const CREDS = { instanceUrl: "https://memos.example.com", accessToken: "tok" };
 
@@ -59,13 +59,13 @@ afterEach(() => {
   window.localStorage.clear();
 });
 
-describe("Dashboard", () => {
-  it("renders the live dashboard on an ok result", async () => {
+describe("Overview", () => {
+  it("renders the live overview on an ok result", async () => {
     mocks.connection.credentials = CREDS;
     mocks.connection.isConnected = true;
     mocks.connection.instanceUrl = CREDS.instanceUrl;
     mocks.fetchInstanceStats.mockResolvedValue(okResult);
-    render(<Dashboard />);
+    render(<Overview />);
     expect(await screen.findByRole("heading", { name: "Activity" })).toBeInTheDocument();
     expect(screen.getByTestId("heatmap")).toBeInTheDocument();
     expect(screen.getByTestId("header")).toBeInTheDocument();
@@ -75,7 +75,7 @@ describe("Dashboard", () => {
 
   it("shows the connect prompt when signed in but not connected", async () => {
     mocks.connection.credentials = null;
-    render(<Dashboard />);
+    render(<Overview />);
     expect(await screen.findByTestId("connect-prompt")).toBeInTheDocument();
     expect(screen.getByTestId("header")).toHaveTextContent("No connections yet");
   });
@@ -84,14 +84,14 @@ describe("Dashboard", () => {
     mocks.connection.credentials = CREDS;
     mocks.connection.isConnected = true;
     mocks.fetchInstanceStats.mockResolvedValue({ status: "error", error: describeInstanceError("unreachable") });
-    render(<Dashboard />);
+    render(<Overview />);
     expect(await screen.findByText(describeInstanceError("unreachable").title)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Retry" })).toBeInTheDocument();
   });
 
   it("shows the signed-out card when Clerk reports the user is signed out", async () => {
     mocks.connection.isSignedIn = false;
-    render(<Dashboard />);
+    render(<Overview />);
     expect(await screen.findByRole("button", { name: "Sign in" })).toBeInTheDocument();
     const heading = screen.getByText("Your Memos workspace");
     expect(heading).toBeInTheDocument();
@@ -102,15 +102,15 @@ describe("Dashboard", () => {
     mocks.connection.credentials = CREDS;
     mocks.connection.isConnected = true;
     mocks.fetchInstanceStats.mockRejectedValue(new Error("boom"));
-    render(<Dashboard />);
-    expect(await screen.findByText("Couldn't load your dashboard. Try again.")).toBeInTheDocument();
+    render(<Overview />);
+    expect(await screen.findByText("Couldn't load your overview. Try again.")).toBeInTheDocument();
   });
 
   it("renders the skeleton until the fetch resolves", () => {
     mocks.connection.credentials = CREDS;
     mocks.connection.isConnected = true;
     mocks.fetchInstanceStats.mockReturnValue(new Promise(() => {})); // never resolves
-    const { container } = render(<Dashboard />);
+    const { container } = render(<Overview />);
     expect(container.querySelector(".animate-pulse")).not.toBeNull();
   });
 });

@@ -9,8 +9,8 @@ vi.mock("next/navigation", () => ({
   useSearchParams: () => mocks.searchParams,
 }));
 
-vi.mock("@/features/memos/components/memos-connections-settings", () => ({
-  MemosConnectionsSettings: ({ source }: { source: string | null }) => <div data-testid="settings-source">{source ?? "direct"}</div>,
+vi.mock("@/features/connections/components/connections-settings", () => ({
+  ConnectionsSettings: ({ source }: { source: string | null }) => <div data-testid="settings-source">{source ?? "direct"}</div>,
 }));
 
 import { ConnectionsSettingsClient } from "./connections-settings-client";

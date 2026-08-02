@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-vi.mock("@/features/memos/components/memos-connections-settings", () => ({
-  MemosConnectionsSettings: ({ source }: { source: string | null }) => <div data-testid="settings-source">{source ?? "direct"}</div>,
+vi.mock("@/features/connections/components/connections-settings", () => ({
+  ConnectionsSettings: ({ source }: { source: string | null }) => <div data-testid="settings-source">{source ?? "direct"}</div>,
 }));
 
 vi.mock("./connections-settings-client", () => ({

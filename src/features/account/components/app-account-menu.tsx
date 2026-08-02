@@ -3,11 +3,11 @@
 import { ArrowUpRightIcon, ChevronUpIcon, LogInIcon, SettingsIcon } from "lucide-react";
 import Link from "next/link";
 import { SignOutItem } from "@/features/account/components/sign-out-item";
-import { ThemeToggle } from "@/features/account/components/theme-toggle";
 import { UserIdentity } from "@/features/account/components/user-identity";
 import { useAccountActions } from "@/features/account/hooks/use-account-actions";
 import { Button } from "@/shared/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/shared/ui/dropdown-menu";
+import { ThemeToggle } from "@/shared/ui/theme-toggle";
 
 export function AppAccountMenu({ compact = false }: { compact?: boolean }) {
   const account = useAccountActions();

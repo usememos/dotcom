@@ -3,7 +3,7 @@ import { type NameSource, resolveUserDisplayName } from "../lib/display-name";
 
 type UserIdentityProps = {
   user: (NameSource & { imageUrl?: string | null }) | null;
-  /** Secondary line: email (menu) or instance label (dashboard). */
+  /** Secondary line: email (menu) or instance label (overview). */
   secondary?: ReactNode;
   size?: "xs" | "sm" | "md";
 };

@@ -24,7 +24,7 @@ describe("instanceFetchJson", () => {
     ]);
     const data = await instanceFetchJson(CREDS, "/api/v1/auth/me", d);
     expect(data).toEqual({ hello: "world" });
-    expect((seen?.headers as Record<string, string>).Authorization).toBe("Bearer tok");
+    expect((seen as RequestInit).headers).toMatchObject({ Authorization: "Bearer tok" });
   });
 
   it("throws mixed-content before any request when page is https and url is http", async () => {

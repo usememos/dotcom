@@ -25,7 +25,7 @@ vi.mock("@/features/account/hooks/use-account-actions", () => ({
 vi.mock("@/features/account/components/sign-out-item", () => ({
   SignOutItem: () => <div data-testid="sign-out-item" />,
 }));
-vi.mock("@/features/account/components/theme-toggle", () => ({
+vi.mock("@/shared/ui/theme-toggle", () => ({
   ThemeToggle: () => <div data-testid="theme-toggle" />,
 }));
 

@@ -1,4 +1,4 @@
-import type { MemosActivityDay } from "@/shared/settings/memos-stats";
+import type { MemosActivityDay } from "@/shared/memos/memos-stats";
 import { toUtcDateKey } from "../../../shared/lib/date";
 
 export const HEATMAP_WEEKS = 53;

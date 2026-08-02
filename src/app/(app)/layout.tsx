@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { AppShell } from "@/features/account/components/app-shell";
-import { AuthProviders } from "@/shared/auth/auth-providers";
+import { AuthProviders } from "@/features/account/providers/auth-providers";
 
 // Shell for the authenticated product surface. Routes under `(app)` are noindex;
 // each page chooses static client-auth or dynamic server-auth rendering based on

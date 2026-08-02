@@ -1,4 +1,4 @@
-// Client-safe stats types shared by the instance client and the dashboard.
+// Client-safe stats types shared by the instance client and product overview.
 
 /** A single UTC day with a memo count. date is "YYYY-MM-DD". */
 export type MemosActivityDay = { date: string; count: number };

@@ -1,5 +1,5 @@
 import { toUtcDateKey } from "../lib/date";
-import type { MemosActivityDay } from "../settings/memos-stats";
+import type { MemosActivityDay } from "./memos-stats";
 
 /** Trailing window for the activity heatmap: 53 weeks. */
 export const ACTIVITY_WINDOW_DAYS = 53 * 7;

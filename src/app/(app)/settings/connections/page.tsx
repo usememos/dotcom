@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { MemosConnectionsSettings } from "@/features/memos/components/memos-connections-settings";
+import { ConnectionsSettings } from "@/features/connections/components/connections-settings";
 import { ConnectionsSettingsClient } from "./connections-settings-client";
 
 // Account and connection data already load in the browser. Keep this route as a
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function ConnectionsPage() {
   return (
-    <Suspense fallback={<MemosConnectionsSettings source={null} />}>
+    <Suspense fallback={<ConnectionsSettings source={null} />}>
       <ConnectionsSettingsClient />
     </Suspense>
   );

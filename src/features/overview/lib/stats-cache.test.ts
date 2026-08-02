@@ -1,10 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { CachedDashboardStats } from "./stats-cache";
-import { clearDashboardStatsCache, readDashboardStatsCache, writeDashboardStatsCache } from "./stats-cache";
+import type { CachedOverviewStats } from "./stats-cache";
+import { clearOverviewStatsCache, readOverviewStatsCache, writeOverviewStatsCache } from "./stats-cache";
 
 const STORAGE_KEY = "memos:dashboard-stats:v1";
 
-const validCache: CachedDashboardStats = {
+const validCache: CachedOverviewStats = {
   userId: "7",
   version: "1.2.3",
   fetchedAt: 1_700_000_000_000,
@@ -23,44 +23,44 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-describe("writeDashboardStatsCache / readDashboardStatsCache", () => {
+describe("writeOverviewStatsCache / readOverviewStatsCache", () => {
   it("round-trips a valid cache", () => {
-    writeDashboardStatsCache(validCache);
-    expect(readDashboardStatsCache()).toEqual(validCache);
+    writeOverviewStatsCache(validCache);
+    expect(readOverviewStatsCache()).toEqual(validCache);
   });
 
   it("returns null when nothing is stored", () => {
-    expect(readDashboardStatsCache()).toBeNull();
+    expect(readOverviewStatsCache()).toBeNull();
   });
 
   it("returns null for malformed JSON", () => {
     window.localStorage.setItem(STORAGE_KEY, "{not json");
-    expect(readDashboardStatsCache()).toBeNull();
+    expect(readOverviewStatsCache()).toBeNull();
   });
 
   it("returns null when the shape fails validation", () => {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ userId: 7, version: null, fetchedAt: 0, stats: {} }));
-    expect(readDashboardStatsCache()).toBeNull();
+    expect(readOverviewStatsCache()).toBeNull();
   });
 
   it("accepts a null version", () => {
     const withNullVersion = { ...validCache, version: null };
-    writeDashboardStatsCache(withNullVersion);
-    expect(readDashboardStatsCache()).toEqual(withNullVersion);
+    writeOverviewStatsCache(withNullVersion);
+    expect(readOverviewStatsCache()).toEqual(withNullVersion);
   });
 
   it("swallows quota errors on write", () => {
     vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
       throw new Error("QuotaExceeded");
     });
-    expect(() => writeDashboardStatsCache(validCache)).not.toThrow();
+    expect(() => writeOverviewStatsCache(validCache)).not.toThrow();
   });
 });
 
-describe("clearDashboardStatsCache", () => {
+describe("clearOverviewStatsCache", () => {
   it("removes the stored cache", () => {
-    writeDashboardStatsCache(validCache);
-    clearDashboardStatsCache();
-    expect(readDashboardStatsCache()).toBeNull();
+    writeOverviewStatsCache(validCache);
+    clearOverviewStatsCache();
+    expect(readOverviewStatsCache()).toBeNull();
   });
 });

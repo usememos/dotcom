@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toUtcDateKey } from "@/shared/lib/date";
-import type { MemosActivityDay } from "@/shared/settings/memos-stats";
+import type { MemosActivityDay } from "@/shared/memos/memos-stats";
 import { buildHeatmapGrid, computeIntensityThresholds, intensityForCount, monthColumnLabel } from "../lib/heatmap";
 import { sumActivity } from "../lib/stats";
 

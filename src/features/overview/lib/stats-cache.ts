@@ -1,9 +1,9 @@
-import type { MemosStatsData } from "@/shared/settings/memos-stats";
-import { isRecord } from "../../../shared/settings/memos-settings";
+import { isRecord } from "@/shared/memos/memos-settings";
+import type { MemosStatsData } from "@/shared/memos/memos-stats";
 
 const STORAGE_KEY = "memos:dashboard-stats:v1";
 
-export type CachedDashboardStats = {
+export type CachedOverviewStats = {
   /** Resolved Memos user id (the bare id, e.g. "7"). */
   userId: string;
   /** Resolved instance version, or null when unknown. */
@@ -34,7 +34,7 @@ function isValidStats(value: unknown): value is MemosStatsData {
   );
 }
 
-function isValidCache(value: unknown): value is CachedDashboardStats {
+function isValidCache(value: unknown): value is CachedOverviewStats {
   return (
     isRecord(value) &&
     typeof value.userId === "string" &&
@@ -44,8 +44,8 @@ function isValidCache(value: unknown): value is CachedDashboardStats {
   );
 }
 
-/** Reads the cached dashboard stats, or null when absent/unavailable/malformed. */
-export function readDashboardStatsCache(): CachedDashboardStats | null {
+/** Reads the cached overview stats, or null when absent/unavailable/malformed. */
+export function readOverviewStatsCache(): CachedOverviewStats | null {
   const storage = getStorage();
   if (!storage) {
     return null;
@@ -62,8 +62,8 @@ export function readDashboardStatsCache(): CachedDashboardStats | null {
   }
 }
 
-/** Persists the dashboard stats; silently no-ops when storage is unavailable or full. */
-export function writeDashboardStatsCache(value: CachedDashboardStats): void {
+/** Persists the overview stats; silently no-ops when storage is unavailable or full. */
+export function writeOverviewStatsCache(value: CachedOverviewStats): void {
   const storage = getStorage();
   if (!storage) {
     return;
@@ -75,8 +75,8 @@ export function writeDashboardStatsCache(value: CachedDashboardStats): void {
   }
 }
 
-/** Removes the cached dashboard stats (e.g. on disconnect or instance switch). */
-export function clearDashboardStatsCache(): void {
+/** Removes the cached overview stats (e.g. on disconnect or instance switch). */
+export function clearOverviewStatsCache(): void {
   const storage = getStorage();
   if (!storage) {
     return;

@@ -1,5 +1,5 @@
-import { parseInstanceUrl } from "@/shared/settings/instance-url";
-import type { MemosActivityDay } from "@/shared/settings/memos-stats";
+import { parseInstanceUrl } from "@/shared/memos/instance-url";
+import type { MemosActivityDay } from "@/shared/memos/memos-stats";
 
 /** Total memos across the windowed activity days (distinct from the all-time total). */
 export function sumActivity(days: MemosActivityDay[]): number {

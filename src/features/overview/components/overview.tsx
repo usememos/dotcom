@@ -4,8 +4,8 @@ import Link from "next/link";
 import { type ReactNode, useCallback, useEffect, useState } from "react";
 import { AppPage } from "@/features/account/components/app-page";
 import { useAccountActions } from "@/features/account/hooks/use-account-actions";
-import { InstanceErrorNotice } from "@/features/memos/components/instance-error-notice";
-import { useMemosConnection } from "@/features/memos/hooks/use-memos-connection";
+import { InstanceErrorNotice } from "@/features/connections/components/instance-error-notice";
+import { useMemosConnection } from "@/features/connections/hooks/use-memos-connection";
 import type { InstanceErrorDetail } from "@/shared/memos/errors";
 import { fetchInstanceStats, type InstanceStatsResult } from "@/shared/memos/instance-stats";
 import { CONNECTIONS_SETTINGS_PATH } from "@/shared/routes";
@@ -13,10 +13,10 @@ import { Alert, AlertDescription, AlertTitle } from "@/shared/ui/alert";
 import { Button, buttonVariants } from "@/shared/ui/button";
 import { Skeleton } from "@/shared/ui/skeleton";
 import { connectedHeaderLabel } from "../lib/stats";
-import { clearDashboardStatsCache, readDashboardStatsCache, writeDashboardStatsCache } from "../lib/stats-cache";
+import { clearOverviewStatsCache, readOverviewStatsCache, writeOverviewStatsCache } from "../lib/stats-cache";
 import { ActivityHeatmap } from "./activity-heatmap";
 import { ConnectPrompt } from "./connect-prompt";
-import { DashboardHeader } from "./dashboard-header";
+import { OverviewHeader } from "./overview-header";
 
 type OkStats = Extract<InstanceStatsResult, { status: "ok" }>;
 type NonOk = { kind: "not-connected" } | { kind: "error"; detail: InstanceErrorDetail } | { kind: "signed-out" } | { kind: "failed" };
@@ -32,7 +32,7 @@ function CenteredPanel({ children }: { children: ReactNode }) {
   );
 }
 
-export function Dashboard() {
+export function Overview() {
   const { signIn } = useAccountActions({ signInForceRedirectUrl: "/dashboard" });
   const connection = useMemosConnection();
   const { credentials, isConnected, isLoaded, isSignedIn, instanceUrl } = connection;
@@ -44,7 +44,7 @@ export function Dashboard() {
 
   // Instant paint from the last-known stats while the live fetch runs.
   useEffect(() => {
-    const cached = readDashboardStatsCache();
+    const cached = readOverviewStatsCache();
     if (cached) {
       setData({
         status: "ok",
@@ -61,18 +61,18 @@ export function Dashboard() {
     }
     if (!isSignedIn) {
       setData(null);
-      clearDashboardStatsCache();
+      clearOverviewStatsCache();
       setNonOk({ kind: "signed-out" });
       return;
     }
     if (!credentials) {
       setData(null);
-      clearDashboardStatsCache();
+      clearOverviewStatsCache();
       setNonOk({ kind: "not-connected" });
       return;
     }
     let cancelled = false;
-    const cached = readDashboardStatsCache();
+    const cached = readOverviewStatsCache();
     const hints = cached ? { userId: cached.userId, version: cached.version } : undefined;
     fetchInstanceStats(credentials, hints)
       .then((next) => {
@@ -82,7 +82,7 @@ export function Dashboard() {
         if (next.status === "ok") {
           setData(next);
           setNonOk(null);
-          writeDashboardStatsCache({
+          writeOverviewStatsCache({
             userId: deriveUserId(next.user.name),
             version: next.instanceVersion,
             stats: next.stats,
@@ -104,8 +104,8 @@ export function Dashboard() {
 
   if (data) {
     return (
-      <DashboardShell>
-        <DashboardHeader secondary={headerLabel(instanceUrl, data)} />
+      <OverviewShell>
+        <OverviewHeader secondary={headerLabel(instanceUrl, data)} />
         <section aria-labelledby="activity-heading" className="pt-2">
           <div className="mb-7 flex items-end justify-between gap-4">
             <div>
@@ -120,7 +120,7 @@ export function Dashboard() {
           </div>
           <ActivityHeatmap days={data.stats.days} />
         </section>
-      </DashboardShell>
+      </OverviewShell>
     );
   }
 
@@ -140,35 +140,35 @@ export function Dashboard() {
 
   if (nonOk?.kind === "not-connected") {
     return (
-      <DashboardShell>
-        <DashboardHeader secondary="No connections yet" />
+      <OverviewShell>
+        <OverviewHeader secondary="No connections yet" />
         <ConnectPrompt />
-      </DashboardShell>
+      </OverviewShell>
     );
   }
 
   if (nonOk?.kind === "error") {
     return (
-      <DashboardShell>
-        <DashboardHeader secondary={nonOkHeaderLabel(instanceUrl, isConnected)} />
+      <OverviewShell>
+        <OverviewHeader secondary={nonOkHeaderLabel(instanceUrl, isConnected)} />
         <div className="max-w-2xl">
           <InstanceErrorNotice detail={nonOk.detail} />
           <RecoveryActions onRetry={reload} />
         </div>
-      </DashboardShell>
+      </OverviewShell>
     );
   }
 
   if (nonOk?.kind === "failed") {
     return (
-      <DashboardShell>
-        <DashboardHeader secondary={nonOkHeaderLabel(instanceUrl, isConnected)} />
-        <InlineError message="Couldn't load your dashboard. Try again." onRetry={reload} />
-      </DashboardShell>
+      <OverviewShell>
+        <OverviewHeader secondary={nonOkHeaderLabel(instanceUrl, isConnected)} />
+        <InlineError message="Couldn't load your overview. Try again." onRetry={reload} />
+      </OverviewShell>
     );
   }
 
-  return <DashboardSkeleton />;
+  return <OverviewSkeleton />;
 }
 
 function headerLabel(instanceUrl: string | null, result: OkStats): string {
@@ -178,7 +178,7 @@ function headerLabel(instanceUrl: string | null, result: OkStats): string {
   return connectedHeaderLabel(instanceUrl, result.instanceVersion);
 }
 
-/** Header label for authenticated states without live dashboard data. */
+/** Header label for authenticated states without live overview data. */
 function nonOkHeaderLabel(instanceUrl: string | null, isConnected: boolean): string {
   if (!isConnected) {
     return "No connections yet";
@@ -186,13 +186,13 @@ function nonOkHeaderLabel(instanceUrl: string | null, isConnected: boolean): str
   return instanceUrl ? connectedHeaderLabel(instanceUrl, null) : "Connected";
 }
 
-function DashboardShell({ children }: { children: ReactNode }) {
+function OverviewShell({ children }: { children: ReactNode }) {
   return <AppPage className="flex flex-col gap-9">{children}</AppPage>;
 }
 
-function DashboardSkeleton() {
+function OverviewSkeleton() {
   return (
-    <DashboardShell>
+    <OverviewShell>
       <Skeleton className="h-5 w-32" />
       <div className="flex items-end justify-between gap-4">
         <div className="space-y-2">
@@ -202,21 +202,21 @@ function DashboardSkeleton() {
         <Skeleton className="hidden h-8 w-64 sm:block" />
       </div>
       <Skeleton className="h-52 w-full" />
-    </DashboardShell>
+    </OverviewShell>
   );
 }
 
 function InlineError({ message, onRetry }: { message: string; onRetry: () => void }) {
   return (
     <Alert variant="destructive">
-      <AlertTitle>Couldn’t load dashboard</AlertTitle>
+      <AlertTitle>Couldn’t load overview</AlertTitle>
       <AlertDescription>{message}</AlertDescription>
       <RecoveryActions onRetry={onRetry} />
     </Alert>
   );
 }
 
-/** Retry + Connections escape hatch shown under any dashboard load error. */
+/** Retry + Connections escape hatch shown under any overview load error. */
 function RecoveryActions({ onRetry }: { onRetry: () => void }) {
   return (
     <div className="mt-4 flex gap-2">

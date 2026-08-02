@@ -5,7 +5,7 @@ to **Cloudflare Workers via OpenNext**. It serves two surfaces from the same
 codebase:
 
 - a **static public** surface (project-owned marketing/editorial UI plus Fumadocs documentation), and
-- an **authenticated product** surface (a Clerk-gated dashboard and `/api` handlers).
+- an **authenticated product** surface (a Clerk-gated overview at `/dashboard` and `/api` handlers).
 
 This document is the source of truth for how the code is organized and how to
 expand the authenticated surface. Keep it in sync when conventions change.
@@ -26,7 +26,7 @@ the research basis behind this direction and the conventions below.
 | `(public)/(site)` | Project-owned marketing + blog + changelog shell | Static |
 | `(public)/docs` | Fumadocs documentation and API reference | Static |
 | `(auth)` | Sign-in / sign-up boundaries | — |
-| `(app)` | Authenticated product surface (dashboard, settings, future authed pages) | Static or dynamic, noindex |
+| `(app)` | Authenticated product surface (overview, settings, future authed pages) | Static or dynamic, noindex |
 | `api/` | Route handlers (currently the static search index) | Static or `nodejs` runtime |
 
 `(app)` is the home for authenticated product pages. Its layout sets
@@ -37,8 +37,9 @@ data stay dynamic.
 ## Feature folders (`src/features/<domain>`)
 
 UI and client logic are vertical slices: `components/`, `hooks/`, `lib/`, and
-co-located tests, per domain (`marketing`, `docs`, `editorial`, `dashboard`,
-`memos`, `account`). Cross-domain primitives live in `src/shared`.
+co-located tests, per domain (`marketing`, `docs`, `editorial`, `overview`,
+`connections`, `account`). Cross-domain primitives live in `src/shared`; the
+client-safe Memos protocol and connection data helpers live in `src/shared/memos`.
 
 ## UI primitives
 
@@ -96,7 +97,7 @@ server-owned data.
   different workflow or trigger a write.
 - The legacy `/dashboard?setup=memos&source=web-clipper` entry permanently
   redirects to the canonical route.
-- Dashboard and clients link to this page; they do not implement separate
+- Overview and clients link to this page; they do not implement separate
   connection dialogs.
 - Sign-in uses the current pathname and query as its forced return URL.
 
@@ -118,7 +119,7 @@ server-owned data.
   `staticAssetsIncrementalCache` (build-time only). On-demand revalidation / ISR
   would require switching the backend to an R2 incremental cache plus a Durable
   Object tag cache — a deliberate future change, not enabled now. If the marketing
-  surface ever needs revalidating ISR, that (or splitting the dashboard to its own
+  surface ever needs revalidating ISR, that (or splitting the authenticated app to its own
   worker) is the escape hatch — not a default.
 - **Public responses are cached before Worker execution.** Wrangler's Workers
   Caching is enabled, so eligible responses are served without invoking OpenNext.
@@ -203,6 +204,6 @@ behind the store seam — in this order:
 - **Credential encryption at rest** for any third-party token (AES-256-GCM via Web
   Crypto with a Worker-secret key and a `key_id` for rotation).
 - **KV read-through cache** for high-read, staleness-tolerant aggregates (e.g.
-  dashboard stats), with D1/the store as source of truth.
+  overview stats), with D1/the store as source of truth.
 - **Clerk → D1 user-sync webhook** only when relational features (teams/sharing) need
   to join on a local users table.

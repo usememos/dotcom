@@ -2,7 +2,6 @@
 
 import { TOCScrollArea, useTOCItems } from "fumadocs-ui/components/toc";
 import { TOCItem, TOCItems } from "fumadocs-ui/components/toc/default";
-import { I18nLabel } from "fumadocs-ui/contexts/i18n";
 import { Text } from "lucide-react";
 import { TocFooter } from "@/features/docs/components/toc-footer";
 
@@ -31,7 +30,7 @@ export function DocsToc() {
         <>
           <h3 id="toc-title" className="inline-flex items-center gap-1.5 text-sm text-fd-muted-foreground">
             <Text className="size-4" />
-            <I18nLabel label="toc" />
+            On this page
           </h3>
           <TOCScrollArea>
             <TOCItems>

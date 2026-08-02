@@ -18,10 +18,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import type { ComponentType, SVGProps } from "react";
-import { ThemeToggle } from "@/features/account/components/theme-toggle";
 import { FEATURES } from "@/features/marketing/data/features";
 import { GITHUB_REPO_URL } from "@/shared/lib/seo";
 import { GithubIcon } from "@/shared/ui/github-icon";
+import { ThemeToggle } from "@/shared/ui/theme-toggle";
 
 function TwitterIcon(props: SVGProps<SVGSVGElement>) {
   return (

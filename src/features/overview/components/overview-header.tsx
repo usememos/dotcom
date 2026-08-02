@@ -2,12 +2,12 @@
 
 import type { ReactNode } from "react";
 
-type DashboardHeaderProps = {
+type OverviewHeaderProps = {
   secondary: ReactNode;
 };
 
 /** Page title and current Memos connection status. */
-export function DashboardHeader({ secondary }: DashboardHeaderProps) {
+export function OverviewHeader({ secondary }: OverviewHeaderProps) {
   return (
     <header>
       <h1 className="text-[26px] font-semibold leading-none tracking-[-0.04em] sm:text-[28px]">Overview</h1>

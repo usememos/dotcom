@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { extname, join, relative } from "node:path";
-import ts from "typescript";
+import * as ts from "typescript";
 import { describe, expect, it } from "vitest";
 
 const srcRoot = join(process.cwd(), "src");

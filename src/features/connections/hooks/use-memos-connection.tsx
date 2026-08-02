@@ -3,7 +3,7 @@
 import { useUser } from "@clerk/nextjs";
 import { useCallback, useMemo, useRef } from "react";
 import type { MemosCredentials } from "@/shared/memos/instance-client";
-import { MemosConnectionConflictError, readMemosCredentials, sameMemosCredentials } from "@/shared/settings/memos-settings";
+import { MemosConnectionConflictError, readMemosCredentials, sameMemosCredentials } from "@/shared/memos/memos-settings";
 
 type UseMemosConnection = {
   credentials: MemosCredentials | null;

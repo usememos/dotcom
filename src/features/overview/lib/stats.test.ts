@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { MemosActivityDay } from "@/shared/settings/memos-stats";
+import type { MemosActivityDay } from "@/shared/memos/memos-stats";
 import { connectedHeaderLabel, sumActivity } from "./stats";
 
 const days = (entries: Array<[string, number]>): MemosActivityDay[] => entries.map(([date, count]) => ({ date, count }));

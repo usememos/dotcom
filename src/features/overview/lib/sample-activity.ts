@@ -1,5 +1,5 @@
 import { toUtcDateKey } from "@/shared/lib/date";
-import type { MemosActivityDay } from "@/shared/settings/memos-stats";
+import type { MemosActivityDay } from "@/shared/memos/memos-stats";
 
 /** A stable, date-relative activity pattern used only behind the connection prompt. */
 export function buildSampleActivity(now: Date): MemosActivityDay[] {
