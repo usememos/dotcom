@@ -78,7 +78,7 @@ export function HomeUseCasesSection() {
           </p>
         </div>
 
-        <div className="mt-12 grid sm:mt-14 md:grid-cols-2 md:gap-x-12">
+        <div className="mt-12 grid gap-y-8 sm:mt-14 md:grid-cols-2 md:gap-x-12 md:gap-y-10">
           {USE_CASES.map((useCase, index) => {
             const Icon = useCase.icon;
             return (
@@ -86,9 +86,7 @@ export function HomeUseCasesSection() {
                 key={useCase.title}
                 href={`/use-cases/${useCase.slug}`}
                 prefetch={false}
-                className={`group grid grid-cols-[2.75rem_minmax(0,1fr)_auto] gap-4 border-b border-zinc-200 py-6 transition-colors hover:bg-stone-50 dark:border-white/10 dark:hover:bg-white/[0.035] ${
-                  index % 2 === 0 ? "md:pr-3" : "md:pl-3"
-                }`}
+                className={`group grid grid-cols-[2.75rem_minmax(0,1fr)_auto] gap-4 py-2 ${index % 2 === 0 ? "md:pr-3" : "md:pl-3"}`}
               >
                 <span className="flex size-9 items-center justify-center rounded-full bg-stone-100 text-zinc-500 transition-colors group-hover:bg-teal-50 group-hover:text-teal-700 dark:bg-white/6 dark:text-zinc-400 dark:group-hover:bg-teal-400/10 dark:group-hover:text-teal-300">
                   <Icon className="size-4 stroke-[1.8]" />

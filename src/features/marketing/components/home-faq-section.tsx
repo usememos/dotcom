@@ -37,7 +37,7 @@ export function HomeFaqSection() {
           {HOME_FAQ_ITEMS.map((item) => (
             <div
               key={item.question}
-              className="grid gap-3 border-b border-zinc-200 py-6 dark:border-white/10 md:grid-cols-[minmax(14rem,0.8fr)_minmax(0,1.2fr)] md:gap-12 md:py-7"
+              className="grid gap-3 border-t border-zinc-200 py-8 first:border-t-0 first:pt-0 last:pb-0 dark:border-white/10 md:grid-cols-[minmax(14rem,0.8fr)_minmax(0,1.2fr)] md:gap-12 md:py-10"
             >
               <dt className="max-w-md text-base font-semibold tracking-tight text-zinc-950 dark:text-zinc-100 sm:text-lg">
                 {item.question}

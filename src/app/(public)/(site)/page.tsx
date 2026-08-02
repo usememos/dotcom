@@ -123,7 +123,7 @@ export default function HomePage() {
       <HomeDiscoverSection />
       <HomeFaqSection />
 
-      <section id="start" className="bg-white py-16 dark:bg-zinc-950 sm:py-20 lg:py-24">
+      <section id="start" className="border-t border-zinc-200 bg-white py-16 dark:border-white/10 dark:bg-zinc-950 sm:py-20 lg:py-24">
         <div className="site-container grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-12">
           <div>
             <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Start here</p>

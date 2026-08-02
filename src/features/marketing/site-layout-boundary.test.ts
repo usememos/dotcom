@@ -53,13 +53,22 @@ describe("public site layout boundary", () => {
     expect(violations).toEqual([]);
   });
 
-  it("keeps marketing heroes content-sized instead of viewport-sized", () => {
-    const heroFiles = [
-      join(srcRoot, "features", "marketing", "components", "hero-section.tsx"),
-      join(srcRoot, "app", "(public)", "(site)", "web-clipper", "page.tsx"),
-    ];
-    const viewportHeight = /(?:min-)?h-(?:screen|\[[^\]]*100(?:s|d)?vh[^\]]*\])/;
-    const violations = heroFiles.filter((file) => viewportHeight.test(readFileSync(file, "utf8"))).map((file) => relative(srcRoot, file));
+  it("keeps public site pages content-sized instead of viewport-sized", () => {
+    const sitePages = listSourceFiles(join(srcRoot, "app", "(public)", "(site)"));
+    const viewportHeight = /(?:^|[\s"'`])(?:min-)?h-(?:screen|\[[^\]]*100(?:s|d)?vh[^\]]*\])/;
+    const violations = sitePages.filter((file) => viewportHeight.test(readFileSync(file, "utf8"))).map((file) => relative(srcRoot, file));
+
+    expect(violations).toEqual([]);
+  });
+
+  it("lets public page titles use their hero column", () => {
+    const roots = [join(srcRoot, "app", "(public)", "(site)"), join(srcRoot, "features", "marketing")];
+    const h1Tags = /<h1\b[\s\S]*?>/g;
+    const characterWidth = /max-w-\[[^\]]*ch\]/;
+    const violations = roots
+      .flatMap(listSourceFiles)
+      .filter((file) => (readFileSync(file, "utf8").match(h1Tags) ?? []).some((tag) => characterWidth.test(tag)))
+      .map((file) => relative(srcRoot, file));
 
     expect(violations).toEqual([]);
   });

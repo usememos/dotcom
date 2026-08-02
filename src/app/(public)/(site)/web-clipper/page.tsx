@@ -94,7 +94,7 @@ export default function WebClipperPage() {
       <JsonLdScript data={softwareJsonLd} />
       <JsonLdScript data={faqJsonLd} />
 
-      <section className="relative isolate border-b border-white/10 bg-[#172033] text-white">
+      <section className="relative isolate bg-[#172033] text-white">
         <div
           className="pointer-events-none absolute inset-0 opacity-40"
           style={{
@@ -145,7 +145,7 @@ export default function WebClipperPage() {
         </div>
       </section>
 
-      <section className="border-b border-zinc-200 py-16 dark:border-white/10 lg:py-24">
+      <section className="py-16 lg:py-24">
         <div className="site-container grid gap-12 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:items-center lg:gap-20">
           <div>
             <p className="text-sm font-semibold tracking-[0.16em] text-teal-700 uppercase dark:text-teal-300">Connection options</p>
@@ -161,7 +161,7 @@ export default function WebClipperPage() {
         </div>
       </section>
 
-      <section className="border-b border-zinc-200 bg-zinc-50 py-16 dark:border-white/10 dark:bg-zinc-900/40 lg:py-24">
+      <section className="bg-zinc-50 py-16 dark:bg-zinc-900/40 lg:py-24">
         <div className="site-container grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,25rem)] lg:items-center lg:gap-20">
           <TemplateVisual />
           <div>
@@ -177,9 +177,9 @@ export default function WebClipperPage() {
         </div>
       </section>
 
-      <section className="border-b border-zinc-200 py-16 dark:border-white/10 lg:py-24">
+      <section className="py-16 lg:py-24">
         <div className="site-container">
-          <div className="grid gap-5 border-b border-zinc-200 pb-10 dark:border-white/10 lg:grid-cols-[minmax(0,23rem)_1fr] lg:items-end lg:gap-20">
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,23rem)_1fr] lg:items-end lg:gap-20">
             <div>
               <p className="text-sm font-semibold tracking-[0.16em] text-teal-700 uppercase dark:text-teal-300">Capture without cleanup</p>
               <h2 className="mt-4 text-balance font-serif text-4xl leading-tight font-semibold tracking-[-0.025em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
@@ -191,9 +191,9 @@ export default function WebClipperPage() {
               the full context.
             </p>
           </div>
-          <div className="grid divide-y divide-zinc-200 dark:divide-white/10 md:grid-cols-3 md:divide-x md:divide-y-0">
+          <div className="mt-12 grid gap-10 md:grid-cols-3 md:gap-12">
             {CAPTURE_FEATURES.map((feature) => (
-              <div key={feature.title} className="group py-8 md:px-8 md:first:pl-0 md:last:pr-0">
+              <div key={feature.title} className="group">
                 <span className="flex size-10 items-center justify-center rounded-xl bg-teal-50 text-teal-700 transition-transform group-hover:-translate-y-1 dark:bg-teal-400/10 dark:text-teal-300">
                   {feature.icon}
                 </span>
@@ -205,7 +205,7 @@ export default function WebClipperPage() {
         </div>
       </section>
 
-      <section className="border-b border-zinc-200 bg-[#f6f2e7] py-14 dark:border-white/10 dark:bg-zinc-900 lg:py-18">
+      <section className="bg-[#f6f2e7] py-14 dark:bg-zinc-900 lg:py-18">
         <div className="site-container grid gap-8 lg:grid-cols-[minmax(0,20rem)_1fr] lg:items-center lg:gap-20">
           <div>
             <LanguagesIcon className="size-6 text-teal-700 dark:text-teal-300" />
@@ -216,10 +216,7 @@ export default function WebClipperPage() {
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-4 sm:grid-cols-3 lg:grid-cols-4">
             {LANGUAGES.map((language) => (
-              <div
-                key={language}
-                className="border-b border-zinc-300 pb-3 font-medium text-zinc-800 dark:border-white/15 dark:text-zinc-200"
-              >
+              <div key={language} className="font-medium text-zinc-800 dark:text-zinc-200">
                 {language}
               </div>
             ))}
@@ -227,8 +224,8 @@ export default function WebClipperPage() {
         </div>
       </section>
 
-      <section className="border-b border-zinc-200 py-14 dark:border-white/10">
-        <div className="site-container grid gap-6 sm:grid-cols-3 sm:divide-x sm:divide-zinc-200 dark:sm:divide-white/10">
+      <section className="py-14">
+        <div className="site-container grid gap-8 sm:grid-cols-3 sm:gap-12">
           {[
             {
               icon: <ServerIcon className="size-5" />,
@@ -246,7 +243,7 @@ export default function WebClipperPage() {
               text: "Inspect the code, report issues, or contribute on GitHub.",
             },
           ].map((item) => (
-            <div key={item.title} className="sm:px-8 sm:first:pl-0 sm:last:pr-0">
+            <div key={item.title}>
               <div className="flex items-center gap-3 text-teal-700 dark:text-teal-300">
                 {item.icon}
                 <h2 className="font-semibold text-zinc-950 dark:text-zinc-100">{item.title}</h2>
@@ -257,7 +254,7 @@ export default function WebClipperPage() {
         </div>
       </section>
 
-      <section className="border-b border-zinc-200 py-16 dark:border-white/10 lg:py-24">
+      <section className="border-t border-zinc-200 py-16 dark:border-white/10 lg:py-24">
         <div className="site-container grid gap-10 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
           <div className="lg:sticky lg:top-24 lg:self-start">
             <p className="text-sm font-semibold tracking-[0.16em] text-teal-700 uppercase dark:text-teal-300">FAQ</p>
@@ -274,9 +271,12 @@ export default function WebClipperPage() {
             </a>
           </div>
 
-          <dl className="divide-y divide-zinc-200 border-y border-zinc-200 dark:divide-white/10 dark:border-white/10">
+          <dl>
             {FAQ_ITEMS.map((item) => (
-              <div key={item.question} className="py-6">
+              <div
+                key={item.question}
+                className="border-t border-zinc-200 py-8 first:border-t-0 first:pt-0 last:pb-0 dark:border-white/10 lg:py-10"
+              >
                 <dt className="text-base font-semibold tracking-tight text-zinc-950 dark:text-zinc-100 sm:text-lg">{item.question}</dt>
                 <dd className="mt-3 max-w-2xl text-sm leading-7 text-zinc-600 dark:text-zinc-300 sm:text-[0.98rem]">{item.answer}</dd>
               </div>

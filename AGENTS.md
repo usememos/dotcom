@@ -6,6 +6,12 @@ This repository is the official website for Memos at `usememos.com`. It is a Nex
 
 Treat it as a **Next.js 16 marketing/docs site plus an authenticated product app**. The marketing/docs surface stays static; authenticated pages use either a static client-auth shell or dynamic server rendering according to `docs/architecture.md`. Before adding persistence, a new Cloudflare binding, or a new external dependency, follow those conventions rather than introducing them ad-hoc.
 
+## Public Website Design Authority
+
+Before changing any project-owned public `(site)` page or a component under `src/features/marketing/` or `src/features/editorial/`, read `DESIGN_SYSTEM.md` in full. It is the authoritative design contract for those surfaces. Only an explicit, locally scoped user instruction may override it; current implementation does not create an exception.
+
+`DESIGN_SYSTEM.md` does not apply to Docs, Dashboard/App, or Auth. Website design-system work must not redesign or migrate those surfaces, and changes to shared CSS or UI primitives must be checked for unintended effects on them.
+
 ## Tech Stack
 
 - **Framework**: Next.js 16 App Router
@@ -107,8 +113,7 @@ See `docs/architecture.md` for the full architecture and the conventions for exp
 - Wrap public `(site)` sections in `site-container` for the shared page width. Do not set an outer `max-w-*` on a page shell; `src/features/marketing/site-layout-boundary.test.ts` fails CI on `max-w-5xl`/`max-w-6xl` under `src/app/(public)/(site)`, `src/features/marketing`, and `src/features/editorial`. The width itself is `--site-layout-width` in `src/app/global.css`.
 - Keep `fumadocs-ui`, its provider, CSS, and search UI scoped to `/docs`. Blog and changelog may use the headless `fumadocs-mdx` and `fumadocs-core/source` pipeline.
 - Maintain dark mode support with `dark:` classes when changing UI.
-- Use `py-24` for standard marketing section padding and `rounded-2xl` for card-like surfaces unless the surrounding component uses a different local pattern.
-- Use the teal/cyan palette, especially `teal-600` and `cyan-600`, for primary marketing actions.
+- Follow `DESIGN_SYSTEM.md` for public-site composition, typography, spacing, radius, color, actions, motion, verification, and migration. Do not replace those contextual rules with generic marketing defaults.
 - Remove emojis from marketing content; use Lucide icons instead.
 - Keep pages mobile-first and responsive.
 

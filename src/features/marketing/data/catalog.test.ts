@@ -27,4 +27,14 @@ describe("catalog", () => {
       }
     }
   });
+
+  it("every use case links only to real feature pages", () => {
+    const featureSlugs = new Set<string>(FEATURE_SLUGS);
+
+    for (const slug of USE_CASE_SLUGS) {
+      for (const feature of USE_CASES[slug].features) {
+        expect(featureSlugs, `use case "${slug}" references unknown feature "${feature.slug}"`).toContain(feature.slug);
+      }
+    }
+  });
 });

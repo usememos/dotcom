@@ -79,7 +79,7 @@ export const USE_CASES = {
     features: [
       { name: "Markdown Support", slug: "markdown-support" },
       { name: "Data Ownership", slug: "data-ownership" },
-      { name: "No Titles Required", slug: "no-titles" },
+      { name: "Quick Capture", slug: "quick-capture" },
     ],
     seo: {
       title: "Memos for Writers & Content Creators - Distraction-Free Writing Tool",
@@ -207,7 +207,7 @@ export const USE_CASES = {
       "No vendor lock-in - export your life's work anytime",
     ],
     features: [
-      { name: "No Titles Required", slug: "no-titles" },
+      { name: "Timeline View", slug: "timeline-view" },
       { name: "Data Ownership", slug: "data-ownership" },
       { name: "Performance", slug: "performance" },
     ],
