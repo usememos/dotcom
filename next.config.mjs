@@ -65,7 +65,7 @@ const SECURITY_HEADERS = [
 // deploy (far more often than yearly), so the post-s-maxage stale window is
 // never reached. Scoped here to marketing/docs routes. OpenNext's cache
 // interceptor also emits a long s-maxage for other prerendered routes such as
-// /scratchpad, /api/search, and the static client-auth shells.
+// /api/search and the static client-auth shells.
 const PUBLIC_CACHE_HEADERS = [
   {
     key: "Cache-Control",

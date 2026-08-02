@@ -9,7 +9,6 @@ describe("seo", () => {
       "Use Cases",
       "Compare",
       "Web Clipper",
-      "Scratchpad",
       "Live Demo",
       "Docs",
       "API Reference",
@@ -35,7 +34,6 @@ describe("seo", () => {
     expect(jsonLd.numberOfItems).toBe(jsonLd.itemListElement.length);
     expect(names).toContain("Get Started");
     expect(names).not.toContain("Live Demo");
-    expect(names).not.toContain("Scratchpad");
     expect(jsonLd.itemListElement.find((item) => item.name === "Features")).toMatchObject({
       description: "Explore self-hosted note-taking features",
       url: "https://usememos.com/features",

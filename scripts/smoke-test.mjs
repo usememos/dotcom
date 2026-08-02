@@ -14,6 +14,7 @@ const checks = [
   },
   { path: "/changelog/0-30-0", type: "html", contains: "Decorated-source editor" },
   { path: "/dashboard", type: "html", cacheControlIncludes: "s-maxage=31536000" },
+  { path: "/scratchpad", status: 404, type: "html", openNextCache: "HIT" },
   {
     path: "/settings/connections?source=web-clipper",
     type: "html",

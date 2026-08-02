@@ -25,7 +25,6 @@ the research basis behind this direction and the conventions below.
 | --- | --- | --- |
 | `(public)/(site)` | Project-owned marketing + blog + changelog shell | Static |
 | `(public)/docs` | Fumadocs documentation and API reference | Static |
-| `(tools)` | Standalone unauthenticated tools (the scratchpad; no Clerk provider) | Client, browser-local |
 | `(auth)` | Sign-in / sign-up boundaries | — |
 | `(app)` | Authenticated product surface (dashboard, settings, future authed pages) | Static or dynamic, noindex |
 | `api/` | Route handlers (currently the static search index) | Static or `nodejs` runtime |
@@ -38,8 +37,8 @@ data stay dynamic.
 ## Feature folders (`src/features/<domain>`)
 
 UI and client logic are vertical slices: `components/`, `hooks/`, `lib/`, and
-co-located tests, per domain (`marketing`, `docs`, `editorial`, `scratchpad`,
-`dashboard`, `memos`, `account`). Cross-domain primitives live in `src/shared`.
+co-located tests, per domain (`marketing`, `docs`, `editorial`, `dashboard`,
+`memos`, `account`). Cross-domain primitives live in `src/shared`.
 
 ## UI primitives
 

@@ -1,8 +1,6 @@
 import "@testing-library/jest-dom/vitest";
-import "fake-indexeddb/auto";
 import { cleanup } from "@testing-library/react";
-import { IDBFactory } from "fake-indexeddb";
-import { afterEach, beforeEach } from "vitest";
+import { afterEach } from "vitest";
 
 // Node 25 ships a global Web Storage that is misconfigured here (no backing
 // file) and shadows jsdom's Storage, leaving window.localStorage as a method-less
@@ -32,11 +30,6 @@ class MemoryStorage implements Storage {
 Object.defineProperty(globalThis, "localStorage", { value: new MemoryStorage(), configurable: true, writable: true });
 Object.defineProperty(globalThis, "sessionStorage", { value: new MemoryStorage(), configurable: true, writable: true });
 
-// Fresh IndexedDB per test so storage suites are isolated.
-beforeEach(() => {
-  globalThis.indexedDB = new IDBFactory();
-});
-
 // RTL only auto-registers cleanup when Vitest globals are enabled; we keep
 // globals off and use explicit imports, so unmount + reset storage between tests.
 afterEach(() => {
@@ -44,8 +37,7 @@ afterEach(() => {
   window.localStorage.clear();
 });
 
-// --- jsdom gaps used by scratchpad code ---
-
+// jsdom does not implement matchMedia, which the docs navigation uses.
 if (!window.matchMedia) {
   window.matchMedia = (query: string) =>
     ({
@@ -59,30 +51,3 @@ if (!window.matchMedia) {
       dispatchEvent: () => false,
     }) as unknown as MediaQueryList;
 }
-
-class ResizeObserverStub {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
-}
-globalThis.ResizeObserver ??= ResizeObserverStub as unknown as typeof ResizeObserver;
-
-// jsdom lacks object URLs; provide deterministic stubs (tests may spy on these).
-let objectUrlCounter = 0;
-URL.createObjectURL = () => `blob:mock/${objectUrlCounter++}`;
-URL.revokeObjectURL = () => {};
-
-// Pointer capture is unimplemented in jsdom; back it with a stateful WeakMap
-// so hasPointerCapture reflects set/release calls.
-const capturedPointers = new WeakMap<Element, Set<number>>();
-Element.prototype.setPointerCapture = function setPointerCapture(pointerId: number) {
-  const set = capturedPointers.get(this) ?? new Set<number>();
-  set.add(pointerId);
-  capturedPointers.set(this, set);
-};
-Element.prototype.releasePointerCapture = function releasePointerCapture(pointerId: number) {
-  capturedPointers.get(this)?.delete(pointerId);
-};
-Element.prototype.hasPointerCapture = function hasPointerCapture(pointerId: number) {
-  return capturedPointers.get(this)?.has(pointerId) ?? false;
-};

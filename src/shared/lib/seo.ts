@@ -34,12 +34,6 @@ export const SITE_NAV_ITEMS = [
     items: [
       { name: "Web Clipper", href: "/web-clipper", description: "Save web pages and selections to Memos" },
       {
-        name: "Scratchpad",
-        href: "/scratchpad",
-        description: "Write locally in a private browser canvas",
-        indexable: false,
-      },
-      {
         name: "Live Demo",
         href: "https://demo.usememos.com/",
         description: "Try Memos in a public demo workspace",

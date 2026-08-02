@@ -15,7 +15,6 @@ import {
   ScaleIcon,
   ShieldCheckIcon,
   SparklesIcon,
-  StickyNoteIcon,
 } from "lucide-react";
 import Link from "next/link";
 import type { ComponentType, SVGProps } from "react";
@@ -39,7 +38,6 @@ interface FooterProps {
 const COMPACT_LINKS: Array<{ href: string; label: string; external?: boolean }> = [
   { href: "/docs", label: "Docs" },
   { href: "/web-clipper", label: "Web Clipper" },
-  { href: "/scratchpad", label: "Scratchpad" },
   { href: "/features", label: "Features" },
   { href: "/changelog", label: "Changelog" },
   { href: "/blog", label: "Blog" },
@@ -81,7 +79,6 @@ const FOOTER_COLUMNS: FooterColumn[] = [
     title: "Tools",
     links: [
       { href: "/web-clipper", label: "Web Clipper", icon: PuzzleIcon },
-      { href: "/scratchpad", label: "Scratchpad", icon: StickyNoteIcon },
       { href: "https://demo.usememos.com/", label: "Live Demo", icon: ExternalLinkIcon, external: true },
     ],
   },
