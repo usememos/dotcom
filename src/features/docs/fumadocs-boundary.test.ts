@@ -12,6 +12,7 @@ const globalCssSource = readFileSync(join(srcRoot, "app", "global.css"), "utf8")
 const docsCssSource = readFileSync(join(srcRoot, "app", "(public)", "docs", "docs.css"), "utf8");
 const docsThemeCssSource = readFileSync(join(srcRoot, "app", "(public)", "docs", "fumadocs-theme.css"), "utf8");
 const scopedDocsCssSource = readFileSync(join(srcRoot, "app", "(public)", "docs", "fumadocs-scoped.css"), "utf8");
+const docsSponsorCardSource = readFileSync(join(srcRoot, "features", "docs", "components", "docs-sponsor-card.tsx"), "utf8");
 
 function listSourceFiles(directory: string): string[] {
   return readdirSync(directory, { recursive: true, encoding: "utf8" })
@@ -77,6 +78,18 @@ describe("Fumadocs UI boundary", () => {
     // Mode-agnostic by design: `--background` already flips under `.dark`, and
     // the bridge outranks the scoped sheet's dark block on specificity.
     expect(docsThemeCssSource).toMatch(/--color-fd-background:\s*var\(--background\)/);
+  });
+
+  it("keeps sponsor logo theme switching out of the Fumadocs utility cascade", () => {
+    // The generated Fumadocs sheet loads after global Tailwind and its `.hidden`
+    // rule otherwise overrides `dark:block`, leaving both logo variants hidden.
+    expect(scopedDocsCssSource).toMatch(/\.hidden\s*{\s*display:\s*none/);
+    expect(docsSponsorCardSource).toContain("docs-sponsor-logo-light");
+    expect(docsSponsorCardSource).toContain("docs-sponsor-logo-dark");
+    expect(docsSponsorCardSource).not.toMatch(/hidden[^"\n]*dark:block/);
+    expect(docsThemeCssSource).toMatch(/\.docs-sponsor-logo-dark\s*{\s*display:\s*none/);
+    expect(docsThemeCssSource).toMatch(/html\.dark:has\(#nd-docs-layout\) \.docs-sponsor-logo-light\s*{\s*display:\s*none/);
+    expect(docsThemeCssSource).toMatch(/html\.dark:has\(#nd-docs-layout\) \.docs-sponsor-logo-dark\s*{\s*display:\s*block/);
   });
 
   it("derives the docs CSS boundary from the Fumadocs layout root", () => {

@@ -22,6 +22,13 @@ export const FEATURED_SPONSORS: Sponsor[] = [
     logoDark: "/sponsors/ssd-nodes.svg",
     description: "Affordable VPS hosting for self-hosters.",
   },
+  {
+    name: "TestMu AI",
+    url: "https://www.testmuai.com/?utm_medium=sponsor&utm_source=memos",
+    logo: "https://raw.githubusercontent.com/usememos/.github/refs/heads/main/assets/sponsors/testmuai/black.png",
+    logoDark: "https://raw.githubusercontent.com/usememos/.github/refs/heads/main/assets/sponsors/testmuai/white.png",
+    description: "The world’s first full-stack Agentic AI Quality Engineering platform.",
+  },
 ];
 
 // Additional sponsors shown on sponsors page

@@ -16,3 +16,18 @@ html:has(#nd-docs-layout) {
   --color-fd-accent-foreground: var(--accent-foreground);
   --color-fd-ring: var(--ring);
 }
+
+/* Fumadocs' scoped `.hidden` utility loads after the global Tailwind utilities,
+   so `hidden dark:block` remains hidden in dark mode. Keep this route-owned
+   image swap outside that shared utility cascade. */
+.docs-sponsor-logo-dark {
+  display: none;
+}
+
+html.dark:has(#nd-docs-layout) .docs-sponsor-logo-light {
+  display: none;
+}
+
+html.dark:has(#nd-docs-layout) .docs-sponsor-logo-dark {
+  display: block;
+}

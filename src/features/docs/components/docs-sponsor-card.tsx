@@ -21,14 +21,14 @@ export function DocsSponsorCard() {
                 src={sponsor.logo}
                 alt={sponsor.name}
                 loading="lazy"
-                className={cn("h-full w-auto max-w-full object-cover", sponsor.logoDark && "dark:hidden", "mx-auto")}
+                className={cn("h-full w-auto max-w-full object-cover", sponsor.logoDark && "docs-sponsor-logo-light", "mx-auto")}
               />
               {sponsor.logoDark && (
                 <img
                   src={sponsor.logoDark}
                   alt={`${sponsor.name} logo`}
                   loading="lazy"
-                  className={cn("hidden h-full w-auto max-w-full object-cover dark:block mx-auto")}
+                  className="docs-sponsor-logo-dark mx-auto h-full w-auto max-w-full object-cover"
                 />
               )}
             </span>
