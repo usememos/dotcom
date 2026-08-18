@@ -1,4 +1,0 @@
-{
-  "title": "Instance Service",
-  "pages": ["GetInstanceProfile", "GetInstanceSetting", "UpdateInstanceSetting"]
-}

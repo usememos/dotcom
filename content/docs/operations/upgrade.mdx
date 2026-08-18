@@ -11,6 +11,17 @@ Memos applies database migrations automatically on startup, so an upgrade is: ba
 2. Read the [changelog](/changelog) for the versions you are skipping, especially across minor versions (0.x → 0.y), which can contain breaking changes.
 3. Note your current version so you can report it if something goes wrong.
 
+## API reference support window
+
+The online API reference publishes the current `main` schema and the two newest
+minor release series. When a new minor series is added, the oldest rendered
+reference is retired. Historical OpenAPI YAML snapshots remain in the website
+repository for reproducibility, but they are not maintained as supported online
+documentation.
+
+If your instance falls outside this window, upgrade it before developing or
+debugging an integration against the current API reference.
+
 ## Upgrading to 0.30
 
 Version 0.30 changes several public access and integration behaviors. Before

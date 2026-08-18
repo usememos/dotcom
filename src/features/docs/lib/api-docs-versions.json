@@ -24,20 +24,23 @@
     "label": "0.28.x",
     "sourceRef": "refs/tags/v0.28.0",
     "snapshotVersion": "0.28.0",
-    "legacySlugs": ["0-28-0"]
+    "legacySlugs": ["0-28-0"],
+    "archived": true
   },
   {
     "slug": "0-27",
     "label": "0.27.x",
     "sourceRef": "refs/tags/v0.27.1",
     "snapshotVersion": "0.27.1",
-    "legacySlugs": ["0-27-1"]
+    "legacySlugs": ["0-27-1"],
+    "archived": true
   },
   {
     "slug": "0-26",
     "label": "0.26.x",
     "sourceRef": "refs/tags/v0.26.2",
     "snapshotVersion": "0.26.2",
-    "legacySlugs": ["0-26-2"]
+    "legacySlugs": ["0-26-2"],
+    "archived": true
   }
 ]

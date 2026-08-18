@@ -143,10 +143,11 @@ server-owned data.
 - **Known browser probe paths are real assets.** The root Apple Web Clip filenames
   live in `public/` and receive immutable asset headers. Cloudflare serves them
   before the Worker, avoiding a 404 invocation for legacy clients and crawlers.
-- **Static search only indexes the current API reference.** Historical API
-  snapshots remain directly browsable, but excluding their near-identical pages
-  from `/api/search` keeps the build-time Orama index and client-side search
-  initialization substantially smaller.
+- **The docs site publishes a three-version API reference window.** The current
+  `main` schema and the two newest minor release series generate pages. Retired
+  OpenAPI YAML snapshots remain committed for reproducibility, but their rendered
+  pages route to the upgrade guide. Static search and the sitemap include only
+  the current `main` reference to avoid near-duplicate results.
 - **Caching is opt-out, not opt-in — a `200` without `Cache-Control` is stored.**
   Workers Caching applies RFC 9111 heuristic freshness (a `200` with no
   `Cache-Control` is cached for 2h), and a request `Cookie` (Clerk's `__session`)

@@ -2,10 +2,11 @@ import fs from "node:fs";
 import path from "node:path";
 import { generateFiles } from "fumadocs-openapi";
 import { createOpenAPI } from "fumadocs-openapi/server";
-import apiDocsVersions from "../src/features/docs/lib/api-docs-versions.json" with { type: "json" };
+import apiDocsVersionManifest from "../src/features/docs/lib/api-docs-versions.json" with { type: "json" };
 
 const OUTPUT_DIR = "./content/docs/api";
 const SPEC_DIR = "./openapi";
+const apiDocsVersions = apiDocsVersionManifest.filter((version) => !version.archived);
 const DEMO_SERVER = `servers:
   - url: https://demo.usememos.com
     description: Demo Server
@@ -87,7 +88,7 @@ async function downloadOpenAPISpec(version) {
     console.log(`Saved OpenAPI spec to ${localPath}`);
   } catch (error) {
     // A transient network failure (e.g. raw.githubusercontent.com unreachable
-    // during a Cloudflare deploy) must not break the build. cleanSpecDirectory()
+    // during a Cloudflare deploy) must not break the build. prepareSpecDirectory()
     // deliberately leaves the committed openapi/*.yaml in place, so fall back to
     // it when the fetch fails; only hard-fail if there is no committed copy.
     if (fs.existsSync(localPath)) {
@@ -99,19 +100,14 @@ async function downloadOpenAPISpec(version) {
 }
 
 /**
- * Cleans generated OpenAPI specs
+ * Prepares the OpenAPI snapshot directory.
+ *
+ * Snapshots for retired documentation versions remain committed for
+ * reproducibility, even though only published versions generate MDX pages.
  */
-function cleanSpecDirectory() {
-  // Keep only configured openapi/*.yaml specs in place: they are the offline
-  // fallback when a download fails. Successful fetches overwrite them in place.
+function prepareSpecDirectory() {
   fs.rmSync("./openapi.yaml", { force: true });
   ensureDirectory(SPEC_DIR);
-  const configuredSpecs = new Set(apiDocsVersions.map((version) => path.basename(getLocalSpecPath(version))));
-  for (const file of fs.readdirSync(SPEC_DIR)) {
-    if (file.endsWith(".yaml") && !configuredSpecs.has(file)) {
-      fs.rmSync(path.join(SPEC_DIR, file));
-    }
-  }
 }
 
 /**
@@ -369,7 +365,7 @@ async function generateVersion(version) {
  * Main execution
  */
 async function main() {
-  cleanSpecDirectory();
+  prepareSpecDirectory();
   cleanOutputDirectory();
 
   for (const version of apiDocsVersions) {

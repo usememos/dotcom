@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { isApiDocsVersion, latestApiDocsVersion } from "@/features/docs/lib/api-docs";
+import { isKnownApiDocsVersion, latestApiDocsVersion } from "@/features/docs/lib/api-docs";
 import { getAllComparisonSlugs } from "@/features/marketing/data/comparisons";
 import { getAllFeatureSlugs } from "@/features/marketing/data/features";
 import { getAllUseCaseSlugs } from "@/features/marketing/data/use-cases";
@@ -32,7 +32,7 @@ function isIndexableDocPage(pageUrl: string): boolean {
   const version = segments[2];
   // Keep the API index and the "latest" tree; drop older version snapshots so
   // the sitemap matches the noindex applied to those near-duplicate pages.
-  if (!version || !isApiDocsVersion(version)) {
+  if (!version || !isKnownApiDocsVersion(version)) {
     return true;
   }
 

@@ -4,9 +4,14 @@ import { createMDX } from "fumadocs-mdx/next";
 
 const withMDX = createMDX();
 
-// API reference versions, kept in sync with src/features/docs/lib/api-docs.ts.
-// Used to build the version-aware /docs/api redirects below.
-const API_DOCS_VERSIONS = JSON.parse(readFileSync(new URL("./src/features/docs/lib/api-docs-versions.json", import.meta.url), "utf8"));
+// API reference manifest, kept in sync with src/features/docs/lib/api-docs.ts.
+// Only non-archived versions are published; archived slugs route to the upgrade
+// guide while their committed OpenAPI snapshots remain available to maintainers.
+const API_DOCS_VERSION_MANIFEST = JSON.parse(
+  readFileSync(new URL("./src/features/docs/lib/api-docs-versions.json", import.meta.url), "utf8"),
+);
+const API_DOCS_VERSIONS = API_DOCS_VERSION_MANIFEST.filter((version) => !version.archived);
+const API_DOCS_RETIRED_VERSIONS = API_DOCS_VERSION_MANIFEST.filter((version) => version.archived);
 const API_DOCS_VERSION_PATTERN = API_DOCS_VERSIONS.map((version) => version.slug).join("|");
 const API_DOCS_LATEST_VERSION = API_DOCS_VERSIONS.find((version) => version.isLatest)?.slug ?? "latest";
 const API_DOCS_LEGACY_REDIRECTS = API_DOCS_VERSIONS.flatMap((version) =>
@@ -23,6 +28,25 @@ const API_DOCS_LEGACY_REDIRECTS = API_DOCS_VERSIONS.flatMap((version) =>
     },
   ]),
 );
+const API_DOCS_RETIRED_VERSION_PATTERN = API_DOCS_RETIRED_VERSIONS.flatMap((version) => [
+  version.slug,
+  ...(version.legacySlugs ?? []),
+]).join("|");
+const API_DOCS_RETIRED_REDIRECTS =
+  API_DOCS_RETIRED_VERSION_PATTERN.length === 0
+    ? []
+    : [
+        {
+          source: `/docs/api/:version(${API_DOCS_RETIRED_VERSION_PATTERN})`,
+          destination: "/docs/operations/upgrade",
+          permanent: true,
+        },
+        {
+          source: `/docs/api/:version(${API_DOCS_RETIRED_VERSION_PATTERN})/:rest*`,
+          destination: "/docs/operations/upgrade",
+          permanent: true,
+        },
+      ];
 
 // Applied only to the OG image routes below. Cloudflare serves the static
 // /og-image.png from public/_headers — keep that file's CORS block in sync.
@@ -169,6 +193,10 @@ const config = {
         destination: "/settings/connections",
         permanent: true,
       },
+      // Retired API reference URLs should never be interpreted as version-less
+      // latest URLs: endpoint shapes may have changed. Send both minor-series
+      // and historical patch-specific slugs to the upgrade guidance instead.
+      ...API_DOCS_RETIRED_REDIRECTS,
       // Historical API docs originally exposed the exact source patch in their
       // URLs even though each reference covers the full minor release series.
       ...API_DOCS_LEGACY_REDIRECTS,

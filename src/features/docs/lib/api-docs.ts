@@ -7,14 +7,23 @@ export interface ApiDocsVersion {
   snapshotVersion: string;
   legacySlugs?: string[];
   isLatest?: boolean;
+  archived?: boolean;
 }
 
-export const apiDocsVersions = apiDocsVersionsData as ApiDocsVersion[];
+const apiDocsVersionManifest = apiDocsVersionsData as ApiDocsVersion[];
+
+/** The three API reference versions published on usememos.com. */
+export const apiDocsVersions = apiDocsVersionManifest.filter((version) => !version.archived);
 
 export const latestApiDocsVersion = apiDocsVersions.find((version) => version.isLatest)?.slug ?? apiDocsVersions[0]?.slug ?? "latest";
 
 export function isApiDocsVersion(slug?: string): slug is string {
   return Boolean(slug && apiDocsVersions.some((version) => version.slug === slug));
+}
+
+/** Includes published versions and retained historical snapshot slugs. */
+export function isKnownApiDocsVersion(slug?: string): slug is string {
+  return Boolean(slug && apiDocsVersionManifest.some((version) => version.slug === slug));
 }
 
 export function getApiDocsVersionLabel(slug?: string): string {
@@ -33,7 +42,7 @@ export function getApiDocsVersionPath(version: string, segments: string[] = []):
  */
 export function isSearchableDocsPath(pathname: string): boolean {
   const segments = pathname.split("/").filter(Boolean);
-  if (segments[0] !== "docs" || segments[1] !== "api" || !isApiDocsVersion(segments[2])) {
+  if (segments[0] !== "docs" || segments[1] !== "api" || !isKnownApiDocsVersion(segments[2])) {
     return true;
   }
 

@@ -34,11 +34,11 @@ Object.defineProperty(globalThis, "sessionStorage", { value: new MemoryStorage()
 // globals off and use explicit imports, so unmount + reset storage between tests.
 afterEach(() => {
   cleanup();
-  window.localStorage.clear();
+  globalThis.localStorage.clear();
 });
 
 // jsdom does not implement matchMedia, which the docs navigation uses.
-if (!window.matchMedia) {
+if (typeof window !== "undefined" && !window.matchMedia) {
   window.matchMedia = (query: string) =>
     ({
       matches: false,
