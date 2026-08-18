@@ -64,16 +64,16 @@ const RAIL_ITEMS = [
 
 function calendarDayClass(day: (typeof CALENDAR_DAYS)[number]) {
   if ("active" in day && day.active) {
-    return "bg-teal-700 text-white shadow-sm dark:bg-teal-400 dark:text-zinc-950";
+    return "bg-brand-700 text-white shadow-sm dark:bg-brand-400 dark:text-zinc-950";
   }
   if ("muted" in day && day.muted) {
     return "text-zinc-300 dark:text-zinc-700";
   }
   if ("intensity" in day) {
     const intensityClasses = {
-      1: "bg-teal-50 text-teal-900 dark:bg-teal-950 dark:text-teal-200",
-      2: "bg-teal-100 text-teal-900 dark:bg-teal-900 dark:text-teal-100",
-      3: "bg-teal-200 text-teal-950 dark:bg-teal-700 dark:text-white",
+      1: "bg-brand-50 text-brand-900 dark:bg-brand-950 dark:text-brand-200",
+      2: "bg-brand-100 text-brand-900 dark:bg-brand-900 dark:text-brand-100",
+      3: "bg-brand-200 text-brand-950 dark:bg-brand-700 dark:text-white",
     } as const;
     return intensityClasses[day.intensity];
   }
@@ -141,13 +141,13 @@ function CalendarIndex() {
         </div>
         <div className="mt-2.5 space-y-1.5">
           <p className="text-[10px] text-zinc-500 dark:text-zinc-400">
-            <span className="text-teal-700 dark:text-teal-300">#</span> books
+            <span className="text-brand-700 dark:text-brand-300">#</span> books
           </p>
           <p className="text-[10px] text-zinc-500 dark:text-zinc-400">
-            <span className="text-teal-700 dark:text-teal-300">#</span> reading
+            <span className="text-brand-700 dark:text-brand-300">#</span> reading
           </p>
           <p className="text-[10px] text-zinc-500 dark:text-zinc-400">
-            <span className="text-teal-700 dark:text-teal-300">#</span> cheatsheet
+            <span className="text-brand-700 dark:text-brand-300">#</span> cheatsheet
           </p>
         </div>
       </div>
@@ -160,7 +160,7 @@ function Composer() {
     <div className="rounded-xl border border-stone-200 bg-white px-3 py-2.5 shadow-[0_8px_24px_rgba(28,25,23,0.035)] dark:border-white/10 dark:bg-zinc-900">
       <p className="min-h-10 text-[12px] leading-5 text-zinc-500 dark:text-zinc-300">
         A quiet place for the thoughts worth keeping.
-        <span className={`${styles.caret} ml-0.5 inline-block h-3 w-px translate-y-0.5 bg-teal-600`} />
+        <span className={`${styles.caret} ml-0.5 inline-block h-3 w-px translate-y-0.5 bg-brand-600`} />
       </p>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -173,7 +173,7 @@ function Composer() {
             <ChevronDownIcon className="size-3" />
           </span>
         </div>
-        <span className="rounded-md bg-teal-700 px-3 py-1.5 text-[10px] font-semibold text-white dark:bg-teal-400 dark:text-zinc-950">
+        <span className="rounded-md bg-brand-700 px-3 py-1.5 text-[10px] font-semibold text-white dark:bg-brand-400 dark:text-zinc-950">
           Save
         </span>
       </div>
@@ -193,11 +193,11 @@ function Timeline() {
         <p className="mt-1 text-[10px] leading-4 text-zinc-600 dark:text-zinc-300">
           Started Cal Newport&apos;s <em>Deep Work</em> this week. This passage stopped me:
         </p>
-        <blockquote className="mt-1.5 border-l-2 border-teal-200 pl-2.5 text-[11px] leading-5 text-zinc-500 italic dark:border-teal-700 dark:text-zinc-400">
+        <blockquote className="mt-1.5 border-l-2 border-brand-200 pl-2.5 text-[11px] leading-5 text-zinc-500 italic dark:border-brand-700 dark:text-zinc-400">
           “Human beings are at their best when immersed deeply in something challenging.”
         </blockquote>
         <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-          <span className="rounded-md bg-teal-50 px-1.5 py-0.5 text-[9px] font-medium text-teal-700 dark:bg-teal-400/10 dark:text-teal-200">
+          <span className="rounded-md bg-brand-50 px-1.5 py-0.5 text-[9px] font-medium text-brand-700 dark:bg-brand-400/10 dark:text-brand-200">
             #books
           </span>
           <span className="rounded-md bg-stone-100 px-1.5 py-0.5 text-[9px] text-zinc-500 dark:bg-white/7 dark:text-zinc-400">
@@ -226,7 +226,7 @@ function Timeline() {
           </code>
         </pre>
         <div className="mt-1.5 flex gap-1.5">
-          <span className="rounded-md bg-teal-50 px-1.5 py-0.5 text-[9px] font-medium text-teal-700 dark:bg-teal-400/10 dark:text-teal-200">
+          <span className="rounded-md bg-brand-50 px-1.5 py-0.5 text-[9px] font-medium text-brand-700 dark:bg-brand-400/10 dark:text-brand-200">
             #dev
           </span>
           <span className="rounded-md bg-stone-100 px-1.5 py-0.5 text-[9px] text-zinc-500 dark:bg-white/7 dark:text-zinc-400">

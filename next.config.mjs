@@ -107,10 +107,10 @@ const config = {
         // heavy fumadocs-openapi route module just to emit the 307 — that in-page
         // redirect was ~408ms CPU/hit (~2M CPU-ms/7d on Workers). Other version-less
         // /docs/api/* URLs are normalized by the version-aware redirect below —
-        // `dynamicParams = false` on the docs route 404s unknown slugs before the
-        // page's normalizeApiDocsSlug() fallback can run.
+        // `dynamicParams = false` on the docs route 404s unknown slugs before any
+        // page code can run.
         source: "/docs/api",
-        destination: "/docs/api/latest",
+        destination: `/docs/api/${API_DOCS_LATEST_VERSION}`,
         permanent: false,
       },
       {

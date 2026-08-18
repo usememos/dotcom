@@ -34,7 +34,7 @@ export default function ComparePage() {
       <section className="py-14 lg:py-20">
         <div className="site-container grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(19rem,0.48fr)] lg:items-end lg:gap-20">
           <div>
-            <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Compare</p>
+            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Compare</p>
             <h1 className="mt-5 text-balance font-serif text-5xl leading-[1.04] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
               How Memos <HeroAccent>compares.</HeroAccent>
             </h1>
@@ -54,7 +54,7 @@ export default function ComparePage() {
           </div>
 
           <aside aria-label="Memos comparison baseline" className="border-y border-zinc-300 dark:border-white/15">
-            <p className="py-4 text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Memos baseline</p>
+            <p className="py-4 text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Memos baseline</p>
             <dl>
               {MEMOS_BASELINE.map((item) => (
                 <div
@@ -74,7 +74,7 @@ export default function ComparePage() {
         <div className="site-container">
           <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.7fr)] lg:items-end lg:gap-12">
             <div>
-              <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Choose a reference point</p>
+              <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Choose a reference point</p>
               <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl lg:text-[3.35rem]">
                 Compare the shape of the work.
               </h2>
@@ -94,12 +94,12 @@ export default function ComparePage() {
                   key={slug}
                   href={`/compare/${slug}`}
                   prefetch={false}
-                  className="group grid gap-4 border-b border-zinc-200 py-6 last:border-b-0 focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-600 sm:grid-cols-[2rem_minmax(12rem,0.62fr)_minmax(0,1fr)_auto] sm:items-center sm:gap-6 dark:border-white/10 dark:focus-visible:outline-teal-300"
+                  className="group grid gap-4 border-b border-zinc-200 py-6 last:border-b-0 focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600 sm:grid-cols-[2rem_minmax(12rem,0.62fr)_minmax(0,1fr)_auto] sm:items-center sm:gap-6 dark:border-white/10 dark:focus-visible:outline-brand-300"
                 >
-                  <Icon className="size-5 stroke-[1.7] text-zinc-400 transition-colors group-hover:text-teal-700 dark:text-zinc-500 dark:group-hover:text-teal-300" />
+                  <Icon className="size-5 stroke-[1.7] text-zinc-400 transition-colors group-hover:text-brand-700 dark:text-zinc-500 dark:group-hover:text-brand-300" />
                   <h3 className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{comparison.title}</h3>
                   <p className="text-sm leading-7 text-zinc-600 dark:text-zinc-300">{comparison.subtitle}</p>
-                  <span className="hidden items-center gap-2 text-sm font-semibold text-zinc-500 group-hover:text-teal-700 sm:flex dark:text-zinc-400 dark:group-hover:text-teal-300">
+                  <span className="hidden items-center gap-2 text-sm font-semibold text-zinc-500 group-hover:text-brand-700 sm:flex dark:text-zinc-400 dark:group-hover:text-brand-300">
                     Compare
                     <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1" />
                   </span>

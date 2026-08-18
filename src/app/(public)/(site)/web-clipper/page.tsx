@@ -106,7 +106,7 @@ export default function WebClipperPage() {
         <div className="site-container relative grid items-center gap-14 pt-14 pb-24 sm:pt-16 sm:pb-28 lg:grid-cols-[minmax(0,34rem)_minmax(0,1fr)] lg:gap-16 lg:py-20">
           <div className={`${styles.heroCopy} max-w-xl`}>
             <div className="mb-7 flex flex-wrap items-center gap-3">
-              <span className="font-mono text-xs tracking-[0.16em] text-sky-100 uppercase">Memos Web Clipper</span>
+              <span className="font-mono text-xs tracking-[0.16em] text-brand-100 uppercase">Memos Web Clipper</span>
               <span className="rounded-full border border-amber-200/30 bg-amber-200/10 px-2.5 py-1 font-mono text-[10px] font-medium text-amber-100">
                 v0.2.0
               </span>
@@ -123,7 +123,7 @@ export default function WebClipperPage() {
                 href={CHROME_STORE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-[#172033] transition-transform hover:-translate-y-0.5 hover:bg-sky-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                className="group inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-[#172033] transition-transform hover:-translate-y-0.5 hover:bg-brand-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
                 Add to Chrome
                 <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1" />
@@ -148,7 +148,7 @@ export default function WebClipperPage() {
       <section className="py-16 lg:py-24">
         <div className="site-container grid gap-12 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:items-center lg:gap-20">
           <div>
-            <p className="text-sm font-semibold tracking-[0.16em] text-teal-700 uppercase dark:text-teal-300">Connection options</p>
+            <p className="text-sm font-semibold tracking-[0.16em] text-brand-700 uppercase dark:text-brand-300">Connection options</p>
             <h2 className="mt-4 text-balance font-serif text-4xl leading-tight font-semibold tracking-[-0.025em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
               Your server. Your way in.
             </h2>
@@ -165,7 +165,7 @@ export default function WebClipperPage() {
         <div className="site-container grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,25rem)] lg:items-center lg:gap-20">
           <TemplateVisual />
           <div>
-            <p className="text-sm font-semibold tracking-[0.16em] text-teal-700 uppercase dark:text-teal-300">Format it once</p>
+            <p className="text-sm font-semibold tracking-[0.16em] text-brand-700 uppercase dark:text-brand-300">Format it once</p>
             <h2 className="mt-4 text-balance font-serif text-4xl leading-tight font-semibold tracking-[-0.025em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
               Every clip, already in your shape.
             </h2>
@@ -181,7 +181,7 @@ export default function WebClipperPage() {
         <div className="site-container">
           <div className="grid gap-5 lg:grid-cols-[minmax(0,23rem)_1fr] lg:items-end lg:gap-20">
             <div>
-              <p className="text-sm font-semibold tracking-[0.16em] text-teal-700 uppercase dark:text-teal-300">Capture without cleanup</p>
+              <p className="text-sm font-semibold tracking-[0.16em] text-brand-700 uppercase dark:text-brand-300">Capture without cleanup</p>
               <h2 className="mt-4 text-balance font-serif text-4xl leading-tight font-semibold tracking-[-0.025em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
                 From webpage to timeline.
               </h2>
@@ -194,7 +194,7 @@ export default function WebClipperPage() {
           <div className="mt-12 grid gap-10 md:grid-cols-3 md:gap-12">
             {CAPTURE_FEATURES.map((feature) => (
               <div key={feature.title} className="group">
-                <span className="flex size-10 items-center justify-center rounded-xl bg-teal-50 text-teal-700 transition-transform group-hover:-translate-y-1 dark:bg-teal-400/10 dark:text-teal-300">
+                <span className="flex size-10 items-center justify-center rounded-xl bg-brand-50 text-brand-700 transition-transform group-hover:-translate-y-1 dark:bg-brand-400/10 dark:text-brand-300">
                   {feature.icon}
                 </span>
                 <h3 className="mt-6 text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{feature.title}</h3>
@@ -208,7 +208,7 @@ export default function WebClipperPage() {
       <section className="bg-[#f6f2e7] py-14 dark:bg-zinc-900 lg:py-18">
         <div className="site-container grid gap-8 lg:grid-cols-[minmax(0,20rem)_1fr] lg:items-center lg:gap-20">
           <div>
-            <LanguagesIcon className="size-6 text-teal-700 dark:text-teal-300" />
+            <LanguagesIcon className="size-6 text-brand-700 dark:text-brand-300" />
             <h2 className="mt-4 font-serif text-3xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">
               At home in your browser.
             </h2>
@@ -244,7 +244,7 @@ export default function WebClipperPage() {
             },
           ].map((item) => (
             <div key={item.title}>
-              <div className="flex items-center gap-3 text-teal-700 dark:text-teal-300">
+              <div className="flex items-center gap-3 text-brand-700 dark:text-brand-300">
                 {item.icon}
                 <h2 className="font-semibold text-zinc-950 dark:text-zinc-100">{item.title}</h2>
               </div>
@@ -257,7 +257,7 @@ export default function WebClipperPage() {
       <section className="border-t border-zinc-200 py-16 dark:border-white/10 lg:py-24">
         <div className="site-container grid gap-10 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
           <div className="lg:sticky lg:top-24 lg:self-start">
-            <p className="text-sm font-semibold tracking-[0.16em] text-teal-700 uppercase dark:text-teal-300">FAQ</p>
+            <p className="text-sm font-semibold tracking-[0.16em] text-brand-700 uppercase dark:text-brand-300">FAQ</p>
             <h2 className="mt-4 max-w-[12ch] text-balance font-serif text-4xl font-semibold tracking-[-0.025em] text-zinc-950 dark:text-zinc-100">
               Before you start clipping.
             </h2>
@@ -265,7 +265,7 @@ export default function WebClipperPage() {
               href={GITHUB_REPO_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-zinc-700 hover:text-teal-700 dark:text-zinc-300 dark:hover:text-teal-300"
+              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-zinc-700 hover:text-brand-700 dark:text-zinc-300 dark:hover:text-brand-300"
             >
               View source on GitHub <ArrowRightIcon className="size-4" />
             </a>
@@ -286,10 +286,10 @@ export default function WebClipperPage() {
       </section>
 
       <section className="relative isolate overflow-hidden bg-[#172033] py-16 text-white lg:py-24">
-        <div className="pointer-events-none absolute top-[-10rem] left-1/2 size-[34rem] -translate-x-1/2 rounded-full bg-sky-300/12 blur-3xl" />
+        <div className="pointer-events-none absolute top-[-10rem] left-1/2 size-[34rem] -translate-x-1/2 rounded-full bg-brand-300/12 blur-3xl" />
         <div className="site-container">
           <div className="relative mx-auto max-w-4xl text-center">
-            <p className="font-mono text-xs tracking-[0.16em] text-sky-200 uppercase">The next page is worth keeping</p>
+            <p className="font-mono text-xs tracking-[0.16em] text-brand-200 uppercase">The next page is worth keeping</p>
             <h2 className="mx-auto mt-5 max-w-[21ch] text-balance font-serif text-4xl leading-[1.08] font-semibold tracking-[-0.03em] sm:text-5xl lg:text-6xl">
               Make it a memo before it becomes another tab.
             </h2>
@@ -301,7 +301,7 @@ export default function WebClipperPage() {
                 href={CHROME_STORE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-[#172033] transition-transform hover:-translate-y-0.5 hover:bg-sky-50"
+                className="group inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-[#172033] transition-transform hover:-translate-y-0.5 hover:bg-brand-50"
               >
                 Add to Chrome <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1" />
               </a>

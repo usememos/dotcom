@@ -15,7 +15,7 @@ export function DockerCommand() {
       <div className="flex items-start justify-between gap-4 border-b border-white/10 px-5 py-5 sm:px-6">
         <div>
           <div className="mb-3 flex items-center gap-3">
-            <div className="inline-flex size-10 items-center justify-center rounded-lg bg-white/8 text-teal-200 transition-transform duration-300 group-hover:-translate-y-0.5 sm:size-11">
+            <div className="inline-flex size-10 items-center justify-center rounded-lg bg-white/8 text-brand-200 transition-transform duration-300 group-hover:-translate-y-0.5 sm:size-11">
               <TerminalIcon className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <h3 className="text-lg font-semibold tracking-tight text-white sm:text-xl">Docker</h3>
@@ -35,7 +35,7 @@ export function DockerCommand() {
           title={copied ? "Copied!" : "Copy to clipboard"}
           aria-label={copied ? "Copied to clipboard" : "Copy command to clipboard"}
         >
-          {copied ? <CheckIcon className="h-4 w-4 text-teal-300" /> : <CopyIcon className="h-4 w-4" />}
+          {copied ? <CheckIcon className="h-4 w-4 text-brand-300" /> : <CopyIcon className="h-4 w-4" />}
         </button>
       </div>
     </div>

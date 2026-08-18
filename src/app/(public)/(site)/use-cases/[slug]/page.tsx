@@ -76,7 +76,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
         <div className="site-container">
           <Link
             href="/use-cases"
-            className="group inline-flex items-center gap-2 text-sm font-semibold text-zinc-500 transition-colors hover:text-teal-700 dark:text-zinc-400 dark:hover:text-teal-300"
+            className="group inline-flex items-center gap-2 text-sm font-semibold text-zinc-500 transition-colors hover:text-brand-700 dark:text-zinc-400 dark:hover:text-brand-300"
           >
             <ArrowLeftIcon className="size-4 transition-transform group-hover:-translate-x-1" />
             All use cases
@@ -84,7 +84,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
 
           <div className="mt-10 grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(19rem,0.48fr)] lg:items-end lg:gap-20">
             <div>
-              <div className="flex items-center gap-3 text-teal-700 dark:text-teal-300">
+              <div className="flex items-center gap-3 text-brand-700 dark:text-brand-300">
                 <IconComponent className="size-5 stroke-[1.7]" />
                 <p className="text-xs font-semibold tracking-[0.18em] uppercase">Use case</p>
               </div>
@@ -104,7 +104,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
               <ol className="mt-7 space-y-7">
                 {useCase.workflows.slice(0, 3).map((workflow) => (
                   <li key={workflow} className="relative text-sm leading-7 text-zinc-700 dark:text-zinc-300">
-                    <span className="absolute top-[0.68rem] -left-[2.05rem] size-2 rounded-full bg-teal-600 ring-4 ring-white dark:bg-teal-300 dark:ring-zinc-950 sm:-left-[2.55rem]" />
+                    <span className="absolute top-[0.68rem] -left-[2.05rem] size-2 rounded-full bg-brand-600 ring-4 ring-white dark:bg-brand-300 dark:ring-zinc-950 sm:-left-[2.55rem]" />
                     {workflow}
                   </li>
                 ))}
@@ -118,7 +118,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
         <div className="site-container">
           <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.7fr)] lg:items-end lg:gap-12">
             <div>
-              <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">In practice</p>
+              <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">In practice</p>
               <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl lg:text-[3.35rem]">
                 Ways it fits the day.
               </h2>
@@ -131,7 +131,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
           <ul className="mt-14 grid gap-x-14 gap-y-8 sm:grid-cols-2 lg:mt-16">
             {useCase.workflows.map((workflow) => (
               <li key={workflow} className="grid grid-cols-[0.75rem_minmax(0,1fr)] gap-3">
-                <span className="mt-[0.68rem] size-1.5 rounded-full bg-teal-600 dark:bg-teal-300" aria-hidden="true" />
+                <span className="mt-[0.68rem] size-1.5 rounded-full bg-brand-600 dark:bg-brand-300" aria-hidden="true" />
                 <p className="text-sm leading-7 text-zinc-700 dark:text-zinc-300 sm:text-base">{workflow}</p>
               </li>
             ))}
@@ -142,7 +142,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
       <section className="py-16 sm:py-20 lg:py-24">
         <div className="site-container grid gap-12 lg:grid-cols-[minmax(16rem,0.58fr)_minmax(0,1.42fr)] lg:gap-20">
           <div>
-            <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Why Memos</p>
+            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Why Memos</p>
             <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
               The fit stays simple.
             </h2>
@@ -151,7 +151,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
           <ul className="border-y border-zinc-300 dark:border-white/15">
             {useCase.whyMemos.map((reason) => (
               <li key={reason} className="flex gap-4 border-b border-zinc-200 py-5 last:border-b-0 dark:border-white/10">
-                <CheckIcon className="mt-1 size-4 shrink-0 stroke-2 text-teal-700 dark:text-teal-300" />
+                <CheckIcon className="mt-1 size-4 shrink-0 stroke-2 text-brand-700 dark:text-brand-300" />
                 <p className="text-sm leading-7 text-zinc-700 dark:text-zinc-300 sm:text-base">{reason}</p>
               </li>
             ))}
@@ -163,7 +163,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
         <div className="site-container">
           <div className="grid gap-10 lg:grid-cols-[minmax(16rem,0.58fr)_minmax(0,1.42fr)] lg:gap-20">
             <div>
-              <p className="text-xs font-semibold tracking-[0.18em] text-teal-300 uppercase">Related features</p>
+              <p className="text-xs font-semibold tracking-[0.18em] text-brand-300 uppercase">Related features</p>
               <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] sm:text-5xl">
                 Follow the useful parts.
               </h2>
@@ -178,11 +178,11 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
                   <li key={feature.slug}>
                     <Link
                       href={`/features/${feature.slug}`}
-                      className="group block border-t border-white/20 py-5 focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-300"
+                      className="group block border-t border-white/20 py-5 focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-300"
                     >
                       <span className="flex items-center justify-between gap-3">
                         <span className="text-base font-semibold text-zinc-100">{feature.name}</span>
-                        <ArrowRightIcon className="size-4 text-zinc-500 transition-transform group-hover:translate-x-1 group-hover:text-teal-300" />
+                        <ArrowRightIcon className="size-4 text-zinc-500 transition-transform group-hover:translate-x-1 group-hover:text-brand-300" />
                       </span>{" "}
                       <span className="mt-2 block text-sm text-zinc-400">{isWip ? "Work in progress" : "Explore the feature"}</span>
                     </Link>
@@ -194,7 +194,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
 
           <div className="mt-20 grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-12">
             <div>
-              <p className="text-xs font-semibold tracking-[0.18em] text-teal-300 uppercase">Start here</p>
+              <p className="text-xs font-semibold tracking-[0.18em] text-brand-300 uppercase">Start here</p>
               <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] sm:text-5xl">
                 Start with one useful note.
               </h2>

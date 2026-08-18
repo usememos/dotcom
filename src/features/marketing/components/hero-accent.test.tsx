@@ -8,8 +8,8 @@ describe("HeroAccent", () => {
     expect(screen.getByText("Keep it yours.")).toBeInTheDocument();
   });
 
-  it("applies the brand teal accent classes for light and dark mode", () => {
+  it("applies the brand accent classes for light and dark mode", () => {
     render(<HeroAccent>Keep it yours.</HeroAccent>);
-    expect(screen.getByText("Keep it yours.")).toHaveClass("text-teal-600", "dark:text-teal-300");
+    expect(screen.getByText("Keep it yours.")).toHaveClass("text-brand-600", "dark:text-brand-300");
   });
 });

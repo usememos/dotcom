@@ -35,7 +35,7 @@ export function WebClipperHeroVisual() {
             </p>
           </div>
 
-          <div className="absolute right-[-1rem] bottom-[-1.25rem] h-44 w-44 rounded-full border-[34px] border-teal-200/50 sm:right-8 sm:bottom-[-3rem] sm:h-56 sm:w-56 sm:border-[46px]" />
+          <div className="absolute right-[-1rem] bottom-[-1.25rem] h-44 w-44 rounded-full border-[34px] border-brand-200/50 sm:right-8 sm:bottom-[-3rem] sm:h-56 sm:w-56 sm:border-[46px]" />
         </div>
       </div>
 
@@ -50,7 +50,7 @@ export function WebClipperHeroVisual() {
         <div className="p-3">
           <div className="min-h-40 rounded-lg border border-zinc-200 bg-white p-3 font-mono text-[10px] leading-[1.65] text-zinc-600 sm:min-h-44 sm:text-[11px]">
             <p className="text-zinc-900">Save the idea while its context is still close.</p>
-            <p className="mt-3 text-teal-700"># Designing a personal archive</p>
+            <p className="mt-3 text-brand-700"># Designing a personal archive</p>
             <p className="mt-1 break-all text-zinc-400">fieldnotes.example/designing-a-personal-archive</p>
           </div>
           <div className="mt-2.5 flex items-center gap-2">
@@ -72,7 +72,7 @@ export function WebClipperHeroVisual() {
       </div>
 
       <div className="absolute bottom-10 left-4 hidden items-center gap-2 rounded-full border border-white/60 bg-white/90 px-3 py-2 text-[10px] font-semibold text-zinc-700 shadow-lg backdrop-blur-sm sm:flex">
-        <PaperclipIcon className="size-3 text-teal-700" />
+        <PaperclipIcon className="size-3 text-brand-700" />
         Selection captured
       </div>
     </div>
@@ -92,14 +92,14 @@ export function ConnectionVisual() {
         </div>
       </div>
       <div className="divide-y divide-zinc-200 dark:divide-white/10">
-        <div className="group grid gap-4 bg-white p-5 transition-colors hover:bg-teal-50/60 dark:bg-zinc-950 dark:hover:bg-teal-950/20 sm:grid-cols-[2.5rem_1fr_auto] sm:items-center">
-          <span className="flex size-10 items-center justify-center rounded-xl bg-teal-100 text-teal-800 dark:bg-teal-400/15 dark:text-teal-300">
+        <div className="group grid gap-4 bg-white p-5 transition-colors hover:bg-brand-50/60 dark:bg-zinc-950 dark:hover:bg-brand-950/20 sm:grid-cols-[2.5rem_1fr_auto] sm:items-center">
+          <span className="flex size-10 items-center justify-center rounded-xl bg-brand-100 text-brand-800 dark:bg-brand-400/15 dark:text-brand-300">
             <Image src="/logo-rounded.png" alt="" width={24} height={24} className="rounded-full" />
           </span>
           <div>
             <div className="flex items-center gap-2">
               <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-100">Connect with usememos.com</p>
-              <span className="text-[9px] font-semibold tracking-wider text-teal-700 uppercase dark:text-teal-300">Recommended</span>
+              <span className="text-[9px] font-semibold tracking-wider text-brand-700 uppercase dark:text-brand-300">Recommended</span>
             </div>
             <p className="mt-1 text-xs leading-5 text-zinc-500 dark:text-zinc-400">
               Sign in once and bring your instance connection to another browser.
@@ -122,10 +122,10 @@ export function ConnectionVisual() {
       </div>
       <div className="flex flex-wrap gap-x-5 gap-y-2 border-t border-zinc-200 px-5 py-3 text-[10px] text-zinc-500 dark:border-white/10 dark:text-zinc-400">
         <span className="flex items-center gap-1.5">
-          <CheckIcon className="size-3 text-teal-600" /> Connection validated first
+          <CheckIcon className="size-3 text-brand-600" /> Connection validated first
         </span>
         <span className="flex items-center gap-1.5">
-          <LockIcon className="size-3 text-teal-600" /> Credentials protected
+          <LockIcon className="size-3 text-brand-600" /> Credentials protected
         </span>
       </div>
     </div>
@@ -172,7 +172,7 @@ export function TemplateVisual() {
             <div className="my-4 h-px bg-zinc-200 dark:bg-white/10" />
             <p className="text-zinc-400">
               Source:{" "}
-              <span className="text-teal-700 underline decoration-teal-200 underline-offset-2 dark:text-teal-300">
+              <span className="text-brand-700 underline decoration-brand-200 underline-offset-2 dark:text-brand-300">
                 Designing a personal archive
               </span>
             </p>

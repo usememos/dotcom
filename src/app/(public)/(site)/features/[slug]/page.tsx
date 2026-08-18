@@ -54,7 +54,7 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
       <section className="py-14 lg:py-20">
         <div className="site-container">
           <div className="flex items-center gap-3">
-            <Icon className="size-5 stroke-[1.7] text-teal-700 dark:text-teal-300" aria-hidden="true" />
+            <Icon className="size-5 stroke-[1.7] text-brand-700 dark:text-brand-300" aria-hidden="true" />
             <p className="text-xs font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">Memos feature</p>
             {isWip ? (
               <span className="rounded-full border border-zinc-300 px-2.5 py-1 text-xs font-semibold tracking-wide text-zinc-600 uppercase dark:border-white/15 dark:text-zinc-300">
@@ -79,7 +79,7 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
           {isWip ? (
             <aside aria-labelledby="wip-title" className="mt-12 rounded-xl bg-stone-50 px-5 py-5 dark:bg-zinc-900 sm:mt-14 sm:px-6">
               <div className="grid gap-4 sm:grid-cols-[auto_minmax(0,1fr)] sm:items-start">
-                <ConstructionIcon className="mt-1 size-5 text-teal-700 dark:text-teal-300" aria-hidden="true" />
+                <ConstructionIcon className="mt-1 size-5 text-brand-700 dark:text-brand-300" aria-hidden="true" />
                 <div>
                   <h2 id="wip-title" className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">
                     Work in progress
@@ -99,7 +99,7 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
         <div className="site-container">
           <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.7fr)] lg:items-end lg:gap-12">
             <div>
-              <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">
+              <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">
                 {isWip ? "Planned outcomes" : "Benefits"}
               </p>
               <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl lg:text-[3.35rem]">
@@ -116,7 +116,7 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
           <ul className="mt-12 grid gap-x-14 gap-y-8 sm:mt-14 sm:grid-cols-2 sm:gap-y-10">
             {feature.benefits.map((benefit) => (
               <li key={benefit} className="grid grid-cols-[1.5rem_minmax(0,1fr)] gap-3">
-                <BenefitIcon className="mt-1 size-4 text-teal-700 dark:text-teal-300" aria-hidden="true" />
+                <BenefitIcon className="mt-1 size-4 text-brand-700 dark:text-brand-300" aria-hidden="true" />
                 <p className="text-sm leading-7 text-zinc-700 dark:text-zinc-300 sm:text-base">{benefit}</p>
               </li>
             ))}
@@ -127,7 +127,7 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
       <section className="py-16 sm:py-20 lg:py-24">
         <div className="site-container grid gap-12 lg:grid-cols-[minmax(0,0.68fr)_minmax(0,1.32fr)] lg:gap-20">
           <div>
-            <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">
+            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">
               {isWip ? "Intended uses" : "Use cases"}
             </p>
             <h2 className="mt-4 max-w-[13ch] text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
@@ -150,7 +150,7 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
       <section className="bg-zinc-950 py-20 text-white sm:py-24 lg:py-28">
         <div className="site-container grid gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-20">
           <div>
-            <p className="text-xs font-semibold tracking-[0.18em] text-teal-300 uppercase">
+            <p className="text-xs font-semibold tracking-[0.18em] text-brand-300 uppercase">
               {isWip ? "Planned technical scope" : "Technical details"}
             </p>
             <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] sm:text-5xl">
@@ -160,7 +160,7 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
           <ul className="grid gap-x-12 gap-y-7 sm:grid-cols-2">
             {feature.techDetails.map((detail) => (
               <li key={detail} className="grid grid-cols-[0.75rem_minmax(0,1fr)] gap-3">
-                <span className="mt-[0.68rem] size-1.5 rounded-full bg-teal-300" aria-hidden="true" />
+                <span className="mt-[0.68rem] size-1.5 rounded-full bg-brand-300" aria-hidden="true" />
                 <p className="text-sm leading-7 text-zinc-300 sm:text-base">{detail}</p>
               </li>
             ))}
@@ -171,7 +171,7 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
       <section className="py-16 sm:py-20 lg:py-24">
         <div className="site-container grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-12">
           <div>
-            <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">
+            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">
               {isWip ? "Development" : "Start here"}
             </p>
             <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">

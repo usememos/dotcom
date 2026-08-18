@@ -61,8 +61,8 @@ export function TOCSidebar({ toc }: TOCSidebarProps) {
                   href={item.url}
                   className={`block py-1 transition-colors ${
                     isActive
-                      ? "text-teal-600 dark:text-teal-400 font-semibold"
-                      : "text-gray-600 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400"
+                      ? "text-brand-600 dark:text-brand-400 font-semibold"
+                      : "text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400"
                   }`}
                 >
                   {item.title}

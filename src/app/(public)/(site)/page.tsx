@@ -90,7 +90,7 @@ export default function HomePage() {
         <div className="site-container">
           <div className="grid gap-7 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.7fr)] lg:items-end lg:gap-12">
             <div>
-              <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">The idea</p>
+              <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">The idea</p>
               <h2 className="mt-4 max-w-[17ch] text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl lg:text-[3.35rem]">
                 Not a workspace. Not a second brain.
               </h2>
@@ -105,7 +105,7 @@ export default function HomePage() {
               const Icon = item.icon;
               return (
                 <article key={item.title}>
-                  <Icon className="size-5 text-teal-700 dark:text-teal-300" />
+                  <Icon className="size-5 text-brand-700 dark:text-brand-300" />
                   <h3 className="mt-7 text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100 sm:mt-8 sm:text-[1.375rem]">
                     {item.title}
                   </h3>
@@ -126,7 +126,7 @@ export default function HomePage() {
       <section id="start" className="border-t border-zinc-200 bg-white py-16 dark:border-white/10 dark:bg-zinc-950 sm:py-20 lg:py-24">
         <div className="site-container grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-12">
           <div>
-            <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Start here</p>
+            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Start here</p>
             <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
               Start with one memo.
             </h2>
@@ -138,7 +138,7 @@ export default function HomePage() {
             <Link
               href="/docs/getting-started"
               prefetch={false}
-              className="group inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-teal-700 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-teal-300"
+              className="group inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-700 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-brand-300"
             >
               Install Memos
               <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1" />

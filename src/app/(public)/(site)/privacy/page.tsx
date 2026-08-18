@@ -152,7 +152,7 @@ function DataPath() {
       className="border-y border-zinc-300 py-5 dark:border-white/15 sm:py-6"
     >
       <div className="flex items-center justify-between gap-6">
-        <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Your data path</p>
+        <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Your data path</p>
         <p className="font-mono text-xs text-zinc-500 dark:text-zinc-400">Self-hosted</p>
       </div>
       <ol className="mt-9 grid sm:grid-cols-3">
@@ -165,7 +165,7 @@ function DataPath() {
             </div>
             {index < DATA_PATH.length - 1 ? (
               <ArrowRightIcon
-                className="absolute bottom-4 left-0 size-4 rotate-90 text-teal-700 dark:text-teal-300 sm:top-8 sm:right-6 sm:bottom-auto sm:left-auto sm:rotate-0"
+                className="absolute bottom-4 left-0 size-4 rotate-90 text-brand-700 dark:text-brand-300 sm:top-8 sm:right-6 sm:bottom-auto sm:left-auto sm:rotate-0"
                 aria-hidden="true"
               />
             ) : null}
@@ -177,7 +177,7 @@ function DataPath() {
           <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-100">The Memos project</p>
           <p className="mt-1 text-xs leading-5 text-zinc-500 dark:text-zinc-400">No hosted data service sits between these steps.</p>
         </div>
-        <p className="text-right font-serif text-xl font-semibold text-teal-700 dark:text-teal-300 sm:text-2xl">Not in the path</p>
+        <p className="text-right font-serif text-xl font-semibold text-brand-700 dark:text-brand-300 sm:text-2xl">Not in the path</p>
       </div>
     </aside>
   );
@@ -193,7 +193,7 @@ export default function PrivacyPage() {
       <section className="py-14 lg:py-20">
         <div className="site-container">
           <div className="max-w-4xl">
-            <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Memos privacy</p>
+            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Memos privacy</p>
             <h1 className="mt-5 text-balance font-serif text-5xl leading-[1.04] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
               We collect nothing. Your data stays yours.
             </h1>
@@ -223,7 +223,7 @@ export default function PrivacyPage() {
       <section className="py-16 sm:py-20 lg:py-24">
         <div className="site-container grid gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-20">
           <div>
-            <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Collection</p>
+            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Collection</p>
             <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
               Information Memos does not collect.
             </h2>
@@ -234,7 +234,7 @@ export default function PrivacyPage() {
           <div className="grid gap-8 lg:gap-10">
             {NO_COLLECTION.map((item) => (
               <div key={item.title} className="grid grid-cols-[1.5rem_minmax(0,1fr)] gap-3">
-                <CheckIcon className="mt-1 size-4 text-teal-700 dark:text-teal-300" />
+                <CheckIcon className="mt-1 size-4 text-brand-700 dark:text-brand-300" />
                 <div>
                   <h3 className="text-base font-semibold text-zinc-950 dark:text-zinc-100 sm:text-lg">{item.title}</h3>
                   <p className="mt-2 text-sm leading-7 text-zinc-600 dark:text-zinc-300 sm:text-base">{item.description}</p>
@@ -249,7 +249,7 @@ export default function PrivacyPage() {
         <div className="site-container">
           <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.7fr)] lg:items-end lg:gap-12">
             <div>
-              <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Your control</p>
+              <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Your control</p>
               <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl lg:text-[3.35rem]">
                 Self-hosting keeps the decisions with you.
               </h2>
@@ -273,7 +273,7 @@ export default function PrivacyPage() {
         <div className="site-container">
           <div className="grid gap-7 lg:grid-cols-[minmax(0,0.8fr)_minmax(18rem,0.6fr)] lg:items-end lg:gap-12">
             <div>
-              <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Boundaries</p>
+              <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Boundaries</p>
               <h2 className="mt-4 max-w-[15ch] text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
                 What this policy covers.
               </h2>

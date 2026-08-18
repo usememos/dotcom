@@ -75,7 +75,7 @@ export default function UseCasesPage() {
       <section className="py-14 lg:py-20">
         <div className="site-container grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(19rem,0.48fr)] lg:items-end lg:gap-20">
           <div>
-            <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Use cases</p>
+            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Use cases</p>
             <h1 className="mt-5 max-w-4xl text-balance font-serif text-5xl leading-[1.04] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
               Use Memos where quick notes <HeroAccent>actually happen.</HeroAccent>
             </h1>
@@ -89,7 +89,7 @@ export default function UseCasesPage() {
               <a
                 key={group.id}
                 href={`#${group.id}`}
-                className="group flex items-center justify-between gap-6 py-3 text-sm font-semibold text-zinc-700 transition-colors hover:text-teal-700 dark:text-zinc-200 dark:hover:text-teal-300"
+                className="group flex items-center justify-between gap-6 py-3 text-sm font-semibold text-zinc-700 transition-colors hover:text-brand-700 dark:text-zinc-200 dark:hover:text-brand-300"
               >
                 <span>{group.eyebrow}</span>
                 <span className="flex items-center gap-3 font-mono text-xs font-normal text-zinc-400 dark:text-zinc-500">
@@ -115,7 +115,7 @@ export default function UseCasesPage() {
         >
           <div className="site-container grid gap-10 lg:grid-cols-[minmax(20rem,0.72fr)_minmax(0,1.28fr)] lg:gap-20">
             <div className="lg:sticky lg:top-24 lg:self-start">
-              <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">{group.eyebrow}</p>
+              <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">{group.eyebrow}</p>
               <h2
                 id={`${group.id}-title`}
                 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl"
@@ -140,9 +140,9 @@ export default function UseCasesPage() {
                     <Link
                       href={`/use-cases/${slug}`}
                       prefetch={false}
-                      className="group grid gap-4 py-6 focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-600 sm:grid-cols-[2rem_minmax(11rem,0.7fr)_minmax(0,1fr)_auto] sm:items-center sm:gap-6 dark:focus-visible:outline-teal-300"
+                      className="group grid gap-4 py-6 focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600 sm:grid-cols-[2rem_minmax(11rem,0.7fr)_minmax(0,1fr)_auto] sm:items-center sm:gap-6 dark:focus-visible:outline-brand-300"
                     >
-                      <Icon className="size-5 stroke-[1.7] text-zinc-400 transition-colors group-hover:text-teal-700 dark:text-zinc-500 dark:group-hover:text-teal-300" />
+                      <Icon className="size-5 stroke-[1.7] text-zinc-400 transition-colors group-hover:text-brand-700 dark:text-zinc-500 dark:group-hover:text-brand-300" />
                       <h3 className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{useCase.title}</h3>
                       <p className="text-sm leading-7 text-zinc-600 dark:text-zinc-300">{useCase.subtitle}</p>
                       <ArrowRightIcon className="hidden size-4 text-zinc-400 transition-transform group-hover:translate-x-1 sm:block dark:text-zinc-500" />

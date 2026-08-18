@@ -146,7 +146,7 @@ function PricingLedger() {
   return (
     <aside aria-label="Memos pricing summary" className="border-y border-zinc-300 dark:border-white/15">
       <div className="flex items-center justify-between gap-6 border-b border-zinc-200 py-4 dark:border-white/10">
-        <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">The whole price list</p>
+        <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">The whole price list</p>
         <p className="font-mono text-xs text-zinc-500 dark:text-zinc-400">USD</p>
       </div>
       <dl className="lg:grid lg:grid-cols-5">
@@ -178,7 +178,7 @@ export default function PricingPage() {
         <div className="site-container">
           <div className="grid gap-9 lg:grid-cols-[minmax(0,1.15fr)_minmax(19rem,0.55fr)] lg:items-end lg:gap-20">
             <div>
-              <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Memos pricing</p>
+              <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Memos pricing</p>
               <h1 className="mt-5 text-balance font-serif text-5xl leading-[1.04] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
                 The whole product costs <HeroAccent>$0.</HeroAccent>
               </h1>
@@ -211,7 +211,7 @@ export default function PricingPage() {
         <div className="site-container">
           <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.7fr)] lg:items-end lg:gap-12">
             <div>
-              <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Included at $0</p>
+              <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Included at $0</p>
               <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl lg:text-[3.35rem]">
                 The product is not divided into tiers.
               </h2>
@@ -224,7 +224,7 @@ export default function PricingPage() {
           <div className="mt-12 grid gap-x-12 gap-y-8 sm:mt-14 md:grid-cols-2 md:gap-x-16 md:gap-y-10">
             {INCLUDED.map((item) => (
               <article key={item.title} className="grid grid-cols-[1.5rem_minmax(0,1fr)] gap-3">
-                <CheckIcon className="mt-1 size-4 text-teal-700 dark:text-teal-300" />
+                <CheckIcon className="mt-1 size-4 text-brand-700 dark:text-brand-300" />
                 <div>
                   <h3 className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{item.title}</h3>
                   <p className="mt-2 max-w-xl text-sm leading-7 text-zinc-600 dark:text-zinc-300">{item.description}</p>
@@ -238,7 +238,7 @@ export default function PricingPage() {
       <section className="bg-stone-50/70 py-16 dark:bg-zinc-900/35 sm:py-20 lg:py-24">
         <div className="site-container grid gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-20">
           <div>
-            <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Your infrastructure</p>
+            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Your infrastructure</p>
             <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
               The only costs are the ones you choose.
             </h2>

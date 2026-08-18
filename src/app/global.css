@@ -6,6 +6,22 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
+  /* Brand accent scale: a custom azure between Tailwind's sky (too cyan) and
+     blue (too indigo) scales, each stop interpolated between the two. A
+     rebrand retunes these stops instead of sweeping every component again.
+     The semantic tokens below (--primary, --accent, ...) are hand-tuned oklch
+     relatives of this scale, not derived from it — retune them alongside. */
+  --color-brand-50: oklch(0.974 0.013 245);
+  --color-brand-100: oklch(0.942 0.029 245);
+  --color-brand-200: oklch(0.892 0.058 243);
+  --color-brand-300: oklch(0.819 0.108 242);
+  --color-brand-400: oklch(0.727 0.16 244);
+  --color-brand-500: oklch(0.654 0.19 247);
+  --color-brand-600: oklch(0.567 0.19 249);
+  --color-brand-700: oklch(0.494 0.175 250);
+  --color-brand-800: oklch(0.434 0.15 250);
+  --color-brand-900: oklch(0.385 0.115 251);
+  --color-brand-950: oklch(0.288 0.078 252);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -40,18 +56,19 @@
   --card-foreground: oklch(0.2 0.006 250);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.2 0.006 250);
-  --primary: oklch(0.48 0.09 165);
+  /* Near brand-600, chroma eased for large fills; dark mode sits near brand-400. */
+  --primary: oklch(0.55 0.17 250);
   --primary-foreground: oklch(0.99 0 0);
   --secondary: oklch(0.965 0.004 250);
   --secondary-foreground: oklch(0.32 0.008 250);
   --muted: oklch(0.962 0.004 250);
   --muted-foreground: oklch(0.5 0.01 250);
-  --accent: oklch(0.955 0.018 165);
-  --accent-foreground: oklch(0.28 0.055 165);
+  --accent: oklch(0.955 0.022 246);
+  --accent-foreground: oklch(0.32 0.09 250);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.9 0.006 250);
   --input: oklch(0.9 0.006 250);
-  --ring: oklch(0.48 0.09 165);
+  --ring: oklch(0.55 0.17 250);
   --site-layout-width: 87.5rem;
 }
 
@@ -62,18 +79,18 @@
   --card-foreground: oklch(0.94 0.003 250);
   --popover: oklch(0.2 0.007 250);
   --popover-foreground: oklch(0.94 0.003 250);
-  --primary: oklch(0.72 0.09 165);
+  --primary: oklch(0.72 0.14 246);
   --primary-foreground: oklch(0.17 0.006 250);
   --secondary: oklch(0.24 0.008 250);
   --secondary-foreground: oklch(0.9 0.004 250);
   --muted: oklch(0.24 0.008 250);
   --muted-foreground: oklch(0.7 0.008 250);
-  --accent: oklch(0.25 0.035 165);
-  --accent-foreground: oklch(0.9 0.045 165);
+  --accent: oklch(0.27 0.05 248);
+  --accent-foreground: oklch(0.87 0.065 245);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(0.34 0.01 250 / 0.6);
   --input: oklch(1 0 0 / 0.15);
-  --ring: oklch(0.72 0.09 165);
+  --ring: oklch(0.72 0.14 246);
 }
 
 body {
@@ -98,47 +115,49 @@ body {
 }
 
 /* Authenticated product surfaces use a quieter, notebook-like palette without
-   changing the public marketing and documentation themes. */
+   changing the public marketing and documentation themes. Neutrals are cool
+   tints around hue 235-245 with the same azure primary as the public site;
+   retune this block alongside any brand hue change. */
 .app-surface,
 body:has(.app-surface) [data-slot="dropdown-menu-content"] {
-  --background: oklch(0.995 0.004 145);
-  --foreground: oklch(0.22 0.012 155);
-  --card: oklch(1 0.002 145);
-  --card-foreground: oklch(0.22 0.012 155);
-  --popover: oklch(1 0.002 145);
-  --popover-foreground: oklch(0.22 0.012 155);
-  --primary: oklch(0.49 0.105 166);
-  --primary-foreground: oklch(0.99 0.002 145);
-  --secondary: oklch(0.96 0.006 145);
-  --secondary-foreground: oklch(0.32 0.012 155);
-  --muted: oklch(0.963 0.007 145);
-  --muted-foreground: oklch(0.51 0.015 155);
-  --accent: oklch(0.95 0.025 165);
-  --accent-foreground: oklch(0.31 0.065 166);
-  --border: oklch(0.9 0.008 145);
-  --input: oklch(0.88 0.01 145);
-  --ring: oklch(0.49 0.105 166);
+  --background: oklch(0.995 0.004 235);
+  --foreground: oklch(0.22 0.012 245);
+  --card: oklch(1 0.002 235);
+  --card-foreground: oklch(0.22 0.012 245);
+  --popover: oklch(1 0.002 235);
+  --popover-foreground: oklch(0.22 0.012 245);
+  --primary: oklch(0.55 0.175 250);
+  --primary-foreground: oklch(0.99 0.002 235);
+  --secondary: oklch(0.96 0.006 235);
+  --secondary-foreground: oklch(0.32 0.012 245);
+  --muted: oklch(0.963 0.007 235);
+  --muted-foreground: oklch(0.51 0.015 245);
+  --accent: oklch(0.95 0.026 248);
+  --accent-foreground: oklch(0.33 0.09 250);
+  --border: oklch(0.9 0.008 235);
+  --input: oklch(0.88 0.01 235);
+  --ring: oklch(0.55 0.175 250);
 }
 
 .dark .app-surface,
 .dark body:has(.app-surface) [data-slot="dropdown-menu-content"] {
-  --background: oklch(0.18 0.01 155);
-  --foreground: oklch(0.94 0.006 145);
-  --card: oklch(0.205 0.012 155);
-  --card-foreground: oklch(0.94 0.006 145);
-  --popover: oklch(0.205 0.012 155);
-  --popover-foreground: oklch(0.94 0.006 145);
-  --primary: oklch(0.7 0.1 165);
-  --primary-foreground: oklch(0.17 0.012 155);
-  --secondary: oklch(0.245 0.012 155);
-  --secondary-foreground: oklch(0.9 0.006 145);
-  --muted: oklch(0.225 0.012 155);
-  --muted-foreground: oklch(0.68 0.012 145);
-  --accent: oklch(0.26 0.04 165);
-  --accent-foreground: oklch(0.9 0.05 165);
-  --border: oklch(0.34 0.012 155 / 0.65);
+  --background: oklch(0.18 0.01 245);
+  --foreground: oklch(0.94 0.006 235);
+  --card: oklch(0.205 0.012 245);
+  --card-foreground: oklch(0.94 0.006 235);
+  --popover: oklch(0.205 0.012 245);
+  --popover-foreground: oklch(0.94 0.006 235);
+  --primary: oklch(0.7 0.14 246);
+  --primary-foreground: oklch(0.17 0.012 245);
+  --secondary: oklch(0.245 0.012 245);
+  --secondary-foreground: oklch(0.9 0.006 235);
+  --muted: oklch(0.225 0.012 245);
+  --muted-foreground: oklch(0.68 0.012 235);
+  --accent: oklch(0.27 0.05 248);
+  --accent-foreground: oklch(0.87 0.065 245);
+  --border: oklch(0.34 0.012 245 / 0.65);
   --input: oklch(1 0 0 / 0.14);
-  --ring: oklch(0.7 0.1 165);
+  --ring: oklch(0.7 0.14 246);
 }
 
 /* Product pages use immediate state changes and no decorative motion. */

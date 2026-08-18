@@ -68,7 +68,7 @@ export function HomeUseCasesSection() {
       <div className="site-container">
         <div className="grid gap-7 lg:grid-cols-[minmax(0,0.9fr)_minmax(18rem,0.55fr)] lg:items-end lg:justify-between lg:gap-12">
           <div>
-            <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Use cases</p>
+            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Use cases</p>
             <h2 className="mt-4 max-w-[17ch] text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl lg:text-[3.35rem]">
               Small notes, many kinds of work.
             </h2>
@@ -88,7 +88,7 @@ export function HomeUseCasesSection() {
                 prefetch={false}
                 className={`group grid grid-cols-[2.75rem_minmax(0,1fr)_auto] gap-4 py-2 ${index % 2 === 0 ? "md:pr-3" : "md:pl-3"}`}
               >
-                <span className="flex size-9 items-center justify-center rounded-full bg-stone-100 text-zinc-500 transition-colors group-hover:bg-teal-50 group-hover:text-teal-700 dark:bg-white/6 dark:text-zinc-400 dark:group-hover:bg-teal-400/10 dark:group-hover:text-teal-300">
+                <span className="flex size-9 items-center justify-center rounded-full bg-stone-100 text-zinc-500 transition-colors group-hover:bg-brand-50 group-hover:text-brand-700 dark:bg-white/6 dark:text-zinc-400 dark:group-hover:bg-brand-400/10 dark:group-hover:text-brand-300">
                   <Icon className="size-4 stroke-[1.8]" />
                 </span>
                 <div>
@@ -99,7 +99,7 @@ export function HomeUseCasesSection() {
                     {useCase.description}
                   </p>
                 </div>
-                <ArrowUpRightIcon className="mt-2 size-4 text-zinc-400 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-teal-700 dark:text-zinc-500 dark:group-hover:text-teal-300" />
+                <ArrowUpRightIcon className="mt-2 size-4 text-zinc-400 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand-700 dark:text-zinc-500 dark:group-hover:text-brand-300" />
               </Link>
             );
           })}
@@ -109,7 +109,7 @@ export function HomeUseCasesSection() {
           <Link
             href="/use-cases"
             prefetch={false}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-zinc-950 transition-colors hover:text-teal-700 dark:text-zinc-100 dark:hover:text-teal-300"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-zinc-950 transition-colors hover:text-brand-700 dark:text-zinc-100 dark:hover:text-brand-300"
           >
             Browse all workflows
             <ArrowUpRightIcon className="size-4" />

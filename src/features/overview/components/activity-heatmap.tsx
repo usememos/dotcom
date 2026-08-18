@@ -8,10 +8,10 @@ import { sumActivity } from "../lib/stats";
 
 const INTENSITY_CLASSES = [
   "bg-foreground/[0.055] dark:bg-foreground/[0.08]",
-  "bg-teal-200/80 dark:bg-teal-950",
-  "bg-teal-300 dark:bg-teal-800",
-  "bg-teal-500 dark:bg-teal-600",
-  "bg-teal-700 dark:bg-teal-400",
+  "bg-brand-200/80 dark:bg-brand-950",
+  "bg-brand-300 dark:bg-brand-800",
+  "bg-brand-500 dark:bg-brand-600",
+  "bg-brand-700 dark:bg-brand-400",
 ];
 
 const WEEKDAY_LABELS = ["", "Mon", "", "Wed", "", "Fri", ""];
@@ -33,7 +33,7 @@ function formatTitle(date: string, count: number): string {
 function cellClassName(intensity: number, isToday: boolean): string {
   const rings = isToday
     ? "ring-2 ring-inset ring-stone-500 dark:ring-stone-300"
-    : "ring-1 ring-inset ring-black/5 hover:ring-2 hover:ring-teal-500/40 dark:ring-white/10";
+    : "ring-1 ring-inset ring-black/5 hover:ring-2 hover:ring-brand-500/40 dark:ring-white/10";
   return `size-3.5 rounded-[3px] ${INTENSITY_CLASSES[intensity]} ${rings}`;
 }
 

@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { normalizeApiDocsSlug } from "@/features/docs/lib/api-docs";
 import { getDocsSocialPreview } from "@/features/docs/lib/social-preview";
 import { createSocialPreviewImage } from "@/shared/content/social-preview-image";
 import { source } from "@/shared/content/source";
@@ -15,8 +14,9 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     notFound();
   }
 
-  const pageSlug = normalizeApiDocsSlug(slug.slice(0, -1));
-  const page = source.getPage(pageSlug);
+  // `dynamicParams = false` restricts params to the canonical slugs emitted by
+  // generateStaticParams, so no version normalization is needed here.
+  const page = source.getPage(slug.slice(0, -1));
   if (!page) {
     notFound();
   }

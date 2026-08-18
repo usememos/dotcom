@@ -60,7 +60,7 @@ export default function SocialPreviewsPage() {
       <section className="py-14 lg:py-20">
         <div className="site-container">
           <div className="max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-400">Social previews</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-brand-700 dark:text-brand-400">Social previews</p>
             <h1 className="mt-4 text-4xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-50">OG image coverage</h1>
             <p className="mt-4 text-lg leading-8 text-zinc-600 dark:text-zinc-300">
               Content URLs grouped by whether their social preview image is explicit, generated, or still using the global default.
@@ -94,7 +94,7 @@ export default function SocialPreviewsPage() {
                       {group.previews.map((preview) => (
                         <tr key={preview.url} className="border-t border-zinc-200 dark:border-zinc-800">
                           <td className="px-4 py-3">
-                            <a className="font-medium text-emerald-700 hover:underline dark:text-emerald-400" href={getPath(preview.url)}>
+                            <a className="font-medium text-brand-700 hover:underline dark:text-brand-400" href={getPath(preview.url)}>
                               {getPath(preview.url)}
                             </a>
                           </td>

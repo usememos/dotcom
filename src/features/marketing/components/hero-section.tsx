@@ -32,7 +32,7 @@ export function HeroSection({ version = "0.30.0", title, subtitle, primaryCta, s
               prefetch={false}
               className="group inline-flex items-center gap-2 text-xs font-medium tracking-[0.14em] text-zinc-500 uppercase transition-colors hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-100"
             >
-              <SparklesIcon className="size-3.5 text-teal-600 dark:text-teal-300" />
+              <SparklesIcon className="size-3.5 text-brand-600 dark:text-brand-300" />
               <span>Latest release</span>
               <span className="font-semibold tracking-normal text-zinc-800 normal-case dark:text-zinc-200">v{version}</span>
               <ArrowRightIcon className="size-3.5 transition-transform group-hover:translate-x-0.5" />
@@ -50,7 +50,7 @@ export function HeroSection({ version = "0.30.0", title, subtitle, primaryCta, s
           <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-[0.8125rem] text-zinc-500 dark:text-zinc-400 sm:text-sm">
             {["Private timeline", "Markdown-native", "Self-hosted"].map((item) => (
               <span key={item} className="inline-flex items-center gap-1.5">
-                <CheckIcon className="size-3.5 text-teal-600 dark:text-teal-300" />
+                <CheckIcon className="size-3.5 text-brand-600 dark:text-brand-300" />
                 {item}
               </span>
             ))}

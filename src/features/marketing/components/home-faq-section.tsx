@@ -13,7 +13,7 @@ export function HomeFaqSection() {
       <div className="site-container">
         <div className="grid gap-7 lg:grid-cols-[minmax(0,0.9fr)_minmax(18rem,0.55fr)] lg:items-end lg:gap-12">
           <div>
-            <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Before you install</p>
+            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Before you install</p>
             <h2 className="mt-4 max-w-[14ch] text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
               A few useful answers.
             </h2>
@@ -25,7 +25,7 @@ export function HomeFaqSection() {
             <Link
               href="/compare"
               prefetch={false}
-              className="group mt-5 inline-flex items-center gap-2 text-sm font-semibold text-zinc-950 transition-colors hover:text-teal-700 dark:text-zinc-100 dark:hover:text-teal-300"
+              className="group mt-5 inline-flex items-center gap-2 text-sm font-semibold text-zinc-950 transition-colors hover:text-brand-700 dark:text-zinc-100 dark:hover:text-brand-300"
             >
               Compare Memos with other apps
               <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1" />

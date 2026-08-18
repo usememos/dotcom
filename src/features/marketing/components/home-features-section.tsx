@@ -40,7 +40,7 @@ export function HomeFeaturesSection() {
       <div className="site-container">
         <div className="grid gap-7 lg:grid-cols-[minmax(0,1.2fr)_minmax(18rem,0.8fr)] lg:items-end lg:gap-12">
           <div>
-            <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Product</p>
+            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Product</p>
             <h2 className="mt-4 max-w-[16ch] text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl lg:text-[3.35rem]">
               Small on purpose. Fast by default.
             </h2>
@@ -52,7 +52,7 @@ export function HomeFeaturesSection() {
             <Link
               href="/features"
               prefetch={false}
-              className="group mt-6 inline-flex items-center gap-2 text-sm font-semibold text-zinc-950 transition-colors hover:text-teal-700 dark:text-zinc-100 dark:hover:text-teal-300"
+              className="group mt-6 inline-flex items-center gap-2 text-sm font-semibold text-zinc-950 transition-colors hover:text-brand-700 dark:text-zinc-100 dark:hover:text-brand-300"
             >
               Explore every feature
               <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1" />
@@ -65,7 +65,7 @@ export function HomeFeaturesSection() {
             const Icon = feature.icon;
             return (
               <article key={feature.title} className="group grid grid-cols-[2.75rem_minmax(0,1fr)] gap-4">
-                <span className="flex size-9 items-center justify-center rounded-full border border-zinc-300 text-zinc-500 transition-colors group-hover:border-teal-600 group-hover:text-teal-700 dark:border-white/15 dark:text-zinc-400 dark:group-hover:border-teal-400 dark:group-hover:text-teal-300">
+                <span className="flex size-9 items-center justify-center rounded-full border border-zinc-300 text-zinc-500 transition-colors group-hover:border-brand-600 group-hover:text-brand-700 dark:border-white/15 dark:text-zinc-400 dark:group-hover:border-brand-400 dark:group-hover:text-brand-300">
                   <Icon className="size-4 stroke-[1.8]" />
                 </span>
                 <div>

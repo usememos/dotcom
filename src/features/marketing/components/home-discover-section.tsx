@@ -38,7 +38,7 @@ export function HomeDiscoverSection() {
       <div className="site-container">
         <div className="flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
           <div>
-            <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Next steps</p>
+            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Next steps</p>
             <h2 className="mt-4 max-w-[15ch] text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
               Go deeper when you need to.
             </h2>
@@ -62,7 +62,7 @@ export function HomeDiscoverSection() {
                   <span className="flex size-9 items-center justify-center rounded-full border border-zinc-300 text-zinc-500 dark:border-white/15 dark:text-zinc-400">
                     <Icon className="size-4 stroke-[1.8]" />
                   </span>
-                  <ArrowRightIcon className="size-4 text-zinc-400 transition-transform group-hover:translate-x-1 group-hover:text-teal-700 dark:text-zinc-500 dark:group-hover:text-teal-300" />
+                  <ArrowRightIcon className="size-4 text-zinc-400 transition-transform group-hover:translate-x-1 group-hover:text-brand-700 dark:text-zinc-500 dark:group-hover:text-brand-300" />
                 </div>
                 <div className="mt-9">
                   <p className="text-[10px] font-semibold tracking-[0.16em] text-zinc-400 uppercase dark:text-zinc-500">{item.label}</p>

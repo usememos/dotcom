@@ -77,7 +77,7 @@ export default async function ComparisonPage({ params }: { params: Promise<{ slu
         <div className="site-container">
           <Link
             href="/compare"
-            className="group inline-flex items-center gap-2 text-sm font-semibold text-zinc-500 transition-colors hover:text-teal-700 dark:text-zinc-400 dark:hover:text-teal-300"
+            className="group inline-flex items-center gap-2 text-sm font-semibold text-zinc-500 transition-colors hover:text-brand-700 dark:text-zinc-400 dark:hover:text-brand-300"
           >
             <ArrowLeftIcon className="size-4 transition-transform group-hover:-translate-x-1" />
             All comparisons
@@ -85,7 +85,7 @@ export default async function ComparisonPage({ params }: { params: Promise<{ slu
 
           <div className="mt-10 grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(20rem,0.52fr)] lg:items-end lg:gap-20">
             <div>
-              <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Compare</p>
+              <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Compare</p>
               <h1 className="mt-5 text-balance font-serif text-5xl leading-[1.04] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
                 {comparison.title}
               </h1>
@@ -102,7 +102,7 @@ export default async function ComparisonPage({ params }: { params: Promise<{ slu
             </div>
 
             <aside aria-label="Short comparison verdict" className="border-y border-zinc-300 py-6 dark:border-white/15">
-              <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Short answer</p>
+              <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Short answer</p>
               <p className="mt-5 font-serif text-2xl leading-9 font-semibold text-zinc-950 dark:text-zinc-100">{comparison.summary}</p>
               <p className="mt-5 text-sm leading-7 text-zinc-500 dark:text-zinc-400">Different tools for different shapes of work.</p>
             </aside>
@@ -114,7 +114,7 @@ export default async function ComparisonPage({ params }: { params: Promise<{ slu
         <div className="site-container">
           <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.7fr)] lg:items-end lg:gap-12">
             <div>
-              <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Side by side</p>
+              <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Side by side</p>
               <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl lg:text-[3.35rem]">
                 The practical differences.
               </h2>
@@ -157,19 +157,19 @@ export default async function ComparisonPage({ params }: { params: Promise<{ slu
       <section className="py-16 sm:py-20 lg:py-24">
         <div className="site-container">
           <div className="max-w-3xl">
-            <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">The decision</p>
+            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">The decision</p>
             <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl lg:text-[3.35rem]">
               Choose for the work in front of you.
             </h2>
           </div>
 
           <div className="mt-14 grid gap-12 lg:grid-cols-2 lg:gap-20">
-            <div className="border-t-2 border-teal-600 pt-6 dark:border-teal-300">
+            <div className="border-t-2 border-brand-600 pt-6 dark:border-brand-300">
               <h3 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">Choose Memos when</h3>
               <ul className="mt-6 space-y-5">
                 {comparison.chooseMemos.map((reason) => (
                   <li key={reason} className="grid grid-cols-[0.75rem_minmax(0,1fr)] gap-3">
-                    <span className="mt-[0.68rem] size-1.5 rounded-full bg-teal-600 dark:bg-teal-300" aria-hidden="true" />
+                    <span className="mt-[0.68rem] size-1.5 rounded-full bg-brand-600 dark:bg-brand-300" aria-hidden="true" />
                     <p className="text-sm leading-7 text-zinc-700 dark:text-zinc-300 sm:text-base">{reason}</p>
                   </li>
                 ))}
@@ -193,7 +193,7 @@ export default async function ComparisonPage({ params }: { params: Promise<{ slu
       <section className="bg-zinc-950 py-20 text-white sm:py-24 lg:py-28">
         <div className="site-container grid gap-10 lg:grid-cols-[minmax(16rem,0.58fr)_minmax(0,1.42fr)] lg:gap-20">
           <div>
-            <p className="text-xs font-semibold tracking-[0.18em] text-teal-300 uppercase">Memos in detail</p>
+            <p className="text-xs font-semibold tracking-[0.18em] text-brand-300 uppercase">Memos in detail</p>
             <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] sm:text-5xl">
               Inspect what matters.
             </h2>
@@ -209,11 +209,11 @@ export default async function ComparisonPage({ params }: { params: Promise<{ slu
                   <Link
                     href={`/features/${feature.slug}`}
                     prefetch={false}
-                    className="group block border-t border-white/20 py-5 focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-300"
+                    className="group block border-t border-white/20 py-5 focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-300"
                   >
                     <span className="flex items-center justify-between gap-3">
                       <span className="text-base font-semibold text-zinc-100">{feature.name}</span>
-                      <ArrowRightIcon className="size-4 text-zinc-500 transition-transform group-hover:translate-x-1 group-hover:text-teal-300" />
+                      <ArrowRightIcon className="size-4 text-zinc-500 transition-transform group-hover:translate-x-1 group-hover:text-brand-300" />
                     </span>{" "}
                     <span className="mt-2 block text-sm text-zinc-400">{isWip ? "Work in progress" : "Explore the feature"}</span>
                   </Link>

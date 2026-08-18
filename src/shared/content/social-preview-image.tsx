@@ -4,9 +4,27 @@ import { ImageResponse } from "next/og";
 import type { ContentSocialPreview } from "@/shared/content/social-preview";
 import { SOCIAL_PREVIEW_IMAGE_SIZE } from "@/shared/content/social-preview";
 
-const logoPromise = readFile(join(process.cwd(), "public/full-logo-landscape.png")).then(
-  (buffer) => `data:image/png;base64,${buffer.toString("base64")}`,
-);
+function loadPngDataUri(relativePath: string): Promise<string> {
+  return readFile(join(process.cwd(), relativePath)).then((buffer) => `data:image/png;base64,${buffer.toString("base64")}`);
+}
+
+/* The round mark plus a white wordmark: the full landscape logo's black
+   wordmark loses contrast against the saturated brand background. This copy is
+   public/logo-rounded.png pre-scaled to 128px (2x its 64px slot) so satori
+   isn't fed the 784px original on every one of the ~550 image renders. */
+const logoPromise = loadPngDataUri("src/shared/content/og-logo.png");
+
+/* Flat brand azure with white ink; a pure background keeps each prerendered
+   image small. Hex values are hand-encoded (satori cannot read CSS variables)
+   and tuned near, not derived from, `--primary` in global.css — keep them
+   visually in sync by hand. */
+const OG_COLORS = {
+  background: "#0073cf", // oklch(0.55 0.17 250), the light-mode --primary
+  badgeBackground: "rgba(255, 255, 255, 0.2)",
+  badgeText: "#ffffff",
+  title: "#ffffff",
+  body: "#dceeff", // brand-100
+} as const;
 const fontDefinitions = [
   {
     name: "Inter",
@@ -53,8 +71,7 @@ export async function createSocialPreviewImage(preview: ContentSocialPreview) {
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        background: "#f8e2ac",
-        color: "#24180d",
+        background: OG_COLORS.background,
         padding: "72px 84px 78px",
         fontFamily: "Inter, Arial, sans-serif",
         position: "relative",
@@ -64,35 +81,38 @@ export async function createSocialPreviewImage(preview: ContentSocialPreview) {
       <div
         style={{
           display: "flex",
-          position: "absolute",
-          inset: 0,
-          background:
-            "radial-gradient(circle at 86% 14%, rgba(255, 249, 224, 0.82), rgba(255, 249, 224, 0) 30%), linear-gradient(145deg, rgba(255, 244, 198, 0.94), rgba(246, 214, 142, 0.74) 52%, rgba(231, 190, 112, 0.58))",
-        }}
-      />
-      <div
-        style={{
-          display: "flex",
-          position: "absolute",
-          right: 70,
-          bottom: 58,
-          width: 330,
-          height: 330,
-          borderRadius: 8,
-          border: "1px solid rgba(138, 90, 43, 0.14)",
-          transform: "rotate(-8deg)",
-          background: "rgba(255, 245, 211, 0.24)",
-        }}
-      />
-      <div
-        style={{
-          display: "flex",
           alignItems: "center",
+          gap: 26,
           position: "relative",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-          <img src={logoSrc} alt="Memos" width={220} height={70} />
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <img src={logoSrc} alt="" width={64} height={64} />
+          <div
+            style={{
+              display: "flex",
+              fontSize: 44,
+              fontWeight: 800,
+              color: OG_COLORS.title,
+              letterSpacing: -1,
+            }}
+          >
+            memos
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            borderRadius: 9999,
+            background: OG_COLORS.badgeBackground,
+            color: OG_COLORS.badgeText,
+            fontSize: 24,
+            fontWeight: 800,
+            letterSpacing: 0.5,
+            padding: "8px 18px",
+          }}
+        >
+          {preview.section}
         </div>
       </div>
 
@@ -102,36 +122,22 @@ export async function createSocialPreviewImage(preview: ContentSocialPreview) {
           flex: 1,
           flexDirection: "column",
           justifyContent: "center",
-          gap: 28,
+          gap: 26,
           position: "relative",
           maxWidth: 990,
-          paddingTop: 18,
+          paddingTop: 30,
+          paddingBottom: 38,
         }}
       >
         <div
           style={{
             display: "flex",
-            borderRadius: 8,
-            background: "rgba(126, 79, 15, 0.12)",
-            color: "#80510f",
-            fontSize: 24,
-            fontWeight: 800,
-            letterSpacing: 0,
-            padding: "9px 14px",
-            alignSelf: "flex-start",
-          }}
-        >
-          {preview.section}
-        </div>
-        <div
-          style={{
-            display: "flex",
-            fontSize: preview.title.length > 72 ? 70 : 88,
-            lineHeight: 1,
+            fontSize: preview.title.length > 28 ? 72 : 88,
+            lineHeight: 1.05,
             fontFamily: "Source Serif 4, Georgia, serif",
             fontWeight: 700,
             letterSpacing: 0,
-            color: "#23170b",
+            color: OG_COLORS.title,
             whiteSpace: "pre-wrap",
           }}
         >
@@ -141,9 +147,9 @@ export async function createSocialPreviewImage(preview: ContentSocialPreview) {
           style={{
             display: "flex",
             fontSize: 38,
-            lineHeight: 1.28,
+            lineHeight: 1.4,
             fontWeight: 400,
-            color: "#6f542f",
+            color: OG_COLORS.body,
             whiteSpace: "pre-wrap",
             maxWidth: 940,
           }}

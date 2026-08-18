@@ -68,9 +68,9 @@ export function ErrorBoundaryFallback({
   return (
     <main className="flex min-h-screen flex-col bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-100">
       <section className="relative isolate flex flex-1 items-center overflow-hidden px-5 py-12 sm:px-8 lg:py-20">
-        <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-teal-500/40 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-brand-500/40 to-transparent" />
         <div className="absolute top-10 right-10 hidden h-40 w-40 rotate-6 rounded-lg border border-zinc-200/70 dark:border-white/10 lg:block" />
-        <div className="absolute right-24 bottom-14 hidden h-24 w-24 -rotate-12 rounded-lg border border-teal-200/70 bg-teal-50/50 dark:border-teal-400/15 dark:bg-teal-400/5 lg:block" />
+        <div className="absolute right-24 bottom-14 hidden h-24 w-24 -rotate-12 rounded-lg border border-brand-200/70 bg-brand-50/50 dark:border-brand-400/15 dark:bg-brand-400/5 lg:block" />
 
         <div className="relative mx-auto grid w-full max-w-6xl gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-center">
           <div className="max-w-3xl">
@@ -90,7 +90,7 @@ export function ErrorBoundaryFallback({
                 <button
                   type="button"
                   onClick={retry}
-                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-teal-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
                 >
                   <RotateCcwIcon className="h-4 w-4" />
                   {retryLabel}
@@ -100,7 +100,7 @@ export function ErrorBoundaryFallback({
                 const isExternal = action.href.startsWith("http");
                 const className =
                   action.kind === "primary"
-                    ? "inline-flex items-center justify-center gap-2 rounded-lg bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-teal-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
+                    ? "inline-flex items-center justify-center gap-2 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
                     : "inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-200 px-4 py-2.5 text-sm font-semibold text-zinc-800 transition-all hover:-translate-y-0.5 hover:bg-zinc-50 dark:border-white/10 dark:text-zinc-100 dark:hover:bg-white/5";
 
                 return (
@@ -128,7 +128,7 @@ export function ErrorBoundaryFallback({
             <div className="mt-5 space-y-5">
               <div>
                 <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-zinc-950 dark:text-zinc-100">
-                  <FileSearchIcon className="h-4 w-4 text-teal-600 dark:text-teal-300" />
+                  <FileSearchIcon className="h-4 w-4 text-brand-600 dark:text-brand-300" />
                   {isNotFound ? "Missing route" : "Load interrupted"}
                 </div>
                 <p className="text-sm leading-7 text-zinc-600 dark:text-zinc-300">

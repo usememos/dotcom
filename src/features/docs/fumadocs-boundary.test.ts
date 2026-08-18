@@ -7,7 +7,7 @@ const dir = dirname(fileURLToPath(import.meta.url));
 const srcRoot = join(dir, "..", "..");
 const rootLayoutSource = readFileSync(join(srcRoot, "app", "layout.tsx"), "utf8");
 const docsServerLayoutSource = readFileSync(join(srcRoot, "app", "(public)", "docs", "layout.tsx"), "utf8");
-const docsLayoutSource = readFileSync(join(srcRoot, "app", "(public)", "docs", "layout.client.tsx"), "utf8");
+const docsLayoutSource = readFileSync(join(srcRoot, "features", "docs", "components", "docs-sidebar-layout.tsx"), "utf8");
 const globalCssSource = readFileSync(join(srcRoot, "app", "global.css"), "utf8");
 const docsCssSource = readFileSync(join(srcRoot, "app", "(public)", "docs", "docs.css"), "utf8");
 const docsThemeCssSource = readFileSync(join(srcRoot, "app", "(public)", "docs", "fumadocs-theme.css"), "utf8");
@@ -32,8 +32,8 @@ describe("Fumadocs UI boundary", () => {
 
   it("initializes static search only in the docs provider", () => {
     expect(rootLayoutSource).not.toMatch(/fumadocs|search=\{/);
-    // Above ClientLayout, which subscribes to usePathname() — nesting it there
-    // would rebuild the search context on every docs navigation.
+    // In the shared docs layout, above the per-branch sidebar layouts — nesting
+    // it there would rebuild the search context on every docs navigation.
     expect(docsServerLayoutSource).toMatch(/RootProvider/);
     expect(docsLayoutSource).not.toMatch(/RootProvider/);
     // Matched loosely so reformatting the prop does not fail a passing runtime.

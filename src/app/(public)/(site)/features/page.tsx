@@ -110,7 +110,7 @@ function FeatureIndex() {
   return (
     <nav aria-label="Feature groups" className="border-y border-zinc-300 py-5 dark:border-white/15 sm:py-6">
       <div className="flex items-center justify-between gap-6">
-        <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Browse by purpose</p>
+        <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Browse by purpose</p>
         <p className="font-mono text-xs text-zinc-500 dark:text-zinc-400">27 features</p>
       </div>
       <div className="mt-6 grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-1">
@@ -118,12 +118,12 @@ function FeatureIndex() {
           <Link
             key={group.id}
             href={`#${group.id}`}
-            className="group flex items-center justify-between gap-6 text-zinc-950 transition-colors hover:text-teal-700 focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-600 dark:text-zinc-100 dark:hover:text-teal-300 dark:focus-visible:outline-teal-300"
+            className="group flex items-center justify-between gap-6 text-zinc-950 transition-colors hover:text-brand-700 focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600 dark:text-zinc-100 dark:hover:text-brand-300 dark:focus-visible:outline-brand-300"
           >
             <span className="text-base font-semibold tracking-tight">{group.title}</span>
             <span className="flex items-center gap-3">
               <span className="font-mono text-xs text-zinc-400 dark:text-zinc-500">{String(group.slugs.length).padStart(2, "0")}</span>
-              <ArrowRightIcon className="size-4 text-zinc-400 transition-transform group-hover:translate-x-1 group-hover:text-teal-700 dark:text-zinc-500 dark:group-hover:text-teal-300" />
+              <ArrowRightIcon className="size-4 text-zinc-400 transition-transform group-hover:translate-x-1 group-hover:text-brand-700 dark:text-zinc-500 dark:group-hover:text-brand-300" />
             </span>
           </Link>
         ))}
@@ -157,13 +157,13 @@ function FeatureGroup({ group }: { group: FeatureGroupDefinition }) {
                 <Link
                   href={`/features/${slug}`}
                   prefetch={false}
-                  className="group/link block focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-600 dark:focus-visible:outline-teal-300"
+                  className="group/link block focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600 dark:focus-visible:outline-brand-300"
                 >
                   <div className="flex items-start gap-4">
-                    <Icon className="mt-1 size-5 shrink-0 stroke-[1.7] text-zinc-400 transition-colors group-hover/link:text-teal-700 dark:text-zinc-500 dark:group-hover/link:text-teal-300" />
+                    <Icon className="mt-1 size-5 shrink-0 stroke-[1.7] text-zinc-400 transition-colors group-hover/link:text-brand-700 dark:text-zinc-500 dark:group-hover/link:text-brand-300" />
                     <div className="min-w-0 flex-1">
                       <div className="flex items-start justify-between gap-4">
-                        <h4 className="text-lg font-semibold tracking-tight text-zinc-950 transition-colors group-hover/link:text-teal-700 dark:text-zinc-100 dark:group-hover/link:text-teal-300">
+                        <h4 className="text-lg font-semibold tracking-tight text-zinc-950 transition-colors group-hover/link:text-brand-700 dark:text-zinc-100 dark:group-hover/link:text-brand-300">
                           {feature.title}
                         </h4>
                         {isWip ? (
@@ -195,7 +195,7 @@ export default function FeaturesPage() {
       <section className="py-14 lg:py-20">
         <div className="site-container grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(19rem,0.48fr)] lg:items-end lg:gap-20">
           <div className="max-w-3xl">
-            <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Features</p>
+            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Features</p>
             <h1 className="mt-5 text-balance font-serif text-5xl leading-[1.04] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
               Everything begins with <HeroAccent>a memo.</HeroAccent>
             </h1>
@@ -226,7 +226,7 @@ export default function FeaturesPage() {
           <div className="site-container">
             <div className="grid gap-7 lg:grid-cols-[minmax(0,1.1fr)_minmax(18rem,0.7fr)] lg:items-end lg:gap-12">
               <div>
-                <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">{chapter.eyebrow}</p>
+                <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">{chapter.eyebrow}</p>
                 <h2
                   id={`${chapter.id}-title`}
                   className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl lg:text-[3.35rem]"
@@ -251,7 +251,7 @@ export default function FeaturesPage() {
       <section className="py-16 sm:py-20 lg:py-24">
         <div className="site-container grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-12">
           <div>
-            <p className="text-xs font-semibold tracking-[0.18em] text-teal-700 uppercase dark:text-teal-300">Start here</p>
+            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Start here</p>
             <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
               Start with one memo.
             </h2>

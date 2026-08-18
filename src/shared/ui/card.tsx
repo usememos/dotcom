@@ -127,16 +127,16 @@ export function Card({ title, href, icon, children }: CardProps) {
       className="group flex items-start gap-3.5 p-4 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-100 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-600 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-all duration-150 no-underline"
     >
       {IconComponent && (
-        <div className="shrink-0 inline-flex items-center justify-center w-8 h-8 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded-lg mt-0.5 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+        <div className="shrink-0 inline-flex items-center justify-center w-8 h-8 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded-lg mt-0.5 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
           <IconComponent className="w-4 h-4" />
         </div>
       )}
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between gap-2">
-          <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors tracking-tight">
+          <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors tracking-tight">
             {title}
           </h3>
-          <ArrowRightIcon className="w-4 h-4 text-zinc-300 dark:text-zinc-600 group-hover:text-teal-500 group-hover:translate-x-0.5 transition-all shrink-0" />
+          <ArrowRightIcon className="w-4 h-4 text-zinc-300 dark:text-zinc-600 group-hover:text-brand-500 group-hover:translate-x-0.5 transition-all shrink-0" />
         </div>
         {children && <div className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed mt-0.5">{children}</div>}
       </div>
