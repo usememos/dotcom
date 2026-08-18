@@ -181,7 +181,9 @@ export default function WebClipperPage() {
         <div className="site-container">
           <div className="grid gap-5 lg:grid-cols-[minmax(0,23rem)_1fr] lg:items-end lg:gap-20">
             <div>
-              <p className="text-sm font-semibold tracking-[0.16em] text-brand-700 uppercase dark:text-brand-300">Capture without cleanup</p>
+              <p className="text-sm font-semibold tracking-[0.16em] text-brand-700 uppercase dark:text-brand-300">
+                Capture without cleanup
+              </p>
               <h2 className="mt-4 text-balance font-serif text-4xl leading-tight font-semibold tracking-[-0.025em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
                 From webpage to timeline.
               </h2>

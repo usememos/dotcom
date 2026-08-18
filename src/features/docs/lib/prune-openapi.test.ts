@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { pruneOpenAPIDocument } from "./prune-openapi";
 
+// biome-ignore lint/suspicious/noExplicitAny: assertions navigate untyped OpenAPI fixture structures
+type LooseDocument = Record<string, any>;
+
 function buildDocument() {
   return {
     openapi: "3.2.0",
@@ -17,7 +20,9 @@ function buildDocument() {
         },
         delete: {
           operationId: "DeleteMemo",
-          responses: { "200": { description: "ok", content: { "application/json": { schema: { $ref: "#/components/schemas/Unrelated" } } } } },
+          responses: {
+            "200": { description: "ok", content: { "application/json": { schema: { $ref: "#/components/schemas/Unrelated" } } } },
+          },
         },
       },
       "/users": {
@@ -49,7 +54,7 @@ function buildDocument() {
 
 describe("pruneOpenAPIDocument", () => {
   it("keeps only the requested operation and its transitive refs", () => {
-    const pruned = pruneOpenAPIDocument(buildDocument(), [{ path: "/memos/{memo}", method: "patch" }]) as Record<string, any>;
+    const pruned = pruneOpenAPIDocument(buildDocument(), [{ path: "/memos/{memo}", method: "patch" }]) as LooseDocument;
 
     expect(Object.keys(pruned.paths)).toEqual(["/memos/{memo}"]);
     expect(pruned.paths["/memos/{memo}"].patch).toBeDefined();
@@ -69,7 +74,7 @@ describe("pruneOpenAPIDocument", () => {
   });
 
   it("selects webhooks by name", () => {
-    const pruned = pruneOpenAPIDocument(buildDocument(), [], [{ name: "memoCreated", method: "post" }]) as Record<string, any>;
+    const pruned = pruneOpenAPIDocument(buildDocument(), [], [{ name: "memoCreated", method: "post" }]) as LooseDocument;
 
     expect(pruned.webhooks.memoCreated.post).toBeDefined();
     expect(Object.keys(pruned.paths)).toEqual([]);
@@ -89,14 +94,14 @@ describe("pruneOpenAPIDocument", () => {
 
   it("returns the document unchanged on non-component refs", () => {
     const document = buildDocument();
-    (document.paths["/users"].get as any).parameters = [{ $ref: "#/paths/~1memos~1%7Bmemo%7D/patch" }];
+    (document.paths["/users"].get as LooseDocument).parameters = [{ $ref: "#/paths/~1memos~1%7Bmemo%7D/patch" }];
     expect(pruneOpenAPIDocument(document, [{ path: "/users", method: "get" }])).toBe(document);
   });
 
   it("survives cyclic schema references", () => {
     const document = buildDocument();
-    (document.components.schemas.User.properties as any).memos = { $ref: "#/components/schemas/Memo" };
-    const pruned = pruneOpenAPIDocument(document, [{ path: "/memos/{memo}", method: "patch" }]) as Record<string, any>;
+    (document.components.schemas.User.properties as LooseDocument).memos = { $ref: "#/components/schemas/Memo" };
+    const pruned = pruneOpenAPIDocument(document, [{ path: "/memos/{memo}", method: "patch" }]) as LooseDocument;
     expect(pruned.components.schemas.Memo).toBeDefined();
     expect(pruned.components.schemas.User).toBeDefined();
   });
