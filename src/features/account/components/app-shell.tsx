@@ -20,7 +20,7 @@ function WorkspaceMark() {
       className="group flex items-center gap-2.5 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       <span className="grid size-7 place-items-center overflow-hidden rounded-lg bg-foreground shadow-sm transition-transform duration-200 group-hover:-rotate-2">
-        <img src="/logo-rounded.png" alt="" className="size-7 object-cover" />
+        <img src="/logo-rounded-96.png" alt="" className="size-7 object-cover" />
       </span>
       <span className="text-[15px] font-semibold tracking-[-0.02em]">Memos</span>
     </Link>

@@ -11,7 +11,7 @@ export const docsLayoutOptions: BaseLayoutProps = {
   nav: {
     title: (
       <>
-        <Image src="/logo.png" alt="" width={24} height={24} className="rounded" priority aria-hidden="true" />
+        <Image src="/logo-96.png" alt="" width={24} height={24} className="rounded" priority aria-hidden="true" />
         Memos
       </>
     ),

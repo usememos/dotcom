@@ -42,7 +42,7 @@ export function WebClipperHeroVisual() {
       <div className="absolute right-2 bottom-[-2.75rem] w-[18.5rem] overflow-hidden rounded-xl border border-zinc-200 bg-[#fffefa] text-zinc-950 shadow-[0_24px_60px_rgba(0,0,0,0.28)] sm:right-8 sm:bottom-[-3.5rem] sm:w-[21rem]">
         <div className="flex h-11 items-center justify-between border-b border-zinc-200 px-3">
           <div className="flex min-w-0 items-center gap-2">
-            <Image src="/logo-rounded.png" alt="" width={20} height={20} className="rounded-full" />
+            <Image src="/logo-rounded-96.png" alt="" width={20} height={20} className="rounded-full" />
             <span className="truncate text-xs font-semibold">steven · memos.example.com</span>
           </div>
           <SettingsIcon className="size-3.5 text-zinc-500" aria-hidden="true" />
@@ -84,7 +84,7 @@ export function ConnectionVisual() {
     <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-[#fbfaf7] shadow-[0_22px_60px_rgba(24,24,27,0.08)] dark:border-white/10 dark:bg-zinc-900">
       <div className="flex items-center border-b border-zinc-200 px-5 py-4 dark:border-white/10">
         <div className="flex items-center gap-2.5">
-          <Image src="/logo-rounded.png" alt="" width={28} height={28} className="rounded-full" />
+          <Image src="/logo-rounded-96.png" alt="" width={28} height={28} className="rounded-full" />
           <div>
             <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-100">memos web clipper</p>
             <p className="text-[11px] text-zinc-500 dark:text-zinc-400">Choose how you want to connect</p>
@@ -94,7 +94,7 @@ export function ConnectionVisual() {
       <div className="divide-y divide-zinc-200 dark:divide-white/10">
         <div className="group grid gap-4 bg-white p-5 transition-colors hover:bg-brand-50/60 dark:bg-zinc-950 dark:hover:bg-brand-950/20 sm:grid-cols-[2.5rem_1fr_auto] sm:items-center">
           <span className="flex size-10 items-center justify-center rounded-xl bg-brand-100 text-brand-800 dark:bg-brand-400/15 dark:text-brand-300">
-            <Image src="/logo-rounded.png" alt="" width={24} height={24} className="rounded-full" />
+            <Image src="/logo-rounded-96.png" alt="" width={24} height={24} className="rounded-full" />
           </span>
           <div>
             <div className="flex items-center gap-2">

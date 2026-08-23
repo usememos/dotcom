@@ -156,7 +156,7 @@ export function SiteHeader() {
     <header ref={headerRef} className="sticky top-0 z-40 h-14 border-b border-border bg-background/85 backdrop-blur-lg">
       <nav className="site-container flex h-14 items-center" aria-label="Main navigation">
         <Link href="/" prefetch={false} className="inline-flex items-center gap-2.5 font-semibold">
-          <Image src="/logo.png" alt="" width={24} height={24} className="rounded" priority aria-hidden="true" />
+          <Image src="/logo-96.png" alt="" width={24} height={24} className="rounded" priority aria-hidden="true" />
           <span>Memos</span>
         </Link>
 

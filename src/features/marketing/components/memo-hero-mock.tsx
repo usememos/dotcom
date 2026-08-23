@@ -3,8 +3,11 @@ import {
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  Globe2Icon,
-  LibraryIcon,
+  ChevronsUpDownIcon,
+  HashIcon,
+  HouseIcon,
+  ListIcon,
+  ListTreeIcon,
   LockIcon,
   MapPinIcon,
   MoreVerticalIcon,
@@ -12,145 +15,263 @@ import {
   PlusIcon,
   SearchIcon,
   SlidersHorizontalIcon,
+  SquarePenIcon,
 } from "lucide-react";
 import Image from "next/image";
+import type { ReactNode } from "react";
 import styles from "@/features/marketing/components/home-hero.module.css";
 
-const CALENDAR_DAYS = [
-  { day: "28", muted: true },
-  { day: "29", muted: true },
-  { day: "30", muted: true },
-  { day: "1", intensity: 1 },
-  { day: "2" },
-  { day: "3", intensity: 2 },
-  { day: "4" },
-  { day: "5" },
-  { day: "6", intensity: 1 },
-  { day: "7" },
-  { day: "8", intensity: 2 },
-  { day: "9" },
-  { day: "10", intensity: 1 },
-  { day: "11" },
-  { day: "12" },
-  { day: "13" },
-  { day: "14", intensity: 3 },
-  { day: "15" },
-  { day: "16", intensity: 1 },
-  { day: "17" },
-  { day: "18" },
-  { day: "19" },
-  { day: "20", intensity: 2 },
-  { day: "21" },
-  { day: "22" },
-  { day: "23", intensity: 1 },
-  { day: "24", active: true },
-  { day: "25" },
-  { day: "26" },
-  { day: "27" },
-  { day: "28", intensity: 1 },
-  { day: "29" },
-  { day: "30" },
-  { day: "31" },
-  { day: "1", muted: true },
-] as const;
+/**
+ * The whole calendar derives from this one date, so the month label, the weekday alignment
+ * of the grid and the "today" marker cannot drift apart when the mock is moved forward.
+ * Frozen rather than read from the clock: the rest of the reconstruction is frozen too
+ * (the memo bodies, the tag counts, the "22 days ago" stamps), so a live calendar would
+ * only drift away from the feed beside it — and a build-time date would churn the
+ * prerendered HTML on every deploy.
+ */
+const MOCK_TODAY = { year: 2026, month: 7, day: 23 } as const;
+
+/**
+ * Day of month to heat level. Keys must stay on or before `MOCK_TODAY.day`: the app never
+ * shows memos filed in the future. Days 1 and 6 carry the two memos the feed renders, whose
+ * "22 days ago" / "17 days ago" stamps are hand-written in `Timeline` and do not follow
+ * `MOCK_TODAY` — moving the mock forward means re-checking them by hand.
+ */
+const MOCK_ACTIVITY: Record<number, 1 | 2 | 3> = {
+  1: 1,
+  3: 2,
+  4: 1,
+  6: 3,
+  7: 1,
+  10: 2,
+  11: 1,
+  12: 1,
+  14: 3,
+  17: 2,
+  18: 1,
+  19: 2,
+  20: 1,
+  21: 3,
+  23: 2,
+};
+
+interface CalendarDay {
+  key: string;
+  label: number;
+  /** A leading or trailing day borrowed from the neighbouring month. */
+  outside: boolean;
+  intensity?: 1 | 2 | 3;
+  today: boolean;
+}
+
+const DAY_MS = 86_400_000;
+/** Six Sunday-start weeks, the fixed grid the app's month calendar draws. */
+const CALENDAR_CELLS = 42;
+
+export const CALENDAR_DAYS: CalendarDay[] = (() => {
+  const { year, month, day: todayDate } = MOCK_TODAY;
+  const firstOfMonth = Date.UTC(year, month, 1);
+  // Back up to the Sunday on or before the 1st, then walk six whole weeks forward.
+  const gridStart = firstOfMonth - new Date(firstOfMonth).getUTCDay() * DAY_MS;
+
+  return Array.from({ length: CALENDAR_CELLS }, (_, index) => {
+    const date = new Date(gridStart + index * DAY_MS);
+    const label = date.getUTCDate();
+    const outside = date.getUTCMonth() !== month;
+
+    return {
+      key: date.toISOString().slice(0, 10),
+      label,
+      outside,
+      intensity: outside ? undefined : MOCK_ACTIVITY[label],
+      today: !outside && label === todayDate,
+    };
+  });
+})();
+
+export const CALENDAR_LABEL = new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric", timeZone: "UTC" }).format(
+  new Date(Date.UTC(MOCK_TODAY.year, MOCK_TODAY.month, MOCK_TODAY.day)),
+);
 
 const WEEKDAYS = ["S", "M", "T", "W", "T", "F", "S"] as const;
 
-const RAIL_ITEMS = [
-  { label: "Explore", icon: Globe2Icon },
-  { label: "Resources", icon: PaperclipIcon },
-  { label: "Notifications", icon: BellIcon },
+/** Collapsed pills next to the active scope: attachments and the notification inbox. */
+const NAV_PILLS = [
+  { label: "Attachments", icon: PaperclipIcon },
+  { label: "Inbox", icon: BellIcon },
 ] as const;
 
-function calendarDayClass(day: (typeof CALENDAR_DAYS)[number]) {
-  if ("active" in day && day.active) {
-    return "bg-brand-700 text-white shadow-sm dark:bg-brand-400 dark:text-zinc-950";
-  }
-  if ("muted" in day && day.muted) {
+/** Counts describe the whole instance, not just the two memos on screen. `Timeline` below
+ *  tags its cards from this list — the sidebar must not advertise a tag no memo carries. */
+export const SIDEBAR_TAGS = [
+  { tag: "books", count: 12 },
+  { tag: "reading", count: 9 },
+  { tag: "dev", count: 7 },
+  { tag: "cheatsheet", count: 4 },
+] as const;
+
+const SIDEBAR_ROW_CLASS =
+  "flex h-[22px] w-full min-w-0 items-center gap-1.5 rounded-md px-1.5 text-[10px] text-zinc-500 dark:text-zinc-400";
+const SECTION_ACTION_CLASS = "size-3 shrink-0 text-zinc-400 dark:text-zinc-500";
+const SECTION_ACTION_ACTIVE_CLASS = "size-3 shrink-0 rounded bg-stone-200/70 text-zinc-600 dark:bg-white/10 dark:text-zinc-300";
+
+const INTENSITY_CLASS: Record<1 | 2 | 3, string> = {
+  1: "bg-brand-400/18 text-zinc-700 dark:text-zinc-200",
+  2: "bg-brand-400/32 text-zinc-800 dark:text-zinc-100",
+  3: "bg-brand-400/55 text-zinc-900 dark:text-zinc-50",
+};
+
+function calendarDayClass(day: CalendarDay) {
+  if (day.outside) {
     return "text-zinc-300 dark:text-zinc-700";
   }
-  if ("intensity" in day) {
-    const intensityClasses = {
-      1: "bg-brand-50 text-brand-900 dark:bg-brand-950 dark:text-brand-200",
-      2: "bg-brand-100 text-brand-900 dark:bg-brand-900 dark:text-brand-100",
-      3: "bg-brand-200 text-brand-950 dark:bg-brand-700 dark:text-white",
-    } as const;
-    return intensityClasses[day.intensity];
+  if (day.intensity) {
+    return INTENSITY_CLASS[day.intensity];
   }
   return "text-zinc-500 dark:text-zinc-400";
 }
 
-function AppRail() {
+function SidebarSectionHeader({ label, children }: { label: string; children?: ReactNode }) {
   return (
-    <aside className="hidden flex-col items-center border-r border-stone-200/90 bg-stone-100/70 py-3 sm:flex dark:border-white/8 dark:bg-zinc-950">
-      <Image src="/logo-rounded.png" alt="" width={25} height={25} className="rounded-lg" />
-      <div className="mt-5 flex flex-col gap-2">
-        <span className="flex size-8 items-center justify-center rounded-lg bg-white text-zinc-800 shadow-sm ring-1 ring-stone-200 dark:bg-white/10 dark:text-zinc-100 dark:ring-white/10">
-          <LibraryIcon className="size-4" />
-        </span>
-        {RAIL_ITEMS.map((item) => {
-          const Icon = item.icon;
-          return (
-            <span key={item.label} className="flex size-8 items-center justify-center text-zinc-400 dark:text-zinc-500">
-              <Icon className="size-4" />
-            </span>
-          );
-        })}
-      </div>
-    </aside>
+    <div className="mb-0.5 flex h-4 items-center justify-between gap-2">
+      <p className="ps-1.5 text-[8px] font-normal tracking-wide text-zinc-400 uppercase dark:text-zinc-500">{label}</p>
+      {children ? <div className="flex items-center gap-0.5">{children}</div> : null}
+    </div>
   );
 }
 
-function CalendarIndex() {
+function SidebarHeader() {
   return (
-    <aside className="hidden border-r border-stone-200/90 bg-[#faf9f6] px-3.5 py-3 sm:block dark:border-white/8 dark:bg-zinc-900">
-      <div className="flex h-7 items-center gap-1.5 rounded-md border border-stone-200 bg-white/70 px-2 text-zinc-400 shadow-[0_1px_1px_rgba(28,25,23,0.02)] dark:border-white/10 dark:bg-white/5 dark:text-zinc-500">
-        <SearchIcon className="size-2.5 shrink-0" />
-        <span className="min-w-0 flex-1 truncate text-[9px] leading-none">Search memos...</span>
-        <SlidersHorizontalIcon className="size-2.5 shrink-0" />
+    <div className="flex h-9 shrink-0 items-center justify-between gap-2 px-3">
+      <div className="flex min-w-0 items-center gap-1.5">
+        <Image src="/logo-rounded-96.png" alt="" width={20} height={20} className="rounded-[6px]" />
+        <span className="truncate text-[11px] font-medium tracking-[-0.01em] text-zinc-800 dark:text-zinc-100">Memos</span>
       </div>
+      <div className="flex shrink-0 items-center gap-1.5 text-zinc-400 dark:text-zinc-500">
+        <SearchIcon className="size-3.5" />
+        <SquarePenIcon className="size-3.5" />
+      </div>
+    </div>
+  );
+}
 
-      <div className="mt-3.5 flex items-center justify-between">
-        <p className="text-[11px] font-semibold text-zinc-800 dark:text-zinc-200">July 2026</p>
-        <div className="flex gap-1 text-zinc-400">
-          <ChevronLeftIcon className="size-3.5" />
-          <ChevronRightIcon className="size-3.5" />
+function GlobalNav() {
+  return (
+    <div className="flex h-7 items-center gap-1 px-3">
+      <span className="flex h-[22px] items-center gap-1.5 rounded-md bg-stone-200/70 px-1.5 text-[10px] font-medium text-zinc-800 dark:bg-white/10 dark:text-zinc-100">
+        <HouseIcon className="size-3.5 shrink-0" />
+        Home
+        <ChevronDownIcon className="size-2.5 shrink-0 opacity-55" />
+      </span>
+      {NAV_PILLS.map((pill) => {
+        const Icon = pill.icon;
+        return (
+          <span key={pill.label} className="flex size-[22px] items-center justify-center rounded-md text-zinc-400 dark:text-zinc-500">
+            <Icon className="size-3.5" />
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
+function CalendarSection() {
+  return (
+    <section>
+      <div className="mb-1 flex h-[22px] items-center justify-between px-1.5">
+        <p className="text-[10.5px] font-medium tracking-[-0.015em] text-zinc-800 dark:text-zinc-200">{CALENDAR_LABEL}</p>
+        <div className="flex gap-0.5 text-zinc-400 dark:text-zinc-500">
+          <ChevronLeftIcon className="size-3" />
+          <ChevronRightIcon className="size-3" />
         </div>
       </div>
 
-      <div className="mt-3 grid grid-cols-7 gap-x-1 gap-y-1">
+      <div className="mb-1 grid grid-cols-7 gap-1">
         {WEEKDAYS.map((day, index) => (
-          <span key={`${day}-${index}`} className="flex h-4 items-center justify-center text-[8px] font-medium text-zinc-400">
+          <span
+            key={`${day}-${index}`}
+            className="flex h-3.5 items-center justify-center text-[8px] font-medium tracking-[0.04em] text-zinc-400/80 uppercase dark:text-zinc-500/80"
+          >
             {day}
           </span>
         ))}
-        {CALENDAR_DAYS.map((day, index) => (
+      </div>
+
+      <div className="grid grid-cols-7 gap-1">
+        {CALENDAR_DAYS.map((day) => (
           <span
-            key={`${day.day}-${index}`}
-            className={`flex aspect-square items-center justify-center rounded-md text-[9px] font-medium ${calendarDayClass(day)}`}
+            key={day.key}
+            className={`relative flex aspect-square items-center justify-center rounded-md text-[9px] tabular-nums ${calendarDayClass(day)}`}
           >
-            {day.day}
+            {day.label}
+            {day.today ? (
+              <span className="absolute bottom-[2px] left-1/2 size-[2.5px] -translate-x-1/2 rounded-full bg-brand-600/80 dark:bg-brand-300/80" />
+            ) : null}
           </span>
         ))}
       </div>
+    </section>
+  );
+}
 
-      <div className="mt-4 border-t border-stone-200/80 pt-3.5 dark:border-white/8">
-        <div className="flex items-center justify-between">
-          <p className="text-[10px] font-semibold text-zinc-700 dark:text-zinc-300">Tags</p>
-          <MoreVerticalIcon className="size-3 text-zinc-400" />
-        </div>
-        <div className="mt-2.5 space-y-1.5">
-          <p className="text-[10px] text-zinc-500 dark:text-zinc-400">
-            <span className="text-brand-700 dark:text-brand-300">#</span> books
-          </p>
-          <p className="text-[10px] text-zinc-500 dark:text-zinc-400">
-            <span className="text-brand-700 dark:text-brand-300">#</span> reading
-          </p>
-          <p className="text-[10px] text-zinc-500 dark:text-zinc-400">
-            <span className="text-brand-700 dark:text-brand-300">#</span> cheatsheet
-          </p>
-        </div>
+function ViewsSection() {
+  return (
+    <section>
+      <SidebarSectionHeader label="Views">
+        <SlidersHorizontalIcon className={SECTION_ACTION_CLASS} />
+        <PlusIcon className={SECTION_ACTION_CLASS} />
+      </SidebarSectionHeader>
+      <span className={SIDEBAR_ROW_CLASS}>Tasks</span>
+    </section>
+  );
+}
+
+function TagsSection() {
+  return (
+    <section>
+      <SidebarSectionHeader label="Tags">
+        <ListIcon className={SECTION_ACTION_ACTIVE_CLASS} />
+        <ListTreeIcon className={SECTION_ACTION_CLASS} />
+      </SidebarSectionHeader>
+      <div className="flex flex-col gap-0.5">
+        {SIDEBAR_TAGS.map((item) => (
+          <span key={item.tag} className={SIDEBAR_ROW_CLASS}>
+            <HashIcon className="size-[11px] shrink-0 opacity-75" />
+            <span className="min-w-0 flex-1 truncate">{item.tag}</span>
+            <span className="text-[8px] tabular-nums text-zinc-400 dark:text-zinc-500">{item.count}</span>
+          </span>
+        ))}
       </div>
+    </section>
+  );
+}
+
+function SidebarFooter() {
+  return (
+    <div className="flex h-9 shrink-0 items-center justify-between gap-2 border-t border-stone-200/80 px-3 dark:border-white/8">
+      <div className="flex min-w-0 items-center gap-1.5">
+        <span className="flex size-5 shrink-0 items-center justify-center rounded-[5px] bg-brand-100 text-[9px] font-semibold text-brand-800 dark:bg-brand-400/15 dark:text-brand-200">
+          S
+        </span>
+        <span className="truncate text-[10px] font-medium text-zinc-800 dark:text-zinc-100">Steven</span>
+      </div>
+      <ChevronsUpDownIcon className="size-3 shrink-0 text-zinc-400 dark:text-zinc-500" />
+    </div>
+  );
+}
+
+function AppSidebar() {
+  return (
+    <aside className="hidden flex-col border-r border-stone-200/90 bg-[#faf9f6] sm:flex dark:border-white/8 dark:bg-zinc-900">
+      <SidebarHeader />
+      <GlobalNav />
+      <div className="mx-3 mt-1.5 border-t border-stone-200/80 dark:border-white/8" />
+      <div className="flex min-h-0 flex-1 flex-col gap-3.5 overflow-hidden px-3 pt-2 pb-3">
+        <CalendarSection />
+        <ViewsSection />
+        <TagsSection />
+      </div>
+      <SidebarFooter />
     </aside>
   );
 }
@@ -253,9 +374,10 @@ export function MemoHeroMock() {
           </div>
         </div>
 
-        <div className="grid min-h-[29rem] grid-cols-1 bg-[#f7f6f2] sm:grid-cols-[2.75rem_10.5rem_minmax(0,1fr)] dark:bg-zinc-950">
-          <AppRail />
-          <CalendarIndex />
+        {/* The sidebar column is the only width literal here, and the calendar sets its floor:
+            below ~12rem the seven day cells stop being legible at this type scale. */}
+        <div className="grid min-h-[29rem] grid-cols-1 bg-[#f7f6f2] sm:grid-cols-[12rem_minmax(0,1fr)] dark:bg-zinc-950">
+          <AppSidebar />
           <div className="min-w-0 px-3.5 py-3 sm:px-4 sm:py-3.5">
             <div className="mx-auto w-full max-w-[512px]">
               <Composer />
