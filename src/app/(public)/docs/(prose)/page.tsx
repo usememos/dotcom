@@ -55,6 +55,7 @@ export default async function Page() {
       <Breadcrumbs items={breadcrumbItems} className="mb-6" />
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
+      <AdsSectionMobile breakpoint="xl" items={["carbon"]} />
       <DocsArticleBody>
         <MDXContent
           components={getDocsMDXComponents({
@@ -63,7 +64,7 @@ export default async function Page() {
           })}
         />
       </DocsArticleBody>
-      <AdsSectionMobile />
+      <AdsSectionMobile breakpoint="xl" items={["sponsors"]} />
     </DocsPage>
   );
 }

@@ -7,7 +7,7 @@ import { AdsSectionDesktop } from "@/features/docs/components/ads-section";
 export function TocFooter() {
   return (
     <div className="mt-2 mb-2">
-      <AdsSectionDesktop />
+      <AdsSectionDesktop breakpoint="xl" items={["carbon", "sponsors"]} />
     </div>
   );
 }

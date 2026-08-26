@@ -85,7 +85,11 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
             </div>
             <BlogPostHeader title={data.title} description={data.description} publishedAt={data.published_at} tags={data.tags} />
             {data.feature_image && <BlogPostHeroImage src={data.feature_image} alt={data.title} />}
+            <AdsSectionMobile items={["carbon"]} className={BLOG_ARTICLE_COLUMN_CLASS} />
           </div>
+          <aside className="hidden lg:block lg:pt-24">
+            <AdsSectionDesktop items={["carbon"]} />
+          </aside>
         </div>
       </section>
 
@@ -93,7 +97,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
         <div className={BLOG_DETAIL_LAYOUT_CLASS}>
           <div className="min-w-0">
             <EditorialArticleBody content={Content} columnClassName={BLOG_ARTICLE_COLUMN_CLASS} />
-            <AdsSectionMobile />
+            <AdsSectionMobile items={["sponsors"]} />
             <BlogPostFooter />
           </div>
           <aside className="hidden lg:block">
@@ -123,7 +127,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                   )}
                 </div>
               </div>
-              <AdsSectionDesktop />
+              <AdsSectionDesktop items={["sponsors"]} />
             </div>
           </aside>
         </div>

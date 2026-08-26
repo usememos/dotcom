@@ -69,14 +69,18 @@ export default async function ChangelogEntryPage({ params }: ChangelogPageProps)
               isLatest={isLatest}
               breaking={data.breaking}
             />
+            <AdsSectionMobile items={["carbon"]} className={CHANGELOG_ARTICLE_COLUMN_CLASS} />
           </div>
+          <aside className="hidden lg:block lg:pt-24">
+            <AdsSectionDesktop items={["carbon"]} />
+          </aside>
         </div>
       </section>
       <section className="pb-16 pt-2 sm:pb-20">
         <div className={CHANGELOG_DETAIL_LAYOUT_CLASS}>
           <div className="min-w-0">
             <EditorialArticleBody content={Content} columnClassName={CHANGELOG_ARTICLE_COLUMN_CLASS} />
-            <AdsSectionMobile />
+            <AdsSectionMobile items={["sponsors"]} />
             <ChangelogFooter version={version} date={data.date} />
           </div>
           <aside className="hidden lg:block">
@@ -97,7 +101,7 @@ export default async function ChangelogEntryPage({ params }: ChangelogPageProps)
                   <p>Shipped fixes, features, and release notes for Memos maintainers and self-hosted upgrades.</p>
                 </div>
               </div>
-              <AdsSectionDesktop />
+              <AdsSectionDesktop items={["sponsors"]} />
             </div>
           </aside>
         </div>

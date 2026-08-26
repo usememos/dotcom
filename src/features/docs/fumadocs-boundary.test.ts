@@ -86,6 +86,8 @@ describe("Fumadocs UI boundary", () => {
     expect(scopedDocsCssSource).toMatch(/\.hidden\s*{\s*display:\s*none/);
     expect(docsSponsorCardSource).toContain("docs-sponsor-logo-light");
     expect(docsSponsorCardSource).toContain("docs-sponsor-logo-dark");
+    expect(docsSponsorCardSource).toContain("dark:!hidden");
+    expect(docsSponsorCardSource).toContain("hidden h-full w-auto max-w-full object-cover dark:!block");
     expect(docsSponsorCardSource).not.toMatch(/hidden[^"\n]*dark:block/);
     expect(docsThemeCssSource).toMatch(/\.docs-sponsor-logo-dark\s*{\s*display:\s*none/);
     expect(docsThemeCssSource).toMatch(/html\.dark:has\(#nd-docs-layout\) \.docs-sponsor-logo-light\s*{\s*display:\s*none/);

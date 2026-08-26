@@ -1,10 +1,11 @@
 "use client";
 
 import { HeartIcon } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/shared/lib/utils";
+import { type CarbonAdRenderStatus, carbonAdRuntime } from "@/shared/ui/carbon-ad-runtime";
 
-const CARBON_SCRIPT_URL = "https://cdn.carbonads.com/carbon.js?serve=CWBD4K7E&placement=usememoscom&format=cover";
 const SPONSOR_URL = "https://github.com/sponsors/usememos";
 
 const CONTAINER_STYLES = {
@@ -26,49 +27,21 @@ interface CarbonAdCardProps {
 }
 
 export function CarbonAdCard({ variant = "default" }: CarbonAdCardProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [adLoaded, setAdLoaded] = useState(false);
+  const mountRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const [status, setStatus] = useState<CarbonAdRenderStatus>("inactive");
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+    const mount = mountRef.current;
+    if (!mount) return;
 
-    const markAdLoaded = () => {
-      if (!container.querySelector("#carbonads, [id^='carbonads_']")) {
-        return false;
-      }
-
-      setAdLoaded(true);
-      return true;
-    };
-
-    const existingAd = document.getElementById("carbonads");
-    if (existingAd) {
-      container.appendChild(existingAd);
-      markAdLoaded();
-      return undefined;
-    }
-
-    const checkAd = setInterval(() => {
-      if (markAdLoaded()) {
-        clearInterval(checkAd);
-      }
-    }, 100);
-
-    if (!document.getElementById("_carbonads_js")) {
-      const script = document.createElement("script");
-      script.src = CARBON_SCRIPT_URL;
-      script.id = "_carbonads_js";
-      script.async = true;
-      container.appendChild(script);
-    }
-
-    return () => clearInterval(checkAd);
-  }, []);
+    return carbonAdRuntime.register(mount, pathname, setStatus);
+  }, [pathname]);
 
   return (
-    <div ref={containerRef} role="complementary" aria-label="Sponsored content" className={CONTAINER_STYLES[variant]}>
-      {!adLoaded && <FallbackContent variant={variant} />}
+    <div role="complementary" aria-label="Sponsored content" className={CONTAINER_STYLES[variant]} data-carbon-status={status}>
+      <div ref={mountRef} className="w-full" data-carbon-ad-mount="" />
+      {status !== "loaded" && <FallbackContent variant={variant} />}
     </div>
   );
 }
