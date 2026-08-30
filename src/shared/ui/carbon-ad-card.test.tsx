@@ -13,20 +13,12 @@ vi.mock("next/navigation", () => ({
   usePathname: () => mocks.pathname,
 }));
 
-function CarbonTestTree({
-  cards = 1,
-  desktopOnly,
-  variant,
-}: {
-  cards?: number;
-  desktopOnly?: boolean;
-  variant?: "compact" | "default" | "sponsor";
-}) {
+function CarbonTestTree({ cards = 1, variant }: { cards?: number; variant?: "compact" | "default" | "sponsor" }) {
   return (
     <>
       <CarbonAdsController />
       {Array.from({ length: cards }, (_, index) => (
-        <CarbonAdCard key={index} desktopOnly={desktopOnly} variant={variant} />
+        <CarbonAdCard key={index} variant={variant} />
       ))}
     </>
   );
@@ -55,7 +47,6 @@ describe("CarbonAdCard", () => {
 
   afterEach(() => {
     resetCarbonAdRuntimeForTests();
-    vi.unstubAllGlobals();
   });
 
   it("keeps the compact sponsor fallback while the Carbon creative is unavailable", () => {
@@ -64,6 +55,7 @@ describe("CarbonAdCard", () => {
     const region = screen.getByRole("complementary", { name: "Sponsored content" });
     expect(region.className).toMatch(/\bpy-2\b/);
     expect(region.className).toMatch(/\bborder-border\b/);
+    expect(region.className).toContain("min-h-[155px]");
     expect(region.className).not.toMatch(/\bh-\d/);
     expect(region).toHaveAttribute("data-carbon-status", "loading");
 
@@ -82,24 +74,14 @@ describe("CarbonAdCard", () => {
     expect(screen.queryByText(/continued development/i)).not.toBeInTheDocument();
   });
 
-  it("keeps the homepage ad inactive with a compact fallback on mobile", () => {
-    vi.stubGlobal(
-      "matchMedia",
-      vi.fn(() => ({
-        addEventListener: vi.fn(),
-        matches: false,
-        media: "(min-width: 1024px)",
-        removeEventListener: vi.fn(),
-      })),
-    );
-
-    render(<CarbonTestTree desktopOnly variant="sponsor" />);
+  it("registers the homepage ad with the approved Responsive height", () => {
+    render(<CarbonTestTree variant="sponsor" />);
 
     const region = screen.getByRole("complementary", { name: "Sponsored content" });
-    expect(region).toHaveAttribute("data-carbon-status", "inactive");
-    expect(region.className).toContain("min-h-16");
-    expect(region.className).toContain("lg:min-h-[200px]");
-    expect(document.querySelector("#_carbonads_js")).not.toBeInTheDocument();
+    expect(region).toHaveAttribute("data-carbon-status", "loading");
+    expect(region.className).toContain("min-h-[155px]");
+    expect(region.className).not.toContain("lg:min-h-[200px]");
+    expect(document.querySelector("#_carbonads_js")).toBeInTheDocument();
   });
 
   it("loads the dashboard tag once without treating script load as an impression", () => {
@@ -110,7 +92,7 @@ describe("CarbonAdCard", () => {
 
     const script = getCarbonScript();
     expect(script.async).toBe(true);
-    expect(script.src).toBe("https://cdn.carbonads.com/carbon.js?serve=CWBD4K7E&placement=usememoscom&format=cover");
+    expect(script.src).toBe("https://cdn.carbonads.com/carbon.js?serve=CWBD4K7E&placement=usememoscom&format=responsive");
 
     fireEvent.load(script);
 

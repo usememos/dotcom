@@ -3,9 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import { COMMUNITY_SPONSORS, FEATURED_SPONSORS } from "@/shared/data/sponsors";
 
 vi.mock("@/shared/ui/carbon-ad-card", () => ({
-  CarbonAdCard: ({ desktopOnly, variant }: { desktopOnly?: boolean; variant?: string }) => (
-    <aside data-testid="carbon-ad" data-desktop-only={desktopOnly || undefined} data-variant={variant} />
-  ),
+  CarbonAdCard: ({ variant }: { variant?: string }) => <aside data-testid="carbon-ad" data-variant={variant} />,
 }));
 
 import { SponsorsSection } from "./sponsors-section";
@@ -46,7 +44,6 @@ describe("SponsorsSection", () => {
 
     expect(logos.length).toBeGreaterThanOrEqual(FEATURED_SPONSORS.length);
     expect(carbonAd).toHaveAttribute("data-variant", "sponsor");
-    expect(carbonAd).toHaveAttribute("data-desktop-only", "true");
 
     for (const logo of logos) {
       expect(logo.compareDocumentPosition(carbonAd) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();

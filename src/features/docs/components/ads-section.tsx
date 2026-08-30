@@ -32,7 +32,7 @@ interface AdsSectionProps {
 
 function getSectionSpace(items: readonly AdsItem[]) {
   if (items.length > 1) return "min-h-[26rem]";
-  if (items[0] === "carbon") return "min-h-32";
+  if (items[0] === "carbon") return "min-h-[155px]";
   return "min-h-[12rem]";
 }
 

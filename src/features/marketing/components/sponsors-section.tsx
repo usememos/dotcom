@@ -7,9 +7,9 @@ const SQUARE_LOGO_SPONSORS = new Set(["SSD Nodes"]);
 
 export function SponsorsSection() {
   return (
-    <section className="bg-stone-50/70 py-10 dark:bg-zinc-900/35 lg:py-12">
+    <section className="bg-stone-50/70 py-8 dark:bg-zinc-900/35 sm:py-10 lg:py-12">
       <div className="site-container">
-        <div className="grid gap-7 lg:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] lg:items-center lg:gap-10">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] lg:items-center lg:gap-10">
           <div>
             <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Sponsors</p>
             <h2 className="mt-4 max-w-[14ch] text-balance font-serif text-3xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100 sm:text-4xl">
@@ -29,8 +29,8 @@ export function SponsorsSection() {
             </a>
           </div>
 
-          <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,22rem)] lg:items-center lg:gap-8">
-            <div className="grid grid-cols-2 gap-x-6 gap-y-4 min-[360px]:grid-cols-3 min-[360px]:gap-x-4 sm:gap-x-8">
+          <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(20rem,25rem)] lg:items-center lg:gap-8">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-3 min-[360px]:grid-cols-3 min-[360px]:gap-x-4 sm:gap-x-8 sm:gap-y-4 lg:grid-cols-2 lg:gap-x-4 lg:gap-y-3 xl:grid-cols-3 xl:gap-x-8 xl:gap-y-4">
               {FEATURED_SPONSORS.map((sponsor) => {
                 const logoClassName = cn(
                   "h-auto w-auto max-w-[88%] object-contain transition-opacity duration-200 group-hover:opacity-100 motion-reduce:transition-none",
@@ -43,7 +43,7 @@ export function SponsorsSection() {
                     href={sponsor.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex min-h-16 items-center justify-center rounded-lg last:col-span-2 last:mx-auto last:w-1/2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-4 focus-visible:ring-offset-stone-50 min-[360px]:last:col-span-1 min-[360px]:last:mx-0 min-[360px]:last:w-auto dark:focus-visible:ring-offset-zinc-900"
+                    className="group flex min-h-14 items-center justify-center rounded-lg last:col-span-2 last:mx-auto last:w-1/2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-4 focus-visible:ring-offset-stone-50 min-[360px]:last:col-span-1 min-[360px]:last:mx-0 min-[360px]:last:w-auto dark:focus-visible:ring-offset-zinc-900 sm:min-h-16 lg:last:col-span-2 lg:last:mx-auto lg:last:w-1/2 xl:last:col-span-1 xl:last:mx-0 xl:last:w-auto"
                   >
                     <img
                       src={sponsor.logo}
@@ -66,12 +66,10 @@ export function SponsorsSection() {
               })}
             </div>
 
-            <div className="border-t border-zinc-200 pt-5 dark:border-white/10 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
-              <p className="hidden text-[0.6875rem] font-semibold tracking-[0.16em] text-zinc-500 uppercase dark:text-zinc-400 lg:block">
-                Sponsored
-              </p>
-              <div className="lg:mt-3">
-                <CarbonAdCard desktopOnly variant="sponsor" />
+            <div className="border-t border-zinc-200 pt-4 dark:border-white/10 lg:relative lg:border-t-0 lg:pt-0 lg:before:absolute lg:before:inset-y-0 lg:before:-left-4 lg:before:w-px lg:before:bg-zinc-200 lg:dark:before:bg-white/10">
+              <p className="text-[0.6875rem] font-semibold tracking-[0.16em] text-zinc-500 uppercase dark:text-zinc-400">Sponsored</p>
+              <div className="mt-2 lg:mt-3">
+                <CarbonAdCard variant="sponsor" />
               </div>
             </div>
           </div>

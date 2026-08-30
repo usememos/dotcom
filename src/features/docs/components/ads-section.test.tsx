@@ -44,6 +44,7 @@ describe("responsive ads sections", () => {
     const ad = screen.getByTestId("carbon-ad");
     expect(screen.getAllByTestId("carbon-ad")).toHaveLength(1);
     expect(ad.parentElement).toHaveClass(expectedViewport === "mobile" ? "xl:!hidden" : "xl:!flex");
+    expect(ad.parentElement).toHaveClass("min-h-[155px]");
   });
 
   it.each([
@@ -69,10 +70,10 @@ describe("responsive ads sections", () => {
   it("renders only the requested items in their requested order", () => {
     mocks.viewportWidth = 1280;
 
-    const { rerender } = render(<AdsSectionDesktop breakpoint="xl" items={["carbon", "sponsors"]} />);
+    const { rerender } = render(<AdsSectionDesktop breakpoint="xl" items={["sponsors", "carbon"]} />);
 
     const combined = screen.getByTestId("carbon-ad").parentElement;
-    expect(Array.from(combined?.children ?? []).map((child) => child.getAttribute("data-testid"))).toEqual(["carbon-ad", "sponsors"]);
+    expect(Array.from(combined?.children ?? []).map((child) => child.getAttribute("data-testid"))).toEqual(["sponsors", "carbon-ad"]);
 
     rerender(<AdsSectionDesktop breakpoint="xl" items={["sponsors"]} />);
     expect(screen.queryByTestId("carbon-ad")).not.toBeInTheDocument();

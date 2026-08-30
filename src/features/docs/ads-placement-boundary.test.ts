@@ -13,19 +13,17 @@ const docsPages = [
 ];
 
 describe("Docs Carbon placement", () => {
-  it.each(docsPages)("keeps one xl mobile ad before prose and sponsors after it in %s", (file) => {
+  it.each(docsPages)("keeps one xl mobile sponsor and Carbon group after prose in %s", (file) => {
     const source = readFileSync(file, "utf8");
-    const carbonPlacement = '<AdsSectionMobile breakpoint="xl" items={["carbon"]} />';
-    const sponsorPlacement = '<AdsSectionMobile breakpoint="xl" items={["sponsors"]} />';
+    const placement = '<AdsSectionMobile breakpoint="xl" items={["sponsors", "carbon"]} />';
 
-    expect(source.match(new RegExp(carbonPlacement.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g"))).toHaveLength(1);
-    expect(source.match(new RegExp(sponsorPlacement.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g"))).toHaveLength(1);
-    expect(source.indexOf(carbonPlacement)).toBeLessThan(source.indexOf("<DocsArticleBody>"));
-    expect(source.indexOf(sponsorPlacement)).toBeGreaterThan(source.indexOf("</DocsArticleBody>"));
+    expect(source.match(new RegExp(placement.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g"))).toHaveLength(1);
+    expect(source.indexOf(placement)).toBeGreaterThan(source.indexOf("</DocsArticleBody>"));
+    expect(source).not.toContain('<AdsSectionMobile breakpoint="xl" items={["carbon"]} />');
   });
 
-  it("uses the matching xl breakpoint and puts Carbon first in the desktop TOC rail", () => {
+  it("uses the matching xl breakpoint and puts Carbon after sponsors in the desktop TOC rail", () => {
     const source = readFileSync(join(srcRoot, "features", "docs", "components", "toc-footer.tsx"), "utf8");
-    expect(source).toContain('<AdsSectionDesktop breakpoint="xl" items={["carbon", "sponsors"]} />');
+    expect(source).toContain('<AdsSectionDesktop breakpoint="xl" items={["sponsors", "carbon"]} />');
   });
 });

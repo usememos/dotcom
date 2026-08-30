@@ -60,7 +60,6 @@ export default async function Page(props: { params: Promise<RouteParams> }) {
       <Breadcrumbs items={breadcrumbs.items} className="mb-6" />
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
-      <AdsSectionMobile breakpoint="xl" items={["carbon"]} />
       <DocsArticleBody>
         <MDXContent
           components={getDocsMDXComponents({
@@ -69,7 +68,7 @@ export default async function Page(props: { params: Promise<RouteParams> }) {
           })}
         />
       </DocsArticleBody>
-      <AdsSectionMobile breakpoint="xl" items={["sponsors"]} />
+      <AdsSectionMobile breakpoint="xl" items={["sponsors", "carbon"]} />
     </DocsPage>
   );
 }

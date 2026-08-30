@@ -55,7 +55,6 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
         <MarkdownCopyButton markdownUrl={markdownUrl} />
         <ViewOptionsPopover markdownUrl={markdownUrl} />
       </div>
-      <AdsSectionMobile breakpoint="xl" items={["carbon"]} />
       <DocsArticleBody>
         <MDXContent
           components={getDocsMDXComponents({
@@ -64,7 +63,7 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
           })}
         />
       </DocsArticleBody>
-      <AdsSectionMobile breakpoint="xl" items={["sponsors"]} />
+      <AdsSectionMobile breakpoint="xl" items={["sponsors", "carbon"]} />
     </DocsPage>
   );
 }

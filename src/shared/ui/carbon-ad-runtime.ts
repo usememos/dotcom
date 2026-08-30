@@ -1,4 +1,4 @@
-const CARBON_SCRIPT_URL = "https://cdn.carbonads.com/carbon.js?serve=CWBD4K7E&placement=usememoscom&format=cover";
+const CARBON_SCRIPT_URL = "https://cdn.carbonads.com/carbon.js?serve=CWBD4K7E&placement=usememoscom&format=responsive";
 
 export type CarbonAdRenderStatus = "error" | "inactive" | "loaded" | "loading";
 
