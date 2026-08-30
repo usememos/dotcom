@@ -114,6 +114,15 @@ const PUBLIC_CACHEABLE_PATHS = [
 const config = {
   poweredByHeader: false,
   reactStrictMode: true,
+  experimental: {
+    // Next 16.3 enables prefetch inlining by default, but OpenNext answers
+    // segment/tree prefetches with the build-time RSC payload, whose
+    // InliningHintsStale bit makes the client expire and re-request the route
+    // forever (infinite `?_rsc=` requests on every page). Keep inlining off so
+    // builds never emit the stale bit and OpenNext serves per-segment data.
+    // Re-evaluate when @opennextjs/cloudflare (>1.20.4) supports inlining.
+    prefetchInlining: false,
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
