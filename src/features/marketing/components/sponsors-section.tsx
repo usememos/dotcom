@@ -1,73 +1,78 @@
-import { HeartIcon } from "lucide-react";
-import Link from "next/link";
+import { ArrowUpRightIcon } from "lucide-react";
 import { FEATURED_SPONSORS } from "@/shared/data/sponsors";
 import { cn } from "@/shared/lib/utils";
 import { CarbonAdCard } from "@/shared/ui/carbon-ad-card";
 
+const SQUARE_LOGO_SPONSORS = new Set(["SSD Nodes"]);
+
 export function SponsorsSection() {
   return (
-    <section className="bg-transparent py-14 sm:py-18 lg:py-20">
+    <section className="bg-stone-50/70 py-10 dark:bg-zinc-900/35 lg:py-12">
       <div className="site-container">
-        <div className="grid gap-10 border-t border-stone-300/60 pt-10 dark:border-white/10 lg:grid-cols-[minmax(0,21rem)_minmax(0,1fr)] lg:gap-14 lg:pt-14">
-          <div className="lg:sticky lg:top-24 lg:self-start">
-            <div className="mb-4 inline-flex items-center gap-3 text-sm font-medium text-stone-600 dark:text-stone-300">
-              <span className="inline-flex h-5 w-5 items-center justify-center text-stone-700 dark:text-stone-200">
-                <HeartIcon className="h-4 w-4" />
-              </span>
-              <span className="tracking-[0.18em] uppercase text-stone-500 dark:text-stone-400">Community</span>
-            </div>
-            <h2 className="max-w-[12ch] text-balance font-serif text-3xl font-semibold tracking-[-0.03em] text-stone-950 dark:text-stone-100 sm:text-4xl lg:text-[3.15rem]">
-              Supported by people who want Memos to last.
+        <div className="grid gap-7 lg:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] lg:items-center lg:gap-10">
+          <div>
+            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Sponsors</p>
+            <h2 className="mt-4 max-w-[14ch] text-balance font-serif text-3xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100 sm:text-4xl">
+              These teams support Memos.
             </h2>
-            <p className="mt-4 max-w-md text-balance text-base leading-7 text-stone-600 dark:text-stone-300 sm:text-lg">
-              A small group of sponsors helps keep the project shipping, documented, and available to everyone.
-            </p>
+            <a
+              href="https://github.com/sponsors/usememos"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group mt-4 inline-flex items-center gap-2 text-sm font-semibold text-zinc-950 transition-colors hover:text-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-4 focus-visible:ring-offset-stone-50 dark:text-zinc-100 dark:hover:text-brand-300 dark:focus-visible:ring-offset-zinc-900"
+            >
+              Become a sponsor
+              <ArrowUpRightIcon
+                aria-hidden="true"
+                className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none"
+              />
+            </a>
           </div>
 
-          <div>
-            <div className="grid lg:grid-cols-2">
-              {FEATURED_SPONSORS.map((sponsor) => (
-                <a
-                  key={sponsor.name}
-                  href={sponsor.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex min-h-[12rem] flex-col justify-between gap-6 border-b border-stone-300/60 px-6 py-6 transition-colors dark:border-white/10 sm:px-8 sm:py-8 lg:[&:nth-last-child(-n+2)]:border-b-0 lg:[&:nth-child(odd)]:border-r lg:[&:nth-child(odd)]:border-stone-300/60 dark:lg:[&:nth-child(odd)]:border-white/10"
-                >
-                  <div className="flex items-center justify-start">
+          <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,22rem)] lg:items-center lg:gap-8">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-4 min-[360px]:grid-cols-3 min-[360px]:gap-x-4 sm:gap-x-8">
+              {FEATURED_SPONSORS.map((sponsor) => {
+                const logoClassName = cn(
+                  "h-auto w-auto max-w-[88%] object-contain transition-opacity duration-200 group-hover:opacity-100 motion-reduce:transition-none",
+                  SQUARE_LOGO_SPONSORS.has(sponsor.name) ? "max-h-12 opacity-90 sm:max-h-14 lg:max-h-16" : "max-h-7 opacity-80 sm:max-h-8",
+                );
+
+                return (
+                  <a
+                    key={sponsor.name}
+                    href={sponsor.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex min-h-16 items-center justify-center rounded-lg last:col-span-2 last:mx-auto last:w-1/2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-4 focus-visible:ring-offset-stone-50 min-[360px]:last:col-span-1 min-[360px]:last:mx-0 min-[360px]:last:w-auto dark:focus-visible:ring-offset-zinc-900"
+                  >
                     <img
                       src={sponsor.logo}
                       alt={`${sponsor.name} logo`}
-                      className={cn("h-10 w-auto max-w-full object-contain sm:h-12", sponsor.logoDark && "dark:hidden")}
+                      loading="lazy"
+                      decoding="async"
+                      className={cn(logoClassName, sponsor.logoDark && "dark:hidden")}
                     />
                     {sponsor.logoDark && (
                       <img
                         src={sponsor.logoDark}
                         alt={`${sponsor.name} logo`}
-                        className="hidden h-10 w-auto max-w-full object-contain dark:block sm:h-12"
+                        loading="lazy"
+                        decoding="async"
+                        className={cn(logoClassName, "hidden dark:block")}
                       />
                     )}
-                  </div>
-                  {sponsor.description && (
-                    <p className="max-w-sm border-t border-stone-300/60 pt-4 text-balance text-sm leading-7 text-stone-600 dark:border-white/10 dark:text-stone-300 sm:text-base">
-                      {sponsor.description}
-                    </p>
-                  )}
-                </a>
-              ))}
-              <div className="border-b border-stone-300/60 px-6 py-6 dark:border-white/10 sm:px-8 sm:py-8 lg:col-span-2 lg:border-b-0 lg:border-t lg:border-stone-300/60 dark:lg:border-white/10">
-                <CarbonAdCard variant="sponsor" />
-              </div>
+                  </a>
+                );
+              })}
             </div>
 
-            <div className="mt-6">
-              <Link
-                href="/sponsors"
-                className="inline-flex items-center gap-2 text-sm font-medium text-stone-900 transition-colors hover:text-stone-700 dark:text-stone-100 dark:hover:text-stone-200 sm:text-base"
-              >
-                View all sponsors and backers
-                <span aria-hidden="true">→</span>
-              </Link>
+            <div className="border-t border-zinc-200 pt-5 dark:border-white/10 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
+              <p className="hidden text-[0.6875rem] font-semibold tracking-[0.16em] text-zinc-500 uppercase dark:text-zinc-400 lg:block">
+                Sponsored
+              </p>
+              <div className="lg:mt-3">
+                <CarbonAdCard desktopOnly variant="sponsor" />
+              </div>
             </div>
           </div>
         </div>

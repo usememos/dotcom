@@ -13,12 +13,20 @@ vi.mock("next/navigation", () => ({
   usePathname: () => mocks.pathname,
 }));
 
-function CarbonTestTree({ cards = 1 }: { cards?: number }) {
+function CarbonTestTree({
+  cards = 1,
+  desktopOnly,
+  variant,
+}: {
+  cards?: number;
+  desktopOnly?: boolean;
+  variant?: "compact" | "default" | "sponsor";
+}) {
   return (
     <>
       <CarbonAdsController />
       {Array.from({ length: cards }, (_, index) => (
-        <CarbonAdCard key={index} />
+        <CarbonAdCard key={index} desktopOnly={desktopOnly} variant={variant} />
       ))}
     </>
   );
@@ -47,6 +55,7 @@ describe("CarbonAdCard", () => {
 
   afterEach(() => {
     resetCarbonAdRuntimeForTests();
+    vi.unstubAllGlobals();
   });
 
   it("keeps the compact sponsor fallback while the Carbon creative is unavailable", () => {
@@ -61,6 +70,36 @@ describe("CarbonAdCard", () => {
     const link = screen.getByRole("link", { name: "Support Memos" });
     expect(link).toHaveAttribute("href", "https://github.com/sponsors/usememos");
     expect(link.className).toMatch(/\bleading-5\b/);
+  });
+
+  it("keeps the homepage sponsor fallback concise", () => {
+    render(<CarbonTestTree variant="sponsor" />);
+
+    expect(screen.getByRole("link", { name: /Sponsor Memos Support the project and feature your logo here\./ })).toHaveAttribute(
+      "href",
+      "https://github.com/sponsors/usememos",
+    );
+    expect(screen.queryByText(/continued development/i)).not.toBeInTheDocument();
+  });
+
+  it("keeps the homepage ad inactive with a compact fallback on mobile", () => {
+    vi.stubGlobal(
+      "matchMedia",
+      vi.fn(() => ({
+        addEventListener: vi.fn(),
+        matches: false,
+        media: "(min-width: 1024px)",
+        removeEventListener: vi.fn(),
+      })),
+    );
+
+    render(<CarbonTestTree desktopOnly variant="sponsor" />);
+
+    const region = screen.getByRole("complementary", { name: "Sponsored content" });
+    expect(region).toHaveAttribute("data-carbon-status", "inactive");
+    expect(region.className).toContain("min-h-16");
+    expect(region.className).toContain("lg:min-h-[200px]");
+    expect(document.querySelector("#_carbonads_js")).not.toBeInTheDocument();
   });
 
   it("loads the dashboard tag once without treating script load as an impression", () => {

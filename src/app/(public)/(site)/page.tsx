@@ -8,6 +8,7 @@ import { HomeDiscoverSection } from "@/features/marketing/components/home-discov
 import { HomeFaqSection } from "@/features/marketing/components/home-faq-section";
 import { HomeFeaturesSection } from "@/features/marketing/components/home-features-section";
 import { HomeUseCasesSection } from "@/features/marketing/components/home-use-cases-section";
+import { SponsorsSection } from "@/features/marketing/components/sponsors-section";
 import { buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/shared/lib/seo";
 
 const PRINCIPLES = [
@@ -122,8 +123,9 @@ export default function HomePage() {
       <HomeUseCasesSection />
       <HomeDiscoverSection />
       <HomeFaqSection />
+      <SponsorsSection />
 
-      <section id="start" className="border-t border-zinc-200 bg-white py-16 dark:border-white/10 dark:bg-zinc-950 sm:py-20 lg:py-24">
+      <section id="start" className="bg-white py-16 dark:bg-zinc-950 sm:py-20 lg:py-24">
         <div className="site-container grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-12">
           <div>
             <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Start here</p>
