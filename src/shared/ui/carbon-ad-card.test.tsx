@@ -1,9 +1,7 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { StrictMode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { CarbonAdCard } from "./carbon-ad-card";
-import { resetCarbonAdRuntimeForTests } from "./carbon-ad-runtime";
-import { CarbonAdsController } from "./carbon-ads-controller";
 
 const mocks = vi.hoisted(() => ({
   pathname: "/docs/getting-started",
@@ -13,206 +11,158 @@ vi.mock("next/navigation", () => ({
   usePathname: () => mocks.pathname,
 }));
 
-function CarbonTestTree({ cards = 1, variant }: { cards?: number; variant?: "compact" | "default" | "sponsor" }) {
-  return (
-    <>
-      <CarbonAdsController />
-      {cards === 1 && <CarbonAdCard variant={variant} />}
-    </>
-  );
+const AD_REQUEST_URL = "https://srv.carbonads.net/ads/CWBD4K7E.json?segment=placement:usememoscom";
+
+function servedPayload(overrides: Record<string, string> = {}) {
+  return {
+    ads: [
+      {
+        statlink: "//srv.buysellads.com/ppc/click/example/[timestamp]",
+        description: "Build better software with ExampleCo.",
+        smallImage: "https://cdn4.buysellads.net/example.png",
+        ad_via_link: "https://discover.buysellads.com/carbon",
+        ...overrides,
+      },
+      {},
+    ],
+  };
 }
 
-function getCarbonScript() {
-  const script = document.querySelector<HTMLScriptElement>("#_carbonads_js");
-  expect(script).not.toBeNull();
-  return script as HTMLScriptElement;
+function stubFetch(payload: unknown) {
+  const fetchMock = vi.fn(() => Promise.resolve({ json: () => Promise.resolve(payload) }));
+  vi.stubGlobal("fetch", fetchMock);
+  return fetchMock;
 }
 
-function appendCreative() {
-  const host = document.querySelector("[data-carbon-ad-host]");
-  expect(host).not.toBeNull();
+class FakeIntersectionObserver {
+  static instances: FakeIntersectionObserver[] = [];
+  callback: (entries: { intersectionRatio: number }[], observer: FakeIntersectionObserver) => void;
+  disconnected = false;
 
-  const creative = document.createElement("div");
-  creative.id = "carbonads";
-  host?.appendChild(creative);
+  constructor(callback: FakeIntersectionObserver["callback"]) {
+    this.callback = callback;
+    FakeIntersectionObserver.instances.push(this);
+  }
+
+  observe() {}
+
+  disconnect() {
+    this.disconnected = true;
+  }
+}
+
+async function findAdText(description = "Build better software with ExampleCo.") {
+  return await screen.findByRole("link", { name: description });
 }
 
 describe("CarbonAdCard", () => {
   beforeEach(() => {
     mocks.pathname = "/docs/getting-started";
-    resetCarbonAdRuntimeForTests();
+    FakeIntersectionObserver.instances = [];
   });
 
   afterEach(() => {
-    resetCarbonAdRuntimeForTests();
+    vi.unstubAllGlobals();
   });
 
-  it("keeps the fallback compact while the creative is unavailable", () => {
-    render(<CarbonTestTree />);
+  it("renders the served ad with a secure, timestamped click link", async () => {
+    stubFetch(servedPayload({ pixel: "https://tracker.test/a/[timestamp]||https://tracker.test/b/[timestamp]" }));
+    render(<CarbonAdCard />);
 
-    const region = screen.getByRole("complementary", { name: "Sponsored content" });
-    expect(region.className).toContain("min-h-24");
-    expect(region.className).not.toContain("min-h-[155px]");
+    const textLink = await findAdText();
+    expect(textLink.getAttribute("href")).toMatch(/^https:\/\/srv\.carbonads\.net\/ppc\/click\/example\/\d+$/);
+    expect(textLink).toHaveAttribute("rel", "noopener sponsored");
+    expect(screen.getByRole("link", { name: "ads via Carbon" })).toHaveAttribute("href", "https://discover.buysellads.com/carbon");
+    expect(screen.queryByRole("link", { name: "Support Memos" })).not.toBeInTheDocument();
 
-    const fallback = region.querySelector("[data-carbon-fallback]");
-    expect(fallback).toHaveClass("group-has-[#carbonads]:hidden");
+    const pixels = document.querySelectorAll("img[hidden]");
+    expect(pixels).toHaveLength(2);
+    expect(pixels[0].getAttribute("src")).toMatch(/^https:\/\/tracker\.test\/a\/\d+$/);
+  });
+
+  it("requests exactly one ad per page view", async () => {
+    const fetchMock = stubFetch(servedPayload());
+    const { rerender } = render(<CarbonAdCard />);
+    await findAdText();
+
+    rerender(<CarbonAdCard />);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock).toHaveBeenCalledWith(AD_REQUEST_URL, expect.objectContaining({ signal: expect.any(AbortSignal) }));
+
+    mocks.pathname = "/docs/configuration";
+    rerender(<CarbonAdCard />);
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+  });
+
+  it("aborts the duplicate Strict Mode request and renders a single ad", async () => {
+    const fetchMock = stubFetch(servedPayload());
+    render(
+      <StrictMode>
+        <CarbonAdCard />
+      </StrictMode>,
+    );
+
+    await findAdText();
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect((fetchMock.mock.calls[0] as unknown[])[1]).toMatchObject({ signal: expect.objectContaining({ aborted: true }) });
+    expect(document.querySelectorAll("[data-carbon-ad]")).toHaveLength(1);
+  });
+
+  it("shows the fallback when Carbon serves no creative", async () => {
+    const fetchMock = stubFetch({ ads: [{ rendering: "carbon", zonekey: "CWBD4K7E" }, {}] });
+    render(<CarbonAdCard />);
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
     expect(screen.getByRole("link", { name: "Support Memos" })).toHaveAttribute("href", "https://github.com/sponsors/usememos");
+    expect(document.querySelector("[data-carbon-ad]")).not.toBeInTheDocument();
+  });
+
+  it("shows the fallback when the ad request fails", async () => {
+    const fetchMock = vi.fn(() => Promise.reject(new Error("blocked")));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<CarbonAdCard />);
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    expect(screen.getByRole("link", { name: "Support Memos" })).toBeInTheDocument();
   });
 
   it("keeps the homepage sponsor fallback concise", () => {
-    render(<CarbonTestTree variant="sponsor" />);
+    stubFetch(servedPayload());
+    render(<CarbonAdCard variant="sponsor" />);
 
     expect(screen.getByRole("link", { name: /Sponsor Memos Support the project and feature your logo here./ })).toHaveAttribute(
       "href",
       "https://github.com/sponsors/usememos",
     );
-    expect(screen.queryByText(/continued development/i)).not.toBeInTheDocument();
   });
 
-  it("keeps the homepage fallback compact", () => {
-    render(<CarbonTestTree variant="sponsor" />);
+  it("records viewability once when the payload asks for it", async () => {
+    vi.stubGlobal("IntersectionObserver", FakeIntersectionObserver);
+    const fetchMock = stubFetch(servedPayload({ should_record_viewable: "1", statview: "https://srv.carbonads.net/ads/viewable/x/token" }));
+    render(<CarbonAdCard />);
+    await findAdText();
 
-    const region = screen.getByRole("complementary", { name: "Sponsored content" });
-    expect(region.className).toContain("min-h-24");
-    expect(region.className).not.toContain("min-h-[155px]");
-    expect(document.querySelector("#_carbonads_js")).toBeInTheDocument();
-  });
+    const observer = FakeIntersectionObserver.instances[0];
+    expect(observer).toBeDefined();
 
-  it("loads the Carbon tag once without refreshing its automatic request", () => {
-    const refresh = vi.fn();
-    window._carbonads = { refresh };
+    observer.callback([{ intersectionRatio: 0.2 }], observer);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
 
-    render(<CarbonTestTree />);
-    const script = getCarbonScript();
-    fireEvent.load(script);
-
-    expect(script.async).toBe(true);
-    expect(script.src).toBe("https://cdn.carbonads.com/carbon.js?serve=CWBD4K7E&placement=usememoscom&format=responsive");
-    expect(refresh).not.toHaveBeenCalled();
-    expect(document.querySelectorAll("#_carbonads_js")).toHaveLength(1);
-  });
-
-  it("does not refresh when navigation finishes before script load", () => {
-    const refresh = vi.fn();
-    window._carbonads = { refresh };
-    const { rerender } = render(<CarbonTestTree />);
-    const script = getCarbonScript();
-
-    mocks.pathname = "/docs/configuration";
-    rerender(<CarbonTestTree />);
-    fireEvent.load(script);
-
-    expect(refresh).not.toHaveBeenCalled();
-    expect(getCarbonScript()).toBe(script);
-  });
-
-  it("refreshes exactly once for each pathname change", async () => {
-    const refresh = vi.fn(() => document.getElementById("carbonads")?.remove());
-    window._carbonads = { refresh };
-    const { rerender } = render(<CarbonTestTree />);
-    const script = getCarbonScript();
-    fireEvent.load(script);
-    appendCreative();
-
-    mocks.pathname = "/docs/configuration";
-    rerender(<CarbonTestTree />);
-    await waitFor(() => expect(refresh).toHaveBeenCalledTimes(1));
-
-    rerender(<CarbonTestTree />);
-    expect(refresh).toHaveBeenCalledTimes(1);
-    expect(getCarbonScript()).toBe(script);
-
-    mocks.pathname = "/docs/installation";
-    rerender(<CarbonTestTree />);
-    await waitFor(() => expect(refresh).toHaveBeenCalledTimes(2));
-  });
-
-  it("refreshes once when returning from a route without an ad slot", async () => {
-    const refresh = vi.fn();
-    window._carbonads = { refresh };
-    const { rerender } = render(<CarbonTestTree />);
-    const script = getCarbonScript();
-    fireEvent.load(script);
-
-    mocks.pathname = "/pricing";
-    rerender(<CarbonTestTree cards={0} />);
-    expect(refresh).not.toHaveBeenCalled();
-
-    mocks.pathname = "/docs/getting-started";
-    rerender(<CarbonTestTree />);
-
-    await waitFor(() => expect(refresh).toHaveBeenCalledTimes(1));
-    expect(getCarbonScript()).toBe(script);
-    expect(document.querySelectorAll("#_carbonads_js")).toHaveLength(1);
-  });
-
-  it("does not refresh when the slot remounts on the same pathname", () => {
-    const refresh = vi.fn();
-    window._carbonads = { refresh };
-    const { rerender } = render(<CarbonTestTree />);
-    const script = getCarbonScript();
-    fireEvent.load(script);
-
-    rerender(<CarbonTestTree cards={0} />);
-    rerender(<CarbonTestTree />);
-
-    expect(refresh).not.toHaveBeenCalled();
-    expect(getCarbonScript()).toBe(script);
-  });
-
-  it("does not duplicate the tag during Strict Mode setup", () => {
-    window._carbonads = { refresh: vi.fn() };
-
-    render(
-      <StrictMode>
-        <CarbonTestTree />
-      </StrictMode>,
-    );
-
-    expect(document.querySelectorAll("#_carbonads_js")).toHaveLength(1);
-  });
-
-  it("uses a compact fallback after the script fails", () => {
-    window._carbonads = { refresh: vi.fn() };
-    const { rerender } = render(<CarbonTestTree />);
-    const script = getCarbonScript();
-
-    fireEvent.error(script);
-
-    const region = screen.getByRole("complementary", { name: "Sponsored content" });
-    expect(region.className).toContain("min-h-24");
-    expect(screen.getByRole("link", { name: "Support Memos" })).toBeInTheDocument();
-
-    mocks.pathname = "/docs/configuration";
-    rerender(<CarbonTestTree />);
-    expect(getCarbonScript()).toBe(script);
-    expect(document.querySelectorAll("#_carbonads_js")).toHaveLength(1);
-  });
-
-  it("keeps the compact fallback when the loaded script has no API", () => {
-    render(<CarbonTestTree />);
-    fireEvent.load(getCarbonScript());
-
-    const region = screen.getByRole("complementary", { name: "Sponsored content" });
-    expect(region.className).toContain("min-h-24");
-    expect(screen.getByRole("link", { name: "Support Memos" })).toBeInTheDocument();
-  });
-
-  it("removes a stale creative when refresh fails", async () => {
-    const refresh = vi.fn();
-    window._carbonads = { refresh };
-    const { rerender } = render(<CarbonTestTree />);
-    fireEvent.load(getCarbonScript());
-    appendCreative();
-
-    refresh.mockImplementation(() => {
-      throw new Error("Carbon runtime failed");
+    observer.callback([{ intersectionRatio: 1 }], observer);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(fetchMock).toHaveBeenLastCalledWith("https://srv.carbonads.net/ads/viewable/x/token?segment=placement:usememoscom", {
+      mode: "no-cors",
     });
-    mocks.pathname = "/docs/configuration";
-    rerender(<CarbonTestTree />);
+    expect(observer.disconnected).toBe(true);
+  });
 
-    await waitFor(() => expect(document.querySelector("#carbonads, [id^='carbonads_']")).not.toBeInTheDocument());
-    expect(document.querySelector("#carbonads, [id^='carbonads_']")).not.toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Support Memos" })).toBeInTheDocument();
+  it("skips viewability tracking when the payload opts out", async () => {
+    vi.stubGlobal("IntersectionObserver", FakeIntersectionObserver);
+    const fetchMock = stubFetch(servedPayload());
+    render(<CarbonAdCard />);
+    await findAdText();
+
+    expect(FakeIntersectionObserver.instances).toHaveLength(0);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 });

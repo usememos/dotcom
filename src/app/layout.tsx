@@ -4,7 +4,6 @@ import { Inter, Source_Serif_4 } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
 import { buildSiteNavigationJsonLd, DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_ALT, GITHUB_REPO_URL } from "@/shared/lib/seo";
-import { CarbonAdsController } from "@/shared/ui/carbon-ads-controller";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -165,7 +164,6 @@ export default function Layout({ children }: { children: ReactNode }) {
       </head>
       <body className={`${inter.variable} ${displaySerif.variable} flex min-h-screen flex-col antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <CarbonAdsController />
           {children}
         </ThemeProvider>
       </body>
