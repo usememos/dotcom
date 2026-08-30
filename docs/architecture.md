@@ -133,11 +133,15 @@ server-owned data.
   per-entrypoint opt-out can't be applied to a single-entrypoint Worker. Watch
   dynamic-route latency after rollout.
 - **Unknown routes use the prerendered 404 cache.** Next 16 stores the App Router
-  not-found artifact at `/_not-found`, while OpenNext 4.1.0 still routes unknown
-  URLs to `/404`. The pinned `@opennextjs/aws` patch aligns those paths so cache
-  interception returns a 404 without loading NextServer. OpenNext 4.1.0 already
-  handles the separate root `/` versus `/index` cache-key mismatch upstream, so
-  do not restore that older local patch. The smoke test verifies the 404 status,
+  not-found artifact at `/_not-found`, while `@opennextjs/aws` 4.1.2 still routes
+  unknown URLs to `/404`. The pinned `@opennextjs/aws` patch aligns those paths so
+  cache interception returns a 404 without loading NextServer. The same patch
+  narrowly preserves the computed long-lived cache policy only for the immutable
+  build-time `/_not-found` artifact (`initialRevalidateSeconds: false`); OpenNext's
+  4.1.2 safety override continues to make transient or revalidating 404s and all
+  500s `no-store`. OpenNext already handles the separate root `/` versus `/index`
+  cache-key mismatch upstream, so do not restore that older local patch. The smoke
+  test verifies the 404 status,
   long-lived cache header, and `x-opennext-cache: HIT`; keep the remaining patch
   until the upstream adapter handles the Next 16 not-found cache key.
 - **Known browser probe paths are real assets.** The root Apple Web Clip filenames

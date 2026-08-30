@@ -1,0 +1,39 @@
+diff --git a/dist/core/routing/cacheInterceptor.js b/dist/core/routing/cacheInterceptor.js
+index 6d5cd16c3634645a8e9f7e9991c8b3befd7d27bf..f913af9ce0ce9f8360607a3ea97b9b155593c6db 100644
+--- a/dist/core/routing/cacheInterceptor.js
++++ b/dist/core/routing/cacheInterceptor.js
+@@ -186,7 +186,15 @@ async function generateResult(event, localizedPath, cachedValue, lastModified, i
+     // that could be stored in the entry's own headers. This is the same override the
+     // server path applies in `OpenNextNodeResponse.fixHeadersForError`, which the
+     // interceptor bypasses by returning a result directly.
+-    fixCacheControlForError(headers, statusCode);
++    // The build-time global not-found artifact is immutable for this deployment,
++    // so it is safe to retain the long-lived cache policy computed above. Keep
++    // transient and revalidating 404s on OpenNext's no-store safety path.
++    const isStaticGlobalNotFound = statusCode === 404 &&
++        localizedPath === "/_not-found" &&
++        PrerenderManifest?.routes?.[localizedPath]?.initialRevalidateSeconds === false;
++    if (!isStaticGlobalNotFound) {
++        fixCacheControlForError(headers, statusCode);
++    }
+     return {
+         type: "core",
+         statusCode,
+diff --git a/dist/core/routingHandler.js b/dist/core/routingHandler.js
+index 7f0e2fe9e8e418890338ab7ee75c86e2ff7ed337..fcd6e7c946fb7ab9276a5c27642846a7706351e0 100644
+--- a/dist/core/routingHandler.js
++++ b/dist/core/routingHandler.js
+@@ -166,8 +166,11 @@ export default async function routingHandler(event, { assetResolver }) {
+             dynamicRouteMatcher(eventOrResult.rawPath).length > 0)) {
+             eventOrResult = {
+                 ...eventOrResult,
+-                rawPath: "/404",
+-                url: constructNextUrl(eventOrResult.url, "/404"),
++                // Next 16 App Router prerenders its global not-found page under
++                // `/_not-found`, not `/404`. Using the actual cache key lets
++                // cache interception return the 404 without loading NextServer.
++                rawPath: "/_not-found",
++                url: constructNextUrl(eventOrResult.url, "/_not-found"),
+                 headers: {
+                     ...eventOrResult.headers,
+                     "x-middleware-response-cache-control": NO_STORE_CACHE_CONTROL,

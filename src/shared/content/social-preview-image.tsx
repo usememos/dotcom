@@ -4,15 +4,17 @@ import { ImageResponse } from "next/og";
 import type { ContentSocialPreview } from "@/shared/content/social-preview";
 import { SOCIAL_PREVIEW_IMAGE_SIZE } from "@/shared/content/social-preview";
 
-function loadPngDataUri(relativePath: string): Promise<string> {
-  return readFile(join(process.cwd(), relativePath)).then((buffer) => `data:image/png;base64,${buffer.toString("base64")}`);
+function loadPngDataUri(filename: string): Promise<string> {
+  return readFile(join(process.cwd(), "src/shared/content", filename)).then(
+    (buffer) => `data:image/png;base64,${buffer.toString("base64")}`,
+  );
 }
 
 /* The round mark plus a white wordmark: the full landscape logo's black
    wordmark loses contrast against the saturated brand background. This copy is
    public/logo-rounded.png pre-scaled to 128px (2x its 64px slot) so satori
    isn't fed the 784px original on every one of the ~550 image renders. */
-const logoPromise = loadPngDataUri("src/shared/content/og-logo.png");
+const logoPromise = loadPngDataUri("og-logo.png");
 
 /* Flat brand azure with white ink; a pure background keeps each prerendered
    image small. Hex values are hand-encoded (satori cannot read CSS variables)
