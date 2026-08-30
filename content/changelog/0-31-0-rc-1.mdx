@@ -1,0 +1,73 @@
+---
+title: Release v0.31.0-rc.1
+description: Collaborative Spaces, unified navigation, inline images, Saved Views, and stronger data boundaries
+date: "2026-08-30"
+breaking: true
+---
+
+> This release candidate introduces first-class Spaces for collaboration while preserving individual memo ownership. It also unifies navigation and memo creation, adds inline attachment images and optional media metadata, replaces Shortcuts with Saved Views, enriches link previews, and strengthens access controls, database upgrades, and live-update performance.
+
+## Breaking Changes
+
+- **Saved Views replace Shortcuts** - `ShortcutService`, shortcut resource names, MCP tools, persisted settings, and `/api/v1/users/*/shortcuts/*` have moved to `MemoViewService`, view resources, and `/api/v1/users/*/views/*`. The web route is now `/views`. Stored shortcuts migrate automatically, but API clients, MCP integrations, and saved links must be updated.
+- **Author-controlled memo mutations** - Instance administrators are no longer implicit memo collaborators or Space members. Memo, attachment, reaction, relation, and share mutations are controlled by the memo author. Space administrators manage Space settings and membership but cannot edit another author's memo.
+- **Independent comment lifecycle** - Comments now have their own visibility, placement, and lifecycle. `CreateMemoComment` no longer inherits the parent memo's visibility, so an omitted value defaults to `PRIVATE`. `SetMemoRelations` rejects `COMMENT` relations, and deleting a memo no longer cascades into comment memos.
+- **Reaction API changes** - `Reaction.content_id` has been removed from the public API. Integrations must identify the memo from the request or reaction resource name. Existing reactions are migrated to internal memo IDs, while orphaned reactions are removed.
+- **Managed attachment requirements** - Managed Markdown images must be bound to a memo before or during the same mutation. S3-backed attachments no longer expose presigned object URLs through `external_link`; clients should use the authenticated Memos file route.
+- **Exact-case usernames and mentions** - Username lookup and authentication are now case-sensitive. New or renamed usernames must contain 1–36 ASCII letters, digits, or interior hyphens, and mentions use the same Markdown-aware grammar. Legacy usernames remain addressable, but unsupported legacy spellings cannot be authored as new mentions.
+- **Quick Find shortcut removed** - The global Cmd/Ctrl+K keyboard shortcut has been removed. Quick Find remains available from the sidebar search action.
+- **RSS feeds removed** - Explore and per-user RSS feeds are no longer available. `/explore/rss.xml` and `/u/:username/rss.xml` now return `404`.
+
+## Upgrade Notes
+
+- **Instance access is independent of the public URL** - Public or private access is now stored separately from `instance-url`. The first upgraded startup preserves previous behavior: instances with a configured URL become public, while those without one remain private. Later URL changes no longer change access policy. Upgrade every replica before changing the mode because older binaries still infer access from the URL.
+- **Stricter instance URL validation** - `instance-url` must be an absolute HTTP or HTTPS URL without credentials, a query, or a fragment.
+- **Existing memos remain Unassigned** - Upgrading does not create a default Space or move existing memos. Their identity, author, visibility, and relations are preserved.
+- **Space deletion is destructive** - Deleting a Space permanently deletes every memo directly assigned to it and the resources owned by those memos. Removing a member leaves their contributions in place, and accounts with active Space memberships cannot be deleted, including with `force`.
+- **Cross-database migrations** - SQLite, MySQL, and PostgreSQL migrations preserve existing memo data, migrate Saved Views and legacy storage settings, and retain generated-ID high-water marks.
+- **Tag indexes update incrementally** - Existing memo payloads are not rebuilt automatically for the new tag grammar. Rendering and editing use the new rules immediately, while filters and statistics adopt them after each memo is saved again.
+- **Deployment changes** - Private webhook destinations can be restricted to exact hostnames, IP addresses, or CIDRs with `--webhook-private-network-allowlist`. The broader `--allow-private-webhooks` option remains compatible but is deprecated. Building Memos from source now requires Go 1.27.
+
+## New Features
+
+### Collaborative Spaces
+
+- **First-class collaboration** - Spaces support `ADMIN` and `USER` memberships while keeping every memo, including comments, owned by its author.
+- **Independent placement and audience** - A memo can remain Unassigned or belong to exactly one Space without changing its identity. The new `SPACE` visibility limits reading to Space members independently of memo placement.
+- **Space-aware browsing** - The Space switcher scopes Home, Explore, memo creation, statistics, filters, and attachments. Archived, Inbox, profiles, and Settings remain global.
+- **Membership management** - Space administrators can manage metadata and roles and invite existing users. Invitations grant no access until accepted.
+- **Stable identifiers** - New Spaces use UUIDv4 identifiers by default and can also use custom stable UIDs.
+
+### Navigation and Writing
+
+- **Unified sidebar** - The previous dual navigation rails have been replaced by one route-aware, resizable sidebar containing the calendar, Saved Views, tags, Quick Find, and contextual resource navigation.
+- **Global composer** - Authenticated users can create a memo from any route without returning to the main feed.
+- **Saved Views** - Existing shortcut data migrates into the new Saved Views surface for reusable memo filtering.
+
+### Attachments and Media
+
+- **Inline image insertion** - Images can be inserted at the cursor from uploads, paste, drag and drop, or existing attachments.
+- **Resilient drafts** - Inline uploads support retries and restoration when returning to an unfinished draft.
+- **Optional media metadata** - Memos can preserve normalized dimensions, camera details, capture time, location, and video duration for inspection in the attachment viewer.
+- **Stable storage configurations** - Named storage configurations use stable IDs so existing S3 attachments remain readable when storage settings change.
+- **Authenticated S3 delivery** - Managed S3 files are proxied through authenticated Memos routes with range-request support.
+
+### Discovery, Filtering, and Live Updates
+
+- **Unified tag parsing** - The backend, renderer, editor, filters, statistics, and API now share the same Markdown-aware tag grammar. Tags consistently support multilingual text, emoji, hierarchy, numeric values, `-`, `+`, `&`, and word-internal apostrophes.
+- **Consistent mentions** - Mention parsing now follows the same exact-case username rules throughout the product.
+- **Richer link previews** - Preview discovery now supports oEmbed, Open Graph, Twitter Cards, JSON-LD, HTML metadata, and semantic fallbacks, with bounded fetching, caching, request coalescing, and SSRF protection.
+- **Location-aware filters** - Memo filtering can now include location data.
+- **Efficient live updates** - Browser tabs share one visible-tab SSE connection, reducing redundant connections and server fanout work.
+
+## Improvements and Bug Fixes
+
+- **Editor and Markdown** - IME composition is preserved, Windows emoji input works again, tag completion matches hierarchical path segments, task checkboxes remain controlled, currency is no longer parsed as inline math, outline links match rendered headings, and presentation toggles are scoped correctly.
+- **Attachments and sharing** - Shared-memo thumbnails retain share tokens, attachment-library media links back to its source memo, and HEIC and HEIF uploads are detected reliably from filename extensions.
+- **Database reliability** - SQLite memo mutations now begin with `BEGIN IMMEDIATE`, allowing concurrent writers to queue instead of intermittently returning `SQLITE_BUSY`. Upgrade handling is also hardened against malformed legacy settings and generated-ID reuse.
+- **Navigation and layout** - Memo scope is preserved across global navigation, Archived remains outside Space scope, sidebar and outline behavior is restored, the resizable month calendar is constrained correctly, and select menus remain above parent popovers.
+- **Maps and localization** - Keyless OpenStreetMap tiles are restored, Hebrew and comprehensive right-to-left layout support are added, Japanese, Traditional Chinese, and Russian translations are refreshed, and the French memo-link label is corrected.
+- **API and settings** - Gateway JSON omits unset protobuf message fields while preserving scalar defaults and empty lists, and the configured memo-content length limit is enforced.
+- **Security dependency** - `golang.org/x/crypto` is updated to 0.52.0 to address CVE-2026-39829.
+
+**Full Changelog**: [v0.30.0...v0.31.0-rc.1](https://github.com/usememos/memos/compare/v0.30.0...v0.31.0-rc.1)
