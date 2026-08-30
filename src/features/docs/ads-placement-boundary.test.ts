@@ -13,17 +13,16 @@ const docsPages = [
 ];
 
 describe("Docs Carbon placement", () => {
-  it.each(docsPages)("keeps one xl mobile sponsor and Carbon group after prose in %s", (file) => {
+  it.each(docsPages)("keeps one xl main-content placement after prose in %s", (file) => {
     const source = readFileSync(file, "utf8");
-    const placement = '<AdsSectionMobile breakpoint="xl" items={["sponsors", "carbon"]} />';
+    const placement = '<MainContentAds breakpoint="xl" />';
 
     expect(source.match(new RegExp(placement.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g"))).toHaveLength(1);
     expect(source.indexOf(placement)).toBeGreaterThan(source.indexOf("</DocsArticleBody>"));
-    expect(source).not.toContain('<AdsSectionMobile breakpoint="xl" items={["carbon"]} />');
   });
 
-  it("uses the matching xl breakpoint and puts Carbon after sponsors in the desktop TOC rail", () => {
+  it("uses the matching xl sidebar placement in the desktop TOC rail", () => {
     const source = readFileSync(join(srcRoot, "features", "docs", "components", "toc-footer.tsx"), "utf8");
-    expect(source).toContain('<AdsSectionDesktop breakpoint="xl" items={["sponsors", "carbon"]} />');
+    expect(source).toContain('<SidebarAds breakpoint="xl" />');
   });
 });

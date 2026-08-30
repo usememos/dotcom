@@ -1,115 +1,57 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { DocsSponsorCard } from "@/features/docs/components/docs-sponsor-card";
 import { useMediaQuery } from "@/features/docs/hooks/use-media-query";
 import { cn } from "@/shared/lib/utils";
 import { CarbonAdCard } from "@/shared/ui/carbon-ad-card";
 
-const DEFAULT_ITEMS = ["sponsors", "carbon"] as const;
-
 const BREAKPOINTS = {
   lg: {
-    desktopClassName: "hidden lg:!flex",
+    mainContentClassName: "lg:!hidden",
     mediaQuery: "(min-width: 1024px)",
-    mobileClassName: "lg:!hidden",
+    sidebarClassName: "hidden lg:!flex",
   },
   xl: {
-    desktopClassName: "hidden xl:!flex",
+    mainContentClassName: "xl:!hidden",
     mediaQuery: "(min-width: 1280px)",
-    mobileClassName: "xl:!hidden",
+    sidebarClassName: "hidden xl:!flex",
   },
 } as const;
 
 type AdsBreakpoint = keyof typeof BREAKPOINTS;
-type AdsItem = (typeof DEFAULT_ITEMS)[number];
+type AdsPlacement = "main-content" | "sidebar";
 
 interface AdsSectionProps {
   breakpoint?: AdsBreakpoint;
-  className?: string;
-  items?: readonly AdsItem[];
 }
 
-function getSectionSpace(items: readonly AdsItem[]) {
-  if (items.length > 1) return "min-h-[26rem]";
-  if (items[0] === "carbon") return "min-h-[155px]";
-  return "min-h-[12rem]";
-}
-
-function useIsDesktopReady(breakpoint: AdsBreakpoint) {
+function AdsSection({ breakpoint = "lg", placement }: AdsSectionProps & { placement: AdsPlacement }) {
   const isDesktop = useMediaQuery(BREAKPOINTS[breakpoint].mediaQuery);
-  const [isReady, setIsReady] = useState(false);
+  const isMainContent = placement === "main-content";
+  const responsiveClassName = isMainContent ? BREAKPOINTS[breakpoint].mainContentClassName : BREAKPOINTS[breakpoint].sidebarClassName;
 
-  useEffect(() => {
-    setIsReady(true);
-  }, []);
-
-  return { isDesktop, isReady };
-}
-
-function AdsSectionPlaceholder({ breakpoint, className, items, viewport }: Required<AdsSectionProps> & { viewport: "mobile" | "desktop" }) {
-  const responsiveClassName = viewport === "mobile" ? BREAKPOINTS[breakpoint].mobileClassName : BREAKPOINTS[breakpoint].desktopClassName;
-
-  return (
-    <div
-      aria-hidden="true"
-      className={cn(responsiveClassName, viewport === "mobile" && "mt-8", "flex-col gap-4", getSectionSpace(items), className)}
-    />
-  );
-}
-
-function AdsSectionItems({ items }: { items: readonly AdsItem[] }) {
-  return items.map((item) => (item === "carbon" ? <CarbonAdCard key={item} /> : <DocsSponsorCard key={item} />));
-}
-
-export function AdsSectionMobile({ breakpoint = "lg", className = "", items = DEFAULT_ITEMS }: AdsSectionProps = {}) {
-  const { isDesktop, isReady } = useIsDesktopReady(breakpoint);
-
-  if (!isReady) {
-    return <AdsSectionPlaceholder breakpoint={breakpoint} className={className} items={items} viewport="mobile" />;
+  if (isDesktop === undefined) {
+    return null;
   }
 
-  if (isDesktop) {
+  const shouldRender = isMainContent ? !isDesktop : isDesktop;
+
+  if (!shouldRender) {
     return null;
   }
 
   return (
-    <div
-      className={cn(
-        BREAKPOINTS[breakpoint].mobileClassName,
-        "mt-8 flex flex-col gap-4",
-        getSectionSpace(items),
-        items.length === 1 && items[0] === "carbon" && "justify-center",
-        className,
-      )}
-    >
-      <AdsSectionItems items={items} />
+    <div className={cn(responsiveClassName, "flex flex-col gap-4", isMainContent && "mt-8")} data-ads-placement={placement}>
+      <DocsSponsorCard />
+      <CarbonAdCard />
     </div>
   );
 }
 
-export function AdsSectionDesktop({ breakpoint = "lg", className = "", items = DEFAULT_ITEMS }: AdsSectionProps = {}) {
-  const { isDesktop, isReady } = useIsDesktopReady(breakpoint);
+export function MainContentAds(props: AdsSectionProps = {}) {
+  return <AdsSection {...props} placement="main-content" />;
+}
 
-  if (!isReady) {
-    return <AdsSectionPlaceholder breakpoint={breakpoint} className={className} items={items} viewport="desktop" />;
-  }
-
-  if (!isDesktop) {
-    return null;
-  }
-
-  return (
-    <div
-      className={cn(
-        BREAKPOINTS[breakpoint].desktopClassName,
-        "flex-col gap-4",
-        getSectionSpace(items),
-        items.length === 1 && items[0] === "carbon" && "justify-center",
-        className,
-      )}
-    >
-      <AdsSectionItems items={items} />
-    </div>
-  );
+export function SidebarAds(props: AdsSectionProps = {}) {
+  return <AdsSection {...props} placement="sidebar" />;
 }

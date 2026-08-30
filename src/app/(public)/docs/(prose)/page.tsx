@@ -2,7 +2,7 @@ import { createRelativeLink } from "fumadocs-ui/mdx";
 import { DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/page";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { AdsSectionMobile } from "@/features/docs/components/ads-section";
+import { MainContentAds } from "@/features/docs/components/ads-section";
 import { DocsArticleBody } from "@/features/docs/components/docs-article-body";
 import { getDocsMDXComponents } from "@/features/docs/lib/mdx-components";
 import { getDocsSocialPreview } from "@/features/docs/lib/social-preview";
@@ -63,7 +63,7 @@ export default async function Page() {
           })}
         />
       </DocsArticleBody>
-      <AdsSectionMobile breakpoint="xl" items={["sponsors", "carbon"]} />
+      <MainContentAds breakpoint="xl" />
     </DocsPage>
   );
 }

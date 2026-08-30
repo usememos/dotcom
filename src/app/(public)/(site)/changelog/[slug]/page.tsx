@@ -2,7 +2,7 @@ import { ArrowLeftIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { AdsSectionDesktop, AdsSectionMobile } from "@/features/docs/components/ads-section";
+import { MainContentAds, SidebarAds } from "@/features/docs/components/ads-section";
 import { TOCSidebar } from "@/features/docs/components/toc-sidebar";
 import { ChangelogFooter } from "@/features/editorial/components/changelog-footer";
 import { ChangelogHeader } from "@/features/editorial/components/changelog-header";
@@ -69,18 +69,14 @@ export default async function ChangelogEntryPage({ params }: ChangelogPageProps)
               isLatest={isLatest}
               breaking={data.breaking}
             />
-            <AdsSectionMobile items={["carbon"]} className={CHANGELOG_ARTICLE_COLUMN_CLASS} />
           </div>
-          <aside className="hidden lg:block lg:pt-24">
-            <AdsSectionDesktop items={["carbon"]} />
-          </aside>
         </div>
       </section>
       <section className="pb-16 pt-2 sm:pb-20">
         <div className={CHANGELOG_DETAIL_LAYOUT_CLASS}>
           <div className="min-w-0">
             <EditorialArticleBody content={Content} columnClassName={CHANGELOG_ARTICLE_COLUMN_CLASS} />
-            <AdsSectionMobile items={["sponsors"]} />
+            <MainContentAds />
             <ChangelogFooter version={version} date={data.date} />
           </div>
           <aside className="hidden lg:block">
@@ -101,7 +97,7 @@ export default async function ChangelogEntryPage({ params }: ChangelogPageProps)
                   <p>Shipped fixes, features, and release notes for Memos maintainers and self-hosted upgrades.</p>
                 </div>
               </div>
-              <AdsSectionDesktop items={["sponsors"]} />
+              <SidebarAds />
             </div>
           </aside>
         </div>

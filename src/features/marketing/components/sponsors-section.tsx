@@ -7,7 +7,7 @@ const SQUARE_LOGO_SPONSORS = new Set(["SSD Nodes"]);
 
 export function SponsorsSection() {
   return (
-    <section className="bg-stone-50/70 py-8 dark:bg-zinc-900/35 sm:py-10 lg:py-12">
+    <section data-ads-placement="main-content" className="bg-stone-50/70 py-8 dark:bg-zinc-900/35 sm:py-10 lg:py-12">
       <div className="site-container">
         <div className="grid gap-6 lg:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] lg:items-center lg:gap-10">
           <div>

@@ -1,13 +1,9 @@
-import { AdsSectionDesktop } from "@/features/docs/components/ads-section";
+import { SidebarAds } from "@/features/docs/components/ads-section";
 
-/**
- * TOC footer component with sponsor card and carbon ads for desktop sidebar
- * Uses shared AdsSectionDesktop component for consistency
- */
 export function TocFooter() {
   return (
     <div className="mt-2 mb-2">
-      <AdsSectionDesktop breakpoint="xl" items={["sponsors", "carbon"]} />
+      <SidebarAds breakpoint="xl" />
     </div>
   );
 }

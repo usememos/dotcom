@@ -2,7 +2,7 @@ import { ArrowLeftIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { AdsSectionDesktop, AdsSectionMobile } from "@/features/docs/components/ads-section";
+import { MainContentAds, SidebarAds } from "@/features/docs/components/ads-section";
 import { TOCSidebar } from "@/features/docs/components/toc-sidebar";
 import { BlogPostFooter } from "@/features/editorial/components/blog-post-footer";
 import { BlogPostHeader } from "@/features/editorial/components/blog-post-header";
@@ -85,11 +85,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
             </div>
             <BlogPostHeader title={data.title} description={data.description} publishedAt={data.published_at} tags={data.tags} />
             {data.feature_image && <BlogPostHeroImage src={data.feature_image} alt={data.title} />}
-            <AdsSectionMobile items={["carbon"]} className={BLOG_ARTICLE_COLUMN_CLASS} />
           </div>
-          <aside className="hidden lg:block lg:pt-24">
-            <AdsSectionDesktop items={["carbon"]} />
-          </aside>
         </div>
       </section>
 
@@ -97,7 +93,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
         <div className={BLOG_DETAIL_LAYOUT_CLASS}>
           <div className="min-w-0">
             <EditorialArticleBody content={Content} columnClassName={BLOG_ARTICLE_COLUMN_CLASS} />
-            <AdsSectionMobile items={["sponsors"]} />
+            <MainContentAds />
             <BlogPostFooter />
           </div>
           <aside className="hidden lg:block">
@@ -127,7 +123,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                   )}
                 </div>
               </div>
-              <AdsSectionDesktop items={["sponsors"]} />
+              <SidebarAds />
             </div>
           </aside>
         </div>

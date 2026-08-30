@@ -42,6 +42,7 @@ describe("SponsorsSection", () => {
     const carbonAd = screen.getByTestId("carbon-ad");
     const logos = Array.from(container.querySelectorAll<HTMLImageElement>("img"));
 
+    expect(container.querySelector("section")).toHaveAttribute("data-ads-placement", "main-content");
     expect(logos.length).toBeGreaterThanOrEqual(FEATURED_SPONSORS.length);
     expect(carbonAd).toHaveAttribute("data-variant", "sponsor");
 
