@@ -1,5 +1,4 @@
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { SITE_NAV_LINKS } from "@/shared/lib/seo";
 import { SiteHeader } from "./site-header";
@@ -26,10 +25,14 @@ describe("SiteHeader", () => {
 
     expect(screen.getByRole("navigation", { name: "Main navigation" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Memos" })).toHaveAttribute("href", "/");
-    expect(screen.getByRole("button", { name: "Product" })).toHaveClass("text-primary");
-    expect(screen.getByRole("button", { name: "Tools" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Features" })).toHaveClass("text-primary");
+    expect(screen.getByRole("link", { name: "Features" })).toHaveAttribute("href", "/features");
+    expect(screen.getByRole("link", { name: "Use Cases" })).toHaveAttribute("href", "/use-cases");
     expect(screen.getByRole("link", { name: "Docs" })).toHaveAttribute("href", "/docs");
     expect(screen.getByRole("button", { name: "Resources" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Product" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Tools" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Live Demo" })).toHaveAttribute("href", "https://demo.usememos.com/");
     expect(screen.getByRole("link", { name: "Get Started" })).toHaveAttribute("href", "/docs/getting-started");
     const githubLink = screen.getByRole("link", { name: "Memos on GitHub, 60K+ stars" });
     expect(githubLink).toHaveAttribute("href", "https://github.com/usememos/memos");
@@ -52,33 +55,34 @@ describe("SiteHeader", () => {
     mocks.pathname = "/features/self-hosted";
     render(<SiteHeader />);
 
-    expect(screen.getByRole("button", { name: "Product" })).toHaveClass("text-primary");
+    expect(screen.getByRole("link", { name: "Features" })).toHaveClass("text-primary");
     expect(screen.getByRole("link", { name: "Docs" })).not.toHaveClass("text-primary");
   });
 
-  it("places API Reference under Resources and omits Pricing", async () => {
-    const user = userEvent.setup();
+  it("marks Resources active when a grouped route is current", () => {
+    mocks.pathname = "/changelog";
     render(<SiteHeader />);
 
-    await user.hover(screen.getByRole("button", { name: "Resources" }));
+    expect(screen.getByRole("button", { name: "Resources" })).toHaveClass("text-primary");
+  });
 
-    expect(await screen.findByRole("menuitem", { name: /API Reference/ })).toHaveAttribute("href", "/docs/api");
-    expect(screen.getByRole("menu")).toHaveClass("space-y-1");
+  it("lists Changelog before Blog under Resources and omits Pricing", () => {
+    const { container } = render(<SiteHeader />);
+
+    const hrefs = Array.from(container.querySelectorAll<HTMLAnchorElement>("nav a")).map((link) => link.getAttribute("href"));
+    expect(hrefs.indexOf("/changelog")).toBeGreaterThan(-1);
+    expect(hrefs.indexOf("/changelog")).toBeLessThan(hrefs.indexOf("/blog"));
     expect(screen.queryByText("Pricing")).not.toBeInTheDocument();
   });
 
-  it("opens on hover without letting clicks pin the menu", async () => {
-    const user = userEvent.setup();
-    render(<SiteHeader />);
+  it("server-renders every dropdown link without interaction", () => {
+    const { container } = render(<SiteHeader />);
 
-    const trigger = screen.getByRole("button", { name: "Product" });
-    await user.hover(trigger);
-    expect(await screen.findByRole("menuitem", { name: /Features/ })).toHaveAttribute("href", "/features");
-
-    await user.click(trigger);
-    await user.unhover(trigger);
-
-    await waitFor(() => expect(screen.queryByRole("menuitem", { name: /Features/ })).not.toBeInTheDocument());
+    const hrefs = Array.from(container.querySelectorAll<HTMLAnchorElement>("nav a")).map((link) => link.getAttribute("href"));
+    for (const item of SITE_NAV_LINKS) {
+      // Once in the always-in-DOM desktop menu, once in the mobile panel.
+      expect(hrefs.filter((href) => href === item.href).length, `${item.name} should be in the initial HTML`).toBeGreaterThanOrEqual(2);
+    }
   });
 
   it("keeps the mobile panel referenced by aria-controls while collapsed", () => {
@@ -101,9 +105,10 @@ describe("SiteHeader", () => {
 
     expect(screen.getByRole("button", { name: "Close navigation menu" })).toHaveAttribute("aria-expanded", "true");
     expect(document.querySelector("#site-mobile-navigation")).not.toHaveAttribute("hidden");
-    expect(screen.getAllByRole("link", { name: /Docs/ })).toHaveLength(2);
-    expect(screen.getByRole("link", { name: /Features/ })).toHaveAttribute("href", "/features");
-    expect(screen.getByRole("link", { name: /API Reference/ })).toHaveAttribute("href", "/docs/api");
+    const panel = within(document.querySelector("#site-mobile-navigation") as HTMLElement);
+    expect(panel.getByRole("link", { name: /Features/ })).toHaveAttribute("href", "/features");
+    expect(panel.getByRole("link", { name: /API Reference/ })).toHaveAttribute("href", "/docs/api");
+    expect(panel.getByRole("link", { name: /Live Demo/ })).toHaveAttribute("href", "https://demo.usememos.com/");
 
     fireEvent.click(screen.getByRole("button", { name: "Close navigation menu" }));
     expect(screen.getByRole("button", { name: "Open navigation menu" })).toHaveAttribute("aria-expanded", "false");

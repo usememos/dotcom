@@ -1,29 +1,57 @@
 import { describe, expect, it } from "vitest";
-import { absoluteUrl, buildBreadcrumbItems, buildFaqJsonLd, buildSiteNavigationJsonLd, SITE_NAV_ITEMS, SITE_NAV_LINKS } from "./seo";
+import {
+  absoluteUrl,
+  buildBreadcrumbItems,
+  buildFaqJsonLd,
+  buildSiteNavigationJsonLd,
+  SITE_NAV_DEMO,
+  SITE_NAV_ITEMS,
+  SITE_NAV_LINKS,
+} from "./seo";
 
 describe("seo", () => {
   it("groups the primary site navigation around visitor tasks", () => {
-    expect(SITE_NAV_ITEMS.map((item) => item.name)).toEqual(["Product", "Tools", "Docs", "Resources"]);
+    expect(SITE_NAV_ITEMS.map((item) => item.name)).toEqual(["Features", "Use Cases", "Docs", "Resources"]);
     expect(SITE_NAV_LINKS.map((item) => item.name)).toEqual([
-      "Features",
-      "Use Cases",
-      "Compare",
-      "Web Clipper",
-      "Live Demo",
+      "All Features",
+      "Self-Hosted",
+      "Open Source",
+      "Markdown Notes",
+      "API & Integrations",
+      "All Use Cases",
+      "Personal Journaling",
+      "Developers",
+      "Writers",
+      "Homelab & Self-Hosting",
       "Docs",
-      "API Reference",
-      "Blog",
       "Changelog",
+      "Blog",
+      "API Reference",
     ]);
     expect(SITE_NAV_LINKS.some((item) => item.href === "/pricing")).toBe(false);
   });
 
-  it("keeps the API reference in Resources", () => {
-    const resources = SITE_NAV_ITEMS.find((item) => item.name === "Resources");
-    const tools = SITE_NAV_ITEMS.find((item) => item.name === "Tools");
+  it("leads the Features and Use Cases menus with their index pages", () => {
+    for (const [group, href] of [
+      ["Features", "/features"],
+      ["Use Cases", "/use-cases"],
+    ] as const) {
+      const item = SITE_NAV_ITEMS.find((navItem) => navItem.name === group);
+      expect(item && "items" in item ? item.items[0]?.href : undefined).toBe(href);
+    }
+  });
 
-    expect(resources && "items" in resources ? resources.items.map((item) => item.name) : []).toContain("API Reference");
-    expect(tools && "items" in tools ? tools.items.map((item) => item.name) : []).not.toContain("API Reference");
+  it("ranks Changelog above Blog in Resources", () => {
+    const resources = SITE_NAV_ITEMS.find((item) => item.name === "Resources");
+    const names = resources && "items" in resources ? resources.items.map((item) => item.name) : [];
+
+    expect(names.indexOf("Changelog")).toBeLessThan(names.indexOf("Blog"));
+    expect(names).toContain("API Reference");
+  });
+
+  it("keeps the live demo out of the crawlable navigation links", () => {
+    expect(SITE_NAV_DEMO.external).toBe(true);
+    expect(SITE_NAV_LINKS.some((item) => item.href === SITE_NAV_DEMO.href)).toBe(false);
   });
 
   it("emits internal navigation destinations as structured data", () => {
@@ -34,7 +62,7 @@ describe("seo", () => {
     expect(jsonLd.numberOfItems).toBe(jsonLd.itemListElement.length);
     expect(names).toContain("Get Started");
     expect(names).not.toContain("Live Demo");
-    expect(jsonLd.itemListElement.find((item) => item.name === "Features")).toMatchObject({
+    expect(jsonLd.itemListElement.find((item) => item.name === "All Features")).toMatchObject({
       description: "Explore self-hosted note-taking features",
       url: "https://usememos.com/features",
     });

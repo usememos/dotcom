@@ -17,42 +17,53 @@ export interface SiteNavLink {
 
 export interface SiteNavGroup {
   name: string;
+  /** Index page the group trigger links to, so the trigger itself is crawlable. */
+  href?: string;
   items: readonly SiteNavLink[];
 }
 
 export const SITE_NAV_ITEMS = [
   {
-    name: "Product",
+    name: "Features",
+    href: "/features",
     items: [
-      { name: "Features", href: "/features", description: "Explore self-hosted note-taking features" },
-      { name: "Use Cases", href: "/use-cases", description: "Discover workflows for personal notes" },
-      { name: "Compare", href: "/compare", description: "Compare Memos with note-taking alternatives" },
+      { name: "All Features", href: "/features", description: "Explore self-hosted note-taking features" },
+      { name: "Self-Hosted", href: "/features/self-hosted", description: "Run Memos on your own infrastructure" },
+      { name: "Open Source", href: "/features/open-source", description: "MIT-licensed and developed in public" },
+      { name: "Markdown Notes", href: "/features/markdown-support", description: "Portable notes with Markdown and LaTeX math" },
+      { name: "API & Integrations", href: "/features/api-first", description: "REST and gRPC APIs for automation" },
     ],
   },
   {
-    name: "Tools",
+    name: "Use Cases",
+    href: "/use-cases",
     items: [
-      { name: "Web Clipper", href: "/web-clipper", description: "Save web pages and selections to Memos" },
-      {
-        name: "Live Demo",
-        href: "https://demo.usememos.com/",
-        description: "Try Memos in a public demo workspace",
-        external: true,
-      },
+      { name: "All Use Cases", href: "/use-cases", description: "Discover workflows for personal notes" },
+      { name: "Personal Journaling", href: "/use-cases/personal-knowledge", description: "Daily journals, notes, and idea trails" },
+      { name: "Developers", href: "/use-cases/developers", description: "Code snippets and technical notes" },
+      { name: "Writers", href: "/use-cases/writers", description: "Article drafts and creative ideas" },
+      { name: "Homelab & Self-Hosting", href: "/use-cases/self-hosting", description: "Server docs and infrastructure logs" },
     ],
   },
   { name: "Docs", href: "/docs", description: "Install, configure, and self-host Memos" },
   {
     name: "Resources",
     items: [
-      { name: "API Reference", href: "/docs/api", description: "Build integrations with the Memos API" },
-      { name: "Blog", href: "/blog", description: "Read Memos guides and project updates" },
       { name: "Changelog", href: "/changelog", description: "Follow new Memos releases and improvements" },
+      { name: "Blog", href: "/blog", description: "Read Memos guides and project updates" },
+      { name: "API Reference", href: "/docs/api", description: "Build integrations with the Memos API" },
     ],
   },
 ] as const satisfies readonly (SiteNavGroup | SiteNavLink)[];
 
 export const SITE_NAV_LINKS = SITE_NAV_ITEMS.flatMap<SiteNavLink>((item) => ("items" in item ? [...item.items] : [item]));
+
+export const SITE_NAV_DEMO = {
+  name: "Live Demo",
+  href: "https://demo.usememos.com/",
+  description: "Try Memos in a public demo workspace",
+  external: true,
+} as const satisfies SiteNavLink;
 
 export const SITE_NAV_CTA = {
   name: "Get Started",

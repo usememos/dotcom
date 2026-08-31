@@ -6,10 +6,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useGithubStarCount } from "@/features/marketing/hooks/use-github-star-count";
-import { GITHUB_REPO_URL, SITE_NAV_CTA, SITE_NAV_ITEMS, SITE_NAV_LINKS, type SiteNavGroup, type SiteNavLink } from "@/shared/lib/seo";
+import {
+  GITHUB_REPO_URL,
+  SITE_NAV_CTA,
+  SITE_NAV_DEMO,
+  SITE_NAV_ITEMS,
+  SITE_NAV_LINKS,
+  type SiteNavGroup,
+  type SiteNavLink,
+} from "@/shared/lib/seo";
 import { cn } from "@/shared/lib/utils";
 import { buttonVariants } from "@/shared/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/ui/dropdown-menu";
 import { GithubIcon } from "@/shared/ui/github-icon";
 
 const MOBILE_NAV_ID = "site-mobile-navigation";
@@ -61,57 +68,72 @@ function MobileSiteNavLink({ item, pathname, activeHref }: MobileSiteNavLinkProp
   );
 }
 
+// Rendered as plain markup revealed with CSS (no portal, no mount-on-open) so
+// every menu link and the group trigger are in the server HTML for crawlers.
 function DesktopNavGroup({ group, pathname, activeHref }: { group: SiteNavGroup; pathname: string; activeHref?: string }) {
   const isActive = group.items.some((item) => item.href === activeHref);
+  const triggerClassName = cn(
+    DESKTOP_NAV_ITEM_CLASS,
+    "cursor-pointer group-hover:bg-muted group-hover:text-foreground group-focus-within:bg-muted group-focus-within:text-foreground group-hover:[&_svg]:rotate-180 group-focus-within:[&_svg]:rotate-180",
+    isActive && "text-primary",
+  );
+  const triggerContent = (
+    <>
+      {group.name}
+      <ChevronDownIcon aria-hidden="true" className="size-3.5 transition-transform" />
+    </>
+  );
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger
-        openOnHover
-        delay={75}
-        closeDelay={150}
-        onMouseDown={(event) => event.preventBaseUIHandler()}
-        render={
-          <button
-            type="button"
-            className={cn(
-              DESKTOP_NAV_ITEM_CLASS,
-              "cursor-pointer data-popup-open:bg-muted data-popup-open:text-foreground data-popup-open:[&_svg]:rotate-180",
-              isActive && "text-primary",
-            )}
-          />
-        }
-      >
-        {group.name}
-        <ChevronDownIcon aria-hidden="true" className="size-3.5 transition-transform" />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-64 space-y-1 p-1.5" sideOffset={8} align="start">
-        {group.items.map((item) => {
-          const isCurrent = pathname === item.href;
+    <div className="group relative">
+      {group.href ? (
+        <Link href={group.href} prefetch={false} aria-current={pathname === group.href ? "page" : undefined} className={triggerClassName}>
+          {triggerContent}
+        </Link>
+      ) : (
+        <button type="button" className={triggerClassName}>
+          {triggerContent}
+        </button>
+      )}
+      <div className="invisible absolute top-full left-0 z-50 pt-2 opacity-0 transition-opacity duration-100 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+        <ul className="w-64 space-y-1 rounded-lg bg-popover p-1.5 text-popover-foreground shadow-md ring-1 ring-foreground/10">
+          {group.items.map((item) => {
+            const itemClassName = cn(
+              "flex items-start gap-3 rounded-md px-2.5 py-2 text-sm transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              activeHref === item.href && "bg-accent",
+            );
+            const content = (
+              <>
+                <span className="min-w-0">
+                  <span className="block font-semibold text-foreground">{item.name}</span>
+                  <span className="mt-0.5 block text-xs leading-5 text-muted-foreground">{item.description}</span>
+                </span>
+                {item.external ? <ArrowUpRightIcon aria-hidden="true" className="mt-0.5 ml-auto size-4 text-muted-foreground" /> : null}
+              </>
+            );
 
-          return (
-            <DropdownMenuItem
-              key={item.href}
-              className={cn("cursor-pointer items-start gap-3 px-2.5 py-2", activeHref === item.href && "bg-accent")}
-              render={
-                item.external ? (
-                  // biome-ignore lint/a11y/useAnchorContent: Base UI merges the menu item children into this rendered anchor.
-                  <a href={item.href} target="_blank" rel="noopener noreferrer" aria-label={item.name} />
+            return (
+              <li key={item.href}>
+                {item.external ? (
+                  <a href={item.href} target="_blank" rel="noopener noreferrer" className={itemClassName}>
+                    {content}
+                  </a>
                 ) : (
-                  <Link href={item.href} prefetch={false} aria-current={isCurrent ? "page" : undefined} />
-                )
-              }
-            >
-              <span className="min-w-0">
-                <span className="block font-semibold text-foreground">{item.name}</span>
-                <span className="mt-0.5 block text-xs leading-5 text-muted-foreground">{item.description}</span>
-              </span>
-              {item.external ? <ArrowUpRightIcon aria-hidden="true" className="ml-auto mt-0.5 text-muted-foreground" /> : null}
-            </DropdownMenuItem>
-          );
-        })}
-      </DropdownMenuContent>
-    </DropdownMenu>
+                  <Link
+                    href={item.href}
+                    prefetch={false}
+                    aria-current={pathname === item.href ? "page" : undefined}
+                    className={itemClassName}
+                  >
+                    {content}
+                  </Link>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </div>
   );
 }
 
@@ -197,6 +219,18 @@ export function SiteHeader() {
               {githubStarCount}
             </span>
           </a>
+          <a
+            href={SITE_NAV_DEMO.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(
+              buttonVariants({ variant: "outline", size: "sm" }),
+              "h-8 rounded-full border-zinc-200 bg-background/70 px-3 shadow-none dark:border-white/15 dark:bg-background/50",
+            )}
+          >
+            {SITE_NAV_DEMO.name}
+            <ArrowUpRightIcon aria-hidden="true" className="size-3.5 text-muted-foreground" />
+          </a>
           <Link href={SITE_NAV_CTA.href} prefetch={false} className={cn(buttonVariants({ size: "sm" }), "h-8 rounded-full px-3")}>
             {SITE_NAV_CTA.name}
             <ArrowRightIcon aria-hidden="true" />
@@ -237,6 +271,7 @@ export function SiteHeader() {
                 <MobileSiteNavLink key={item.href} item={item} pathname={pathname} activeHref={activeHref} />
               ),
             )}
+            <MobileSiteNavLink item={SITE_NAV_DEMO} pathname={pathname} activeHref={activeHref} />
             <div className="grid grid-cols-2 gap-2 border-t border-border pt-4">
               <Link href={SITE_NAV_CTA.href} prefetch={false} className={cn(buttonVariants({ size: "default" }), "rounded-full")}>
                 {SITE_NAV_CTA.name}
