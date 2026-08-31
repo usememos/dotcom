@@ -130,10 +130,9 @@ describe("CarbonAdCard", () => {
     stubFetch(servedPayload());
     render(<CarbonAdCard variant="sponsor" />);
 
-    expect(screen.getByRole("link", { name: /Sponsor Memos Support the project and feature your logo here./ })).toHaveAttribute(
-      "href",
-      "https://github.com/sponsors/usememos",
-    );
+    const sponsorLink = screen.getByRole("link", { name: /Sponsor Memos/ });
+    expect(sponsorLink).toHaveAttribute("href", "https://github.com/sponsors/usememos");
+    expect(sponsorLink).toHaveTextContent("Support the project and feature your logo here.");
   });
 
   it("records viewability once when the payload asks for it", async () => {

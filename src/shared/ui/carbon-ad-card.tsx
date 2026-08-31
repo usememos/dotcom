@@ -1,9 +1,8 @@
 "use client";
 
-import { HeartIcon } from "lucide-react";
+import { ArrowUpRightIcon, HeartIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { cn } from "@/shared/lib/utils";
 
 const SPONSOR_URL = "https://github.com/sponsors/usememos";
 const CARBON_PLACEMENT = "usememoscom";
@@ -17,10 +16,10 @@ const CONTAINER_STYLES = {
 
 const FALLBACK_STYLES = {
   default:
-    "flex w-full flex-1 items-center justify-center text-sm font-medium leading-5 text-muted-foreground transition-colors hover:text-foreground",
+    "group/fallback flex w-full items-center gap-2 py-0.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground",
   compact:
-    "flex w-full flex-1 items-center justify-center text-xs text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100",
-  sponsor: "flex flex-1 flex-col justify-center gap-2",
+    "group/fallback flex w-full items-center gap-2 text-xs text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100",
+  sponsor: "group/fallback flex w-full items-center gap-3 text-left",
 } as const;
 
 interface CarbonAd {
@@ -41,7 +40,7 @@ export function CarbonAdCard({ variant = "default" }: CarbonAdCardProps) {
   const ad = useCarbonAd(pathname);
 
   return (
-    <div role="complementary" aria-label="Sponsored content" className={cn("min-h-24", CONTAINER_STYLES[variant])} data-carbon-ad-card="">
+    <div role="complementary" aria-label="Sponsored content" className={CONTAINER_STYLES[variant]} data-carbon-ad-card="">
       {ad ? <CarbonAdContent ad={ad} /> : <FallbackContent variant={variant} />}
     </div>
   );
@@ -136,34 +135,25 @@ function CarbonAdContent({ ad }: { ad: CarbonAd }) {
 }
 
 function FallbackContent({ variant }: { variant: keyof typeof CONTAINER_STYLES }) {
-  if (variant === "compact") {
-    return (
-      <a href={SPONSOR_URL} target="_blank" rel="noopener noreferrer" className={FALLBACK_STYLES.compact}>
-        Support Memos
-      </a>
-    );
-  }
-
   if (variant === "sponsor") {
     return (
-      <a
-        href={SPONSOR_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={cn(FALLBACK_STYLES.sponsor, "text-left transition-colors duration-300 hover:text-stone-700 dark:hover:text-stone-200")}
-      >
-        <div className="flex items-center gap-2">
-          <HeartIcon className="h-5 w-5 text-stone-700 sm:h-6 sm:w-6 dark:text-stone-200" />
-          <span className="text-base font-semibold text-stone-900 sm:text-lg dark:text-stone-100">Sponsor Memos</span>
-        </div>
-        <p className="text-xs leading-5 text-stone-600 dark:text-stone-300 sm:text-sm">Support the project and feature your logo here.</p>
+      <a href={SPONSOR_URL} target="_blank" rel="noopener noreferrer" className={FALLBACK_STYLES.sponsor}>
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-stone-100 transition-colors group-hover/fallback:bg-stone-200 dark:bg-white/10 dark:group-hover/fallback:bg-white/15">
+          <HeartIcon className="h-4 w-4 text-stone-700 dark:text-stone-200" />
+        </span>
+        <span className="flex min-w-0 flex-col">
+          <span className="text-sm font-semibold text-stone-900 dark:text-stone-100">Sponsor Memos</span>
+          <span className="truncate text-xs text-stone-600 dark:text-stone-300">Support the project and feature your logo here.</span>
+        </span>
       </a>
     );
   }
 
   return (
-    <a href={SPONSOR_URL} target="_blank" rel="noopener noreferrer" className={FALLBACK_STYLES.default}>
-      Support Memos
+    <a href={SPONSOR_URL} target="_blank" rel="noopener noreferrer" className={FALLBACK_STYLES[variant]}>
+      <HeartIcon className="h-3.5 w-3.5 shrink-0 text-rose-500" />
+      <span>Support Memos</span>
+      <ArrowUpRightIcon className="ml-auto h-3.5 w-3.5 shrink-0 opacity-50 transition-opacity group-hover/fallback:opacity-100" />
     </a>
   );
 }
