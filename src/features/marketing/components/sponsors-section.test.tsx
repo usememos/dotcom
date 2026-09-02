@@ -12,7 +12,7 @@ describe("SponsorsSection", () => {
   it("introduces the current backers and invites new sponsors", () => {
     render(<SponsorsSection />);
 
-    expect(screen.getByRole("heading", { name: "These teams support Memos." })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Built with their support." })).toBeInTheDocument();
 
     const sponsorCta = screen.getByRole("link", { name: "Become a sponsor" });
     expect(sponsorCta).toHaveAttribute("href", "https://github.com/sponsors/usememos");

@@ -13,7 +13,7 @@ export function SponsorsSection() {
           <div>
             <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Sponsors</p>
             <h2 className="mt-2.5 max-w-[14ch] text-balance font-serif text-2xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100 sm:text-3xl">
-              These teams support Memos.
+              Built with their support.
             </h2>
             <a
               href="https://github.com/sponsors/usememos"
