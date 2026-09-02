@@ -1,14 +1,15 @@
 ---
 title: Memos
-description: Create, edit, organize, and manage the core content unit in Memos.
+description: Create, edit, link, organize, and manage the core content unit in Memos.
 ---
 
-Memos are the central unit of content in the product. A good memo workflow keeps capture fast while still making notes readable and searchable later.
+Memos are the central unit of content in the product. A good memo practice keeps capture fast while still making notes readable and searchable later.
 
 ## Core actions
 
 - create a memo from the editor on the home page
 - edit content inline
+- link related memos with Relations
 - pin important memos
 - set visibility before sharing
 - archive memos that are no longer active
@@ -56,6 +57,14 @@ Memos automatically computes properties from memo content. These can be used in 
 | `has_task_list` | Contains at least one task list item |
 | `has_incomplete_tasks` | Contains unchecked `- [ ]` task items |
 
+## Linking memos with Relations
+
+Choose **Link memo** from the editor's add menu, search active memos you own, and select one. After you save, the current memo displays the outgoing connection under **Referencing**; the selected memo displays the incoming connection under **Referenced by**.
+
+Relations are separate from Markdown links. Pasting a memo URL into the content creates a normal link but does not create a Relation or an incoming reference. Use Relations to connect knowledge inside Memos, and use Markdown links when the URL itself should be part of the memo.
+
+A Relation does not grant access to either memo. Each side keeps its own visibility, and readers only see connections to memos they can already access.
+
 ## Useful memo metadata
 
 - visibility: `PRIVATE`, `PROTECTED`, or `PUBLIC`
@@ -72,4 +81,8 @@ Memos automatically computes properties from memo content. These can be used in 
 - archive stale memos instead of leaving everything active forever
 - pin only the memos that truly deserve persistent attention
 
-For an end-to-end example that combines short memos, checklists, tags, pins, and Archive, see [How to Use Memos for GTD](/docs/usage/getting-things-done).
+## Related guides
+
+- [Use Memos as a Digital Bullet Journal](/docs/guides/bullet-journal) for rapid logging and reflection.
+- [Use Memos for GTD](/docs/guides/getting-things-done) for action management.
+- [Build a Zettelkasten in Memos](/docs/guides/zettelkasten) for connected knowledge.

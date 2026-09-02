@@ -1,6 +1,6 @@
 {
   "title": "Usage",
-  "description": "Daily workflows for writing and organizing memos",
+  "description": "Product guides for writing and organizing memos",
   "pages": [
     "index",
     "memos",
@@ -12,7 +12,6 @@
     "reactions-comments",
     "inbox",
     "linked-identities",
-    "search-archive",
-    "getting-things-done"
+    "search-archive"
   ]
 }

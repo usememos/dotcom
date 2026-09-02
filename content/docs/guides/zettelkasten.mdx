@@ -1,0 +1,219 @@
+---
+title: "Zettelkasten"
+description: Build a practical Zettelkasten in Memos with source notes, atomic ideas, Relations, and synthesis notes that turn each question into a useful answer.
+category: guides
+tags: ["zettelkasten", "knowledge-management", "practice"]
+difficulty: beginner
+estimatedTime: 10 minutes
+relatedPages: ["/docs/usage/memos", "/docs/usage/tags", "/docs/usage/shortcuts", "/docs/usage/search-archive", "/docs/guides/getting-things-done"]
+---
+
+Good ideas rarely arrive as finished documents. The [Zettelkasten method](https://zettelkasten.de/overview/) develops them through focused notes that can be connected, tested, and reused. Memos gives the practice a self-hosted home: the timeline keeps each observation close to its context, topic tags bring related material back into view, and Relations let you trace an answer to the claims and evidence behind it.
+
+This guide uses one active question, three memo roles, and two saved filters. By the end, you will have a repeatable way to turn daily captures into a decision, draft, lesson, or plan.
+
+## Start with a question worth returning to
+
+Choose a real question connected to something you want to understand, decide, explain, or build. Create a synthesis memo for it:
+
+```markdown
+# What makes a backup genuinely recoverable?
+
+## Current answer
+
+A backup is recoverable when the database, attachments, and deployment configuration can be restored together and verified in a running instance.
+
+## Still unclear
+
+- Which failures can a database-only restore miss?
+- How often should a restore drill run?
+
+## Next thing to examine
+
+Compare the documented restore steps with our current runbook.
+
+#zk/synthesis #topic/backup-recovery
+```
+
+[Pin this memo](/docs/usage/memos) while the question is active. It is the main entry point to everything you learn about the subject. Pin only questions you are actively developing; the rest remain available through tags and search.
+
+Beginning with a question makes the system useful on day one, even with only a handful of notes.
+
+## Use three roles for knowledge memos
+
+Use a small vocabulary for the role each memo plays:
+
+Here, `zk` is a short namespace that keeps the three role tags together; it is not a folder or a separate area of Memos.
+
+| Role | What it contains | Tag |
+| --- | --- | --- |
+| Evidence | A source, observation, result, or event with its original context | `#zk/evidence` |
+| Idea | One claim that can be stated, supported, or challenged independently of its source | `#zk/idea` |
+| Synthesis | The best current answer to a question, including tensions and gaps | `#zk/synthesis` |
+
+These are roles, not folders. Add one broad [topic tag](/docs/usage/tags) such as `#topic/backup-recovery` to bring related memos into the same neighborhood. Keep the vocabulary deliberately small; a new tag should make a recurring body of knowledge easier to enter, not describe every detail in the memo.
+
+In common Zettelkasten vocabulary, quick captures roughly correspond to fleeting notes, Evidence memos to source or literature notes, and Idea memos to permanent notes. A Synthesis memo acts as a structure note for one active question. The role matters more than the label.
+
+Quick thoughts do not all need to become durable Zettelkasten notes. The Memos timeline already makes capture fast. Add a Zettelkasten role only when a record contributes evidence, develops an idea, or changes a synthesis.
+
+## Preserve the source and record what it changed
+
+An evidence memo should let you recover both the observation and your interpretation. A bookmark alone preserves a location, but not why it mattered when you found it.
+
+```markdown
+## Observation
+
+The restore process treats the database, attachments, and deployment configuration as one recovery set.
+
+## Source
+
+[Backup & Restore](https://usememos.com/docs/operations/backup-restore)
+
+## Why it may matter
+
+A database can import successfully while files or runtime settings remain unavailable.
+
+#zk/evidence #topic/backup-recovery
+```
+
+Keep quotations short and use a Markdown link to the original source. For a conversation, experiment, or meeting, record enough context to understand who observed what and under which conditions. Attach a screenshot or document when the evidence depends on it; [attachments remain connected to their memo](/docs/usage/attachments).
+
+**Why it may matter** is where a source becomes part of your thinking. It records which question the evidence could change, so you know why the memo deserves another look.
+
+Keep the evidence memo intact. When it changes your view, create a separate `#zk/idea` memo and relate the new claim back to its evidence. Do not turn the evidence memo into the idea by replacing its role tag; the separation preserves provenance.
+
+## Turn evidence into an atomic idea
+
+An atomic note is not simply a short note. It makes one claim and contains enough reasoning to remain understandable when you encounter it from another topic or synthesis.
+
+```markdown
+# A backup is a recoverable system, not a database file
+
+A restore is complete only when the database, referenced files, and required configuration function together in a running instance.
+
+## Because
+
+Each part can restore successfully on its own while links between them remain broken.
+
+## What would change this view
+
+Evidence that every dependency is embedded in one verified artifact.
+
+#zk/idea #topic/backup-recovery
+```
+
+State the conclusion you currently hold, then explain why it follows from the evidence. If one source changes your thinking in three independent ways, create three idea memos. If an idea needs several paragraphs to explain one claim well, keep the paragraphs together. Atomicity is about conceptual focus, not a word limit.
+
+Including **What would change this view** is optional, but it keeps important claims open to correction. The Zettelkasten becomes more valuable when notes can challenge one another instead of only accumulating support for what you already believe.
+
+## Connect memos with an explicit reason
+
+Use [**Link memo** from the editor's add menu](/docs/usage/memos#linking-memos-with-relations) to search active memos you own and select one. After you save, the current memo's detail view shows the outgoing note under **Referencing**; the other memo shows the incoming connection under **Referenced by**.
+
+A useful reading trail often looks like this:
+
+```txt
+synthesis → idea → evidence
+```
+
+Keep the direction consistent:
+
+1. While creating or editing an Idea memo, open the add menu, choose **Link memo**, and select its Evidence memo.
+2. While editing the Synthesis memo, link it to the Idea memo.
+
+The resulting trail reads from the current answer into its reasoning: synthesis → idea → evidence.
+
+Relations in Memos represent a general reference rather than a semantic label such as “supports” or “challenges.” State the reason for an important connection inside the memo:
+
+```markdown
+## Connection
+
+Supports “A restore drill must cover every dependency”: attachments can fail independently of the database.
+```
+
+Useful connection verbs include **supports**, **challenges**, **narrows**, **explains**, and **gives an example of**. A handful of explained relations is more useful than many unexplained links.
+
+Relations and [Markdown links](/docs/usage/writing-markdown) serve different purposes. A Markdown link puts a URL in the content; a Relation builds a navigable connection between two memos. Pasting a memo URL does not automatically create a Relation or an incoming reference. Use both when a link must remain visible in copied or shared content.
+
+## Use tags for neighborhoods and Relations for arguments
+
+A topic tag helps you discover candidates that may belong together. A Relation records the specific connection you chose after reading them. Selecting `#topic/backup-recovery` may reveal ten nearby memos; the relation from one claim to one piece of evidence explains part of the argument.
+
+[Search](/docs/usage/search-archive) by topic before finishing a new idea. Ask:
+
+- Does an existing memo already make this claim?
+- What supports or challenges it?
+- Which synthesis would change if this is true?
+
+If you are developing several questions, save a filter for active synthesis memos:
+
+```txt
+pinned && "zk/synthesis" in tags
+```
+
+A second [saved filter](/docs/usage/shortcuts) can surface recent Zettelkasten memos for a connection pass:
+
+```txt
+tag in ["zk"] && created_ts >= now - duration("168h")
+```
+
+Do not use `has_link` to find memo Relations. That property detects Markdown links in the memo body, not structured relations.
+
+## Revise the synthesis while the question is active
+
+Return to the pinned synthesis whenever a new idea materially changes the answer. Update four things:
+
+- the best answer you can give now
+- the evidence or ideas that support it
+- meaningful contradictions or uncertainty
+- the next source, test, or question worth pursuing
+
+Link the synthesis to the idea memos that carry the detailed reasoning. This keeps the synthesis readable while preserving a path into the evidence.
+
+When a central claim changes completely, leave the earlier memo intact. Create a new Idea memo, state what changed and why, and relate it to the old one. The two memos preserve the earlier position and the reason it changed without relying on edit history.
+
+A Synthesis memo is the current entry point for one live question. It fills the role often called a structure note without requiring a master index for the entire knowledge base. Create one when a topic needs an answer or output, not merely because it has accumulated many notes.
+
+## Follow one reasoning trail into an output
+
+The backup example now has a visible path:
+
+```txt
+What makes a backup genuinely recoverable?            #zk/synthesis
+└─ A backup is a recoverable system                    #zk/idea
+   └─ Recovery covers data, files, and configuration   #zk/evidence
+```
+
+The Synthesis holds the current answer. The Idea explains the conclusion, and its Evidence preserves the source context. Together they can become a restore-drill runbook with explicit checks for data, files, configuration, and access. For a reading project, the same pattern can connect a passage, an interpretation, and a developing essay argument.
+
+The output could instead be a design decision, article, lesson plan, proposal, or experiment. The synthesis already contains the current answer; its Relations let you verify or revisit each part before you publish or act on it.
+
+## Run a weekly connection pass
+
+Once a week, open the recent-memos filter and spend ten to fifteen minutes moving one active question forward:
+
+- Which recent evidence changed an existing claim or deserves a new one?
+- Does each important Relation have a reason you can explain?
+- Does a new idea support, challenge, or narrow something already in the system?
+- Which pinned synthesis needs a better current answer?
+- Which captures are duplicates or no longer useful enough to keep active?
+
+[Archive](/docs/usage/search-archive) records that remain useful but no longer belong in daily views. The review is successful when at least one question becomes clearer or produces a next output—not when you reach a target number of notes, tags, or relations.
+
+## Keep knowledge and commitments separate
+
+Zettelkasten and [Getting Things Done](/docs/guides/getting-things-done) can share one Memos instance without becoming one system. Zettelkasten develops ideas; GTD tracks commitments. Keep their namespaces separate:
+
+```markdown
+Knowledge memo: #zk/idea #topic/backup-recovery
+Action memo:    #gtd/next #project/restore-drill
+```
+
+When a synthesis creates an action, make a separate GTD memo and relate it to the relevant synthesis. Avoid adding a task checkbox to every knowledge memo simply because an idea could someday become actionable.
+
+Keep personal research `PRIVATE` unless sharing is intentional. A standalone share link does not expose the surrounding relation graph, so put essential context and source URLs in the memo body when another reader needs them. If Memos becomes a long-term knowledge base, [back up the database and attachments](/docs/operations/backup-restore) and test the restore process.
+
+For a chronological practice that combines tasks, events, and observations, use the [digital Bullet Journal guide](/docs/guides/bullet-journal).
+
+Start with one question for one week. Pin its synthesis, capture only evidence that changes the question, turn one or two observations into claims, and explain each Relation you add. Keep the practice if the answer becomes easier to defend or use.

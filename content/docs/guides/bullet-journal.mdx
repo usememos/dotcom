@@ -1,0 +1,185 @@
+---
+title: "Bullet Journal"
+description: Build a private, self-hosted digital Bullet Journal in Memos with timeline capture, a pinned Monthly Log, tag-based Collections, and deliberate migration.
+category: guides
+tags: ["bullet-journal", "journaling", "practice"]
+difficulty: beginner
+estimatedTime: 10 minutes
+relatedPages: ["/docs/usage/memos", "/docs/usage/writing-markdown", "/docs/usage/tags", "/docs/usage/shortcuts", "/docs/usage/search-archive"]
+---
+
+Most days do not need a page prepared in advance. They need a quick place to record what happened, what it changed, and what deserves attention next. The [Bullet Journal method](https://bulletjournal.com/pages/how-to-bullet-journal)—often shortened to BuJo—builds that rhythm through rapid logging, reflection, and migration.
+
+Memos gives the rhythm a lightweight, self-hosted home. The timeline becomes the Daily Log, a pinned memo becomes a focused Monthly Log, tags gather recurring subjects into Collections, and saved filters bring unfinished commitments back for a deliberate decision. The complete setup is one `#bujo` tag tree, one monthly compass, one future-decisions memo, and two filters.
+
+## Adapt the Bullet Journal method to Memos
+
+A digital Bullet Journal does not need to reproduce the geometry of a paper notebook. Translate each question in the practice into the Memos feature that answers it best:
+
+| Question | Memos practice |
+| --- | --- |
+| What just happened? | Capture a short memo in the timeline |
+| What matters this month? | Keep one monthly compass pinned |
+| Where does this belong over time? | Add a Collection tag after a subject repeats |
+| What still deserves attention? | Review incomplete tasks through a saved filter |
+| When must I be interrupted? | Put the actual appointment or reminder in a calendar |
+
+The important part is the return. Capturing should stay quick; reflection is where a record becomes a choice about what to finish, retain, schedule, or release.
+
+## Let the timeline serve as your Daily Log
+
+Write what happened, changed, or became clear as ordinary [Markdown](/docs/usage/writing-markdown). Add an unchecked `- [ ]` item only when the moment creates a real action, then check it with `- [x]` when finished. Supporting details stay beside the entry that gives them meaning. Memos can identify unfinished actions without making you maintain a separate symbol key.
+
+Capture one moment while its context is still clear:
+
+```markdown
+Rain reached the inside of the east window this morning.
+
+- [ ] Photograph the frame in daylight.
+- [ ] Ask the building manager who handles exterior seals.
+
+#bujo #collection/home-maintenance
+```
+
+The observation explains why the actions exist, and the memo's **Created at** timestamp places the whole record in the day's chronology. If the evidence matters, [attach the photograph](/docs/usage/attachments) to the same memo.
+
+Related notes and tasks from one moment can stay together. Separate unrelated actions into their own memos, especially when they need different tags or will be reviewed independently. Fields such as `has_incomplete_tasks` describe the whole memo, not each checklist row, so a long daily page containing unrelated actions is harder to filter cleanly.
+
+Use one tag from the `#bujo` tree on every memo in the practice. Ordinary log entries use `#bujo`; the monthly compass and later-decisions memo use `#bujo/monthly` and `#bujo/future`. A parent filter matches all three.
+
+The timeline is already the running log. Use `#bujo` to isolate journal entries, and combine it with a date filter when you want to read one day; there is no need to add a date tag or prepare a master memo for every day. For a stable capture chronology, set **View options** to **Created at** and **Newest first**. Pinned memos remain the exception at the top when they match the current filter.
+
+## Close the day with three questions
+
+A daily reflection can take two or three minutes:
+
+1. **What actually finished?** Check the completed boxes.
+2. **What changed because of today?** Create a new memo when the result happened later; update an existing memo only when clarifying the same moment.
+3. **What deserves attention tomorrow?** Clarify the action and pin no more than three memos that genuinely need focus.
+
+Unpin a memo when its action is completed, blocked, or no longer part of tomorrow's focus. Pins are a small focus set, not a permanent priority system.
+
+Do not archive an ordinary log merely because one task inside it is complete; the record still belongs to the journal. Archive standalone operational memos when they remain worth keeping but no longer need to appear in active views.
+
+## Use a pinned monthly compass as your Monthly Log
+
+In Memos, the Monthly Log becomes a compact compass that describes what a good month would look like:
+
+```markdown
+# September compass
+
+## Direction
+
+Make the flat ready for the wet season.
+
+## This month is successful when
+
+- [ ] The east-window leak is resolved.
+- [ ] The power-outage kit has been tested.
+
+## Protect
+
+Keep two evenings each week free from household administration.
+
+## Notice
+
+Which maintenance problems keep returning instead of being solved?
+
+#bujo/monthly
+```
+
+[Pin the current compass](/docs/usage/memos) and keep it small: one direction, one to three outcomes, one boundary to protect, and one pattern to notice. It is an orientation point, not a second copy of every task.
+
+Keep the compass pinned until the monthly review; that review will decide what enters the next one.
+
+## Keep a Future Log for later decisions
+
+Future intentions need somewhere to wait without pretending that every idea is a scheduled commitment. Keep one memo such as:
+
+```markdown
+# Later decisions
+
+## Committed, but not active
+
+- Renew the lease. The actual deadline is in the calendar.
+
+## Worth reconsidering
+
+- Replace the desk after the move.
+
+## Waiting for a trigger
+
+- Review storage options when the basement is cleared.
+
+#bujo/future
+```
+
+Open `#bujo/future` during the monthly review. Move an item into its own task memo only when it becomes actionable.
+
+Put appointments, hard deadlines, follow-up alerts, and the recurring review itself in a calendar or reminder app. Keep the Memos link with the calendar entry when it needs background. A date written in a memo remains context. Editing **Created at** changes where the memo appears when viewing or filtering by creation time; it does not set a due date or alert.
+
+## Let Collections emerge from repetition
+
+Create a Collection when the same subject has appeared often enough that you want a reliable way back into it. In Memos, the right shape depends on how the subject grows:
+
+- keep a bounded list, such as household emergency contacts, in one memo
+- give an evolving subject, such as home maintenance or garden observations, a shared tag
+
+Add a tag from the `#bujo` tree to a bounded Collection only when its checkboxes should appear in the Bullet Journal review. A reference-only list does not need to enter the unfinished-task view.
+
+For an evolving Collection, add a focused tag such as `#collection/home-maintenance` to every relevant memo. Selecting the tag reconstructs the trail across observations, tasks, decisions, and attachments. When older entries have moved out of the active timeline, open [Archive and search for the same Collection tag](/docs/usage/search-archive) to recover them.
+
+In a paper Bullet Journal, the Index points back to Collections by page number. In Memos, tags and search provide that route back without maintaining a manual page index.
+
+Wait for repetition before creating a Collection. This keeps the [tag vocabulary](/docs/usage/tags) grounded in subjects you actually revisit instead of categories you may never use.
+
+## Save two filters for reflection
+
+Create two reusable [saved filters](/docs/usage/shortcuts) to make the review repeatable. The first shows the recent journal:
+
+```txt
+tag in ["bujo"] && created_ts >= now - duration("168h")
+```
+
+The second shows Bullet Journal memos with unfinished tasks:
+
+```txt
+tag in ["bujo"] && has_incomplete_tasks
+```
+
+`tag in ["bujo"]` includes nested tags such as `#bujo/monthly` and `#bujo/future`. The task filter inspects Markdown checkboxes, so it does not depend on special symbols or task-state tags.
+
+Keep these views broad. Capture time already lives in **Created at**, subjects live in Collection tags, and the monthly compass holds current direction.
+
+## Make Migration a decision, not a copy
+
+[Migration](https://bulletjournal.com/pages/migration) creates a pause in which every unfinished commitment must justify following you forward. Memos can preserve that pause without manufacturing a duplicate entry each week or month.
+
+During the monthly review, open the unfinished-task filter and decide what each memo deserves now:
+
+- **Finished:** check the box and record the result when it adds useful context.
+- **No longer relevant:** replace the checkbox with a plain line such as `Dropped — the building manager already owns this`, then archive the memo if it no longer belongs in active views.
+- **Still vague:** rewrite the text of the unchecked checkbox as the next visible action.
+- **Still important:** keep the task open and state which current compass outcome it supports. Pin it only when it belongs to the next day's three-item focus set.
+- **Time-specific:** if the action was to schedule something, check it after creating the calendar entry. If the checkbox represented the future event itself, replace it with a plain line such as `Scheduled in calendar — inspection on October 8` so it leaves the unfinished-task view.
+- **Becoming a recurring subject:** add a Collection tag so future observations join the same trail.
+
+This is digital migration: the memo stays connected to its original context, while your latest decision becomes explicit. After the decisions are made, create the new monthly compass, unpin the old one, and archive anything that should leave active surfaces.
+
+The review succeeds when stale tasks are gone and every remaining commitment has a clear reason to stay.
+
+## Keep Bullet Journal, GTD, and Zettelkasten distinct
+
+All three practices can live in Memos, but they answer different questions:
+
+| Practice | Use it to |
+| --- | --- |
+| Bullet Journal | Record the day, notice patterns, and reconsider what deserves attention |
+| [Getting Things Done](/docs/guides/getting-things-done) | Manage projects, next actions, waiting items, and delegated commitments |
+| [Zettelkasten](/docs/guides/zettelkasten) | Develop sources and observations into connected, reusable knowledge |
+
+Choose one primary practice for each memo. A journal observation can produce a separate Zettelkasten idea; a growing commitment can produce a separate GTD action. They may share a Collection or project tag without carrying every other system's state tags.
+
+Keep personal journal entries `PRIVATE`, and do not create a share link unless sharing is intentional; a share link grants access to that one memo even when it is `PRIVATE`. If Memos becomes the long-term record of your days, [back up the database and attachments](/docs/operations/backup-restore) and test the restore process.
+
+Try the practice for one week. Add a tag from the `#bujo` tree to every memo that belongs to it, keep one monthly compass pinned, and use the unfinished-task view during the daily close. Open the recent-journal view during the weekly or monthly review. Create a Collection only after a subject repeats. Keep the parts that help you notice, decide, and follow through.

@@ -1,16 +1,16 @@
 ---
-title: "How to Use Memos for GTD: A Practical Workflow"
+title: "GTD"
 description: Set up GTD in Memos with quick capture, Markdown next actions, project tags, Shortcuts, waiting items, daily focus, and a weekly review.
 category: guides
-tags: ["gtd", "productivity", "workflow"]
+tags: ["gtd", "personal-organization", "practice"]
 difficulty: beginner
 estimatedTime: 10 minutes
 relatedPages: ["/docs/usage/memos", "/docs/usage/tags", "/docs/usage/shortcuts", "/docs/usage/search-archive"]
 ---
 
-[Getting Things Done](https://gettingthingsdone.com/what-is-gtd/) works best when capture is fast, next actions are visible, and every project has a clear place to resume. Memos gives that workflow a lightweight, self-hosted foundation: quick notes for capture, Markdown checkboxes for actions, tags for project context, Shortcuts for reusable work views, and a searchable timeline that keeps the history.
+[Getting Things Done](https://gettingthingsdone.com/what-is-gtd/) is most reliable when capture is fast, next actions are visible, and every project has a clear place to resume. Memos gives that practice a lightweight, self-hosted foundation: quick notes for capture, Markdown checkboxes for actions, tags for project context, Shortcuts for reusable views, and a searchable timeline that keeps the history.
 
-This guide keeps the setup focused: one memo per commitment, one state tag for what happens next, and one project tag for related work. Shortcuts keep next actions, waiting items, and active projects visible; checkboxes and Archive close the loop without discarding the record.
+This guide keeps the setup focused: one memo per commitment, one state tag for what happens next, and one project tag for related actions. Shortcuts keep next actions, waiting items, and active projects visible; checkboxes and Archive close the loop without discarding the record.
 
 ## Give every memo one clear GTD role
 
@@ -23,7 +23,7 @@ Start with four lifecycle states:
 #gtd/someday
 ```
 
-Use exactly one of those four states on a workflow memo. An item cannot need clarification and be ready to do at the same time. `#gtd/project` is not a state; use it only on an anchor memo that defines a project outcome.
+Use exactly one of those four states on a GTD memo. An item cannot need clarification and be ready to do at the same time. `#gtd/project` is not a state; use it only on an anchor memo that defines a project outcome.
 
 There is no `#gtd/done` tag. A checked box already records completion, and Archive removes it from active surfaces. There is no `#gtd/reference` tag either. Reference is the rest of the searchable timeline: give useful material a topic or project tag, then archive it when it no longer needs to stay visible.
 
@@ -41,7 +41,7 @@ Ask Mei whether the release screenshots are final.
 
 This tagged inbox is separate from the built-in [Memos Inbox](/docs/usage/inbox), which contains notifications about comments and mentions.
 
-During a short daily sweep, decide what, if anything, must return. Delete what has no value. Give useful information a topic or project tag. Move an idea you may revisit to `#gtd/someday`. Turn work you can advance into a concrete checkbox:
+During a short daily sweep, decide what, if anything, must return. Delete what has no value. Give useful information a topic or project tag. Move an idea you may revisit to `#gtd/someday`. Turn a commitment you can advance into a concrete checkbox:
 
 ```markdown
 - [ ] Ask Mei which release screenshots are approved.
@@ -56,7 +56,7 @@ If someone else owns the next move, use `#gtd/waiting` instead. The state change
 #gtd/inbox → #gtd/waiting → checked → archived
 ```
 
-When the result you were waiting for arrives, close that Waiting memo and create a new Next memo for the work that follows. The expected result and your next action are different commitments, so they should not share one record.
+When the result you were waiting for arrives, close that Waiting memo and create a new Next memo for the action that follows. The expected result and your next action are different commitments, so they should not share one record.
 
 The one-action rule comes from Memos itself. Tags, visibility, timestamps, and `has_incomplete_tasks` describe the whole memo, not individual checklist rows. A long memo containing calls, errands, and computer tasks cannot expose each row through a different context filter.
 
@@ -69,7 +69,7 @@ A project does not need a folder or a master task document. Give it one anchor m
 ```markdown
 ## Outcome
 
-The September release post is live with reviewed screenshots and working links.
+The September release post is live with reviewed screenshots and valid links.
 
 ## Done when
 
@@ -82,9 +82,9 @@ The September release post is live with reviewed screenshots and working links.
 
 Every action, decision, waiting item, and useful reference for that outcome receives `#project/september-release`. Selecting the tag reconstructs the project's active trail instead of a checklist that must duplicate every detail. After records are archived, use [search and Archive](/docs/usage/search-archive) with the same tag to retrieve the closed history.
 
-Every active project should show where work resumes: at least one open `#gtd/next` memo or one open `#gtd/waiting` memo. When the next step is clear, create it before leaving the project; add several only for genuinely parallel work.
+Every active project should show where progress resumes: at least one open `#gtd/next` memo or one open `#gtd/waiting` memo. When the next step is clear, create it before leaving the project; add several only for genuinely parallel actions.
 
-A waiting memo should record the result you expect, not assign work:
+A waiting memo should record the result you expect, not assign a task:
 
 ```markdown
 - [ ] Mei confirms the approved screenshot set.
@@ -109,7 +109,7 @@ The home timeline tells you what was recorded recently. It should not also decid
 
 The filter syntax is capable of much more, but these four questions are enough to run the system. `#gtd/someday` does not need a permanent place in the sidebar; selecting the tag during a monthly review is usually sufficient.
 
-At the start of the day, choose no more than three memos from **What can I advance?** and pin them. A pin is a temporary work-in-progress limit, not a permanent priority label. Unpin an action when it is completed, blocked, or no longer part of today's focus.
+At the start of the day, choose no more than three memos from **What can I advance?** and pin them. A pin is a temporary focus limit, not a permanent priority label. Unpin an action when it is completed, blocked, or no longer part of today's focus.
 
 Add a context only after the available-actions view becomes genuinely difficult to scan. For example:
 
@@ -143,7 +143,7 @@ has_incomplete_tasks && !tags.exists(t, t.startsWith("gtd/"))
 
 Classify or archive anything it finds. Once a month, scan `#gtd/someday` and activate, retain, or discard each idea.
 
-The goal is not to touch every memo. The review is complete when the decision queue is empty, the action queue is believable, and every active project shows where work resumes.
+The goal is not to touch every memo. The review is complete when the decision queue is empty, the action queue is believable, and every active project shows where progress resumes.
 
 ## Pair Memos with a calendar for deadlines and reminders
 
@@ -151,8 +151,12 @@ Memos owns the commitment, its context, and its history. It does not provide doc
 
 Put appointments, hard deadlines, follow-up alerts, and the recurring review itself in a calendar or reminder app. Add the Memos URL to the event when it needs project context. The calendar decides when to interrupt you; Memos explains what the interruption is about.
 
-Trust has an operational side too. Keep personal commitments `PRIVATE` unless sharing is intentional. If this becomes the only record of important work, [back up the database and attachments](/docs/operations/backup-restore) and test a restore.
+Trust has an operational side too. Keep personal commitments `PRIVATE` unless sharing is intentional. If this becomes the only record of important commitments, [back up the database and attachments](/docs/operations/backup-restore) and test a restore.
+
+GTD is strongest when it manages commitments rather than becoming a store for every idea. To develop research and observations alongside the action system, use a separate [Zettelkasten practice](/docs/guides/zettelkasten) and create a GTD memo only when knowledge produces a concrete next action.
+
+For a chronological practice built around daily capture and reflection, use the [digital Bullet Journal guide](/docs/guides/bullet-journal).
 
 Run the practice unchanged for one week. If the available-actions view is still easy to use, stop designing the system. Add a tag or view only when it answers a question you repeatedly struggle to answer.
 
-The practice is healthy when the inbox reaches zero, the next-action list remains credible, and every active project shows where work resumes. Everything else can become history.
+The practice is healthy when the inbox reaches zero, the next-action list remains credible, and every active project shows where progress resumes. Everything else can become history.

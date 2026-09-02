@@ -156,6 +156,23 @@ const config = {
         destination: "/docs/integrations/api-access",
         permanent: true,
       },
+      // End-to-end practices now live in their own Guides section. Preserve
+      // the original Usage URLs for bookmarks, inbound links, and search equity.
+      {
+        source: "/docs/usage/bullet-journal",
+        destination: "/docs/guides/bullet-journal",
+        permanent: true,
+      },
+      {
+        source: "/docs/usage/getting-things-done",
+        destination: "/docs/guides/getting-things-done",
+        permanent: true,
+      },
+      {
+        source: "/docs/usage/zettelkasten",
+        destination: "/docs/guides/zettelkasten",
+        permanent: true,
+      },
       // Dead docs URLs (no matching content file) that still draw crawler/inbound
       // traffic. An unmatched /docs/[...slug] loads the full fumadocs+MDX+shiki
       // route module only to call notFound() — ~450-510ms CPU/hit, and the
