@@ -50,7 +50,7 @@ docker compose up -d
 - keep your data directory on persistent storage
 - place Memos behind a reverse proxy for HTTPS
 - leave `MEMOS_INSTANCE_URL` empty for private mode, or set it to the canonical public URL to enable anonymous public access
-- back up both the database and any local assets if you do not use database-backed attachment storage
+- back up both the database and any local assets if you do not use database-backed attachment storage - see [Backup & Restore](/docs/operations/backup-restore) for how; with SQLite, copying `memos_prod.db` on its own while Memos is running misses everything still in its `-wal` file
 
 ## When to add more services
 

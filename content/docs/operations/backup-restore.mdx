@@ -17,7 +17,7 @@ The location is controlled by `MEMOS_DATA`. Override it at runtime or use the de
 
 ## What to back up
 
-- the database itself
+- the database itself - with SQLite, `memos_prod.db` together with its `-wal` and `-shm` files, or a copy made with `.backup` as below; on a running instance the newest rows are in the `-wal` until SQLite checkpoints them
 - local attachment storage when attachments are not stored in the database
 - deployment configuration such as environment variables, compose files, and proxy config
 
