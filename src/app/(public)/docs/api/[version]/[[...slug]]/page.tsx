@@ -54,7 +54,7 @@ export default async function Page(props: { params: Promise<RouteParams> }) {
   };
 
   return (
-    <DocsPage {...tocProps} {...tocConfig}>
+    <DocsPage {...tocProps} breadcrumb={{ enabled: false }} {...tocConfig}>
       <JsonLdScript data={jsonLd} />
       <JsonLdScript data={breadcrumbs.jsonLd} />
       <Breadcrumbs items={breadcrumbs.items} className="mb-6" />

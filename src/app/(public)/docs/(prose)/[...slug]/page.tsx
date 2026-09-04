@@ -45,7 +45,7 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
   };
 
   return (
-    <DocsPage full={page.data.full} toc={page.data.toc} {...tocConfig}>
+    <DocsPage full={page.data.full} toc={page.data.toc} breadcrumb={{ enabled: false }} {...tocConfig}>
       <JsonLdScript data={jsonLd} />
       <JsonLdScript data={breadcrumbs.jsonLd} />
       <Breadcrumbs items={breadcrumbs.items} className="mb-6" />

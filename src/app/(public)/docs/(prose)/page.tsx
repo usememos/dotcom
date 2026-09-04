@@ -49,7 +49,7 @@ export default async function Page() {
   const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
 
   return (
-    <DocsPage toc={page.data.toc} full={page.data.full} {...tocConfig}>
+    <DocsPage toc={page.data.toc} full={page.data.full} breadcrumb={{ enabled: false }} {...tocConfig}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <Breadcrumbs items={breadcrumbItems} className="mb-6" />
