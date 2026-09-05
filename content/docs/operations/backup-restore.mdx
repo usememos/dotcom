@@ -34,7 +34,7 @@ sudo systemctl start memos
 For online backups while Memos is running, use SQLite's built-in `.backup` command which handles WAL mode correctly:
 
 ```bash
-sqlite3 ~/.memos/memos_prod.db ".backup ~/.memos/memos_backup.db"
+sqlite3 ~/.memos/memos_prod.db ".backup $HOME/.memos/memos_backup.db"
 ```
 
 Automated daily backup with 7-day retention:
