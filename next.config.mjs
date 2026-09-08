@@ -189,16 +189,6 @@ const config = {
         permanent: true,
       },
       {
-        source: "/docs/guides/shortcuts",
-        destination: "/docs/usage/saved-views",
-        permanent: true,
-      },
-      {
-        source: "/docs/usage/shortcuts",
-        destination: "/docs/usage/saved-views",
-        permanent: true,
-      },
-      {
         source: "/docs/integrations/rss",
         destination: "/docs/operations/upgrade#removed-features",
         permanent: true,

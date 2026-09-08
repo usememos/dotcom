@@ -37,7 +37,7 @@ These notes apply to **0.31.0-rc.1**, a release candidate. Back up before testin
 ### Data and ownership
 
 - Existing memos remain Unassigned; no default Space is created. Their IDs, authors, visibility, and relations are preserved.
-- Stored Shortcuts become Saved Views automatically. Named storage configurations and legacy storage settings migrate across SQLite, MySQL, and PostgreSQL; generated-ID high-water marks are retained.
+- Stored `Shortcut` resources migrate to Views automatically. Named storage configurations and legacy storage settings migrate across SQLite, MySQL, and PostgreSQL; generated-ID high-water marks are retained.
 - Memo edits, attachments, references, and shares follow author and Space membership rules. Instance and Space admin roles no longer override another author's ownership. Users control their own reactions.
 - Comments have independent visibility, placement, and lifecycle. Deleting a parent does not delete its comment memos. Deleting a Space permanently deletes every directly assigned memo and its owned resources; removing a member leaves contributions in place.
 - Active Space memberships block account deletion, including with `force`.
@@ -45,7 +45,7 @@ These notes apply to **0.31.0-rc.1**, a release candidate. Back up before testin
 
 ### Integrations and links
 
-- Update app bookmarks from `/shortcuts` to `/views`. Replace `ShortcutService`, shortcut resource paths, and MCP tool names with their Saved Views equivalents.
+- Update app bookmarks from `/shortcuts` to `/views`. Replace `ShortcutService`, shortcut resource paths, and MCP tool names with their Views equivalents.
 - Send comment visibility explicitly: `CreateMemoComment` defaults an omitted value to `PRIVATE`. `SetMemoRelations` rejects `COMMENT` relations.
 - Stop reading `Reaction.content_id`. Existing reactions migrate to internal memo IDs; orphaned reactions are removed.
 - Bind managed inline images before or during the memo mutation. Use authenticated Memos routes for S3 files instead of expecting presigned URLs in `externalLink`.
@@ -62,13 +62,13 @@ The global Cmd/Ctrl+K shortcut was removed. Open Quick Find from the sidebar sea
 
 ### Verify the upgrade
 
-Check exact-case sign-in, intended anonymous access, existing memos and Saved Views, old and new storage attachments, share links, and your API/MCP/webhook clients. In Spaces, test invitation acceptance, members-only visibility, and author permissions with separate accounts before inviting your team.
+Check exact-case sign-in, intended anonymous access, existing memos and Views, old and new storage attachments, share links, and your API/MCP/webhook clients. In Spaces, test invitation acceptance, members-only visibility, and author permissions with separate accounts before inviting your team.
 
 If an old memo's displayed tags and filter results differ, save that memo again. If a migrated setting or attachment fails, inspect startup logs and the preserved configuration before changing or deleting storage entries.
 
 ## Upgrading to 0.30
 
-These historical notes describe 0.30. For 0.31, apply the newer access, RSS, and Saved Views changes above as well. Version 0.30 changes several public access and integration behaviors. Before deploying it:
+These historical notes describe 0.30. For 0.31, apply the newer access, RSS, and Views changes above as well. Version 0.30 changes several public access and integration behaviors. Before deploying it:
 
 - Back up the database and attachments.
 - Set `MEMOS_INSTANCE_URL` to the canonical public URL if the instance should

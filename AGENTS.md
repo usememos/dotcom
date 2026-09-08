@@ -101,6 +101,7 @@ See `docs/architecture.md` for the full architecture and the conventions for exp
 
 ## Coding Conventions
 
+- Follow `CONTEXT.md` for product terminology. Use **View / Views** (**视图**) in product copy and `MemoView` / `MemoViews` in code and API identifiers. Saving is an action: **Save as view / 保存为视图**; the resulting object remains a View. Preserve legacy identifiers when documenting historical APIs or migration sources.
 - Prefer existing feature-folder patterns over creating new top-level structures.
 - Add reusable primitives through shadcn/ui and keep them in `src/shared/ui/`. Application code should import the shadcn wrappers rather than `@base-ui/react` directly.
 - Do not add Radix UI dependencies or direct Radix imports. Radix packages may still exist transitively through Fumadocs.

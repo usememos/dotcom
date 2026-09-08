@@ -1,38 +1,40 @@
 ---
-title: Saved Views
-description: Save frequently used filters so you can switch views quickly.
+title: Views
+description: Name and reuse Memo filters to see the Memos that currently match.
 ---
 
-Saved Views keep filter expressions for quick reuse. They are useful when you repeatedly open the same slice of your memos, such as work items, incomplete tasks, or recent public posts.
+A View is a named, reusable set of Memo filter conditions. Opening a View shows the Memos that currently match those conditions. A View does not store copies of Memos or specify a display layout such as a list or cards.
 
-## Upgrading from Shortcuts
+Use Views for filters you revisit, such as work items, incomplete tasks, or recent public posts.
 
-Saved Views replace Shortcuts in 0.31. Stored shortcuts migrate automatically. Update bookmarks to `/views` and integrations to `MemoViewService`, `/api/v1/users/*/views/*`, and the MCP tool `memo_view_list_memo_views`.
+## Upgrading existing filters
 
-## Create a saved view
+Views replace the legacy `Shortcut` resource in 0.31. Stored filters migrate automatically. Update bookmarks to `/views` and integrations to `UserService` (`MemoView` resources), `/api/v1/users/*/views/*`, and the MCP tool `user_list_memo_views`.
 
-Saved Views are created and managed on the **Views** page at `/views`, which you open from the sidebar.
+## Create a View
+
+Views are created and managed on the **Views** page at `/views`, which you open from the sidebar.
 
 1. open the Views page and choose **Create**
-2. give the saved view a clear title
+2. give the View a clear title
 3. enter a [filter expression](#filter-expression-syntax)
 4. choose **Validate** to dry-run the expression — this checks the filter without saving, so you catch typos before committing
-5. **Save** the saved view
+5. choose **Save**
 
 Title and filter are both required, and an invalid expression is rejected on save.
 
-Saved Views appear in the sidebar. Select one to apply its filter to your memo list; the active filter also syncs to the URL, so you can bookmark or share the resulting view. You can also start a new saved view straight from an active filter — the form opens prefilled with the current expression.
+Views appear in the sidebar. Select one to apply its filter to your memo list; the active filter also syncs to the URL, so you can bookmark or share the resulting view. You can also start a new View straight from an active filter — the form opens prefilled with the current expression.
 
-## Edit and delete saved views
+## Edit and delete Views
 
-The Views page lists every saved view with its title and filter. Each row has a menu to:
+The Views page lists every View with its title and filter. Each row has a menu to:
 
-- **Edit** — load the saved view back into the form to change its title or filter
-- **Delete** — remove a saved view you no longer use, after a confirmation step
+- **Edit** — load the View back into the form to change its title or filter
+- **Delete** — remove a View you no longer use, after a confirmation step
 
 ## Filter expression syntax
 
-Saved Views use CEL (Common Expression Language) filter expressions. A saved view filter must evaluate to `true` for memos you want included.
+Views use CEL (Common Expression Language) filter expressions. A View filter must evaluate to `true` for memos you want included.
 
 ### Supported fields
 
@@ -117,7 +119,7 @@ Use `matches()` for regular expressions:
 content.matches("v[0-9]+")
 ```
 
-Regular expressions are validated before a saved view is saved. Keep patterns portable: SQLite, PostgreSQL, and MySQL use different regular-expression engines.
+Regular expressions are validated before a View is saved. Keep patterns portable: SQLite, PostgreSQL, and MySQL use different regular-expression engines.
 
 ### Time-based filters
 
@@ -141,7 +143,7 @@ created_ts.getMonth() == now.getMonth() && created_ts.getDate() == now.getDate()
 
 Months are zero-based (`0` is January), and days of the week are zero-based (`0` is Sunday). Accessors are evaluated in UTC for SQLite and PostgreSQL; MySQL reads timestamp columns in the database session time zone.
 
-## Example saved views
+## Example Views
 
 | Name | Filter |
 | --- | --- |
@@ -160,7 +162,7 @@ Months are zero-based (`0` is January), and days of the week are zero-based (`0`
 | One Space | `space == "spaces/team-notes"` |
 | Release notes | `content.matches("v[0-9]+\\.[0-9]+")` |
 
-## Good saved view patterns
+## Good View patterns
 
 - incomplete tasks for one project
 - pinned or high-signal memos
@@ -171,13 +173,13 @@ Months are zero-based (`0` is January), and days of the week are zero-based (`0`
 ## Management tips
 
 - keep names short and obvious
-- delete stale saved views you no longer use
+- delete stale Views you no longer use
 - update filters when your tag vocabulary changes
-- prefer a few durable saved views over dozens of narrow one-off views
+- prefer a few durable Views over dozens of narrow one-off views
 
 ## Limits to remember
 
-Saved Views are personal filters, not shared Space settings. They apply within the current browsing scope and never grant access to additional memos. If a Space filter conflicts with the selected Space, it can return no results. Switch to the main Memos context when you want to filter across available Spaces. Use the actual stable Space ID in a `spaces/...` filter; `team-notes` above is an example custom ID.
+Views are personal filters, not shared Space settings. They apply within the current browsing scope and never grant access to additional memos. If a Space filter conflicts with the selected Space, it can return no results. Switch to the main Memos context when you want to filter across available Spaces. Use the actual stable Space ID in a `spaces/...` filter; `team-notes` above is an example custom ID.
 
 Memos supports a deliberate subset of CEL that can be translated consistently to SQLite, MySQL, and PostgreSQL. Use the **Validate** action before saving; it reports unsupported fields, type mismatches, invalid regular expressions, and operations that cannot be translated.
 

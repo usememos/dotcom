@@ -8,7 +8,6 @@
     "identityproviderservice",
     "instanceservice",
     "memoservice",
-    "memoviewservice",
     "spaceservice",
     "userservice"
   ]

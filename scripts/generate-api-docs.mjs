@@ -34,7 +34,7 @@ const SERVICE_TITLES = {
   identityproviderservice: "Identity Provider Service",
   instanceservice: "Instance Service",
   memoservice: "Memo Service",
-  memoviewservice: "Memo View Service",
+  memoviewservice: "View Service",
   shortcutservice: "Shortcut Service",
   spaceservice: "Space Service",
   userservice: "User Service",
@@ -70,7 +70,11 @@ function enrichOpenAPISpec(text, version) {
     throw new Error(`Could not locate the OpenAPI info block for ${version.slug}`);
   }
 
-  return enriched;
+  // Normalize product prose without changing MemoView API identifiers or
+  // historical snapshots. API pages also render these schema descriptions.
+  return version.isLatest
+    ? enriched.replace(/\b(?:saved )?memo views?\b/gi, (term) => (term.toLowerCase().endsWith("s") ? "Views" : "View"))
+    : enriched;
 }
 
 /**
@@ -155,7 +159,10 @@ function processMDXFiles(dir, dirPath) {
 
     // Update file content
     let content = fs.readFileSync(filePath, "utf-8");
-    content = content.replace(/^title: .*? Service_ (.*)$/m, "title: $1").replace(/\nfull: true\n/, "\n");
+    content = content
+      .replace(/^title: .*? Service_ (.*)$/m, "title: $1")
+      .replace(/^(title: .*)\bMemo Views?\b/gm, (title) => title.replace(/Memo (Views?)/, "$1"))
+      .replace(/\nfull: true\n/, "\n");
     fs.writeFileSync(filePath, content);
 
     // Rename file to remove service prefix

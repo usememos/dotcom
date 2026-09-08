@@ -30,7 +30,7 @@ Review these changes before pointing an existing integration at 0.31:
 
 | Area | Required client change |
 | --- | --- |
-| Saved Views | Replace `ShortcutService` with `MemoViewService`, shortcut resources with view resources, and `/api/v1/users/*/shortcuts/*` with `/api/v1/users/*/views/*`. Stored filters migrate automatically. |
+| Views | Replace `ShortcutService` with the `MemoView` operations in `UserService`, shortcut resources with view resources, and `/api/v1/users/*/shortcuts/*` with `/api/v1/users/*/views/*`. Stored filters migrate automatically. |
 | Authorization | Run mutations as the memo author. Assigned memo edits also require Space membership; instance and Space admin roles do not override authorship. Users manage their own reactions. |
 | Comments | Send visibility and placement intentionally. `CreateMemoComment` defaults omitted visibility to `PRIVATE`; `SetMemoRelations` rejects `COMMENT`. Parent deletion does not delete comment memos. |
 | Reactions | Stop reading `Reaction.content_id` (`contentId` in JSON). Identify the memo from the request or the reaction resource name. |

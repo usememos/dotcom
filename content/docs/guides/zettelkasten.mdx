@@ -5,7 +5,7 @@ category: guides
 tags: ["zettelkasten", "knowledge-management", "practice"]
 difficulty: beginner
 estimatedTime: 10 minutes
-relatedPages: ["/docs/usage/memos", "/docs/usage/tags", "/docs/usage/saved-views", "/docs/usage/search-archive", "/docs/guides/getting-things-done"]
+relatedPages: ["/docs/usage/memos", "/docs/usage/tags", "/docs/usage/views", "/docs/usage/search-archive", "/docs/guides/getting-things-done"]
 ---
 
 Good ideas rarely arrive as finished documents. The [Zettelkasten method](https://zettelkasten.de/overview/) develops them through focused notes that can be connected, tested, and reused. Memos gives the practice a self-hosted home: the timeline keeps each observation close to its context, topic tags bring related material back into view, and Relations let you trace an answer to the claims and evidence behind it.
@@ -152,7 +152,7 @@ If you are developing several questions, save a filter for active synthesis memo
 pinned && "zk/synthesis" in tags
 ```
 
-A second [saved filter](/docs/usage/saved-views) can surface recent Zettelkasten memos for a connection pass:
+A second [View](/docs/usage/views) can surface recent Zettelkasten memos for a connection pass:
 
 ```txt
 tag in ["zk"] && created_ts >= now - duration("168h")

@@ -1,4 +1,0 @@
-{
-  "title": "Memo View Service",
-  "pages": ["CreateMemoView", "DeleteMemoView", "GetMemoView", "ListMemoViews", "UpdateMemoView"]
-}

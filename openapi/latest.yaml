@@ -229,6 +229,35 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
+    /api/v1/attachments:upload:
+        post:
+            tags:
+                - AttachmentService
+            description: |-
+                UploadAttachment uploads a file in bounded chunks. The first call carries
+                 the spec and returns an upload_id; later calls carry that upload_id.
+                 Uploads are bound to the authenticated user, expire after 30 minutes of
+                 inactivity, and do not survive a server restart.
+            operationId: AttachmentService_UploadAttachment
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UploadAttachmentRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UploadAttachmentResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /api/v1/auth/me:
         get:
             tags:
@@ -2490,12 +2519,12 @@ paths:
     /api/v1/users/{user}/views:
         get:
             tags:
-                - MemoViewService
+                - UserService
             description: |-
-                ListMemoViews returns a user's memo views. Each view is a named, reusable
+                ListMemoViews returns a user's Views. Each view is a named, reusable
                  CEL filter (see MemoView.filter); pass its filter string directly to the
                  ListMemos `filter` argument.
-            operationId: MemoViewService_ListMemoViews
+            operationId: UserService_ListMemoViews
             parameters:
                 - name: user
                   in: path
@@ -2518,9 +2547,9 @@ paths:
                                 $ref: '#/components/schemas/Status'
         post:
             tags:
-                - MemoViewService
-            description: CreateMemoView creates a new memo view for a user.
-            operationId: MemoViewService_CreateMemoView
+                - UserService
+            description: CreateMemoView creates a new View for a user.
+            operationId: UserService_CreateMemoView
             parameters:
                 - name: user
                   in: path
@@ -2530,7 +2559,7 @@ paths:
                     type: string
                 - name: validateOnly
                   in: query
-                  description: Optional. If set, validate the request, but do not actually create the memo view.
+                  description: Optional. If set, validate the request, but do not actually create the View.
                   schema:
                     type: boolean
             requestBody:
@@ -2555,9 +2584,9 @@ paths:
     /api/v1/users/{user}/views/{view}:
         get:
             tags:
-                - MemoViewService
-            description: GetMemoView gets a memo view by name.
-            operationId: MemoViewService_GetMemoView
+                - UserService
+            description: GetMemoView gets a View by name.
+            operationId: UserService_GetMemoView
             parameters:
                 - name: user
                   in: path
@@ -2586,9 +2615,9 @@ paths:
                                 $ref: '#/components/schemas/Status'
         delete:
             tags:
-                - MemoViewService
-            description: DeleteMemoView deletes a memo view for a user.
-            operationId: MemoViewService_DeleteMemoView
+                - UserService
+            description: DeleteMemoView deletes a View for a user.
+            operationId: UserService_DeleteMemoView
             parameters:
                 - name: user
                   in: path
@@ -2614,9 +2643,9 @@ paths:
                                 $ref: '#/components/schemas/Status'
         patch:
             tags:
-                - MemoViewService
-            description: UpdateMemoView updates a memo view for a user.
-            operationId: MemoViewService_UpdateMemoView
+                - UserService
+            description: UpdateMemoView updates a View for a user.
+            operationId: UserService_UpdateMemoView
             parameters:
                 - name: user
                   in: path
@@ -3758,7 +3787,7 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/MemoView'
-                    description: The list of memo views.
+                    description: The list of Views.
         ListMemosResponse:
             type: object
             properties:
@@ -3998,8 +4027,9 @@ components:
                     readOnly: true
                     type: string
                     description: |-
-                        Output only. The readable context memo of this COMMENT relation, if any.
-                         This is omitted unless the caller may independently read both memos.
+                        Output only. The context memo of this COMMENT relation, if any.
+                         Its identity is returned even when the caller cannot read the parent.
+                         Fetch the parent independently; this field does not grant read access.
                          Format: memos/{memo}
                 snippet:
                     readOnly: true
@@ -4080,16 +4110,32 @@ components:
                 name:
                     type: string
                     description: |-
-                        The resource name of the memo view.
+                        The resource name of the View.
                          Format: users/{user}/views/{view}
                 title:
                     type: string
-                    description: The title of the memo view.
+                    description: The title of the View.
                 filter:
                     type: string
                     description: |-
-                        The CEL filter expression for the memo view, using the same grammar as the
+                        The CEL filter expression for the View, using the same grammar as the
                          ListMemos `filter` argument. Reuse it by passing this value to ListMemos.
+                icon:
+                    allOf:
+                        - $ref: '#/components/schemas/MemoView_Icon'
+                    description: |-
+                        Optional. Display icon. Omit when updating with the "icon" mask to reset
+                         to the default view icon.
+            description: View messages
+        MemoView_Icon:
+            type: object
+            properties:
+                emoji:
+                    type: string
+                    description: A Unicode emoji sequence.
+                lucide:
+                    type: string
+                    description: A canonical Lucide icon name, such as "leaf".
         Memo_Property:
             type: object
             properties:
@@ -4399,6 +4445,12 @@ components:
                         Output only. The number of accepted members in this space. Pending
                          invitations are excluded. Zero when this Space is exposed as metadata-only.
                     format: int32
+                icon:
+                    allOf:
+                        - $ref: '#/components/schemas/Space_Icon'
+                    description: |-
+                        Optional. Display icon. Omit when updating with the "icon" mask to reset
+                         to the default Space mark.
             description: Space is a collaboration boundary for placed memos.
         SpaceInvitation:
             required:
@@ -4449,6 +4501,15 @@ components:
                     description: Required. The member's role within this space.
                     format: enum
             description: SpaceMember is a user's membership and governance role in a space.
+        Space_Icon:
+            type: object
+            properties:
+                emoji:
+                    type: string
+                    description: A Unicode emoji sequence.
+                lucide:
+                    type: string
+                    description: A canonical Lucide icon name, such as "leaf".
         Status:
             type: object
             properties:
@@ -4558,6 +4619,76 @@ components:
                 contentType:
                     type: string
                     description: Optional. The MIME type of the input audio.
+        UploadAttachmentRequest:
+            required:
+                - writeOffset
+            type: object
+            properties:
+                spec:
+                    allOf:
+                        - $ref: '#/components/schemas/UploadAttachmentSpec'
+                    description: Starts a new upload. The same call may also carry data and finish_write.
+                uploadId:
+                    type: string
+                    description: Continues the upload identified by a previous response.
+                writeOffset:
+                    type: string
+                    description: |-
+                        Required. Zero-based byte offset at which data is written. Must equal the
+                         committed size, except when retrying the most recently accepted chunk
+                         with identical bytes and offset, which is accepted without writing again.
+                data:
+                    type: string
+                    description: |-
+                        Optional. File bytes, at most max_chunk_size long. With no data and
+                         finish_write false, the call reports progress without writing, and
+                         write_offset is ignored.
+                    format: bytes
+                finishWrite:
+                    type: boolean
+                    description: |-
+                        Optional. Finalize the upload after writing data. The committed size must
+                         then equal total_size. Any later call for the same upload_id returns the
+                         created attachment.
+        UploadAttachmentResponse:
+            type: object
+            properties:
+                uploadId:
+                    type: string
+                    description: Opaque ID for subsequent calls. This is not a resource name.
+                committedSize:
+                    type: string
+                    description: Number of file bytes committed so far.
+                attachment:
+                    allOf:
+                        - $ref: '#/components/schemas/Attachment'
+                    description: Set once the upload has been finalized.
+                maxChunkSize:
+                    type: integer
+                    description: Maximum number of data bytes accepted in one call.
+                    format: int32
+        UploadAttachmentSpec:
+            required:
+                - attachment
+            type: object
+            properties:
+                attachment:
+                    allOf:
+                        - $ref: '#/components/schemas/Attachment'
+                    description: |-
+                        Required. Metadata for the attachment to create. content must be empty;
+                         file bytes are sent in data.
+                attachmentId:
+                    type: string
+                    description: |-
+                        Optional. The attachment ID to use for this attachment.
+                         If empty, a unique ID will be generated.
+                         Format: ^[a-zA-Z0-9]([a-zA-Z0-9-]{0,34}[a-zA-Z0-9])?$
+                totalSize:
+                    type: string
+                    description: |-
+                        Optional. Total size of the file in bytes before media processing.
+                         Zero represents an empty file.
         UpsertMemoReactionRequest:
             required:
                 - name
@@ -4926,7 +5057,6 @@ tags:
     - name: IdentityProviderService
     - name: InstanceService
     - name: MemoService
-    - name: MemoViewService
     - name: SpaceService
       description: SpaceService manages collaborative spaces and their memberships.
     - name: UserService

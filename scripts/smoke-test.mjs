@@ -8,6 +8,12 @@ const checks = [
     contains: "Common questions about running and using Memos.",
   },
   {
+    path: "/docs/usage/views",
+    type: "html",
+    contains: "A View is a named, reusable set of Memo filter conditions.",
+    openNextCache: "HIT",
+  },
+  {
     path: "/blog/best-practices-to-write-tag",
     type: "html",
     contains: "Best practices to write a TAG",

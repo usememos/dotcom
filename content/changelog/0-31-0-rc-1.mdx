@@ -1,15 +1,15 @@
 ---
 title: Release v0.31.0-rc.1
-description: Collaborative Spaces, unified navigation, inline images, Saved Views, and stronger data boundaries
+description: Collaborative Spaces, unified navigation, inline images, Views, and stronger data boundaries
 date: "2026-08-30"
 breaking: true
 ---
 
-> This release candidate introduces first-class Spaces for collaboration while preserving individual memo ownership. It also unifies navigation and memo creation, adds inline attachment images and optional media metadata, replaces Shortcuts with Saved Views, enriches link previews, and strengthens access controls, database upgrades, and live-update performance.
+> This release candidate introduces first-class Spaces for collaboration while preserving individual memo ownership. It also unifies navigation and memo creation, adds inline attachment images and optional media metadata, migrates legacy filters to Views, enriches link previews, and strengthens access controls, database upgrades, and live-update performance.
 
 ## Breaking Changes
 
-- **Saved Views replace Shortcuts** - `ShortcutService`, shortcut resource names, MCP tools, persisted settings, and `/api/v1/users/*/shortcuts/*` have moved to `MemoViewService`, view resources, and `/api/v1/users/*/views/*`. The web route is now `/views`. Stored shortcuts migrate automatically, but API clients, MCP integrations, and saved links must be updated.
+- **Views replace legacy filters** - `ShortcutService`, shortcut resource names, MCP tools, persisted settings, and `/api/v1/users/*/shortcuts/*` have moved to `MemoViewService`, view resources, and `/api/v1/users/*/views/*`. The web route is now `/views`. Stored shortcuts migrate automatically, but API clients, MCP integrations, and saved links must be updated.
 - **Author-controlled memo mutations** - Instance administrators are no longer implicit memo collaborators or Space members. Memo, attachment, reaction, relation, and share mutations are controlled by the memo author. Space administrators manage Space settings and membership but cannot edit another author's memo.
 - **Independent comment lifecycle** - Comments now have their own visibility, placement, and lifecycle. `CreateMemoComment` no longer inherits the parent memo's visibility, so an omitted value defaults to `PRIVATE`. `SetMemoRelations` rejects `COMMENT` relations, and deleting a memo no longer cascades into comment memos.
 - **Reaction API changes** - `Reaction.content_id` has been removed from the public API. Integrations must identify the memo from the request or reaction resource name. Existing reactions are migrated to internal memo IDs, while orphaned reactions are removed.
@@ -24,7 +24,7 @@ breaking: true
 - **Stricter instance URL validation** - `instance-url` must be an absolute HTTP or HTTPS URL without credentials, a query, or a fragment.
 - **Existing memos remain Unassigned** - Upgrading does not create a default Space or move existing memos. Their identity, author, visibility, and relations are preserved.
 - **Space deletion is destructive** - Deleting a Space permanently deletes every memo directly assigned to it and the resources owned by those memos. Removing a member leaves their contributions in place, and accounts with active Space memberships cannot be deleted, including with `force`.
-- **Cross-database migrations** - SQLite, MySQL, and PostgreSQL migrations preserve existing memo data, migrate Saved Views and legacy storage settings, and retain generated-ID high-water marks.
+- **Cross-database migrations** - SQLite, MySQL, and PostgreSQL migrations preserve existing memo data, migrate Views and legacy storage settings, and retain generated-ID high-water marks.
 - **Tag indexes update incrementally** - Existing memo payloads are not rebuilt automatically for the new tag grammar. Rendering and editing use the new rules immediately, while filters and statistics adopt them after each memo is saved again.
 - **Deployment changes** - Private webhook destinations can be restricted to exact hostnames, IP addresses, or CIDRs with `--webhook-private-network-allowlist`. The broader `--allow-private-webhooks` option remains compatible but is deprecated. Building Memos from source now requires Go 1.27.
 
@@ -40,9 +40,9 @@ breaking: true
 
 ### Navigation and Writing
 
-- **Unified sidebar** - The previous dual navigation rails have been replaced by one route-aware, resizable sidebar containing the calendar, Saved Views, tags, Quick Find, and contextual resource navigation.
+- **Unified sidebar** - The previous dual navigation rails have been replaced by one route-aware, resizable sidebar containing the calendar, Views, tags, Quick Find, and contextual resource navigation.
 - **Global composer** - Authenticated users can create a memo from any route without returning to the main feed.
-- **Saved Views** - Existing shortcut data migrates into the new Saved Views surface for reusable memo filtering.
+- **Views** - Views are named, reusable Memo filters. Opening a View shows the Memos that currently match; it does not store Memo copies or choose a display layout. Existing filters migrate automatically.
 
 ### Attachments and Media
 
