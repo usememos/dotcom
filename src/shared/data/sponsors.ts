@@ -4,12 +4,14 @@ export interface Sponsor {
   logo: string;
   logoDark?: string;
   description?: string;
+  sidebarFeatured?: boolean;
 }
 
 // Featured sponsors displayed in docs sidebar and homepage
 export const FEATURED_SPONSORS: Sponsor[] = [
   {
     name: "CodeRabbit",
+    sidebarFeatured: true,
     url: "https://coderabbit.link/usememos",
     logo: "https://raw.githubusercontent.com/usememos/.github/refs/heads/main/assets/sponsors/coderabbit/orange-typemark.svg",
     logoDark: "https://raw.githubusercontent.com/usememos/.github/refs/heads/main/assets/sponsors/coderabbit/white-typemark.svg",

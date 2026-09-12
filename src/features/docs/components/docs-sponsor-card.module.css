@@ -1,0 +1,82 @@
+.marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, black 12px, black calc(100% - 12px), transparent);
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: sponsor-scroll 14s linear infinite;
+}
+
+.group {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 24px;
+  width: max-content;
+  padding-right: 24px;
+}
+
+.group > a {
+  flex: 0 0 auto;
+}
+
+.marquee:hover .track {
+  animation-play-state: paused;
+}
+
+/* Show both original links in place when navigating with the keyboard. */
+.marquee:has(:focus-visible) {
+  mask-image: none;
+}
+
+.marquee:has(:focus-visible) .track {
+  width: 100%;
+  animation: none;
+}
+
+.marquee:has(:focus-visible) .group {
+  width: 100%;
+  gap: 8px;
+  padding-right: 0;
+}
+
+.marquee:has(:focus-visible) .group > a {
+  flex: 0 1 auto;
+}
+
+.marquee:has(:focus-visible) .duplicate {
+  display: none;
+}
+
+@keyframes sponsor-scroll {
+  to {
+    transform: translateX(calc(-1 * var(--sponsor-group-width)));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    mask-image: none;
+  }
+
+  .track {
+    width: 100%;
+    animation: none;
+  }
+
+  .group {
+    width: 100%;
+    gap: 8px;
+    padding-right: 0;
+  }
+
+  .group > a {
+    flex: 0 1 auto;
+  }
+
+  .marquee .group.duplicate {
+    display: none;
+  }
+}

@@ -736,9 +736,17 @@ When the system cannot express a legitimate new website need, the agent MUST:
 Agents MUST NOT create a local workaround first and document it afterward.
 
 A durable user-requested exception MUST be recorded in this document with its
-route, scope, reason, and affected rule. There are currently no standing user
-exceptions. Registered page signatures are part of the system and are not
-exceptions.
+route, scope, reason, and affected rule. Registered page signatures are part of
+the system and are not exceptions.
+
+- Blog and Changelog article sponsor panels share the Docs sponsor component.
+  At the user's request, CodeRabbit stays fixed above a continuous horizontal
+  strip of the other paid sponsors. This scoped exception to section 17 makes
+  the sponsor display more compact. Sponsor logos are left-aligned with a
+  consistent gap, including between loop repetitions. At the user's request,
+  there is no pause button. The strip pauses on hover and shows all sponsors
+  without motion for keyboard focus and reduced motion preferences. It does
+  not authorize other rotating carousels.
 
 ## 23. Migration
 
