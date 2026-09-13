@@ -739,6 +739,13 @@ A durable user-requested exception MUST be recorded in this document with its
 route, scope, reason, and affected rule. Registered page signatures are part of
 the system and are not exceptions.
 
+- The Homepage's `MemoHeroMock` follows the current `demo.usememos.com` product
+  UI at the user's request. Inside that reconstruction, section 12's website
+  radius roles give way to the product's 8px memo/editor surfaces, compact
+  controls and square avatars, and outlined pill tags. Product colors and the
+  system UI font stay scoped to the mockup; the surrounding site keeps its
+  established tokens and typography.
+
 - Blog and Changelog article sponsor panels share the Docs sponsor component.
   At the user's request, CodeRabbit stays fixed above a continuous horizontal
   strip of the other paid sponsors. This scoped exception to section 17 makes

@@ -3,7 +3,138 @@
 }
 
 .mock {
+  /* Product tokens sampled from demo.usememos.com, scoped to this artifact. */
+  --mock-canvas: oklch(98.18% 0.0054 95.0986);
+  --mock-sidebar: oklch(96.63% 0.008 98.8792);
+  --mock-card: #fff;
+  --mock-ink: oklch(24.38% 0.0269 95.7226);
+  --mock-muted: oklch(55.59% 0.0075 97.4233);
+  --mock-border: oklch(88.47% 0.0069 97.3627);
+  --mock-accent: oklch(45% 0.08 250);
+  --mock-selected: oklch(92.45% 0.0138 92.9892);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  color: var(--mock-ink);
   animation: mock-in 800ms 120ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+[class~="dark"] .mock {
+  --mock-canvas: #181818;
+  --mock-sidebar: #202020;
+  --mock-card: #242424;
+  --mock-ink: #e6e4dd;
+  --mock-muted: #a3a29c;
+  --mock-border: #41413d;
+  --mock-accent: #a8c7e7;
+  --mock-selected: #33332f;
+}
+
+.memoSurface {
+  border: 1px solid color-mix(in oklab, var(--mock-border) 70%, transparent);
+  border-radius: 8px;
+  background: var(--mock-card);
+  padding: 10px 12px;
+}
+
+.memoFeed {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.mockContent {
+  min-height: 0;
+  min-width: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.mockContent[data-scrolling="true"] {
+  scrollbar-color: var(--mock-muted) transparent;
+}
+
+.mockContent::-webkit-scrollbar {
+  width: 6px;
+}
+
+.mockContent::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: transparent;
+}
+
+.mockContent[data-scrolling="true"]::-webkit-scrollbar-thumb {
+  background: var(--mock-muted);
+}
+
+.mockContent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.mockContent::-webkit-scrollbar-button {
+  display: none;
+}
+
+.memoFeed > article {
+  flex-shrink: 0;
+  scroll-margin: 8px;
+}
+
+.mockContent:focus-visible {
+  outline: 2px solid var(--mock-accent);
+  outline-offset: -3px;
+}
+
+.memoLink {
+  display: inline-block;
+  margin-top: 6px;
+  color: var(--mock-accent);
+  font-size: 10px;
+  line-height: 16px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.memoReference {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--mock-accent);
+  font-size: 9px;
+}
+
+.memoLink:hover,
+.memoReference:hover {
+  text-decoration: underline;
+}
+
+.memoLink:focus-visible,
+.memoReference:focus-visible {
+  outline: 2px solid var(--mock-accent);
+  outline-offset: 2px;
+}
+
+.memoTag {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--mock-accent);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--mock-accent) 15%, transparent);
+  padding: 2px 5px;
+  color: var(--mock-accent);
+  font-size: 9px;
+  line-height: 1;
+  font-weight: 400;
+}
+
+.mockControl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--mock-border);
+  border-radius: 6px;
+  background: var(--mock-canvas);
+  box-shadow: 0 1px 2px #0000000d;
 }
 
 .caret {
