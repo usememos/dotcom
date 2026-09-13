@@ -1,5 +1,5 @@
 {
   "title": "Integrations",
   "description": "Connect Memos with third-party services and tools",
-  "pages": ["index", "api-access", "mcp", "telegram-bot", "webhooks"]
+  "pages": ["api-access", "mcp", "telegram-bot", "webhooks"]
 }

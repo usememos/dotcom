@@ -1,5 +1,5 @@
 {
   "title": "Operations",
   "description": "Architecture, backup, upgrade, and performance guidance for operating Memos",
-  "pages": ["index", "architecture", "backup-restore", "upgrade", "performance-tuning"]
+  "pages": ["architecture", "backup-restore", "upgrade", "performance-tuning"]
 }
