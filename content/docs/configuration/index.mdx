@@ -3,38 +3,44 @@ title: Configuration
 description: Configure server behavior, storage, authentication, and environment variables.
 ---
 
-Memos can be configured through command-line flags, `MEMOS_*` environment variables, deployment-managed JSON files, and instance-level settings managed in the UI or API.
+Configure Memos around how your instance runs, where its data lives, and how people sign in. These pages explain startup options, deployment-managed settings, database and attachment storage, and access controls.
 
-## Common runtime settings
+<Cards>
+  <Card title="Environment Variables" href="/docs/configuration/environment-variables" icon="Terminal">
+    Set the listen address, port, data directory, database connection, and canonical instance URL.
+  </Card>
+  <Card title="Deployment-Managed Configuration" href="/docs/configuration/deployment-configuration" icon="Settings">
+    Load selected instance settings and identity providers from mounted JSON files at startup.
+  </Card>
+  <Card title="Database" href="/docs/configuration/database" icon="Database">
+    Configure SQLite, MySQL, or PostgreSQL and understand the operational tradeoffs.
+  </Card>
+  <Card title="Storage" href="/docs/configuration/storage" icon="HardDrive">
+    Choose where attachments live and manage named storage configurations for new and existing files.
+  </Card>
+  <Card title="Authentication" href="/docs/configuration/authentication" icon="Key">
+    Configure password sign-in, SSO providers, and personal access tokens.
+  </Card>
+  <Card title="Security" href="/docs/configuration/security" icon="Shield">
+    Review HTTPS, credentials, sharing, and recovery as part of operating your instance.
+  </Card>
+</Cards>
 
-| Flag | Environment | Purpose |
-| --- | --- | --- |
-| `--port` | `MEMOS_PORT` | HTTP port |
-| `--addr` | `MEMOS_ADDR` | bind address |
-| `--unix-sock` | `MEMOS_UNIX_SOCK` | Unix socket path |
-| `--data` | `MEMOS_DATA` | data directory |
-| `--driver` | `MEMOS_DRIVER` | database backend |
-| `--dsn` | `MEMOS_DSN` | database connection string |
-| `--instance-url` | `MEMOS_INSTANCE_URL` | canonical external URL; independent of access policy |
-| `--demo` | `MEMOS_DEMO` | demo mode |
-| `--webhook-private-network-allowlist` | `MEMOS_WEBHOOK_PRIVATE_NETWORK_ALLOWLIST` | Allowed private destinations: exact hostnames, IP addresses, or CIDRs |
-| `--allow-private-webhooks` | `MEMOS_ALLOW_PRIVATE_WEBHOOKS` | deprecated blanket exception for private webhook destinations |
-| `--log-level` | `MEMOS_LOG_LEVEL` | log verbosity (`debug`, `info`, `warn`, `error`) |
+## Choose the question you need to answer
+
+| If you want to know… | Start with… |
+| --- | --- |
+| How do I change the port, data path, or external URL? | [Environment Variables](/docs/configuration/environment-variables) |
+| How do I keep settings under deployment or secret-manager control? | [Deployment-Managed Configuration](/docs/configuration/deployment-configuration) |
+| Which database fits my deployment? | [Database](/docs/configuration/database) |
+| Where should uploads be stored? | [Storage](/docs/configuration/storage) |
+| How do I set up SSO or authenticate an integration? | [Authentication](/docs/configuration/authentication) |
+| What should I review before exposing the instance? | [Security](/docs/configuration/security) |
 
 ## Configuration layers
 
-- runtime flags and environment variables control server startup
-- deployment-managed files keep selected authentication and instance settings under infrastructure control
-- instance settings control storage, registration, and some auth behavior
-- reverse proxy settings affect HTTPS, cookie behavior, and public URL correctness
+Runtime flags and `MEMOS_*` environment variables control server startup. Instance settings manage policies and services through the UI or API. When a supported setting is supplied by a deployment-managed file, that file is authoritative for the server process; changes to it require a restart.
 
 In Memos 0.31, the `ACCESS` instance setting selects public or private access independently of `MEMOS_INSTANCE_URL`. Set the URL to the canonical external HTTP(S) address, including for private instances behind a proxy. Manage access in instance settings or a [deployment-managed access file](/docs/configuration/deployment-configuration#access-policy).
 
-## Related topics
-
-- [Environment Variables](/docs/configuration/environment-variables)
-- [Deployment-Managed Configuration](/docs/configuration/deployment-configuration)
-- [Database](/docs/configuration/database)
-- [Storage](/docs/configuration/storage)
-- [Authentication](/docs/configuration/authentication)
-- [Security](/docs/configuration/security)
+For the installation itself, start with [Deploy](/docs/deploy). Once Memos is running, use [Admin](/docs/admin) for ongoing instance and account management, and [Reverse Proxy](/docs/deploy/reverse-proxy) for HTTPS and forwarded headers.

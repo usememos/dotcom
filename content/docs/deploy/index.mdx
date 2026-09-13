@@ -3,34 +3,40 @@ title: Deploy
 description: Install and run Memos in local, server, and production environments.
 ---
 
-Choose the deployment method that matches your environment and operational needs.
-
-In practice:
-
-- use Docker for the fastest single-instance setup
-- use Docker Compose when you want repeatable config and easier upgrades
-- use the binary when you already have host-level service management in place
-- use Kubernetes only when you already operate a cluster
-- build from source when customizing or pinning a specific revision of Memos
-- put production traffic behind a reverse proxy and HTTPS
+Run Memos on infrastructure you control, using the deployment method that fits your environment. These guides take you from starting the application to keeping data persistent and serving your instance over HTTPS.
 
 <Cards>
   <Card title="Docker" href="/docs/deploy/docker" icon="Container">
-    Quick single-container setup.
+    Start a single container with a persistent data directory and a restart policy.
   </Card>
   <Card title="Docker Compose" href="/docs/deploy/docker-compose" icon="Container">
-    A structured deployment for local or small production setups.
+    Keep service settings, volumes, and environment variables in a repeatable deployment file.
   </Card>
   <Card title="Binary" href="/docs/deploy/binary" icon="Download">
-    Install and supervise Memos without Docker.
+    Install a native release and run it under your host's service manager.
   </Card>
   <Card title="Kubernetes" href="/docs/deploy/kubernetes" icon="Cloud">
-    Deploy Memos on a cluster with manifests and persistent storage.
+    Fit Memos into an existing cluster with persistent storage, service routing, and ingress.
   </Card>
   <Card title="Build From Source" href="/docs/deploy/development" icon="Code">
     Compile Memos yourself for forks, custom patches, and pinned deployments.
   </Card>
   <Card title="Reverse Proxy" href="/docs/deploy/reverse-proxy" icon="Shield">
-    Put Memos behind HTTPS.
+    Serve HTTPS with the correct external URL, forwarded headers, and authentication behavior.
   </Card>
 </Cards>
+
+## Choose the question you need to answer
+
+| If you want to know… | Start with… |
+| --- | --- |
+| How do I start one instance with Docker? | [Docker](/docs/deploy/docker) |
+| How do I keep the deployment easy to recreate and update? | [Docker Compose](/docs/deploy/docker-compose) |
+| How do I run Memos directly on my host? | [Binary](/docs/deploy/binary) |
+| How do I deploy into a cluster I already operate? | [Kubernetes](/docs/deploy/kubernetes) |
+| How do I run a fork or a build from a specific revision? | [Build From Source](/docs/deploy/development) |
+| How do I serve my instance at an HTTPS URL? | [Reverse Proxy](/docs/deploy/reverse-proxy) |
+
+Choose one installation path, then configure the external URL and proxy for that deployment. Confirm that your database and attachments survive a restart before relying on the instance for daily use.
+
+Continue to [Configuration](/docs/configuration) for database, storage, and sign-in choices, and [Operations](/docs/operations) for backups and upgrades. To work on the Memos codebase, start with [Development](/docs/development).

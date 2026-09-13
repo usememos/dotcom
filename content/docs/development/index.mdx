@@ -1,21 +1,34 @@
 ---
 title: Development
-description: Local development workflows for contributing to Memos.
+description: Set up the Memos codebase, build the application, test changes, and prepare contributions for review.
 ---
 
-This section is for contributors and maintainers working on the Memos codebase rather than just deploying the application.
+Work on Memos from a local checkout through to a reviewable contribution. These pages cover the backend and frontend toolchains, building the application, choosing useful checks, and explaining changes to maintainers.
 
 <Cards>
   <Card title="Setup" href="/docs/development/setup" icon="Settings">
-    Prepare your machine with the required languages and tools.
+    Prepare the Go and frontend toolchains, install dependencies, and get a local checkout ready.
   </Card>
   <Card title="Building" href="/docs/development/building" icon="Code">
-    Produce frontend and backend builds locally.
+    Build the frontend assets and backend binary, then verify that they work together.
   </Card>
   <Card title="Testing" href="/docs/development/testing" icon="Activity">
-    Run validation before shipping changes.
+    Choose backend tests, frontend checks, and smoke tests that match the behavior you changed.
   </Card>
   <Card title="Contributing" href="/docs/development/contributing" icon="Github">
-    Work in a way that makes reviews and maintenance easier.
+    Scope a code or documentation change and prepare the context reviewers need.
   </Card>
 </Cards>
+
+## Choose the question you need to answer
+
+| If you want to know… | Start with… |
+| --- | --- |
+| What do I need to work on Memos locally? | [Setup](/docs/development/setup) |
+| How do I turn the source into a runnable application? | [Building](/docs/development/building) |
+| Which checks should I run for my change? | [Testing](/docs/development/testing) |
+| What should I include in a code or documentation contribution? | [Contributing](/docs/development/contributing) |
+
+For a first code change, get an unchanged checkout building before editing. Use a focused test loop while developing, then verify the built application and describe the resulting behavior in your pull request. Update the relevant docs when that behavior changes.
+
+For an overview of the application layers, read [Architecture](/docs/operations/architecture). To deploy the build you produce, continue to [Build From Source](/docs/deploy/development).

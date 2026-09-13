@@ -1,21 +1,34 @@
 ---
 title: Integrations
-description: API access, MCP, webhooks, and community integrations.
+description: Connect scripts, AI assistants, event receivers, and Telegram capture to your Memos instance.
 ---
 
-Memos includes a small set of built-in integrations and supports community projects.
+Connect Memos to the tools you use to capture and work with notes. Use the API for scripts and applications, MCP for AI assistants, webhooks to react to memo events, or a separate Telegram integration to capture messages.
 
 <Cards>
   <Card title="API Access" href="/docs/integrations/api-access" icon="Key">
-    Authenticate API calls with personal access tokens.
+    Create a personal access token, authenticate requests, and review client migration requirements.
   </Card>
   <Card title="MCP Server" href="/docs/integrations/mcp" icon="Bot">
-    Connect AI assistants to your memos via MCP.
-  </Card>
-  <Card title="Webhooks" href="/docs/integrations/webhooks" icon="Link">
-    Receive events when memos change.
+    Connect an assistant to the built-in MCP endpoint to search, create, and update memos.
   </Card>
   <Card title="Telegram Bot" href="/docs/integrations/telegram-bot" icon="MessageCircle">
-    Community integration for Telegram.
+    Run Memogram to send text and images from Telegram into your Memos instance.
+  </Card>
+  <Card title="Webhooks" href="/docs/integrations/webhooks" icon="Webhook">
+    Receive memo events and implement signature verification and delivery responses.
   </Card>
 </Cards>
+
+## Choose the question you need to answer
+
+| If you want to know… | Start with… |
+| --- | --- |
+| How do I read or write memos from my own application? | [API Access](/docs/integrations/api-access) |
+| How do I let an AI assistant work with my memos? | [MCP Server](/docs/integrations/mcp) |
+| How do I capture a note from Telegram? | [Telegram Bot](/docs/integrations/telegram-bot) |
+| How do I trigger another service when a memo changes? | [Webhooks](/docs/integrations/webhooks) |
+
+API and MCP calls act with the permissions of the account behind the token. Create a separate token for each application so you can revoke its access independently. For webhook receivers, follow the signing and response requirements before processing events.
+
+For request and response details, open the [API Reference](/docs/api) and choose the version that matches your instance; Latest tracks `main`. For instance-wide sign-in setup, see [Authentication](/docs/configuration/authentication).
