@@ -1,19 +1,20 @@
 /**
- * Compact, editorial adaptations of the official demo seed, checked 2026-09-13:
+ * Compact examples adapted from the official demo seed, checked 2026-09-13:
  * https://github.com/usememos/memos/blob/main/store/seed/sqlite/01__dump.sql
- * Ordered to show everyday capture, developer notes, travel, reading, and bookmarks.
+ * Includes an authored Tasks view example to connect the timeline and sidebar.
+ * Ordered to show everyday capture, developer notes, Views, reading, and bookmarks.
  * Dates are relative to the viewer's local day in this personal example timeline.
  */
 interface HomeMemo {
   id: string;
-  sourceUid: string;
+  kind: "note" | "sponsors";
+  sourceUid?: string;
   daysAgo: number;
   title: string;
   tags: string[];
   text?: string;
   tasks?: { text: string; done: boolean }[];
   code?: string;
-  image?: { src: string; alt: string };
   location?: string;
   quote?: string;
   link?: { label: string; href: string };
@@ -23,6 +24,7 @@ interface HomeMemo {
 export const HOME_MEMOS: HomeMemo[] = [
   {
     id: "weekly",
+    kind: "note",
     sourceUid: "johnnyweekly001",
     daysAgo: 0,
     title: "A small win, and what’s next",
@@ -35,6 +37,7 @@ export const HOME_MEMOS: HomeMemo[] = [
   },
   {
     id: "git",
+    kind: "note",
     sourceUid: "johnnytilgit001",
     daysAgo: 1,
     title: "TIL: compare files across branches",
@@ -43,19 +46,24 @@ export const HOME_MEMOS: HomeMemo[] = [
     tags: ["dev/til", "dev/git"],
   },
   {
-    id: "travel",
-    sourceUid: "goldenhour0001",
+    id: "tasks-view",
+    kind: "note",
     daysAgo: 2,
-    title: "A little color from the coastal trail",
-    image: {
-      src: "/demo/golden-hour-trail.png",
-      alt: "Golden-hour coastal landscape from the Memos demo: a warm sky above purple hills and blue water.",
-    },
-    location: "Point Reyes, California",
-    tags: ["travel/hikes"],
+    title: "A view for unfinished work",
+    text: "My Tasks view gathers notes with unchecked items. Keeping the filter here for my next weekly review.",
+    code: "has_incomplete_tasks",
+    tags: ["weekly/planning"],
+  },
+  {
+    id: "sponsors",
+    kind: "sponsors",
+    daysAgo: 2,
+    title: "Built with their support",
+    tags: [],
   },
   {
     id: "reading",
+    kind: "note",
     sourceUid: "johnnyreading01",
     daysAgo: 3,
     title: "Reading: Deep Work",
@@ -66,6 +74,7 @@ export const HOME_MEMOS: HomeMemo[] = [
   },
   {
     id: "bookmark",
+    kind: "note",
     sourceUid: "johnnybookmark1",
     daysAgo: 4,
     title: "Save this for the weekend",

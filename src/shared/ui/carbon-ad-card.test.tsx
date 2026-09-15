@@ -135,6 +135,37 @@ describe("CarbonAdCard", () => {
     expect(sponsorLink).toHaveTextContent("Support the project and feature your logo here.");
   });
 
+  it("renders the memo fallback as one link without the sponsor banner", async () => {
+    const fetchMock = stubFetch({ ads: [] });
+    render(<CarbonAdCard variant="memo" />);
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+
+    expect(screen.getByRole("link", { name: "Sponsor Memos" })).toHaveAttribute("href", "https://github.com/sponsors/usememos");
+    expect(screen.getAllByRole("link")).toHaveLength(1);
+    expect(screen.queryByText("Support the project and feature your logo here.")).not.toBeInTheDocument();
+  });
+
+  it("preserves the served creative and attribution in the memo presentation", async () => {
+    stubFetch(servedPayload());
+    const { container } = render(<CarbonAdCard variant="memo" />);
+    await findAdText();
+
+    expect(screen.getByRole("link", { name: "ads via Carbon" })).toBeInTheDocument();
+    expect(screen.getByRole("complementary", { name: "Sponsored content" })).toHaveClass("max-w-[400px]");
+    expect(container.querySelector("img")).toHaveAttribute("width", "130");
+    expect(container.querySelectorAll("[data-carbon-ad]")).toHaveLength(1);
+    expect(screen.queryByRole("link", { name: "Sponsor Memos" })).not.toBeInTheDocument();
+  });
+
+  it("renders a memo ad without an image when the response only supplies text", async () => {
+    stubFetch(servedPayload({ smallImage: "" }));
+    const { container } = render(<CarbonAdCard variant="memo" />);
+    await findAdText();
+
+    expect(container.querySelector("img")).toBeNull();
+    expect(screen.getByRole("link", { name: "ads via Carbon" })).toBeInTheDocument();
+  });
+
   it("records viewability once when the payload asks for it", async () => {
     vi.stubGlobal("IntersectionObserver", FakeIntersectionObserver);
     const fetchMock = stubFetch(servedPayload({ should_record_viewable: "1", statview: "https://srv.carbonads.net/ads/viewable/x/token" }));

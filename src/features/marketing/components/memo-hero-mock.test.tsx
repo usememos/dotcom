@@ -1,10 +1,14 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { act } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { buildHomeCalendar, HOME_MEMOS, HOME_TAGS } from "@/features/marketing/data/home-memos";
 import { MemoHeroCalendar } from "./memo-hero-calendar";
 import { MemoHeroContent } from "./memo-hero-content";
 import { MemoHeroMock } from "./memo-hero-mock";
+
+vi.mock("@/shared/ui/carbon-ad-card", () => ({
+  CarbonAdCard: () => <aside data-testid="carbon-ad" />,
+}));
 
 // Calendar arithmetic uses local calendar days, including month/year rollovers.
 describe("homepage calendar", () => {
@@ -66,6 +70,7 @@ describe("homepage example memos", () => {
       expect(item.count).toBeGreaterThan(0);
     }
     expect(HOME_TAGS.find((item) => item.tag === "dev")?.count).toBe(2);
+    expect(HOME_TAGS.find((item) => item.tag === "weekly")?.count).toBe(2);
     expect(HOME_TAGS.some((item) => item.tag === "dev/git")).toBe(true);
   });
 
@@ -79,7 +84,26 @@ describe("homepage example memos", () => {
     expect(screen.getAllByRole("article")).toHaveLength(HOME_MEMOS.length);
     const reference = screen.getByRole("link", { name: "Linked: Git TIL" });
     expect(document.querySelector(reference.getAttribute("href") ?? "")).not.toBeNull();
-    expect(screen.getByRole("img", { name: /Golden-hour coastal landscape/ })).toBeInTheDocument();
+    const thirdMemo = screen.getAllByRole("article")[2];
+    expect(within(thirdMemo).getByRole("heading", { name: "A view for unfinished work" })).toBeInTheDocument();
+    expect(within(thirdMemo).getByText("has_incomplete_tasks")).toBeInTheDocument();
+    expect(thirdMemo.querySelector("img")).toBeNull();
+  });
+
+  it("renders sponsorship as the fourth memo with the same metadata and one Carbon slot", () => {
+    render(<MemoHeroMock />);
+    const articles = screen.getAllByRole("article");
+    expect(articles[2]).toHaveAttribute("id", `home-memo-${HOME_MEMOS[2].id}`);
+    const sponsor = screen.getByRole("article", { name: "Built with their support" });
+    expect(articles[3]).toBe(sponsor);
+    expect(sponsor).toHaveAttribute("id", `home-memo-${HOME_MEMOS[3].id}`);
+    expect(within(sponsor).getByText("2 days ago")).toBeInTheDocument();
+    expect(within(sponsor).queryByText("#memos/sponsors")).not.toBeInTheDocument();
+    expect(articles[4]).toHaveAttribute("id", `home-memo-${HOME_MEMOS[4].id}`);
+    expect(screen.getAllByTestId("carbon-ad")).toHaveLength(1);
+    expect(HOME_TAGS.some((item) => item.tag === "memos/sponsors")).toBe(false);
+    const calendar = buildHomeCalendar(new Date(2026, 8, 15));
+    expect(calendar.days.find((day) => day.key === "2026-09-13")?.count).toBe(2);
   });
 });
 

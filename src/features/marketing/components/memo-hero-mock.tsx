@@ -23,6 +23,7 @@ import type { ReactNode } from "react";
 import styles from "@/features/marketing/components/home-hero.module.css";
 import { MemoHeroCalendar } from "@/features/marketing/components/memo-hero-calendar";
 import { MemoHeroContent } from "@/features/marketing/components/memo-hero-content";
+import { MemoHeroSponsors } from "@/features/marketing/components/memo-hero-sponsors";
 import { HOME_MEMOS, HOME_TAGS } from "@/features/marketing/data/home-memos";
 
 /** Compact destinations alongside the active Home scope in the current product. */
@@ -181,13 +182,16 @@ function Timeline() {
   return (
     <div className={styles.memoFeed} data-testid="memo-feed">
       {HOME_MEMOS.map((memo) => (
-        <article key={memo.id} id={`home-memo-${memo.id}`} className={styles.memoSurface}>
+        <article key={memo.id} id={`home-memo-${memo.id}`} aria-labelledby={`home-memo-${memo.id}-title`} className={styles.memoSurface}>
           <div className="flex items-center justify-between text-[9px] text-[var(--mock-muted)]">
             <span>{memo.daysAgo === 0 ? "Today" : memo.daysAgo === 1 ? "Yesterday" : `${memo.daysAgo} days ago`}</span>
             <MoreVerticalIcon aria-hidden="true" className="size-3" />
           </div>
-          <h3 className="mt-1 text-[12px] leading-4 font-semibold text-[var(--mock-ink)]">{memo.title}</h3>
+          <h3 id={`home-memo-${memo.id}-title`} className="mt-1 text-[12px] leading-4 font-semibold text-[var(--mock-ink)]">
+            {memo.title}
+          </h3>
           {memo.text ? <p className="mt-1 text-[10px] leading-4">{memo.text}</p> : null}
+          {memo.kind === "sponsors" ? <MemoHeroSponsors /> : null}
           {memo.tasks ? (
             <ul className="mt-1 space-y-0.5 text-[10px] leading-4">
               {memo.tasks.map((task) => (
@@ -208,15 +212,6 @@ function Timeline() {
               <code>{memo.code}</code>
             </pre>
           ) : null}
-          {memo.image ? (
-            <Image
-              src={memo.image.src}
-              alt={memo.image.alt}
-              width={480}
-              height={300}
-              className="mt-1.5 h-[60px] w-full rounded-[6px] object-cover"
-            />
-          ) : null}
           {memo.quote ? (
             <blockquote className="mt-1.5 border-l-2 border-[var(--mock-border)] pl-2 text-[11px] leading-4 text-[var(--mock-muted)] italic">
               {memo.quote}
@@ -227,25 +222,27 @@ function Timeline() {
               {memo.link.label}
             </a>
           ) : null}
-          <div className="mt-1.5 flex flex-wrap items-center gap-1">
-            {memo.tags.map((tag) => (
-              <span key={tag} className={styles.memoTag}>
-                #{tag}
-              </span>
-            ))}
-            {memo.referenceId ? (
-              <a className={`${styles.memoReference} ml-auto`} href={`#home-memo-${memo.referenceId}`}>
-                <LinkIcon aria-hidden="true" className="size-2.5" />
-                <span>Linked: Git TIL</span>
-              </a>
-            ) : null}
-            {memo.location ? (
-              <span className="ml-auto flex items-center gap-1 text-[9px] text-[var(--mock-muted)]">
-                <MapPinIcon aria-hidden="true" className="size-2.5" />
-                {memo.location}
-              </span>
-            ) : null}
-          </div>
+          {memo.tags.length > 0 || memo.referenceId || memo.location ? (
+            <div className="mt-1.5 flex flex-wrap items-center gap-1">
+              {memo.tags.map((tag) => (
+                <span key={tag} className={styles.memoTag}>
+                  #{tag}
+                </span>
+              ))}
+              {memo.referenceId ? (
+                <a className={`${styles.memoReference} ml-auto`} href={`#home-memo-${memo.referenceId}`}>
+                  <LinkIcon aria-hidden="true" className="size-2.5" />
+                  <span>Linked: Git TIL</span>
+                </a>
+              ) : null}
+              {memo.location ? (
+                <span className="ml-auto flex items-center gap-1 text-[9px] text-[var(--mock-muted)]">
+                  <MapPinIcon aria-hidden="true" className="size-2.5" />
+                  {memo.location}
+                </span>
+              ) : null}
+            </div>
+          ) : null}
         </article>
       ))}
     </div>
