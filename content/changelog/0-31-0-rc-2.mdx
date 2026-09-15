@@ -1,0 +1,47 @@
+---
+title: Release v0.31.0-rc.2
+description: Calendar and Map pages, easier Space navigation, View icons, attachment storage usage, and account email upgrades
+date: "2026-09-15"
+breaking: true
+---
+
+> The second 0.31 release candidate adds Calendar and Map pages for browsing memos by date and location. It also makes moving between Spaces easier, adds icons for Views, improves writing and search, and tightens account email rules.
+
+## Upgrade Notes
+
+- **Unique account emails** - Email remains optional, but an address can belong to only one account per instance. During the upgrade, duplicate addresses stay on the oldest account and are cleared from the others. Administrators can find affected usernames in the server logs; those users can add a different address in account settings.
+- **Upgrading from 0.30** - Review the [0.31.0-rc.1 upgrade notes](/changelog/0-31-0-rc-1) for the earlier API, access-control, and migration changes in this release series.
+
+## New Features
+
+### Calendar and Map
+
+- **Calendar** - Browse a month of memos, open a date to read its entries, and create a memo for that day.
+- **Dedicated Map page** - Explore memos that have location data on a map.
+
+### Spaces, Views, and Search
+
+- **Move memos between Spaces** - Change a memo's Space from the interface.
+- **Invitations in Inbox** - Receive Space invitations alongside other notifications.
+- **Custom icons** - Choose icons or emoji for Spaces and personalize Views with icons.
+- **Keep your browsing context** - Switching Spaces preserves the current page and filters.
+- **More precise search** - Find memos by Space and use filter expressions in Quick Find.
+
+### Writing and Account Settings
+
+- **Markdown shortcuts** - Apply formatting from the keyboard. On desktop, the Home editor receives focus when the page opens so you can start writing immediately.
+- **Attachment storage usage** - See how much attachment storage your account uses in settings.
+- **Slower audio playback** - Listen at 0.5× or 0.75× speed.
+- **Azerbaijani support** - Use Memos in Azerbaijani.
+
+## Improvements and Bug Fixes
+
+- **Navigation and memo details** - Refined the memo detail sidebar and compact navigation, with more visible active filters and adjusted spacing.
+- **Editor behavior** - Improved mobile typing assistance and tag suggestions. Pasted files appear as attachments, and closing the date picker saves date edits.
+- **Focus mode and blurred content** - Fixed focus mode in multi-column layouts. Memo headers and reactions remain interactive when content is blurred.
+- **Appearance and translations** - Improved dark-mode status bar colors and Chinese translations.
+- **Server reliability and security** - Added protections against abusive requests and unsafe webhook destinations, improved MCP compatibility, and fixed scheduled-job timing.
+
+**Release**: [v0.31.0-rc.2 on GitHub](https://github.com/usememos/memos/releases/tag/v0.31.0-rc.2)
+
+**Full Changelog**: [v0.31.0-rc.1...v0.31.0-rc.2](https://github.com/usememos/memos/compare/v0.31.0-rc.1...v0.31.0-rc.2)
