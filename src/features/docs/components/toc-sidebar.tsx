@@ -49,7 +49,7 @@ export function TOCSidebar({ toc }: TOCSidebarProps) {
 
   return (
     <div className="max-h-[calc(100vh-8rem)] overflow-y-auto">
-      <nav>
+      <nav aria-label="On this page">
         <ul className="space-y-2 text-sm">
           {toc.map((item) => {
             const id = item.url.slice(1);
@@ -59,6 +59,7 @@ export function TOCSidebar({ toc }: TOCSidebarProps) {
               <li key={item.url} style={{ paddingLeft: `${(item.depth - 2) * 12}px` }}>
                 <a
                   href={item.url}
+                  aria-current={isActive ? "location" : undefined}
                   className={`block py-1 transition-colors ${
                     isActive
                       ? "text-brand-600 dark:text-brand-400 font-semibold"

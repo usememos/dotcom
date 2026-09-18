@@ -20,10 +20,14 @@ function SponsorLink({ sponsor, duplicate = false }: { sponsor: Sponsor; duplica
       tabIndex={duplicate ? -1 : undefined}
       className="flex h-10 min-w-0 items-center justify-start rounded-lg hover:opacity-80 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
     >
+      {/* Lazy on both theme variants: a lazy image that is display:none is never
+          fetched, so only the visible variant downloads. In-viewport lazy images
+          still load right after layout. */}
       <img
         src={sponsor.logo}
         alt={sponsor.name}
-        loading="eager"
+        loading="lazy"
+        decoding="async"
         className={cn(
           "h-full w-auto max-w-full object-contain object-left py-2",
           sponsor.logoDark && "docs-sponsor-logo-light dark:!hidden",
@@ -33,7 +37,8 @@ function SponsorLink({ sponsor, duplicate = false }: { sponsor: Sponsor; duplica
         <img
           src={sponsor.logoDark}
           alt={`${sponsor.name} logo`}
-          loading="eager"
+          loading="lazy"
+          decoding="async"
           className="docs-sponsor-logo-dark hidden h-full w-auto max-w-full object-contain object-left py-2 dark:!block"
         />
       )}

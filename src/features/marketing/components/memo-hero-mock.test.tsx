@@ -110,8 +110,27 @@ describe("homepage example memos", () => {
 describe("homepage content scrollbar", () => {
   afterEach(() => vi.useRealTimers());
 
-  it("appears only after scrolling and hides after scrolling stops", () => {
+  it("appears on scroll and hides on scrollend", () => {
     vi.useFakeTimers();
+    const { unmount } = render(<MemoHeroContent>Example content</MemoHeroContent>);
+    const content = screen.getByTestId("memo-content");
+    expect(content).toHaveAttribute("data-scrolling", "false");
+    fireEvent.scroll(content);
+    expect(content).toHaveAttribute("data-scrolling", "true");
+    // No debounce timer is armed when the browser reports scroll end itself.
+    expect(vi.getTimerCount()).toBe(0);
+    act(() => vi.advanceTimersByTime(2000));
+    expect(content).toHaveAttribute("data-scrolling", "true");
+    fireEvent(content, new Event("scrollend", { bubbles: true }));
+    expect(content).toHaveAttribute("data-scrolling", "false");
+    unmount();
+  });
+
+  it("falls back to a debounce timer when scrollend is unsupported", () => {
+    vi.useFakeTimers();
+    // Unsupported browsers have no `onscrollend` property at all (reads as undefined).
+    const original = Object.getOwnPropertyDescriptor(window, "onscrollend");
+    Object.defineProperty(window, "onscrollend", { value: undefined, configurable: true });
     const { unmount } = render(<MemoHeroContent>Example content</MemoHeroContent>);
     const content = screen.getByTestId("memo-content");
     expect(content).toHaveAttribute("data-scrolling", "false");
@@ -128,5 +147,10 @@ describe("homepage content scrollbar", () => {
     fireEvent.scroll(content);
     unmount();
     expect(vi.getTimerCount()).toBe(0);
+    if (original) {
+      Object.defineProperty(window, "onscrollend", original);
+    } else {
+      delete (window as { onscrollend?: unknown }).onscrollend;
+    }
   });
 });

@@ -153,6 +153,9 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Lets the browser paint the canvas and native UI in the system scheme
+            before CSS or the next-themes bootstrap script run. */}
+        <meta name="color-scheme" content="light dark" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />

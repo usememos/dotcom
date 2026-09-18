@@ -58,12 +58,16 @@ export default function SponsorsPage() {
                   <img
                     src={sponsor.logo}
                     alt={`${sponsor.name} logo`}
+                    loading="lazy"
+                    decoding="async"
                     className={cn("h-full w-auto max-w-full object-contain", sponsor.logoDark && "dark:hidden")}
                   />
                   {sponsor.logoDark && (
                     <img
                       src={sponsor.logoDark}
                       alt={`${sponsor.name} logo`}
+                      loading="lazy"
+                      decoding="async"
                       className="hidden h-full w-auto max-w-full object-contain dark:block"
                     />
                   )}
@@ -94,7 +98,13 @@ export default function SponsorsPage() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-4 rounded-lg border border-zinc-200 bg-white p-4 transition-colors hover:bg-zinc-50 dark:border-white/10 dark:bg-zinc-950 dark:hover:bg-white/5"
                 >
-                  <img src={sponsor.logo} alt={`${sponsor.name} logo`} className="h-12 w-12 shrink-0 rounded-lg object-contain" />
+                  <img
+                    src={sponsor.logo}
+                    alt={`${sponsor.name} logo`}
+                    loading="lazy"
+                    decoding="async"
+                    className="h-12 w-12 shrink-0 rounded-lg object-contain"
+                  />
                   <div className="min-w-0">
                     <p className="font-semibold text-zinc-950 dark:text-zinc-100">{sponsor.name}</p>
                     {sponsor.description ? (
@@ -114,7 +124,13 @@ export default function SponsorsPage() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 px-3 py-2 text-sm font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-white/10 dark:text-zinc-300 dark:hover:bg-white/5"
                 >
-                  <img src={sponsor.logo} alt={`${sponsor.title} avatar`} className="h-7 w-7 rounded-lg object-cover" />
+                  <img
+                    src={sponsor.logo}
+                    alt={`${sponsor.title} avatar`}
+                    loading="lazy"
+                    decoding="async"
+                    className="h-7 w-7 rounded-lg object-cover"
+                  />
                   {sponsor.title}
                 </a>
               ))}

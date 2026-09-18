@@ -61,6 +61,7 @@ const CORS_HEADERS = [
   },
 ];
 
+// Keep in sync with public/_headers, which covers static assets.
 const SECURITY_HEADERS = [
   {
     key: "X-Content-Type-Options",
@@ -77,6 +78,41 @@ const SECURITY_HEADERS = [
   {
     key: "Permissions-Policy",
     value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
+  },
+  {
+    // Apex only: add `includeSubDomains; preload` once every usememos.com
+    // subdomain is confirmed HTTPS-only. The Cloudflare zone HSTS setting
+    // overrides this header when enabled — verify the live value after deploy.
+    key: "Strict-Transport-Security",
+    value: "max-age=31536000",
+  },
+  {
+    // Blocks cross-origin openers (XS-Leaks) while still allowing popups the
+    // site opens itself (Clerk OAuth). Do not tighten to `same-origin` without
+    // verifying no integration relies on window.opener.
+    key: "Cross-Origin-Opener-Policy",
+    value: "same-origin-allow-popups",
+  },
+  {
+    // Enforced directives that cannot break the app: no <base> is used, no
+    // plugins are embedded, and frame-ancestors mirrors X-Frame-Options.
+    // script-src is deliberately absent: pages are static and edge-cached, so
+    // per-response nonces are impossible and Next.js' inline hydration
+    // scripts rule out a hash allowlist. See the report-only policy below.
+    key: "Content-Security-Policy",
+    value: "base-uri 'none'; object-src 'none'; frame-ancestors 'none'",
+  },
+  {
+    // Discovery policy (never enforced): surfaces every script origin and
+    // form target the site actually uses in the DevTools Issues panel, so a
+    // future enforced script-src is built from data rather than guesses.
+    // 'unsafe-inline' is needed for Next.js hydration and next-themes; the
+    // Clerk origin is the dev instance plus the conventional production FAPI
+    // subdomain — confirm the production origin before promoting this.
+    // No report-to/report-uri on purpose: a collector endpoint would be a
+    // new Worker route absorbing extension noise (see Cloudflare CPU notes).
+    key: "Content-Security-Policy-Report-Only",
+    value: "script-src 'self' 'unsafe-inline' https://*.clerk.accounts.dev https://clerk.usememos.com; form-action 'self'",
   },
 ];
 
