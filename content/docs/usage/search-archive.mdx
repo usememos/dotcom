@@ -20,6 +20,13 @@ Search works best when you keep memo titles, headings, and tags consistent.
 
 Open Quick Find with the sidebar search action. The global Cmd/Ctrl+K shortcut was removed in 0.31.
 
+- **Text** searches for words in memo content. Matching text is highlighted in the results.
+- **Expression** accepts the same [CEL filter syntax as Views](/docs/usage/views#filter-expression-syntax), for example `has_location && tag in ["travel"]` or `space == null && has_incomplete_tasks`.
+
+Press **Enter** to search. In Expression mode, **Shift+Enter** adds a new line. Check the scope shown at the top of Quick Find: the current collection, Space, View, and filters can narrow the results. To reuse an expression, copy it into a new [View](/docs/usage/views#create-a-view).
+
+Searching from Calendar, Map, or Attachments opens the matching memo list in Home within the same Space context.
+
 Home and Explore filters follow the selected Space. [Views](/docs/usage/views) reuse CEL expressions, including `has_location`, `space == null` for Unassigned memos, and `visibility == "SPACE"` for members-only memos.
 
 ## Archive

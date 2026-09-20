@@ -11,6 +11,8 @@ Attachments let you keep files close to the notes they belong to. This is useful
 - use the upload control in the toolbar
 - paste screenshots directly from the clipboard when supported
 
+The app uploads files in smaller chunks automatically. No separate setting is needed; the instance's file-size limits still apply.
+
 ## Inline images and drafts
 
 Images can be inserted at the cursor through upload, paste, drag and drop, or selection from existing attachments. They become Markdown images in the memo body. Other files remain attachments you can open from the memo.
@@ -48,7 +50,7 @@ The Attachments page lets you browse, preview, and manage your uploads. Its resu
 
 - files are grouped into **Media**, **Audio**, and **Documents** tabs, each with a live count
 - media is shown as a grid grouped by month; images, videos, and motion photos open in a full-screen lightbox
-- audio files play inline, and documents are listed as rows you can open in a new tab
+- audio files play inline, with playback-speed choices including 0.5× and 0.75×; documents are listed as rows you can open in a new tab
 - every attachment links back to the memo it belongs to, or is flagged when it isn't linked to any memo
 - long lists load in pages with a **Load more** button
 
@@ -64,11 +66,15 @@ Deleting unused attachments is permanent, so review the list before confirming. 
 
 ## Storage implications
 
+Open **Settings → My Account** and look under **Statistics → Attachment storage** to see your account's attachment storage usage. Review unused uploads in the attachment library when you want to reclaim space.
+
 Attachments depend on the storage backend chosen for the instance:
 
 - database storage keeps everything together
 - local filesystem storage keeps files on the host or volume
 - S3-compatible storage separates files from the app host
+
+Admins can configure multiple named storage backends. Changing the backend for new uploads does not move existing files. A [personal memo export](/docs/usage/export-import) includes the managed files attached to your exported memos, regardless of their storage backend.
 
 ## Access to managed files
 

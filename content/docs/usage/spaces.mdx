@@ -11,11 +11,13 @@ Spaces bring members and memos together inside one Memos instance. Each memo sti
 2. Enter a name and an optional description. Memos generates a stable ID, or you can supply a custom ID during creation.
 3. Open **Settings → Spaces** to manage the Space. Its creator becomes the first Space admin.
 4. In the members section, invite an existing user and choose the **User** or **Admin** role.
-5. The invited user accepts or declines from **Settings → Spaces**.
+5. The invited user opens **Inbox** and chooses **Accept** or **Decline** on the invitation. Invitations are also available in **Settings → Spaces**. After accepting, choose **Open space** or select it from the sidebar switcher.
 
 An invitation grants no access until accepted. It is an invitation to an existing account on the instance, not an email invitation or an account registration link.
 
 A Space's ID stays stable when its name changes. Newly generated IDs use UUIDv4. Custom IDs contain 1–36 ASCII letters or digits, with hyphens allowed inside the ID. Spaces can have the same display name, so use their IDs to distinguish them in integrations.
+
+Space admins can change the name, description, and icon from **Settings → Spaces**. Use the icon picker to choose an icon or emoji so the Space is easier to recognize in the sidebar and invitations.
 
 ## Placement and visibility
 
@@ -36,11 +38,22 @@ Active instance administrators can also read and manage individual private and S
 
 Choose the Space when composing a memo, or change placement on a memo you authored. You must be a member of the destination Space. Moving a memo preserves its identity and relations. For a `SPACE` memo, confirm the destination audience when moving it; choose a different visibility when returning it to Unassigned.
 
+### Move an existing memo
+
+1. Open the memo's action menu and choose **Move to Space**.
+2. Choose a destination Space or **Unassigned**.
+3. Review **Visibility**. Moving a members-only memo to another Space changes which members can read it. Choosing Unassigned resets `SPACE` visibility to `PRIVATE`; you can select another available visibility before confirming.
+4. Choose **Move**.
+
+Existing reactions stay with the memo. Comments and linked memos keep their own placement and access rules; moving one memo does not move a whole discussion.
+
 `SPACE` memos cannot have share links. Revoke active share links before changing a memo to `SPACE`. See [Sharing](/docs/usage/sharing).
 
 ## Browse in context
 
-Select a Space from the sidebar switcher to scope Home, Explore, new memo creation, statistics, filters, and attachments to that Space. Choose the main **Memos** context to browse across the memos available to you.
+Select a Space from the sidebar switcher to scope Home, Explore, Calendar, Map, new memo creation, statistics, filters, and attachments to that Space. Choose the main **Memos** context to browse across the memos available to you. [Calendar](/docs/usage/memos#calendar) and [Map](/docs/usage/memos#map) show your own memos within that scope.
+
+Opening a memo and returning to its collection preserves the Space and filters, so you can continue browsing where you left off.
 
 Archived, Inbox, user profiles, and Settings remain global. Selecting a Space does not restrict these pages to that Space. The [global composer](/docs/usage/memos) remains available on authenticated routes; check its placement and visibility before saving.
 
@@ -69,4 +82,5 @@ Accounts with active Space memberships cannot be deleted, even through an API re
 
 - [Users & Roles](/docs/admin/users-roles)
 - [Reactions & Comments](/docs/usage/reactions-comments)
+- [Export & Import](/docs/usage/export-import) — how Space placement is handled when moving your memos between instances
 - [Upgrading to 0.31](/docs/operations/upgrade#upgrading-to-031)

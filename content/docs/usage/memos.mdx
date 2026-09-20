@@ -16,7 +16,7 @@ Memos are the central unit of content in the product. A good memo practice keeps
 
 ## Navigation and creation
 
-The resizable sidebar contains the calendar, Views, tags, Quick Find, and navigation for the current route. Open the global composer from the sidebar to write without returning to Home.
+The resizable sidebar contains [Calendar](#calendar), [Map](#map), Views, tags, Quick Find, and navigation for the current route. Open the global composer from the sidebar to write without returning to Home.
 
 Selecting a Space scopes browsing and memo creation to that Space. Check placement and visibility before saving; assigning a memo does not change its audience. Existing memos remain Unassigned after upgrading. See [Spaces](/docs/usage/spaces) for scope and membership rules.
 
@@ -38,6 +38,10 @@ Authors can edit their own memos; editing an assigned memo also requires active 
 
 ## Browsing your memos
 
+Home, Calendar, and Map show your active memos within the selected [Space](/docs/usage/spaces), [View](/docs/usage/views), and tag filters. Select the main **Memos** context to browse your memos across Spaces. Selecting a Space does not make Calendar or Map show every member's notes. Archived memos are available separately under [Archived](/docs/usage/search-archive#archive).
+
+### Feed
+
 Choose one, two, three, or automatic columns in your display preferences.
 Compact mode and link previews are configurable there too, and the choices are
 saved for your account. Link previews discover metadata from oEmbed, Open Graph, Twitter Cards, JSON-LD, and ordinary HTML when the linked site supplies it. Sites without usable metadata may still appear as plain links. The single-column layout shows full memo content by
@@ -46,6 +50,30 @@ default; multi-column and compact layouts favor faster scanning.
 New memos appear above the pinned section. When you return from a memo detail
 page, Memos restores your previous feed position so you can continue where you
 left off.
+
+### Calendar
+
+Open **Calendar** from the sidebar to revisit a day's notes or review a month. Use the previous and next month controls, or select the month heading to choose another month and year. **Today** returns to the current month.
+
+Select a day to read its memos in a panel on desktop or below the grid on mobile. Days show counts and previews when available. The calendar uses your local time zone and the selected creation or update time setting, with creation time as the default.
+
+To fill in an entry for a particular date, open that day and choose **New memo on this day**. The composer starts with that date as the creation and update time and uses the current Space. Check the date, placement, and visibility before saving. Later edits can move a memo to a different day when browsing by update time; use creation time to review a journal by its entry dates.
+
+Calendar groups notes by their timestamps; it does not assign due dates to checklist items. If a day looks empty, check the active filters and time setting.
+
+### Map
+
+Open **Map** from the sidebar to browse memos with saved locations. Select a marker to read the notes at that location, or choose **Show all results** to fit the matching locations into view. With a single location selected, **Write here** starts a memo with that location and the current Space filled in.
+
+To add a location to a memo:
+
+1. Create or edit the memo and choose **Add location** from the editor's add menu.
+2. Select a point on the map or enter latitude and longitude. Allowing browser location access can help set your current position; you can also choose manually.
+3. Enter a location label, choose **Confirm**, and save the memo.
+
+Writing a place name or attaching a photo with location metadata does not by itself place the memo on Map. Anyone who can read the memo can see its saved location, so check visibility before sharing.
+
+If no markers appear, check for saved locations and active filters; use **Clear filters** when offered. A newly saved memo may fall outside the current filters. If the map background fails to load, use **Retry**; your memo results remain available.
 
 ## Memo detail
 
@@ -96,3 +124,4 @@ A Relation does not grant access to either memo. Each side keeps its own visibil
 - [Use Memos as a Digital Bullet Journal](/docs/guides/bullet-journal) for rapid logging and reflection.
 - [Use Memos for GTD](/docs/guides/getting-things-done) for action management.
 - [Build a Zettelkasten in Memos](/docs/guides/zettelkasten) for connected knowledge.
+- [Export & Import](/docs/usage/export-import) to download your memos and attachments or move them to another instance.
