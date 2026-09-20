@@ -24,7 +24,7 @@ debugging an integration against the current API reference.
 
 ## Upgrading to 0.31
 
-These notes apply to **0.31.0-rc.1**, a release candidate. Back up before testing it and pin the version explicitly; the `stable` image does not select this candidate. Read the [release changelog](/changelog/0-31-0-rc-1).
+These notes apply to **0.31.0**, the latest stable release. Back up before upgrading and use `neosmemo/memos:0.31.0` to pin this release. Read the [release changelog](/changelog/0-31-0).
 
 ### Access and deployment
 
@@ -36,9 +36,10 @@ These notes apply to **0.31.0-rc.1**, a release candidate. Back up before testin
 
 ### Data and ownership
 
+- Account emails remain optional, but are trimmed, lowercased, and unique per instance. The upgrade clears invalid addresses and keeps duplicate addresses only on the oldest account; affected usernames are logged.
 - Existing memos remain Unassigned; no default Space is created. Their IDs, authors, visibility, and relations are preserved.
 - Stored `Shortcut` resources migrate to Views automatically. Named storage configurations and legacy storage settings migrate across SQLite, MySQL, and PostgreSQL; generated-ID high-water marks are retained.
-- Memo edits, attachments, references, and shares follow author and Space membership rules. Instance and Space admin roles no longer override another author's ownership. Users control their own reactions.
+- Memo edits, attachments, references, and shares follow author and Space membership rules. Active instance administrators can read and manage individual memos, including private and Space-only memos, without authorship or Space membership. Collection listings still filter by audience. Space admin roles do not override authorship. Users control their own reactions.
 - Comments have independent visibility, placement, and lifecycle. Deleting a parent does not delete its comment memos. Deleting a Space permanently deletes every directly assigned memo and its owned resources; removing a member leaves contributions in place.
 - Active Space memberships block account deletion, including with `force`.
 - New tag grammar takes effect immediately in rendering and editing. Stored filter and statistics indexes adopt it when each memo is saved again; there is no automatic full backfill.
@@ -117,7 +118,7 @@ See the [Binary guide](/docs/deploy/binary) for service setup.
 
 ## Pinning versions
 
-`neosmemo/memos:stable` tracks the latest stable release, which is convenient but upgrades implicitly on every pull. For production, pin a specific version tag (for example `neosmemo/memos:0.30.0`) and upgrade deliberately.
+`neosmemo/memos:stable` tracks the latest stable release, which is convenient but upgrades implicitly on every pull. For production, pin a specific version tag (for example `neosmemo/memos:0.31.0`) and upgrade deliberately.
 
 ## Verify after upgrading
 

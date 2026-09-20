@@ -1,0 +1,14 @@
+{
+  "title": "0.31.x",
+  "pages": [
+    "index",
+    "aiservice",
+    "attachmentservice",
+    "authservice",
+    "identityproviderservice",
+    "instanceservice",
+    "memoservice",
+    "spaceservice",
+    "userservice"
+  ]
+}

@@ -4,10 +4,12 @@ import { apiDocsVersions, isApiDocsVersion, isKnownApiDocsVersion, isSearchableD
 describe("apiDocsVersions", () => {
   it("exposes only the three published API references", () => {
     expect(apiDocsVersions).toHaveLength(3);
-    expect(apiDocsVersions.map((version) => version.slug)).toEqual(["latest", "0-30", "0-29"]);
+    expect(apiDocsVersions.map((version) => version.slug)).toEqual(["latest", "0-31", "0-30"]);
   });
 
   it("does not treat archived snapshots as public routes", () => {
+    expect(isApiDocsVersion("0-29")).toBe(false);
+    expect(isKnownApiDocsVersion("0-29")).toBe(true);
     expect(isApiDocsVersion("0-28")).toBe(false);
     expect(isKnownApiDocsVersion("0-28")).toBe(true);
   });
@@ -25,6 +27,7 @@ describe("isSearchableDocsPath", () => {
   });
 
   it("excludes historical API snapshots", () => {
+    expect(isSearchableDocsPath("/docs/api/0-31/memoservice/ListMemos")).toBe(false);
     expect(isSearchableDocsPath("/docs/api/0-30")).toBe(false);
     expect(isSearchableDocsPath("/docs/api/0-29/memoservice/ListMemos")).toBe(false);
     expect(isSearchableDocsPath("/docs/api/0-28/memoservice/ListMemos")).toBe(false);

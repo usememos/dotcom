@@ -193,7 +193,7 @@ For 0.31, use named entries in `storages` and select one with `defaultStorageId`
 }
 ```
 
-Keep every configuration referenced by existing attachments when replacing this complete settings group. Changing the default affects new uploads only. Legacy `storageType` and top-level `s3Config` remain supported for compatibility, but new configurations should use the named format. This example requires 0.31; pin the candidate image to `neosmemo/memos:0.31.0-rc.1` when testing it before the stable release.
+Keep every configuration referenced by existing attachments when replacing this complete settings group. Changing the default affects new uploads only. Legacy `storageType` and top-level `s3Config` remain supported for compatibility, but new configurations should use the named format. This example requires 0.31 or later; use `neosmemo/memos:0.31.0` to pin the release.
 
 Only enable `insecureSkipTlsVerify` for a trusted S3-compatible endpoint using a self-signed certificate. It disables TLS certificate verification.
 

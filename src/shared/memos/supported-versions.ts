@@ -5,10 +5,10 @@ import { parseMinor } from "./versions";
  * `pages` array in content/docs/api/meta.json (newest first). This publication
  * window is independent of the instance compatibility range below.
  */
-export const SUPPORTED_DOC_VERSIONS = ["latest", "0-30", "0-29"] as const;
+export const SUPPORTED_DOC_VERSIONS = ["latest", "0-31", "0-30"] as const;
 
 /** The exact product snapshot used by the newest concrete documentation series. */
-export const LATEST_SUPPORTED_VERSION = "0.30.0";
+export const LATEST_SUPPORTED_VERSION = "0.31.0";
 
 const latestSupportedMinor = parseMinor(LATEST_SUPPORTED_VERSION);
 if (latestSupportedMinor === null) {

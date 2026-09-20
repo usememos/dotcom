@@ -18,7 +18,10 @@ const checks = [
     type: "html",
     contains: "Best practices to write a TAG",
   },
-  { path: "/changelog/0-30-0", type: "html", contains: "Decorated-source editor" },
+  { path: "/changelog/0-31-0", type: "html", contains: "Shared Spaces" },
+  { path: "/docs/api/0-31", type: "html", contains: "v0.31.0" },
+  { path: "/docs/api/0-31/userservice/ExportMemos", type: "html", contains: "Export Memos" },
+  { path: "/docs/api/0-29/memoservice/ListMemos", type: "html", contains: "Upgrading to 0.31" },
   { path: "/dashboard", type: "html", cacheControlIncludes: "s-maxage=31536000" },
   { path: "/scratchpad", status: 404, type: "html", openNextCache: "HIT" },
   {

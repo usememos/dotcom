@@ -30,6 +30,8 @@ Choose placement and visibility separately:
 | `PUBLIC` | Signed-in users, plus anonymous visitors when public instance access is enabled |
 | `SPACE` | Active members of its assigned Space |
 
+Active instance administrators can also read and manage individual private and Space-only memos without Space membership. Collection listings still filter by audience.
+
 `SPACE` requires a Space assignment. Assigning a `PRIVATE` memo does not make it visible to the other members. Assigning a `PROTECTED` or `PUBLIC` memo does not restrict it to members. A non-member who can read such a memo does not gain access to the Space feed, membership list, or settings.
 
 Choose the Space when composing a memo, or change placement on a memo you authored. You must be a member of the destination Space. Moving a memo preserves its identity and relations. For a `SPACE` memo, confirm the destination audience when moving it; choose a different visibility when returning it to Unassigned.
@@ -51,9 +53,9 @@ Archived, Inbox, user profiles, and Settings remain global. Selecting a Space do
 | Space User | Browse readable Space memos and contribute their own memos, comments, and reactions |
 | Space Admin | The same participation rights, plus Space metadata, invitations, member roles, member removal, and Space deletion |
 
-Only a memo's author can edit its content or visibility and manage its attachments, references, and share links. For an assigned memo, these actions also require active membership. Reactions belong to the user who added them. Commenting or reacting to an assigned memo requires both read access and membership in its Space.
+Apart from active instance administrators, only a memo's author can edit its content or visibility and manage its attachments, references, and share links. For an assigned memo, these actions also require active membership. Reactions belong to the user who added them. Commenting or reacting to an assigned memo requires both read access and membership in its Space.
 
-Instance admins are not automatically Space members and cannot edit other authors' memos. Space admins govern the Space, but also cannot edit another author's memo. A Space must retain at least one active admin: promote another member before the last admin leaves, is removed, or is archived.
+Active instance admins can read and manage individual memos without authorship or Space membership, but are not automatically Space members. Space admins govern the Space, but also cannot edit another author's memo. A Space must retain at least one active admin: promote another member before the last admin leaves, is removed, or is archived.
 
 ## Leave or delete a Space
 

@@ -1,0 +1,59 @@
+---
+title: Release v0.31.0
+description: Spaces for collaboration, Calendar and Map, personal export and import, and improvements to writing, search, and attachments
+date: "2026-09-19"
+breaking: true
+---
+
+> Memos 0.31 brings shared Spaces, Calendar and Map pages, and personal export and import. It also improves writing, search, attachments, and navigation.
+
+## Upgrade notes
+
+- **Administrator access** - Active instance administrators can read and manage individual memos, including private and Space-only memos, without being the author or a Space member. Collection listings still filter by audience, and administrators do not automatically join Spaces.
+- **Views and API clients** - Existing Shortcuts migrate to Views. Integrations using the Shortcut API need to switch to the `UserService` View operations at `/api/v1/users/{user}/views`. The reaction API no longer accepts `contentId`; reactions belong to their memo.
+- **Account emails** - Email is optional, but addresses are trimmed, lowercased, and unique within an instance. The upgrade clears invalid addresses and retains duplicate addresses only on the oldest account. Affected usernames appear in server logs.
+- **RSS removal** - RSS is no longer supported, and existing feed URLs stop serving feeds.
+
+## New features
+
+### Spaces, Calendar, and Map
+
+- **Shared Spaces** - Organize memos with other people, receive invitations in Inbox, move memos between Spaces, and choose custom icons or emoji. Space-only memos are visible to active members, with the administrator access described above.
+- **Calendar** - Browse memos by month, open a date to read its entries, and write a memo for that day.
+- **Map** - Explore memos with location data on a dedicated Map page.
+
+### Views and search
+
+- **Reusable filters** - Save filters as Views and give them custom icons.
+- **More precise search** - Filter by Space or location, find memos outside any Space, and use expressions in Quick Find.
+- **Highlighted matches** - See matching text highlighted within memo content.
+
+### Export, import, and attachments
+
+- **Move between instances** - Use Settings → Export & Import to download and import Memos Export Format ZIP files. Personal exports contain archived memos, comments you wrote, and attachment files. They exclude instance settings and other users' data. Older exports remain importable.
+- **Flexible storage** - Configure multiple named attachment storage backends and check your storage usage in account settings.
+- **Attachment uploads** - Upload files in smaller chunks and insert attachment images into memo content.
+
+### Writing and navigation
+
+- **Faster capture** - Create memos from the sidebar and format Markdown with keyboard shortcuts.
+- **Adjustable sidebar** - Resize the sidebar on desktop.
+- **Preserved context** - Keep your Space and filters when opening a memo and returning to the previous page.
+
+## Improvements and fixes
+
+- **Editor input** - Improved IME and Windows emoji input, restored mobile text assistance, fixed pasted attachments and timestamp edits, and expanded tag autocomplete.
+- **Markdown** - Improved tag recognition, fixed currency being parsed as inline math and numbered task-list toggles, and enabled telephone and SMS links.
+- **Maps and media** - Restored OpenStreetMap tiles without an API key, fixed leaving Map after a WebGL failure, improved HEIC/HEIF detection, and added 0.5× and 0.75× audio playback.
+- **Interface and languages** - Refined memo navigation and comment menus, fixed focus-mode and right-to-left layouts, and aligned the installed app's status bar with dark mode. Added Azerbaijani and Hebrew and updated translations.
+
+## Administration and integrations
+
+- **Security and reliability** - Added rate limits and stricter request, image-processing, and import limits. Strengthened remote-fetch validation, prevented S3 object-key collisions, and fixed attachment cleanup.
+- **Sessions and files** - Changing your password signs out your other sessions. An administrator password reset signs out all sessions for that account. S3 attachments use authenticated file routes.
+- **Instance access** - Public/private access mode is stored separately from the instance URL.
+- **MCP and CLI** - Added Space operations and corrected MCP tool schemas. Fixed scheduled-job day matching and added `-V` and `--version` CLI options.
+
+**Release**: [v0.31.0 on GitHub](https://github.com/usememos/memos/releases/tag/v0.31.0)
+
+**Full changelog**: [v0.30.0...v0.31.0](https://github.com/usememos/memos/compare/v0.30.0...v0.31.0)
