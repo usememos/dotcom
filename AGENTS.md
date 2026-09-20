@@ -2,9 +2,9 @@
 
 ## Project Snapshot
 
-This repository is the official website for Memos at `usememos.com`. It is a Next.js + TypeScript + Tailwind app that serves a static public site with project-owned marketing/editorial UI and Fumadocs-powered documentation, **and** an authenticated product surface (a Clerk-gated overview at `/dashboard` plus a static docs search route).
+This repository is the official website for Memos at `usememos.com`. It is a Next.js + TypeScript + Tailwind app with a static public marketing/editorial site, Fumadocs documentation, and an account app at `/dashboard` and `/settings/connections`. The account app uses Clerk sign-in and calls the user's connected Memos instance directly from the browser. `/api/search` is a public static documentation index.
 
-Treat it as a **Next.js 16 marketing/docs site plus an authenticated product app**. The marketing/docs surface stays static; authenticated pages use either a static client-auth shell or dynamic server rendering according to `docs/architecture.md`. Before adding persistence, a new Cloudflare binding, or a new external dependency, follow those conventions rather than introducing them ad-hoc.
+Treat it as a **Next.js 16 marketing/docs site plus an account app**. Current account pages are static client-auth shells; no server-authenticated product API, application database, `src/server/` directory, or request middleware exists. Follow `docs/architecture.md` when adding request-dependent pages, persistence, Cloudflare bindings, or external dependencies.
 
 ## Public Website Design Authority
 
@@ -20,13 +20,13 @@ Before changing any project-owned public `(site)` page or a component under `src
 - **Styling**: Tailwind CSS 4.x with the local design system
 - **UI primitives**: shadcn/ui (`base-nova`) backed by Base UI, configured in `components.json`
 - **Icons**: Lucide React using the `XxxIcon` naming convention
-- **Validation**: Zod schemas in `source.config.ts` and server route schemas
+- **Validation**: Zod content schemas in `source.config.ts`; client-safe connection parsing in `src/shared/memos/`
 - **Auth**: Clerk (`@clerk/nextjs`), currently client-side and scoped to `(app)`
 - **Node.js**: 24.0.0 or newer (pinned in `.nvmrc`)
 
 ## Common Commands
 
-Use `pnpm` for all package scripts.
+Use `pnpm` for all package scripts, with the version declared in `package.json`.
 
 | Task | Command | Notes |
 | --- | --- | --- |
@@ -38,11 +38,11 @@ Use `pnpm` for all package scripts.
 | Lint | `pnpm lint` | Runs static revalidation audit, metadata audit, and Biome |
 | Format | `pnpm format` | Runs Biome format with `--write` |
 | Check and write fixes | `pnpm check` | Runs `biome check --write` |
-| Refresh generated docs | `pnpm docs:refresh` | Downloads OpenAPI specs, regenerates API MDX, formats it, and rebuilds Fumadocs source |
+| Refresh generated docs | `pnpm docs:refresh` | Downloads OpenAPI specs, regenerates and formats API MDX, and rebuilds Fumadocs source and scoped styles |
 | Generate Fumadocs source | `pnpm docs:generate:source` | Rebuilds ignored `.source/` files without downloading API specs |
 | Generate scoped docs styles | `pnpm docs:generate:styles` | Rebuilds the generated `/docs`-scoped Fumadocs stylesheet |
 | Generate Cloudflare types | `pnpm typegen` | Writes `cloudflare-env.d.ts` |
-| Build Cloudflare Worker | `pnpm run build:worker` | Generates Fumadocs source and builds the OpenNext artifact |
+| Build Cloudflare Worker | `pnpm run build:worker` | Generates sources/styles, runs the Next.js build, and creates the OpenNext artifact |
 | Cloudflare preview | `pnpm run preview` | Builds with OpenNext and serves the Workers runtime on port 8788 |
 | Cloudflare deploy | `pnpm run deploy` | Deploys an existing OpenNext artifact, preserving existing vars |
 | Cloudflare version upload | `pnpm run upload` | Uploads an existing OpenNext artifact without promoting it |
@@ -55,9 +55,11 @@ For day-to-day work, use `pnpm dev`. Before deployment-sensitive changes, prefer
 
 Standard verification is `pnpm test`, `pnpm lint`, and `pnpm build`, with `pnpm run preview` plus smoke tests when the change could affect production routing or runtime behavior. CI runs `test`, `lint`, and the Cloudflare dry-run build.
 
+`pnpm test` runs the TypeScript tests under `src/` using `vitest.config.mts`. The Node tests in `scripts/*.test.mjs` are separate and are not run by that command or the current CI test job; run relevant ones explicitly for configuration changes.
+
 ## Architecture
 
-See `docs/architecture.md` for the full architecture and the conventions for expanding the authenticated app (route groups, server-domain layout, the data-access store seam, runtime/caching rules, the auth seam, and a step-by-step for adding an authed feature).
+See `docs/architecture.md` for current routes, browser-side account data flow, content generation, caching, and deployment. Its server-domain and store-interface guidance applies when a future feature first needs a backend; those abstractions are not implemented today.
 
 ### Routes
 
@@ -66,8 +68,16 @@ See `docs/architecture.md` for the full architecture and the conventions for exp
 - `src/app/(public)/(site)/blog/` serves blog posts from `content/blog/`.
 - `src/app/(public)/(site)/changelog/` serves release notes from `content/changelog/`.
 - `src/app/(public)/(site)/features/` contains the feature index and SEO pages at `/features/[slug]`.
-- `src/app/(public)/(site)/brand/`, `pricing/`, `privacy/`, `sponsors/`, and `use-cases/` contain static marketing pages.
-- `src/app/(app)/` is the authenticated product surface (Clerk-gated and noindex); its overview (`/dashboard`) and connection settings are static client-auth shells, while request-dependent pages stay dynamic. `src/app/(auth)/` holds sign-in/sign-up boundaries. Add authed features following `docs/architecture.md`.
+- `src/app/(public)/(site)/brand/`, `compare/`, `pricing/`, `privacy/`, `sponsors/`, `use-cases/`, and `web-clipper/` contain static marketing pages.
+- `src/app/(app)/` mounts Clerk and the account shell and sets noindex metadata. `/dashboard` and `/settings/connections` render static shells; their client components handle sign-in and load account/instance data. The layout does not enforce server-side authentication. Sign-in uses Clerk's modal; there is no `(auth)` route group.
+- `src/app/api/search/route.ts` generates the public search index. Other static handlers provide `/og/` images, `/blog/feed.xml`, `/llms.txt`, `/llms-full.txt`, and `/llms.mdx/[...slug]` exports.
+
+### Account data
+
+- `useMemosConnection` stores one `{ instanceUrl, accessToken }` connection in Clerk `unsafeMetadata.memos`. Its reload-and-compare check detects previously changed data but is not an atomic write lock.
+- `src/shared/memos/` handles browser requests to the instance, version compatibility, and statistics normalization. There is no website API proxy for these requests.
+- The overview uses a best-effort `localStorage` statistics cache. There is no IndexedDB memo store or sync engine.
+- `/settings/connections` is the canonical connection page. `?source=web-clipper` changes return guidance only; the old `/dashboard?setup=memos` entry redirects here.
 
 ### Content
 
@@ -77,6 +87,9 @@ See `docs/architecture.md` for the full architecture and the conventions for exp
 - `source.config.ts` defines content schemas and MDX processing.
 - `src/shared/content/source.ts` configures Fumadocs loaders for docs, blog, and changelog content.
 - `.source/` is generated by `fumadocs-mdx`; never edit it directly.
+- `src/features/docs/lib/api-docs-versions.json` controls API snapshots and navigation: publish Latest (`main`) and the two newest minor series. Keep `src/shared/memos/supported-versions.ts` aligned when rotating versions.
+- `openapi/*.yaml` and `content/docs/api/` are committed generated content; regenerate them with `pnpm docs:refresh`. Preserve retired YAML snapshots, remove their rendered pages, and verify the manifest-driven redirects to the upgrade guide.
+- Search and the sitemap include only Latest API pages; versioned API pages are noindex. Markdown exports include prose docs, blog, and changelog content, excluding generated API references.
 
 ### Feature and Use-Case Data
 
@@ -90,6 +103,7 @@ See `docs/architecture.md` for the full architecture and the conventions for exp
 - Marketing components: `src/features/marketing/components/`
 - Docs components and helpers: `src/features/docs/components/` and `src/features/docs/lib/`
 - Editorial components and helpers: `src/features/editorial/components/` and `src/features/editorial/lib/`
+- Markdown discovery/export builders: `src/features/ai-discovery/`
 - Product overview components and helpers: `src/features/overview/`
 - Connection settings components and hooks: `src/features/connections/`
 - Account shell and Clerk provider: `src/features/account/`
@@ -101,7 +115,7 @@ See `docs/architecture.md` for the full architecture and the conventions for exp
 
 ## Coding Conventions
 
-- Follow `CONTEXT.md` for product terminology. Use **View / Views** (**视图**) in product copy and `MemoView` / `MemoViews` in code and API identifiers. Saving is an action: **Save as view / 保存为视图**; the resulting object remains a View. Preserve legacy identifiers when documenting historical APIs or migration sources.
+- Use **View / Views** (**视图**) in product copy and `MemoView` / `MemoViews` in code and API identifiers. Saving is an action: **Save as view / 保存为视图**; the resulting object remains a View. Preserve legacy identifiers when documenting historical APIs or migration sources.
 - Prefer existing feature-folder patterns over creating new top-level structures.
 - Add reusable primitives through shadcn/ui and keep them in `src/shared/ui/`. Application code should import the shadcn wrappers rather than `@base-ui/react` directly.
 - Do not add Radix UI dependencies or direct Radix imports. Radix packages may still exist transitively through Fumadocs.
@@ -127,7 +141,11 @@ See `docs/architecture.md` for the full architecture and the conventions for exp
 
 ## Cloudflare Notes
 
-OpenNext is configured with static-assets incremental caching for this mostly static site. Treat content updates as rebuild and redeploy events. If future ISR or runtime revalidation is required, design a persistent cache backend such as R2 or KV before enabling it.
+OpenNext uses `staticAssetsIncrementalCache` with cache interception, and Wrangler enables caching before Worker execution. Treat content updates as rebuild and redeploy events. Only the `ASSETS` binding is configured; design a persistent cache backend before adding ISR or runtime revalidation.
+
+Keep personalized data out of cached HTML. Future server-authenticated routes must verify the session and return `Cache-Control: private, no-store`; a client-auth shell is not a server authorization boundary. `next.config.mjs` also enforces no-store for `/api/*` except `/api/search`.
+
+Preserve the pinned OpenNext 404-cache patch and `experimental.prefetchInlining: false` until adapter upgrades are verified in Workers preview. See `docs/architecture.md` for their purpose. Do not add `runtime = "edge"`; OpenNext uses the Workers runtime with Node compatibility.
 
 Cloudflare Workers Builds uses the repository root with these commands:
 
@@ -135,14 +153,16 @@ Cloudflare Workers Builds uses the repository root with these commands:
 - Deploy command: `pnpm run deploy`
 - Version command: `pnpm run upload`
 
-The build command creates `.open-next/` once. The deploy command promotes that artifact to production, while the version command uploads it without promotion for non-production builds.
+The build command creates `.open-next/` once. The deploy command promotes that artifact to production, while the version command uploads it without promotion for non-production builds. Deploy and upload do not rebuild it.
 
 Use `pnpm run preview` or `pnpm run deploy:dry-run` to validate Cloudflare production behavior. `pnpm start` only validates the local Next.js production server.
 
 ## Gotchas
 
 - `postinstall` regenerates the ignored Fumadocs `.source/` files and the ignored docs-scoped UI stylesheet (`src/app/(public)/docs/fumadocs-scoped.css`). Neither is committed, and `pnpm build` regenerates both. CI installs with `--ignore-scripts`, so the test job regenerates the stylesheet explicitly. Run `pnpm docs:refresh` explicitly when refreshing the committed OpenAPI specs and generated API MDX. The refresh falls back to committed `openapi/*.yaml` files if the network fetch fails.
-- pnpm may warn about ignored build scripts for `esbuild` and `sharp`; this is cosmetic for normal development.
+- `pnpm-workspace.yaml` explicitly allows dependency build scripts for Clerk shared code, esbuild, sharp, and workerd. Investigate new blocked-build warnings rather than assuming they are cosmetic.
 - The production build generates hundreds of static pages, so `pnpm build` can take a while.
 - Do not edit generated files in `.source/`.
-- Auth (Clerk) and `/api` handlers already exist; the required env vars are `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` (auth is inert when unset). Do not add a database, a new Cloudflare binding, or a new external dependency ad-hoc — follow the sanctioned path in `docs/architecture.md` ("Future data layer").
+- Set `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` before building the static account routes; deploy and upload check that it is present. There are no current `CLERK_SECRET_KEY` consumers or server-side Clerk handlers. Introduce server credentials and narrowly matched auth middleware together when a feature needs them.
+- Ordinary builds use committed API schemas. `pnpm docs:refresh` can fall back to a local snapshot after a failed download; inspect its log before claiming a snapshot is current.
+- Before adding persistence or a binding, document the feature's requirements and follow `docs/architecture.md` ("Future data layer"). D1, Drizzle, KV, and Clerk user-sync webhooks are not existing infrastructure or mandatory next steps.

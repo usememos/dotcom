@@ -5,19 +5,23 @@ to **Cloudflare Workers via OpenNext**. It serves two surfaces from the same
 codebase:
 
 - a **static public** surface (project-owned marketing/editorial UI plus Fumadocs documentation), and
-- an **authenticated product** surface (a Clerk-gated overview at `/dashboard` and `/api` handlers).
+- an **account product** surface (`/dashboard` and `/settings/connections`, with
+  Clerk sign-in and browser-side access to a connected Memos instance).
 
 This document is the source of truth for how the code is organized and how to
 expand the authenticated surface. Keep it in sync when conventions change.
 
-## Product direction
+## Current scope
 
-The product is a **companion / control-plane** for self-hosted Memos: users connect
-their own instance (token-based `/api/v1`) and the app adds analytics and, later,
-value-add features (cross-instance search, backups, AI, teams). It is **not** a
-hosted multi-tenant Memos. See
-`docs/superpowers/specs/2026-06-14-architecture-expansion-readiness-design.md` for
-the research basis behind this direction and the conventions below.
+The public site explains Memos, publishes documentation and releases, and links
+to installation and the Web Clipper. The account app connects one Memos instance
+per account and displays its activity. It does not run Memos instances or proxy
+their API requests: the browser calls the user's instance directly.
+
+There is no application database, server-side product API, `src/server/`
+directory, or request middleware today. Extension guidance below describes what
+to add when a feature needs those pieces; it is not an inventory of existing
+infrastructure or a committed product roadmap.
 
 ## Route groups (`src/app`)
 
@@ -25,9 +29,13 @@ the research basis behind this direction and the conventions below.
 | --- | --- | --- |
 | `(public)/(site)` | Project-owned marketing + blog + changelog shell | Static |
 | `(public)/docs` | Fumadocs documentation and API reference | Static |
-| `(auth)` | Sign-in / sign-up boundaries | — |
-| `(app)` | Authenticated product surface (overview, settings, future authed pages) | Static or dynamic, noindex |
-| `api/` | Route handlers (currently the static search index) | Static or `nodejs` runtime |
+| `(app)` | Overview and connection settings; Clerk provider and account shell | Static client-auth shells, noindex |
+| `api/search` | Public docs search index, searched in the browser | Static |
+| `og/` | Generated Docs, Blog, and Changelog social images | Static, `nodejs` runtime |
+| `llms.txt`, `llms-full.txt`, `llms.mdx/[...slug]` | Public content indexes and Markdown exports | Static |
+
+The site also generates `sitemap.xml` and `/blog/feed.xml`. There is no `(auth)`
+route group: account actions open Clerk's sign-in modal.
 
 `(app)` is the home for authenticated product pages. Its layout sets
 `robots: noindex`. Pages that only read Clerk and product data in the browser may
@@ -37,11 +45,39 @@ data stay dynamic.
 ## Feature folders (`src/features/<domain>`)
 
 UI and client logic are vertical slices: `components/`, `hooks/`, `lib/`, and
-co-located tests, per domain (`marketing`, `docs`, `editorial`, `overview`,
-`connections`, `account`). Cross-domain primitives live in `src/shared`; the
+co-located tests, per domain (`marketing`, `docs`, `editorial`, `ai-discovery`,
+`overview`, `connections`, `account`). Cross-domain primitives live in `src/shared`; the
 client-safe Memos protocol and connection data helpers live in `src/shared/memos`.
 
+## Content and generated references
+
+- `content/docs/`, `content/blog/`, and `content/changelog/` contain MDX sources.
+  `source.config.ts` defines their schemas; `src/shared/content/source.ts` exposes
+  the Fumadocs loaders.
+- `.source/` is ignored build output. `pnpm docs:generate:source` rebuilds it;
+  do not edit it directly.
+- `src/features/docs/lib/api-docs-versions.json` owns the API version manifest.
+  `pnpm docs:refresh` downloads schemas into `openapi/`, regenerates
+  `content/docs/api/`, and refreshes the source and scoped styles. Both YAML
+  snapshots and generated API MDX are committed. A failed download can fall back
+  to an existing local snapshot, so check the refresh log before claiming it is
+  current. Ordinary builds use committed schemas and do not download new ones.
+- The published API window is Latest (`main`) plus the two newest minor series
+  (currently 0.31 and 0.30). Retired YAML snapshots remain committed; their pages
+  redirect to the upgrade guide. Keep `src/shared/memos/supported-versions.ts`
+  aligned with the manifest. The minimum instance version supported by the
+  account app is a separate compatibility setting.
+- Search and the sitemap include only Latest API pages. Versioned API pages are
+  noindex. `src/features/ai-discovery/` exports prose docs, blog, and changelog
+  content; generated API references are excluded from the Markdown exports.
+- Docs child layouts own either the prose tree or one API version's tree, so a
+  page does not serialize every version's navigation.
+
 ## UI primitives
+
+`DESIGN_SYSTEM.md` is authoritative for public marketing and editorial design;
+`AGENTS.md` defines product terminology. Docs and the account app retain their own
+layout and styling boundaries.
 
 Reusable interactive primitives use shadcn/ui's `base-nova` style backed by Base UI. The CLI configuration is `components.json`, generated components live in `src/shared/ui`, and their shared utility import resolves to `src/shared/lib/utils.ts`.
 
@@ -59,36 +95,28 @@ Public marketing and editorial routes live in the `(site)` route group, which ap
 
 Rendered MDX uses the owned shadcn Typeset stylesheet at `src/app/typeset.css`. Blog and changelog pages use the spacious `typeset-editorial` preset in `src/app/global.css`; documentation pages use the denser `typeset-docs` preset while retaining Fumadocs for layout, navigation, code blocks, callouts, cards, and generated API reference components. Complex Fumadocs widgets opt out with `not-typeset`, and MDX tables use a `typeset-scroll` wrapper so narrow viewports scroll the table instead of the page.
 
-## Server domains (`src/server/<domain>`)
+## Account data flow
 
-Server logic is grouped by domain, each containing:
+`useMemosConnection` reads and writes one `{ instanceUrl, accessToken }` connection
+in Clerk `unsafeMetadata.memos`. Saving or disconnecting reloads the user,
+compares the stored connection with the last observed value, writes the change,
+and reloads again. This catches an already-changed connection; it is not an
+atomic compare-and-swap between simultaneous writes. This browser-writable
+metadata must not be treated as server-owned authorization data.
 
-- `*-handlers.ts` — a **handler factory** that takes its dependencies as an
-  argument (e.g. `createMemosSettingsHandlers(deps)`), so handlers are testable
-  with fakes and free of direct I/O.
-- `*-store.ts` — the **persistence seam** (see "Data access").
-- `*-schema.ts` — Zod validation + parsing.
-- `auth/` holds the Clerk auth seam (`RouteAuthDeps`, `requireUserId`, `isClerkConfigured`).
-- `db/` is the reserved home for a future shared DB client + schema (empty today).
+The connection form validates the URL and tests the instance before saving.
+`src/shared/memos/instance-client.ts` sends the personal access token directly
+to the instance's `/api/v1` endpoints. It handles timeouts, redirects, mixed
+content, and CORS/network failures. `instance-stats.ts` and `versions.ts` resolve
+the instance user and normalize version-specific statistics for the overview.
+The instance must be reachable from the browser and permit the site's origin.
 
-A `route.ts` under `src/app/api/<...>` stays thin: it constructs the concrete
-dependencies (store, auth deps) and wires them into the factory.
-
-## Data access (the store seam)
-
-Persistence is reached only through a per-domain **store interface**, never by
-calling a backend client directly from a handler.
-
-The account-level Memos connection is the deliberate small-data exception: it
-lives in Clerk `unsafeMetadata.memos` because first-party browser clients need to
-read it through OAuth userinfo. Only usememos.com writes this key, through
-`useMemosConnection`; the Web Clipper is read-only. Connection writes reload and
-compare the latest value before updating so another settings page is not silently
-overwritten. Clip templates stay in browser storage and never enter Clerk.
-
-Features that need server-side persistence still add a per-domain store seam as
-described below. Do not copy the Clerk metadata exception for larger or
-server-owned data.
+The overview keeps a best-effort statistics cache in browser `localStorage`
+through `src/features/overview/lib/stats-cache.ts`, then refreshes from the
+instance. The cache contains statistics, a resolved Memos user ID, and version
+metadata, not the access token. The account app has no IndexedDB or local memo
+sync engine. The Web Clipper is a separate client; this repository owns its
+landing page and the account connection settings entry point.
 
 ## Connection route contract
 
@@ -116,11 +144,11 @@ server-owned data.
   `export const dynamic = "force-dynamic"` and return `Cache-Control: no-store`.
   They opt out of the static cache and coexist with static content.
 - **Static cache cannot revalidate.** The incremental cache is
-  `staticAssetsIncrementalCache` (build-time only). On-demand revalidation / ISR
-  would require switching the backend to an R2 incremental cache plus a Durable
-  Object tag cache — a deliberate future change, not enabled now. If the marketing
-  surface ever needs revalidating ISR, that (or splitting the authenticated app to its own
-  worker) is the escape hatch — not a default.
+  `staticAssetsIncrementalCache` with `enableCacheInterception: true` in
+  `open-next.config.ts`. Content changes require a rebuild and redeploy.
+  On-demand revalidation / ISR requires a deliberate persistent-cache design;
+  no R2, KV, D1, or Durable Object bindings are configured today. Do not enable
+  partial prerendering without revisiting cache interception.
 - **Public responses are cached before Worker execution.** Wrangler's Workers
   Caching is enabled, so eligible responses are served without invoking OpenNext.
   OpenNext's cache interceptor gives prerendered routes a long `s-maxage`; the
@@ -147,11 +175,10 @@ server-owned data.
 - **Known browser probe paths are real assets.** The root Apple Web Clip filenames
   live in `public/` and receive immutable asset headers. Cloudflare serves them
   before the Worker, avoiding a 404 invocation for legacy clients and crawlers.
-- **The docs site publishes a three-version API reference window.** The current
-  `main` schema and the two newest minor release series generate pages. Retired
-  OpenAPI YAML snapshots remain committed for reproducibility, but their rendered
-  pages route to the upgrade guide. Static search and the sitemap include only
-  the current `main` reference to avoid near-duplicate results.
+- **Prefetch inlining is disabled.** `next.config.mjs` sets
+  `experimental.prefetchInlining: false` to avoid repeated RSC requests with the
+  current Next.js/OpenNext combination. Recheck this compatibility setting when
+  upgrading the adapter.
 - **Caching is opt-out, not opt-in — a `200` without `Cache-Control` is stored.**
   Workers Caching applies RFC 9111 heuristic freshness (a `200` with no
   `Cache-Control` is cached for 2h), and a request `Cookie` (Clerk's `__session`)
@@ -163,26 +190,59 @@ server-owned data.
   no-store` on all `/api/*` except the public `/api/search` index; put any
   authenticated non-`/api` route on that list too.
 - **No request middleware is currently needed.** Clerk is consumed by client
-  components, and the only route handler is the public static search index. Add
+  components, and the existing route handlers produce public static output. Add
   Clerk middleware with a narrow matcher when a future route starts using
   server-side Clerk auth; do not leave matchers for deleted API namespaces.
 
 ## Auth seam
 
-Clerk is currently scoped to client components under `(app)`; no route handler
-calls Clerk server auth, so the app has no request middleware. If a future
-feature introduces server-authenticated routes, add the Clerk secret, a narrow
-middleware matcher, and a testable auth dependency seam together. Never accept
-a `userId` from the client.
+`AuthProviders` mounts Clerk only under `(app)`. `AppShell` supplies navigation;
+the overview and settings components render their own signed-out and loading
+states. The layout does not enforce server-side authentication. Public marketing
+and docs layouts do not mount Clerk.
+
+`useAccountActions` opens Clerk's sign-in modal and preserves the current path
+and query unless the caller supplies a return URL. The current browser flow uses
+`NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`; `scripts/verify-deploy-env.mjs` requires it for
+deploy and upload. Set it before building because the account shells are static.
+There are no current `CLERK_SECRET_KEY` consumers, server auth helpers, or Clerk
+webhook handlers in this repository.
+
+If a feature introduces server-authenticated routes, add server credentials,
+narrowly matched auth middleware, and a testable auth dependency together. Derive
+the acting user from the verified session, not a client-supplied `userId`.
 
 ## Testing
 
-- Vitest (`*.test.ts` / `*.test.tsx`) is the current runner: `pnpm test`. The setup
-  (`vitest.setup.ts`) provides jsdom, a localStorage polyfill, and IndexedDB.
-- Test handlers and stores through their dependency seams with in-memory fakes — do
-  not hit Clerk or the network in unit tests.
-- Some legacy `*.test.mjs` (node:test) files predate the Vitest migration and are not
-  run by `pnpm test`; write new tests as `*.test.ts`.
+- `pnpm test` runs Vitest against `src/**/*.{test,spec}.{ts,tsx}` as configured in
+  `vitest.config.mts`. The default environment is jsdom; individual tests can
+  select Node. `vitest.setup.ts` installs in-memory local/session storage,
+  Testing Library cleanup, and a `matchMedia` stub. It does not install IndexedDB.
+- Mock Clerk and inject fetch dependencies for instance-client tests; do not
+  contact real accounts or instances in unit tests.
+- `scripts/*.test.mjs` use Node's test runner and are not included in `pnpm test`
+  or the current CI test job. Run a relevant script test explicitly when changing
+  the configuration it covers.
+- Standard validation is `pnpm test`, `pnpm lint`, and `pnpm build`. For routing
+  or runtime changes, use `pnpm run preview` and run
+  `SMOKE_BASE_URL=http://localhost:8788 pnpm run smoke`. `pnpm start` checks only
+  the local Next.js production server, not the Workers runtime.
+- `.github/workflows/ci.yml` runs tests, lint, and the Cloudflare dry-run build.
+  Dependencies install with `--ignore-scripts`; the test job explicitly generates
+  the scoped docs stylesheet, and the build generates both styles and sources.
+
+## Build and deployment
+
+Use Node 24 or newer and the pnpm version declared in `package.json`. `pnpm dev`
+runs Next.js with Turbopack. `pnpm build` generates Fumadocs sources and scoped
+styles before the production build.
+
+`pnpm run build:worker` runs the OpenNext build and produces `.open-next/`.
+`pnpm run deploy` promotes that existing artifact with `--keep-vars`;
+`pnpm run upload` uploads it without promotion. Neither command rebuilds the
+artifact. `pnpm run deploy:dry-run` builds and packages without deploying.
+`wrangler.jsonc` configures the `ASSETS` binding, Node compatibility, observability,
+and port 8788 for the local preview.
 
 ## Adding an authenticated feature
 
@@ -190,25 +250,30 @@ a `userId` from the client.
    when all personalized data loads in the browser; use a dynamic route when the
    server reads request or authentication state.
 2. Put UI + client logic in `src/features/<feature>/`.
-3. Put server logic in `src/server/<feature>/`: a `*-handlers.ts` factory, a
-   `*-store.ts` seam if it persists data, and a `*-schema.ts` for input validation.
-4. Add a thin `src/app/api/<feature>/route.ts` that wires concrete deps into the
-   factory; set `runtime = "nodejs"`.
-5. Add Clerk middleware with a narrow matcher for the new API namespace.
-6. Write Vitest tests against the factory and store using fakes.
+3. If browser access to the connected instance is sufficient, reuse the helpers
+   in `src/shared/memos`; a new page does not automatically need a server API.
+4. If server logic is needed, introduce `src/server/<feature>/` with a handler
+   factory accepting dependencies, a store interface for persistence, and a Zod
+   schema for input validation. These folders and abstractions do not exist yet.
+5. Wire concrete dependencies in a thin `src/app/api/<feature>/route.ts`; use
+   `runtime = "nodejs"`, verify the session, and return `Cache-Control: private,
+   no-store`. Add narrowly matched Clerk middleware with the first server-auth
+   route.
+6. Test the new client behavior or server dependency seams with fakes, and check
+   caching in the Workers preview when adding a route.
 
-## Future data layer (sanctioned plan — not built yet)
+## Future data layer
 
-When a feature first needs persistence beyond a small per-user blob, introduce —
-behind the store seam — in this order:
+There is no database client, ORM, migration system, or server-side credential
+store in this application. D1, Drizzle, KV caches, and Clerk user-sync webhooks
+are not implemented dependencies or prerequisites for the current account app.
 
-- **Cloudflare D1 + Drizzle** as the relational store (Drizzle is the
-  Workers-compatible default). Keep the schema Postgres-portable so a later
-  Hyperdrive + Neon swap is a config change. Migrations via `drizzle-kit` +
-  `wrangler d1 migrations apply`.
-- **Credential encryption at rest** for any third-party token (AES-256-GCM via Web
-  Crypto with a Worker-secret key and a `key_id` for rotation).
-- **KV read-through cache** for high-read, staleness-tolerant aggregates (e.g.
-  overview stats), with D1/the store as source of truth.
-- **Clerk → D1 user-sync webhook** only when relational features (teams/sharing) need
-  to join on a local users table.
+Before adding persistence or a Cloudflare binding, document the feature's data
+ownership, access rules, retention, migration, and runtime needs. Choose the
+backend for those requirements and access it through a per-domain store
+interface. Do not copy browser-writable Clerk metadata for larger or server-owned
+data, and do not assume changing database providers is only a configuration edit.
+
+If the server starts storing third-party credentials, include encryption, key
+rotation, and deletion in that design. Add a cache or local user table only when
+the feature requires one. Record the chosen design here when it is implemented.
