@@ -1,7 +1,7 @@
 const baseUrl = process.env.SMOKE_BASE_URL ?? "http://localhost:8788";
 
 const checks = [
-  { path: "/", type: "html", contains: "Capture first.", cacheControlIncludes: "s-maxage=31536000" },
+  { path: "/", type: "html", contains: "Catch a thought.", cacheControlIncludes: "s-maxage=31536000" },
   {
     path: "/docs/faq",
     type: "html",

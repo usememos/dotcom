@@ -3,9 +3,12 @@ import { readFile } from "node:fs/promises";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { GET as getDefaultImage } from "@/app/og-image.png/route";
+import { getDocsSocialPreview } from "@/features/docs/lib/social-preview";
+import { BRAND_DESCRIPTION, BRAND_TAGLINE_LINES } from "@/shared/lib/branding";
+import { buildContentMetadata } from "./social-preview";
 import { createSocialPreviewImage, SocialPreviewImage } from "./social-preview-image";
 
-const description = "An open-source, self-hosted notebook. Capture what matters, and keep it yours.";
+const description = BRAND_DESCRIPTION;
 
 describe("social preview artwork", () => {
   it("keeps the default image's public cache policy", async () => {
@@ -23,10 +26,11 @@ describe("social preview artwork", () => {
 
   it("uses the same display family for title and brand, without a competing section label", () => {
     const html = renderToStaticMarkup(
-      <SocialPreviewImage preview={{ title: "Capture first.", description, section: "Blog" }} artwork="sky.svg" />,
+      <SocialPreviewImage preview={{ title: BRAND_TAGLINE_LINES.join("\n"), description, section: "Blog" }} artwork="sky.svg" />,
     );
     expect(html).toContain(">Memos</div>");
     expect(html.match(/font-family:Fraunces/g)).toHaveLength(2);
+    expect(html).toContain("font-size:76px");
     expect(html.match(/left:72px/g)).toHaveLength(2);
     expect(html.match(/<img /g)).toHaveLength(1);
     expect(html).not.toMatch(/logo|badge|Blog|text-shadow/);
@@ -39,9 +43,26 @@ describe("social preview artwork", () => {
     expect(html).not.toContain("<script>");
     expect(html).toContain("&lt;script&gt;");
     expect(html).toContain("…");
-    expect(html).toContain("line-clamp:3");
+    expect(html).toContain("line-clamp:2");
     expect(html).toContain("word-break:break-word");
     expect(html).not.toContain("undefined");
+  });
+
+  it("uses concise image copy without shortening the metadata description", () => {
+    const fullDescription = "Official Memos documentation — install and self-host with Docker, configure storage and authentication.";
+    const preview = getDocsSocialPreview({
+      url: "/docs",
+      slugs: [],
+      data: { title: "Documentation", description: fullDescription },
+    });
+    const html = renderToStaticMarkup(<SocialPreviewImage preview={preview} artwork="sky.svg" />);
+    expect(html).toContain("Install and configure Memos.\nExplore the API and daily workflows.");
+    expect(html).not.toContain(fullDescription);
+    expect(html).toContain("font-size:34px");
+    expect(html).toContain("line-clamp:2");
+    const metadata = buildContentMetadata(preview);
+    expect(metadata.openGraph?.description).toBe(fullDescription);
+    expect(metadata.twitter?.description).toBe(fullDescription);
   });
 
   it.each([

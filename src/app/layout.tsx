@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Source_Serif_4 } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
+import { BRAND_DESCRIPTION, BRAND_TITLE } from "@/shared/lib/branding";
 import { buildSiteNavigationJsonLd, DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_ALT, GITHUB_REPO_URL } from "@/shared/lib/seo";
 
 const inter = Inter({
@@ -20,11 +21,10 @@ const displaySerif = Source_Serif_4({
 export const metadata: Metadata = {
   metadataBase: new URL("https://usememos.com"),
   title: {
-    default: "Memos - Capture first. Keep it yours.",
+    default: BRAND_TITLE,
     template: "%s - Memos",
   },
-  description:
-    "Memos is an open-source, self-hosted note-taking app — a Markdown-native timeline for quick notes, daily logs, links, and snippets. Lightweight, private, and yours to run.",
+  description: BRAND_DESCRIPTION,
   keywords: [
     "note taking app",
     "self-hosted notes",
@@ -55,9 +55,8 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://usememos.com",
     siteName: "Memos",
-    title: "Memos - Capture first. Keep it yours.",
-    description:
-      "Memos is an open-source, self-hosted note-taking app — a Markdown-native timeline for quick notes, daily logs, links, and snippets. Lightweight, private, and yours to run.",
+    title: BRAND_TITLE,
+    description: BRAND_DESCRIPTION,
     images: [
       {
         url: DEFAULT_OG_IMAGE,
@@ -69,9 +68,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Memos - Capture first. Keep it yours.",
-    description:
-      "Memos is an open-source, self-hosted note-taking app — a Markdown-native timeline for quick notes, daily logs, links, and snippets. Lightweight, private, and yours to run.",
+    title: BRAND_TITLE,
+    description: BRAND_DESCRIPTION,
     images: [DEFAULT_OG_IMAGE],
   },
   icons: {

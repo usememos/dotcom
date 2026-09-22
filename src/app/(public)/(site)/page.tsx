@@ -8,6 +8,7 @@ import { HomeDiscoverSection } from "@/features/marketing/components/home-discov
 import { HomeFaqSection } from "@/features/marketing/components/home-faq-section";
 import { HomeFeaturesSection } from "@/features/marketing/components/home-features-section";
 import { HomeUseCasesSection } from "@/features/marketing/components/home-use-cases-section";
+import { BRAND_DESCRIPTION, BRAND_TAGLINE_LINES, BRAND_TITLE } from "@/shared/lib/branding";
 import { buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/shared/lib/seo";
 
 const PRINCIPLES = [
@@ -52,9 +53,8 @@ export const metadata: Metadata = {
     canonical: "https://usememos.com",
   },
   openGraph: {
-    title: "Memos - Capture first. Keep it yours.",
-    description:
-      "Open-source, self-hosted timeline for quick notes, daily logs, links, and snippets. Markdown-native, lightweight, and yours to run.",
+    title: BRAND_TITLE,
+    description: BRAND_DESCRIPTION,
     url: "https://usememos.com",
     siteName: "Memos",
     locale: "en_US",
@@ -63,9 +63,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Memos - Capture first. Keep it yours.",
-    description:
-      "Open-source, self-hosted timeline for quick notes, daily logs, links, and snippets. Markdown-native, lightweight, and yours to run.",
+    title: BRAND_TITLE,
+    description: BRAND_DESCRIPTION,
     images: [DEFAULT_OG_IMAGE],
   },
 };
@@ -76,13 +75,13 @@ export default function HomePage() {
       <HeroSection
         title={
           <>
-            <span className="block">Capture first.</span>
+            <span className="block">{BRAND_TAGLINE_LINES[0]}</span>
             <span className="block">
-              <HeroAccent>Keep it yours.</HeroAccent>
+              <HeroAccent>{BRAND_TAGLINE_LINES[1]}</HeroAccent>
             </span>
           </>
         }
-        subtitle="A self-hosted timeline for quick notes, daily logs, links, and snippets. Open it, write in Markdown, and move on."
+        subtitle={BRAND_DESCRIPTION}
         primaryCta={{ text: "Install Memos", href: "/docs/getting-started" }}
         secondaryCta={{ text: "Try Live Demo", href: "https://demo.usememos.com/", external: true }}
       />

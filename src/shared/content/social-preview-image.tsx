@@ -4,7 +4,8 @@ import { ImageResponse } from "next/og";
 import type { ContentSocialPreview } from "@/shared/content/social-preview";
 import { SOCIAL_PREVIEW_IMAGE_SIZE } from "@/shared/content/social-preview";
 
-type SocialPreviewCopy = Pick<ContentSocialPreview, "title" | "description"> & Partial<Pick<ContentSocialPreview, "section">>;
+type SocialPreviewCopy = Pick<ContentSocialPreview, "title" | "description" | "imageDescription"> &
+  Partial<Pick<ContentSocialPreview, "section">>;
 
 // Original vector artwork echoes /cloud without embedding its large painted assets.
 // Keep PNG output: social crawlers do not consistently accept SVG image URLs.
@@ -40,12 +41,14 @@ function truncateText(value: string, maxLength: number): string {
   if (normalized.length <= maxLength) return normalized;
   const excerpt = normalized.slice(0, maxLength - 1);
   const lastSpace = excerpt.lastIndexOf(" ");
-  return `${lastSpace > maxLength * 0.65 ? excerpt.slice(0, lastSpace) : excerpt}…`;
+  return `${(lastSpace > maxLength * 0.65 ? excerpt.slice(0, lastSpace) : excerpt).replace(/[\s,;:—–-]+$/, "")}…`;
 }
 
 export function SocialPreviewImage({ preview, artwork }: { preview: SocialPreviewCopy; artwork: string }) {
   const title = truncateText(preview.title, 100);
-  const titleSize = title.length > 55 ? 48 : title.length > 30 ? 68 : 86;
+  const longestTitleLine = Math.max(...title.split("\n").map((line) => line.length));
+  const titleSize = longestTitleLine > 55 ? 48 : longestTitleLine > 30 ? 64 : 76;
+  const description = preview.imageDescription?.trim() || preview.description.replace(/\s+/g, " ").trim();
 
   return (
     <div
@@ -81,11 +84,11 @@ export function SocialPreviewImage({ preview, artwork }: { preview: SocialPrevie
           position: "absolute",
           top: 92,
           left: 72,
-          width: 680,
+          width: 660,
           height: 380,
           flexDirection: "column",
           justifyContent: "center",
-          gap: 26,
+          gap: 28,
         }}
       >
         <div
@@ -98,7 +101,7 @@ export function SocialPreviewImage({ preview, artwork }: { preview: SocialPrevie
             letterSpacing: -2.2,
             whiteSpace: "pre-wrap",
             wordBreak: "break-word",
-            lineClamp: titleSize === 86 ? 2 : titleSize === 48 ? 4 : 3,
+            lineClamp: titleSize === 76 ? 2 : titleSize === 48 ? 4 : 3,
           }}
         >
           {title}
@@ -106,16 +109,17 @@ export function SocialPreviewImage({ preview, artwork }: { preview: SocialPrevie
         <div
           style={{
             display: "block",
-            width: 610,
-            fontSize: 25,
-            lineHeight: 1.4,
+            width: 660,
+            fontSize: 34,
+            lineHeight: 1.3,
             fontWeight: 400,
+            color: "#dce7f5",
             whiteSpace: "pre-wrap",
             wordBreak: "break-word",
-            lineClamp: 3,
+            lineClamp: 2,
           }}
         >
-          {truncateText(preview.description, 132)}
+          {truncateText(description, 80)}
         </div>
       </div>
     </div>

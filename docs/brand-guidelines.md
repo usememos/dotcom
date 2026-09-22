@@ -1,5 +1,7 @@
 # Memos Brand Guidelines
 
+**Status:** Authoritative. This document defines product-level messaging for Memos, including the website, default social previews, metadata, and product introductions. [DESIGN_SYSTEM.md](../DESIGN_SYSTEM.md) remains the visual design authority.
+
 ## Brand Introduction
 
 ### Mission
@@ -16,7 +18,7 @@ Memos is the open-source, self-hosted note-taking tool for instant capture. It g
 
 ### Core Positioning Line
 
-**Fast enough for every thought. Private enough for all of them.**
+**Catch a thought. Keep it yours.**
 
 ### Who This Guide Is For
 
@@ -110,7 +112,29 @@ Users value Memos most when it stays good at quick capture. The brand should pro
 
 ### Tagline
 
-**Fast enough for every thought. Private enough for all of them.**
+**Catch a thought. Keep it yours.**
+
+### Supporting Description
+
+Quick notes, daily logs, and ideas. Open source and yours to host.
+
+### Messaging Constraints
+
+- Use the tagline exactly, including sentence case and both periods. A line break between the two sentences is allowed; rewriting, reordering, or shortening either sentence requires an explicit branding decision.
+- Use `src/shared/lib/branding.ts` for executable copies of the tagline, its two display lines, the default branded title, and the supporting description. Do not duplicate these strings in components or metadata.
+- Use the tagline on the homepage hero and default brand-level social preview. Default branded metadata titles use `Memos - Catch a thought. Keep it yours.`. Page-specific search titles, article titles, and descriptions should continue to describe their actual content.
+- Use the supporting description when a short product introduction is needed. Longer SEO, documentation, and feature descriptions may add factual details such as Markdown, the timeline, APIs, and self-hosting. They must remain consistent with this positioning.
+- `An open-source, self-hosted notebook.` is not the approved product introduction. Do not reintroduce it as the tagline or default image description. “Notebook” may still appear in ordinary explanatory or historical content where it is accurate.
+- Previous taglines, including `Capture first. Keep it yours.` and `Fast enough for every thought. Private enough for all of them.`, are retired for current brand surfaces. Preserve historical quotations and published release content.
+- “Keep it yours” means user control and ownership. It does not imply end-to-end encryption, local-only operation, perpetual availability, or that all deployments are private. Make technical claims only where the product supports them.
+- Campaign headlines and task-specific UI copy may differ. They must not be presented as replacement product taglines. Do not insert the slogan into every page heading, control, or error message.
+- There is no approved translated tagline yet. Translations require a separate wording decision rather than inventing a new English or localized variant.
+
+### Visual Use and Maintenance
+
+Follow [DESIGN_SYSTEM.md](../DESIGN_SYSTEM.md) for typography, layout, colors, and social-preview artwork. In OG images, keep the tagline or page title primary and supporting copy readable within one or two lines. Preserve the text-only Memos wordmark and the approved sky, clouds, and bird silhouettes.
+
+When changing approved copy, update this document, `src/shared/lib/branding.ts`, and verification expectations together. Check the homepage at desktop and mobile widths, default and content OG images at sharing size, and rendered metadata before shipping. Changes in this repository do not automatically update separate Memos application repositories or externally managed profiles.
 
 ### Elevator Pitch (30 seconds)
 
@@ -179,7 +203,7 @@ We should market Memos as a fast, private capture tool with a distinct personali
 
 Headlines should be short, concrete, and centered on capture plus ownership.
 
-- Good: "Capture first. Organize later."
+- Product tagline: "Catch a thought. Keep it yours."
 - Good: "A private timeline for your thoughts."
 - Good: "Self-hosted notes without the drag."
 - Avoid: "The complete second brain for modern knowledge workers"
@@ -237,7 +261,7 @@ Memos works best when positioned as the fastest place to save a thought you care
 
 | Context | Tone | Example |
 |---------|------|---------|
-| Homepage hero | Clear, fast, confident | "A private timeline for your thoughts." |
+| Homepage hero | Clear, fast, confident | "Catch a thought. Keep it yours." |
 | Docs | Clear, practical | "Run Memos in minutes and keep your notes on your own server." |
 | Blog posts | Reflective, grounded | "People come to Memos for quick capture, so product decisions should protect that speed." |
 | GitHub README | Direct, minimal | "Memos is an open-source, self-hosted note-taking tool built for instant capture." |

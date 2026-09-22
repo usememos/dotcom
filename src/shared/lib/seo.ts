@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { BRAND_TITLE } from "./branding";
 
 export const BASE_URL = "https://usememos.com";
 export const SITE_NAME = "Memos";
 export const GITHUB_REPO_URL = "https://github.com/usememos/memos";
 export const GITHUB_STAR_COUNT_PLACEHOLDER = "60K+";
 export const DEFAULT_OG_IMAGE = `${BASE_URL}/og-image.png`;
-export const DEFAULT_OG_IMAGE_ALT = "Memos - Open-source self-hosted notes";
+export const DEFAULT_OG_IMAGE_ALT = BRAND_TITLE;
 
 export interface SiteNavLink {
   name: string;

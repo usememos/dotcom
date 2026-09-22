@@ -12,6 +12,8 @@ export type SocialPreviewImageKind = "explicit" | "generated" | "default";
 export interface ContentSocialPreview {
   title: string;
   description: string;
+  /** Short copy for the image; metadata keeps the full description. */
+  imageDescription?: string;
   url: string;
   imageUrl: string;
   imageAlt: string;

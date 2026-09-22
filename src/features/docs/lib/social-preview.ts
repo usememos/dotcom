@@ -12,6 +12,7 @@ export function getDocsSocialPreview(page: SourcePage): ContentSocialPreview {
   return {
     title,
     description: compactDescription(page.data.description, "Practical guides for installing, configuring, and using Memos."),
+    ...(page.url === "/docs" ? { imageDescription: "Install and configure Memos.\nExplore the API and daily workflows." } : {}),
     url: absoluteUrl(page.url),
     imageUrl: buildGeneratedImageUrl(docsImagePath(page.slugs)),
     imageAlt: `${title} - ${SITE_NAME}`,

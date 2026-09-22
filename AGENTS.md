@@ -6,6 +6,10 @@ This repository is the official website for Memos at `usememos.com`. It is a Nex
 
 Treat it as a **Next.js 16 marketing/docs site plus an account app**. Current account pages are static client-auth shells; no server-authenticated product API, application database, `src/server/` directory, or request middleware exists. Follow `docs/architecture.md` when adding request-dependent pages, persistence, Cloudflare bindings, or external dependencies.
 
+## Branding Authority
+
+Read `docs/brand-guidelines.md` before changing product messaging, taglines, default metadata, or social-preview copy. It is the authoritative messaging contract. Reuse `src/shared/lib/branding.ts` for approved brand strings.
+
 ## Public Website Design Authority
 
 Before changing any project-owned public `(site)` page or a component under `src/features/marketing/` or `src/features/editorial/`, read `DESIGN_SYSTEM.md` in full. It is the authoritative design contract for those surfaces. Only an explicit, locally scoped user instruction may override it; current implementation does not create an exception.
