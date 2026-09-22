@@ -289,10 +289,6 @@ const config = {
   async headers() {
     return [
       {
-        source: "/og-image.png",
-        headers: CORS_HEADERS,
-      },
-      {
         source: "/og/:path*",
         headers: CORS_HEADERS,
       },

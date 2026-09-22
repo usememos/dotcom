@@ -32,7 +32,7 @@ infrastructure or a committed product roadmap.
 | `(app)` | Overview and connection settings; Clerk provider and account shell | Static client-auth shells, noindex |
 | `api/search` | Public docs search index, searched in the browser | Static |
 | `og/` | Generated Docs, Blog, and Changelog social images | Static, `nodejs` runtime |
-| `og-image.png` | Default social image, using the same SVG sky and text-only wordmark template | Static, `nodejs` runtime |
+| `og/home/image.png` | Default social image, using the same SVG sky and text-only wordmark template | Static, `nodejs` runtime |
 | `llms.txt`, `llms-full.txt`, `llms.mdx/[...slug]` | Public content indexes and Markdown exports | Static |
 
 The site also generates `sitemap.xml` and `/blog/feed.xml`. There is no `(auth)`

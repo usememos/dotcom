@@ -2,7 +2,7 @@
 import { readFile } from "node:fs/promises";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { GET as getDefaultImage } from "@/app/og-image.png/route";
+import { GET as getDefaultImage } from "@/app/og/home/image.png/route";
 import { getDocsSocialPreview } from "@/features/docs/lib/social-preview";
 import { BRAND_DESCRIPTION, BRAND_TAGLINE_LINES } from "@/shared/lib/branding";
 import { buildContentMetadata } from "./social-preview";

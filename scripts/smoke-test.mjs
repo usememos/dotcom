@@ -45,7 +45,8 @@ const checks = [
     cacheControlIncludes: "max-age=31536000",
     openNextCacheAbsent: true,
   },
-  { path: "/og-image.png", type: "png", cacheControlIncludes: "max-age=86400", openNextCache: "HIT" },
+  { path: "/og-image.png", status: 404, type: "html" },
+  { path: "/og/home/image.png", type: "png", cacheControlIncludes: "max-age=86400", openNextCache: "HIT" },
   { path: "/og/blog/best-practices-to-write-tag/image.png", type: "png" },
   { path: "/og/blog/20k-github-stars-in-2-years/image.png", status: 404, type: "html" },
   {

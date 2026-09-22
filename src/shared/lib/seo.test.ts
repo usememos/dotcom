@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   absoluteUrl,
   buildBreadcrumbItems,
+  buildDefaultOpenGraphImages,
   buildFaqJsonLd,
   buildSiteNavigationJsonLd,
   SITE_NAV_DEMO,
@@ -10,6 +11,10 @@ import {
 } from "./seo";
 
 describe("seo", () => {
+  it("uses a new homepage image URL instead of the retired static image", () => {
+    expect(buildDefaultOpenGraphImages()[0].url).toBe("https://usememos.com/og/home/image.png");
+  });
+
   it("groups the primary site navigation around visitor tasks", () => {
     expect(SITE_NAV_ITEMS.map((item) => item.name)).toEqual(["Features", "Use Cases", "Docs", "Resources"]);
     expect(SITE_NAV_LINKS.map((item) => item.name)).toEqual([

@@ -68,16 +68,14 @@ function matchesRoute(pattern, route) {
   return route.startsWith(prefix) && route.endsWith(suffix);
 }
 
-test("static Open Graph image keeps only its specific cache rule", async () => {
-  const headers = await readHeadersBlock("/og-image.png");
+test("generated homepage Open Graph image keeps its cache rule", async () => {
+  const headers = await readHeadersBlock("/og/home/image.png");
 
   assert.equal(headers.get("cache-control"), "public,max-age=86400,stale-while-revalidate=604800");
-  assert.equal(headers.has("access-control-allow-origin"), false);
-  assert.equal(headers.has("access-control-allow-methods"), false);
 });
 
-test("static Open Graph image allows cross-origin reads from inherited static headers", async () => {
-  const headers = await readEffectiveHeaders("/og-image.png");
+test("generated homepage Open Graph image allows cross-origin reads", async () => {
+  const headers = await readEffectiveHeaders("/og/home/image.png");
 
   assert.equal(headers.get("access-control-allow-origin"), "*");
   assert.equal(headers.get("access-control-allow-methods"), "GET, HEAD, OPTIONS");
