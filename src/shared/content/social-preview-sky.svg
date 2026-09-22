@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <title>An abstract cobalt sky with cut-paper clouds and three birds in flight</title>
+  <path fill="#2458c6" d="M0 0h1200v630H0z"/>
+  <!-- Clouds are large, cropped paper shapes; the left column stays open. -->
+  <path fill="#f4f1e7" d="M897-68c-27 50-7 96 41 111 38 13 69-4 89 19 22 26-12 54 15 79 25 24 58 7 77 28 18 21-2 48 26 64 36 20 76-6 117-31V-68Z"/>
+  <path fill="#b9d0e7" d="M1238 336c-52-4-77 25-66 61 7 25 1 40-29 43-48 5-70 26-61 59 9 31-21 48-53 38-39-12-72 1-74 39-2 32-25 38-47 31-50-15-79 17-77 54h407Z"/>
+  <path fill="#f4f1e7" d="M1262 417c-47-13-82 8-82 39 0 22-12 35-39 32-37-4-64 14-58 43 5 26-7 43-37 40-40-4-69 19-60 48 5 18-17 28-45 31h321Z"/>
+  <!-- Continuous paper-cut contours: short beaks, tapered wings, and scissor tails. -->
+  <path transform="translate(773 118) scale(.95)" fill="#f4f1e7" d="M0 95C27 99 45 98 63 88 50 67 39 28 36 4c42 24 65 46 76 68 13 0 21-11 35-10 8 0 11 4 15 7l10 5-11 3c-3 9-12 17-24 21 15 23 33 41 55 55-40-6-75-21-93-42-13 5-23 4-34-1-23 24-45 35-63 40l41-40C27 108 12 102 0 95Z"/>
+  <path transform="translate(963 227) rotate(-18 85 80) scale(.82)" fill="#f4f1e7" d="M0 95c27 4 45 3 63-7C58 60 58 27 68 0c28 27 41 51 44 72 13 0 21-11 35-10 8 0 11 4 15 7l10 5-11 3c-3 9-12 17-24 21 2 25 13 53 29 76-36-17-59-39-67-63-13 5-23 4-34-1-23 24-45 35-63 40l41-40C27 108 12 102 0 95Z"/>
+  <path transform="translate(842 384) rotate(7 95 75) scale(.74)" fill="#f4f1e7" d="M0 95c27 4 45 3 63-7C41 71 19 46 9 22c44 10 80 29 103 50 13 0 21-11 35-10 8 0 11 4 15 7l10 5-11 3c-3 9-12 17-24 21 19 17 43 28 69 34-41 6-78-2-107-21-13 5-23 4-34-1-23 24-45 35-63 40l41-40C27 108 12 102 0 95Z"/>
+</svg>

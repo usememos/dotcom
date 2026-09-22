@@ -78,6 +78,12 @@ the current code pass.
 
 ## 4. How an agent uses this system
 
+### Social preview artwork
+
+At the user's request, generated social previews abstract the Cloud campaign's sky, clouds, and birds through a flat cut-paper composition informed by modern abstract painting. This scope covers `src/shared/content/social-preview-image.tsx`, its artwork, and the default `/og-image.png`. Use a cobalt sky, oversized ivory cloud shapes, and birds reduced to asymmetric wing silhouettes. No eyes, feather detail, outlines, gradients, texture filters, or simulated depth. The original SVG must contain no embedded bitmaps.
+
+Use Fraunces Black for both the title and the text-only Memos wordmark; Inter carries supporting copy. The wordmark sits independently at the lower left, aligned with the title and description. Omit section labels from the image rather than pairing mismatched type next to the brand. Keep the left text column clear of illustration and reserve the right side for an asymmetric, cropped composition. No logo icon or text shadows. This exception to sections 10–11 applies only to the fixed 1200 × 630 social image, not page styles. Serve PNG from the shared template for social crawler compatibility, and keep representative generated images below 300 KB. Verify short and long titles at full and card size.
+
 Before editing a public page, the agent MUST:
 
 1. Read the page's real content and identify its audience and single primary

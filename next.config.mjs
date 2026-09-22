@@ -48,8 +48,8 @@ const API_DOCS_RETIRED_REDIRECTS =
         },
       ];
 
-// Applied only to the OG image routes below. Cloudflare serves the static
-// /og-image.png from public/_headers — keep that file's CORS block in sync.
+// Applied only to the statically generated OG image routes below. Keep the
+// matching Cloudflare asset headers in public/_headers in sync.
 const CORS_HEADERS = [
   {
     key: "Access-Control-Allow-Origin",
