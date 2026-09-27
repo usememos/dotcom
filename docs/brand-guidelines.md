@@ -2,113 +2,41 @@
 
 **Status:** Authoritative. This document defines product-level messaging for Memos, including the website, default social previews, metadata, and product introductions. [DESIGN_SYSTEM.md](../DESIGN_SYSTEM.md) remains the visual design authority.
 
-## Brand Introduction
+Use this guide when writing about Memos: on the website, in documentation, in community introductions, or in partner material. The positioning below records deliberate messaging choices. Claims about user preferences or product performance require separate evidence.
+
+## Positioning
 
 ### Mission
 
-Memos exists to make thought capture effortless for people who want speed, privacy, and control without the weight of a full knowledge-management system.
+Make it easy to capture thoughts, revisit them, and keep control of them.
 
 ### Vision
 
-A world where saving a thought is as easy as having one, and where the fastest note-taking tool is also the one you fully own.
+A world where saving a thought is as easy as having one, and people control where those thoughts live.
 
 ### Positioning Statement
 
-Memos is the open-source, self-hosted note-taking tool for instant capture. It gives people a fast, lightweight place to save thoughts in Markdown on infrastructure they control, without ads, tracking, or subscription lock-in.
+Memos is an open-source, self-hosted note-taking tool for quick capture. Save notes, daily logs, links, and ideas in Markdown, revisit them through a timeline, search, and tags, and run it on infrastructure you control.
 
-### Core Positioning Line
+### Benefit Hierarchy
 
-**Catch a thought. Keep it yours.**
+Lead with capture. Explain why the notes remain useful and how users retain control.
 
-### Who This Guide Is For
+| Benefit | What to Communicate | Product Details to Show |
+|---------|---------------------|-------------------------|
+| **Capture easily** | Write something down while it is still fresh. | The note editor and the flow from writing to saving |
+| **Revisit what matters** | Find a saved note or look back through your days. | Timeline, search, tags, and review flows |
+| **Retain control** | Choose where Memos runs and manage the data you keep there. | Self-hosting, open-source code, and documented backup and export options |
 
-Everyone shaping how Memos is presented: maintainers, contributors, writers, community members, and partners creating pages, campaigns, docs, or product copy.
+Lightweight design supports all three benefits. Demonstrate it through a clear workflow or deployment instructions rather than asserting that every part of the experience is effortless.
 
-### Why Research-Led Messaging Matters
+### Positioning Boundary
 
-- Reinforces the strengths users already repeat: speed, simplicity, privacy, ownership
-- Prevents over-positioning Memos as something it is not
-- Sharpens the language around what makes Memos distinct
-- Keeps the brand honest, which matters more in open source than marketing polish
+Quick capture and a timeline for personal notes are the starting point for the brand. Avoid promising an all-in-one knowledge-management suite. This is a messaging focus, not a permanent limit on product development: describe organization, sharing, and other supported features through the user outcomes they serve.
 
----
+General introductions should stand on their own. Discuss how Memos compares with or complements other tools when that comparison helps the reader make a specific choice.
 
-## Brand Voice
-
-Memos should speak with three personality traits: **Immediate**, **Trustworthy**, and **Focused**.
-
-### 1. Immediate
-
-People choose Memos because it gets out of the way. The writing should reflect that same speed.
-
-| We Are | We Are Not |
-|--------|------------|
-| Fast | Breathless |
-| Direct | Abrupt |
-| Minimal | Empty |
-| Useful | Clever-for-its-own-sake |
-
-**Do:**
-- Lead with the capture moment: open, type, save
-- Keep sentences short and concrete
-- Use product language that feels lightweight and quick
-- Compare the experience to posting or jotting something down
-
-**Don't:**
-- Turn simple benefits into long explanations
-- Describe Memos like a complex productivity suite
-- Add abstract messaging before showing the practical value
-- Overload headlines with feature lists
-
-### 2. Trustworthy
-
-Users trust Memos because it is self-hosted, open source, and plain about what it does. The brand should protect that trust by staying specific, measured, and credible.
-
-| We Are | We Are Not |
-|--------|------------|
-| Honest | Defensive |
-| Transparent | Alarmist |
-| Stable-minded | Overconfident |
-| Privacy-first | Conspiratorial |
-
-**Do:**
-- Emphasize ownership, Markdown, and self-hosting in simple terms
-- Speak with clarity about the product's strengths and intended use
-- Use proof points users can verify: GitHub stars, deployment simplicity, open-source license
-- Write with the assumption that credibility matters more than hype
-
-**Don't:**
-- Claim Memos is frictionless in every part of the experience
-- Inflate the promise beyond the actual experience
-- Position privacy as fear-driven messaging
-- Pretend the product replaces every note-taking workflow
-
-### 3. Focused
-
-Users value Memos most when it stays good at quick capture. The brand should protect that clarity.
-
-| We Are | We Are Not |
-|--------|------------|
-| Purpose-built | Limited-minded |
-| Lightweight | Barebones apologetic |
-| Clear | Narrow in a negative sense |
-| Complementary | Competitive for its own sake |
-
-**Do:**
-- Present Memos as a micro-journal, quick-thought, and scratchpad tool
-- Say clearly that it complements deeper systems like Obsidian or Notion
-- Highlight timeline, hashtags, and simple review flows
-- Keep the value proposition centered on capture first
-
-**Don't:**
-- Market Memos as an everything app for knowledge work
-- Over-index on enterprise or collaboration language
-- Force comparisons that users already understand naturally
-- Blur the product's purpose by trying to cover every use case
-
----
-
-## Messaging Framework
+## Approved Copy
 
 ### Tagline
 
@@ -118,153 +46,93 @@ Users value Memos most when it stays good at quick capture. The brand should pro
 
 Quick notes, daily logs, and ideas. Open source and yours to host.
 
-### Messaging Constraints
+### Elevator Pitch
+
+Memos is an open-source, self-hosted note-taking tool for quick notes, daily logs, links, and ideas. Open it, write a thought, and save it in Markdown. Your notes form a timeline you can revisit, with search and tags to help you find something again. Run Memos on infrastructure you control.
+
+### Usage Rules
 
 - Use the tagline exactly, including sentence case and both periods. A line break between the two sentences is allowed; rewriting, reordering, or shortening either sentence requires an explicit branding decision.
-- Use `src/shared/lib/branding.ts` for executable copies of the tagline, its two display lines, the default branded title, and the supporting description. Do not duplicate these strings in components or metadata.
-- Use the tagline on the homepage hero and default brand-level social preview. Default branded metadata titles use `Memos - Catch a thought. Keep it yours.`. Page-specific search titles, article titles, and descriptions should continue to describe their actual content.
-- Use the supporting description when a short product introduction is needed. Longer SEO, documentation, and feature descriptions may add factual details such as Markdown, the timeline, APIs, and self-hosting. They must remain consistent with this positioning.
+- Use the tagline on the homepage hero and default brand-level social preview. Default branded metadata titles use `Memos - Catch a thought. Keep it yours.`. Page-specific search titles, article titles, and descriptions should describe their actual content.
+- Use the supporting description when a short product introduction is needed. Longer SEO, documentation, and feature descriptions may add factual details consistent with the positioning.
+- Campaign headlines and task-specific UI copy may differ. They must not be presented as replacement product taglines. Do not insert the slogan into every page heading, control, or error message.
 - `An open-source, self-hosted notebook.` is not the approved product introduction. Do not reintroduce it as the tagline or default image description. “Notebook” may still appear in ordinary explanatory or historical content where it is accurate.
 - Previous taglines, including `Capture first. Keep it yours.` and `Fast enough for every thought. Private enough for all of them.`, are retired for current brand surfaces. Preserve historical quotations and published release content.
-- “Keep it yours” means user control and ownership. It does not imply end-to-end encryption, local-only operation, perpetual availability, or that all deployments are private. Make technical claims only where the product supports them.
-- Campaign headlines and task-specific UI copy may differ. They must not be presented as replacement product taglines. Do not insert the slogan into every page heading, control, or error message.
 - There is no approved translated tagline yet. Translations require a separate wording decision rather than inventing a new English or localized variant.
 
-### Visual Use and Maintenance
+## Voice
+
+Memos should sound **immediate, trustworthy, and focused**.
+
+| Trait | How to Write | Avoid |
+|-------|--------------|-------|
+| **Immediate** | Use short, concrete sentences. Start with what someone can do: write a note, save a link, find an idea. | Abstract introductions, breathless urgency, and feature lists in headlines |
+| **Trustworthy** | Describe supported behavior precisely. State the conditions behind a claim. | Superlatives, fear-based privacy messaging, and unsupported guarantees |
+| **Focused** | Give each section one clear user benefit and enough detail to understand it. | Repeated competitor references, defensive exclusions, and promises to cover every workflow |
+
+Lead public copy with what Memos enables. Keep positioning boundaries as editorial guidance; do not turn them into repeated headlines about what Memos is not.
+
+## Claims and Evidence
+
+“Keep it yours” means user control and ownership. Keep that promise distinct from note visibility, deployment security, and availability.
+
+| Topic | Wording and Evidence Rule | Do Not Imply |
+|-------|---------------------------|--------------|
+| **Ownership and hosting** | Describe self-hosting and the control it gives the person operating an instance. Scope claims to the deployment being described. | Every user operates their own server, or hosting guarantees perpetual access |
+| **Privacy and visibility** | Describe the actual visibility settings and who can access notes in the relevant context. Use “private” when that context supports it. | Every deployment or note is private, or self-hosting means end-to-end encryption or local-only operation |
+| **Markdown and portability** | Describe Markdown as the note content format. Explain supported export and backup workflows separately when relevant. | “Markdown-native” means notes are stored as individual `.md` files, or Markdown alone makes all application data portable |
+| **Speed and setup** | Show the capture flow. Link setup claims to current instructions and their prerequisites. Use comparative speed claims only with relevant measurements. | Memos is the “fastest,” setup takes a fixed time for everyone, or operating a server requires no maintenance |
+| **Ads and tracking** | Verify the behavior and identify the scope: the Memos software, website, or a particular hosted service. | A product-level statement automatically covers every operator, integration, or external service |
+| **Cost and subscriptions** | Distinguish software pricing, infrastructure costs, and any hosted-service terms. Verify current terms before publishing. | Free software means free hosting, or all services using Memos have the same pricing |
+
+Support claims with evidence that proves the specific point:
+
+- Use current documentation, implementation, or a demonstrated workflow for product capabilities.
+- Link a source and date for user research, testimonials, adoption figures, or performance comparisons. Keep quotations faithful and distinguish individual feedback from broader findings.
+- Without research, state a positioning choice directly: “We lead with quick capture.” Do not recast it as “Users value quick capture most.”
+- GitHub stars indicate interest; they do not establish usability, reliability, or privacy. An open-source license establishes licensing terms, not a security guarantee.
+
+## Context and Examples
+
+Adapt the emphasis to the reader's task while keeping the same positioning.
+
+| Reader's Task | Emphasis |
+|---------------|----------|
+| Decide whether Memos fits their note-taking habits | Show capture, timeline, and ways to revisit notes with concrete examples. |
+| Deploy and maintain an instance | Explain prerequisites, deployment, backups, and upgrades. |
+| Understand privacy and control | Explain hosting, visibility, and data management in the relevant deployment. |
+| Build an integration or contribute | Describe documented APIs, supported extension points, and contribution paths. |
+| Compare note-taking tools | Address the actual workflow and tradeoffs. Include other tools only where useful to the comparison. |
+
+Examples below illustrate tone and structure. They are not required strings; any capability or change mentioned must be verified for the content being published.
+
+| Context | Example or Direction |
+|---------|----------------------|
+| Homepage hero | “Catch a thought. Keep it yours.” |
+| Supporting headline | “Find the thought you saved last week.” |
+| Product description | “Write a quick note, save a link, or look back through your daily logs.” |
+| Feature description | “Use tags to bring related notes together.” |
+| Docs | “Follow the Docker setup guide to run Memos on your server.” |
+| Blog posts | Explain a concrete workflow or product decision and the reasoning behind it. |
+| GitHub README | “Memos is an open-source, self-hosted note-taking tool for quick capture.” |
+| Release notes | Name the behavior that changed and its effect. Hypothetical example: “Fixed search results losing the selected tag when you change pages.” |
+| Social posts | Show one useful workflow or a specific shipped change. |
+| Comparison pages | Explain who benefits from each approach and support factual differences with current sources. |
+
+## Implementation and Maintenance
+
+### Canonical Strings
+
+Use `src/shared/lib/branding.ts` for executable copies of the tagline, its two display lines, the default branded title, and the supporting description. Do not duplicate these strings in components or metadata.
+
+When changing those canonical strings, update this document, `src/shared/lib/branding.ts`, and verification expectations together. Changes to editorial guidance do not require changing approved strings.
+
+### Visual Use
 
 Follow [DESIGN_SYSTEM.md](../DESIGN_SYSTEM.md) for typography, layout, colors, and social-preview artwork. In OG images, keep the tagline or page title primary and supporting copy readable within one or two lines. Preserve the text-only Memos wordmark and the approved sky, clouds, and bird silhouettes.
 
-When changing approved copy, update this document, `src/shared/lib/branding.ts`, and verification expectations together. Check the homepage at desktop and mobile widths, default and content OG images at sharing size, and rendered metadata before shipping. Changes in this repository do not automatically update separate Memos application repositories or externally managed profiles.
+### Verification
 
-### Elevator Pitch (30 seconds)
+When shipping changes to rendered brand copy, check the affected homepage at desktop and mobile widths, default and content OG images at sharing size, and rendered metadata as applicable. Check factual claims against current product behavior and documentation.
 
-Memos is an open-source, self-hosted note-taking tool built for instant capture. It feels more like a private timeline than a traditional notebook: open it, type a thought, and save it in Markdown on your own infrastructure. Users love it because setup is simple, the interface is fast, and ownership is clear. The product is strongest as a lightweight place for quick notes, journals, snippets, and bookmarks, not as a full knowledge-management system.
-
-### Value Propositions
-
-#### 1. Instant Capture
-Memos removes the setup cost of writing something down. The note box is there immediately, so thoughts get captured before they disappear.
-
-*Proof points: homepage input, timeline-first UX, low-friction posting flow*
-
-#### 2. Ownership by Default
-People trust Memos because their notes live on infrastructure they control, in open formats, without ads or tracking.
-
-*Proof points: self-hosted deployment, Markdown-native storage, open-source codebase, privacy-first reputation*
-
-#### 3. Lightweight by Design
-Memos is praised for being simple to deploy and snappy to use. The brand should treat lightweight as a product decision, not a lack of ambition.
-
-*Proof points: single Docker setup, SQLite simplicity, responsive feel*
-
-#### 4. Built for Short-Form Thinking
-The strongest use cases are quick thoughts, personal logs, links, and daily notes. This is where users feel the product is distinct.
-
-*Proof points: Twitter-like feel, hashtags, calendar/review workflows, micro-journal framing*
-
-### Audience Segments
-
-| Segment | What They Care About | How We Speak to Them |
-|---------|---------------------|----------------------|
-| **Self-hosters** | Easy deployment, backup, control | Lead with one-command setup, SQLite option, portability |
-| **Privacy-minded users** | Ownership, no tracking, no subscription dependence | Lead with self-hosting, Markdown, and data control |
-| **Fast-note takers** | Low friction, always-ready input, speed | Lead with the capture flow and timeline feel |
-| **Developers** | Open source, extensibility, community | Lead with architecture simplicity, APIs, and contribution |
-| **People choosing between note tools** | Whether Memos matches their style of writing | Lead with quick capture, simplicity, and timeline-based thinking |
-
----
-
-## Brand Signals to Amplify
-
-### What Resonates Most
-
-- Memos is easy to start and easy to keep running
-- The writing flow is faster than heavier note apps
-- Self-hosting and privacy are central, not secondary
-- The product feels lightweight and responsive
-- The timeline and hashtag model gives it a memorable identity
-
-### What the Brand Should Emphasize
-
-- Simplicity over complexity
-- Speed over ceremony
-- Ownership over dependence
-- Focus over feature sprawl
-
-### Messaging Implication
-
-We should market Memos as a fast, private capture tool with a distinct personality, using language that stays clear, confident, and tightly aligned to the core experience.
-
----
-
-## Brand Personality in Practice
-
-### Headlines
-
-Headlines should be short, concrete, and centered on capture plus ownership.
-
-- Product tagline: "Catch a thought. Keep it yours."
-- Good: "A private timeline for your thoughts."
-- Good: "Self-hosted notes without the drag."
-- Avoid: "The complete second brain for modern knowledge workers"
-- Avoid: "The most advanced all-in-one note platform"
-
-### Product Descriptions
-
-Lead with the real experience users praise.
-
-- Good: "Open Memos, type a thought, and keep it on your own server."
-- Good: "Built for quick notes, daily logs, links, and ideas you want to save now."
-- Avoid: "A comprehensive workspace for documents, collaboration, research, and personal knowledge management."
-
-### Feature Descriptions
-
-Keep feature language anchored in ease, ownership, and speed.
-
-- Good: "Self-hosted, Markdown-native, and ready in minutes."
-- Good: "A timeline-first note-taking tool for thoughts you want to keep."
-- Avoid: "A complete productivity operating system for every kind of work."
-
-## What Memos Is and Is Not
-
-### Memos Is
-
-- A **quick-capture tool** for thoughts, bookmarks, snippets, and daily notes
-- A **self-hosted, privacy-first** product with strong ownership semantics
-- A **lightweight timeline** for personal writing
-- A **Markdown-native** place to save ideas quickly
-- A tool with a clear niche users understand once they try it
-
-### Memos Is Not
-
-- A full **knowledge management suite**
-- A deep-linking, graph-first workspace
-- An all-in-one workspace for every writing workflow
-- A feature-maximal productivity platform
-- A replacement for all note-taking tools in every context
-
-Memos works best when positioned as the fastest place to save a thought you care about, not the last tool you will ever need.
-
----
-
-## Competitive Positioning Principles
-
-1. Lead with speed and ownership, not feature volume.
-2. Compete through clarity of purpose, not broad category claims.
-3. Acknowledge that many users pair Memos with deeper tools.
-4. Let the lightweight, self-hosted angle do the differentiation work.
-5. Keep the brand focused on the product's most recognizable strengths.
-
----
-
-## Tone Calibration by Context
-
-| Context | Tone | Example |
-|---------|------|---------|
-| Homepage hero | Clear, fast, confident | "Catch a thought. Keep it yours." |
-| Docs | Clear, practical | "Run Memos in minutes and keep your notes on your own server." |
-| Blog posts | Reflective, grounded | "People come to Memos for quick capture, so product decisions should protect that speed." |
-| GitHub README | Direct, minimal | "Memos is an open-source, self-hosted note-taking tool built for instant capture." |
-| Release notes | Factual, concise | "Faster note capture, cleaner workflows, and continued product refinement." |
-| Social posts | Brief, concrete | "Fast notes, self-hosted, Markdown-native." |
-| Comparison pages | Clear, confident | "Memos is built for fast, private capture with a lightweight timeline experience." |
+Changes in this repository do not automatically update separate Memos application repositories or externally managed profiles.

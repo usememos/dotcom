@@ -1,8 +1,15 @@
 import { render, screen } from "@testing-library/react";
+import type { ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
+import { BRAND_DESCRIPTION, BRAND_TAGLINE } from "@/shared/lib/branding";
 
 vi.mock("@/features/marketing/components/hero-section", () => ({
-  HeroSection: () => <section data-testid="hero-section" />,
+  HeroSection: ({ title, subtitle }: { title: ReactNode; subtitle: string }) => (
+    <section data-testid="hero-section">
+      <h1>{title}</h1>
+      <p>{subtitle}</p>
+    </section>
+  ),
 }));
 
 vi.mock("@/features/marketing/components/home-deploy-section", () => ({
@@ -28,6 +35,14 @@ vi.mock("@/features/marketing/components/home-use-cases-section", () => ({
 import HomePage from "./page";
 
 describe("HomePage", () => {
+  it("preserves the approved brand introduction as one accessible heading", () => {
+    render(<HomePage />);
+
+    expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+    expect(screen.getByRole("heading", { level: 1, name: BRAND_TAGLINE })).toBeVisible();
+    expect(screen.getByText(BRAND_DESCRIPTION)).toBeVisible();
+  });
+
   it("follows the FAQ with the final start CTA", () => {
     render(<HomePage />);
 

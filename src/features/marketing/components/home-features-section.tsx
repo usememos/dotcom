@@ -1,30 +1,30 @@
-import { ArrowRightIcon, DollarSignIcon, GitForkIcon, PenToolIcon, ServerIcon, ShieldIcon, ZapIcon } from "lucide-react";
+import { ArrowRightIcon, CodeIcon, GitForkIcon, SearchIcon, ServerIcon, SquareCheckIcon, TagsIcon } from "lucide-react";
 import Link from "next/link";
 
 const FEATURES = [
   {
-    icon: ShieldIcon,
-    title: "Your notes stay with you",
+    icon: SearchIcon,
+    title: "Find notes with search",
   },
   {
-    icon: ZapIcon,
-    title: "Open, type, move on",
+    icon: TagsIcon,
+    title: "Bring related notes together",
   },
   {
-    icon: PenToolIcon,
-    title: "Plain Markdown",
+    icon: CodeIcon,
+    title: "Write in Markdown",
   },
   {
     icon: ServerIcon,
-    title: "Small enough to run anywhere",
+    title: "Run on your own server",
   },
   {
     icon: GitForkIcon,
     title: "Open source you can inspect",
   },
   {
-    icon: DollarSignIcon,
-    title: "Free because you host it",
+    icon: SquareCheckIcon,
+    title: "Keep checklists in your notes",
   },
 ] as const;
 
@@ -35,8 +35,8 @@ export function HomeFeaturesSection() {
         <div className="grid gap-7 lg:grid-cols-[minmax(0,1.2fr)_auto] lg:items-end lg:gap-12">
           <div>
             <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Product</p>
-            <h2 className="mt-4 max-w-[16ch] text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl lg:text-[3.35rem]">
-              Small on purpose. Fast by default.
+            <h2 className="mt-4 max-w-xl text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl lg:text-[3.35rem]">
+              Make more of what you save.
             </h2>
           </div>
           <Link

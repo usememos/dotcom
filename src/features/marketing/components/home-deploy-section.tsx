@@ -19,11 +19,11 @@ export function HomeDeploySection() {
             <ContainerIcon className="size-5" />
           </span>
           <p className="mt-7 text-xs font-semibold tracking-[0.18em] text-brand-300 uppercase">Deploy</p>
-          <h2 className="mt-4 max-w-[13ch] text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] sm:text-5xl lg:text-[3.35rem]">
-            Your server. One command.
+          <h2 className="mt-4 max-w-md text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] sm:text-5xl lg:text-[3.35rem]">
+            Choose where your notes live.
           </h2>
           <p className="mt-5 max-w-md text-base leading-7 text-zinc-300 sm:text-[1.0625rem] sm:leading-8">
-            Start a private Memos timeline in minutes, then move it whenever your setup changes.
+            With Docker installed, start Memos on your server. The setup guide covers installation, configuration, and next steps.
           </p>
           <Link
             href="/docs/getting-started"

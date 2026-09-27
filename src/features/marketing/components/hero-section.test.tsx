@@ -13,8 +13,17 @@ describe("HeroSection", () => {
       />,
     );
 
-    expect(screen.getByRole("heading", { name: "Test headline" })).toBeInTheDocument();
+    const heading = screen.getByRole("heading", { name: "Test headline" });
+    expect(heading).toBeInTheDocument();
+    // Scale the brand headline on narrow screens without preventing text wrapping.
+    expect(heading.className).toMatch(/text-\[clamp\(/);
+    expect(heading.className).not.toMatch(/whitespace-nowrap|text-nowrap/);
     expect(screen.getByRole("link", { name: /Latest release\s*v0\.31\.0/ })).toHaveAttribute("href", "/changelog/0-31-0");
+    expect(screen.getByRole("link", { name: "Install" })).toHaveAttribute("href", "/install");
+    const demo = screen.getByRole("link", { name: "Demo" });
+    expect(demo).toHaveAttribute("href", "https://demo.example.com/");
+    expect(demo).toHaveAttribute("target", "_blank");
+    expect(demo).toHaveAttribute("rel", "noopener noreferrer");
 
     const ambient = container.querySelector('[aria-hidden="true"].pointer-events-none');
     expect(ambient).not.toBeNull();

@@ -1,4 +1,4 @@
-import { ArrowRightIcon, LockKeyholeIcon, PenLineIcon, ServerIcon } from "lucide-react";
+import { ArrowRightIcon, HistoryIcon, PenLineIcon, ServerIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HeroAccent } from "@/features/marketing/components/hero-accent";
@@ -14,18 +14,18 @@ import { buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/shared/lib/seo"
 const PRINCIPLES = [
   {
     icon: PenLineIcon,
-    title: "Open. Write. Done.",
-    description: "No folder decision, no workspace setup, no title required before a thought is worth saving.",
+    title: "Capture easily",
+    description: "Write a thought, save a link, or jot down a daily log. Start with what you want to remember.",
   },
   {
-    icon: LockKeyholeIcon,
-    title: "Private timeline.",
-    description: "Memos feels closer to posting into your own quiet feed than maintaining a formal notebook.",
+    icon: HistoryIcon,
+    title: "Revisit what matters",
+    description: "Look back through your timeline, search for a phrase, or use tags to find related notes.",
   },
   {
     icon: ServerIcon,
-    title: "Yours to run.",
-    description: "Self-host it, keep Markdown-native notes, and choose the database and server you trust.",
+    title: "Retain control",
+    description: "Run Memos on your own infrastructure. Choose where your notes live and how you back them up.",
   },
 ] as const;
 
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     absolute: "Memos - Open-Source, Self-Hosted Note-Taking App",
   },
   description:
-    "Memos is an open-source, self-hosted note-taking app — a Markdown-native timeline for quick notes, daily logs, links, and snippets. Self-host with Docker in minutes; private and free.",
+    "Capture quick notes, daily logs, and ideas with Memos, an open-source, self-hosted note-taking app. Revisit your timeline with search and tags.",
   keywords: [
     "note-taking app",
     "open source note taking app",
@@ -75,8 +75,8 @@ export default function HomePage() {
       <HeroSection
         title={
           <>
-            <span className="block">{BRAND_TAGLINE_LINES[0]}</span>
-            <span className="block">
+            <span className="block text-balance">{BRAND_TAGLINE_LINES[0]}</span>{" "}
+            <span className="block text-balance">
               <HeroAccent>{BRAND_TAGLINE_LINES[1]}</HeroAccent>
             </span>
           </>
@@ -90,12 +90,12 @@ export default function HomePage() {
           <div className="grid gap-7 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.7fr)] lg:items-end lg:gap-12">
             <div>
               <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">The idea</p>
-              <h2 className="mt-4 max-w-[17ch] text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl lg:text-[3.35rem]">
-                Not a workspace. Not a second brain.
+              <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl lg:text-[3.35rem]">
+                Save it now. Find it later.
               </h2>
             </div>
             <p className="max-w-xl text-base leading-7 text-zinc-600 dark:text-zinc-300 sm:text-[1.0625rem] sm:leading-8 lg:justify-self-end">
-              Just a small, self-hosted timeline for notes you want to capture quickly and keep close.
+              A thought today, a useful reference tomorrow. Keep your notes together in a timeline you can return to.
             </p>
           </div>
 
@@ -137,16 +137,16 @@ export default function HomePage() {
             <Link
               href="/docs/getting-started"
               prefetch={false}
-              className="group inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-700 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-brand-300"
+              className="group inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-700 dark:focus-visible:outline-brand-300 hover:bg-brand-700 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-brand-300"
             >
               Install Memos
-              <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1" />
+              <ArrowRightIcon className="size-4 motion-safe:transition-transform motion-safe:group-hover:translate-x-1" />
             </Link>
             <Link
               href="https://demo.usememos.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-lg border border-zinc-300 px-5 py-3 text-sm font-semibold text-zinc-950 transition-colors hover:bg-stone-50 dark:border-white/15 dark:text-zinc-100 dark:hover:bg-white/5"
+              className="inline-flex items-center justify-center rounded-lg border border-zinc-300 px-5 py-3 text-sm font-semibold text-zinc-950 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-700 dark:focus-visible:outline-brand-300 hover:bg-stone-50 dark:border-white/15 dark:text-zinc-100 dark:hover:bg-white/5"
             >
               Try Live Demo
             </Link>

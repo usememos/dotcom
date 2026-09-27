@@ -116,7 +116,7 @@ Primary sources:
 - `src/features/marketing/components/home-hero.module.css`
 
 The Homepage establishes the default relationship between editorial display
-type, quiet neutral space, concise copy, restrained teal emphasis, and a real
+type, quiet neutral space, concise copy, restrained blue brand emphasis, and a real
 product artifact. It also demonstrates that related content can use open grids,
 lists, and occasional dividers instead of a field of cards. Its whitespace and
 alignment are the primary grouping devices; the dividers are not a default
@@ -149,7 +149,7 @@ The following traits are observable requirements:
 - **Editorial hierarchy.** Serif display type carries the thesis. Sans-serif
   text explains it. Monospace identifies code, versions, and technical data.
 - **Quiet canvas.** Neutral surfaces and generous open space are the default.
-  Teal signals emphasis and action; it does not flood every section.
+  Brand blue signals emphasis and action; it does not flood every section.
 - **Product as evidence.** Real interface behavior, Markdown, browser context,
   deployment commands, and project facts carry more weight than abstract
   illustration.
@@ -390,12 +390,16 @@ before implementation.
 
 | Role | Canonical treatment |
 | --- | --- |
-| Brand hero | `font-serif text-[3.25rem] leading-[0.96] font-semibold tracking-[-0.04em] sm:text-6xl lg:text-[4.25rem]` |
+| Brand hero | `font-serif text-[clamp(2.25rem,12vw,3.25rem)] leading-[0.96] font-semibold tracking-[-0.04em] sm:text-6xl lg:text-[4.25rem]` |
 | Campaign hero | `font-serif text-5xl leading-[0.98] font-semibold tracking-[-0.035em] sm:text-6xl lg:text-7xl` |
 | Standard marketing H1 | `font-serif text-5xl leading-[1.04] font-semibold tracking-[-0.035em] sm:text-6xl lg:text-7xl` |
 | Section thesis | `font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] sm:text-5xl lg:text-[3.35rem]` |
 | Compact section title | `font-serif text-3xl font-semibold tracking-tight sm:text-4xl` |
 | Editorial index H1 | `font-serif text-4xl font-semibold sm:text-6xl` |
+
+The brand hero's fluid mobile size keeps the approved tagline readable as two
+sentences at narrow widths. Keep each sentence on its own line when space permits,
+but allow wrapping when larger text settings require it.
 
 Display headings MUST use `text-balance`, but balance is not a substitute for a
 correct content column. A page H1 MUST use the available hero column by default;
@@ -428,7 +432,10 @@ not span the full site container.
 
 ## 11. Color
 
-The default website palette is neutral and role-based:
+The default website palette uses neutral surfaces and the existing primary blue
+brand scale. `--color-brand-*` in `src/app/global.css` defines that scale; use
+the `brand-*` utilities for brand accents rather than introducing a separate
+accent palette.
 
 | Role | Light | Dark |
 | --- | --- | --- |
@@ -438,17 +445,24 @@ The default website palette is neutral and role-based:
 | Body text | `text-zinc-600` | `dark:text-zinc-300` |
 | Muted text | `text-zinc-500` | `dark:text-zinc-400` |
 | Rule/border | `border-zinc-200` | `dark:border-white/10` |
-| Accent text/icon | `text-teal-700` | `dark:text-teal-300` |
-| Display accent | `text-teal-600` | `dark:text-teal-300` |
+| Accent text/icon | `text-brand-700` | `dark:text-brand-300` |
+| Display accent | `text-brand-600` | `dark:text-brand-300` |
 
-Primary marketing actions use a high-contrast neutral fill with teal as a hover
-or supporting signal. Teal-filled controls MAY be used when the surrounding
-composition requires it, but teal MUST NOT become a default fill for every
-action and icon.
+Primary marketing actions use a high-contrast neutral fill with brand blue as a
+hover or supporting signal. Brand-filled controls MAY be used when the
+surrounding composition requires it, but blue MUST NOT become a default fill
+for every action and icon.
+
+Use `HeroAccent` for display emphasis, including the Homepage's “Keep it yours.”
+line. Its `text-brand-600 dark:text-brand-300` treatment is the standard brand
+accent, not a page-specific exception.
 
 Color rules:
 
 - Color MUST communicate hierarchy, action, state, or subject matter.
+- Brand accents MUST use the existing `brand-*` tokens. Do not substitute
+  Tailwind blue, teal, or green scales for the primary brand color. Semantic
+  state colors and the registered signature palettes retain their own roles.
 - Dark mode MUST be composed intentionally; do not mechanically invert colors.
 - Body text MUST meet WCAG AA contrast against its surface.
 - Raw hex colors MUST NOT be introduced for general site UI.
