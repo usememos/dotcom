@@ -27,7 +27,7 @@ describe("PricingPage", () => {
     const faq = structuredData.find((entry) => entry["@type"] === "FAQPage");
 
     expect(metadata.title).toBe("Pricing: Free, Open-Source, Self-Hosted");
-    expect(metadata.description).toContain("completely free");
+    expect(metadata.description).toContain("no license fee");
     expect(metadata.alternates?.canonical).toBe("https://usememos.com/pricing");
     expect(software).toMatchObject({
       isAccessibleForFree: true,

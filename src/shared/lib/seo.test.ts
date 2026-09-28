@@ -68,7 +68,7 @@ describe("seo", () => {
     expect(names).toContain("Get Started");
     expect(names).not.toContain("Live Demo");
     expect(jsonLd.itemListElement.find((item) => item.name === "All Features")).toMatchObject({
-      description: "Explore self-hosted note-taking features",
+      description: "Writing, search, views, and self-hosting",
       url: "https://usememos.com/features",
     });
   });

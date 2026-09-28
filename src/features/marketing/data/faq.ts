@@ -10,7 +10,8 @@ import type { FaqItem } from "@/shared/lib/seo";
 export const HOME_FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "Is Memos free?",
-    answer: "Yes. The self-hosted Memos software is free and MIT-licensed. Hosting costs depend on the hardware or provider you choose.",
+    answer:
+      "Yes. Memos is open-source software under the MIT license, with no license fee. Hosting may still cost money, depending on the hardware or provider you choose.",
   },
   {
     question: "Can I self-host Memos?",
@@ -19,16 +20,16 @@ export const HOME_FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "Does Memos support Markdown?",
     answer:
-      "Yes. Format notes with Markdown, including lists, code blocks, and checklists. Memos stores note content in your instance’s database.",
+      "Yes. You write memos in Markdown, including lists, code blocks, and checklists. Memos stores them in your instance’s database, and you can export your memos as a ZIP archive.",
   },
   {
     question: "Is Memos a good open-source alternative to Google Keep, Notion, or Evernote?",
     answer:
-      "Choose Memos for quick capture, a timeline of notes, and self-hosting. Use search and tags to revisit what you save; compare the workflows that matter to you.",
+      "Choose Memos if you want to write short notes quickly and find them later by search, tag, or date, on a server you control. Compare the workflows that matter to you.",
   },
   {
     question: "Where is my data stored, and is it private?",
     answer:
-      "Notes are stored in the database used by your Memos instance. Who can see a note depends on its visibility setting; hosting and backups are managed by the instance operator.",
+      "Memos are stored in the database of the Memos instance you use. New memos are private by default, and each memo’s visibility setting decides who can see it. Hosting and backups are managed by whoever runs the instance.",
   },
 ] as const;

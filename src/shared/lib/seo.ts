@@ -28,10 +28,10 @@ export const SITE_NAV_ITEMS = [
     name: "Features",
     href: "/features",
     items: [
-      { name: "All Features", href: "/features", description: "Explore self-hosted note-taking features" },
+      { name: "All Features", href: "/features", description: "Writing, search, views, and self-hosting" },
       { name: "Self-Hosted", href: "/features/self-hosted", description: "Run Memos on your own infrastructure" },
       { name: "Open Source", href: "/features/open-source", description: "MIT-licensed and developed in public" },
-      { name: "Markdown Notes", href: "/features/markdown-support", description: "Portable notes with Markdown and LaTeX math" },
+      { name: "Markdown Notes", href: "/features/markdown-support", description: "Write memos in Markdown, with LaTeX math" },
       { name: "API & Integrations", href: "/features/api-first", description: "REST and gRPC APIs for automation" },
     ],
   },
@@ -39,8 +39,8 @@ export const SITE_NAV_ITEMS = [
     name: "Use Cases",
     href: "/use-cases",
     items: [
-      { name: "All Use Cases", href: "/use-cases", description: "Discover workflows for personal notes" },
-      { name: "Personal Journaling", href: "/use-cases/personal-knowledge", description: "Daily journals, notes, and idea trails" },
+      { name: "All Use Cases", href: "/use-cases", description: "Ways people use Memos for quick notes" },
+      { name: "Personal Journaling", href: "/use-cases/personal-knowledge", description: "Daily logs, journal entries, and ideas" },
       { name: "Developers", href: "/use-cases/developers", description: "Code snippets and technical notes" },
       { name: "Writers", href: "/use-cases/writers", description: "Article drafts and creative ideas" },
       { name: "Homelab & Self-Hosting", href: "/use-cases/self-hosting", description: "Server docs and infrastructure logs" },
@@ -62,7 +62,7 @@ export const SITE_NAV_LINKS = SITE_NAV_ITEMS.flatMap<SiteNavLink>((item) => ("it
 export const SITE_NAV_DEMO = {
   name: "Live Demo",
   href: "https://demo.usememos.com/",
-  description: "Try Memos in a public demo workspace",
+  description: "Try Memos on a public demo instance",
   external: true,
 } as const satisfies SiteNavLink;
 

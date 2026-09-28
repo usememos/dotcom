@@ -10,32 +10,32 @@ export const COMPARISONS: Record<ComparisonSlug, ComparisonDefinition> = {
   obsidian: {
     competitor: "Obsidian",
     title: "Memos vs Obsidian",
-    subtitle: "A self-hosted timeline for quick capture vs. a local-first knowledge base.",
+    subtitle: "A personal timeline of short memos vs. a local-first vault of linked notes.",
     description:
-      "Both keep your notes in Markdown, but they solve different problems. Memos is a self-hosted web app for fast, chronological capture you reach from any device. Obsidian is a local-first desktop and mobile app for building a densely linked knowledge base.",
+      "Both use Markdown, but they solve different problems. Memos is a personal timeline of short, untitled memos, self-hosted on a server you reach from any browser. Obsidian is a local-first desktop and mobile app for building a vault of densely linked notes.",
     icon: GemIcon,
     summary:
-      "Choose Memos if you want quick, private capture on your own server. Choose Obsidian if you want an offline, deeply linked knowledge graph on a single machine.",
+      "Choose Memos if you want to write short memos into a timeline on your own server. Choose Obsidian if you want local Markdown files, backlinks, and a graph view on your own devices.",
     rows: [
-      { label: "License", memos: "Open source (MIT)", competitor: "Proprietary (free for personal use)" },
+      { label: "License", memos: "Open source (MIT)", competitor: "Proprietary (free to use)" },
       { label: "Hosting", memos: "Self-hosted web server", competitor: "Local desktop & mobile app" },
-      { label: "Sync", memos: "Built in via your server", competitor: "Paid Obsidian Sync or third-party" },
-      { label: "Format", memos: "Markdown-native", competitor: "Markdown files on disk" },
-      { label: "Best for", memos: "Fast capture into a timeline", competitor: "Linked knowledge base & graph" },
-      { label: "Cost", memos: "Free (you host)", competitor: "Free personal; paid sync & commercial" },
+      { label: "Sync", memos: "Server-based; open it in any browser", competitor: "Paid Obsidian Sync or third-party" },
+      { label: "Format", memos: "Written in Markdown, stored in a database", competitor: "Markdown files on disk" },
+      { label: "Best for", memos: "Short memos in a timeline", competitor: "Linked notes & graph view" },
+      { label: "Cost", memos: "No license fee (you host)", competitor: "Free; paid Sync & Publish add-ons" },
     ],
     chooseMemos: [
-      "You want quick capture into a chronological feed, not a folder tree.",
-      "You want a self-hosted web app you reach from any device.",
-      "You want to share selected notes publicly without extra tooling.",
+      "You want to write short, untitled memos into a timeline, not file pages into folders.",
+      "You want one self-hosted web app you reach from any browser.",
+      "You want to share a single memo publicly or by link without extra tooling.",
     ],
     chooseCompetitor: [
-      "You are building a densely linked knowledge base with backlinks and a graph view.",
-      "You work mostly offline on a single machine.",
+      "You are building long, densely linked notes with backlinks and a graph view.",
+      "You want local files and full offline use on your own devices.",
       "You rely on a large community plugin ecosystem.",
     ],
     features: [
-      { name: "Markdown-native", slug: "markdown-support" },
+      { name: "Markdown", slug: "markdown-support" },
       { name: "Self-hosted", slug: "self-hosted" },
       { name: "Lightweight", slug: "lightweight" },
     ],
@@ -57,31 +57,31 @@ export const COMPARISONS: Record<ComparisonSlug, ComparisonDefinition> = {
     title: "Memos vs Joplin",
     subtitle: "Two open-source note apps with different shapes: a timeline vs. encrypted notebooks.",
     description:
-      "Memos and Joplin are both open source, Markdown-based, and self-hostable. Memos is a lightweight, web-first timeline for quick capture. Joplin is a notebook system with end-to-end encrypted sync across native desktop and mobile apps.",
+      "Memos and Joplin are both open source, use Markdown, and can be self-hosted. Memos is a web-based personal timeline of short, untitled memos. Joplin is a notebook system with end-to-end encrypted sync across native desktop and mobile apps.",
     icon: NotebookIcon,
     summary:
-      "Choose Memos for a lightweight self-hosted feed you reach from the browser. Choose Joplin for end-to-end encrypted notebooks and offline native clients.",
+      "Choose Memos for a self-hosted timeline of short memos you open in any browser. Choose Joplin for end-to-end encrypted notebooks and offline native clients.",
     rows: [
       { label: "License", memos: "Open source (MIT)", competitor: "Open source" },
       { label: "Hosting", memos: "Self-hosted web server", competitor: "Local apps + self-hostable sync" },
-      { label: "Sync", memos: "Built in via your server", competitor: "End-to-end encrypted sync" },
-      { label: "Format", memos: "Markdown-native", competitor: "Markdown notes & notebooks" },
-      { label: "Best for", memos: "Fast capture into a timeline", competitor: "Encrypted notebooks across devices" },
-      { label: "Cost", memos: "Free (you host)", competitor: "Free; optional paid Joplin Cloud" },
+      { label: "Sync", memos: "Server-based; open it in any browser", competitor: "End-to-end encrypted sync" },
+      { label: "Format", memos: "Markdown memos with tags", competitor: "Markdown notes & notebooks" },
+      { label: "Best for", memos: "Short memos in a timeline", competitor: "Encrypted notebooks across devices" },
+      { label: "Cost", memos: "No license fee (you host)", competitor: "Free; optional paid Joplin Cloud" },
     ],
     chooseMemos: [
-      "You prefer a lightweight timeline over notebooks and folders.",
+      "You prefer writing into a timeline and adding tags later over filing notes into notebooks.",
       "You want a web-first instance you host once and reach anywhere.",
-      "You want public sharing and a microblog-style feed.",
+      "You want to share selected memos publicly in a microblog-style feed.",
     ],
     chooseCompetitor: [
       "You need end-to-end encrypted sync across native apps.",
       "You organize notes into notebooks and sub-notebooks.",
-      "You want a built-in web clipper and fully offline desktop clients.",
+      "You want fully offline desktop and mobile clients.",
     ],
     features: [
       { name: "Open source", slug: "open-source" },
-      { name: "Markdown-native", slug: "markdown-support" },
+      { name: "Markdown", slug: "markdown-support" },
       { name: "Self-hosted", slug: "self-hosted" },
     ],
     seo: {
@@ -94,24 +94,24 @@ export const COMPARISONS: Record<ComparisonSlug, ComparisonDefinition> = {
   notion: {
     competitor: "Notion",
     title: "Memos vs Notion",
-    subtitle: "An open-source, self-hosted notes app vs. an all-in-one cloud workspace.",
+    subtitle: "An open-source, self-hosted timeline of memos vs. a hosted workspace for docs and databases.",
     description:
-      "Notion is a powerful hosted workspace with databases and collaboration. Memos goes the other way: a small, self-hosted, open-source tool for private quick capture that you fully own.",
+      "Notion is a hosted workspace with pages, databases, and team collaboration. Memos goes the other way: a personal timeline of short memos, open source and running on a server you choose.",
     icon: LayoutGridIcon,
     summary:
-      "Choose Memos to own your data and capture fast without a heavy editor. Choose Notion for structured databases and team collaboration in the cloud.",
+      "Choose Memos to write short memos without a page editor and keep them on your own server. Choose Notion for structured databases and team collaboration in the cloud.",
     rows: [
       { label: "License", memos: "Open source (MIT)", competitor: "Proprietary" },
       { label: "Hosting", memos: "Self-hosted web server", competitor: "Cloud SaaS (hosted by Notion)" },
       { label: "Data ownership", memos: "Your database, zero telemetry", competitor: "Stored on Notion's servers" },
-      { label: "Format", memos: "Markdown-native", competitor: "Blocks (Markdown import/export)" },
-      { label: "Best for", memos: "Fast private capture", competitor: "All-in-one workspace & databases" },
-      { label: "Cost", memos: "Free (you host)", competitor: "Freemium; paid plans for teams" },
+      { label: "Format", memos: "Written in Markdown", competitor: "Blocks (Markdown import/export)" },
+      { label: "Best for", memos: "Short personal memos", competitor: "Shared docs, wikis & databases" },
+      { label: "Cost", memos: "No license fee (you host)", competitor: "Freemium; paid plans for teams" },
     ],
     chooseMemos: [
-      "You want to own your data on your own server with no vendor lock-in.",
-      "You want fast, private capture without a heavy block editor.",
-      "You want it free and open source.",
+      "You want your memos on your own server, with a ZIP export when you need it.",
+      "You want to write a quick memo without setting up a page or a database.",
+      "You want open-source software with no license fee.",
     ],
     chooseCompetitor: [
       "You need structured databases, kanban boards, and rich documents.",
@@ -139,23 +139,23 @@ export const COMPARISONS: Record<ComparisonSlug, ComparisonDefinition> = {
   "google-keep": {
     competitor: "Google Keep",
     title: "Memos vs Google Keep",
-    subtitle: "An open-source, self-hosted alternative to Google Keep's quick notes.",
+    subtitle: "Short notes on your own server vs. quick notes in your Google account.",
     description:
-      "Google Keep is a free, zero-setup note app tied to your Google account. Memos offers the same fast-capture feel but self-hosted, Markdown-native, and private — your notes live on your server, not Google's.",
+      "Google Keep is a free, zero-setup note app tied to your Google account. Memos is also built for short notes: a personal timeline of memos written in Markdown, on a server you choose instead of Google's.",
     icon: StickyNoteIcon,
     summary:
-      "Choose Memos to self-host quick notes with Markdown and full ownership. Choose Google Keep for instant, no-server notes inside the Google ecosystem.",
+      "Choose Memos to keep short Markdown memos on your own server. Choose Google Keep for zero-setup notes and reminders inside the Google ecosystem.",
     rows: [
       { label: "License", memos: "Open source (MIT)", competitor: "Proprietary" },
       { label: "Hosting", memos: "Self-hosted web server", competitor: "Google cloud account" },
       { label: "Data ownership", memos: "Your database, zero telemetry", competitor: "Tied to your Google account" },
-      { label: "Format", memos: "Markdown-native", competitor: "Plain notes & lists, no Markdown" },
-      { label: "Best for", memos: "Self-hosted quick capture", competitor: "Zero-setup quick notes" },
-      { label: "Cost", memos: "Free (you host)", competitor: "Free with a Google account" },
+      { label: "Format", memos: "Written in Markdown", competitor: "Plain notes & lists, no Markdown" },
+      { label: "Best for", memos: "Short memos on your server", competitor: "Zero-setup quick notes" },
+      { label: "Cost", memos: "No license fee (you host)", competitor: "Free with a Google account" },
     ],
     chooseMemos: [
-      "You want to own and self-host your notes instead of storing them in Google's cloud.",
-      "You want Markdown, tags, and search over a private timeline.",
+      "You want your notes on a server you run instead of in Google's cloud.",
+      "You want Markdown, tags, and search over your own timeline, with new memos private by default.",
       "You want an open-source tool with zero telemetry.",
     ],
     chooseCompetitor: [
@@ -169,7 +169,7 @@ export const COMPARISONS: Record<ComparisonSlug, ComparisonDefinition> = {
       { name: "Open source", slug: "open-source" },
     ],
     seo: {
-      title: "Memos: The Open-Source, Self-Hosted Google Keep Alternative",
+      title: "Memos: An Open-Source, Self-Hosted Google Keep Alternative",
       description:
         "Memos is an open-source, self-hosted Google Keep alternative. Compare hosting, privacy, Markdown, and cost — and see when to choose each.",
       keywords: [
@@ -184,28 +184,28 @@ export const COMPARISONS: Record<ComparisonSlug, ComparisonDefinition> = {
   evernote: {
     competitor: "Evernote",
     title: "Memos vs Evernote",
-    subtitle: "A free, open-source, self-hosted alternative to Evernote.",
+    subtitle: "A self-hosted timeline of short memos vs. a cloud notebook app.",
     description:
-      "Evernote is a mature cloud notebook app with clipping and search on a freemium plan. Memos is a free, open-source, self-hosted alternative focused on lightweight Markdown capture without subscriptions or note limits.",
+      "Evernote is a mature cloud notebook app with clipping and search on a freemium plan. Memos is a personal timeline of short memos written in Markdown: open source, self-hosted, and with no subscription or note limits in the software.",
     icon: FeatherIcon,
     summary:
-      "Choose Memos for a free, self-hosted tool you own outright. Choose Evernote for web clipping, OCR, and polished apps if you are comfortable in the cloud.",
+      "Choose Memos for short memos on a server you control, with no license fee. Choose Evernote for OCR, document search, and polished native apps if you are comfortable in the cloud.",
     rows: [
       { label: "License", memos: "Open source (MIT)", competitor: "Proprietary" },
       { label: "Hosting", memos: "Self-hosted web server", competitor: "Cloud SaaS (hosted by Evernote)" },
       { label: "Data ownership", memos: "Your database, zero telemetry", competitor: "Stored on Evernote's servers" },
-      { label: "Format", memos: "Markdown-native", competitor: "Rich-text notebooks" },
-      { label: "Best for", memos: "Lightweight private capture", competitor: "Web clipping & cross-notebook search" },
-      { label: "Cost", memos: "Free (you host)", competitor: "Freemium; paid plans for full use" },
+      { label: "Format", memos: "Written in Markdown", competitor: "Rich-text notebooks" },
+      { label: "Best for", memos: "Short memos in a timeline", competitor: "Web clipping & cross-notebook search" },
+      { label: "Cost", memos: "No license fee (you host)", competitor: "Freemium; paid plans for full use" },
     ],
     chooseMemos: [
-      "You want a free, self-hosted tool with no subscription or note limits.",
-      "You prefer Markdown and a lightweight capture flow.",
-      "You want full ownership of your data.",
+      "You want self-hosted, open-source software with no subscription or note limits.",
+      "You prefer short Markdown memos over formatted notebook pages.",
+      "You want your memos on your own server, with a ZIP export when you need it.",
     ],
     chooseCompetitor: [
-      "You rely on web clipping, OCR, and document search.",
-      "You want polished native apps across every platform.",
+      "You rely on OCR, document scanning, and search inside PDFs and images.",
+      "You want polished native apps on desktop and mobile.",
       "You do not want to self-host.",
     ],
     features: [
@@ -214,7 +214,7 @@ export const COMPARISONS: Record<ComparisonSlug, ComparisonDefinition> = {
       { name: "No fees", slug: "no-fees" },
     ],
     seo: {
-      title: "Memos: The Open-Source, Self-Hosted Evernote Alternative",
+      title: "Memos: An Open-Source, Self-Hosted Evernote Alternative",
       description:
         "Memos is a free, open-source, self-hosted Evernote alternative. Compare hosting, data ownership, Markdown, and cost before you switch.",
       keywords: [

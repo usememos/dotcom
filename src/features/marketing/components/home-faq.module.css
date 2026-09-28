@@ -1,0 +1,22 @@
+/* Smoothly open and close the native accordion where supported; elsewhere it toggles instantly. */
+.faq {
+  interpolate-size: allow-keywords;
+}
+
+.faq details::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition:
+    block-size 240ms ease-out,
+    content-visibility 240ms allow-discrete;
+}
+
+.faq details[open]::details-content {
+  block-size: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq details::details-content {
+    transition: none;
+  }
+}

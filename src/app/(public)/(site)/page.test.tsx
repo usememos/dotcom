@@ -12,24 +12,20 @@ vi.mock("@/features/marketing/components/hero-section", () => ({
   ),
 }));
 
-vi.mock("@/features/marketing/components/home-deploy-section", () => ({
-  HomeDeploySection: () => <section data-testid="home-deploy" />,
+vi.mock("@/features/marketing/components/home-write-section", () => ({
+  HomeWriteSection: () => <section data-testid="home-write" />,
 }));
 
-vi.mock("@/features/marketing/components/home-discover-section", () => ({
-  HomeDiscoverSection: () => <section data-testid="home-discover" />,
+vi.mock("@/features/marketing/components/home-find-section", () => ({
+  HomeFindSection: () => <section data-testid="home-find" />,
+}));
+
+vi.mock("@/features/marketing/components/home-own-section", () => ({
+  HomeOwnSection: () => <section data-testid="home-own" />,
 }));
 
 vi.mock("@/features/marketing/components/home-faq-section", () => ({
   HomeFaqSection: () => <section data-testid="home-faq" />,
-}));
-
-vi.mock("@/features/marketing/components/home-features-section", () => ({
-  HomeFeaturesSection: () => <section data-testid="home-features" />,
-}));
-
-vi.mock("@/features/marketing/components/home-use-cases-section", () => ({
-  HomeUseCasesSection: () => <section data-testid="home-use-cases" />,
 }));
 
 import HomePage from "./page";
@@ -41,6 +37,17 @@ describe("HomePage", () => {
     expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
     expect(screen.getByRole("heading", { level: 1, name: BRAND_TAGLINE })).toBeVisible();
     expect(screen.getByText(BRAND_DESCRIPTION)).toBeVisible();
+  });
+
+  it("tells the story in brand order: write, find, own, then answers", () => {
+    render(<HomePage />);
+
+    const hero = screen.getByTestId("hero-section");
+    const order = ["home-write", "home-find", "home-own", "home-faq"].map((id) => screen.getByTestId(id));
+    expect(hero.nextElementSibling).toBe(order[0]);
+    for (let index = 1; index < order.length; index++) {
+      expect(order[index - 1].nextElementSibling).toBe(order[index]);
+    }
   });
 
   it("follows the FAQ with the final start CTA", () => {

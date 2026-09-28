@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { BRAND_PROOF_POINTS } from "@/shared/lib/branding";
 import { HeroSection } from "./hero-section";
 
 describe("HeroSection", () => {
@@ -24,6 +25,10 @@ describe("HeroSection", () => {
     expect(demo).toHaveAttribute("href", "https://demo.example.com/");
     expect(demo).toHaveAttribute("target", "_blank");
     expect(demo).toHaveAttribute("rel", "noopener noreferrer");
+
+    for (const point of BRAND_PROOF_POINTS) {
+      expect(screen.getByText(point)).toBeVisible();
+    }
 
     const ambient = container.querySelector('[aria-hidden="true"].pointer-events-none');
     expect(ambient).not.toBeNull();

@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { HeroAmbient } from "@/features/marketing/components/hero-ambient";
 import styles from "@/features/marketing/components/home-hero.module.css";
 import { MemoHeroMock } from "@/features/marketing/components/memo-hero-mock";
+import { BRAND_PROOF_POINTS } from "@/shared/lib/branding";
 
 interface HeroSectionProps {
   version?: string;
@@ -48,7 +49,7 @@ export function HeroSection({ version = "0.31.0", title, subtitle, primaryCta, s
           </p>
 
           <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-[0.8125rem] text-zinc-500 dark:text-zinc-400 sm:text-sm">
-            {["Markdown notes", "Search & tags", "Self-hosted"].map((item) => (
+            {BRAND_PROOF_POINTS.map((item) => (
               <span key={item} className="inline-flex items-center gap-1.5">
                 <CheckIcon className="size-3.5 text-brand-600 dark:text-brand-300" />
                 {item}

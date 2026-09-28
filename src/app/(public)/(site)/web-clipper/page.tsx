@@ -40,22 +40,23 @@ const softwareJsonLd = {
 const CAPTURE_FEATURES = [
   {
     title: "Clean Markdown conversion",
-    description: "Selected text, links, lists, code blocks, and tables become readable Markdown that fits your existing notes.",
+    description: "Selected text, links, lists, code blocks, and tables become readable Markdown that sits alongside your other memos.",
     icon: <CodeIcon className="h-5 w-5" />,
   },
   {
     title: "Images and quick saves",
-    description: "Attach images from a page, or right-click selected text and images to save them privately without opening the popup.",
+    description:
+      "Attach images from a page, or right-click selected text and images to save them as Private memos without opening the popup.",
     icon: <ImageIcon className="h-5 w-5" />,
   },
   {
-    title: "Review every memo",
-    description: "Trim, annotate, or tag the Markdown, then choose a clearly explained Private, Protected, or Public visibility.",
+    title: "Edit before you save",
+    description: "Trim, annotate, or tag the Markdown, then choose Private, Protected, or Public visibility, each explained in the popup.",
     icon: <EyeIcon className="h-5 w-5" />,
   },
 ] as const;
 
-const LANGUAGES = ["English", "简体中文", "繁體中文", "Français", "Deutsch", "日本語", "Español"] as const;
+const LANGUAGES = ["English", "简体中文", "繁體中文", "Français", "Deutsch", "日本語", "Español", "한국어", "Русский"] as const;
 
 const FAQ_ITEMS: readonly FaqItem[] = [
   {
@@ -108,7 +109,7 @@ export default function WebClipperPage() {
             <div className="mb-7 flex flex-wrap items-center gap-3">
               <span className="font-mono text-xs tracking-[0.16em] text-brand-100 uppercase">Memos Web Clipper</span>
               <span className="rounded-full border border-amber-200/30 bg-amber-200/10 px-2.5 py-1 font-mono text-[10px] font-medium text-amber-100">
-                v0.2.0
+                v0.4.1
               </span>
             </div>
             <h1 className="font-serif text-5xl leading-[0.98] font-semibold tracking-[-0.035em] text-white sm:text-6xl lg:text-7xl">
@@ -214,7 +215,7 @@ export default function WebClipperPage() {
             <h2 className="mt-4 font-serif text-3xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">
               At home in your browser.
             </h2>
-            <p className="mt-3 text-sm leading-7 text-zinc-600 dark:text-zinc-400">The whole extension now speaks seven languages.</p>
+            <p className="mt-3 text-sm leading-7 text-zinc-600 dark:text-zinc-400">The whole extension speaks nine languages.</p>
           </div>
           <div className="grid grid-cols-2 gap-x-8 gap-y-4 sm:grid-cols-3 lg:grid-cols-4">
             {LANGUAGES.map((language) => (
@@ -231,13 +232,13 @@ export default function WebClipperPage() {
           {[
             {
               icon: <ServerIcon className="size-5" />,
-              title: "Self-hosted first",
+              title: "Your instance",
               text: "Clips go to the Memos instance you choose.",
             },
             {
               icon: <LockKeyholeIcon className="size-5" />,
-              title: "Private by design",
-              text: "No analytics, ads, or telemetry in the extension.",
+              title: "Zero telemetry",
+              text: "The extension has no analytics, ads, or usage tracking.",
             },
             {
               icon: <GithubIcon className="size-5" />,
@@ -296,7 +297,7 @@ export default function WebClipperPage() {
               Make it a memo before it becomes another tab.
             </h2>
             <p className="mx-auto mt-6 max-w-4xl text-base leading-8 text-slate-200/80 sm:text-lg">
-              Install the extension, choose how to connect, and save your first clip in under a minute.
+              Install the extension, choose how to connect, and save your first clip.
             </p>
             <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
               <a

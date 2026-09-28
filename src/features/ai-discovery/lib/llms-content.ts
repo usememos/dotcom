@@ -10,7 +10,7 @@ import { absoluteUrl, SITE_NAME } from "@/shared/lib/seo";
  */
 
 export const LLMS_SUMMARY =
-  "Memos is an open-source, self-hosted note-taking app — a Markdown-native timeline for quick notes, daily logs, links, and snippets. Self-host with Docker; private and free.";
+  "Memos is a personal timeline for quick notes: write short memos as they come, and find them later by search, tag, or date. It is an open-source (MIT), self-hosted note-taking app that runs with Docker. Private and free: new memos are private by default, and the software has no license fee. The Memos software sends no telemetry.";
 
 export interface PageMeta {
   url: string;
@@ -57,11 +57,7 @@ export function buildLlmsIndex(input: { docs: PageMeta[]; blog: PageMeta[]; chan
 
   out.push(
     ...sectionLines("Features", [
-      formatLine(
-        "Features overview",
-        "/features",
-        "Everything Memos does: quick capture, Markdown, tags, search, and self-hosted ownership.",
-      ),
+      formatLine("Features overview", "/features", "What Memos does: memos written in Markdown, search, tags, views, and self-hosting."),
       ...getAllFeatureSlugs().map((slug) => formatLine(FEATURES[slug].title, `/features/${slug}`, FEATURES[slug].description)),
     ]),
   );

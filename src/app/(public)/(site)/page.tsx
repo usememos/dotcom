@@ -1,40 +1,20 @@
-import { ArrowRightIcon, HistoryIcon, PenLineIcon, ServerIcon } from "lucide-react";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { HeroAccent } from "@/features/marketing/components/hero-accent";
 import { HeroSection } from "@/features/marketing/components/hero-section";
-import { HomeDeploySection } from "@/features/marketing/components/home-deploy-section";
-import { HomeDiscoverSection } from "@/features/marketing/components/home-discover-section";
 import { HomeFaqSection } from "@/features/marketing/components/home-faq-section";
-import { HomeFeaturesSection } from "@/features/marketing/components/home-features-section";
-import { HomeUseCasesSection } from "@/features/marketing/components/home-use-cases-section";
+import { HomeFindSection } from "@/features/marketing/components/home-find-section";
+import { HomeOwnSection } from "@/features/marketing/components/home-own-section";
+import { HomeWriteSection } from "@/features/marketing/components/home-write-section";
+import { StartSection } from "@/features/marketing/components/start-section";
 import { BRAND_DESCRIPTION, BRAND_TAGLINE_LINES, BRAND_TITLE } from "@/shared/lib/branding";
 import { buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/shared/lib/seo";
-
-const PRINCIPLES = [
-  {
-    icon: PenLineIcon,
-    title: "Capture easily",
-    description: "Write a thought, save a link, or jot down a daily log. Start with what you want to remember.",
-  },
-  {
-    icon: HistoryIcon,
-    title: "Revisit what matters",
-    description: "Look back through your timeline, search for a phrase, or use tags to find related notes.",
-  },
-  {
-    icon: ServerIcon,
-    title: "Retain control",
-    description: "Run Memos on your own infrastructure. Choose where your notes live and how you back them up.",
-  },
-] as const;
 
 export const metadata: Metadata = {
   title: {
     absolute: "Memos - Open-Source, Self-Hosted Note-Taking App",
   },
   description:
-    "Capture quick notes, daily logs, and ideas with Memos, an open-source, self-hosted note-taking app. Revisit your timeline with search and tags.",
+    "Write short memos without titles or folders in Memos, an open-source, self-hosted note-taking app. Find them later by search, tag, or date.",
   keywords: [
     "note-taking app",
     "open source note taking app",
@@ -43,7 +23,7 @@ export const metadata: Metadata = {
     "self-hosted note-taking tool",
     "open source note taking",
     "docker notes tool",
-    "privacy-first notes",
+    "private notes",
     "markdown notes",
     "memos",
     "quick capture notes",
@@ -85,74 +65,12 @@ export default function HomePage() {
         primaryCta={{ text: "Install Memos", href: "/docs/getting-started" }}
         secondaryCta={{ text: "Try Live Demo", href: "https://demo.usememos.com/", external: true }}
       />
-      <section id="why-memos" className="bg-white py-16 dark:bg-zinc-950 sm:py-20 lg:py-24">
-        <div className="site-container">
-          <div className="grid gap-7 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.7fr)] lg:items-end lg:gap-12">
-            <div>
-              <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">The idea</p>
-              <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl lg:text-[3.35rem]">
-                Save it now. Find it later.
-              </h2>
-            </div>
-            <p className="max-w-xl text-base leading-7 text-zinc-600 dark:text-zinc-300 sm:text-[1.0625rem] sm:leading-8 lg:justify-self-end">
-              A thought today, a useful reference tomorrow. Keep your notes together in a timeline you can return to.
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-10 sm:mt-14 lg:grid-cols-3 lg:gap-12">
-            {PRINCIPLES.map((item) => {
-              const Icon = item.icon;
-              return (
-                <article key={item.title}>
-                  <Icon className="size-5 text-brand-700 dark:text-brand-300" />
-                  <h3 className="mt-7 text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100 sm:mt-8 sm:text-[1.375rem]">
-                    {item.title}
-                  </h3>
-                  <p className="mt-3 max-w-md text-sm leading-7 text-zinc-600 dark:text-zinc-300 sm:text-[0.9375rem]">{item.description}</p>
-                </article>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <HomeFeaturesSection />
-      <HomeDeploySection />
-      <HomeUseCasesSection />
-      <HomeDiscoverSection />
+      <HomeWriteSection />
+      <HomeFindSection />
+      <HomeOwnSection />
       <HomeFaqSection />
 
-      <section id="start" className="bg-white py-16 dark:bg-zinc-950 sm:py-20 lg:py-24">
-        <div className="site-container grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-12">
-          <div>
-            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Start here</p>
-            <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
-              Start with one memo.
-            </h2>
-            <p className="mt-4 max-w-xl text-base leading-7 text-zinc-600 dark:text-zinc-300 sm:text-[1.0625rem] sm:leading-8">
-              Run it yourself or try the public demo before choosing where your timeline will live.
-            </p>
-          </div>
-          <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
-            <Link
-              href="/docs/getting-started"
-              prefetch={false}
-              className="group inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-700 dark:focus-visible:outline-brand-300 hover:bg-brand-700 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-brand-300"
-            >
-              Install Memos
-              <ArrowRightIcon className="size-4 motion-safe:transition-transform motion-safe:group-hover:translate-x-1" />
-            </Link>
-            <Link
-              href="https://demo.usememos.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-lg border border-zinc-300 px-5 py-3 text-sm font-semibold text-zinc-950 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-700 dark:focus-visible:outline-brand-300 hover:bg-stone-50 dark:border-white/15 dark:text-zinc-100 dark:hover:bg-white/5"
-            >
-              Try Live Demo
-            </Link>
-          </div>
-        </div>
-      </section>
+      <StartSection />
     </main>
   );
 }

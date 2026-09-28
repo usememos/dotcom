@@ -22,7 +22,7 @@ export function getBlogIndexSocialPreview(): ContentSocialPreview {
 
   return {
     title,
-    description: "Insights, updates, and stories from the team building Memos, the open-source note-taking tool for instant capture.",
+    description: "Product notes, guides, and project updates from the team building Memos, a personal timeline for quick notes.",
     imageDescription: "Ideas, updates, and stories\nfrom the Memos team.",
     url: absoluteUrl("/blog"),
     imageUrl: buildGeneratedImageUrl(blogImagePath()),
@@ -69,7 +69,7 @@ export function getChangelogIndexSocialPreview(): ContentSocialPreview {
 
   return {
     title,
-    description: "Stay up to date with new features, improvements, and bug fixes in Memos.",
+    description: "New features, improvements, and fixes in each Memos release.",
     url: absoluteUrl("/changelog"),
     imageUrl: buildGeneratedImageUrl(changelogImagePath()),
     imageAlt: `${title} - ${SITE_NAME}`,

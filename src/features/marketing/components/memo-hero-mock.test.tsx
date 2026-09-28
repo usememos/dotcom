@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { act } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { buildHomeCalendar, HOME_MEMOS, HOME_TAGS } from "@/features/marketing/data/home-memos";
+import { buildHomeCalendar, HOME_MEMOS, HOME_TAGS, memoTags } from "@/features/marketing/data/home-memos";
 import { MemoHeroCalendar } from "./memo-hero-calendar";
 import { MemoHeroContent } from "./memo-hero-content";
 import { MemoHeroMock } from "./memo-hero-mock";
@@ -34,7 +34,7 @@ describe("homepage calendar", () => {
 
   it("counts only this month's example memos across a year boundary", () => {
     const calendar = buildHomeCalendar(new Date(2027, 0, 2));
-    expect(calendar.days.reduce((total, day) => total + day.count, 0)).toBe(2);
+    expect(calendar.days.reduce((total, day) => total + day.count, 0)).toBe(4);
   });
 
   afterEach(() => vi.useRealTimers());
@@ -58,20 +58,34 @@ describe("homepage example memos", () => {
     expect(HOME_MEMOS.map((memo) => memo.daysAgo)).toEqual([...HOME_MEMOS.map((memo) => memo.daysAgo)].sort((a, b) => a - b));
     for (const memo of HOME_MEMOS) {
       expect(memo.daysAgo).toBeGreaterThanOrEqual(0);
-      if (memo.referenceId) expect(HOME_MEMOS.some((target) => target.id === memo.referenceId)).toBe(true);
+      for (const target of memo.referencing ?? []) expect(HOME_MEMOS.some((candidate) => candidate.id === target.id)).toBe(true);
     }
+  });
+
+  it("shows memos as the product stores them: no title field, with tags typed inline", () => {
+    render(<MemoHeroMock />);
+    const articles = screen.getAllByRole("article");
+    for (const [index, article] of articles.entries()) {
+      // Memos have no title field; an optional Markdown heading renders as memo text, not a card title.
+      expect(within(article).queryByRole("heading")).toBeNull();
+      const tags = memoTags(HOME_MEMOS[index]);
+      const text = article.querySelector(`#home-memo-${HOME_MEMOS[index].id}-label`);
+      expect(text).not.toBeNull();
+      for (const tag of tags) expect(within(text as HTMLElement).getByText(`#${tag}`)).toBeInTheDocument();
+    }
+    expect(HOME_MEMOS.filter((memo) => memo.kind === "note").every((memo) => memoTags(memo).length > 0)).toBe(true);
   });
 
   it("derives parent and nested tag counts from the actual examples", () => {
     for (const item of HOME_TAGS) {
       expect(item.count).toBe(
-        HOME_MEMOS.filter((memo) => memo.tags.some((tag) => tag === item.tag || tag.startsWith(`${item.tag}/`))).length,
+        HOME_MEMOS.filter((memo) => memoTags(memo).some((tag) => tag === item.tag || tag.startsWith(`${item.tag}/`))).length,
       );
       expect(item.count).toBeGreaterThan(0);
     }
-    expect(HOME_TAGS.find((item) => item.tag === "dev")?.count).toBe(2);
-    expect(HOME_TAGS.find((item) => item.tag === "weekly")?.count).toBe(2);
-    expect(HOME_TAGS.some((item) => item.tag === "dev/git")).toBe(true);
+    expect(HOME_TAGS.find((item) => item.tag === "reading")?.count).toBe(2);
+    expect(HOME_TAGS.some((item) => item.tag === "reading/books")).toBe(true);
+    expect(HOME_TAGS[0].tag).toBe("reading");
   });
 
   it("exposes the scrollable examples to keyboard and screen-reader users", () => {
@@ -79,31 +93,33 @@ describe("homepage example memos", () => {
     const feed = screen.getByRole("region", { name: "Example memos — scroll to explore" });
     expect(feed).toHaveAttribute("tabindex", "0");
     expect(feed.closest('[aria-hidden="true"]')).toBeNull();
-    expect(feed).toContainElement(screen.getByText("A small thought worth keeping…"));
+    expect(feed).toContainElement(screen.getByText("Any thoughts…"));
     expect(feed).toContainElement(screen.getByTestId("memo-feed"));
     expect(screen.getAllByRole("article")).toHaveLength(HOME_MEMOS.length);
-    const reference = screen.getByRole("link", { name: "Linked: Git TIL" });
-    expect(document.querySelector(reference.getAttribute("href") ?? "")).not.toBeNull();
-    const thirdMemo = screen.getAllByRole("article")[2];
-    expect(within(thirdMemo).getByRole("heading", { name: "A view for unfinished work" })).toBeInTheDocument();
-    expect(within(thirdMemo).getByText("has_incomplete_tasks")).toBeInTheDocument();
-    expect(thirdMemo.querySelector("img")).toBeNull();
+    // Referencing rows jump to the linked memo inside the same timeline.
+    for (const reference of screen.getAllByRole("link", { name: /Reading: Deep Work|TIL: diff a single file/ })) {
+      expect(document.querySelector(reference.getAttribute("href") ?? "")).not.toBeNull();
+    }
+    const errands = screen.getAllByRole("article")[2];
+    expect(within(errands).getByText("Book the train to Lyon")).toBeInTheDocument();
+    expect(errands.querySelector("img")).toBeNull();
   });
 
-  it("renders sponsorship as the fourth memo with the same metadata and one Carbon slot", () => {
+  it("renders sponsorship in timeline order with the same metadata and one Carbon slot", () => {
     render(<MemoHeroMock />);
     const articles = screen.getAllByRole("article");
-    expect(articles[2]).toHaveAttribute("id", `home-memo-${HOME_MEMOS[2].id}`);
-    const sponsor = screen.getByRole("article", { name: "Built with their support" });
-    expect(articles[3]).toBe(sponsor);
-    expect(sponsor).toHaveAttribute("id", `home-memo-${HOME_MEMOS[3].id}`);
+    const index = HOME_MEMOS.findIndex((memo) => memo.kind === "sponsors");
+    const sponsor = screen.getByRole("article", { name: HOME_MEMOS[index].text });
+    expect(articles[index]).toBe(sponsor);
+    expect(sponsor).toHaveAttribute("id", `home-memo-${HOME_MEMOS[index].id}`);
     expect(within(sponsor).getByText("2 days ago")).toBeInTheDocument();
     expect(within(sponsor).queryByText("#memos/sponsors")).not.toBeInTheDocument();
-    expect(articles[4]).toHaveAttribute("id", `home-memo-${HOME_MEMOS[4].id}`);
+    expect(articles[index + 1]).toHaveAttribute("id", `home-memo-${HOME_MEMOS[index + 1].id}`);
     expect(screen.getAllByTestId("carbon-ad")).toHaveLength(1);
     expect(HOME_TAGS.some((item) => item.tag === "memos/sponsors")).toBe(false);
     const calendar = buildHomeCalendar(new Date(2026, 8, 15));
-    expect(calendar.days.find((day) => day.key === "2026-09-13")?.count).toBe(2);
+    expect(calendar.days.find((day) => day.key === "2026-09-13")?.count).toBe(1);
+    expect(calendar.days.find((day) => day.key === "2026-09-15")?.count).toBe(3);
   });
 });
 

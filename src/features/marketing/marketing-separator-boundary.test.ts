@@ -23,6 +23,8 @@ describe("marketing separator boundary", () => {
       const source = readFileSync(file, "utf8");
       const sectionOpenings = source.match(/<section\b[^>]*>/g) ?? [];
       const separatedSections = sectionOpenings.filter((opening) => separatorUtility.test(opening));
+      // Pages composed entirely of chapter components have no inline sections to check here.
+      if (sectionOpenings.length === 0) continue;
 
       expect(separatedSections.length, file).toBeLessThan(sectionOpenings.length);
     }

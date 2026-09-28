@@ -43,7 +43,7 @@ export default function ChangelogPage() {
         <EditorialIndexHeader
           eyebrow="Release History"
           title="Changelog"
-          description="Stay up to date with new features, improvements, and bug fixes in Memos."
+          description="New features, improvements, and fixes in each Memos release."
           metrics={[
             {
               icon: <CalendarIcon className="h-4 w-4" />,

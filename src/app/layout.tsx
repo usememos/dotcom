@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     "note taking app",
     "self-hosted notes",
     "open source note taking",
-    "privacy-first notes",
+    "private notes",
     "markdown notes",
     "memos app",
     "quick capture notes",
@@ -90,7 +90,8 @@ export default function Layout({ children }: { children: ReactNode }) {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "Memos",
-    description: "An open-source, self-hosted timeline for quick notes, daily logs, links, and snippets.",
+    description:
+      "A personal timeline for quick notes: write short memos as they come, and find them later by search, tag, or date. Open source and self-hosted.",
     applicationCategory: "ProductivityApplication",
     operatingSystem: "Cross-platform",
     offers: {
@@ -117,12 +118,14 @@ export default function Layout({ children }: { children: ReactNode }) {
     image: DEFAULT_OG_IMAGE,
     screenshot: DEFAULT_OG_IMAGE,
     featureList: [
-      "Instant thought capture",
-      "Private timeline",
-      "Markdown-native storage",
-      "Self-hosted, zero telemetry",
+      "Short memos written in Markdown",
+      "Search, tags, and saved views",
+      "Timeline and calendar browsing",
+      "New memos private by default",
+      "Self-hosted with Docker",
+      "Zero telemetry in the Memos software",
       "MIT licensed, open source",
-      "Deploys in under 5 minutes",
+      "Personal export as a ZIP archive",
     ],
   };
 

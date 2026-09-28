@@ -15,32 +15,32 @@ export const USE_CASES = {
     title: "Software Developers & Engineers",
     subtitle: "Code snippets, technical notes, and architecture decisions",
     description:
-      "Developers use Memos to capture code snippets, debug notes, architecture decisions, and learning resources. Markdown and quick capture make it a natural fit for fast-moving development work.",
+      "Developers use Memos to save code snippets, debug notes, architecture decisions, and learning resources as short memos. Fenced code blocks, tags, and search make them easy to find again.",
     icon: CodeIcon,
     workflows: [
       "Store reusable code snippets and command-line recipes",
       "Document bug investigations and troubleshooting steps",
       "Record architecture decisions and technical trade-offs",
       "Collect learning resources while exploring new technologies",
-      "Track API endpoints, credentials, and configuration notes",
+      "Track API endpoints, environment details, and configuration notes",
       "Maintain personal development logs and TIL (Today I Learned) entries",
     ],
     whyMemos: [
-      "Markdown syntax highlighting for 100+ programming languages",
-      "Instant save captures thoughts without interrupting flow state",
-      "API access enables automation and integration with dev tools",
-      "Self-hosted ensures sensitive code and credentials stay private",
-      "No titles required for quick snippets and notes",
+      "Syntax highlighting for common languages in fenced code blocks",
+      "Cmd/Ctrl+Enter saves a memo without leaving the keyboard",
+      "REST and gRPC APIs, webhooks, and a built-in MCP server connect Memos to your tools",
+      "Self-hosting keeps work notes on a server you run, and new memos start private",
+      "No titles to invent: write the snippet and add a #tag",
     ],
     features: [
       { name: "Markdown Support", slug: "markdown-support" },
-      { name: "Instant Save", slug: "instant-save" },
+      { name: "Saving & Drafts", slug: "instant-save" },
       { name: "API-First Design", slug: "api-first" },
     ],
     seo: {
       title: "Memos for Software Developers - Self-Hosted Code Snippet Manager & Technical Notes",
       description:
-        "Discover how software developers use Memos for code snippets, bug tracking, architecture decisions, and technical documentation. Free, self-hosted with Markdown support and syntax highlighting.",
+        "See how software developers use Memos for code snippets, debug notes, architecture decisions, and TIL logs. Open source and self-hosted, with Markdown and syntax highlighting.",
       keywords: [
         "developer note-taking tool",
         "code snippet manager",
@@ -59,22 +59,22 @@ export const USE_CASES = {
     title: "Content Creators & Writers",
     subtitle: "Article drafts, research collection, and creative ideas",
     description:
-      "Writers and content creators use Memos to draft articles, collect research, brainstorm ideas, and keep an editorial trail. The interface stays light, and ownership stays clear.",
+      "Writers and content creators use Memos to catch ideas, collect research, and keep short working notes beside longer drafts. Every memo lands in a timeline you can search by tag or date.",
     icon: PencilIcon,
     workflows: [
-      "Draft blog posts and articles in clean Markdown format",
+      "Sketch outlines and opening lines in Markdown",
       "Collect research links, quotes, and source materials",
       "Capture creative ideas and story concepts as they emerge",
-      "Organize content calendars and publication schedules",
-      "Store writing templates and style guidelines",
-      "Maintain revision history of drafts and iterations",
+      "Keep a running log of what you published and when",
+      "Pin style notes and reusable snippets to the top of your timeline",
+      "Tag drafts by project so every version of an idea stays together",
     ],
     whyMemos: [
-      "Distraction-free writing environment without cloud interruptions",
-      "Draft ownership stays clear because the instance is yours to run",
-      "Instant save prevents losing work during creative flow",
+      "A plain composer: write first, add tags later",
+      "Your drafts stay on an instance you run, with ZIP export when you need it",
+      "Cmd/Ctrl+Enter saves a thought before it slips away",
       "Markdown formatting for clean, portable content",
-      "Chronological timeline helps track idea evolution",
+      "The timeline shows how an idea developed over time",
     ],
     features: [
       { name: "Markdown Support", slug: "markdown-support" },
@@ -84,7 +84,7 @@ export const USE_CASES = {
     seo: {
       title: "Memos for Writers & Content Creators - Distraction-Free Writing Tool",
       description:
-        "Learn how writers and content creators use Memos for article drafts, research collection, and creative ideation. Self-hosted writing with Markdown support and clear data ownership.",
+        "See how writers and content creators use Memos to catch ideas, collect research, and keep working notes in Markdown on a server they control.",
       keywords: [
         "writing app for authors",
         "content creation tool",
@@ -103,22 +103,22 @@ export const USE_CASES = {
     title: "Privacy-Conscious Professionals",
     subtitle: "Journalists, healthcare workers, legal professionals",
     description:
-      "Professionals handling sensitive information use Memos for confidential notes, client records, and private research. Self-hosting and clear data ownership make it a strong fit when privacy matters.",
+      "Professionals who handle sensitive information use Memos for working notes and research they keep to themselves. New memos start private, and self-hosting lets you decide where the server and database run.",
     icon: ShieldCheckIcon,
     workflows: [
-      "Record confidential interviews and source communications",
-      "Document patient notes and healthcare observations in self-managed environments",
+      "Log interview notes and source contacts",
+      "Keep observation notes on infrastructure your organization manages",
       "Maintain client case notes and legal research",
       "Store investigative research and sensitive findings",
-      "Keep personal journals and private reflections secure",
-      "Archive confidential business intelligence and strategy notes",
+      "Keep personal journals and reflections as private memos",
+      "Archive strategy notes that should not sit in a third-party cloud",
     ],
     whyMemos: [
-      "Zero telemetry keeps the data path simple",
+      "Zero telemetry: the Memos software sends no usage data",
       "Can run in isolated environments you control",
-      "Self-hosting supports privacy-sensitive workflows",
-      "Self-hosted architecture puts you in full control",
-      "No third-party services or cloud provider access",
+      "New memos default to Private; you choose when to share",
+      "Whoever runs the instance controls access, retention, and backups",
+      "No third-party service is required to run it",
     ],
     features: [
       { name: "Data Ownership", slug: "data-ownership" },
@@ -128,7 +128,7 @@ export const USE_CASES = {
     seo: {
       title: "Secure Note-Taking for Privacy-Focused Professionals",
       description:
-        "Discover how journalists, healthcare workers, and legal professionals use Memos for confidential notes, private research, and self-hosted documentation.",
+        "See how journalists, healthcare workers, and legal professionals use Memos for sensitive working notes on a self-hosted server they control.",
       keywords: [
         "private note-taking tool",
         "confidential note app",
@@ -136,7 +136,7 @@ export const USE_CASES = {
         "legal case management",
         "healthcare note-taking tool",
         "secure patient notes",
-        "privacy-first notes",
+        "self-hosted private notes",
         "zero telemetry note taking",
       ],
     },
@@ -145,22 +145,22 @@ export const USE_CASES = {
     title: "Students & Researchers",
     subtitle: "Academic notes, research compilation, and study materials",
     description:
-      "Students and researchers use Memos for lecture notes, reading trails, thesis work, and study groups. It works especially well for fast capture and lightweight organization.",
+      "Students and researchers use Memos for lecture notes, reading trails, and thesis work. Write short memos as you go, then find them again by tag, search, or date.",
     icon: GraduationCapIcon,
     workflows: [
       "Take lecture notes with rich Markdown formatting",
-      "Organize research papers, citations, and literature reviews",
+      "Note key points and citations from the papers you read",
       "Compile thesis notes and dissertation research",
-      "Create study guides and exam preparation materials",
-      "Collaborate with study groups on shared instances",
+      "Collect study notes for exam preparation",
+      "Share memos with a study group on a shared instance",
       "Archive academic projects and coursework portfolios",
     ],
     whyMemos: [
-      "No subscription fees",
-      "Unlimited storage for extensive research materials",
+      "Open source, with no subscription or license fee",
+      "No note limits in the software; storage depends on your server",
       "Markdown formatting for academic writing and citations",
-      "Media integration for diagrams, charts, and screenshots",
-      "Full-text search across thousands of notes and papers",
+      "Attach images, screenshots, and files to any memo",
+      "Search memo text, filter by tag, and save filters as views",
     ],
     features: [
       { name: "Zero Subscription Fees", slug: "no-fees" },
@@ -170,7 +170,7 @@ export const USE_CASES = {
     seo: {
       title: "Memos for Students & Researchers - Free Academic Note-Taking Software",
       description:
-        "Learn how students and researchers use Memos for lecture notes, thesis research, and academic writing with Markdown support and no subscription fees.",
+        "See how students and researchers use Memos for lecture notes, reading notes, and thesis research, written in Markdown with no subscription fees.",
       keywords: [
         "student note taking app",
         "academic research tool",
@@ -189,22 +189,22 @@ export const USE_CASES = {
     title: "Personal Journaling & Notes",
     subtitle: "Daily journaling, personal notes, and idea trails",
     description:
-      "People use Memos for daily journals, reading notes, idea trails, and lightweight personal archives. The timeline and fast capture flow make it easy to keep coming back.",
+      "People use Memos for daily journals, reading notes, and idea trails. Each memo lands in a timeline, so you can look back through any day or find an entry by tag or search.",
     icon: BookOpenIcon,
     workflows: [
       "Write daily journal entries and personal reflections",
       "Keep a personal archive of ideas and references",
       "Maintain reading notes and book summaries",
-      "Track personal goals, habits, and life milestones",
+      "Log personal goals, habits, and life milestones",
       "Collect interesting quotes, insights, and inspiration",
       "Let ideas build up over time in a simple timeline",
     ],
     whyMemos: [
-      "Lightweight and fast - no bloated features or complexity",
-      "Chronological timeline for natural journal flow",
-      "Tag system for flexible organization and connections",
-      "Long-term control over notes you want to keep",
-      "No vendor lock-in - export your life's work anytime",
+      "Short, untitled memos: nothing to set up before you write",
+      "A timeline and calendar that follow the order of your days",
+      "Tags and memo links add structure after you write",
+      "Your journal stays on a server you choose",
+      "Export your memos as a ZIP whenever you want",
     ],
     features: [
       { name: "Timeline View", slug: "timeline-view" },
@@ -214,7 +214,7 @@ export const USE_CASES = {
     seo: {
       title: "Memos for Personal Journaling & Notes",
       description:
-        "Learn how people use Memos for personal notes, daily journaling, and lightweight idea trails with clear data ownership.",
+        "See how people use Memos for personal notes, daily journaling, and idea trails in a personal timeline they host themselves.",
       keywords: [
         "personal notes",
         "journal app",
@@ -231,7 +231,7 @@ export const USE_CASES = {
     title: "Hobbyists & Makers",
     subtitle: "Project logs, ideas collection, and creative documentation",
     description:
-      "Makers, DIY enthusiasts, and hobbyists use Memos to document projects, collect inspiration, track materials, and keep build logs. Media support and quick capture help keep ideas close.",
+      "Makers, DIY enthusiasts, and hobbyists use Memos to keep build logs, collect inspiration, and track materials. Photos attach to the memo, and the timeline shows how each project moved.",
     icon: WrenchIcon,
     workflows: [
       "Document DIY projects with photos, notes, and progress logs",
@@ -242,21 +242,21 @@ export const USE_CASES = {
       "Create project plans and step-by-step documentation",
     ],
     whyMemos: [
-      "Media integration for photos and videos of your work",
-      "Quick capture for ideas that strike during creative flow",
+      "Attach photos and videos of your work to a memo",
+      "Write a quick memo when an idea strikes mid-project",
       "Chronological logs help track project progress over time",
-      "Self-hosted keeps your creative IP and ideas private",
-      "Tag system for organizing projects by type, status, or material",
+      "Your project notes stay on a server you run",
+      "Tags sort projects by type, status, or material",
     ],
     features: [
       { name: "Media Integration", slug: "media-integration" },
-      { name: "Instant Save", slug: "instant-save" },
+      { name: "Saving & Drafts", slug: "instant-save" },
       { name: "Data Ownership", slug: "data-ownership" },
     ],
     seo: {
       title: "Memos for Makers & Hobbyists - DIY Project Logging & Creative Documentation",
       description:
-        "Discover how makers, DIY enthusiasts, and hobbyists use Memos for project documentation, build logs, and creative idea collection. Self-hosted with media support and quick capture.",
+        "See how makers, DIY enthusiasts, and hobbyists use Memos for build logs, project notes, and idea collection, with photo attachments on a self-hosted server.",
       keywords: [
         "DIY project notes",
         "maker documentation",
@@ -275,20 +275,20 @@ export const USE_CASES = {
     title: "Homelab & Self-Hosting Community",
     subtitle: "Server documentation, configuration notes, and infrastructure logs",
     description:
-      "Self-hosting enthusiasts and homelab operators use Memos to document server configurations, troubleshooting procedures, and infrastructure changes. Its lightweight deployment makes it easy to keep close to the rest of the stack.",
+      "Self-hosting enthusiasts and homelab operators use Memos to log server configurations, troubleshooting steps, and infrastructure changes. It runs as a single Docker container beside the rest of the stack.",
     icon: ServerIcon,
     workflows: [
       "Document server configurations and network topology",
-      "Record troubleshooting steps and solution databases",
+      "Record troubleshooting steps and the fixes that worked",
       "Track infrastructure changes and upgrade history",
       "Store backup procedures and disaster recovery plans",
       "Maintain hardware inventory and equipment notes",
       "Create runbooks for common maintenance tasks",
     ],
     whyMemos: [
-      "Deploy on Raspberry Pi or low-power hardware",
-      "Minimal memory and CPU footprint",
-      "Docker containerization for easy deployment",
+      "Runs on Raspberry Pi and other ARM hardware",
+      "A single Go binary with a small footprint",
+      "Official Docker images for amd64 and ARM",
       "Multiple database options (SQLite, PostgreSQL, MySQL)",
       "No external dependencies after setup",
     ],
@@ -300,7 +300,7 @@ export const USE_CASES = {
     seo: {
       title: "Memos for Homelab & Self-Hosting - Server Documentation & Infrastructure Notes",
       description:
-        "Discover how self-hosting enthusiasts use Memos for homelab documentation, server configurations, and infrastructure logs. Lightweight, private, and easy to run on your own hardware.",
+        "See how self-hosting enthusiasts use Memos for homelab notes, server configurations, and infrastructure logs. Open source, light on resources, and simple to run on your own hardware.",
       keywords: [
         "homelab documentation",
         "self-hosting notes",
@@ -317,34 +317,34 @@ export const USE_CASES = {
   },
   family: {
     title: "Families & Friends",
-    subtitle: "A private social feed for your closest people",
+    subtitle: "A shared timeline for your closest people",
     description:
-      "Families and friend groups can use Memos as a lightweight social app for sharing updates, photos, memories, and everyday notes in a space that stays personal and under your control.",
+      "Families and friend groups can share one Memos instance for updates, photos, and everyday notes. Protected memos are visible only to people signed in to your instance.",
     icon: UsersIcon,
     workflows: [
       "Share daily updates with family members and close friends",
       "Post milestone photos, travel notes, and personal memories",
-      "Keep household plans, reminders, and event notes in one place",
+      "Keep household plans, lists, and event notes in one place",
       "Collect recipes, traditions, and family reference notes",
-      "Create a private timeline of moments you want to revisit later",
+      "Keep a shared timeline of moments you want to look back on",
       "Use comments and reactions to stay connected without public social media",
     ],
     whyMemos: [
-      "Private by default, without feeding personal updates into public platforms",
-      "Simple posting flow makes it easy for non-technical family members to use",
-      "Self-hosted setup keeps your shared memories under your control",
+      "New memos start private; set Protected to share with signed-in members",
+      "A simple composer that non-technical family members can use",
+      "Your shared memos stay on a server you run",
       "Markdown and attachments work well for notes, photos, and links",
-      "Chronological history turns everyday updates into a lasting archive",
+      "The timeline and calendar let you look back through any day",
     ],
     features: [
       { name: "Data Ownership", slug: "data-ownership" },
-      { name: "Instant Save", slug: "instant-save" },
+      { name: "Saving & Drafts", slug: "instant-save" },
       { name: "Cross-Platform Support", slug: "cross-platform" },
     ],
     seo: {
-      title: "Memos for Families - Private Social Feed & Shared Family Notes",
+      title: "Memos for Families - Private Family Feed & Shared Notes",
       description:
-        "See how families and friend groups use Memos as a private social feed for updates, memories, photos, and shared notes without relying on public platforms.",
+        "See how families and friend groups share updates, photos, and notes on their own Memos instance, visible only to signed-in members, without relying on public platforms.",
       keywords: [
         "private family social app",
         "family notes app",
@@ -361,21 +361,21 @@ export const USE_CASES = {
     title: "Team Documentation & Collaboration",
     subtitle: "Shared notes, meeting records, and internal updates",
     description:
-      "Teams use Memos for shared notes, meeting records, internal updates, and lightweight documentation. It works best for teams that want a simple self-hosted writing space.",
+      "Small teams use Memos for short shared notes, meeting records, and internal updates. It fits teams that want a simple, self-hosted place to post and search them.",
     icon: UsersIcon,
     workflows: [
       "Share meeting agendas, notes, and action items",
-      "Build internal documentation and process guides",
-      "Create team onboarding materials and training resources",
+      "Post short how-to notes and process reminders",
+      "Collect onboarding links and tips in a tagged feed",
       "Maintain project status updates and sprint notes",
       "Document decisions, discussions, and team retrospectives",
-      "Share technical specifications and design documents",
+      "Link to specs and design documents with a short summary",
     ],
     whyMemos: [
       "No per-user licensing",
-      "PostgreSQL/MySQL support for multi-user setups",
-      "Custom branding for team identity and consistency",
-      "API enables integration with team tools and workflows",
+      "SQLite by default, with PostgreSQL or MySQL for larger setups",
+      "Set your instance name and logo",
+      "REST API and webhooks connect Memos to team tools",
       "Self-hosting keeps team notes inside infrastructure you manage",
     ],
     features: [
@@ -384,9 +384,9 @@ export const USE_CASES = {
       { name: "Self-Hosted", slug: "self-hosted" },
     ],
     seo: {
-      title: "Memos for Teams - Collaborative Wiki & Team Knowledge Base Software",
+      title: "Memos for Teams - Shared Notes & Internal Updates",
       description:
-        "Learn how teams use Memos for shared notes, meeting records, and internal documentation. Self-hosted, simple to run, and easy to keep under your control.",
+        "See how small teams use Memos for shared notes, meeting records, and internal updates. Self-hosted, open source, and simple to run on your own infrastructure.",
       keywords: [
         "team wiki software",
         "collaborative note-taking tool",

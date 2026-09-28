@@ -15,7 +15,7 @@ describe("buildLlmsIndex", () => {
 
   it("starts with the site heading and summary", () => {
     expect(output.startsWith("# Memos\n")).toBe(true);
-    expect(output).toContain("> Memos is an open-source, self-hosted note-taking app");
+    expect(output).toContain("> Memos is a personal timeline for quick notes");
   });
 
   it("includes every section heading", () => {

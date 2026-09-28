@@ -7,7 +7,7 @@ import { buildBreadcrumbJsonLd, buildMarketingMetadata } from "@/shared/lib/seo"
 
 export const metadata: Metadata = buildMarketingMetadata({
   title: "Brand",
-  description: "Official Memos brand assets, logos, and usage guidelines for the open-source note-taking tool built for instant capture.",
+  description: "Official brand assets, logos, and usage guidelines for Memos, a personal timeline for quick notes.",
   path: "/brand",
 });
 

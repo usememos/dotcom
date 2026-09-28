@@ -768,6 +768,22 @@ the system and are not exceptions.
   system UI font stay scoped to the mockup; the surrounding site keeps its
   established tokens and typography.
 
+- At the user's request, the Features and Use Cases indexes and detail pages
+  adopt the Homepage chapter grammar: a centered `PageHero`/`ChapterHeader`,
+  lean open grids instead of divider lists, a product reconstruction built
+  from the shared memo primitives wherever one truthfully shows the subject,
+  and the shared `StartSection` that closes on the empty composer. This is the
+  repeatable sibling-page shell §7.3 allows; each page still chooses its proof
+  from its own content, and pages without a truthful artifact show none rather
+  than a decorative one.
+
+- At the user's request, memo reconstructions on the Homepage (`MemoHeroMock`, the
+  memo anatomy, and the Find views) and on Features and Use Cases pages use content modeled on
+  the official demo seed, including the emoji in memo headings and emoji
+  reactions that the product itself renders. This scoped exception to the
+  no-emoji marketing rule applies only inside those product reconstructions;
+  surrounding headings, copy, and icons stay emoji-free.
+
 - Blog and Changelog article sponsor panels share the Docs sponsor component.
   At the user's request, CodeRabbit stays fixed above a continuous horizontal
   strip of the other paid sponsors. This scoped exception to section 17 makes

@@ -10,7 +10,7 @@ describe("FeaturePage", () => {
   it("presents an available feature as an open feature brief", async () => {
     await renderFeature("self-hosted");
 
-    expect(screen.getByRole("heading", { level: 1, name: "Run Memos Yourself" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1, name: "Run Memos yourself" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: "What changes when you use it." })).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: "Where it earns its place." })).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: "The implementation stays inspectable." })).toBeInTheDocument();
@@ -20,7 +20,7 @@ describe("FeaturePage", () => {
   });
 
   it("labels unreleased features and never presents them as available", async () => {
-    await renderFeature("keyboard-shortcuts");
+    await renderFeature("import");
 
     expect(screen.getByText("WIP")).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: "Work in progress" })).toBeInTheDocument();

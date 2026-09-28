@@ -51,3 +51,13 @@ if (typeof window !== "undefined" && !window.matchMedia) {
       dispatchEvent: () => false,
     }) as unknown as MediaQueryList;
 }
+
+// jsdom has no layout, so observers that redraw on resize (the annotated product figures) never fire.
+const layoutGlobals = globalThis as { ResizeObserver?: typeof ResizeObserver };
+if (!layoutGlobals.ResizeObserver) {
+  layoutGlobals.ResizeObserver = class {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  } as unknown as typeof ResizeObserver;
+}

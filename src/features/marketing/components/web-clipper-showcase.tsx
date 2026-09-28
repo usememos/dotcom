@@ -114,7 +114,7 @@ export function ConnectionVisual() {
           <div>
             <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-100">Connect directly</p>
             <p className="mt-1 text-xs leading-5 text-zinc-500 dark:text-zinc-400">
-              Use your instance URL and a personal access token. No Memos account required.
+              Use your instance URL and a personal access token. No usememos.com account required.
             </p>
           </div>
           <span className="hidden text-sm text-zinc-400 transition-transform group-hover:translate-x-1 sm:block">→</span>
@@ -125,7 +125,7 @@ export function ConnectionVisual() {
           <CheckIcon className="size-3 text-brand-600" /> Connection validated first
         </span>
         <span className="flex items-center gap-1.5">
-          <LockIcon className="size-3 text-brand-600" /> Credentials protected
+          <LockIcon className="size-3 text-brand-600" /> Token hidden after saving
         </span>
       </div>
     </div>

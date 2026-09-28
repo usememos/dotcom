@@ -20,7 +20,10 @@ describe("UseCasePage", () => {
       expect(screen.getAllByText(workflow).length).toBeGreaterThan(0);
     }
 
-    expect(screen.getByRole("link", { name: /Install Memos/ })).toHaveClass("bg-white");
+    // The page closes on the shared start chapter, with one install action.
+    expect(screen.getByRole("link", { name: /Install Memos/ })).toHaveAttribute("href", "/docs/getting-started");
+    // Every use case shows its own example timeline in the hero.
+    expect(screen.getByTestId("use-case-timeline").querySelectorAll("article")).toHaveLength(3);
   });
 
   it("links only to public feature details and statically generates every use case", async () => {

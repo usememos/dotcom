@@ -1,10 +1,13 @@
-import { ArrowRightIcon } from "lucide-react";
 import type { Metadata } from "next";
-import Link from "next/link";
+import { AnchorPills } from "@/features/marketing/components/anchor-pills";
+import { ChapterHeader } from "@/features/marketing/components/chapter-header";
 import { HeroAccent } from "@/features/marketing/components/hero-accent";
-import { MarketingCtaSection } from "@/features/marketing/components/marketing-page";
+import { LinkGrid } from "@/features/marketing/components/link-grid";
+import { PageHero } from "@/features/marketing/components/page-hero";
+import { StartSection } from "@/features/marketing/components/start-section";
 import { getAllUseCaseSlugs, getUseCase } from "@/features/marketing/data/use-cases";
 import { buildBreadcrumbJsonLd, buildMarketingMetadata } from "@/shared/lib/seo";
+import { JsonLdScript } from "@/shared/ui/json-ld-script";
 
 export const metadata: Metadata = {
   ...buildMarketingMetadata({
@@ -70,37 +73,22 @@ export default function UseCasesPage() {
 
   return (
     <main className="flex flex-1 flex-col bg-white dark:bg-zinc-950">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <JsonLdScript data={breadcrumbJsonLd} />
 
-      <section className="py-14 lg:py-20">
-        <div className="site-container grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(19rem,0.48fr)] lg:items-end lg:gap-20">
-          <div>
-            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Use cases</p>
-            <h1 className="mt-5 max-w-4xl text-balance font-serif text-5xl leading-[1.04] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
-              Use Memos where quick notes <HeroAccent>actually happen.</HeroAccent>
-            </h1>
-            <p className="mt-7 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">
-              Start from the context you already have: a thought, a shared update, a server change, or work that should stay private.
-            </p>
-          </div>
-
-          <nav aria-label="Use case groups" className="border-y border-zinc-300 py-2 dark:border-white/15">
-            {USE_CASE_GROUPS.map((group) => (
-              <a
-                key={group.id}
-                href={`#${group.id}`}
-                className="group flex items-center justify-between gap-6 py-3 text-sm font-semibold text-zinc-700 transition-colors hover:text-brand-700 dark:text-zinc-200 dark:hover:text-brand-300"
-              >
-                <span>{group.eyebrow}</span>
-                <span className="flex items-center gap-3 font-mono text-xs font-normal text-zinc-400 dark:text-zinc-500">
-                  {String(group.slugs.length).padStart(2, "0")}
-                  <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1" />
-                </span>
-              </a>
-            ))}
-          </nav>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Use cases"
+        title={
+          <>
+            Use Memos where quick notes <HeroAccent>actually happen.</HeroAccent>
+          </>
+        }
+        lead="Start from the context you already have: a thought, a shared update, a server change, or work that should stay private."
+      >
+        <AnchorPills
+          label="Use case groups"
+          items={USE_CASE_GROUPS.map((group) => ({ href: `#${group.id}`, label: group.eyebrow, count: group.slugs.length }))}
+        />
+      </PageHero>
 
       {USE_CASE_GROUPS.map((group, groupIndex) => (
         <section
@@ -113,51 +101,31 @@ export default function UseCasesPage() {
               : "scroll-mt-20 py-16 sm:py-20 lg:py-24"
           }
         >
-          <div className="site-container grid gap-10 lg:grid-cols-[minmax(20rem,0.72fr)_minmax(0,1.28fr)] lg:gap-20">
-            <div className="lg:sticky lg:top-24 lg:self-start">
-              <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">{group.eyebrow}</p>
-              <h2
-                id={`${group.id}-title`}
-                className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl"
-              >
-                {group.title}
-              </h2>
-              <p className="mt-5 max-w-md text-base leading-8 text-zinc-600 dark:text-zinc-300">{group.description}</p>
+          <div className="site-container">
+            <ChapterHeader id={`${group.id}-title`} eyebrow={group.eyebrow} title={group.title} description={group.description} />
+            <div className="mt-12 sm:mt-14">
+              <LinkGrid
+                items={group.slugs.flatMap((slug) => {
+                  const useCase = getUseCase(slug);
+                  if (!useCase) return [];
+                  const Icon = useCase.icon;
+                  return [
+                    {
+                      href: `/use-cases/${slug}`,
+                      title: useCase.title,
+                      description: useCase.subtitle,
+                      icon: <Icon aria-hidden="true" className="size-5 stroke-[1.7]" />,
+                    },
+                  ];
+                })}
+              />
             </div>
-
-            <ul className="border-y border-zinc-300 dark:border-white/15">
-              {group.slugs.map((slug) => {
-                const useCase = getUseCase(slug);
-
-                if (!useCase) {
-                  return null;
-                }
-
-                const Icon = useCase.icon;
-
-                return (
-                  <li key={slug} className="border-b border-zinc-200 last:border-b-0 dark:border-white/10">
-                    <Link
-                      href={`/use-cases/${slug}`}
-                      prefetch={false}
-                      className="group grid gap-4 py-6 focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600 sm:grid-cols-[2rem_minmax(11rem,0.7fr)_minmax(0,1fr)_auto] sm:items-center sm:gap-6 dark:focus-visible:outline-brand-300"
-                    >
-                      <Icon className="size-5 stroke-[1.7] text-zinc-400 transition-colors group-hover:text-brand-700 dark:text-zinc-500 dark:group-hover:text-brand-300" />
-                      <h3 className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">{useCase.title}</h3>
-                      <p className="text-sm leading-7 text-zinc-600 dark:text-zinc-300">{useCase.subtitle}</p>
-                      <ArrowRightIcon className="hidden size-4 text-zinc-400 transition-transform group-hover:translate-x-1 sm:block dark:text-zinc-500" />
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
           </div>
         </section>
       ))}
 
-      <MarketingCtaSection
-        title="Ready to start with one note?"
-        description="Start with the workflow Memos does best: quick capture, private timelines, and lightweight review."
+      <StartSection
+        description="Write short memos as they come, and find them later by search, tag, or date."
         actions={[
           { label: "Install Memos", href: "/docs/getting-started", showArrow: true },
           { label: "See Features", href: "/features" },

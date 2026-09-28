@@ -10,8 +10,14 @@ describe("FeaturesPage", () => {
     expect(screen.getByRole("heading", { level: 1, name: "Everything begins with a memo." })).toBeInTheDocument();
 
     const index = screen.getByRole("navigation", { name: "Feature groups" });
-    for (const group of ["Capture", "Review", "Publishing", "Ownership", "Operations"]) {
-      expect(within(index).getByRole("link", { name: new RegExp(group) })).toHaveAttribute("href", `#${group.toLowerCase()}`);
+    for (const [group, id] of [
+      ["Write", "capture"],
+      ["Find", "review"],
+      ["Publishing", "publishing"],
+      ["Ownership", "ownership"],
+      ["Operations", "operations"],
+    ]) {
+      expect(within(index).getByRole("link", { name: new RegExp(group) })).toHaveAttribute("href", `#${id}`);
     }
 
     const featureLinks = screen.getAllByRole("link").filter((link) => link.getAttribute("href")?.startsWith("/features/"));

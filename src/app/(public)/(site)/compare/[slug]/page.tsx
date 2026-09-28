@@ -225,8 +225,8 @@ export default async function ComparisonPage({ params }: { params: Promise<{ slu
       </section>
 
       <MarketingCtaSection
-        title="Own your notes."
-        description="Install Memos and keep quick capture on your own server — open source, self-hosted, and free."
+        title="Start your own timeline."
+        description="Install Memos on a server you choose and write your first memo. Open source under MIT, with no license fee."
         actions={[
           { label: "Install Memos", href: "/docs/getting-started", showArrow: true },
           { label: "Read Docs", href: "/docs" },

@@ -9,7 +9,7 @@ import { cn } from "@/shared/lib/utils";
 export const metadata: Metadata = buildMarketingMetadata({
   title: "Sponsors",
   description:
-    "Thank you to the sponsors and backers who support the development of Memos, the open-source note-taking tool built for instant capture.",
+    "Thank you to the sponsors and backers who support the development of Memos, the open-source personal timeline for quick notes.",
   path: "/sponsors",
 });
 

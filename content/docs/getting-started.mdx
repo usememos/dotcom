@@ -1,9 +1,9 @@
 ---
 title: Getting Started
-description: Run Memos locally, create the first admin user, and publish your first memo.
+description: Run Memos locally with Docker, create the first admin user, and write your first memo.
 ---
 
-Memos is designed to be usable within minutes. The shortest path is Docker with SQLite and a local data volume, then you can harden deployment and storage once the instance is up.
+Memos is a personal timeline for quick notes: write short memos as they come, and find them later by search, tag, or date. The shortest path to a running instance is one Docker command with SQLite and a local data volume. Harden deployment and storage once the instance is up.
 
 ## Prerequisite
 
@@ -86,7 +86,7 @@ Useful things to try immediately:
 
 ## 5. Understand visibility
 
-Each memo uses one of four visibility levels:
+Each memo uses one of four visibility levels. New memos default to `PRIVATE`; you can change the default in your settings or pick a level in the editor.
 
 - `PRIVATE`: only you can read it
 - `PROTECTED`: authenticated users on the instance can read it

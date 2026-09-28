@@ -5,22 +5,20 @@ import {
   ChevronsUpDownIcon,
   HashIcon,
   HouseIcon,
-  LinkIcon,
-  LockIcon,
   MapIcon,
-  MapPinIcon,
   MoreHorizontalIcon,
   MoreVerticalIcon,
   PaperclipIcon,
   PlusIcon,
   SearchIcon,
   SlidersHorizontalIcon,
-  SquareIcon,
   SquarePenIcon,
 } from "lucide-react";
 import Image from "next/image";
 import type { ReactNode } from "react";
 import styles from "@/features/marketing/components/home-hero.module.css";
+import { MemoCard } from "@/features/marketing/components/memo-card";
+import { MemoComposer } from "@/features/marketing/components/memo-composer";
 import { MemoHeroCalendar } from "@/features/marketing/components/memo-hero-calendar";
 import { MemoHeroContent } from "@/features/marketing/components/memo-hero-content";
 import { MemoHeroSponsors } from "@/features/marketing/components/memo-hero-sponsors";
@@ -151,99 +149,13 @@ function AppSidebar() {
   );
 }
 
-function Composer() {
-  return (
-    <div aria-hidden="true" className={`${styles.memoSurface} shrink-0`}>
-      <p className="min-h-7 text-[12px] leading-5 text-zinc-500 dark:text-zinc-300">
-        A small thought worth keeping…
-        <span className={`${styles.caret} ml-0.5 inline-block h-3 w-px translate-y-0.5 bg-[var(--mock-accent)]`} />
-      </p>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className={`${styles.mockControl} size-6`}>
-            <PlusIcon className="size-3.5" />
-          </span>
-          <span className="flex items-center gap-1 text-[10px] text-[var(--mock-muted)]">
-            <LockIcon className="size-3" />
-            Private
-            <ChevronDownIcon className="size-3" />
-          </span>
-        </div>
-        <span className="flex items-center gap-1 rounded-[6px] bg-[var(--mock-accent)] px-2 py-1 text-[10px] font-semibold text-white dark:text-zinc-950">
-          Save
-          <span className="rounded-sm bg-white/20 px-1 text-[8px]">Ctrl↵</span>
-        </span>
-      </div>
-    </div>
-  );
-}
-
 function Timeline() {
   return (
     <div className={styles.memoFeed} data-testid="memo-feed">
       {HOME_MEMOS.map((memo) => (
-        <article key={memo.id} id={`home-memo-${memo.id}`} aria-labelledby={`home-memo-${memo.id}-title`} className={styles.memoSurface}>
-          <div className="flex items-center justify-between text-[9px] text-[var(--mock-muted)]">
-            <span>{memo.daysAgo === 0 ? "Today" : memo.daysAgo === 1 ? "Yesterday" : `${memo.daysAgo} days ago`}</span>
-            <MoreVerticalIcon aria-hidden="true" className="size-3" />
-          </div>
-          <h3 id={`home-memo-${memo.id}-title`} className="mt-1 text-[12px] leading-4 font-semibold text-[var(--mock-ink)]">
-            {memo.title}
-          </h3>
-          {memo.text ? <p className="mt-1 text-[10px] leading-4">{memo.text}</p> : null}
+        <MemoCard key={memo.id} memo={memo} anchored>
           {memo.kind === "sponsors" ? <MemoHeroSponsors /> : null}
-          {memo.tasks ? (
-            <ul className="mt-1 space-y-0.5 text-[10px] leading-4">
-              {memo.tasks.map((task) => (
-                <li key={task.text} className="flex items-center gap-1.5">
-                  {task.done ? (
-                    <CheckSquareIcon aria-hidden="true" className="size-3 shrink-0 text-[var(--mock-accent)]" />
-                  ) : (
-                    <SquareIcon aria-hidden="true" className="size-3 shrink-0 text-[var(--mock-muted)]" />
-                  )}
-                  <span className="sr-only">{task.done ? "Completed: " : "To do: "}</span>
-                  <span className={task.done ? "text-[var(--mock-muted)] line-through" : undefined}>{task.text}</span>
-                </li>
-              ))}
-            </ul>
-          ) : null}
-          {memo.code ? (
-            <pre className="mt-1.5 rounded-[6px] border border-[var(--mock-border)] bg-[var(--mock-canvas)] px-2 py-1 font-mono text-[9px] leading-4 whitespace-pre-wrap break-all">
-              <code>{memo.code}</code>
-            </pre>
-          ) : null}
-          {memo.quote ? (
-            <blockquote className="mt-1.5 border-l-2 border-[var(--mock-border)] pl-2 text-[11px] leading-4 text-[var(--mock-muted)] italic">
-              {memo.quote}
-            </blockquote>
-          ) : null}
-          {memo.link ? (
-            <a className={styles.memoLink} href={memo.link.href} target="_blank" rel="noopener noreferrer">
-              {memo.link.label}
-            </a>
-          ) : null}
-          {memo.tags.length > 0 || memo.referenceId || memo.location ? (
-            <div className="mt-1.5 flex flex-wrap items-center gap-1">
-              {memo.tags.map((tag) => (
-                <span key={tag} className={styles.memoTag}>
-                  #{tag}
-                </span>
-              ))}
-              {memo.referenceId ? (
-                <a className={`${styles.memoReference} ml-auto`} href={`#home-memo-${memo.referenceId}`}>
-                  <LinkIcon aria-hidden="true" className="size-2.5" />
-                  <span>Linked: Git TIL</span>
-                </a>
-              ) : null}
-              {memo.location ? (
-                <span className="ml-auto flex items-center gap-1 text-[9px] text-[var(--mock-muted)]">
-                  <MapPinIcon aria-hidden="true" className="size-2.5" />
-                  {memo.location}
-                </span>
-              ) : null}
-            </div>
-          ) : null}
-        </article>
+        </MemoCard>
       ))}
     </div>
   );
@@ -252,7 +164,7 @@ function Timeline() {
 export function MemoHeroMock() {
   return (
     <div className={styles.mock} data-testid="memo-hero-mock">
-      <h2 className="sr-only">Everyday notes in Memos</h2>
+      <h2 className="sr-only">An example week in Memos</h2>
       <div className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-[0_30px_80px_rgba(24,24,27,0.14)] dark:border-white/12 dark:bg-zinc-900 dark:shadow-[0_30px_80px_rgba(0,0,0,0.35)]">
         <div
           aria-hidden="true"
@@ -273,7 +185,9 @@ export function MemoHeroMock() {
         <div className="grid h-[29rem] grid-cols-1 grid-rows-[minmax(0,1fr)] bg-[var(--mock-canvas)] sm:grid-cols-[12rem_minmax(0,1fr)]">
           <AppSidebar />
           <MemoHeroContent>
-            <Composer />
+            <div aria-hidden="true" className="shrink-0">
+              <MemoComposer />
+            </div>
             <Timeline />
           </MemoHeroContent>
         </div>

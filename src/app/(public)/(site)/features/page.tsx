@@ -1,8 +1,11 @@
-import { ArrowRightIcon } from "lucide-react";
 import type { Metadata } from "next";
-import Link from "next/link";
+import { AnchorPills } from "@/features/marketing/components/anchor-pills";
+import { ChapterHeader } from "@/features/marketing/components/chapter-header";
 import { HeroAccent } from "@/features/marketing/components/hero-accent";
-import { MarketingActions } from "@/features/marketing/components/marketing-page";
+import { LinkGrid } from "@/features/marketing/components/link-grid";
+import { MemoAnatomyShowcase } from "@/features/marketing/components/memo-anatomy-showcase";
+import { PageHero } from "@/features/marketing/components/page-hero";
+import { StartSection } from "@/features/marketing/components/start-section";
 import { FEATURES, type FeatureSlug } from "@/features/marketing/data/features";
 import { buildBreadcrumbItems, buildBreadcrumbJsonLd, buildMarketingMetadata } from "@/shared/lib/seo";
 import { JsonLdScript } from "@/shared/ui/json-ld-script";
@@ -14,11 +17,11 @@ export const metadata: Metadata = {
   ...buildMarketingMetadata({
     title: "Features",
     description:
-      "Everything Memos does and nothing it doesn't — quick capture, Markdown notes, tags, universal search, a private timeline, and self-hosted ownership. Free and open source.",
+      "Every Memos feature: quick capture in Markdown, then search, tags, views, and a private timeline to find memos again. Self-hosted and open source, with export.",
     path: "/features",
   }),
   description:
-    "Everything Memos does and nothing it doesn't — quick capture, Markdown notes, tags, universal search, a private timeline, and self-hosted ownership. Free and open source.",
+    "Every Memos feature: quick capture in Markdown, then search, tags, views, and a private timeline to find memos again. Self-hosted and open source, with export.",
   keywords: [
     "note taking features",
     "self-hosted",
@@ -57,25 +60,25 @@ const FEATURE_CHAPTERS = [
     eyebrow: "Use Memos",
     title: "Write first. Organize when the note asks for it.",
     description:
-      "Capture stays fast. Markdown, media, search, tags, and publishing appear around the memo instead of becoming setup you must finish first.",
+      "There is no title or folder to choose first. Markdown, attachments, tags, search, and sharing sit around the memo, ready when you need them.",
     surface: "plain",
     groups: [
       {
         id: "capture",
-        title: "Capture",
+        title: "Write",
         description: "The shortest path from thought to saved memo.",
         slugs: ["instant-save", "quick-capture", "markdown-support", "media-integration", "keyboard-shortcuts"],
       },
       {
         id: "review",
-        title: "Review",
-        description: "Find, filter, and revisit notes without planning a large system first.",
-        slugs: ["universal-search", "tags", "timeline-view", "import", "export"],
+        title: "Find",
+        description: "Search, filter by tag or view, and look back through the timeline without planning a system first.",
+        slugs: ["universal-search", "tags", "timeline-view"],
       },
       {
         id: "publishing",
         title: "Publishing",
-        description: "Share selected notes while keeping private memos private.",
+        description: "Share the memos you choose. New memos start private.",
         slugs: ["public-sharing", "microblog", "community", "multi-language"],
       },
     ],
@@ -85,19 +88,19 @@ const FEATURE_CHAPTERS = [
     eyebrow: "Run Memos",
     title: "Keep the software as legible as the notes.",
     description:
-      "Choose the server, database, deployment shape, and integrations. Memos stays open source, portable, and free to run on your terms.",
+      "Choose the server, database, and integrations. Memos is open source under the MIT license with no license fee, and your memos export to a portable ZIP.",
     surface: "quiet",
     groups: [
       {
         id: "ownership",
         title: "Ownership",
-        description: "Run the product yourself and keep the data path legible.",
-        slugs: ["self-hosted", "data-ownership", "open-source", "no-fees", "no-dependencies", "database-support"],
+        description: "Run Memos yourself, keep the data path legible, and take your memos with you.",
+        slugs: ["self-hosted", "data-ownership", "open-source", "no-fees", "no-dependencies", "database-support", "import", "export"],
       },
       {
         id: "operations",
         title: "Operations",
-        description: "Keep Memos fast, portable, and easy to fit into your stack.",
+        description: "Fit Memos into your devices, your hardware, and the rest of your stack.",
         slugs: ["beautiful-design", "pwa-support", "customizable-ui", "cross-platform", "performance", "lightweight", "api-first"],
       },
     ],
@@ -106,84 +109,27 @@ const FEATURE_CHAPTERS = [
 
 const FEATURE_GROUPS: readonly FeatureGroupDefinition[] = FEATURE_CHAPTERS.flatMap<FeatureGroupDefinition>((chapter) => chapter.groups);
 
-function FeatureIndex() {
-  return (
-    <nav aria-label="Feature groups" className="border-y border-zinc-300 py-5 dark:border-white/15 sm:py-6">
-      <div className="flex items-center justify-between gap-6">
-        <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Browse by purpose</p>
-        <p className="font-mono text-xs text-zinc-500 dark:text-zinc-400">27 features</p>
-      </div>
-      <div className="mt-6 grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-1">
-        {FEATURE_GROUPS.map((group) => (
-          <Link
-            key={group.id}
-            href={`#${group.id}`}
-            className="group flex items-center justify-between gap-6 text-zinc-950 transition-colors hover:text-brand-700 focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600 dark:text-zinc-100 dark:hover:text-brand-300 dark:focus-visible:outline-brand-300"
-          >
-            <span className="text-base font-semibold tracking-tight">{group.title}</span>
-            <span className="flex items-center gap-3">
-              <span className="font-mono text-xs text-zinc-400 dark:text-zinc-500">{String(group.slugs.length).padStart(2, "0")}</span>
-              <ArrowRightIcon className="size-4 text-zinc-400 transition-transform group-hover:translate-x-1 group-hover:text-brand-700 dark:text-zinc-500 dark:group-hover:text-brand-300" />
-            </span>
-          </Link>
-        ))}
-      </div>
-    </nav>
-  );
-}
-
 function FeatureGroup({ group }: { group: FeatureGroupDefinition }) {
   return (
-    <section id={group.id} aria-labelledby={`${group.id}-title`} className="scroll-mt-24">
-      <div className="grid gap-9 lg:grid-cols-[minmax(12rem,0.52fr)_minmax(0,1.48fr)] lg:gap-16">
-        <div>
-          <h3
-            id={`${group.id}-title`}
-            className="font-serif text-3xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100 sm:text-4xl"
-          >
-            {group.title}
-          </h3>
-          <p className="mt-3 max-w-sm text-sm leading-7 text-zinc-600 dark:text-zinc-300 sm:text-base">{group.description}</p>
-        </div>
-
-        <ul className="grid gap-x-12 gap-y-8 sm:grid-cols-2">
-          {group.slugs.map((slug) => {
-            const feature = FEATURES[slug];
-            const Icon = feature.icon;
-            const isWip = "wip" in feature && feature.wip;
-
-            return (
-              <li key={slug}>
-                <Link
-                  href={`/features/${slug}`}
-                  prefetch={false}
-                  className="group/link block focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600 dark:focus-visible:outline-brand-300"
-                >
-                  <div className="flex items-start gap-4">
-                    <Icon className="mt-1 size-5 shrink-0 stroke-[1.7] text-zinc-400 transition-colors group-hover/link:text-brand-700 dark:text-zinc-500 dark:group-hover/link:text-brand-300" />
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-start justify-between gap-4">
-                        <h4 className="text-lg font-semibold tracking-tight text-zinc-950 transition-colors group-hover/link:text-brand-700 dark:text-zinc-100 dark:group-hover/link:text-brand-300">
-                          {feature.title}
-                        </h4>
-                        {isWip ? (
-                          <span className="mt-0.5 shrink-0 rounded-md border border-zinc-300 px-2 py-0.5 text-xs font-medium text-zinc-500 dark:border-white/15 dark:text-zinc-400">
-                            WIP
-                          </span>
-                        ) : (
-                          <ArrowRightIcon className="mt-1 size-4 shrink-0 text-zinc-400 transition-transform group-hover/link:translate-x-1 dark:text-zinc-500" />
-                        )}
-                      </div>
-                      <p className="mt-2 text-sm leading-7 text-zinc-600 dark:text-zinc-300">{feature.description}</p>
-                    </div>
-                  </div>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+    <div id={group.id} className="scroll-mt-24">
+      <div className="mb-10 flex flex-col items-center text-center">
+        <h3 className="font-serif text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl dark:text-zinc-100">{group.title}</h3>
+        <p className="mt-3 max-w-md text-pretty text-sm leading-7 text-zinc-600 sm:text-base dark:text-zinc-300">{group.description}</p>
       </div>
-    </section>
+      <LinkGrid
+        items={group.slugs.map((slug) => {
+          const feature = FEATURES[slug];
+          const Icon = feature.icon;
+          return {
+            href: `/features/${slug}`,
+            title: feature.title,
+            description: feature.description,
+            icon: <Icon aria-hidden="true" className="size-5 stroke-[1.7]" />,
+            badge: "wip" in feature && feature.wip ? "WIP" : undefined,
+          };
+        })}
+      />
+    </div>
   );
 }
 
@@ -192,30 +138,27 @@ export default function FeaturesPage() {
     <main className="flex flex-1 flex-col bg-white dark:bg-zinc-950">
       <JsonLdScript data={breadcrumbJsonLd} />
 
-      <section className="py-14 lg:py-20">
-        <div className="site-container grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(19rem,0.48fr)] lg:items-end lg:gap-20">
-          <div className="max-w-3xl">
-            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Features</p>
-            <h1 className="mt-5 text-balance font-serif text-5xl leading-[1.04] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
-              Everything begins with <HeroAccent>a memo.</HeroAccent>
-            </h1>
-            <p className="mt-7 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">
-              Capture in Markdown, find it by tag or search, share only what you choose, and keep the entire stack on infrastructure you
-              control.
-            </p>
-            <div className="mt-9">
-              <MarketingActions
-                align="left"
-                actions={[
-                  { label: "Install Memos", href: "/docs/getting-started", showArrow: true },
-                  { label: "Try Live Demo", href: "https://demo.usememos.com/" },
-                ]}
-              />
-            </div>
-          </div>
-          <FeatureIndex />
+      <PageHero
+        eyebrow="Features"
+        title={
+          <>
+            Everything begins with <HeroAccent>a memo.</HeroAccent>
+          </>
+        }
+        lead="Write a memo in Markdown, find it again by search, tag, or date, share only what you choose, and run it all on a server you pick."
+        actions={[
+          { label: "Install Memos", href: "/docs/getting-started", showArrow: true },
+          { label: "Try Live Demo", href: "https://demo.usememos.com/" },
+        ]}
+      >
+        <AnchorPills
+          label="Feature groups"
+          items={FEATURE_GROUPS.map((group) => ({ href: `#${group.id}`, label: group.title, count: group.slugs.length }))}
+        />
+        <div className="mt-14 sm:mt-16">
+          <MemoAnatomyShowcase />
         </div>
-      </section>
+      </PageHero>
 
       {FEATURE_CHAPTERS.map((chapter) => (
         <section
@@ -224,22 +167,8 @@ export default function FeaturesPage() {
           className={chapter.surface === "quiet" ? "bg-stone-50/70 py-16 dark:bg-zinc-900/35 sm:py-20 lg:py-24" : "py-16 sm:py-20 lg:py-24"}
         >
           <div className="site-container">
-            <div className="grid gap-7 lg:grid-cols-[minmax(0,1.1fr)_minmax(18rem,0.7fr)] lg:items-end lg:gap-12">
-              <div>
-                <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">{chapter.eyebrow}</p>
-                <h2
-                  id={`${chapter.id}-title`}
-                  className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl lg:text-[3.35rem]"
-                >
-                  {chapter.title}
-                </h2>
-              </div>
-              <p className="max-w-xl text-base leading-7 text-zinc-600 dark:text-zinc-300 sm:text-[1.0625rem] sm:leading-8 lg:justify-self-end">
-                {chapter.description}
-              </p>
-            </div>
-
-            <div className="mt-16 space-y-16 sm:mt-20 sm:space-y-20 lg:space-y-24">
+            <ChapterHeader id={`${chapter.id}-title`} eyebrow={chapter.eyebrow} title={chapter.title} description={chapter.description} />
+            <div className="mt-16 space-y-20 sm:mt-20 lg:space-y-24">
               {chapter.groups.map((group) => (
                 <FeatureGroup key={group.id} group={group} />
               ))}
@@ -248,26 +177,7 @@ export default function FeaturesPage() {
         </section>
       ))}
 
-      <section className="py-16 sm:py-20 lg:py-24">
-        <div className="site-container grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-12">
-          <div>
-            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Start here</p>
-            <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
-              Start with one memo.
-            </h2>
-            <p className="mt-4 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300">
-              Install Memos on your server or try the live demo before you decide.
-            </p>
-          </div>
-          <MarketingActions
-            align="left"
-            actions={[
-              { label: "Install Memos", href: "/docs/getting-started", showArrow: true },
-              { label: "Try Live Demo", href: "https://demo.usememos.com/" },
-            ]}
-          />
-        </div>
-      </section>
+      <StartSection description="Install Memos on your server or try the live demo before you decide." />
     </main>
   );
 }

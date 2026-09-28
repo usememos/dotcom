@@ -22,7 +22,7 @@ import { JsonLdScript } from "@/shared/ui/json-ld-script";
 export const metadata: Metadata = buildMarketingMetadata({
   title: "Pricing: Free, Open-Source, Self-Hosted",
   description:
-    "Memos is completely free, open-source, self-hosted note-taking software. No subscriptions, paid plans, seat fees, usage fees, or premium feature tiers.",
+    "Memos is free, open-source, self-hosted note-taking software: no license fee, subscriptions, seat fees, usage fees, or premium feature tiers. Hosting may cost money.",
   path: "/pricing",
 });
 
@@ -63,7 +63,7 @@ const SUMMARY = [
   },
   {
     title: "No paid features",
-    description: "Capture, Markdown, tags, search, sharing, and API access do not require an upgrade.",
+    description: "Writing, Markdown, tags, search, views, sharing, and API access do not require an upgrade.",
   },
   {
     title: "No Memos bill",
@@ -73,12 +73,12 @@ const SUMMARY = [
 
 const INCLUDED = [
   {
-    title: "Quick capture and timeline",
-    description: "Write without choosing a plan, workspace, folder, or paid template first.",
+    title: "Writing and the timeline",
+    description: "Write memos and browse your timeline without choosing a plan first.",
   },
   {
-    title: "Markdown, tags, and search",
-    description: "Keep notes portable and find them again without a premium organization tier.",
+    title: "Markdown, tags, search, and views",
+    description: "Write in Markdown and find memos again without a premium organization tier.",
   },
   {
     title: "Sharing and API access",
@@ -86,7 +86,7 @@ const INCLUDED = [
   },
   {
     title: "SQLite, PostgreSQL, and MySQL",
-    description: "Choose the database that fits your deployment without paying to unlock another backend.",
+    description: "Choose the database that fits your deployment without paying for another backend.",
   },
   {
     title: "Updates and source access",
@@ -94,7 +94,7 @@ const INCLUDED = [
   },
   {
     title: "No commercial seat meter",
-    description: "Memos does not charge for adding people, writing more notes, or keeping a longer timeline.",
+    description: "Memos does not charge for adding people, writing more memos, or keeping a longer timeline.",
   },
 ] as const;
 
@@ -116,7 +116,8 @@ const OPTIONAL_COSTS = [
 export const PRICING_FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "Is Memos completely free?",
-    answer: "Yes. The Memos software costs $0 and does not have subscriptions, paid plans, premium features, or in-app purchases.",
+    answer:
+      "Yes. The Memos software costs $0 and does not have subscriptions, paid plans, premium features, or in-app purchases. Hosting may still cost money.",
   },
   {
     question: "Does Memos charge per user or per note?",
@@ -185,8 +186,8 @@ export default function PricingPage() {
             </div>
             <div className="max-w-xl lg:pb-1">
               <p className="mt-7 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">
-                Memos is completely free, open-source, self-hosted note-taking software. There are no subscriptions, seat fees, usage fees,
-                or premium feature tiers. You only choose where it runs.
+                Memos is free, open-source software under the MIT license. There is no license fee, subscription, seat fee, usage fee, or
+                premium feature tier. Hosting may cost money, depending on where you run it.
               </p>
               <div className="mt-9">
                 <MarketingActions
@@ -243,7 +244,7 @@ export default function PricingPage() {
               The only costs are the ones you choose.
             </h2>
             <p className="mt-5 max-w-lg text-base leading-8 text-zinc-600 dark:text-zinc-300">
-              Memos never bills you for these services. Run them yourself or pay the provider that fits your setup.
+              Memos does not bill you for these services. Run them yourself or pay the provider that fits your setup.
             </p>
           </div>
           <div className="grid gap-8 lg:gap-10">
