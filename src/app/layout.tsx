@@ -90,8 +90,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "Memos",
-    description:
-      "A personal timeline for quick notes: write short memos as they come, and find them later by search, tag, or date. Open source and self-hosted.",
+    description: BRAND_DESCRIPTION,
     applicationCategory: "ProductivityApplication",
     operatingSystem: "Cross-platform",
     offers: {

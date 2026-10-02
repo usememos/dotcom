@@ -453,8 +453,8 @@ hover or supporting signal. Brand-filled controls MAY be used when the
 surrounding composition requires it, but blue MUST NOT become a default fill
 for every action and icon.
 
-Use `HeroAccent` for display emphasis, including the Homepage's “Keep it yours.”
-line. Its `text-brand-600 dark:text-brand-300` treatment is the standard brand
+Use `HeroAccent` for display emphasis, including the second line of the
+Homepage tagline. Its `text-brand-600 dark:text-brand-300` treatment is the standard brand
 accent, not a page-specific exception.
 
 Color rules:
@@ -603,7 +603,7 @@ system.
 
 ## 16. Content and voice
 
-`docs/brand-guidelines.md` defines the approved product tagline, supporting description, and messaging constraints. Use the shared constants in `src/shared/lib/branding.ts` for brand-level copy; page-specific headings and descriptions should describe their own subject.
+[`BRAND.md`](https://github.com/usememos/.github/blob/main/BRAND.md) in `usememos/.github` defines the positioning and approved copy. Use the shared constants in `src/shared/lib/branding.ts` for brand-level copy; page-specific headings and descriptions should describe their own subject.
 
 Words are part of the composition.
 

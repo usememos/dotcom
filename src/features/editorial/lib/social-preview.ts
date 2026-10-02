@@ -22,7 +22,7 @@ export function getBlogIndexSocialPreview(): ContentSocialPreview {
 
   return {
     title,
-    description: "Product notes, guides, and project updates from the team building Memos, a personal timeline for quick notes.",
+    description: "Product notes, guides, and project updates from the team building Memos.",
     imageDescription: "Ideas, updates, and stories\nfrom the Memos team.",
     url: absoluteUrl("/blog"),
     imageUrl: buildGeneratedImageUrl(blogImagePath()),

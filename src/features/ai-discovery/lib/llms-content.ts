@@ -1,6 +1,7 @@
 import { COMPARISONS, getAllComparisonSlugs } from "@/features/marketing/data/comparisons";
 import { FEATURES, getAllFeatureSlugs } from "@/features/marketing/data/features";
 import { getAllUseCaseSlugs, USE_CASES } from "@/features/marketing/data/use-cases";
+import { BRAND_STANDARD } from "@/shared/lib/branding";
 import { absoluteUrl, SITE_NAME } from "@/shared/lib/seo";
 
 /**
@@ -9,8 +10,7 @@ import { absoluteUrl, SITE_NAME } from "@/shared/lib/seo";
  * module takes plain data so it stays trivially testable.
  */
 
-export const LLMS_SUMMARY =
-  "Memos is a personal timeline for quick notes: write short memos as they come, and find them later by search, tag, or date. It is an open-source (MIT), self-hosted note-taking app that runs with Docker. Private and free: new memos are private by default, and the software has no license fee. The Memos software sends no telemetry.";
+export const LLMS_SUMMARY = `${BRAND_STANDARD} It is MIT-licensed, runs with Docker, and the Memos software sends no telemetry.`;
 
 export interface PageMeta {
   url: string;

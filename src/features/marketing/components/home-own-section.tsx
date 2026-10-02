@@ -8,7 +8,7 @@ import { BRAND_PROOF_POINTS } from "@/shared/lib/branding";
 
 type ProofPoint = (typeof BRAND_PROOF_POINTS)[number];
 
-/** The condition behind each approved proof point, from docs/brand-guidelines.md. */
+/** The condition behind each proof point. */
 const PROOF_DETAILS: Record<ProofPoint, { icon: ReactNode; detail: string }> = {
   "Private and free": {
     icon: <LockIcon aria-hidden="true" className="size-4" />,

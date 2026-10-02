@@ -6,15 +6,14 @@ import { HomeFindSection } from "@/features/marketing/components/home-find-secti
 import { HomeOwnSection } from "@/features/marketing/components/home-own-section";
 import { HomeWriteSection } from "@/features/marketing/components/home-write-section";
 import { StartSection } from "@/features/marketing/components/start-section";
-import { BRAND_DESCRIPTION, BRAND_TAGLINE_LINES, BRAND_TITLE } from "@/shared/lib/branding";
+import { BRAND_DESCRIPTION, BRAND_SHORT, BRAND_TAGLINE_LINES, BRAND_TITLE } from "@/shared/lib/branding";
 import { buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/shared/lib/seo";
 
 export const metadata: Metadata = {
   title: {
     absolute: "Memos - Open-Source, Self-Hosted Note-Taking App",
   },
-  description:
-    "Write short memos without titles or folders in Memos, an open-source, self-hosted note-taking app. Find them later by search, tag, or date.",
+  description: BRAND_DESCRIPTION,
   keywords: [
     "note-taking app",
     "open source note taking app",
@@ -61,7 +60,7 @@ export default function HomePage() {
             </span>
           </>
         }
-        subtitle={BRAND_DESCRIPTION}
+        subtitle={BRAND_SHORT}
         primaryCta={{ text: "Install Memos", href: "/docs/getting-started" }}
         secondaryCta={{ text: "Try Live Demo", href: "https://demo.usememos.com/", external: true }}
       />

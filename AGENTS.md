@@ -8,7 +8,7 @@ Treat it as a **Next.js 16 marketing/docs site plus an account app**. Current ac
 
 ## Branding Authority
 
-Read `docs/brand-guidelines.md` before changing product messaging, taglines, default metadata, or social-preview copy. It is the authoritative messaging contract. Reuse `src/shared/lib/branding.ts` for approved brand strings.
+Brand positioning and approved copy live in [`BRAND.md`](https://github.com/usememos/.github/blob/main/BRAND.md) in the `usememos/.github` repository; it is the single source of truth. Do not keep brand guidelines in this repository. Read it before changing product messaging, taglines, default metadata, or social-preview copy, and reuse `src/shared/lib/branding.ts`, which copies its strings verbatim.
 
 ## Public Website Design Authority
 
@@ -170,3 +170,13 @@ Use `pnpm run preview` or `pnpm run deploy:dry-run` to validate Cloudflare produ
 - Set `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` before building the static account routes; deploy and upload check that it is present. There are no current `CLERK_SECRET_KEY` consumers or server-side Clerk handlers. Introduce server credentials and narrowly matched auth middleware together when a feature needs them.
 - Ordinary builds use committed API schemas. `pnpm docs:refresh` can fall back to a local snapshot after a failed download; inspect its log before claiming a snapshot is current.
 - Before adding persistence or a binding, document the feature's requirements and follow `docs/architecture.md` ("Future data layer"). D1, Drizzle, KV, and Clerk user-sync webhooks are not existing infrastructure or mandatory next steps.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
