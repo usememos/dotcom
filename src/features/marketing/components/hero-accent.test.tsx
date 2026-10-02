@@ -4,12 +4,12 @@ import { HeroAccent } from "./hero-accent";
 
 describe("HeroAccent", () => {
   it("renders its children", () => {
-    render(<HeroAccent>Keep it yours.</HeroAccent>);
-    expect(screen.getByText("Keep it yours.")).toBeInTheDocument();
+    render(<HeroAccent>shared on your terms.</HeroAccent>);
+    expect(screen.getByText("shared on your terms.")).toBeInTheDocument();
   });
 
   it("applies the brand accent classes for light and dark mode", () => {
-    render(<HeroAccent>Keep it yours.</HeroAccent>);
-    expect(screen.getByText("Keep it yours.")).toHaveClass("text-brand-600", "dark:text-brand-300");
+    render(<HeroAccent>shared on your terms.</HeroAccent>);
+    expect(screen.getByText("shared on your terms.")).toHaveClass("text-brand-600", "dark:text-brand-300");
   });
 });

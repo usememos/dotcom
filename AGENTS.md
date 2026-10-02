@@ -8,7 +8,7 @@ Treat it as a **Next.js 16 marketing/docs site plus an account app**. Current ac
 
 ## Branding Authority
 
-Read `docs/brand-guidelines.md` before changing product messaging, taglines, default metadata, or social-preview copy. It is the authoritative messaging contract. Reuse `src/shared/lib/branding.ts` for approved brand strings.
+Brand positioning and approved copy live in [`BRAND.md`](https://github.com/usememos/.github/blob/main/BRAND.md) in the `usememos/.github` repository; it is the single source of truth. Do not keep brand guidelines in this repository. Read it before changing product messaging, taglines, default metadata, or social-preview copy, and reuse `src/shared/lib/branding.ts`, which copies its strings verbatim.
 
 ## Public Website Design Authority
 

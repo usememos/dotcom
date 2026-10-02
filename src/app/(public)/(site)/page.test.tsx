@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
-import { BRAND_DESCRIPTION, BRAND_TAGLINE } from "@/shared/lib/branding";
+import { BRAND_SHORT, BRAND_TAGLINE } from "@/shared/lib/branding";
 
 vi.mock("@/features/marketing/components/hero-section", () => ({
   HeroSection: ({ title, subtitle }: { title: ReactNode; subtitle: string }) => (
@@ -36,7 +36,7 @@ describe("HomePage", () => {
 
     expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
     expect(screen.getByRole("heading", { level: 1, name: BRAND_TAGLINE })).toBeVisible();
-    expect(screen.getByText(BRAND_DESCRIPTION)).toBeVisible();
+    expect(screen.getByText(BRAND_SHORT)).toBeVisible();
   });
 
   it("tells the story in brand order: write, find, own, then answers", () => {

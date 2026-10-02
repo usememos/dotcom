@@ -36,7 +36,7 @@ import type { FeatureDefinition } from "./types";
 
 /**
  * Complete feature definitions with all metadata.
- * Every claim must match current Memos behavior (see docs/brand-guidelines.md, "Claims").
+ * Every claim must match current Memos behavior.
  */
 export const FEATURES = {
   // Own: hosting, data, and license
