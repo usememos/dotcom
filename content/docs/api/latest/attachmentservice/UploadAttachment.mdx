@@ -1,9 +1,9 @@
 ---
 title: Upload Attachment
-description: |-
-  UploadAttachment uploads a file in bounded chunks. The first call carries
-   the spec and returns an upload_id; later calls carry that upload_id.
-   Uploads are bound to the authenticated user, expire after 30 minutes of
+description: >-
+  UploadAttachment uploads a file in bounded chunks. The first call carries the
+  spec and returns an upload_id;
+   later calls carry that upload_id. Uploads are bound to the authenticated user, expire after 30 minutes of
    inactivity, and do not survive a server restart.
 _openapi:
   preload:
@@ -16,9 +16,8 @@ _openapi:
     contents:
       - content: >-
           UploadAttachment uploads a file in bounded chunks. The first call
-          carries
-           the spec and returns an upload_id; later calls carry that upload_id.
-           Uploads are bound to the authenticated user, expire after 30 minutes of
+          carries the spec and returns an upload_id;
+           later calls carry that upload_id. Uploads are bound to the authenticated user, expire after 30 minutes of
            inactivity, and do not survive a server restart.
 ---
 
@@ -31,7 +30,7 @@ export default function Layout(props) {
   return (
     <>
       {props.children}
-      <Comp document="./openapi/latest.yaml" operations={[{"path":"/api/v1/attachments:upload","method":"post"}]} />
+      <Comp document="./openapi/latest.yaml" operations={[{"path":"/api/attachments:upload","method":"post"}]} />
     </>
   );
 }

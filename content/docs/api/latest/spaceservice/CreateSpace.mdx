@@ -27,7 +27,7 @@ export default function Layout(props) {
   return (
     <>
       {props.children}
-      <Comp document="./openapi/latest.yaml" operations={[{"path":"/api/v1/spaces","method":"post"}]} />
+      <Comp document="./openapi/latest.yaml" operations={[{"path":"/api/spaces","method":"post"}]} />
     </>
   );
 }

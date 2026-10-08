@@ -5,7 +5,7 @@ category: configuration
 tags: ["configuration", "self-hosting", "docker", "kubernetes"]
 difficulty: advanced
 estimatedTime: 15 minutes
-lastUpdated: "2026-09-06"
+lastUpdated: "2026-10-08"
 ---
 
 Memos 0.30 and later can load selected configuration from JSON files mounted under `/etc/secrets`. Use this when settings such as SSO, storage credentials, or registration policy should be controlled by Docker Compose, Kubernetes, GitOps, or a secret manager instead of the admin UI.
@@ -164,7 +164,9 @@ Use `memos-instance-setting-general.json` with `key: "GENERAL"`. The complete fo
 
 ### Storage
 
-For 0.31, use named entries in `storages` and select one with `defaultStorageId`. Types are `DATABASE`, `LOCAL`, and `S3`. Each entry has a stable ID; existing attachments continue to use the configuration identified at upload time.
+For 0.31, use named entries in `storages` and select one with `defaultStorageId`. Each entry has a stable ID; existing attachments continue to use the configuration identified at upload time.
+
+In deployment files, `storages[].type` must be `STORAGE_TYPE_DATABASE`, `STORAGE_TYPE_LOCAL`, or `STORAGE_TYPE_S3`. The shorter values used by the instance API are not accepted for this field.
 
 ```json
 {
@@ -177,7 +179,7 @@ For 0.31, use named entries in `storages` and select one with `defaultStorageId`
       {
         "id": "team-assets",
         "name": "Team assets",
-        "type": "S3",
+        "type": "STORAGE_TYPE_S3",
         "s3Config": {
           "accessKeyId": "access-key",
           "accessKeySecret": "secret-key",

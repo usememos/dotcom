@@ -15,12 +15,16 @@ Tokens are scoped to your user: API calls made with a token can do what your use
 
 ## Call the API
 
-Pass the token in the `Authorization` header:
+Pass the token in the `Authorization` header. The Latest API on Memos `main` uses `/api`:
 
 ```bash
 curl -H "Authorization: Bearer memos_pat_..." \
-  https://memos.example.com/api/v1/memos
+  https://memos.example.com/api/memos
 ```
+
+Memos 0.30 and 0.31 use `/api/v1` instead. Select the [API reference for your instance version](/docs/api) before using an endpoint in an integration.
+
+When moving a client from 0.31 to the Latest API, update REST paths to `/api/...` and Connect procedures to `/memos.api.<Service>/<Method>`. The new API also renames some methods and fields; use the [API changelog](https://github.com/usememos/memos/blob/main/proto/api/CHANGELOG.md) as the migration checklist. Old paths return `410 Gone` for one release, then are removed.
 
 For browser-based integrations, bearer-token requests may be sent cross-origin. Cookie authentication remains same-origin; do not build third-party API clients around a user's browser session cookie.
 

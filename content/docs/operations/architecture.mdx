@@ -31,8 +31,10 @@ At a high level, Memos is a lightweight web application with a frontend UI, an A
 
 Memos exposes two API surfaces backed by the same service implementations:
 
-- **Connect RPC** at `/memos.api.v1.*` — used by the browser frontend; speaks HTTP/JSON with type-safe generated clients
-- **gRPC-Gateway** at `/api/v1/*` — provides REST-compatible HTTP/JSON endpoints for external tools, CLI clients, and integrations
+- **Connect RPC** at `/memos.api.<Service>/<Method>` — used by the browser frontend; speaks HTTP/JSON with type-safe generated clients
+- **gRPC-Gateway** at `/api/*` — provides REST-compatible HTTP/JSON endpoints for external tools, CLI clients, and integrations
+
+These are the paths on Memos `main`. Memos 0.30 and 0.31 use `/memos.api.v1.<Service>/<Method>` and `/api/v1/*`.
 
 Both go through the same interceptor chain (metadata extraction, request logging, panic recovery, auth validation).
 

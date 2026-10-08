@@ -1,8 +1,8 @@
 ---
 title: Import Memos
 description: |-
-  ImportMemos uploads a Memos export file in bounded chunks and imports it into
-   the user's memos. The first call carries the spec and returns an
+  ImportMemos uploads a Memos export file in bounded chunks and imports it
+   into the user's memos. The first call carries the spec and returns an
    upload_id; later calls carry that upload_id. A finishing call with
    validate_only returns the plan and keeps the archive staged; a finishing
    call without it imports and returns the report. Uploads are bound to the
@@ -19,8 +19,8 @@ _openapi:
     contents:
       - content: >-
           ImportMemos uploads a Memos export file in bounded chunks and imports
-          it into
-           the user's memos. The first call carries the spec and returns an
+          it
+           into the user's memos. The first call carries the spec and returns an
            upload_id; later calls carry that upload_id. A finishing call with
            validate_only returns the plan and keeps the archive staged; a finishing
            call without it imports and returns the report. Uploads are bound to the
@@ -37,7 +37,7 @@ export default function Layout(props) {
   return (
     <>
       {props.children}
-      <Comp document="./openapi/latest.yaml" operations={[{"path":"/api/v1/users/{user}:importMemos","method":"post"}]} />
+      <Comp document="./openapi/latest.yaml" operations={[{"path":"/api/users/{user}:importMemos","method":"post"}]} />
     </>
   );
 }

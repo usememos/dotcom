@@ -4,19 +4,22 @@
     "label": "Latest",
     "sourceRef": "main",
     "snapshotVersion": "main",
+    "apiBasePath": "/api",
     "isLatest": true
   },
   {
     "slug": "0-31",
     "label": "0.31.x",
     "sourceRef": "refs/tags/v0.31.0",
-    "snapshotVersion": "0.31.0"
+    "snapshotVersion": "0.31.0",
+    "apiBasePath": "/api/v1"
   },
   {
     "slug": "0-30",
     "label": "0.30.x",
     "sourceRef": "refs/tags/v0.30.0",
-    "snapshotVersion": "0.30.0"
+    "snapshotVersion": "0.30.0",
+    "apiBasePath": "/api/v1"
   },
   {
     "slug": "0-29",

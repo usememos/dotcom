@@ -11,6 +11,14 @@ const DEMO_SERVER = `servers:
   - url: https://demo.usememos.com
     description: Demo Server
 `;
+const INSTANCE_SERVER = `servers:
+  - url: '{instanceUrl}'
+    description: Your Memos instance
+    variables:
+      instanceUrl:
+        default: https://your-memos-instance.com
+        description: Enter the full URL of an instance running the Latest API
+`;
 
 const SERVICE_ENTRY_PAGES = {
   activityservice: "GetActivity",
@@ -92,7 +100,7 @@ async function downloadOpenAPISpec(version) {
       throw new Error(`HTTP ${res.status} ${res.statusText}`);
     }
     const text = enrichOpenAPISpec(await res.text(), version);
-    fs.writeFileSync(localPath, `${text}\n${DEMO_SERVER}`);
+    fs.writeFileSync(localPath, `${text}\n${version.isLatest ? INSTANCE_SERVER : DEMO_SERVER}`);
     console.log(`Saved OpenAPI spec to ${localPath}`);
   } catch (error) {
     // A transient network failure (e.g. raw.githubusercontent.com unreachable
@@ -206,10 +214,11 @@ function getServiceEntryPage(dir, pages) {
 
 /**
  * Generates the version overview page
- * @param {{ slug: string, label: string, snapshotVersion: string, isLatest?: boolean }} version - API docs version
+ * @param {{ slug: string, label: string, sourceRef: string, apiBasePath: string, isLatest?: boolean }} version - API docs version
  * @param {string[]} serviceDirs - List of service directory names
  */
 function generateVersionIndex(version, serviceDirs) {
+  const apiBasePath = version.apiBasePath;
   const cards = serviceDirs
     .map((dir) => {
       const dirPath = path.join(getVersionOutputDir(version), dir);
@@ -226,7 +235,7 @@ function generateVersionIndex(version, serviceDirs) {
 
   const versionNote = version.isLatest
     ? "This reference tracks the latest API schema from the `main` branch."
-    : `This reference applies to Memos \`${version.label}\`. It is generated from the OpenAPI schema in \`v${version.snapshotVersion}\`.`;
+    : `This reference applies to Memos \`${version.label}\`. It is generated from the OpenAPI schema in \`${version.sourceRef.replace(/^refs\/tags\//, "")}\`.`;
 
   const content = `---
 title: API Reference
@@ -239,16 +248,16 @@ ${versionNote}
 
 ## Base URL
 
-The API is served at the \`/api/v1\` path of your Memos instance.
+The API is served at the \`${apiBasePath}\` path of your Memos instance.
 
 \`\`\`bash
-https://your-memos-instance.com/api/v1
+https://your-memos-instance.com${apiBasePath}
 \`\`\`
 
 For example, if your instance is hosted at \`https://memos.example.com\`, the API base URL would be:
 
 \`\`\`bash
-https://memos.example.com/api/v1
+https://memos.example.com${apiBasePath}
 \`\`\`
 
 ## Authentication
@@ -297,7 +306,7 @@ All responses are returned in JSON format. Errors are returned with a standard s
 Here is an example of how to list memos:
 
 \`\`\`bash
-curl -X GET "https://your-memos-instance.com/api/v1/memos?pageSize=10" \\
+curl -X GET "https://your-memos-instance.com${apiBasePath}/memos?pageSize=10" \\
   -H "Authorization: Bearer <YOUR_ACCESS_TOKEN>"
 \`\`\`
 

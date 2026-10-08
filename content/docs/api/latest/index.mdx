@@ -9,16 +9,16 @@ This reference tracks the latest API schema from the `main` branch.
 
 ## Base URL
 
-The API is served at the `/api/v1` path of your Memos instance.
+The API is served at the `/api` path of your Memos instance.
 
 ```bash
-https://your-memos-instance.com/api/v1
+https://your-memos-instance.com/api
 ```
 
 For example, if your instance is hosted at `https://memos.example.com`, the API base URL would be:
 
 ```bash
-https://memos.example.com/api/v1
+https://memos.example.com/api
 ```
 
 ## Authentication
@@ -67,7 +67,7 @@ All responses are returned in JSON format. Errors are returned with a standard s
 Here is an example of how to list memos:
 
 ```bash
-curl -X GET "https://your-memos-instance.com/api/v1/memos?pageSize=10" \
+curl -X GET "https://your-memos-instance.com/api/memos?pageSize=10" \
   -H "Authorization: Bearer <YOUR_ACCESS_TOKEN>"
 ```
 

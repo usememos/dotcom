@@ -31,7 +31,7 @@ export default function Layout(props) {
   return (
     <>
       {props.children}
-      <Comp document="./openapi/latest.yaml" operations={[{"path":"/api/v1/users/{user}:exportMemos","method":"get"}]} />
+      <Comp document="./openapi/latest.yaml" operations={[{"path":"/api/users/{user}:exportMemos","method":"get"}]} />
     </>
   );
 }

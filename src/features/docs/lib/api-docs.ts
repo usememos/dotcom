@@ -5,6 +5,7 @@ export interface ApiDocsVersion {
   label: string;
   sourceRef: string;
   snapshotVersion: string;
+  apiBasePath?: string;
   legacySlugs?: string[];
   isLatest?: boolean;
   archived?: boolean;
