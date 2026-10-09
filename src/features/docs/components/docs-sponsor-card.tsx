@@ -10,7 +10,7 @@ function SponsorLink({ sponsor }: { sponsor: Sponsor }) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={sponsor.name}
-      className="flex h-10 min-w-0 items-center justify-start rounded-lg hover:opacity-80 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
+      className="flex h-10 max-h-10 min-w-0 max-w-[min(10rem,100%)] flex-none items-center justify-start rounded-lg hover:opacity-80 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
     >
       {/* Lazy on both theme variants: a lazy image that is display:none is never
           fetched, so only the visible variant downloads. In-viewport lazy images
@@ -21,7 +21,7 @@ function SponsorLink({ sponsor }: { sponsor: Sponsor }) {
         loading="lazy"
         decoding="async"
         className={cn(
-          "h-full w-auto max-w-full object-contain object-left py-2",
+          "h-6 max-h-6 w-auto max-w-full object-contain object-left",
           sponsor.logoDark && "docs-sponsor-logo-light dark:!hidden",
         )}
       />
@@ -31,7 +31,7 @@ function SponsorLink({ sponsor }: { sponsor: Sponsor }) {
           alt={`${sponsor.name} logo`}
           loading="lazy"
           decoding="async"
-          className="docs-sponsor-logo-dark hidden h-full w-auto max-w-full object-contain object-left py-2 dark:!block"
+          className="docs-sponsor-logo-dark hidden h-6 max-h-6 w-auto max-w-full object-contain object-left dark:!block"
         />
       )}
     </a>
@@ -50,7 +50,7 @@ export function DocsSponsorCard() {
         </Link>
       </div>
 
-      <div className="mt-2 space-y-2" role="group" aria-label="Sponsors">
+      <div className="mt-2 flex flex-wrap items-center justify-start gap-x-6 gap-y-2" role="group" aria-label="Sponsors">
         {FEATURED_SPONSORS.map((sponsor) => (
           <SponsorLink key={sponsor.url} sponsor={sponsor} />
         ))}
