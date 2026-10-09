@@ -15,7 +15,7 @@ Tokens are scoped to your user: API calls made with a token can do what your use
 
 ## Call the API
 
-Pass the token in the `Authorization` header. The Latest API on Memos `main` uses `/api`:
+Pass the token in the `Authorization` header. Memos 26.10 and the Latest API on `main` use `/api`:
 
 ```bash
 curl -H "Authorization: Bearer memos_pat_..." \
@@ -24,9 +24,36 @@ curl -H "Authorization: Bearer memos_pat_..." \
 
 Memos 0.30 and 0.31 use `/api/v1` instead. Select the [API reference for your instance version](/docs/api) before using an endpoint in an integration.
 
-When moving a client from 0.31 to the Latest API, update REST paths to `/api/...` and Connect procedures to `/memos.api.<Service>/<Method>`. The new API also renames some methods and fields; use the [API changelog](https://github.com/usememos/memos/blob/main/proto/api/CHANGELOG.md) as the migration checklist. Old paths return `410 Gone` for one release, then are removed.
+When moving a client from 0.31 to 26.10, follow the [migration checklist](#2610-client-migration). The Latest API reference tracks `main` and may include later changes.
 
 For browser-based integrations, bearer-token requests may be sent cross-origin. Cookie authentication remains same-origin; do not build third-party API clients around a user's browser session cookie.
+
+## 26.10 client migration
+
+These breaking changes apply to **26.10-rc.1**. Use the [tagged API changelog](https://github.com/usememos/memos/blob/26.10-rc.1/proto/api/CHANGELOG.md) and [OpenAPI specification](https://github.com/usememos/memos/blob/26.10-rc.1/proto/gen/openapi.yaml) for the exact release contract.
+
+### Paths and encoding
+
+- REST routes change from `/api/v1/...` to `/api/...`; server-sent events use `/api/sse`.
+- The proto package changes from `memos.api.v1` to `memos.api`. Connect and gRPC procedures use `/memos.api.<Service>/<Method>`.
+- Resource types use `memos.api/<Type>` and `google.rpc.ErrorInfo.domain` becomes `memos.api`.
+- In this release, old REST and procedure paths return `410 Gone` with an `UNIMPLEMENTED` error. They are removed in the next release.
+- Protobuf field numbers change. Regenerate clients that use binary protobuf encoding; JSON clients must update the renamed fields below. Proto field names are shown in `snake_case`; gateway JSON uses their `camelCase` equivalents.
+
+### Renamed methods, fields, and types
+
+| Area | Required client change |
+| --- | --- |
+| Memo child operations | `ListMemoAttachments`, `ListMemoRelations`, `ListMemoComments`, `CreateMemoComment`, `ListMemoReactions`, and `UpsertMemoReaction` take `parent` instead of `name`. `ListMemoCommentsResponse.memos` becomes `comments`. |
+| Memo resources | `MemoRelation.Memo` becomes `MemoRelation.MemoRef`; the `MemoShare` singular/plural becomes `memoShare`/`memoShares`. |
+| User statistics | `ListAllUserStats` becomes `ListUserStats`, with required `parent` (`users/-` for all users or `users/{user}` for one user). The all-user REST path becomes `GET /api/users/-/stats`; response `stats` becomes `user_stats`, and `UserStats.tag_count` becomes `tag_counts`. |
+| Batch users | `BatchGetUsersRequest.usernames` becomes `names`, accepting `users/{user}` resource names instead of bare usernames. |
+| Personal access tokens | `created_at`, `expires_at`, and `last_used_at` become `create_time`, `expire_time`, and `last_use_time`. |
+| Linked identities | `LinkedIdentity.idp_name` and `extern_uid` become `identity_provider` and `external_uid`; `CreateLinkedIdentityRequest.idp_name` becomes `identity_provider`. |
+| Views and notifications | Resource singulars become `memoView` and `userNotification`; `UserNotification.SpaceInvitationPayload.State` becomes `InvitationState`. |
+| Imports | `MemoImportPlan`, `MemoImportReport`, and `MemoImportIssue` become `ImportMemosPlan`, `ImportMemosReport`, and `ImportMemosIssue`. Plan fields `memos`/`attachments` become `memo_count`/`attachment_count`; issue field `memo` becomes `memo_uid`. |
+| Settings | `UpdateUserSettingRequest.setting` and `ListUserSettingsResponse.settings` become `user_setting` and `user_settings`. `UpdateInstanceSettingRequest.setting` and `BatchGetInstanceSettingsResponse.settings` become `instance_setting` and `instance_settings`. |
+| Authentication | `SignInResponse.access_token_expires_at` and `RefreshTokenResponse.expires_at` become `access_token_expire_time`. `SignInRequest.SSOCredentials` becomes `SsoCredentials`, with `identity_provider` replacing `idp_name`. |
 
 ## 0.31 client migration
 

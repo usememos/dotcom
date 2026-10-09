@@ -19,7 +19,7 @@ describe("HeroSection", () => {
     // Scale the brand headline on narrow screens without preventing text wrapping.
     expect(heading.className).toMatch(/text-\[clamp\(/);
     expect(heading.className).not.toMatch(/whitespace-nowrap|text-nowrap/);
-    expect(screen.getByRole("link", { name: /Latest release\s*v0\.31\.0/ })).toHaveAttribute("href", "/changelog/0-31-0");
+    expect(screen.getByRole("link", { name: /Release candidate\s*26\.10-rc\.1/ })).toHaveAttribute("href", "/changelog/26-10-rc-1");
     expect(screen.getByRole("link", { name: "Install" })).toHaveAttribute("href", "/install");
     const demo = screen.getByRole("link", { name: "Demo" });
     expect(demo).toHaveAttribute("href", "https://demo.example.com/");
@@ -32,5 +32,19 @@ describe("HeroSection", () => {
 
     const ambient = container.querySelector('[aria-hidden="true"].pointer-events-none');
     expect(ambient).not.toBeNull();
+  });
+
+  it("preserves the prefix and changelog link for historical releases", () => {
+    render(
+      <HeroSection
+        version="0.31.0"
+        title="Test headline"
+        subtitle="Test subtitle"
+        primaryCta={{ text: "Install", href: "/install" }}
+        secondaryCta={{ text: "Demo", href: "/demo" }}
+      />,
+    );
+
+    expect(screen.getByRole("link", { name: /Latest release\s*v0\.31\.0/ })).toHaveAttribute("href", "/changelog/0-31-0");
   });
 });

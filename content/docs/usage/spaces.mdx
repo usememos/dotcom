@@ -40,10 +40,14 @@ Choose the Space when composing a memo, or change placement on a memo you author
 
 ### Move an existing memo
 
-1. Open the memo's action menu and choose **Move to Space**.
-2. Choose a destination Space or **Unassigned**.
-3. Review **Visibility**. Moving a members-only memo to another Space changes which members can read it. Choosing Unassigned resets `SPACE` visibility to `PRIVATE`; you can select another available visibility before confirming.
-4. Choose **Move**.
+In 26.10, Space placement is part of the editor's audience menu:
+
+1. Open a top-level memo you can edit and choose **Edit**.
+2. Open the audience menu and choose a destination Space or **Unassigned**.
+3. Review visibility in the same menu. Moving a members-only memo changes which members can read it; Unassigned memos cannot use `SPACE` visibility.
+4. Save the memo to apply content, Space, and visibility changes together.
+
+This replaces the separate **Move to Space** action available in 0.31.
 
 Existing reactions stay with the memo. Comments and linked memos keep their own placement and access rules; moving one memo does not move a whole discussion.
 
@@ -51,7 +55,7 @@ Existing reactions stay with the memo. Comments and linked memos keep their own 
 
 ## Browse in context
 
-Select a Space from the sidebar switcher to scope Home, Explore, Calendar, Map, new memo creation, statistics, filters, and attachments to that Space. Choose the main **Memos** context to browse across the memos available to you. [Calendar](/docs/usage/memos#calendar) and [Map](/docs/usage/memos#map) show your own memos within that scope.
+Select a Space from the sidebar switcher to scope browsing, new memo creation, statistics, filters, and attachments to that Space. Choose the main **Memos** context to browse across the memos available to you. In 26.10, switching between Timeline, [Calendar](/docs/usage/memos#calendar), [Map](/docs/usage/memos#map), and Attachments preserves both the creator and Space selection; Calendar and Map can show readable memos from several creators.
 
 Opening a memo and returning to its collection preserves the Space and filters, so you can continue browsing where you left off.
 

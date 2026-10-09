@@ -21,7 +21,7 @@ interface HeroSectionProps {
   };
 }
 
-export function HeroSection({ version = "0.31.0", title, subtitle, primaryCta, secondaryCta }: HeroSectionProps) {
+export function HeroSection({ version = "26.10-rc.1", title, subtitle, primaryCta, secondaryCta }: HeroSectionProps) {
   return (
     <section className="relative isolate overflow-hidden bg-white dark:bg-zinc-950">
       <HeroAmbient />
@@ -34,8 +34,10 @@ export function HeroSection({ version = "0.31.0", title, subtitle, primaryCta, s
               className="group inline-flex items-center gap-2 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-700 dark:focus-visible:outline-brand-300 text-xs font-medium tracking-[0.14em] text-zinc-500 uppercase transition-colors hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-100"
             >
               <TagIcon className="size-3.5 text-brand-600 dark:text-brand-300" />
-              <span>Latest release</span>
-              <span className="font-semibold tracking-normal text-zinc-800 normal-case dark:text-zinc-200">v{version}</span>
+              <span>{version.includes("-") ? "Release candidate" : "Latest release"}</span>
+              <span className="font-semibold tracking-normal text-zinc-800 normal-case dark:text-zinc-200">
+                {version.startsWith("0.") ? `v${version}` : version}
+              </span>
               <ArrowRightIcon className="size-3.5 motion-safe:transition-transform motion-safe:group-hover:translate-x-0.5" />
             </Link>
           ) : null}

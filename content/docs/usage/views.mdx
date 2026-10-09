@@ -9,7 +9,9 @@ Use Views for filters you revisit, such as work items, incomplete tasks, or rece
 
 ## Upgrading existing filters
 
-Views replace the legacy `Shortcut` resource in 0.31. Stored filters migrate automatically. Update bookmarks to `/views` and integrations to `UserService` (`MemoView` resources), `/api/v1/users/*/views/*`, and the MCP tool `user_list_memo_views`.
+Views replace the legacy `Shortcut` resource in 0.31. Stored filters migrate automatically. Update bookmarks to `/views` and integrations to `UserService` (`MemoView` resources) and the MCP tool `user_list_memo_views`. REST paths use `/api/users/*/views/*` in 26.10 and `/api/v1/users/*/views/*` in 0.31.
+
+In 26.10, the built-in Tasks View is removed. Create a View with `has_task_list && has_incomplete_tasks` to keep browsing unfinished tasks.
 
 ## Create a View
 

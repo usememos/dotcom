@@ -1,0 +1,46 @@
+---
+title: Release 26.10-rc.1
+description: Editor suggestions, audio transcription, browsing by creator and Space, and improved Calendar, Map, and image previews
+date: "2026-10-09"
+breaking: true
+---
+
+> The first 26.10 release candidate helps you write within your current filters, transcribe audio attachments, and browse readable memos by creator and Space. It also improves Markdown, Calendar, Map, and image previews.
+
+## Upgrade notes
+
+- **Upgrade path** - If you use a version earlier than 0.31.0, upgrade to 0.31.0 and start it successfully before installing this release. Versions earlier than 0.22 must first run 0.25.3, then 0.31.0. You can upgrade directly from 0.31.0; fresh installations need no intermediate release.
+- **Calendar versions** - Releases now use names such as `26.10`, `26.10.1`, and `26.10-rc.1`, without a `v` prefix. This is a release candidate; install it with the exact container tag `neosmemo/memos:26.10-rc.1`. The `stable` tag continues to follow stable releases.
+- **API clients** - REST paths move from `/api/v1/...` to `/api/...`, including `/api/sse`. Connect and gRPC procedures use `/memos.api.<Service>/<Method>`. Clients must also update renamed fields and types; binary protobuf clients must regenerate from the new schema. Old paths return `410 Gone` for this release and will be removed in the next release. Follow the [26.10 API migration checklist](/docs/integrations/api-access#2610-client-migration).
+- **Tasks View** - The built-in Tasks View is removed. Create a [View](/docs/usage/views) with `has_task_list && has_incomplete_tasks` to browse unfinished tasks.
+- **Space placement** - To move a memo, edit it and choose its Space in the audience menu alongside visibility. The separate Move to Space action is removed.
+
+See the [upgrade guide](/docs/operations/upgrade#upgrading-to-2610) before updating an existing installation.
+
+## New features
+
+### Writing in context
+
+- **Editor suggestions** - New drafts offer tags, checklist formatting, and visibility choices based on your current filters or selected View. Apply the suggestions you want; they disappear when the draft fulfills them.
+- **Audio transcription** - Transcribe an existing audio attachment from the editor using your configured provider. Review the transcript in your draft before saving. Your existing text and original audio stay intact.
+- **Space and visibility together** - Select a memo's Space and visibility from the editor's audience menu. Edit a top-level memo to add, change, or remove its Space, then save the changes together.
+
+### Browsing by creator and Space
+
+- **Keep your scope** - Switch between Timeline, Calendar, Map, and Attachments while keeping the selected creator and Space.
+- **Calendar and Map for visitors** - Signed-out visitors can browse memos they can read in Calendar and Map. Photos and author avatars help identify days and map pins across several authors; the desktop calendar makes room for its day panel.
+- **Shared attachment browsing** - The attachment library includes files from readable memos and identifies their uploaders.
+
+## Improvements and fixes
+
+- **Markdown and editing** - Collapsible sections have clearer indicators and spacing, with keyboard controls and nested sections preserved. Headings match between editing and reading, block spacing is more consistent, and formatting shortcuts keep surrounding whitespace outside Markdown delimiters.
+- **Image previews** - Pinch to zoom, drag to pan a zoomed image, and swipe between gallery images at fit zoom. Preview controls stay within the visible mobile viewport.
+- **Memos and filters** - Pinned memos have a clearer corner marker in single-creator feeds; mixed-author feeds stay chronological. Filters such as `has_task_list == false` include memos without that property. Deleting a memo also deletes its comments and nested replies.
+- **Navigation and appearance** - Open memo timestamps in a new tab. Theme and language controls use sidebar submenus that stay on screen in narrow viewports. Notifications follow the active theme, and reaction pickers close without flashing at the page corner.
+- **Languages and link previews** - Norwegian Nynorsk is available, the Korean hidden-content label uses neutral wording, and large web pages produce more reliable preview titles and images.
+
+Report regressions in [GitHub issues](https://github.com/usememos/memos/issues).
+
+**Release**: [26.10-rc.1 on GitHub](https://github.com/usememos/memos/releases/tag/26.10-rc.1)
+
+**Full changelog**: [v0.31.0...26.10-rc.1](https://github.com/usememos/memos/compare/v0.31.0...26.10-rc.1)

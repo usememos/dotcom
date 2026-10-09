@@ -36,9 +36,13 @@ Authors can edit their own memos; editing an assigned memo also requires active 
 - tag suggestions when you type `#`
 - auto-saved drafts cached locally so content is not lost on page reload
 
+In 26.10, new drafts offer optional tag, checklist, and visibility suggestions based on your current filters or selected View. Apply a suggestion to add it to the draft; it disappears once fulfilled. Choose the Space and visibility together in the audience menu, then save the memo.
+
 ## Browsing your memos
 
-Home, Calendar, and Map show your active memos within the selected [Space](/docs/usage/spaces), [View](/docs/usage/views), and tag filters. Select the main **Memos** context to browse your memos across Spaces. Selecting a Space does not make Calendar or Map show every member's notes. Archived memos are available separately under [Archived](/docs/usage/search-archive#archive).
+In 26.10, Timeline, Calendar, Map, and Attachments retain the selected creator and [Space](/docs/usage/spaces) when you switch between them. Combine that scope with a [View](/docs/usage/views) or tag filters to narrow readable memos. Select the main **Memos** context to browse across Spaces. Archived memos are available separately under [Archived](/docs/usage/search-archive#archive).
+
+Calendar and Map also support signed-out visitors when public access is enabled; visitors only see memos they can read. Photos and author avatars help distinguish entries when browsing several creators.
 
 ### Feed
 
@@ -47,7 +51,7 @@ Compact mode and link previews are configurable there too, and the choices are
 saved for your account. Link previews discover metadata from oEmbed, Open Graph, Twitter Cards, JSON-LD, and ordinary HTML when the linked site supplies it. Sites without usable metadata may still appear as plain links. The single-column layout shows full memo content by
 default; multi-column and compact layouts favor faster scanning.
 
-New memos appear above the pinned section. When you return from a memo detail
+Single-creator feeds show pinned memos with a corner marker; mixed-author feeds stay chronological. When you return from a memo detail
 page, Memos restores your previous feed position so you can continue where you
 left off.
 

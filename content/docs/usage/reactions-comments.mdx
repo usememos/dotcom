@@ -24,7 +24,7 @@ Open a memo's detail page to read and add comments.
 - comments support the full Markdown editor, just like memos
 - each comment is an independent, author-owned memo connected to its context memo, so it can be reacted to and linked directly
 - each comment has its own placement and visibility; a relation does not grant access to either memo
-- deleting the context memo removes its incident relations, but does not delete the comment memos
+- in 26.10, deleting the context memo also deletes its comments and nested replies
 - the memo's author is notified in their [inbox](/docs/usage/inbox) when a new comment is posted
 
 Comments live on the memo's detail page rather than in the main timeline, which keeps feeds focused on top-level notes.
@@ -33,7 +33,7 @@ Comments live on the memo's detail page rather than in the main timeline, which 
 
 A discussion only includes comments the reader can independently access. Check the comment's placement and audience before posting; they are not inherited by the API. `CreateMemoComment` defaults omitted visibility to `PRIVATE`.
 
-Use `CreateMemoComment` to create a comment and its context relation together. `SetMemoRelations` rejects `COMMENT` relations. Removing a parent memo does not cascade into replies. An eligible comment can also be shared independently through the API; its share exposes only that comment.
+Use `CreateMemoComment` to create a comment and its context relation together. `SetMemoRelations` rejects `COMMENT` relations. In 26.10, removing a parent memo deletes the comment subtree; in 0.31, parent deletion only removed its incident relations. An eligible comment can also be shared independently through the API; its share exposes only that comment.
 
 ## Mentions
 

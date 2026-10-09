@@ -8,7 +8,7 @@ Memos applies database migrations automatically on startup, so an upgrade is: ba
 ## Before every upgrade
 
 1. Back up the database and attachments — see [Backup & Restore](/docs/operations/backup-restore).
-2. Read the [changelog](/changelog) for the versions you are skipping, especially across minor versions (0.x → 0.y), which can contain breaking changes.
+2. Read the [changelog](/changelog) for the versions you are skipping. Both historical minor releases (0.x → 0.y) and calendar releases can contain breaking changes.
 3. Note your current version so you can report it if something goes wrong.
 
 ## API reference support window
@@ -21,6 +21,26 @@ documentation.
 
 If your instance falls outside this window, upgrade it before developing or
 debugging an integration against the current API reference.
+
+## Upgrading to 26.10
+
+**26.10-rc.1 is a release candidate.** Back up before upgrading and pin `neosmemo/memos:26.10-rc.1` to test this release. It does not update the `stable` container tag. Read the [release changelog](/changelog/26-10-rc-1).
+
+### Required upgrade path
+
+- From **0.31.0**, upgrade directly.
+- From **0.22 through 0.30**, first upgrade to **0.31.0** and start it successfully, then install 26.10.
+- From a version **earlier than 0.22**, first run **0.25.3**, then **0.31.0**, then install 26.10.
+- Fresh installations can start with 26.10 directly.
+
+### Clients and workflows
+
+- Update every API client from `/api/v1/...` to `/api/...`, and update Connect/gRPC procedure paths, renamed fields, and types. Regenerate binary protobuf clients. The old paths return `410 Gone` for this release and are removed in the next release. Use the [26.10 client migration checklist](/docs/integrations/api-access#2610-client-migration).
+- Replace the removed built-in Tasks View with a [View](/docs/usage/views) using `has_task_list && has_incomplete_tasks`.
+- Move a top-level memo by editing its Space in the audience menu, then saving. The separate Move to Space action is removed.
+- Deleting a memo now deletes its comments and nested replies as well. Review a discussion before deleting its parent.
+
+After upgrading, verify sign-in, existing memos, attachments, creator and Space filters, and API integrations. Check that Calendar and Map expose only the memos each signed-in user or visitor can read.
 
 ## Upgrading to 0.31
 
@@ -119,6 +139,8 @@ See the [Binary guide](/docs/deploy/binary) for service setup.
 ## Pinning versions
 
 `neosmemo/memos:stable` tracks the latest stable release, which is convenient but upgrades implicitly on every pull. For production, pin a specific version tag (for example `neosmemo/memos:0.31.0`) and upgrade deliberately.
+
+From 26.10 onward, release tags use calendar versions without a `v` prefix: `26.10` is a monthly release and `26.10.1` is a patch. Stable releases publish exact-version, monthly-series, and `stable` container tags. Release candidates publish only their exact tag, such as `26.10-rc.1`.
 
 ## Verify after upgrading
 
