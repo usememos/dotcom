@@ -1,0 +1,52 @@
+---
+title: Why Memos is switching to CalVer
+description: After years of 0.x releases, we're moving to calendar versioning to show when each release shipped and match our release rhythm.
+published_at: "2026-09-20"
+tags: ["Project", "Releases"]
+---
+
+Memos is moving from Semantic Versioning to calendar versioning, or CalVer. Starting with the next release, our versions will carry the year and month. A release in October 2026, for example, will be named `26.10`.
+
+We [shared the plan with the community](https://github.com/orgs/usememos/discussions/6351). The reason is straightforward: after years of `0.x` releases, a date gives people more useful information about the Memos version they are using.
+
+## What our old version numbers told you
+
+[Semantic Versioning](https://semver.org/) gives major, minor, and patch numbers specific meanings. Once a project declares a stable public API, those numbers distinguish incompatible changes, compatible additions, and compatible fixes. That makes SemVer useful when deciding which versions of a dependency an application can accept.
+
+Memos has stayed in the `0.x` series since the beginning. SemVer treats that series as initial development, where the public API is not yet considered stable. It leaves room for incompatible changes before `1.0`.
+
+That describes an important limit, but it gives someone using Memos little detail about an individual release. Seeing `0.31.0` after `0.30.0` tells you which came later. It does not tell you how recently either was released. You still need the release history to understand the time between them, and the release notes to understand the changes.
+
+For Memos, the growing minor number had mostly become a sequence counter. We wanted the number itself to communicate something people could use.
+
+## A date is easier to place
+
+`26.10` immediately places a release in October 2026. You can recognize its age without remembering our release history. It also gives a feature's arrival a date that is easier to recall than an arbitrary minor number.
+
+This matters when you come back to Memos after a while. You may remember roughly when you last updated, or when you saw a feature discussed, without remembering the version attached to it. Calendar versions make those two ways of remembering line up.
+
+The version becomes a useful starting point for reading the project's history. The changelog provides the details.
+
+## It fits how Memos develops
+
+Our releases have a roughly monthly rhythm. Naming them by year and month reflects that rhythm directly. [CalVer](https://calver.org/) lets a project choose date components that fit its release cycle; for Memos, the month is a useful level of detail.
+
+A daily identifier would add precision that most people would not need when looking through our releases. A year alone would group too much together. The year and month give each release a recognizable place while keeping the name short.
+
+The date does not set a release deadline. We still need to finish and check the work before publishing it. It also does not describe how large a release is: a month can bring small refinements or changes that need more attention.
+
+## Why we didn't simply move to 1.0
+
+Under SemVer, `1.0` marks the point where a project defines its stable public API. That is a compatibility commitment. It deserves a decision based on the API people depend on, rather than how long a project has existed or how high its minor number has reached.
+
+Changing the leading number would also leave the date question unanswered. `1.0`, `1.1`, and `1.2` would still require a lookup to know when they shipped.
+
+We chose to make the release date explicit because it is useful on its own. The work of explaining compatibility remains just as important.
+
+## Release notes still carry the details
+
+A calendar version tells you when a release belongs. It cannot tell you everything an update changes, and it should not be read as a promise that consecutive releases are interchangeable.
+
+We will continue to call out breaking changes under **Upgrade notes** in the changelog. A clear version number and clear release notes serve different purposes: one makes a release easy to identify; the other explains what it means for the people using it.
+
+That is the reason for this change. We want Memos versions to be easier to place in time, while keeping the explanation of each release specific and readable.
