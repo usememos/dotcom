@@ -785,13 +785,9 @@ the system and are not exceptions.
   surrounding headings, copy, and icons stay emoji-free.
 
 - Blog and Changelog article sponsor panels share the Docs sponsor component.
-  At the user's request, CodeRabbit stays fixed above a continuous horizontal
-  strip of the other paid sponsors. This scoped exception to section 17 makes
-  the sponsor display more compact. Sponsor logos are left-aligned with a
-  consistent gap, including between loop repetitions. At the user's request,
-  there is no pause button. The strip pauses on hover and shows all sponsors
-  without motion for keyboard focus and reduced motion preferences. It does
-  not authorize other rotating carousels.
+  At the user's request, every featured sponsor uses the same fixed, left-aligned
+  logo row. The order follows the shared sponsor list; the panel does not rotate
+  or animate sponsor logos.
 
 ## 23. Migration
 

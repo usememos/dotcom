@@ -7,7 +7,7 @@ export function MemoHeroSponsors() {
     <>
       <ul aria-label="Memos sponsors" className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1">
         {FEATURED_SPONSORS.map((sponsor) => {
-          const logoClassName = cn("h-auto w-auto object-contain", sponsor.name === "SSD Nodes" ? "max-h-6 max-w-12" : "max-h-4 max-w-20");
+          const logoClassName = "h-auto w-auto max-h-4 max-w-20 object-contain";
 
           return (
             <li key={sponsor.name}>
