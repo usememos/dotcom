@@ -390,7 +390,7 @@ before implementation.
 
 | Role | Canonical treatment |
 | --- | --- |
-| Brand hero | `font-serif text-[clamp(2.25rem,12vw,3.25rem)] leading-[0.96] font-semibold tracking-[-0.04em] sm:text-6xl lg:text-[4.25rem]` |
+| Brand hero | `font-serif text-[clamp(2.25rem,10.5vw,3.25rem)] leading-[0.96] font-semibold tracking-[-0.04em] sm:text-6xl lg:text-[4.25rem]` |
 | Campaign hero | `font-serif text-5xl leading-[0.98] font-semibold tracking-[-0.035em] sm:text-6xl lg:text-7xl` |
 | Standard marketing H1 | `font-serif text-5xl leading-[1.04] font-semibold tracking-[-0.035em] sm:text-6xl lg:text-7xl` |
 | Section thesis | `font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] sm:text-5xl lg:text-[3.35rem]` |
@@ -760,6 +760,16 @@ Agents MUST NOT create a local workaround first and document it afterward.
 A durable user-requested exception MUST be recorded in this document with its
 route, scope, reason, and affected rule. Registered page signatures are part of
 the system and are not exceptions.
+
+- At the user's request, the Homepage hero at `/` uses the page-specific title
+  "Capture a thought. Keep it yours." to express quick capture and ownership
+  with less text. This scoped exception to section 16's canonical brand-copy
+  rule applies only to the visible hero title. Keep the two sentences on
+  separate lines when space permits, with `HeroAccent` on "Keep it yours.";
+  allow natural wrapping on narrower screens and with larger text settings.
+  The desktop claim column is 36rem, and the mobile fluid scale uses 10.5vw
+  within the existing rem bounds so each sentence fits at the primary review
+  sizes without preventing text from wrapping.
 
 - The Homepage's `MemoHeroMock` follows the current `demo.usememos.com` product
   UI at the user's request. Inside that reconstruction, section 12's website

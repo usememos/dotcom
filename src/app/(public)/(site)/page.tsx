@@ -6,7 +6,7 @@ import { HomeFindSection } from "@/features/marketing/components/home-find-secti
 import { HomeOwnSection } from "@/features/marketing/components/home-own-section";
 import { HomeWriteSection } from "@/features/marketing/components/home-write-section";
 import { StartSection } from "@/features/marketing/components/start-section";
-import { BRAND_DESCRIPTION, BRAND_SHORT, BRAND_TAGLINE_LINES, BRAND_TITLE } from "@/shared/lib/branding";
+import { BRAND_DESCRIPTION, BRAND_SHORT, BRAND_TITLE } from "@/shared/lib/branding";
 import { buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/shared/lib/seo";
 
 export const metadata: Metadata = {
@@ -54,9 +54,9 @@ export default function HomePage() {
       <HeroSection
         title={
           <>
-            <span className="block text-balance">{BRAND_TAGLINE_LINES[0]}</span>{" "}
+            <span className="block text-balance">Capture a thought.</span>{" "}
             <span className="block text-balance">
-              <HeroAccent>{BRAND_TAGLINE_LINES[1]}</HeroAccent>
+              <HeroAccent>Keep it yours.</HeroAccent>
             </span>
           </>
         }

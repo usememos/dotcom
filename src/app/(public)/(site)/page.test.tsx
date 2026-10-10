@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
-import { BRAND_SHORT, BRAND_TAGLINE } from "@/shared/lib/branding";
+import { BRAND_SHORT } from "@/shared/lib/branding";
 
 vi.mock("@/features/marketing/components/hero-section", () => ({
   HeroSection: ({ title, subtitle }: { title: ReactNode; subtitle: string }) => (
@@ -31,11 +31,12 @@ vi.mock("@/features/marketing/components/home-faq-section", () => ({
 import HomePage from "./page";
 
 describe("HomePage", () => {
-  it("preserves the approved brand introduction as one accessible heading", () => {
+  it("renders the chosen hero title as one accessible heading with the ownership accent", () => {
     render(<HomePage />);
 
     expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
-    expect(screen.getByRole("heading", { level: 1, name: BRAND_TAGLINE })).toBeVisible();
+    expect(screen.getByRole("heading", { level: 1, name: "Capture a thought. Keep it yours." })).toBeVisible();
+    expect(screen.getByText("Keep it yours.")).toHaveClass("text-brand-600", "dark:text-brand-300");
     expect(screen.getByText(BRAND_SHORT)).toBeVisible();
   });
 

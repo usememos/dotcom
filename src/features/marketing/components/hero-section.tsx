@@ -25,7 +25,7 @@ export function HeroSection({ version = "26.10-rc.1", title, subtitle, primaryCt
   return (
     <section className="relative isolate overflow-hidden bg-white dark:bg-zinc-950">
       <HeroAmbient />
-      <div className="site-container grid gap-12 pt-12 pb-16 sm:pt-14 sm:pb-20 lg:grid-cols-[minmax(0,32rem)_minmax(0,1fr)] lg:items-center lg:gap-12 lg:py-20">
+      <div className="site-container grid gap-12 pt-12 pb-16 sm:pt-14 sm:pb-20 lg:grid-cols-[minmax(0,36rem)_minmax(0,1fr)] lg:items-center lg:gap-12 lg:py-20">
         <div className={`${styles.copy} min-w-0`}>
           {version ? (
             <Link
@@ -42,7 +42,7 @@ export function HeroSection({ version = "26.10-rc.1", title, subtitle, primaryCt
             </Link>
           ) : null}
 
-          <h1 className="mt-6 text-balance font-serif text-[clamp(2.25rem,12vw,3.25rem)] leading-[0.96] font-semibold tracking-[-0.04em] text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-[4.25rem]">
+          <h1 className="mt-6 text-balance font-serif text-[clamp(2.25rem,10.5vw,3.25rem)] leading-[0.96] font-semibold tracking-[-0.04em] text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-[4.25rem]">
             {title}
           </h1>
 
