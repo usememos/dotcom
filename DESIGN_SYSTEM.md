@@ -778,8 +778,8 @@ the system and are not exceptions.
   system UI font stay scoped to the mockup; the surrounding site keeps its
   established tokens and typography.
 
-- At the user's request, the Features and Use Cases indexes and detail pages
-  adopt the Homepage chapter grammar: a centered `PageHero`/`ChapterHeader`,
+- At the user's request, the Features, Use Cases, and Compare indexes and detail
+  pages adopt the Homepage chapter grammar: a centered `PageHero`/`ChapterHeader`,
   lean open grids instead of divider lists, a product reconstruction built
   from the shared memo primitives wherever one truthfully shows the subject,
   and the shared `StartSection` that closes on the empty composer. This is the
@@ -798,6 +798,17 @@ the system and are not exceptions.
   At the user's request, every featured sponsor uses the same fixed, left-aligned
   logo row. The order follows the shared sponsor list; the panel does not rotate
   or animate sponsor logos.
+
+- At the user's request, Compare pages carry the same sponsor and Carbon panels.
+  A comparison detail page mounts the shared responsive placements once each:
+  `SidebarAds` in a sticky rail beside the feature-matrix chapter from `lg` up,
+  and `MainContentAds` after the matrix below `lg`, so one Carbon request is
+  made per page view. The Compare index shows the sponsor and Carbon cards once,
+  in a compact centered block between the comparison chapters and the closing
+  `StartSection`. The comparison detail page's hero proof is its short
+  at-a-glance table, and the grouped feature matrix is its signature structure. These panels reuse
+  the Docs sponsor component and `CarbonAdCard` unchanged; they do not add a
+  site-specific ad surface or restyle the Docs components.
 
 ## 23. Migration
 

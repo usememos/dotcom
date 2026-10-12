@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { isKnownApiDocsVersion, latestApiDocsVersion } from "@/features/docs/lib/api-docs";
-import { getAllComparisonSlugs } from "@/features/marketing/data/comparisons";
+import { COMPARISONS, getAllComparisonSlugs } from "@/features/marketing/data/comparisons";
 import { getAllFeatureSlugs } from "@/features/marketing/data/features";
 import { getAllUseCaseSlugs } from "@/features/marketing/data/use-cases";
 import { blogSource, changelogSource, source } from "@/shared/content/source";
@@ -151,11 +151,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
   sitemap.push(...useCasePages);
 
   // Individual comparison pages
-  const comparisonPages = getAllComparisonSlugs().map((slug) => ({
-    url: `${BASE_URL}/compare/${slug}`,
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
-  }));
+  const comparisonPages = getAllComparisonSlugs().map((slug) => {
+    const lastModified = parseDate(COMPARISONS[slug].reviewedAt);
+
+    return {
+      url: `${BASE_URL}/compare/${slug}`,
+      ...(lastModified ? { lastModified } : {}),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    };
+  });
 
   sitemap.push(...comparisonPages);
 

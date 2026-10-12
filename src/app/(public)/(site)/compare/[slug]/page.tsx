@@ -1,11 +1,29 @@
-import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
+import { CheckIcon } from "lucide-react";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { MarketingActions, MarketingCtaSection } from "@/features/marketing/components/marketing-page";
-import { getAllComparisonSlugs, getComparison } from "@/features/marketing/data/comparisons";
+import { MainContentAds, SidebarAds } from "@/features/docs/components/ads-section";
+import { ChapterHeader } from "@/features/marketing/components/chapter-header";
+import { COMPARISON_TABLE_CLASS, ComparisonFeatureMatrix } from "@/features/marketing/components/comparison-feature-matrix";
+import { FaqDisclosure } from "@/features/marketing/components/faq-disclosure";
+import { LinkGrid } from "@/features/marketing/components/link-grid";
+import { PageHero } from "@/features/marketing/components/page-hero";
+import { StartSection } from "@/features/marketing/components/start-section";
+import {
+  COMPARISONS,
+  getAllComparisonSlugs,
+  getComparison,
+  getRelatedComparisonSlugs,
+  isComparisonSlug,
+} from "@/features/marketing/data/comparisons";
 import { getFeature } from "@/features/marketing/data/features";
-import { buildBreadcrumbItems, buildBreadcrumbJsonLd, buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/shared/lib/seo";
+import {
+  buildBreadcrumbItems,
+  buildBreadcrumbJsonLd,
+  buildDefaultOpenGraphImages,
+  buildFaqJsonLd,
+  DEFAULT_OG_IMAGE,
+} from "@/shared/lib/seo";
+import { cn } from "@/shared/lib/utils";
 import { JsonLdScript } from "@/shared/ui/json-ld-script";
 
 export const dynamic = "force-static";
@@ -55,11 +73,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
+function formatReviewedAt(reviewedAt: string) {
+  return new Date(`${reviewedAt}T00:00:00Z`).toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
+}
+
 export default async function ComparisonPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const comparison = getComparison(slug);
 
-  if (!comparison) {
+  if (!comparison || !isComparisonSlug(slug)) {
     notFound();
   }
 
@@ -68,170 +90,171 @@ export default async function ComparisonPage({ params }: { params: Promise<{ slu
     { href: `/compare/${slug}`, name: comparison.title },
   ]);
   const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
+  const faqJsonLd = buildFaqJsonLd(comparison.faq);
+  const Icon = comparison.icon;
+  const reviewedAtLabel = formatReviewedAt(comparison.reviewedAt);
+  const relatedComparisons = getRelatedComparisonSlugs(slug).map((relatedSlug) => {
+    const related = COMPARISONS[relatedSlug];
+    const RelatedIcon = related.icon;
+    return {
+      href: `/compare/${relatedSlug}`,
+      title: related.title,
+      description: related.subtitle,
+      icon: <RelatedIcon aria-hidden="true" className="size-5 stroke-[1.7]" />,
+    };
+  });
+  const relatedFeatures = comparison.features.flatMap((feature) => {
+    const definition = getFeature(feature.slug);
+    if (!definition) return [];
+    const FeatureIcon = definition.icon;
+    return [
+      {
+        href: `/features/${feature.slug}`,
+        title: feature.name,
+        description: definition.description,
+        icon: <FeatureIcon aria-hidden="true" className="size-5 stroke-[1.7]" />,
+        badge: definition.wip ? "WIP" : undefined,
+      },
+    ];
+  });
 
   return (
     <main className="flex flex-1 flex-col bg-white dark:bg-zinc-950">
       <JsonLdScript data={breadcrumbJsonLd} />
+      <JsonLdScript data={faqJsonLd} />
 
-      <section className="py-14 lg:py-20">
+      <PageHero
+        back={{ href: "/compare", label: "All comparisons" }}
+        icon={<Icon className="size-5 stroke-[1.7]" aria-hidden="true" />}
+        eyebrow="Compare"
+        title={comparison.title}
+        lead={comparison.summary}
+        detail={comparison.description}
+        actions={[
+          { label: "Install Memos", href: "/docs/getting-started", showArrow: true },
+          { label: "Try Live Demo", href: "https://demo.usememos.com/" },
+        ]}
+      >
+        <figure className="mx-auto max-w-3xl text-left">
+          <table aria-label={`${comparison.title} comparison table`} className={COMPARISON_TABLE_CLASS.table}>
+            <thead className={COMPARISON_TABLE_CLASS.head}>
+              <tr className="border-b border-zinc-200 dark:border-white/10">
+                <th scope="col" className="w-36 pb-4 pr-6 text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                  At a glance
+                </th>
+                <th scope="col" className="pb-4 pr-6 text-base font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">
+                  Memos
+                </th>
+                <th scope="col" className="pb-4 text-base font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">
+                  {comparison.competitor}
+                </th>
+              </tr>
+            </thead>
+            <tbody className={COMPARISON_TABLE_CLASS.body}>
+              {comparison.rows.map((row) => (
+                <tr key={row.label} className={cn(COMPARISON_TABLE_CLASS.row, "border-b border-zinc-200 dark:border-white/10")}>
+                  <th scope="row" className={COMPARISON_TABLE_CLASS.rowLabel}>
+                    {row.label}
+                  </th>
+                  <td className={cn(COMPARISON_TABLE_CLASS.cell, "pr-6 text-zinc-800 dark:text-zinc-200")}>
+                    <span className={COMPARISON_TABLE_CLASS.cellLabel} aria-hidden="true">
+                      Memos
+                    </span>
+                    {row.memos}
+                  </td>
+                  <td className={cn(COMPARISON_TABLE_CLASS.cell, "text-zinc-600 dark:text-zinc-400")}>
+                    <span className={COMPARISON_TABLE_CLASS.cellLabel} aria-hidden="true">
+                      {comparison.competitor}
+                    </span>
+                    {row.competitor}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <figcaption className="mt-5 text-center text-xs text-zinc-500 dark:text-zinc-400">Facts checked {reviewedAtLabel}.</figcaption>
+        </figure>
+      </PageHero>
+
+      <section className="py-16 sm:py-20 lg:py-24">
         <div className="site-container">
-          <Link
-            href="/compare"
-            className="group inline-flex items-center gap-2 text-sm font-semibold text-zinc-500 transition-colors hover:text-brand-700 dark:text-zinc-400 dark:hover:text-brand-300"
-          >
-            <ArrowLeftIcon className="size-4 transition-transform group-hover:-translate-x-1" />
-            All comparisons
-          </Link>
-
-          <div className="mt-10 grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(20rem,0.52fr)] lg:items-end lg:gap-20">
+          <ChapterHeader eyebrow="The decision" title="Choose for the work in front of you." />
+          <div className="mx-auto mt-12 grid max-w-4xl gap-12 text-left sm:mt-14 md:grid-cols-2 md:gap-14">
             <div>
-              <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Compare</p>
-              <h1 className="mt-5 text-balance font-serif text-5xl leading-[1.04] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-7xl">
-                {comparison.title}
-              </h1>
-              <p className="mt-7 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">{comparison.description}</p>
-              <div className="mt-9">
-                <MarketingActions
-                  align="left"
-                  actions={[
-                    { label: "Install Memos", href: "/docs/getting-started", showArrow: true },
-                    { label: "Try Live Demo", href: "https://demo.usememos.com/" },
-                  ]}
-                />
-              </div>
+              <h3 className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">Choose Memos when</h3>
+              <ul className="mt-5 space-y-4">
+                {comparison.chooseMemos.map((reason) => (
+                  <li key={reason} className="flex gap-3">
+                    <CheckIcon aria-hidden="true" className="mt-1 size-4 shrink-0 text-brand-700 dark:text-brand-300" />
+                    <p className="text-pretty text-sm leading-7 text-zinc-700 sm:text-base dark:text-zinc-300">{reason}</p>
+                  </li>
+                ))}
+              </ul>
             </div>
-
-            <aside aria-label="Short comparison verdict" className="border-y border-zinc-300 py-6 dark:border-white/15">
-              <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Short answer</p>
-              <p className="mt-5 font-serif text-2xl leading-9 font-semibold text-zinc-950 dark:text-zinc-100">{comparison.summary}</p>
-              <p className="mt-5 text-sm leading-7 text-zinc-500 dark:text-zinc-400">Different tools for different shapes of work.</p>
-            </aside>
+            <div>
+              <h3 className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">Choose {comparison.competitor} when</h3>
+              <ul className="mt-5 space-y-4">
+                {comparison.chooseCompetitor.map((reason) => (
+                  <li key={reason} className="flex gap-3">
+                    <CheckIcon aria-hidden="true" className="mt-1 size-4 shrink-0 text-zinc-400 dark:text-zinc-500" />
+                    <p className="text-pretty text-sm leading-7 text-zinc-600 sm:text-base dark:text-zinc-300">{reason}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </section>
 
       <section className="bg-stone-50/70 py-16 dark:bg-zinc-900/35 sm:py-20 lg:py-24">
         <div className="site-container">
-          <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.7fr)] lg:items-end lg:gap-12">
-            <div>
-              <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">Side by side</p>
-              <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl lg:text-[3.35rem]">
-                The practical differences.
-              </h2>
+          <ChapterHeader
+            eyebrow="Feature by feature"
+            title="What each one actually does."
+            description="Memos answers honestly, including the rows where it says no."
+          />
+          <div className="mx-auto mt-12 grid max-w-[72rem] gap-12 sm:mt-14 lg:grid-cols-[minmax(0,1fr)_15rem] lg:gap-16">
+            <div className="min-w-0">
+              <ComparisonFeatureMatrix comparison={comparison} />
+              <MainContentAds />
             </div>
-            <p className="max-w-xl text-base leading-8 text-zinc-600 dark:text-zinc-300 lg:justify-self-end">
-              Compare the operating model and the daily workflow before comparing feature counts.
-            </p>
-          </div>
-
-          <div className="mt-14 overflow-x-auto lg:mt-16">
-            <table aria-label={`${comparison.title} comparison table`} className="w-full min-w-[42rem] border-collapse text-left text-sm">
-              <thead>
-                <tr className="border-y border-zinc-300 dark:border-white/15">
-                  <th className="w-40 py-4 pr-6 font-semibold text-zinc-500 dark:text-zinc-400">
-                    <span className="sr-only">Dimension</span>
-                  </th>
-                  <th className="py-4 pr-6 font-semibold text-zinc-950 dark:text-zinc-100">Memos</th>
-                  <th className="py-4 font-semibold text-zinc-950 dark:text-zinc-100">{comparison.competitor}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {comparison.rows.map((row) => (
-                  <tr key={row.label} className="border-b border-zinc-200 dark:border-white/10">
-                    <th
-                      scope="row"
-                      className="py-4 pr-6 align-top text-xs font-semibold uppercase tracking-[0.14em] whitespace-nowrap text-zinc-400 dark:text-zinc-500"
-                    >
-                      {row.label}
-                    </th>
-                    <td className="py-4 pr-6 align-top leading-7 text-zinc-800 dark:text-zinc-200">{row.memos}</td>
-                    <td className="py-4 align-top leading-7 text-zinc-600 dark:text-zinc-400">{row.competitor}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <aside aria-label="Sponsors" className="hidden lg:block">
+              <div className="sticky top-24">
+                <SidebarAds />
+              </div>
+            </aside>
           </div>
         </div>
       </section>
 
       <section className="py-16 sm:py-20 lg:py-24">
+        <div className="site-container flex flex-col items-center">
+          <ChapterHeader eyebrow="Questions" title="Questions people ask." />
+          <FaqDisclosure items={comparison.faq} name="comparison-faq" className="mt-12 sm:mt-14" />
+        </div>
+      </section>
+
+      <section className="bg-stone-50/70 py-16 dark:bg-zinc-900/35 sm:py-20 lg:py-24">
         <div className="site-container">
-          <div className="max-w-3xl">
-            <p className="text-xs font-semibold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">The decision</p>
-            <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] text-zinc-950 dark:text-zinc-100 sm:text-5xl lg:text-[3.35rem]">
-              Choose for the work in front of you.
-            </h2>
-          </div>
-
-          <div className="mt-14 grid gap-12 lg:grid-cols-2 lg:gap-20">
-            <div className="border-t-2 border-brand-600 pt-6 dark:border-brand-300">
-              <h3 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">Choose Memos when</h3>
-              <ul className="mt-6 space-y-5">
-                {comparison.chooseMemos.map((reason) => (
-                  <li key={reason} className="grid grid-cols-[0.75rem_minmax(0,1fr)] gap-3">
-                    <span className="mt-[0.68rem] size-1.5 rounded-full bg-brand-600 dark:bg-brand-300" aria-hidden="true" />
-                    <p className="text-sm leading-7 text-zinc-700 dark:text-zinc-300 sm:text-base">{reason}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="border-t-2 border-zinc-300 pt-6 dark:border-white/20">
-              <h3 className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-100">Choose {comparison.competitor} when</h3>
-              <ul className="mt-6 space-y-5">
-                {comparison.chooseCompetitor.map((reason) => (
-                  <li key={reason} className="grid grid-cols-[0.75rem_minmax(0,1fr)] gap-3">
-                    <span className="mt-[0.68rem] size-1.5 rounded-full bg-zinc-400 dark:bg-zinc-500" aria-hidden="true" />
-                    <p className="text-sm leading-7 text-zinc-600 dark:text-zinc-400 sm:text-base">{reason}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <ChapterHeader eyebrow="Keep exploring" title="Related comparisons and features." />
+          <div className="mx-auto mt-12 grid max-w-[64rem] gap-14 sm:mt-14">
+            <section aria-labelledby="related-comparisons-title">
+              <h3 id="related-comparisons-title" className="mb-6 text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                More comparisons
+              </h3>
+              <LinkGrid items={relatedComparisons} />
+            </section>
+            <section aria-labelledby="related-features-title">
+              <h3 id="related-features-title" className="mb-6 text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                Memos in detail
+              </h3>
+              <LinkGrid items={relatedFeatures} />
+            </section>
           </div>
         </div>
       </section>
 
-      <section className="bg-zinc-950 py-20 text-white sm:py-24 lg:py-28">
-        <div className="site-container grid gap-10 lg:grid-cols-[minmax(16rem,0.58fr)_minmax(0,1.42fr)] lg:gap-20">
-          <div>
-            <p className="text-xs font-semibold tracking-[0.18em] text-brand-300 uppercase">Memos in detail</p>
-            <h2 className="mt-4 text-balance font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] sm:text-5xl">
-              Inspect what matters.
-            </h2>
-          </div>
-
-          <ul className="grid gap-x-10 sm:grid-cols-3">
-            {comparison.features.map((feature) => {
-              const featureDefinition = getFeature(feature.slug);
-              const isWip = featureDefinition?.wip === true;
-
-              return (
-                <li key={feature.slug}>
-                  <Link
-                    href={`/features/${feature.slug}`}
-                    prefetch={false}
-                    className="group block border-t border-white/20 py-5 focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-300"
-                  >
-                    <span className="flex items-center justify-between gap-3">
-                      <span className="text-base font-semibold text-zinc-100">{feature.name}</span>
-                      <ArrowRightIcon className="size-4 text-zinc-500 transition-transform group-hover:translate-x-1 group-hover:text-brand-300" />
-                    </span>{" "}
-                    <span className="mt-2 block text-sm text-zinc-400">{isWip ? "Work in progress" : "Explore the feature"}</span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </section>
-
-      <MarketingCtaSection
-        title="Start your own timeline."
-        description="Install Memos on a server you choose and write your first memo. Open source under MIT, with no license fee."
-        actions={[
-          { label: "Install Memos", href: "/docs/getting-started", showArrow: true },
-          { label: "Read Docs", href: "/docs" },
-        ]}
-      />
+      <StartSection description="Install Memos on a server you choose and write your first memo. Open source under MIT, with no license fee." />
     </main>
   );
 }

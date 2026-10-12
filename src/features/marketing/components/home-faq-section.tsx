@@ -1,7 +1,7 @@
-import { ArrowRightIcon, PlusIcon } from "lucide-react";
+import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
 import { ChapterHeader } from "@/features/marketing/components/chapter-header";
-import styles from "@/features/marketing/components/home-faq.module.css";
+import { FaqDisclosure } from "@/features/marketing/components/faq-disclosure";
 import { HOME_FAQ_ITEMS } from "@/features/marketing/data/faq";
 import { buildFaqJsonLd } from "@/shared/lib/seo";
 import { JsonLdScript } from "@/shared/ui/json-ld-script";
@@ -15,25 +15,7 @@ export function HomeFaqSection() {
       <div className="site-container flex flex-col items-center">
         <ChapterHeader eyebrow="Before you install" title="A few useful answers." />
 
-        {/* Native <details> stay searchable with Find in page and indexable; a shared name opens one at a time. */}
-        <div
-          className={`${styles.faq} mt-12 w-full max-w-2xl divide-y divide-zinc-200 border-y border-zinc-200 sm:mt-14 dark:divide-white/10 dark:border-white/10`}
-        >
-          {HOME_FAQ_ITEMS.map((item, index) => (
-            <details key={item.question} name="home-faq" open={index === 0} className="group">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-left text-base font-semibold tracking-tight text-zinc-950 transition-colors hover:text-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700 sm:text-lg dark:text-zinc-100 dark:hover:text-brand-300 dark:focus-visible:outline-brand-300 [&::-webkit-details-marker]:hidden">
-                {item.question}
-                <PlusIcon
-                  aria-hidden="true"
-                  className="size-4 shrink-0 text-zinc-400 motion-safe:transition-transform motion-safe:duration-200 group-open:rotate-45"
-                />
-              </summary>
-              <p className="max-w-xl pb-6 text-pretty text-sm leading-7 text-zinc-600 sm:text-[0.9375rem] dark:text-zinc-300">
-                {item.answer}
-              </p>
-            </details>
-          ))}
-        </div>
+        <FaqDisclosure items={HOME_FAQ_ITEMS} name="home-faq" className="mt-12 sm:mt-14" />
 
         <Link
           href="/compare"
