@@ -74,6 +74,12 @@ test("generated homepage Open Graph image keeps its cache rule", async () => {
   assert.equal(headers.get("cache-control"), "public,max-age=86400,stale-while-revalidate=604800");
 });
 
+test("homepage images stay fresh for one week", async () => {
+  const headers = await readEffectiveHeaders("/home/golden-hour-trail.png");
+
+  assert.equal(headers.get("cache-control"), "public,max-age=604800,stale-while-revalidate=604800");
+});
+
 test("generated homepage Open Graph image allows cross-origin reads", async () => {
   const headers = await readEffectiveHeaders("/og/home/image.png");
 

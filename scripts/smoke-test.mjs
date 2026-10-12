@@ -34,6 +34,12 @@ const checks = [
   { path: "/sitemap.xml", type: "text", contains: "<urlset" },
   { path: "/blog/feed.xml", type: "text", contains: "<rss" },
   {
+    path: "/home/golden-hour-trail.png",
+    type: "png",
+    cacheControlIncludes: "public,max-age=604800,stale-while-revalidate=604800",
+    openNextCacheAbsent: true,
+  },
+  {
     path: "/apple-touch-icon.png",
     type: "png",
     cacheControlIncludes: "max-age=31536000",
