@@ -15,15 +15,13 @@ describe("brand asset catalog", () => {
       expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([512, 512]);
     }
     const downloads = Array.from(container.querySelectorAll<HTMLAnchorElement>("a[download]"));
-    expect(downloads).toHaveLength(14);
+    expect(downloads).toHaveLength(10);
     for (const link of downloads) expect(existsSync(`public${link.getAttribute("href")}`)).toBe(true);
     expect(new Set(downloads.map((link) => link.getAttribute("aria-label"))).size).toBe(downloads.length);
   });
 
-  it("keeps legacy assets secondary and shows real small-size previews", () => {
+  it("shows real small-size previews", () => {
     const { container } = render(<BrandPage />);
-    expect(container.querySelector("details")).not.toHaveAttribute("open");
-    expect(container.querySelectorAll("details a[download]")).toHaveLength(4);
     for (const size of [16, 24, 32]) expect(container.querySelectorAll(`svg[viewBox="0 0 512 512"][width="${size}"]`)).toHaveLength(2);
   });
 });

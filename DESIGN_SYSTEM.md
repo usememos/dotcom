@@ -562,7 +562,7 @@ theme.
 
 ### 13.4 Brand mark
 
-Use the official bird SVG shape through `MemosMark` for interface branding. Its
+Use the official Memos SVG shape through `MemosMark` for interface branding. Its
 `currentColor` fill follows the surrounding text color; backgrounds and radius
 belong to the placement, not the mark. Use the official simplified shape at
 32px or below and the standard shape above 32px. Use `MemosLockup` for the public
@@ -573,10 +573,10 @@ fixed light mark on a dark rounded tile, independent of the system theme, so the
 mark remains visible in both light and dark browser tabs.
 
 The Brand page is the asset catalog: show light and dark previews, actual-size
-small marks, SVG downloads, the official square avatar PNGs, and a secondary
-Legacy section. Avatar palettes do not redefine the site's primary color scale.
-Source authority remains the upstream `BRAND.md`; keep vendored assets under
-versioned URLs. This logo migration does not change typography or social previews.
+small marks, SVG downloads, and the official square avatar PNGs. Avatar palettes
+do not redefine the site's primary color scale. Source authority remains the
+upstream `BRAND.md`; serve assets at fixed `/brand/` URLs with revalidation before
+reuse. This logo migration does not change typography or social previews.
 
 ## 14. Product presentation
 

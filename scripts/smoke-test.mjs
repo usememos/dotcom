@@ -2,6 +2,29 @@ const baseUrl = process.env.SMOKE_BASE_URL ?? "http://localhost:8788";
 
 const checks = [
   { path: "/", type: "html", contains: "Your thoughts, your data,", cacheControlIncludes: "s-maxage=31536000" },
+  { path: "/brand", type: "html", contains: "/brand/logo-small.svg" },
+  {
+    path: "/brand/logo.svg",
+    type: "text",
+    contains: "currentColor",
+    cacheControlIncludes: "public,max-age=0,must-revalidate",
+    openNextCacheAbsent: true,
+  },
+  {
+    path: "/brand/avatars/memos-graphite.png",
+    type: "png",
+    cacheControlIncludes: "public,max-age=0,must-revalidate",
+    openNextCacheAbsent: true,
+  },
+  ...[
+    "/logo.png",
+    "/logo-96.png",
+    "/logo-rounded.png",
+    "/logo-rounded-96.png",
+    "/full-logo.png",
+    "/full-logo-landscape.png",
+    "/brand/5e31214/logo.svg",
+  ].map((path) => ({ path, status: 404, type: "html", redirect: "manual" })),
   {
     path: "/docs/faq",
     type: "html",
@@ -42,13 +65,13 @@ const checks = [
   {
     path: "/apple-touch-icon.png",
     type: "png",
-    cacheControlIncludes: "max-age=31536000",
+    cacheControlIncludes: "public,max-age=0,must-revalidate",
     openNextCacheAbsent: true,
   },
   {
     path: "/apple-touch-icon-precomposed.png",
     type: "png",
-    cacheControlIncludes: "max-age=31536000",
+    cacheControlIncludes: "public,max-age=0,must-revalidate",
     openNextCacheAbsent: true,
   },
   { path: "/og-image.png", status: 404, type: "html" },
@@ -118,7 +141,7 @@ for (const check of checks) {
   const url = buildUrl(check.path);
   let response;
   try {
-    response = await fetch(url);
+    response = await fetch(url, { redirect: check.redirect });
   } catch (error) {
     throw new Error(`${check.path} request failed for ${url}`, { cause: error });
   }

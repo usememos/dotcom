@@ -13,18 +13,15 @@
 /_next/static/*
   Cache-Control: public,max-age=31536000,immutable
 
-# Versioned brand assets; use a new directory when their contents change.
-/brand/5e31214/*
-  Cache-Control: public,max-age=31536000,immutable
-
-/logo*
-  Cache-Control: public,max-age=604800,stale-while-revalidate=86400
+# Brand assets use fixed URLs and must be revalidated before reuse.
+/brand/*
+  Cache-Control: public,max-age=0,must-revalidate
 
 /favicon.ico
-  Cache-Control: public,max-age=604800,stale-while-revalidate=86400
+  Cache-Control: public,max-age=0,must-revalidate
 
 /apple-touch-icon*.png
-  Cache-Control: public,max-age=31536000,immutable
+  Cache-Control: public,max-age=0,must-revalidate
 
 # CORS for OG images: keep in sync with CORS_HEADERS in next.config.mjs,
 # which covers the generated /og/home/image.png and /og/:path* routes.

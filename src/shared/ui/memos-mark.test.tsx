@@ -6,7 +6,7 @@ import { MemosMark } from "./memos-mark";
 describe("MemosMark", () => {
   it.each([16, 24, 32, 48, 144])("preserves the official shape at %ipx", (size) => {
     const filename = size <= 32 ? "logo-small.svg" : "logo.svg";
-    const source = readFileSync(`public/brand/5e31214/${filename}`, "utf8");
+    const source = readFileSync(`public/brand/${filename}`, "utf8");
     const original = new DOMParser().parseFromString(source, "image/svg+xml");
     const { container } = render(<MemosMark size={size} />);
 
@@ -23,7 +23,7 @@ describe("MemosMark", () => {
   });
 
   it("gives informative previews an accessible name", () => {
-    render(<MemosMark size={144} label="Memos bird logo" />);
-    expect(screen.getByRole("img", { name: "Memos bird logo" })).not.toHaveAttribute("aria-hidden");
+    render(<MemosMark size={144} label="Memos logo" />);
+    expect(screen.getByRole("img", { name: "Memos logo" })).not.toHaveAttribute("aria-hidden");
   });
 });

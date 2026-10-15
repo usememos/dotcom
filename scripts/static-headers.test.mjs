@@ -80,10 +80,17 @@ test("homepage images stay fresh for one week", async () => {
   assert.equal(headers.get("cache-control"), "public,max-age=604800,stale-while-revalidate=604800");
 });
 
-test("versioned brand assets have immutable URLs without caching the brand page", async () => {
-  const headers = await readEffectiveHeaders("/brand/5e31214/logo.svg");
-  assert.equal(headers.get("cache-control"), "public,max-age=31536000,immutable");
+test("fixed brand asset URLs require revalidation without caching the brand page", async () => {
+  for (const route of ["/brand/logo.svg", "/brand/avatars/memos-graphite.png", "/brand/favicon-tile.svg"]) {
+    assert.equal((await readEffectiveHeaders(route)).get("cache-control"), "public,max-age=0,must-revalidate");
+  }
   assert.equal((await readEffectiveHeaders("/brand")).get("cache-control"), undefined);
+});
+
+test("fixed fallback icon URLs also require revalidation", async () => {
+  for (const route of ["/favicon.ico", "/apple-touch-icon.png", "/apple-touch-icon-precomposed.png"]) {
+    assert.equal((await readEffectiveHeaders(route)).get("cache-control"), "public,max-age=0,must-revalidate");
+  }
 });
 
 test("generated homepage Open Graph image allows cross-origin reads", async () => {

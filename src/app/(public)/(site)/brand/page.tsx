@@ -19,15 +19,8 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd([
 ]);
 
 const LOGOS = [
-  { title: "Standard logo", filename: "logo.svg", small: false, description: "The original mark for general use." },
-  { title: "Small logo", filename: "logo-small.svg", small: true, description: "Simplified details for display at 32px or smaller." },
-] as const;
-
-const LEGACY_LOGOS = [
-  { src: "/logo.png", title: "Standard logo" },
-  { src: "/logo-rounded.png", title: "Rounded logo" },
-  { src: "/full-logo-landscape.png", title: "Landscape logo" },
-  { src: "/full-logo.png", title: "Vertical logo" },
+  { title: "Standard logo", filename: "logo.svg", small: false, description: "Standard logo for general use." },
+  { title: "Small logo", filename: "logo-small.svg", small: true, description: "Simplified version for display at 32px or smaller." },
 ] as const;
 
 function DownloadLink({ href, name, format }: { href: string; name: string; format: "SVG" | "PNG" }) {
@@ -60,7 +53,7 @@ function MarkPreview({ small = false, dark = false }: { small?: boolean; dark?: 
             </div>
           ))
         ) : (
-          <MemosMark size={144} label={`Memos bird logo on a ${dark ? "dark" : "light"} background`} />
+          <MemosMark size={144} label={`Memos logo on a ${dark ? "dark" : "light"} background`} />
         )}
       </div>
       <span className={`text-xs ${dark ? "text-zinc-400" : "text-zinc-500"}`}>{dark ? "Dark background" : "Light background"}</span>
@@ -79,8 +72,7 @@ export default function BrandPage() {
             Memos <HeroAccent>brand assets.</HeroAccent>
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-7 text-zinc-600 sm:text-lg sm:leading-8 dark:text-zinc-300">
-            Our logo is based on the bird pictograph for the Chinese character <span lang="zh">鸟</span>. Download the original mark or
-            choose an avatar for your profile.
+            The logo is a stylized bird inspired by ancient pictographs. Download the SVG or choose an avatar for your profile.
           </p>
           <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:gap-8">
             {LOGOS.map((logo) => (
@@ -140,8 +132,7 @@ export default function BrandPage() {
             Using the brand
           </h2>
           <p className="mt-5 max-w-2xl text-sm leading-7 text-zinc-600 dark:text-zinc-300">
-            Wordmark typography, capitalization, and the primary color palette are still being explored. These avatar palettes are available
-            options, not a final brand color system.
+            Wordmark typography, capitalization, and the primary color palette remain under exploration.
           </p>
           <a
             href="https://github.com/usememos/.github/blob/main/BRAND.md"
@@ -151,22 +142,6 @@ export default function BrandPage() {
           >
             Read the brand guidelines
           </a>
-          <details className="mt-10 max-w-2xl">
-            <summary className="w-fit cursor-pointer rounded-lg py-2 text-sm font-semibold text-zinc-600 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600 dark:text-zinc-300">
-              Legacy assets
-            </summary>
-            <p className="mt-3 text-sm leading-7 text-zinc-600 dark:text-zinc-400">
-              Previous logos remain available for existing references. Use the bird mark above for new work.
-            </p>
-            <ul className="mt-4 grid gap-4 sm:grid-cols-2">
-              {LEGACY_LOGOS.map((logo) => (
-                <li key={logo.src}>
-                  <p className="text-sm text-zinc-600 dark:text-zinc-300">{logo.title}</p>
-                  <DownloadLink href={logo.src} name={`Legacy ${logo.title.toLowerCase()}`} format="PNG" />
-                </li>
-              ))}
-            </ul>
-          </details>
         </div>
       </section>
     </main>
