@@ -2,6 +2,7 @@
 
 import { ArrowRightIcon, BookOpenIcon, FileSearchIcon, HomeIcon, MessageCircleIcon, RotateCcwIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { MemosLockup } from "@/shared/ui/memos-lockup";
 
 type FallbackVariant = "error" | "not-found";
 
@@ -75,8 +76,7 @@ export function ErrorBoundaryFallback({
         <div className="relative mx-auto grid w-full max-w-6xl gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-center">
           <div className="max-w-3xl">
             <a href="/" className="mb-10 inline-flex items-center gap-3 text-sm font-semibold text-zinc-800 dark:text-zinc-100">
-              <span aria-hidden="true" className="h-7 w-7 rounded bg-cover bg-center" style={{ backgroundImage: "url('/logo-96.png')" }} />
-              <span>Memos</span>
+              <MemosLockup />
             </a>
 
             <p className="text-sm font-semibold tracking-[0.18em] text-zinc-500 uppercase dark:text-zinc-400">{resolvedEyebrow}</p>

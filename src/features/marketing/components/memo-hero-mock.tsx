@@ -14,7 +14,6 @@ import {
   SlidersHorizontalIcon,
   SquarePenIcon,
 } from "lucide-react";
-import Image from "next/image";
 import type { ReactNode } from "react";
 import styles from "@/features/marketing/components/home-hero.module.css";
 import { MemoCard } from "@/features/marketing/components/memo-card";
@@ -23,6 +22,7 @@ import { MemoHeroCalendar } from "@/features/marketing/components/memo-hero-cale
 import { MemoHeroContent } from "@/features/marketing/components/memo-hero-content";
 import { MemoHeroSponsors } from "@/features/marketing/components/memo-hero-sponsors";
 import { HOME_MEMOS, HOME_TAGS } from "@/features/marketing/data/home-memos";
+import { MemosMark } from "@/shared/ui/memos-mark";
 
 /** Compact destinations alongside the active Home scope in the current product. */
 const NAV_PILLS = [
@@ -47,7 +47,7 @@ function SidebarHeader() {
   return (
     <div className="flex h-9 shrink-0 items-center justify-between gap-2 px-3">
       <div className="flex min-w-0 items-center gap-1.5">
-        <Image src="/logo-rounded-96.png" alt="" width={20} height={20} className="rounded-[6px]" />
+        <MemosMark size={20} className="text-[var(--mock-ink)]" />
         <span className="truncate text-[11px] font-medium tracking-[-0.01em] text-[var(--mock-ink)]">Memos</span>
         <ChevronsUpDownIcon className="size-2.5 text-[var(--mock-muted)] opacity-70" />
       </div>
@@ -125,7 +125,9 @@ function SidebarFooter() {
   return (
     <div className="flex h-9 shrink-0 items-center justify-between gap-2 border-t border-[var(--mock-border)] px-3 dark:border-white/8">
       <div className="flex min-w-0 items-center gap-1.5">
-        <Image src="/logo-rounded-96.png" alt="" width={20} height={20} className="rounded-[5px]" />
+        <span className="grid size-5 place-items-center rounded-[5px] bg-[var(--mock-selected)] text-[10px] font-medium text-[var(--mock-ink)]">
+          S
+        </span>
         <span className="truncate text-[10px] font-medium text-[var(--mock-ink)]">Steven</span>
       </div>
       <MoreVerticalIcon className="size-3 shrink-0 text-[var(--mock-muted)] opacity-70" />

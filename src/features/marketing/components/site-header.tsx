@@ -1,7 +1,6 @@
 "use client";
 
 import { ArrowRightIcon, ArrowUpRightIcon, ChevronDownIcon, MenuIcon, StarIcon, XIcon } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -18,6 +17,7 @@ import {
 import { cn } from "@/shared/lib/utils";
 import { buttonVariants } from "@/shared/ui/button";
 import { GithubIcon } from "@/shared/ui/github-icon";
+import { MemosLockup } from "@/shared/ui/memos-lockup";
 
 const MOBILE_NAV_ID = "site-mobile-navigation";
 const DESKTOP_NAV_ITEM_CLASS =
@@ -177,9 +177,12 @@ export function SiteHeader() {
   return (
     <header ref={headerRef} className="sticky top-0 z-40 h-14 border-b border-border bg-background/85 backdrop-blur-lg">
       <nav className="site-container flex h-14 items-center" aria-label="Main navigation">
-        <Link href="/" prefetch={false} className="inline-flex items-center gap-2.5 font-semibold">
-          <Image src="/logo-96.png" alt="" width={24} height={24} className="rounded" priority aria-hidden="true" />
-          <span>Memos</span>
+        <Link
+          href="/"
+          prefetch={false}
+          className="inline-flex h-10 items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+        >
+          <MemosLockup />
         </Link>
 
         <ul className="ml-5 hidden items-center gap-1 md:flex">

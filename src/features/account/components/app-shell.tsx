@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { cn } from "@/shared/lib/utils";
 import { CONNECTIONS_SETTINGS_PATH } from "@/shared/routes";
+import { MemosMark } from "@/shared/ui/memos-mark";
 import { AppAccountMenu } from "./app-account-menu";
 
 const navigation = [
@@ -20,7 +21,7 @@ function WorkspaceMark() {
       className="group flex items-center gap-2.5 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       <span className="grid size-7 place-items-center overflow-hidden rounded-lg bg-foreground shadow-sm transition-transform duration-200 group-hover:-rotate-2">
-        <img src="/logo-rounded-96.png" alt="" className="size-7 object-cover" />
+        <MemosMark size={28} className="text-background" />
       </span>
       <span className="text-[15px] font-semibold tracking-[-0.02em]">Memos</span>
     </Link>

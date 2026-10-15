@@ -80,6 +80,12 @@ test("homepage images stay fresh for one week", async () => {
   assert.equal(headers.get("cache-control"), "public,max-age=604800,stale-while-revalidate=604800");
 });
 
+test("versioned brand assets have immutable URLs without caching the brand page", async () => {
+  const headers = await readEffectiveHeaders("/brand/5e31214/logo.svg");
+  assert.equal(headers.get("cache-control"), "public,max-age=31536000,immutable");
+  assert.equal((await readEffectiveHeaders("/brand")).get("cache-control"), undefined);
+});
+
 test("generated homepage Open Graph image allows cross-origin reads", async () => {
   const headers = await readEffectiveHeaders("/og/home/image.png");
 

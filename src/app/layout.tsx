@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Source_Serif_4 } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
+import { BRAND_ASSETS_PATH, BRAND_LOGO_URL } from "@/shared/lib/brand-assets";
 import { BRAND_DESCRIPTION, BRAND_TITLE } from "@/shared/lib/branding";
 import { buildSiteNavigationJsonLd, DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_ALT, GITHUB_REPO_URL } from "@/shared/lib/seo";
 
@@ -73,9 +74,9 @@ export const metadata: Metadata = {
     images: [DEFAULT_OG_IMAGE],
   },
   icons: {
-    icon: "/logo-rounded.png",
-    shortcut: "/logo-rounded.png",
-    apple: "/logo-rounded.png",
+    icon: [{ url: `${BRAND_ASSETS_PATH}/favicon-tile.svg`, type: "image/svg+xml" }],
+    shortcut: `${BRAND_ASSETS_PATH}/favicon-tile.ico`,
+    apple: [{ url: `${BRAND_ASSETS_PATH}/apple-touch-icon.png`, sizes: "180x180", type: "image/png" }],
   },
 };
 
@@ -111,7 +112,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       url: "https://usememos.com",
       logo: {
         "@type": "ImageObject",
-        url: "https://usememos.com/logo-rounded.png",
+        url: BRAND_LOGO_URL,
       },
     },
     image: DEFAULT_OG_IMAGE,
@@ -133,7 +134,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     "@type": "Organization",
     name: "Memos",
     url: "https://usememos.com",
-    logo: "https://usememos.com/logo-rounded.png",
+    logo: BRAND_LOGO_URL,
     sameAs: [GITHUB_REPO_URL, "https://twitter.com/usaboringmemos", "https://discord.gg/tfPJa4UmAv"],
     contactPoint: {
       "@type": "ContactPoint",

@@ -1,6 +1,6 @@
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
-import Image from "next/image";
 import { GITHUB_REPO_URL } from "@/shared/lib/seo";
+import { MemosLockup } from "@/shared/ui/memos-lockup";
 
 /**
  * Chrome for the docs shell. No `links`: the docs layout renders its own sidebar
@@ -9,12 +9,7 @@ import { GITHUB_REPO_URL } from "@/shared/lib/seo";
  */
 export const docsLayoutOptions: BaseLayoutProps = {
   nav: {
-    title: (
-      <>
-        <Image src="/logo-96.png" alt="" width={24} height={24} className="rounded" priority aria-hidden="true" />
-        Memos
-      </>
-    ),
+    title: <MemosLockup />,
   },
   githubUrl: GITHUB_REPO_URL,
 };

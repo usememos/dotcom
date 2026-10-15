@@ -560,6 +560,24 @@ theme.
 - Repeated generic sparkles, rockets, lightning, or magic-wand decoration MUST
   NOT substitute for product evidence.
 
+### 13.4 Brand mark
+
+Use the official bird SVG shape through `MemosMark` for interface branding. Its
+`currentColor` fill follows the surrounding text color; backgrounds and radius
+belong to the placement, not the mark. Use the official simplified shape at
+32px or below and the standard shape above 32px. Use `MemosLockup` for the public
+header, Docs title, and fallback pages: a 28px-tall mark with transparent side
+padding trimmed, an 8px gap, and the existing Inter face at 20px semibold with
+tight tracking. Preserve the SVG's proportions and paths. Browser icons use a
+fixed light mark on a dark rounded tile, independent of the system theme, so the
+mark remains visible in both light and dark browser tabs.
+
+The Brand page is the asset catalog: show light and dark previews, actual-size
+small marks, SVG downloads, the official square avatar PNGs, and a secondary
+Legacy section. Avatar palettes do not redefine the site's primary color scale.
+Source authority remains the upstream `BRAND.md`; keep vendored assets under
+versioned URLs. This logo migration does not change typography or social previews.
+
 ## 14. Product presentation
 
 The public site proves the product; it does not redesign the product.

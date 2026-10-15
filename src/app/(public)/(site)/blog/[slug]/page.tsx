@@ -12,6 +12,7 @@ import { BLOG_ARTICLE_COLUMN_CLASS, BLOG_DETAIL_LAYOUT_CLASS, formatBlogDate } f
 import { getBlogSocialPreview } from "@/features/editorial/lib/social-preview";
 import { buildContentMetadata } from "@/shared/content/social-preview";
 import { blogSource } from "@/shared/content/source";
+import { BRAND_LOGO_URL } from "@/shared/lib/brand-assets";
 import { buildBreadcrumbItems, buildBreadcrumbJsonLd } from "@/shared/lib/seo";
 import { JsonLdScript } from "@/shared/ui/json-ld-script";
 
@@ -58,7 +59,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
       url: "https://usememos.com",
       logo: {
         "@type": "ImageObject",
-        url: "https://usememos.com/logo-rounded.png",
+        url: BRAND_LOGO_URL,
       },
     },
     mainEntityOfPage: {
