@@ -17,49 +17,55 @@ describe("social preview artwork", () => {
     await response.arrayBuffer();
   });
 
-  it("uses compact vector artwork without embedded bitmaps or costly texture filters", async () => {
-    const svg = await readFile("src/shared/content/social-preview-sky.svg", "utf8");
-    expect(Buffer.byteLength(svg)).toBeLessThan(10_000);
-    expect(svg).toContain('viewBox="0 0 1200 630"');
-    expect(svg).not.toMatch(/<image|<filter|Gradient|<circle|data:image|https?:\/\/(?!www\.w3\.org)/);
+  it("keeps the approved illustration local, compact, and independent of the background", async () => {
+    const png = await readFile("src/shared/content/social-preview-timeline.png");
+    expect(png.byteLength).toBeLessThan(100_000);
+    expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([1200, 630]);
+    expect(png[25]).toBe(6); // RGBA: backgrounds belong to the renderer.
   });
 
-  it("uses the same display family for title and brand, without a competing section label", () => {
+  it("pairs the official mark with the serif wordmark and selected two-blue palette", () => {
     const html = renderToStaticMarkup(
-      <SocialPreviewImage preview={{ title: BRAND_TAGLINE_LINES.join("\n"), description, section: "Blog" }} artwork="sky.svg" />,
+      <SocialPreviewImage preview={{ title: BRAND_TAGLINE_LINES.join("\n"), description, section: "Blog" }} artwork="timeline.png" />,
     );
-    expect(html).toContain(">Memos</div>");
-    expect(html.match(/font-family:Fraunces/g)).toHaveLength(2);
+    expect(html).toContain(">Memos</span>");
+    expect(html).toContain("font-family:Liberation Serif");
+    expect(html.match(/font-weight:400/g)).toHaveLength(2);
     expect(html).toContain("font-size:76px");
-    expect(html.match(/left:72px/g)).toHaveLength(2);
+    expect(html).toContain("background:#c0d9e3");
+    expect(html).toContain("background:#79a9c8");
+    expect(html).toContain("color:#25363e");
+    expect(html).toContain('viewBox="112 32 288 448"');
     expect(html.match(/<img /g)).toHaveLength(1);
-    expect(html).not.toMatch(/logo|badge|Blog|text-shadow/);
+    expect(html.match(/<svg /g)).toHaveLength(1);
+    expect(html).not.toMatch(/badge|Blog|text-shadow/);
   });
 
   it("bounds long copy and escapes content", () => {
     const html = renderToStaticMarkup(
-      <SocialPreviewImage preview={{ title: "<script> ".repeat(30), description: "Description ".repeat(50) }} artwork="sky.svg" />,
+      <SocialPreviewImage preview={{ title: "<script> ".repeat(30), description: "Description ".repeat(50) }} artwork="timeline.png" />,
     );
     expect(html).not.toContain("<script>");
     expect(html).toContain("&lt;script&gt;");
     expect(html).toContain("…");
-    expect(html).toContain("line-clamp:2");
+    expect(html).toContain("height:340px");
     expect(html).toContain("word-break:break-word");
+    expect(html).toContain("text-wrap:balance");
+    expect(html).not.toContain("line-clamp");
     expect(html).not.toContain("undefined");
   });
 
-  it("uses concise image copy without shortening the metadata description", () => {
+  it("keeps descriptions in metadata without crowding the image", () => {
     const fullDescription = "Official Memos documentation — install and self-host with Docker, configure storage and authentication.";
     const preview = getDocsSocialPreview({
       url: "/docs",
       slugs: [],
       data: { title: "Documentation", description: fullDescription },
     });
-    const html = renderToStaticMarkup(<SocialPreviewImage preview={preview} artwork="sky.svg" />);
-    expect(html).toContain("Install and configure Memos.\nExplore the API and daily workflows.");
+    const html = renderToStaticMarkup(<SocialPreviewImage preview={preview} artwork="timeline.png" />);
+    expect(html).toContain("Documentation");
+    expect(html).not.toContain("Install and configure Memos.");
     expect(html).not.toContain(fullDescription);
-    expect(html).toContain("font-size:34px");
-    expect(html).toContain("line-clamp:2");
     const metadata = buildContentMetadata(preview);
     expect(metadata.openGraph?.description).toBe(fullDescription);
     expect(metadata.twitter?.description).toBe(fullDescription);

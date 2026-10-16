@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { MemosLockup } from "./memos-lockup";
 import { MemosMark } from "./memos-mark";
 
 describe("MemosMark", () => {
@@ -25,5 +26,13 @@ describe("MemosMark", () => {
   it("gives informative previews an accessible name", () => {
     render(<MemosMark size={144} label="Memos logo" />);
     expect(screen.getByRole("img", { name: "Memos logo" })).not.toHaveAttribute("aria-hidden");
+  });
+
+  it("uses system serif for the shared wordmark while keeping the small official mark", () => {
+    const { container } = render(<MemosLockup />);
+    expect(screen.getByText("Memos")).toHaveStyle({ fontFamily: 'Georgia, "Times New Roman", Times, serif' });
+    expect(screen.getByText("Memos")).not.toHaveClass("font-serif");
+    expect(container.querySelector("svg")).toHaveAttribute("height", "28");
+    expect(container.querySelector("svg")).toHaveAttribute("viewBox", "112 32 288 448");
   });
 });

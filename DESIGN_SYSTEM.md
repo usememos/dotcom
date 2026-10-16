@@ -80,9 +80,9 @@ the current code pass.
 
 ### Social preview artwork
 
-At the user's request, generated social previews abstract the Cloud campaign's sky, clouds, and birds through a flat cut-paper composition informed by modern abstract painting. This scope covers `src/shared/content/social-preview-image.tsx`, its artwork, and the default `/og/home/image.png`. Use a cobalt sky, oversized ivory cloud shapes, and birds reduced to asymmetric wing silhouettes. No eyes, feather detail, outlines, gradients, texture filters, or simulated depth. The original SVG must contain no embedded bitmaps.
+At the user's request, generated social previews use a two-color editorial composition: water blue `#c0d9e3` on the left and mid blue `#79a9c8` on the right, with dark ink `#25363e`. The left field occupies approximately 61% of the canvas. The right field carries the approved timeline illustration as a local transparent PNG. Keep both background colors in the renderer, independent of the artwork. This scope covers `src/shared/content/social-preview-image.tsx`, its artwork, and every generated `/og/` image; explicit article cover images retain their own artwork.
 
-Use Fraunces Black for both the title and the text-only Memos wordmark; Inter carries supporting copy at 34px, limited to one or two lines. Keep descriptions subordinate through regular weight and a softer ink color, not tiny type. Entry pages may supply concise image-only copy while retaining their full metadata descriptions. The wordmark sits independently at the lower left, aligned with the title and description. Omit section labels from the image rather than pairing mismatched type next to the brand. Keep the left text column clear of illustration and reserve the right side for an asymmetric, cropped composition. No logo icon or text shadows. This exception to sections 10–11 applies only to the fixed 1200 × 630 social image, not page styles. Serve PNG from the shared template for social crawler compatibility, and keep representative generated images below 300 KB. Verify short and long titles at full and card size.
+Use a conventional system-serif treatment for both the title and the Memos wordmark. PNG generation requires explicit font data: use the local Times New Roman-compatible Liberation Serif Regular solely for image rendering, without loading it as a website font. Place the official standard SVG mark and wordmark together at the upper left, preserving the SVG paths and proportions. Keep the title in the clear left field, balance its wrapping, and reduce its size for long titles. Do not render descriptions or section labels inside the image; retain full descriptions in Open Graph and Twitter metadata. Avoid gradients, shadows, and added background texture. This scoped palette does not redefine general site colors. Serve 1200 × 630 PNG from the shared template for social crawler compatibility, and keep representative generated images below 300 KB. Verify short and long titles at full size and in 390px share cards on light and dark surfaces.
 
 Before editing a public page, the agent MUST:
 
@@ -567,8 +567,8 @@ Use the official Memos SVG shape through `MemosMark` for interface branding. Its
 belong to the placement, not the mark. Use the official simplified shape at
 32px or below and the standard shape above 32px. Use `MemosLockup` for the public
 header, Docs title, and fallback pages: a 28px-tall mark with transparent side
-padding trimmed, an 8px gap, and the existing Inter face at 20px semibold with
-tight tracking. Preserve the SVG's proportions and paths. Browser icons use a
+padding trimmed, an 8px gap, and the system serif stack `Georgia, "Times New Roman", Times, serif` at 20px regular with
+`-0.025em` tracking. Body and UI text retain Inter. Preserve the SVG's proportions and paths. Browser icons use a
 fixed light mark on a dark rounded tile, independent of the system theme, so the
 mark remains visible in both light and dark browser tabs.
 
@@ -576,7 +576,8 @@ The Brand page is the asset catalog: show light and dark previews, actual-size
 small marks, SVG downloads, and the official square avatar PNGs. Avatar palettes
 do not redefine the site's primary color scale. Source authority remains the
 upstream `BRAND.md`; serve assets at fixed `/brand/` URLs with revalidation before
-reuse. This logo migration does not change typography or social previews.
+reuse. The website wordmark and social-preview treatment above are locally
+approved choices; upstream `BRAND.md` remains the authority for product copy.
 
 ## 14. Product presentation
 

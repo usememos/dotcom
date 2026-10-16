@@ -3,24 +3,26 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import type { ContentSocialPreview } from "@/shared/content/social-preview";
 import { SOCIAL_PREVIEW_IMAGE_SIZE } from "@/shared/content/social-preview";
+import { MemosMark } from "@/shared/ui/memos-mark";
 
 type SocialPreviewCopy = Pick<ContentSocialPreview, "title" | "description" | "imageDescription"> &
   Partial<Pick<ContentSocialPreview, "section">>;
 
-// Original vector artwork echoes /cloud without embedding its large painted assets.
-// Keep PNG output: social crawlers do not consistently accept SVG image URLs.
-const artworkPromise = readFile(join(process.cwd(), "src/shared/content/social-preview-sky.svg")).then(
-  (buffer) => `data:image/svg+xml;base64,${buffer.toString("base64")}`,
+const INK = "#25363e";
+
+// The approved illustration is transparent; both background colors stay in code.
+// Keep PNG output for social crawlers and load all assets locally at build time.
+const artworkPromise = readFile(join(process.cwd(), "src/shared/content/social-preview-timeline.png")).then(
+  (buffer) => `data:image/png;base64,${buffer.toString("base64")}`,
 );
 const fontDefinitions = [
   {
-    name: "Inter",
+    name: "Liberation Serif",
     weight: 400,
-    file: "inter-regular.ttf",
+    file: "liberation-serif-regular.ttf",
   },
-  { name: "Fraunces", weight: 900, file: "fraunces-black.ttf" },
 ] as const;
-// Local, licensed subsets make all static previews reproducible without font fetches.
+// A local, licensed TTF makes every static preview independent of font services.
 const fontsPromise = Promise.all(
   fontDefinitions.map(async (font) => {
     const buffer = await readFile(join(process.cwd(), "src/shared/content/fonts", font.file));
@@ -46,9 +48,7 @@ function truncateText(value: string, maxLength: number): string {
 
 export function SocialPreviewImage({ preview, artwork }: { preview: SocialPreviewCopy; artwork: string }) {
   const title = truncateText(preview.title, 100);
-  const longestTitleLine = Math.max(...title.split("\n").map((line) => line.length));
-  const titleSize = longestTitleLine > 55 ? 48 : longestTitleLine > 30 ? 64 : 76;
-  const description = preview.imageDescription?.trim() || preview.description.replace(/\s+/g, " ").trim();
+  const titleSize = title.length > 80 ? 52 : title.length > 55 ? 62 : 76;
 
   return (
     <div
@@ -56,70 +56,58 @@ export function SocialPreviewImage({ preview, artwork }: { preview: SocialPrevie
         width: "100%",
         height: "100%",
         display: "flex",
-        background: "#2458c6",
-        fontFamily: "Inter",
-        color: "#f4f1e7",
+        background: "#79a9c8",
+        fontFamily: "Liberation Serif",
+        color: INK,
         position: "relative",
         overflow: "hidden",
       }}
     >
+      <div style={{ display: "flex", position: "absolute", top: 0, left: 0, width: 735.26, height: 630, background: "#c0d9e3" }} />
       <img src={artwork} alt="" width={1200} height={630} style={{ position: "absolute", top: 0, left: 0 }} />
       <div
         style={{
           display: "flex",
           position: "absolute",
-          left: 72,
-          bottom: 48,
-          fontFamily: "Fraunces",
-          fontSize: 40,
-          fontWeight: 900,
-          letterSpacing: -1.6,
+          left: 65,
+          top: 48,
+          height: 108,
+          alignItems: "center",
+          gap: 15,
         }}
       >
-        Memos
+        <MemosMark size={108} width={69} viewBox="112 32 288 448" style={{ color: INK }} />
+        <span style={{ fontSize: 43, fontWeight: 400, letterSpacing: -1.075, lineHeight: 1 }}>Memos</span>
       </div>
       <div
         style={{
           display: "flex",
           position: "absolute",
-          top: 92,
+          top: 196,
           left: 72,
-          width: 660,
-          height: 380,
+          width: 650,
+          height: 340,
           flexDirection: "column",
           justifyContent: "center",
-          gap: 28,
+          overflow: "hidden",
         }}
       >
         <div
           style={{
             display: "block",
-            fontFamily: "Fraunces",
+            width: titleSize === 62 ? 600 : 650,
             fontSize: titleSize,
             lineHeight: 1.06,
-            fontWeight: 900,
-            letterSpacing: -2.2,
+            fontWeight: 400,
+            letterSpacing: titleSize === 52 ? -1.5 : -2.15,
             whiteSpace: "pre-wrap",
             wordBreak: "break-word",
-            lineClamp: titleSize === 76 ? 2 : titleSize === 48 ? 4 : 3,
+            // Satori balances against the full text. A line clamp would make it
+            // treat truncated layouts as fitting and shrink long titles too far.
+            textWrap: "balance",
           }}
         >
           {title}
-        </div>
-        <div
-          style={{
-            display: "block",
-            width: 660,
-            fontSize: 34,
-            lineHeight: 1.3,
-            fontWeight: 400,
-            color: "#dce7f5",
-            whiteSpace: "pre-wrap",
-            wordBreak: "break-word",
-            lineClamp: 2,
-          }}
-        >
-          {truncateText(description, 80)}
         </div>
       </div>
     </div>
