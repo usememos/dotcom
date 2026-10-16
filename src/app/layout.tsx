@@ -74,9 +74,9 @@ export const metadata: Metadata = {
     images: [DEFAULT_OG_IMAGE],
   },
   icons: {
-    icon: [{ url: `${BRAND_ASSETS_PATH}/favicon-tile.svg`, type: "image/svg+xml" }],
-    shortcut: `${BRAND_ASSETS_PATH}/favicon-tile.ico`,
-    apple: [{ url: `${BRAND_ASSETS_PATH}/apple-touch-icon.png`, sizes: "180x180", type: "image/png" }],
+    icon: [{ url: `${BRAND_ASSETS_PATH}/favicon.svg`, type: "image/svg+xml", sizes: "any" }],
+    shortcut: "/favicon.ico?v=bird-blue",
+    apple: [{ url: `${BRAND_ASSETS_PATH}/apple-touch-icon.png?v=celadon`, sizes: "180x180", type: "image/png" }],
   },
 };
 

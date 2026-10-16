@@ -569,8 +569,13 @@ belong to the placement, not the mark. Use the official simplified shape at
 header, Docs title, and fallback pages: a 28px-tall mark with transparent side
 padding trimmed, an 8px gap, and the system serif stack `Georgia, "Times New Roman", Times, serif` at 20px regular with
 `-0.025em` tracking. Body and UI text retain Inter. Preserve the SVG's proportions and paths. Browser icons use a
-fixed light mark on a dark rounded tile, independent of the system theme, so the
-mark remains visible in both light and dark browser tabs.
+fixed blue (`#477FA8`) simplified mark on a transparent background, matching the
+local Memos favicon at the user's request. Preserve its 1.08 scale and light
+3-unit stroke for legibility at small sizes, independent of the system theme.
+The SVG and ICO fallback must share this treatment. At the user's request,
+Apple touch icons and their fallback files use the official Celadon avatar,
+resized to 180px with its solid light-green background and square canvas.
+These icon treatments do not change the website's brand-color tokens.
 
 The Brand page is the asset catalog: show light and dark previews, actual-size
 small marks, SVG downloads, and the official square avatar PNGs. Avatar palettes

@@ -81,7 +81,7 @@ test("homepage images stay fresh for one week", async () => {
 });
 
 test("fixed brand asset URLs require revalidation without caching the brand page", async () => {
-  for (const route of ["/brand/logo.svg", "/brand/avatars/memos-graphite.png", "/brand/favicon-tile.svg"]) {
+  for (const route of ["/brand/logo.svg", "/brand/avatars/memos-graphite.png", "/brand/favicon.svg"]) {
     assert.equal((await readEffectiveHeaders(route)).get("cache-control"), "public,max-age=0,must-revalidate");
   }
   assert.equal((await readEffectiveHeaders("/brand")).get("cache-control"), undefined);
