@@ -1,11 +1,7 @@
 import { ArrowRightIcon, CheckIcon } from "lucide-react";
 import type { Metadata } from "next";
-import {
-  MarketingActions,
-  MarketingCtaSection,
-  MarketingFaqSection,
-  MarketingSummaryBand,
-} from "@/features/marketing/components/marketing-page";
+import { MarketingActions, MarketingFaqSection, MarketingSummaryBand } from "@/features/marketing/components/marketing-page";
+import { StartSection } from "@/features/marketing/components/start-section";
 import {
   absoluteUrl,
   buildBreadcrumbItems,
@@ -206,8 +202,8 @@ export default function PrivacyPage() {
               <MarketingActions
                 align="left"
                 actions={[
-                  { label: "Inspect the source", href: GITHUB_REPO_URL, icon: <GithubIcon className="size-4" /> },
-                  { label: "Install Memos", href: "/docs/getting-started" },
+                  { label: "Source code", href: GITHUB_REPO_URL, icon: <GithubIcon className="size-4" /> },
+                  { label: "Installation", href: "/docs/getting-started" },
                 ]}
               />
             </div>
@@ -301,12 +297,10 @@ export default function PrivacyPage() {
         separators={false}
       />
 
-      <MarketingCtaSection
-        title="Verify it in the open."
-        description="Inspect the source, review the deployment path, and decide where your data should live."
+      <StartSection
         actions={[
-          { label: "Inspect the source", href: GITHUB_REPO_URL, icon: <GithubIcon className="size-4" /> },
-          { label: "Report a privacy concern", href: `${GITHUB_REPO_URL}/issues`, variant: "secondary" },
+          { label: "Source code", href: GITHUB_REPO_URL },
+          { label: "Privacy concerns", href: `${GITHUB_REPO_URL}/issues` },
         ]}
       />
     </main>

@@ -16,12 +16,10 @@ export const revalidate = false;
 export const metadata: Metadata = {
   ...buildMarketingMetadata({
     title: "Features",
-    description:
-      "Every Memos feature: quick capture in Markdown, then search, tags, views, and a private timeline to find memos again. Self-hosted and open source, with export.",
+    description: "Writing, finding, and sharing your memos, with Markdown, tags, a calendar, and export.",
     path: "/features",
   }),
-  description:
-    "Every Memos feature: quick capture in Markdown, then search, tags, views, and a private timeline to find memos again. Self-hosted and open source, with export.",
+  description: "Writing, finding, and sharing your memos, with Markdown, tags, a calendar, and export.",
   keywords: [
     "note taking features",
     "self-hosted",
@@ -58,7 +56,7 @@ const FEATURE_CHAPTERS = [
   {
     id: "use-memos",
     eyebrow: "Use Memos",
-    title: "Write first. Organize when the note asks for it.",
+    title: "Write without choosing a title or folder.",
     description:
       "There is no title or folder to choose first. Markdown, attachments, tags, search, and sharing sit around the memo, ready when you need them.",
     surface: "plain",
@@ -66,7 +64,7 @@ const FEATURE_CHAPTERS = [
       {
         id: "capture",
         title: "Write",
-        description: "The shortest path from thought to saved memo.",
+        description: "A thought, kept as a memo.",
         slugs: ["instant-save", "quick-capture", "markdown-support", "media-integration", "keyboard-shortcuts"],
       },
       {
@@ -77,7 +75,7 @@ const FEATURE_CHAPTERS = [
       },
       {
         id: "publishing",
-        title: "Publishing",
+        title: "Sharing",
         description: "Share the memos you choose. New memos start private.",
         slugs: ["public-sharing", "microblog", "community", "multi-language"],
       },
@@ -85,22 +83,21 @@ const FEATURE_CHAPTERS = [
   },
   {
     id: "run-memos",
-    eyebrow: "Run Memos",
-    title: "Keep the software as legible as the notes.",
-    description:
-      "Choose the server, database, and integrations. Memos is open source under the MIT license with no license fee, and your memos export to a portable ZIP.",
+    eyebrow: "Yours to keep",
+    title: "Your memos, wherever you choose.",
+    description: "You choose where your memos live. Your export includes Markdown and attachments that stay readable outside Memos.",
     surface: "quiet",
     groups: [
       {
         id: "ownership",
         title: "Ownership",
-        description: "Run Memos yourself, keep the data path legible, and take your memos with you.",
+        description: "Keep a record that belongs to you, with a copy you can take anywhere.",
         slugs: ["self-hosted", "data-ownership", "open-source", "no-fees", "no-dependencies", "database-support", "import", "export"],
       },
       {
         id: "operations",
-        title: "Operations",
-        description: "Fit Memos into your devices, your hardware, and the rest of your stack.",
+        title: "Everyday use",
+        description: "Read and write across your devices, or connect the tools you already use.",
         slugs: ["beautiful-design", "pwa-support", "customizable-ui", "cross-platform", "performance", "lightweight", "api-first"],
       },
     ],
@@ -145,10 +142,10 @@ export default function FeaturesPage() {
             Everything begins with <HeroAccent>a memo.</HeroAccent>
           </>
         }
-        lead="Write a memo in Markdown, find it again by search, tag, or date, share only what you choose, and run it all on a server you pick."
+        lead="Write in Markdown and return to any memo by word, tag, or date. Each memo is private until you choose to share it."
         actions={[
-          { label: "Install Memos", href: "/docs/getting-started", showArrow: true },
-          { label: "Try Live Demo", href: "https://demo.usememos.com/" },
+          { label: "Installation", href: "/docs/getting-started", showArrow: true },
+          { label: "Demo", href: "https://demo.usememos.com/" },
         ]}
       >
         <AnchorPills
@@ -177,7 +174,7 @@ export default function FeaturesPage() {
         </section>
       ))}
 
-      <StartSection description="Install Memos on your server or try the live demo before you decide." />
+      <StartSection />
     </main>
   );
 }

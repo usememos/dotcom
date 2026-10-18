@@ -15,18 +15,18 @@ describe("buildLlmsIndex", () => {
 
   it("starts with the site heading and summary", () => {
     expect(output.startsWith("# Memos\n")).toBe(true);
-    expect(output).toContain("> Memos is an open-source timeline for your thoughts");
+    expect(output).toContain("> Memos is an open-source timeline for your quick thoughts");
   });
 
   it("includes every section heading", () => {
-    for (const heading of ["## Docs", "## API", "## Features", "## Compare", "## Use Cases", "## Blog", "## Changelog"]) {
+    for (const heading of ["## Docs", "## API", "## Features", "## Use Cases", "## Blog", "## Changelog"]) {
       expect(output).toContain(heading);
     }
   });
 
-  it("emits absolute URLs and the curated comparison pages", () => {
+  it("emits absolute URLs without retired comparisons", () => {
     expect(output).toContain("https://usememos.com/docs/getting-started");
-    expect(output).toContain("https://usememos.com/compare/obsidian");
+    expect(output).not.toContain("/compare");
   });
 
   it("excludes API reference pages from the docs list but links the reference once", () => {

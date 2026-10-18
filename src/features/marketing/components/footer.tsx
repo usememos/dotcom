@@ -4,7 +4,6 @@ import {
   DollarSignIcon,
   ExternalLinkIcon,
   FileTextIcon,
-  GitCompareIcon,
   HeartIcon,
   HistoryIcon,
   LightbulbIcon,
@@ -19,6 +18,7 @@ import {
 import Link from "next/link";
 import type { ComponentType, SVGProps } from "react";
 import { FEATURES } from "@/features/marketing/data/features";
+import { BRAND_DESCRIPTION } from "@/shared/lib/branding";
 import { GITHUB_REPO_URL } from "@/shared/lib/seo";
 import { GithubIcon } from "@/shared/ui/github-icon";
 import { ThemeToggle } from "@/shared/ui/theme-toggle";
@@ -70,7 +70,6 @@ const FOOTER_COLUMNS: FooterColumn[] = [
     links: [
       { href: "/docs", label: "Documentation", icon: BookOpenIcon },
       { href: "/use-cases", label: "Use Cases", icon: LightbulbIcon },
-      { href: "/compare", label: "Compare", icon: GitCompareIcon },
       { href: "/pricing", label: "Pricing", icon: DollarSignIcon },
       { href: "/changelog", label: "Changelog", icon: HistoryIcon },
     ],
@@ -150,9 +149,7 @@ export function Footer({ compact = false }: FooterProps = {}) {
           <div className="grid gap-8 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
             <div>
               <p className="text-sm font-semibold tracking-[0.18em] text-zinc-950 uppercase dark:text-zinc-100">Memos</p>
-              <p className="mt-3 max-w-md text-sm leading-7 text-zinc-600 dark:text-zinc-400">
-                Capture quick notes in a private timeline you run yourself.
-              </p>
+              <p className="mt-3 max-w-md text-sm leading-7 text-zinc-600 dark:text-zinc-400">{BRAND_DESCRIPTION}</p>
             </div>
             <nav className="flex flex-wrap gap-x-5 gap-y-3 text-sm font-medium text-zinc-600 dark:text-zinc-300" aria-label="Footer">
               {COMPACT_LINKS.map((link) =>

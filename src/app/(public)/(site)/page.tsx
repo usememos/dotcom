@@ -5,29 +5,15 @@ import { HomeFaqSection } from "@/features/marketing/components/home-faq-section
 import { HomeFindSection } from "@/features/marketing/components/home-find-section";
 import { HomeOwnSection } from "@/features/marketing/components/home-own-section";
 import { HomeWriteSection } from "@/features/marketing/components/home-write-section";
-import { StartSection } from "@/features/marketing/components/start-section";
-import { BRAND_DESCRIPTION, BRAND_SHORT, BRAND_TITLE } from "@/shared/lib/branding";
+import { BRAND_DESCRIPTION, BRAND_TAGLINE_LINES, BRAND_TITLE } from "@/shared/lib/branding";
 import { buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/shared/lib/seo";
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Memos - Open-Source, Self-Hosted Note-Taking App",
+    absolute: BRAND_TITLE,
   },
   description: BRAND_DESCRIPTION,
-  keywords: [
-    "note-taking app",
-    "open source note taking app",
-    "self-hosted note-taking app",
-    "open source self hosted note-taking tool",
-    "self-hosted note-taking tool",
-    "open source note taking",
-    "docker notes tool",
-    "private notes",
-    "markdown notes",
-    "memos",
-    "quick capture notes",
-    "self-hosted notes",
-  ],
+  keywords: ["memos", "quick thoughts", "timeline", "Markdown notes", "private notes", "daily notes"],
   alternates: {
     canonical: "https://usememos.com",
   },
@@ -54,22 +40,20 @@ export default function HomePage() {
       <HeroSection
         title={
           <>
-            <span className="block text-balance">Capture a thought.</span>{" "}
+            <span className="block text-balance">{BRAND_TAGLINE_LINES[0]}</span>{" "}
             <span className="block text-balance">
-              <HeroAccent>Keep it yours.</HeroAccent>
+              <HeroAccent>{BRAND_TAGLINE_LINES[1]}</HeroAccent>
             </span>
           </>
         }
-        subtitle={BRAND_SHORT}
-        primaryCta={{ text: "Install Memos", href: "/docs/getting-started" }}
-        secondaryCta={{ text: "Try Live Demo", href: "https://demo.usememos.com/", external: true }}
+        subtitle="Memos is a timeline for quick thoughts, daily notes, and things you want to remember. No title or folder to choose before you write."
+        primaryCta={{ text: "Installation", href: "/docs/getting-started" }}
+        secondaryCta={{ text: "Demo", href: "https://demo.usememos.com/", external: true }}
       />
       <HomeWriteSection />
       <HomeFindSection />
       <HomeOwnSection />
       <HomeFaqSection />
-
-      <StartSection />
     </main>
   );
 }

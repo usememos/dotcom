@@ -1,7 +1,7 @@
 import type { SVGProps } from "react";
 import { cn } from "@/shared/lib/utils";
 
-// Exact paths from usememos/.github@5e3121450f5160c7b6b7c301379c27fedf7985d1.
+// Exact paths from usememos/.github@6fe87bfcd881e6ffd977e1041b8835cae9efc56d.
 // The parity test keeps these inline, themeable marks aligned with the downloadable SVGs.
 const shapes = {
   standard: {

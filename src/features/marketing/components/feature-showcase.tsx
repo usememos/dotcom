@@ -1,7 +1,5 @@
 import { HomeFindViews, type ViewId } from "@/features/marketing/components/home-find-views";
 import { HomeOwnCommand } from "@/features/marketing/components/home-own-command";
-import { COMMAND_NOTES } from "@/features/marketing/components/home-own-section";
-import { MemoAnatomyFigure } from "@/features/marketing/components/memo-anatomy-figure";
 import { MemoAnatomyShowcase } from "@/features/marketing/components/memo-anatomy-showcase";
 import type { FeatureSlug } from "@/features/marketing/data/features";
 
@@ -36,9 +34,9 @@ export function FeatureShowcase({ slug }: { slug: FeatureSlug }) {
   if (showcase.kind === "find") return <HomeFindViews initialView={showcase.view} />;
   return (
     <div className="rounded-2xl bg-zinc-950 px-5 py-10 sm:px-8 sm:py-14">
-      <MemoAnatomyFigure notes={COMMAND_NOTES} tone="inverse">
+      <div className="mx-auto w-full max-w-[31rem] text-left">
         <HomeOwnCommand />
-      </MemoAnatomyFigure>
+      </div>
     </div>
   );
 }

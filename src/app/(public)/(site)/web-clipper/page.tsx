@@ -13,7 +13,7 @@ const GITHUB_REPO_URL = "https://github.com/usememos/web-clipper";
 export const metadata: Metadata = buildMarketingMetadata({
   title: "Memos Web Clipper - Save Web Pages to Your Memos",
   description:
-    "An open-source browser extension for Chrome, Edge, Brave, Arc, and Firefox. Save pages, selections, and images as Markdown directly to your Memos instance.",
+    "Keep pages, selections, and images in your memos as Markdown, with a link to the source. Available for Chromium browsers and Firefox.",
   path: "/web-clipper",
 });
 
@@ -117,7 +117,7 @@ export default function WebClipperPage() {
               <span className="block sm:whitespace-nowrap">Lose the tab.</span>
             </h1>
             <p className="mt-7 max-w-lg text-balance text-base leading-8 text-slate-200/85 sm:text-lg">
-              Turn pages, selections, and images into clean Markdown—then save them straight to the Memos instance you control.
+              Keep pages, selections, and images in your memos as Markdown, with a link to the source.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <a
@@ -151,7 +151,7 @@ export default function WebClipperPage() {
           <div>
             <p className="text-sm font-semibold tracking-[0.16em] text-brand-700 uppercase dark:text-brand-300">Connection options</p>
             <h2 className="mt-4 text-balance font-serif text-4xl leading-tight font-semibold tracking-[-0.025em] text-zinc-950 dark:text-zinc-100 sm:text-5xl">
-              Your server. Your way in.
+              A connection to your memos.
             </h2>
             <p className="mt-5 text-base leading-8 text-zinc-600 dark:text-zinc-300">
               Use the guided usememos.com setup, or connect directly with an instance URL and personal access token. Both paths are
@@ -232,8 +232,8 @@ export default function WebClipperPage() {
           {[
             {
               icon: <ServerIcon className="size-5" />,
-              title: "Your instance",
-              text: "Clips go to the Memos instance you choose.",
+              title: "Your memos",
+              text: "Clips stay alongside your other memos.",
             },
             {
               icon: <LockKeyholeIcon className="size-5" />,
@@ -285,39 +285,6 @@ export default function WebClipperPage() {
               </div>
             ))}
           </dl>
-        </div>
-      </section>
-
-      <section className="relative isolate overflow-hidden bg-[#172033] py-16 text-white lg:py-24">
-        <div className="pointer-events-none absolute top-[-10rem] left-1/2 size-[34rem] -translate-x-1/2 rounded-full bg-brand-300/12 blur-3xl" />
-        <div className="site-container">
-          <div className="relative mx-auto max-w-4xl text-center">
-            <p className="font-mono text-xs tracking-[0.16em] text-brand-200 uppercase">The next page is worth keeping</p>
-            <h2 className="mx-auto mt-5 max-w-[21ch] text-balance font-serif text-4xl leading-[1.08] font-semibold tracking-[-0.03em] sm:text-5xl lg:text-6xl">
-              Make it a memo before it becomes another tab.
-            </h2>
-            <p className="mx-auto mt-6 max-w-4xl text-base leading-8 text-slate-200/80 sm:text-lg">
-              Install the extension, choose how to connect, and save your first clip.
-            </p>
-            <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
-              <a
-                href={CHROME_STORE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-[#172033] transition-transform hover:-translate-y-0.5 hover:bg-brand-50"
-              >
-                Add to Chrome <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1" />
-              </a>
-              <a
-                href={FIREFOX_ADDON_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-lg border border-white/25 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10"
-              >
-                Add to Firefox
-              </a>
-            </div>
-          </div>
         </div>
       </section>
     </main>

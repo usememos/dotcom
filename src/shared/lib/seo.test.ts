@@ -65,10 +65,10 @@ describe("seo", () => {
 
     expect(jsonLd.name).toBe("Memos site navigation");
     expect(jsonLd.numberOfItems).toBe(jsonLd.itemListElement.length);
-    expect(names).toContain("Get Started");
-    expect(names).not.toContain("Live Demo");
+    expect(names).toContain("Installation");
+    expect(names).not.toContain("Demo");
     expect(jsonLd.itemListElement.find((item) => item.name === "All Features")).toMatchObject({
-      description: "Writing, search, views, and self-hosting",
+      description: "Writing, finding, and sharing your memos",
       url: "https://usememos.com/features",
     });
   });

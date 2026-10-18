@@ -1,4 +1,3 @@
-import { COMPARISONS, getAllComparisonSlugs } from "@/features/marketing/data/comparisons";
 import { FEATURES, getAllFeatureSlugs } from "@/features/marketing/data/features";
 import { getAllUseCaseSlugs, USE_CASES } from "@/features/marketing/data/use-cases";
 import { BRAND_STANDARD } from "@/shared/lib/branding";
@@ -10,7 +9,7 @@ import { absoluteUrl, SITE_NAME } from "@/shared/lib/seo";
  * module takes plain data so it stays trivially testable.
  */
 
-export const LLMS_SUMMARY = `${BRAND_STANDARD} It is MIT-licensed, runs with Docker, and the Memos software sends no telemetry.`;
+export const LLMS_SUMMARY = BRAND_STANDARD;
 
 export interface PageMeta {
   url: string;
@@ -57,15 +56,8 @@ export function buildLlmsIndex(input: { docs: PageMeta[]; blog: PageMeta[]; chan
 
   out.push(
     ...sectionLines("Features", [
-      formatLine("Features overview", "/features", "What Memos does: memos written in Markdown, search, tags, views, and self-hosting."),
+      formatLine("Features overview", "/features", "Writing, finding, and sharing your memos."),
       ...getAllFeatureSlugs().map((slug) => formatLine(FEATURES[slug].title, `/features/${slug}`, FEATURES[slug].description)),
-    ]),
-  );
-
-  out.push(
-    ...sectionLines("Compare", [
-      formatLine("Compare Memos", "/compare", "How Memos compares to popular note apps, and when to choose each."),
-      ...getAllComparisonSlugs().map((slug) => formatLine(COMPARISONS[slug].title, `/compare/${slug}`, COMPARISONS[slug].seo.description)),
     ]),
   );
 

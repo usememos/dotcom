@@ -1,8 +1,8 @@
 const baseUrl = process.env.SMOKE_BASE_URL ?? "http://localhost:8788";
 
 const checks = [
-  { path: "/", type: "html", contains: "Your thoughts, your data,", cacheControlIncludes: "s-maxage=31536000" },
-  { path: "/brand", type: "html", contains: "/brand/logo-small.svg" },
+  { path: "/", type: "html", contains: "Seconds to write.", cacheControlIncludes: "s-maxage=31536000" },
+  { path: "/brand", type: "html", contains: "/brand/lockup-small.svg" },
   {
     path: "/brand/logo.svg",
     type: "text",
@@ -53,8 +53,18 @@ const checks = [
     cacheControlIncludes: "s-maxage=31536000",
     openNextCache: "HIT",
   },
+  ...["/compare", "/compare/obsidian", "/compare/notion"].map((path) => ({
+    path,
+    status: 308,
+    type: "text",
+    redirect: "manual",
+    location: "/features",
+  })),
+  { path: "/brand/lockup.svg", type: "text", contains: "currentColor", cacheControlIncludes: "public,max-age=0,must-revalidate" },
+  { path: "/brand/previews/timeline-light.png", type: "png" },
+  { path: "/brand/previews/timeline-dark.png", type: "png" },
   { path: "/api/search", type: "search-index" },
-  { path: "/sitemap.xml", type: "text", contains: "<urlset" },
+  { path: "/sitemap.xml", type: "text", contains: "<urlset", excludes: "/compare" },
   { path: "/blog/feed.xml", type: "text", contains: "<rss" },
   {
     path: "/home/golden-hour-trail.png",
@@ -102,6 +112,10 @@ function assertCheck(check, response, body) {
   if (response.status !== expectedStatus) {
     throw new Error(`${check.path} returned ${response.status}; expected ${expectedStatus}`);
   }
+  if (check.location && new URL(response.headers.get("location"), baseUrl).pathname !== check.location)
+    throw new Error(`${check.path} did not redirect to ${check.location}`);
+  if (check.excludes && typeof body === "string" && body.includes(check.excludes))
+    throw new Error(`${check.path} contains retired content`);
   const contentType = response.headers.get("content-type") ?? "";
   const cacheControl = response.headers.get("cache-control") ?? "";
   if (check.cacheControlIncludes && !cacheControl.includes(check.cacheControlIncludes)) {

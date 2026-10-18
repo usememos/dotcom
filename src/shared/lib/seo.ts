@@ -28,8 +28,8 @@ export const SITE_NAV_ITEMS = [
     name: "Features",
     href: "/features",
     items: [
-      { name: "All Features", href: "/features", description: "Writing, search, views, and self-hosting" },
-      { name: "Self-Hosted", href: "/features/self-hosted", description: "Run Memos on your own infrastructure" },
+      { name: "All Features", href: "/features", description: "Writing, finding, and sharing your memos" },
+      { name: "Self-Hosted", href: "/features/self-hosted", description: "Choose where your memos live" },
       { name: "Open Source", href: "/features/open-source", description: "MIT-licensed and developed in public" },
       { name: "Markdown Notes", href: "/features/markdown-support", description: "Write memos in Markdown, with LaTeX math" },
       { name: "API & Integrations", href: "/features/api-first", description: "REST and gRPC APIs for automation" },
@@ -46,7 +46,7 @@ export const SITE_NAV_ITEMS = [
       { name: "Homelab & Self-Hosting", href: "/use-cases/self-hosting", description: "Server docs and infrastructure logs" },
     ],
   },
-  { name: "Docs", href: "/docs", description: "Install, configure, and self-host Memos" },
+  { name: "Docs", href: "/docs", description: "Writing, finding, and sharing your memos" },
   {
     name: "Resources",
     items: [
@@ -60,14 +60,14 @@ export const SITE_NAV_ITEMS = [
 export const SITE_NAV_LINKS = SITE_NAV_ITEMS.flatMap<SiteNavLink>((item) => ("items" in item ? [...item.items] : [item]));
 
 export const SITE_NAV_DEMO = {
-  name: "Live Demo",
+  name: "Demo",
   href: "https://demo.usememos.com/",
-  description: "Try Memos on a public demo instance",
+  description: "A public Memos timeline",
   external: true,
 } as const satisfies SiteNavLink;
 
 export const SITE_NAV_CTA = {
-  name: "Get Started",
+  name: "Installation",
   href: "/docs/getting-started",
   description: "Start with the Memos documentation",
 } as const;

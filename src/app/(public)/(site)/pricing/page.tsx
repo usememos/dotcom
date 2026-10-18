@@ -1,12 +1,8 @@
 import { CheckIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { HeroAccent } from "@/features/marketing/components/hero-accent";
-import {
-  MarketingActions,
-  MarketingCtaSection,
-  MarketingFaqSection,
-  MarketingSummaryBand,
-} from "@/features/marketing/components/marketing-page";
+import { MarketingActions, MarketingFaqSection, MarketingSummaryBand } from "@/features/marketing/components/marketing-page";
+import { StartSection } from "@/features/marketing/components/start-section";
 import {
   absoluteUrl,
   buildBreadcrumbItems,
@@ -20,9 +16,9 @@ import { GithubIcon } from "@/shared/ui/github-icon";
 import { JsonLdScript } from "@/shared/ui/json-ld-script";
 
 export const metadata: Metadata = buildMarketingMetadata({
-  title: "Pricing: Free, Open-Source, Self-Hosted",
+  title: "Pricing",
   description:
-    "Memos is free, open-source, self-hosted note-taking software: no license fee, subscriptions, seat fees, usage fees, or premium feature tiers. Hosting may cost money.",
+    "Memos has no license fee, subscription, or paid feature tier. You may have costs for the place you choose to keep your memos.",
   path: "/pricing",
 });
 
@@ -193,8 +189,8 @@ export default function PricingPage() {
                 <MarketingActions
                   align="left"
                   actions={[
-                    { label: "Install Memos", href: "/docs/getting-started", showArrow: true },
-                    { label: "View the source", href: GITHUB_REPO_URL, icon: <GithubIcon className="size-4" /> },
+                    { label: "Installation", href: "/docs/getting-started", showArrow: true },
+                    { label: "Source code", href: GITHUB_REPO_URL, icon: <GithubIcon className="size-4" /> },
                   ]}
                 />
               </div>
@@ -266,12 +262,10 @@ export default function PricingPage() {
         separators={false}
       />
 
-      <MarketingCtaSection
-        title="Install Memos for $0."
-        description="Use your own server, keep every feature, and stay in control of the software and data."
+      <StartSection
         actions={[
-          { label: "Install Memos", href: "/docs/getting-started", showArrow: true },
-          { label: "Review the MIT license", href: `${GITHUB_REPO_URL}/blob/main/LICENSE`, variant: "secondary" },
+          { label: "MIT license", href: `${GITHUB_REPO_URL}/blob/main/LICENSE` },
+          { label: "Installation", href: "/docs/getting-started" },
         ]}
       />
     </main>

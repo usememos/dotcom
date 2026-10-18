@@ -1,12 +1,6 @@
 import type { FaqItem } from "@/shared/lib/seo";
 
-/**
- * Homepage FAQ. Single source of truth for both the visible Q&A block and the
- * FAQPage JSON-LD. Questions mirror real search queries from Search Console
- * ("is memos free", "self host memos", "memos markdown", "google keep / notion
- * alternative", "memos private") so the visible text earns question-intent
- * rankings and feeds AI answer surfaces.
- */
+/** Shared by the visible answers and FAQPage structured data. */
 export const HOME_FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "Is Memos free?",
@@ -14,22 +8,21 @@ export const HOME_FAQ_ITEMS: readonly FaqItem[] = [
       "Yes. Memos is open-source software under the MIT license, with no license fee. Hosting may still cost money, depending on the hardware or provider you choose.",
   },
   {
-    question: "Can I self-host Memos?",
-    answer: "Yes. Run it with Docker on your server, NAS, or homelab; SQLite, MySQL, and PostgreSQL are supported.",
+    question: "Can I choose where my memos live?",
+    answer:
+      "Yes. Run Memos with Docker on your server, NAS, or homelab. Your memos stay in that instance’s database: SQLite by default, or MySQL or PostgreSQL. Whoever runs the instance manages its hosting and backups.",
   },
   {
     question: "Does Memos support Markdown?",
-    answer:
-      "Yes. You write memos in Markdown, including lists, code blocks, and checklists. Memos stores them in your instance’s database, and you can export your memos as a ZIP archive.",
+    answer: "Yes. You can write lists, code blocks, and checklists in Markdown, and export your memos as a ZIP of Markdown files.",
   },
   {
-    question: "Is Memos a good open-source alternative to Google Keep, Notion, or Evernote?",
-    answer:
-      "Choose Memos if you want to write short notes quickly and find them later by search, tag, or date, on a server you control. Compare the workflows that matter to you.",
+    question: "Do I need to organize a thought before saving it?",
+    answer: "No. You can write without a title or folder. Each memo keeps its date, and you can return to it by calendar, tag, or search.",
   },
   {
-    question: "Where is my data stored, and is it private?",
+    question: "Who can see my memos?",
     answer:
-      "Memos are stored in the database of the Memos instance you use. New memos are private by default, and each memo’s visibility setting decides who can see it. Hosting and backups are managed by whoever runs the instance.",
+      "New memos are yours alone. You choose whether to share each memo with family and friends or make it available through a public link.",
   },
 ] as const;

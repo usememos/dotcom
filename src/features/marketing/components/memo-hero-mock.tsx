@@ -1,17 +1,14 @@
 import {
   CalendarDaysIcon,
-  CheckSquareIcon,
   ChevronDownIcon,
   ChevronsUpDownIcon,
+  EllipsisIcon,
   HashIcon,
-  HouseIcon,
+  LibraryIcon,
+  ListTodoIcon,
   MapIcon,
-  MoreHorizontalIcon,
-  MoreVerticalIcon,
   PaperclipIcon,
-  PlusIcon,
   SearchIcon,
-  SlidersHorizontalIcon,
   SquarePenIcon,
 } from "lucide-react";
 import type { ReactNode } from "react";
@@ -22,9 +19,9 @@ import { MemoHeroCalendar } from "@/features/marketing/components/memo-hero-cale
 import { MemoHeroContent } from "@/features/marketing/components/memo-hero-content";
 import { MemoHeroSponsors } from "@/features/marketing/components/memo-hero-sponsors";
 import { HOME_MEMOS, HOME_TAGS } from "@/features/marketing/data/home-memos";
-import { MemosMark } from "@/shared/ui/memos-mark";
+import { MemosLockup } from "@/shared/ui/memos-lockup";
 
-/** Compact destinations alongside the active Home scope in the current product. */
+/** Official Timeline navigation, retaining the product's attachment entry. */
 const NAV_PILLS = [
   { label: "Calendar", icon: CalendarDaysIcon },
   { label: "Map", icon: MapIcon },
@@ -32,12 +29,11 @@ const NAV_PILLS = [
   { label: "Search", icon: SearchIcon },
 ] as const;
 
-const SIDEBAR_ROW_CLASS = "flex h-[22px] w-full min-w-0 items-center gap-1.5 rounded-[6px] px-1.5 text-[10px] text-[var(--mock-muted)]";
-const SECTION_ACTION_CLASS = "size-3 shrink-0 text-[var(--mock-muted)] opacity-70";
+const SIDEBAR_ROW_CLASS = "flex h-[22px] w-full min-w-0 items-center gap-1.5 rounded-[6px] px-1.5 text-[10px]";
 function SidebarSectionHeader({ label, children }: { label: string; children?: ReactNode }) {
   return (
     <div className="mb-0.5 flex h-4 items-center justify-between gap-2">
-      <p className="ps-1.5 text-[8px] font-normal tracking-wide text-zinc-400 uppercase dark:text-zinc-500">{label}</p>
+      <p className="ps-1.5 text-[8px] font-normal tracking-wide text-[var(--mock-section-heading)] uppercase">{label}</p>
       {children ? <div className="flex items-center gap-0.5">{children}</div> : null}
     </div>
   );
@@ -47,9 +43,8 @@ function SidebarHeader() {
   return (
     <div className="flex h-9 shrink-0 items-center justify-between gap-2 px-3">
       <div className="flex min-w-0 items-center gap-1.5">
-        <MemosMark size={20} className="text-[var(--mock-ink)]" />
-        <span className="truncate text-[11px] font-medium tracking-[-0.01em] text-[var(--mock-ink)]">Memos</span>
-        <ChevronsUpDownIcon className="size-2.5 text-[var(--mock-muted)] opacity-70" />
+        <MemosLockup height={24} label="" className="text-[var(--mock-lockup)]" />
+        <ChevronsUpDownIcon className="size-2.5 text-[var(--mock-switcher)]" strokeWidth={1.8} />
       </div>
       <div className={`${styles.mockControl} size-6 shrink-0`}>
         <SquarePenIcon className="size-3.5" />
@@ -61,16 +56,19 @@ function SidebarHeader() {
 function GlobalNav() {
   return (
     <div className="flex h-7 items-center justify-between gap-0.5 px-3">
-      <span className="flex h-[22px] items-center gap-1.5 rounded-[6px] bg-[var(--mock-selected)] px-1.5 text-[10px] font-medium text-zinc-800 dark:bg-white/10 dark:text-zinc-100">
-        <HouseIcon className="size-3.5 shrink-0" />
-        Home
-        <ChevronDownIcon className="size-2.5 shrink-0 opacity-55" />
+      <span className="flex h-[22px] shrink-0 items-center gap-1.5 rounded-[6px] bg-[var(--mock-selected)] px-1.5 text-[10px] font-medium text-[var(--mock-ink)]">
+        <LibraryIcon className="size-3.5 shrink-0" strokeWidth={1.8} />
+        Timeline
+        <ChevronDownIcon className="size-2.5 shrink-0 text-[var(--mock-nav-chevron)]" strokeWidth={1.8} />
       </span>
       {NAV_PILLS.map((pill) => {
         const Icon = pill.icon;
         return (
-          <span key={pill.label} className="flex size-[22px] items-center justify-center rounded-[6px] text-[var(--mock-muted)] opacity-70">
-            <Icon className="size-3.5" />
+          <span
+            key={pill.label}
+            className="flex h-[22px] min-w-0 flex-1 items-center justify-center rounded-[6px] text-[var(--mock-nav-icon)]"
+          >
+            <Icon className="size-3.5" strokeWidth={1.8} />
           </span>
         );
       })}
@@ -82,12 +80,11 @@ function ViewsSection() {
   return (
     <section>
       <SidebarSectionHeader label="Views">
-        <SlidersHorizontalIcon className={SECTION_ACTION_CLASS} />
-        <PlusIcon className={SECTION_ACTION_CLASS} />
+        <EllipsisIcon className="size-3 shrink-0 text-[var(--mock-section-heading)]" strokeWidth={1.8} />
       </SidebarSectionHeader>
-      <span className={SIDEBAR_ROW_CLASS}>
-        <CheckSquareIcon className="size-3.5 shrink-0" />
-        Tasks
+      <span className={`${SIDEBAR_ROW_CLASS} text-[var(--mock-view-ink)]`}>
+        <ListTodoIcon className="size-3.5 shrink-0 text-[var(--mock-view-icon)]" strokeWidth={1.8} />
+        Unfinished tasks
       </span>
     </section>
   );
@@ -96,42 +93,18 @@ function ViewsSection() {
 function TagsSection() {
   return (
     <section>
-      <SidebarSectionHeader label="Tags">
-        <MoreHorizontalIcon className={SECTION_ACTION_CLASS} />
-      </SidebarSectionHeader>
+      <SidebarSectionHeader label="Tags" />
       <div className="flex flex-col gap-0.5">
         {/* A compact selection leaves room for a six-week month without scrolling. */}
         {HOME_TAGS.slice(0, 3).map((item) => (
-          <span key={item.tag} className={SIDEBAR_ROW_CLASS}>
-            <HashIcon className="size-[11px] shrink-0 opacity-75" />
-            <span className="min-w-0 flex-1 truncate">
-              {item.tag.includes("/") ? (
-                <>
-                  <span className="opacity-65">{item.tag.split("/")[0]}</span>/{item.tag.split("/").slice(1).join("/")}
-                </>
-              ) : (
-                item.tag
-              )}
-            </span>
-            <span className="text-[8px] tabular-nums text-[var(--mock-muted)] opacity-70">{item.count}</span>
+          <span key={item.tag} className={`${SIDEBAR_ROW_CLASS} text-[var(--mock-tag-row-ink)]`}>
+            <HashIcon className="size-[11px] shrink-0 text-[var(--mock-tag-row-icon)]" strokeWidth={1.8} />
+            <span className="min-w-0 flex-1 truncate">{item.tag}</span>
+            <span className="text-[8px] tabular-nums text-[var(--mock-tag-count)]">{item.count}</span>
           </span>
         ))}
       </div>
     </section>
-  );
-}
-
-function SidebarFooter() {
-  return (
-    <div className="flex h-9 shrink-0 items-center justify-between gap-2 border-t border-[var(--mock-border)] px-3 dark:border-white/8">
-      <div className="flex min-w-0 items-center gap-1.5">
-        <span className="grid size-5 place-items-center rounded-[5px] bg-[var(--mock-selected)] text-[10px] font-medium text-[var(--mock-ink)]">
-          S
-        </span>
-        <span className="truncate text-[10px] font-medium text-[var(--mock-ink)]">Steven</span>
-      </div>
-      <MoreVerticalIcon className="size-3 shrink-0 text-[var(--mock-muted)] opacity-70" />
-    </div>
   );
 }
 
@@ -140,13 +113,12 @@ function AppSidebar() {
     <aside aria-hidden="true" className="hidden min-h-0 flex-col border-r border-[var(--mock-border)] bg-[var(--mock-sidebar)] sm:flex">
       <SidebarHeader />
       <GlobalNav />
-      <div className="mx-3 mt-1.5 border-t border-[var(--mock-border)] dark:border-white/8" />
+      <div className="mx-3 mt-1.5 border-t border-[var(--mock-border)]" />
       <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-clip px-3 py-2 [&>section]:shrink-0">
         <MemoHeroCalendar />
         <ViewsSection />
         <TagsSection />
       </div>
-      <SidebarFooter />
     </aside>
   );
 }

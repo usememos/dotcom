@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import type { ContentSocialPreview } from "@/shared/content/social-preview";
 import { SOCIAL_PREVIEW_IMAGE_SIZE } from "@/shared/content/social-preview";
-import { MemosMark } from "@/shared/ui/memos-mark";
+import { MemosLockup } from "@/shared/ui/memos-lockup";
 
 type SocialPreviewCopy = Pick<ContentSocialPreview, "title" | "description" | "imageDescription"> &
   Partial<Pick<ContentSocialPreview, "section">>;
@@ -76,8 +76,7 @@ export function SocialPreviewImage({ preview, artwork }: { preview: SocialPrevie
           gap: 15,
         }}
       >
-        <MemosMark size={108} width={69} viewBox="112 32 288 448" style={{ color: INK }} />
-        <span style={{ fontSize: 43, fontWeight: 400, letterSpacing: -1.075, lineHeight: 1 }}>Memos</span>
+        <MemosLockup height={88} label="" style={{ color: INK }} />
       </div>
       <div
         style={{

@@ -3,20 +3,22 @@ import { describe, expect, it } from "vitest";
 import FeaturePage, { generateMetadata, generateStaticParams } from "./page";
 
 async function renderFeature(slug: string) {
-  render(await FeaturePage({ params: Promise.resolve({ slug }) }));
+  return render(await FeaturePage({ params: Promise.resolve({ slug }) }));
 }
 
 describe("FeaturePage", () => {
   it("presents an available feature as an open feature brief", async () => {
-    await renderFeature("self-hosted");
+    const { container } = await renderFeature("self-hosted");
 
-    expect(screen.getByRole("heading", { level: 1, name: "Run Memos yourself" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1, name: "Choose where your memos live" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: "What changes when you use it." })).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: "Where it earns its place." })).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: "The implementation stays inspectable." })).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: /Install Memos/ })[0]).toHaveAttribute("href", "/docs/getting-started");
+    expect(screen.getAllByRole("link", { name: /Installation/ })[0]).toHaveAttribute("href", "/docs/getting-started");
     expect(screen.queryByText("WIP")).not.toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: "Breadcrumb" })).not.toBeInTheDocument();
+    expect(container.querySelector("pre code")).toHaveTextContent("docker run");
+    expect(container.querySelector("[data-note], [data-arrow]")).toBeNull();
   });
 
   it("labels unreleased features and never presents them as available", async () => {
@@ -27,8 +29,8 @@ describe("FeaturePage", () => {
     expect(screen.getByText(/not presented as complete in current Memos releases/)).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: "What this feature is intended to change." })).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: "The implementation direction." })).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: /Follow development/ })[0]).toHaveAttribute("href", "https://github.com/usememos/memos");
-    expect(screen.queryByRole("link", { name: /Install Memos/ })).not.toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /Development/ })[0]).toHaveAttribute("href", "https://github.com/usememos/memos");
+    expect(screen.queryByRole("link", { name: /Installation/ })).not.toBeInTheDocument();
   });
 
   it("marks WIP pages in metadata and statically generates every feature", async () => {

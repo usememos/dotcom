@@ -139,7 +139,6 @@ const PUBLIC_CACHEABLE_PATHS = [
   "/changelog/:path*",
   "/features/:path*",
   "/use-cases/:path*",
-  "/compare/:path*",
   "/pricing",
   "/brand",
   "/privacy",
@@ -170,6 +169,12 @@ const config = {
   },
   async redirects() {
     return [
+      {
+        // Competitive pages are retired; preserve bookmarks and inbound links.
+        source: "/compare/:path*",
+        destination: "/features",
+        permanent: true,
+      },
       {
         // Bare /docs/api normalizes to the "latest" version. Doing it here (routing
         // layer) instead of via redirect() inside the docs page avoids loading the

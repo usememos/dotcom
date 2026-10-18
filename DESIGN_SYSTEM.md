@@ -1,6 +1,6 @@
 # Memos Website Design System
 
-**Status:** Authoritative, version 0.1
+**Status:** Authoritative, version 0.2
 **Primary reader:** Coding agents maintaining the Memos public website
 
 This document is the design contract for the project-owned public website at
@@ -36,7 +36,7 @@ This system applies to the project-owned public site:
 - the public site header and footer
 - shared UI used by those surfaces when the change is safely scoped
 
-It includes the Homepage, Web Clipper, Features, Use Cases, Compare, Pricing,
+It includes the Homepage, Web Clipper, Features, Use Cases, Pricing,
 Sponsors, Brand, Privacy, Blog, and Changelog pages.
 
 This system explicitly does **not** own:
@@ -63,10 +63,10 @@ When sources disagree, use this order:
 
 1. An explicit, locally scoped instruction from the user to treat a named area
    specially.
-2. This `DESIGN_SYSTEM.md`.
-3. Current shared components and tokens.
-4. Existing page implementation.
-5. External design systems, examples, and generic best practices.
+2. Upstream `usememos/.github/BRAND.md` for positioning, approved copy, and identity assets.
+3. This `DESIGN_SYSTEM.md` for website composition and implementation.
+4. Current shared components and tokens.
+5. Existing implementation and external examples.
 
 Only an explicit user instruction that identifies the special treatment can
 override this system. Existing code, a historical screenshot, convenience, or
@@ -82,14 +82,14 @@ the current code pass.
 
 At the user's request, generated social previews use a two-color editorial composition: water blue `#c0d9e3` on the left and mid blue `#79a9c8` on the right, with dark ink `#25363e`. The left field occupies approximately 61% of the canvas. The right field carries the approved timeline illustration as a local transparent PNG. Keep both background colors in the renderer, independent of the artwork. This scope covers `src/shared/content/social-preview-image.tsx`, its artwork, and every generated `/og/` image; explicit article cover images retain their own artwork.
 
-Use a conventional system-serif treatment for both the title and the Memos wordmark. PNG generation requires explicit font data: use the local Times New Roman-compatible Liberation Serif Regular solely for image rendering, without loading it as a website font. Place the official standard SVG mark and wordmark together at the upper left, preserving the SVG paths and proportions. Keep the title in the clear left field, balance its wrapping, and reduce its size for long titles. Do not render descriptions or section labels inside the image; retain full descriptions in Open Graph and Twitter metadata. Avoid gradients, shadows, and added background texture. This scoped palette does not redefine general site colors. Serve 1200 × 630 PNG from the shared template for social crawler compatibility, and keep representative generated images below 300 KB. Verify short and long titles at full size and in 390px share cards on light and dark surfaces.
+Use a conventional system-serif treatment for the title and the supplied official SVG lockup for the Memos identity. PNG generation requires explicit font data: use the local Times New Roman-compatible Liberation Serif Regular solely for image rendering, without loading it as a website font. Place `MemosLockup` at the upper left, preserving the official SVG paths, viewBox, alignment, and padding. Do not typeset or reconstruct the wordmark. Keep the title in the clear left field, balance its wrapping, and reduce its size for long titles. Do not render descriptions or section labels inside the image; retain full descriptions in Open Graph and Twitter metadata. Avoid gradients, shadows, and added background texture. This scoped palette does not redefine general site colors. Serve 1200 × 630 PNG from the shared template for social crawler compatibility, and keep representative generated images below 300 KB. Verify short and long titles at full size and in 390px share cards on light and dark surfaces.
 
 Before editing a public page, the agent MUST:
 
 1. Read the page's real content and identify its audience and single primary
    job.
 2. Classify the page using the archetypes below.
-3. Write down the primary claim, strongest available proof, primary action, and
+3. Write down the primary claim, strongest available proof, useful destination, and
    page-specific signature.
 4. Inspect the relevant reference implementation and shared primitives.
 5. Choose a composition using the decision rules in this document.
@@ -141,8 +141,8 @@ easier to copy.
 
 ## 6. Design character
 
-The public website is a quiet editorial frame for proving a small, open-source,
-self-hosted tool through real artifacts and specific language.
+The public website is a quiet editorial frame for the product experience defined
+in upstream `BRAND.md`. Real artifacts and specific language explain that experience.
 
 The following traits are observable requirements:
 
@@ -187,9 +187,9 @@ Example: Web Clipper.
 - MUST return to the shared site grammar outside the signature composition.
 - MUST NOT turn the campaign palette into a new global theme.
 
-### 7.3 Catalog, comparison, and search-oriented marketing
+### 7.3 Catalog and product information
 
-Examples: Features, Use Cases, Compare, Pricing, and their detail pages.
+Examples: Features, Use Cases, Pricing, and their detail pages.
 
 - MUST answer the visitor's evaluation question before expanding into detail.
 - SHOULD use a repeatable information architecture when sibling pages contain
@@ -197,9 +197,9 @@ Examples: Features, Use Cases, Compare, Pricing, and their detail pages.
 - A Use Case index SHOULD organize entries by the visitor's context or job, not
   present every audience as an undifferentiated card grid. Independent workflows
   MUST NOT be numbered unless their order is meaningful.
-- A comparison detail page MUST place its honest short verdict before the full
-  table. It SHOULD use rows and column alignment as its signature structure, and
-  MUST NOT repeat the H1 as an otherwise empty section heading.
+- Competitive comparisons are retired. `/compare` and its descendants MUST
+  permanently redirect to `/features`, and MUST NOT appear in navigation, the
+  sitemap, or AI discovery. Existing external links continue to resolve.
 - Related Feature links MUST resolve to existing public routes. A link to a WIP
   Feature MUST expose that status before the visitor follows it.
 - MUST vary hierarchy and proof according to the content; a shared shell does
@@ -216,7 +216,7 @@ Examples: Blog and Changelog.
   prose.
 - SHOULD favor open lists, metadata, strong titles, and whitespace over card
   grids. Rules MAY clarify dense editorial rows but SHOULD remain sparse.
-- MUST keep promotional interruptions secondary to the article.
+- MUST NOT interrupt the article with promotional copy.
 
 ### 7.5 Institutional and utility
 
@@ -260,7 +260,7 @@ Use this decision sequence:
 2. Choose the most credible available proof.
 3. Make either the claim or the proof dominant; do not give every element equal
    weight.
-4. Place the primary action next to the claim.
+4. Place useful destination links where they answer the reader's next question.
 5. Remove anything that does not help establish the claim, proof, or action.
 
 A split hero SHOULD be used when a meaningful product artifact exists. A
@@ -291,7 +291,7 @@ Sections MUST form a narrative, not a feature inventory. A common sequence is:
 3. How it works
 4. Evidence or technical reality
 5. Objections and answers
-6. Next action
+6. Relevant documentation or product links, when useful
 
 This is a reasoning sequence, not a mandatory template. An agent MUST remove,
 merge, or reorder steps when the page does not have the corresponding content.
@@ -322,7 +322,6 @@ signature MUST arise from the subject's real material:
 - a browser selection and clip panel for Web Clipper
 - an accurate memo timeline for quick capture
 - a real command surface for deployment
-- a truthful comparison structure for a comparison page
 
 The signature MAY use a page-owned component, CSS module, scoped palette, or
 custom animation. Those choices are allowed by the system and are not an
@@ -525,24 +524,28 @@ ordinary headings, navigation, or decorative labels.
 
 ## 13. Actions, links, and icons
 
-### 13.1 Action hierarchy
+### 13.1 Links and functional actions
 
-- A hero MUST have no more than one primary and one secondary action.
-- A section SHOULD have one next action. Additional destinations become text
-  links or belong in navigation.
-- Labels MUST use a specific verb and object: `Install Memos`, `Try Live Demo`,
-  `Add to Chrome`, or `Read the changelog`.
-- `Learn more`, `Get started`, and `Submit` SHOULD NOT be used when a more
-  specific action is available.
-- External actions MUST use safe external-link attributes.
+Public copy follows upstream `BRAND.md`; this document does not maintain a second
+voice guide. Product and documentation destinations MAY appear as quiet text
+links with factual labels such as `Demo`, `Documentation`, and `Installation`.
+Do not add sales prompts, urgency, repeated conversion panels, or competitive
+recommendations. Functional controls such as downloads, copying a command, and
+extension installation remain available and describe their actual action.
 
-Standard marketing pages SHOULD use `MarketingActionLink` and
-`MarketingActions`. A signature hero MAY own its action markup when contrast or
-artifact context requires it, but it MUST preserve the established height,
-radius, type weight, focus treatment, and action hierarchy.
-Actions placed on an always-dark chapter MUST use the shared inverse tone; dark
-mode variants alone do not provide contrast when the visitor is using the light
-theme.
+Use `MarketingActions` for destination lists. Its links MUST retain visible
+keyboard focus, safe external-link attributes, usable touch targets, and enough
+contrast on both normal and inverse surfaces. Page-specific functional actions
+may use buttons, but ordinary destination links MUST NOT be presented as a
+conversion button row. The shared closing `StartSection` is a compact reference
+section with documentation and demo links, without a second composer or slogan.
+
+The site header's GitHub, Demo, and Installation links share one quiet text-link
+treatment on desktop and inside the mobile menu: 32px height, 14px semibold text,
+14px icons, consistent spacing, and visible keyboard focus. Do not give one of
+these destinations a separate pill, border, or filled button treatment. Mobile
+links may wrap together when space is limited. Use the collapsed navigation below
+1024px so the full link set does not crowd or overflow tablet-width headers.
 
 ### 13.2 Interaction
 
@@ -562,27 +565,27 @@ theme.
 
 ### 13.4 Brand mark
 
-Use the official Memos SVG shape through `MemosMark` for interface branding. Its
-`currentColor` fill follows the surrounding text color; backgrounds and radius
-belong to the placement, not the mark. Use the official simplified shape at
-32px or below and the standard shape above 32px. Use `MemosLockup` for the public
-header, Docs title, and fallback pages: a 28px-tall mark with transparent side
-padding trimmed, an 8px gap, and the system serif stack `Georgia, "Times New Roman", Times, serif` at 20px regular with
-`-0.025em` tracking. Body and UI text retain Inter. Preserve the SVG's proportions and paths. Browser icons use a
-fixed blue (`#477FA8`) simplified mark on a transparent background, matching the
-local Memos favicon at the user's request. Preserve its 1.08 scale and light
-3-unit stroke for legibility at small sizes, independent of the system theme.
-The SVG and ICO fallback must share this treatment. At the user's request,
-Apple touch icons and their fallback files use the official Celadon avatar,
-resized to 180px with its solid light-green background and square canvas.
-These icon treatments do not change the website's brand-color tokens.
+Use the official assets from `usememos/.github/assets/brand/`. `MemosMark`
+preserves the supplied standalone geometry; `MemosLockup` preserves the supplied
+bird and outlined lettering as one uniformly scaled SVG, including its viewBox
+and padding. Do not recreate the wordmark with a local font, trim its canvas,
+stretch the artwork, add outlines, or recolor individual parts. Choose the small
+mark at 32px or below; choose lockup variants by visible bird height, not canvas
+height. Inline artwork inherits `currentColor` with dark fill on light surfaces
+and light fill on dark surfaces. This identity migration also applies to the
+existing shared logo in Docs and fallback pages, without changing their layout.
 
-The Brand page is the asset catalog: show light and dark previews, actual-size
-small marks, SVG downloads, and the official square avatar PNGs. Avatar palettes
-do not redefine the site's primary color scale. Source authority remains the
-upstream `BRAND.md`; serve assets at fixed `/brand/` URLs with revalidation before
-reuse. The website wordmark and social-preview treatment above are locally
-approved choices; upstream `BRAND.md` remains the authority for product copy.
+Keep the existing blue browser favicon and Celadon Apple touch icons as scoped
+platform treatments. They do not define a primary brand palette. Legacy public
+asset URLs MUST remain available; newly cataloged downloads use the upstream
+filenames under `/brand/`. Assets require revalidation before reuse.
+
+The Brand page catalogs standard and small marks, all official lockups, eight
+square avatar PNGs, and both product previews. Show light and dark identity
+previews, actual-size small marks, accessible download names, and useful alt
+text. Use the supplied preview PNGs unchanged at their original 1448 × 1086
+aspect ratio. Keep editable preview sources upstream rather than copying the
+preview tool into this repository. Link to upstream `BRAND.md` for brand policy.
 
 ## 14. Product presentation
 
@@ -629,23 +632,15 @@ system.
 
 [`BRAND.md`](https://github.com/usememos/.github/blob/main/BRAND.md) in `usememos/.github` defines the positioning and approved copy. Use the shared constants in `src/shared/lib/branding.ts` for brand-level copy; page-specific headings and descriptions should describe their own subject.
 
-Words are part of the composition.
+Brand-level descriptions MUST use the canonical constants verbatim. Page-specific
+copy explains the page's subject in the upstream voice. Functional documentation,
+privacy disclosures, and integration instructions retain the technical details
+needed to understand their subject; they are not homepage positioning. Do not
+rewrite historical blog posts, changelogs, or API terminology as a brand refresh.
 
-- Write from the visitor's side of the screen in direct, active language.
-- State what Memos does, what the visitor controls, and what evidence supports
-  the claim.
-- Prefer concrete nouns and verbs over category jargon.
-- Keep headings short enough to carry hierarchy without becoming slogans made
-  of filler.
-- A label labels, an example demonstrates, and an action states what happens.
-- Use sentence case except for short established eyebrows and metadata.
-- Keep the same action name across the page.
-- Explain self-hosting, privacy, Markdown, and open source through consequences,
-  not empty adjectives.
-
-Avoid inflated language such as `revolutionary`, `effortless`, `supercharge`,
-`unlock`, or `the ultimate`. Avoid describing Memos as a generic workspace,
-second brain, all-in-one platform, or AI productivity layer.
+The website MUST NOT define a competing tagline or maintain independent brand
+guidelines. Product and documentation navigation remains useful without becoming
+sales copy. Existing content is not an exception to upstream policy.
 
 ## 17. Motion
 
@@ -785,28 +780,71 @@ A durable user-requested exception MUST be recorded in this document with its
 route, scope, reason, and affected rule. Registered page signatures are part of
 the system and are not exceptions.
 
-- At the user's request, the Homepage hero at `/` uses the page-specific title
-  "Capture a thought. Keep it yours." to express quick capture and ownership
-  with less text. This scoped exception to section 16's canonical brand-copy
-  rule applies only to the visible hero title. Keep the two sentences on
-  separate lines when space permits, with `HeroAccent` on "Keep it yours.";
-  allow natural wrapping on narrower screens and with larger text settings.
-  The desktop claim column is 36rem, and the mobile fluid scale uses 10.5vw
-  within the existing rem bounds so each sentence fits at the primary review
-  sizes without preventing text from wrapping.
+- The Homepage hero uses the canonical tagline from `branding.ts`, with each
+  sentence on its own line where space permits and `HeroAccent` on the second.
+  Allow natural wrapping at narrow widths and larger text settings. The former
+  custom headline is retired by this brand migration.
+  Keep its canvas plain in both themes; ambient dot grids and colored glows do
+  not explain the product and MUST NOT be added as background decoration.
 
-- The Homepage's `MemoHeroMock` follows the current `demo.usememos.com` product
-  UI at the user's request. Inside that reconstruction, section 12's website
-  radius roles give way to the product's 8px memo/editor surfaces, compact
-  controls and square avatars, and outlined pill tags. Product colors and the
-  system UI font stay scoped to the mockup; the surrounding site keeps its
-  established tokens and typography.
+- The Homepage ends with its FAQ, followed directly by the shared site footer.
+  Do not append `StartSection` or a separate reference-links section on `/`;
+  those destinations already appear in the site navigation and footer.
 
-- At the user's request, the Features, Use Cases, and Compare indexes and detail
+- At the user's request, the Homepage's `#own` chapter retains "Choose where
+  your memos live.", the Docker command, its copy control, supporting
+  privacy/license/telemetry facts, and a deployment-guide link. This scoped
+  exception to sections 13.1 and 16 makes ownership concrete through deployment
+  and the local data folder. Brand copy changes MUST NOT remove this proof.
+  Keep the explanation factual and the documentation link quiet; do not promise
+  a deployment time. Show the command as a plain, readable code surface on the
+  Homepage and feature pages, with a solid background and no backdrop blur or
+  decorative shadow. Do not apply the memo-card arrows or duplicate the
+  supporting explanation in surrounding annotations.
+  On `/`, treat the command as the chapter's primary artifact: allow an inner
+  width of `42rem`, with 16px code on mobile, 18px from `sm`, and 20px from `lg`.
+  Keep long code lines scrollable inside the frame on narrow screens. Feature
+  embeds retain their compact scale. The shared copy control includes a visible
+  `Copy` label and changes to `Copied` only after clipboard success.
+  Below the command, a quiet linked sentence identifies SQLite as the default
+  and MySQL/PostgreSQL as alternatives. The third supporting fact introduces
+  Docker Compose, native binaries, Kubernetes, and source builds. The closing
+  `Deployment guides` link leads to `/docs/deploy`, which covers those choices.
+  The Homepage FAQ also retains concrete answers about Docker deployment,
+  database storage, and the instance operator's hosting and backup responsibility.
+  These operational facts belong in the ownership answer, rather than being
+  removed or repeated as promotional badges.
+
+- At the user's request, the visible Homepage hero subtitle at `/` is
+  "Memos is a timeline for quick thoughts, daily notes, and things you want to
+  remember. No title or folder to choose before you write."
+  Use balanced wrapping for this short standalone text. This scoped exception
+  to section 16 gives the hero a concise product introduction. The upstream
+  canonical descriptions continue to apply to metadata and other surfaces.
+
+- At the user's request, the Homepage's `MemoHeroMock` follows the official
+  `.github/tools/preview/` light and dark styles: the supplied SVG lockup,
+  opaque interface colors, borderless filled tags at memo-text size, a subdued
+  empty-editor Save control, neutral filled checkboxes, and distinct calendar
+  activity/today fills. Preserve its existing example memos, Private default,
+  dynamic local calendar, and scrollable timeline. Omit the sidebar's account
+  footer (avatar, user name, and account menu). Use up/down chevrons for the
+  switcher beside the lockup; keep the down chevron for the active Timeline
+  scope, with the Library icon. Views has one ellipsis action and an Unfinished
+  tasks row with the ListTodo icon; Tags has no heading action. Use the official
+  opaque sidebar text/icon colors in both themes, without opacity reductions
+  on weekdays, tag names, or counts. Retain the compose and attachment controls
+  shown in the product reference. Inside this reconstruction, section
+  12's website radius roles give way to compact product controls and
+  8px memo/editor surfaces. Scope these styles to the Hero; the surrounding
+  website and other reconstructions retain their existing treatments. Sync the
+  Brand page's two preview PNGs unchanged from the same upstream revision.
+
+- At the user's request, the Features and Use Cases indexes and detail
   pages adopt the Homepage chapter grammar: a centered `PageHero`/`ChapterHeader`,
   lean open grids instead of divider lists, a product reconstruction built
   from the shared memo primitives wherever one truthfully shows the subject,
-  and the shared `StartSection` that closes on the empty composer. This is the
+  and a compact reference section for useful destination links. This is the
   repeatable sibling-page shell §7.3 allows; each page still chooses its proof
   from its own content, and pages without a truthful artifact show none rather
   than a decorative one.
@@ -823,17 +861,6 @@ the system and are not exceptions.
   logo row. The order follows the shared sponsor list; the panel does not rotate
   or animate sponsor logos.
 
-- At the user's request, Compare pages carry the same sponsor and Carbon panels.
-  A comparison detail page mounts the shared responsive placements once each:
-  `SidebarAds` in a sticky rail beside the feature-matrix chapter from `lg` up,
-  and `MainContentAds` after the matrix below `lg`, so one Carbon request is
-  made per page view. The Compare index shows the sponsor and Carbon cards once,
-  in a compact centered block between the comparison chapters and the closing
-  `StartSection`. The comparison detail page's hero proof is its short
-  at-a-glance table, and the grouped feature matrix is its signature structure. These panels reuse
-  the Docs sponsor component and `CarbonAdCard` unchanged; they do not add a
-  site-specific ad surface or restyle the Docs components.
-
 ## 23. Migration
 
 The Homepage and Web Clipper are the initial reference implementations. They are
@@ -844,7 +871,7 @@ All other public `(site)` pages are migration targets. Migration SHOULD proceed
 in this order:
 
 1. Shared site chrome, actions, headings, containers, and section primitives
-2. Feature, Use Case, Compare, and Pricing indexes
+2. Feature, Use Case, and Pricing indexes
 3. Their detail pages
 4. Blog and Changelog indexes and articles
 5. Sponsors, Brand, Privacy, and other utility pages

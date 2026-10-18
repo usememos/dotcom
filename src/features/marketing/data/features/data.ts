@@ -42,11 +42,11 @@ export const FEATURES = {
   // Own: hosting, data, and license
   "self-hosted": {
     title: "Self-Hosted",
-    description: "Run Memos on a server you choose, from a Raspberry Pi at home to a company server.",
+    description: "Choose where your memos live and who can use your Memos.",
     icon: ServerIcon,
     hero: {
-      title: "Run Memos yourself",
-      subtitle: "Put your timeline of memos on hardware you choose and decide who can sign in, how, and what is public.",
+      title: "Choose where your memos live",
+      subtitle: "Keep your timeline where you decide. You choose who can sign in and which memos to share.",
     },
     benefits: [
       "Your memos stay on the server you choose: a home server, a VPS, or company hardware",
@@ -79,11 +79,11 @@ export const FEATURES = {
   },
   "data-ownership": {
     title: "Data Ownership",
-    description: "Keep memos in a database you choose, with zero telemetry and a ZIP export when you need it.",
+    description: "Keep your own record, with a Markdown export whenever you want a copy.",
     icon: LockIcon,
     hero: {
-      title: "Your memos, on your side",
-      subtitle: "Memos keeps your memos in your database, on your server. The software sends no usage data anywhere.",
+      title: "A record that stays yours",
+      subtitle: "You decide where your memos live. You can take them with you, with their dates and attachments.",
     },
     benefits: [
       "Memos and settings live in the database you choose: SQLite, MySQL, or PostgreSQL",
@@ -190,11 +190,11 @@ export const FEATURES = {
   },
   "no-dependencies": {
     title: "Self-Contained",
-    description: "One binary with the web app built in. Memos runs without any external service.",
+    description: "Your memos stay where you choose, without a required outside account.",
     icon: CloudOffIcon,
     hero: {
-      title: "Nothing else to run",
-      subtitle: "Zero telemetry and no required outside services. Optional features reach out only when you use them.",
+      title: "No outside account required",
+      subtitle: "Your everyday writing does not need another account. You choose whether to connect other tools.",
     },
     benefits: [
       "Zero telemetry: no usage reporting, analytics, or update checks",
@@ -527,11 +527,11 @@ export const FEATURES = {
   },
   microblog: {
     title: "Microblog",
-    description: "Publish short public memos from your own instance as a personal microblog.",
+    description: "Share a quick thought or an update as a public memo when you choose.",
     icon: MessageCircleIcon,
     hero: {
-      title: "A microblog on your own server",
-      subtitle: "Share quick thoughts and updates from an instance you run, one public memo at a time.",
+      title: "A thought you can share",
+      subtitle: "You choose which thoughts to make public. Your other memos stay private.",
     },
     benefits: [
       "Write a short memo and set it to public to publish it",
@@ -752,11 +752,11 @@ export const FEATURES = {
   },
   performance: {
     title: "Performance",
-    description: "One Go process with in-process caching and no extra services, so a modest host can run it.",
+    description: "Read and write your memos on modest hardware.",
     icon: ZapIcon,
     hero: {
-      title: "Few moving parts",
-      subtitle: "One Go process serves the API and the web app. There is no separate cache, queue, or search service to run.",
+      title: "A place for everyday writing",
+      subtitle: "Keep a timeline you can open through the day, with your notes and attachments together.",
     },
     benefits: [
       "The app talks to your own server, not a third-party cloud",
@@ -789,11 +789,11 @@ export const FEATURES = {
   },
   lightweight: {
     title: "Lightweight",
-    description: "One binary and SQLite by default, so Memos fits on small hardware.",
+    description: "Keep your timeline on modest hardware you already have.",
     icon: FeatherIcon,
     hero: {
       title: "Fits on small hardware",
-      subtitle: "One process and a SQLite file are enough to start. No separate database, cache, or search server is required.",
+      subtitle: "Your timeline can live on a small computer, with room for everyday notes and attachments.",
     },
     benefits: [
       "A single binary with the web interface built in",

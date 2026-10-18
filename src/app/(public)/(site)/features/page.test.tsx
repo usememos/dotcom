@@ -13,24 +13,24 @@ describe("FeaturesPage", () => {
     for (const [group, id] of [
       ["Write", "capture"],
       ["Find", "review"],
-      ["Publishing", "publishing"],
+      ["Sharing", "publishing"],
       ["Ownership", "ownership"],
-      ["Operations", "operations"],
+      ["Everyday use", "operations"],
     ]) {
       expect(within(index).getByRole("link", { name: new RegExp(group) })).toHaveAttribute("href", `#${id}`);
     }
 
     const featureLinks = screen.getAllByRole("link").filter((link) => link.getAttribute("href")?.startsWith("/features/"));
     expect(featureLinks).toHaveLength(FEATURE_SLUGS.length);
-    expect(screen.getByRole("heading", { level: 2, name: "Write first. Organize when the note asks for it." })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { level: 2, name: "Keep the software as legible as the notes." })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: "Write without choosing a title or folder." })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: "Your memos, wherever you choose." })).toBeInTheDocument();
   });
 
   it("keeps search metadata focused on the complete feature set", () => {
     render(<FeaturesPage />);
 
     expect(metadata.title).toBe("Features");
-    expect(metadata.description).toContain("quick capture");
+    expect(metadata.description).toContain("Writing, finding, and sharing");
     expect(metadata.alternates?.canonical).toBe("https://usememos.com/features");
     expect(screen.queryByRole("navigation", { name: "Breadcrumb" })).not.toBeInTheDocument();
   });

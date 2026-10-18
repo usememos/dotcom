@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
-import { BRAND_SHORT } from "@/shared/lib/branding";
 
 vi.mock("@/features/marketing/components/hero-section", () => ({
   HeroSection: ({ title, subtitle }: { title: ReactNode; subtitle: string }) => (
@@ -35,9 +34,13 @@ describe("HomePage", () => {
     render(<HomePage />);
 
     expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
-    expect(screen.getByRole("heading", { level: 1, name: "Capture a thought. Keep it yours." })).toBeVisible();
-    expect(screen.getByText("Keep it yours.")).toHaveClass("text-brand-600", "dark:text-brand-300");
-    expect(screen.getByText(BRAND_SHORT)).toBeVisible();
+    expect(screen.getByRole("heading", { level: 1, name: "Seconds to write. Yours to keep." })).toBeVisible();
+    expect(screen.getByText("Yours to keep.")).toHaveClass("text-brand-600", "dark:text-brand-300");
+    expect(
+      screen.getByText(
+        "Memos is a timeline for quick thoughts, daily notes, and things you want to remember. No title or folder to choose before you write.",
+      ),
+    ).toBeVisible();
   });
 
   it("tells the story in brand order: write, find, own, then answers", () => {
@@ -51,13 +54,13 @@ describe("HomePage", () => {
     }
   });
 
-  it("follows the FAQ with the final start CTA", () => {
+  it("ends with the FAQ without a separate reference-links section", () => {
     render(<HomePage />);
 
     const faq = screen.getByTestId("home-faq");
-    const start = document.getElementById("start");
-
-    expect(start).not.toBeNull();
-    expect(faq.nextElementSibling).toBe(start);
+    expect(screen.getByRole("main").lastElementChild).toBe(faq);
+    expect(faq.nextElementSibling).toBeNull();
+    expect(screen.queryByRole("heading", { name: "Further reading" })).not.toBeInTheDocument();
+    expect(document.getElementById("start")).toBeNull();
   });
 });

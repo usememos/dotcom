@@ -42,12 +42,12 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
   const BenefitIcon = isWip ? CircleDashedIcon : CheckIcon;
   const heroActions = isWip
     ? [
-        { label: "Follow development", href: GITHUB_REPO_URL, icon: <GithubIcon className="size-4" /> },
-        { label: "Explore available features", href: "/features", variant: "secondary" as const },
+        { label: "Development", href: GITHUB_REPO_URL, icon: <GithubIcon className="size-4" /> },
+        { label: "Available features", href: "/features", variant: "secondary" as const },
       ]
     : [
-        { label: "Install Memos", href: "/docs/getting-started", showArrow: true },
-        { label: "Try Live Demo", href: "https://demo.usememos.com/", variant: "secondary" as const },
+        { label: "Installation", href: "/docs/getting-started", showArrow: true },
+        { label: "Demo", href: "https://demo.usememos.com/", variant: "secondary" as const },
       ];
 
   return (
@@ -147,25 +147,7 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
         </div>
       </section>
 
-      {isWip ? (
-        <StartSection
-          eyebrow="Development"
-          title="Follow the feature in the open."
-          description="Track releases and implementation work on GitHub, or browse features already available in Memos."
-          actions={[
-            { label: "Follow development", href: GITHUB_REPO_URL, icon: <GithubIcon className="size-4" /> },
-            { label: "Explore available features", href: "/features", variant: "secondary" },
-          ]}
-        />
-      ) : (
-        <StartSection
-          description="Install Memos on a server you choose, then explore the rest of the features."
-          actions={[
-            { label: "Install Memos", href: "/docs/getting-started", showArrow: true },
-            { label: "Explore all features", href: "/features", variant: "secondary" },
-          ]}
-        />
-      )}
+      <StartSection />
     </main>
   );
 }

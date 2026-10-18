@@ -32,8 +32,8 @@ describe("SiteHeader", () => {
     expect(screen.getByRole("button", { name: "Resources" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Product" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Tools" })).not.toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Live Demo" })).toHaveAttribute("href", "https://demo.usememos.com/");
-    expect(screen.getByRole("link", { name: "Get Started" })).toHaveAttribute("href", "/docs/getting-started");
+    expect(screen.getByRole("link", { name: "Demo" })).toHaveAttribute("href", "https://demo.usememos.com/");
+    expect(screen.getByRole("link", { name: "Installation" })).toHaveAttribute("href", "/docs/getting-started");
     const githubLink = screen.getByRole("link", { name: "Memos on GitHub, 60K+ stars" });
     expect(githubLink).toHaveAttribute("href", "https://github.com/usememos/memos");
     expect(within(githubLink).getByText("60K+")).toBeInTheDocument();
@@ -57,6 +57,33 @@ describe("SiteHeader", () => {
 
     expect(screen.getByRole("link", { name: "Features" })).toHaveClass("text-primary");
     expect(screen.getByRole("link", { name: "Docs" })).not.toHaveClass("text-primary");
+  });
+
+  it("uses consistent text links and explicitly sized 14px utility icons", () => {
+    render(<SiteHeader />);
+    const links = [
+      screen.getByRole("link", { name: "Memos on GitHub, 60K+ stars" }),
+      screen.getByRole("link", { name: "Demo" }),
+      screen.getByRole("link", { name: "Installation" }),
+    ];
+    for (const link of links) {
+      expect(link.className).toBe(links[0].className);
+      expect(link).toHaveClass("h-8", "text-sm", "font-semibold", "focus-visible:outline-2");
+      expect(link).not.toHaveClass("rounded-full", "border");
+      for (const icon of link.querySelectorAll("svg")) expect(icon).toHaveClass("size-3.5", "shrink-0");
+    }
+  });
+
+  it("reuses the same utility links in the mobile menu", () => {
+    render(<SiteHeader />);
+    const desktopClass = screen.getByRole("link", { name: "Installation" }).className;
+    fireEvent.click(screen.getByRole("button", { name: "Open navigation menu" }));
+    const panel = within(document.getElementById("site-mobile-navigation") as HTMLElement);
+    for (const name of ["Memos on GitHub, 60K+ stars", "Demo", "Installation"]) {
+      const link = panel.getByRole("link", { name });
+      expect(link.className).toBe(desktopClass);
+      for (const icon of link.querySelectorAll("svg")) expect(icon).toHaveClass("size-3.5");
+    }
   });
 
   it("marks Resources active when a grouped route is current", () => {
@@ -93,9 +120,12 @@ describe("SiteHeader", () => {
 
     expect(panelId).toBe("site-mobile-navigation");
     expect(trigger).toHaveAttribute("aria-expanded", "false");
+    expect(trigger).toHaveClass("lg:hidden");
+    expect(screen.getByRole("link", { name: "Features", exact: true }).closest("ul")).toHaveClass("lg:flex");
     // The panel must exist even when closed, or aria-controls dangles.
     expect(document.getElementById(String(panelId))).toBeInTheDocument();
     expect(document.getElementById(String(panelId))).toHaveAttribute("hidden");
+    expect(document.getElementById(String(panelId))).toHaveClass("lg:hidden");
   });
 
   it("opens and closes the mobile navigation", () => {
@@ -108,7 +138,7 @@ describe("SiteHeader", () => {
     const panel = within(document.querySelector("#site-mobile-navigation") as HTMLElement);
     expect(panel.getByRole("link", { name: /Features/ })).toHaveAttribute("href", "/features");
     expect(panel.getByRole("link", { name: /API Reference/ })).toHaveAttribute("href", "/docs/api");
-    expect(panel.getByRole("link", { name: /Live Demo/ })).toHaveAttribute("href", "https://demo.usememos.com/");
+    expect(panel.getByRole("link", { name: /Demo/ })).toHaveAttribute("href", "https://demo.usememos.com/");
 
     fireEvent.click(screen.getByRole("button", { name: "Close navigation menu" }));
     expect(screen.getByRole("button", { name: "Open navigation menu" })).toHaveAttribute("aria-expanded", "false");

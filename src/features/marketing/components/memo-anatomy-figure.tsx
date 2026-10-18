@@ -6,10 +6,13 @@ export interface AnatomyNote {
   id: string;
   label: string;
   side: "left" | "right";
-  /** The note's vertical center, from the top of the card; offset from its part so the arrow curves. */
-  top: string;
-  /** Where the arrow lands: level with its part at the card edge (default), or on the card's top-right corner. */
-  target?: "edge" | "corner";
+  /** Fixed placement for annotations on the deployment command. */
+  top?: string;
+  /** Otherwise follow the named controls, with this vertical offset in CSS pixels. */
+  offsetY?: number;
+  /** One label can explain two related controls, such as reactions and comments. */
+  anchors?: readonly string[];
+  target?: "edge" | "corner" | "left" | "right" | "top" | "bottom" | "top-left" | "bottom-right";
 }
 
 interface Arrow {
@@ -18,46 +21,96 @@ interface Arrow {
   head: string;
 }
 
+interface FigureLayout {
+  arrows: Arrow[];
+  tops: Record<string, number>;
+}
+
 /** Room between a note and the card for its arrow to curve. */
 const GUTTER_CLASS = { left: "right-full mr-20 text-right", right: "left-full ml-20 text-left" } as const;
 
 /**
- * Draws one arrow per note from the note's inner edge to the exact card part it names, found by
- * the matching `data-anchor`. Each arrow ends at the card edge level with that part, or on the
- * card's top-right corner for `target: "corner"`. Arrows are recomputed whenever the card or figure
- * resizes (fonts, the image, the viewport), so they never drift from what they point at.
+ * Measure controls and labels in the overlay's coordinate system. Memo annotations land just
+ * outside their named controls; deployment annotations retain their card-edge treatment.
  */
-function measureArrows(root: HTMLElement, notes: readonly AnatomyNote[]): Arrow[] {
+function measureFigure(root: HTMLElement, notes: readonly AnatomyNote[]): FigureLayout {
   const box = root.getBoundingClientRect();
   const card = root.querySelector("[data-anatomy-card]")?.getBoundingClientRect();
-  if (!card) return [];
-  return notes.flatMap((note, index) => {
+  const tops: Record<string, number> = {};
+  if (!card) return { arrows: [], tops };
+  const arrows = notes.flatMap((note, index) => {
     const label = root.querySelector(`[data-note="${note.id}"]`)?.getBoundingClientRect();
-    const anchor = root.querySelector(`[data-anchor="${note.id}"]`)?.getBoundingClientRect();
+    const anchors = (note.anchors ?? [note.id]).flatMap((id) => {
+      const rect = root.querySelector(`[data-anchor="${id}"]`)?.getBoundingClientRect();
+      return rect ? [{ id, rect }] : [];
+    });
     // Notes are hidden below `xl`, where the stacked caption takes over.
-    if (!label || !anchor || label.width === 0) return [];
+    if (!label || anchors.length === 0 || label.width === 0) return [];
 
     const sx = (note.side === "left" ? label.right + 10 : label.left - 10) - box.left;
-    const sy = label.top + label.height / 2 - box.top;
-    const pinned = note.target === "corner";
-    const ex = (pinned ? card.right - 8 : note.side === "left" ? card.left - 6 : card.right + 6) - box.left;
-    const ey = (pinned ? card.top + 8 : anchor.top + anchor.height / 2) - box.top;
+    const centerY = anchors.reduce((sum, { rect }) => sum + rect.top + rect.height / 2, 0) / anchors.length;
+    const sy = note.top === undefined ? centerY - box.top + (note.offsetY ?? 0) : label.top + label.height / 2 - box.top;
+    if (note.top === undefined) tops[note.id] = sy;
 
-    // A quadratic curve that sags a little, with a slightly different bend per note so the set reads hand-drawn.
-    const dx = ex - sx;
-    const dy = ey - sy;
-    const length = Math.hypot(dx, dy) || 1;
-    const bend = Math.min(26, length * (0.16 + (index % 3) * 0.05));
-    const direction = note.side === "left" ? 1 : -1;
-    const cx = (sx + ex) / 2 - (dy / length) * bend * direction;
-    const cy = (sy + ey) / 2 + (dx / length) * bend * direction;
+    return anchors.map(({ id, rect }) => {
+      const target = note.target ?? "edge";
+      let ex = (note.side === "left" ? card.left - 6 : card.right + 6) - box.left;
+      let ey = rect.top + rect.height / 2 - box.top;
+      if (target === "corner") {
+        // Leave the folded corner visible instead of drawing the head over it.
+        ex = rect.right + 6 - box.left;
+        ey = rect.top - 6 - box.top;
+      } else if (target === "left" || target === "right") {
+        ex = (target === "left" ? rect.left - 6 : rect.right + 6) - box.left;
+      } else if (target === "top" || target === "bottom") {
+        ex = rect.left + rect.width / 2 - box.left;
+        ey = (target === "top" ? rect.top - 6 : rect.bottom + 6) - box.top;
+      } else if (target === "top-left" || target === "bottom-right") {
+        ex = (target === "top-left" ? rect.left - 6 : rect.right + 6) - box.left;
+        ey = (target === "top-left" ? rect.top - 6 : rect.bottom + 6) - box.top;
+      }
 
-    // The arrowhead follows the curve's final tangent.
-    const angle = Math.atan2(ey - cy, ex - cx);
-    const wing = (spread: number) => `${ex - 8 * Math.cos(angle + spread)} ${ey - 8 * Math.sin(angle + spread)}`;
+      const dx = ex - sx;
+      const dy = ey - sy;
+      const length = Math.hypot(dx, dy) || 1;
+      const direction = note.side === "left" ? 1 : -1;
+      let line: string;
+      let angle: number;
+      if (target === "edge") {
+        // Preserve the deployment diagram's existing card-edge connectors.
+        const bend = Math.min(26, length * (0.16 + (index % 3) * 0.05));
+        const cx = (sx + ex) / 2 - (dy / length) * bend * direction;
+        const cy = (sy + ey) / 2 + (dx / length) * bend * direction;
+        line = `M${sx} ${sy} Q${cx} ${cy} ${ex} ${ey}`;
+        angle = Math.atan2(ey - cy, ex - cx);
+      } else {
+        // Independent tangents keep the label end horizontal and aim the head at the control.
+        const diagonal = Math.SQRT1_2;
+        const entry = {
+          left: [1, 0],
+          right: [-1, 0],
+          top: [0, 1],
+          bottom: [0, -1],
+          "top-left": [diagonal, diagonal],
+          "bottom-right": [-diagonal, -diagonal],
+          corner: [-diagonal, diagonal],
+        }[target];
+        const startHandle = Math.min(56, length / 3);
+        const endHandle = Math.min(32, length / 3);
+        const c1x = sx + direction * startHandle;
+        const c2x = ex - entry[0] * endHandle;
+        // No vertical overshoot: short connectors must not curl back into a hook.
+        const c2y = Math.max(Math.min(sy, ey), Math.min(Math.max(sy, ey), ey - entry[1] * endHandle));
+        line = `M${sx} ${sy} C${c1x} ${sy} ${c2x} ${c2y} ${ex} ${ey}`;
+        angle = Math.atan2(ey - c2y, ex - c2x);
+      }
+      const headSize = target === "edge" ? 8 : 6;
+      const wing = (spread: number) => `${ex - headSize * Math.cos(angle + spread)} ${ey - headSize * Math.sin(angle + spread)}`;
 
-    return [{ id: note.id, line: `M${sx} ${sy} Q${cx} ${cy} ${ex} ${ey}`, head: `M${wing(0.5)} L${ex} ${ey} L${wing(-0.5)}` }];
+      return { id, line, head: `M${wing(0.5)} L${ex} ${ey} L${wing(-0.5)}` };
+    });
   });
+  return { arrows, tops };
 }
 
 const TONE_CLASS = {
@@ -76,21 +129,24 @@ interface AnnotatedFigureProps {
 
 export function MemoAnatomyFigure({ notes, children, tone = "light", widthClass = "max-w-[31rem]" }: AnnotatedFigureProps) {
   const rootRef = useRef<HTMLDivElement>(null);
-  const [arrows, setArrows] = useState<Arrow[]>([]);
+  const [layout, setLayout] = useState<FigureLayout>({ arrows: [], tops: {} });
 
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    const draw = () => setArrows(measureArrows(root, notes));
+    const draw = () => setLayout(measureFigure(root, notes));
     draw();
     const observer = new ResizeObserver(draw);
-    observer.observe(root);
-    const card = root.querySelector("[data-anatomy-card]");
-    if (card) observer.observe(card);
+    // Anchors and labels can reflow without changing the card's total height.
+    for (const element of [root, ...root.querySelectorAll("[data-anatomy-card], [data-anchor], [data-note]")]) observer.observe(element);
+    document.fonts?.addEventListener("loadingdone", draw);
+    root.addEventListener("load", draw, true);
     // The figure keeps a fixed width, so crossing the `xl` breakpoint (which shows the notes) only shows up as a viewport resize.
     window.addEventListener("resize", draw);
     return () => {
       observer.disconnect();
+      document.fonts?.removeEventListener("loadingdone", draw);
+      root.removeEventListener("load", draw, true);
       window.removeEventListener("resize", draw);
     };
   }, [notes]);
@@ -102,7 +158,10 @@ export function MemoAnatomyFigure({ notes, children, tone = "light", widthClass 
         <p
           key={note.id}
           data-note={note.id}
-          style={{ top: note.top }}
+          style={{
+            top: note.top ?? layout.tops[note.id] ?? 0,
+            visibility: note.top === undefined && layout.tops[note.id] === undefined ? "hidden" : undefined,
+          }}
           className={`absolute hidden -translate-y-1/2 text-[0.9375rem] font-medium whitespace-nowrap xl:block ${TONE_CLASS[tone].note} ${GUTTER_CLASS[note.side]}`}
         >
           {note.label}
@@ -117,7 +176,7 @@ export function MemoAnatomyFigure({ notes, children, tone = "light", widthClass 
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        {arrows.map((arrow) => (
+        {layout.arrows.map((arrow) => (
           <g key={arrow.id} data-arrow={arrow.id}>
             <path d={arrow.line} />
             <path d={arrow.head} />

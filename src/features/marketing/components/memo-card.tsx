@@ -1,4 +1,4 @@
-import { CheckSquareIcon, LinkIcon, MapPinIcon, MoreVerticalIcon, SquareIcon, UserRoundIcon } from "lucide-react";
+import { CheckIcon, CheckSquareIcon, LinkIcon, MapPinIcon, MoreVerticalIcon, SquareIcon, UserRoundIcon } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
 import styles from "@/features/marketing/components/home-hero.module.css";
 import { type HomeMemo, INLINE_TAG_PATTERN } from "@/features/marketing/data/home-memos";
@@ -33,7 +33,7 @@ export function ReactionPills({ reactions, className = "" }: { reactions: { emoj
       {reactions.map((reaction) => (
         <span
           key={reaction.emoji}
-          className="inline-flex h-[1.6em] items-center gap-1 rounded-full bg-[color-mix(in_oklab,var(--mock-selected)_70%,transparent)] px-[0.6em] text-[var(--mock-muted)]"
+          className={`${styles.reactionPill} inline-flex h-[1.6em] items-center gap-1 rounded-full bg-[color-mix(in_oklab,var(--mock-selected)_70%,transparent)] px-[0.6em] text-[var(--mock-muted)]`}
         >
           <span className="leading-none">{reaction.emoji}</span>
           <span className="text-[0.85em] tabular-nums opacity-70">{reaction.count}</span>
@@ -135,13 +135,17 @@ export function MemoCard({ memo, anchored = false, match, compact = false, child
         <ul className="mt-1 space-y-0.5 text-[10px] leading-4">
           {memo.tasks.map((task) => (
             <li key={task.text} className="flex items-center gap-1.5">
-              {task.done ? (
+              {anchored ? (
+                <span aria-hidden="true" className={styles.taskCheckbox} data-checked={task.done}>
+                  {task.done ? <CheckIcon className="size-2.5" strokeWidth={2.3} /> : null}
+                </span>
+              ) : task.done ? (
                 <CheckSquareIcon aria-hidden="true" className="size-3 shrink-0 text-[var(--mock-accent)]" />
               ) : (
                 <SquareIcon aria-hidden="true" className="size-3 shrink-0 text-[var(--mock-muted)]" />
               )}
               <span className="sr-only">{task.done ? "Completed: " : "To do: "}</span>
-              <span className={task.done ? "text-[var(--mock-muted)] line-through" : undefined}>{task.text}</span>
+              <span className={task.done ? `${styles.completedTask} text-[var(--mock-muted)] line-through` : undefined}>{task.text}</span>
             </li>
           ))}
         </ul>
@@ -175,7 +179,7 @@ export function MemoCard({ memo, anchored = false, match, compact = false, child
                   <span className="truncate">{target.label}</span>
                 </span>
               )}
-              <span className="shrink-0 text-[var(--mock-muted)] opacity-70">Referencing</span>
+              <span className={`${styles.referenceLabel} shrink-0 text-[var(--mock-muted)] opacity-70`}>Referencing</span>
             </li>
           ))}
         </ul>

@@ -28,11 +28,26 @@ describe("MemosMark", () => {
     expect(screen.getByRole("img", { name: "Memos logo" })).not.toHaveAttribute("aria-hidden");
   });
 
-  it("uses system serif for the shared wordmark while keeping the small official mark", () => {
-    const { container } = render(<MemosLockup />);
-    expect(screen.getByText("Memos")).toHaveStyle({ fontFamily: 'Georgia, "Times New Roman", Times, serif' });
-    expect(screen.getByText("Memos")).not.toHaveClass("font-serif");
-    expect(container.querySelector("svg")).toHaveAttribute("height", "28");
-    expect(container.querySelector("svg")).toHaveAttribute("viewBox", "112 32 288 448");
+  it.each([34, 45, 46, 88])("preserves the official lockup at %ipx canvas height", (height) => {
+    const filename = height * (24 / 34) <= 32 ? "lockup-small.svg" : "lockup.svg";
+    const original = new DOMParser().parseFromString(readFileSync(`public/brand/${filename}`, "utf8"), "image/svg+xml");
+    const { container } = render(<MemosLockup height={height} />);
+    const svg = screen.getByRole("img", { name: "Memos" });
+    expect(svg).toHaveAttribute("viewBox", original.documentElement.getAttribute("viewBox"));
+    expect(svg).toHaveAttribute("height", String(height));
+    for (const tag of ["path", "g"]) {
+      const actual = Array.from(container.querySelectorAll(tag));
+      const supplied = Array.from(original.querySelectorAll(tag));
+      expect(actual).toHaveLength(supplied.length);
+      actual.forEach((node, i) => {
+        for (const attr of ["d", "transform", "fill-rule"]) expect(node.getAttribute(attr)).toBe(supplied[i].getAttribute(attr));
+      });
+    }
+    expect(container.querySelector("text, span")).toBeNull();
+  });
+
+  it("hides decorative lockups without removing the linked logo name", () => {
+    const { container } = render(<MemosLockup label="" />);
+    expect(container.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
   });
 });

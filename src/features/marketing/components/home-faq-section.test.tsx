@@ -14,6 +14,15 @@ interface FaqPageJsonLd {
 }
 
 describe("HomeFaqSection", () => {
+  it("preserves ownership details alongside the product questions", () => {
+    const { container } = render(<HomeFaqSection />);
+    expect(container.querySelectorAll("#faq details")).toHaveLength(5);
+    const ownership = HOME_FAQ_ITEMS.find((item) => item.question === "Can I choose where my memos live?");
+    expect(ownership?.answer).toMatch(/Docker.*server, NAS, or homelab/);
+    expect(ownership?.answer).toMatch(/database: SQLite by default, or MySQL or PostgreSQL/);
+    expect(ownership?.answer).toMatch(/Whoever runs the instance manages its hosting and backups/);
+  });
+
   it("keeps every answer in sync with the FAQPage JSON-LD, one open at a time", () => {
     const { container } = render(<HomeFaqSection />);
     const scripts = container.querySelectorAll<HTMLScriptElement>('script[type="application/ld+json"]');

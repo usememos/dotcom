@@ -25,14 +25,14 @@ export function MemoHeroCalendar() {
     <section data-testid="mock-calendar">
       <div className="mb-2 flex h-[22px] items-center justify-between px-1.5">
         <p className="text-[10.5px] font-medium text-[var(--mock-ink)]">{calendar?.label ?? "Calendar"}</p>
-        <div className="flex gap-1.5 text-[var(--mock-muted)] opacity-70">
-          <ChevronLeftIcon className="size-3" />
-          <ChevronRightIcon className="size-3" />
+        <div className="flex gap-1.5 text-[var(--mock-switcher)]">
+          <ChevronLeftIcon className="size-3" strokeWidth={1.8} />
+          <ChevronRightIcon className="size-3" strokeWidth={1.8} />
         </div>
       </div>
       <div className="mb-1.5 grid grid-cols-7 gap-1">
         {["S", "M", "T", "W", "T", "F", "S"].map((day, index) => (
-          <span key={`${day}-${index}`} className="flex h-3.5 items-center justify-center text-[8px] text-[var(--mock-muted)] opacity-60">
+          <span key={`${day}-${index}`} className="flex h-3.5 items-center justify-center text-[8px] text-[var(--mock-weekday)]">
             {day}
           </span>
         ))}
@@ -46,16 +46,15 @@ export function MemoHeroCalendar() {
               aria-current={day.today ? "date" : undefined}
               className={`relative flex aspect-square items-center justify-center rounded-[6px] text-[9px] tabular-nums ${
                 day.outside
-                  ? "text-[var(--mock-muted)] opacity-25"
-                  : day.count
-                    ? "bg-[color-mix(in_oklab,var(--mock-accent)_22%,transparent)] text-[var(--mock-ink)]"
-                    : "text-[var(--mock-muted)]"
+                  ? "text-[var(--mock-day-outside)]"
+                  : day.today
+                    ? "bg-[var(--mock-day-today)] text-[var(--mock-day-today-ink)]"
+                    : day.count
+                      ? "bg-[var(--mock-day-active)] text-[var(--mock-ink)]"
+                      : "text-[var(--mock-ink)]"
               }`}
             >
               {day.label}
-              {day.today ? (
-                <span className="absolute bottom-[2px] left-1/2 size-[2.5px] -translate-x-1/2 rounded-full bg-[var(--mock-accent)]" />
-              ) : null}
             </span>
           ))
         ) : (

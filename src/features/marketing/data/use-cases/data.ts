@@ -15,7 +15,7 @@ export const USE_CASES = {
     title: "Software Developers & Engineers",
     subtitle: "Code snippets, technical notes, and architecture decisions",
     description:
-      "Developers use Memos to save code snippets, debug notes, architecture decisions, and learning resources as short memos. Fenced code blocks, tags, and search make them easy to find again.",
+      "Keep a code snippet, a debugging note, or a decision as it happens. Each memo keeps its date, and you can find it again by a word or a tag.",
     icon: CodeIcon,
     workflows: [
       "Store reusable code snippets and command-line recipes",
@@ -59,7 +59,7 @@ export const USE_CASES = {
     title: "Content Creators & Writers",
     subtitle: "Article drafts, research collection, and creative ideas",
     description:
-      "Writers and content creators use Memos to catch ideas, collect research, and keep short working notes beside longer drafts. Every memo lands in a timeline you can search by tag or date.",
+      "Keep a phrase, an observation, or an idea before it goes. A few words can stay a complete memo; longer drafts can grow when you want them to.",
     icon: PencilIcon,
     workflows: [
       "Sketch outlines and opening lines in Markdown",
@@ -100,52 +100,40 @@ export const USE_CASES = {
     },
   },
   "privacy-professionals": {
-    title: "Privacy-Conscious Professionals",
-    subtitle: "Journalists, healthcare workers, legal professionals",
-    description:
-      "Professionals who handle sensitive information use Memos for working notes and research they keep to themselves. New memos start private, and self-hosting lets you decide where the server and database run.",
+    title: "Notes for yourself",
+    subtitle: "Observations, reflections, and thoughts you keep private",
+    description: "You can write a thought without choosing a title or a folder. Your memos stay private until you decide to share one.",
     icon: ShieldCheckIcon,
     workflows: [
-      "Log interview notes and source contacts",
-      "Keep observation notes on infrastructure your organization manages",
-      "Maintain client case notes and legal research",
-      "Store investigative research and sensitive findings",
-      "Keep personal journals and reflections as private memos",
-      "Archive strategy notes that should not sit in a third-party cloud",
+      "Keep a daily reflection",
+      "Write down an observation",
+      "Save a question for later",
+      "Remember a conversation",
+      "Keep a personal reading note",
+      "Look back through a week of thoughts",
     ],
     whyMemos: [
-      "Zero telemetry: the Memos software sends no usage data",
-      "Can run in isolated environments you control",
-      "New memos default to Private; you choose when to share",
-      "Whoever runs the instance controls access, retention, and backups",
-      "No third-party service is required to run it",
+      "New memos are private by default",
+      "Each thought keeps the day you wrote it",
+      "Find a memo by word, date, or tag",
+      "Take a copy with you as Markdown",
     ],
     features: [
       { name: "Data Ownership", slug: "data-ownership" },
-      { name: "No External Dependencies", slug: "no-dependencies" },
-      { name: "Self-Hosted", slug: "self-hosted" },
+      { name: "Timeline", slug: "timeline-view" },
+      { name: "Export", slug: "export" },
     ],
     seo: {
-      title: "Secure Note-Taking for Privacy-Focused Professionals",
-      description:
-        "See how journalists, healthcare workers, and legal professionals use Memos for sensitive working notes on a self-hosted server they control.",
-      keywords: [
-        "private note-taking tool",
-        "confidential note app",
-        "journalist notes tool",
-        "legal case management",
-        "healthcare note-taking tool",
-        "secure patient notes",
-        "self-hosted private notes",
-        "zero telemetry note taking",
-      ],
+      title: "Notes for yourself",
+      description: "Keep observations, reflections, and quick thoughts in your private timeline. Find them again by date, word, or tag.",
+      keywords: ["private notes", "daily reflections", "personal timeline", "quick thoughts"],
     },
   },
   "students-researchers": {
     title: "Students & Researchers",
     subtitle: "Academic notes, research compilation, and study materials",
     description:
-      "Students and researchers use Memos for lecture notes, reading trails, and thesis work. Write short memos as you go, then find them again by tag, search, or date.",
+      "Keep a question from a lecture, a passage from your reading, or a finding from your research. Return to it by date, word, or tag.",
     icon: GraduationCapIcon,
     workflows: [
       "Take lecture notes with rich Markdown formatting",
@@ -189,7 +177,7 @@ export const USE_CASES = {
     title: "Personal Journaling & Notes",
     subtitle: "Daily journaling, personal notes, and idea trails",
     description:
-      "People use Memos for daily journals, reading notes, and idea trails. Each memo lands in a timeline, so you can look back through any day or find an entry by tag or search.",
+      "Keep a few words about your day, a thought, or something you want to remember. Your timeline keeps the date so you can return to any day.",
     icon: BookOpenIcon,
     workflows: [
       "Write daily journal entries and personal reflections",
@@ -231,7 +219,7 @@ export const USE_CASES = {
     title: "Hobbyists & Makers",
     subtitle: "Project logs, ideas collection, and creative documentation",
     description:
-      "Makers, DIY enthusiasts, and hobbyists use Memos to keep build logs, collect inspiration, and track materials. Photos attach to the memo, and the timeline shows how each project moved.",
+      "Keep a project observation, a photo, or the result of an experiment. Your memos give you a dated record of what you tried.",
     icon: WrenchIcon,
     workflows: [
       "Document DIY projects with photos, notes, and progress logs",
@@ -275,7 +263,7 @@ export const USE_CASES = {
     title: "Homelab & Self-Hosting Community",
     subtitle: "Server documentation, configuration notes, and infrastructure logs",
     description:
-      "Self-hosting enthusiasts and homelab operators use Memos to log server configurations, troubleshooting steps, and infrastructure changes. It runs as a single Docker container beside the rest of the stack.",
+      "Keep configuration notes, troubleshooting steps, and changes to your homelab. A short memo gives you a dated record to return to.",
     icon: ServerIcon,
     workflows: [
       "Document server configurations and network topology",
@@ -319,7 +307,7 @@ export const USE_CASES = {
     title: "Families & Friends",
     subtitle: "A shared timeline for your closest people",
     description:
-      "Families and friend groups can share one Memos instance for updates, photos, and everyday notes. Protected memos are visible only to people signed in to your instance.",
+      "Keep your own notes, photos, and everyday thoughts. Share a memo with family and friends when you choose; each person keeps their own memos.",
     icon: UsersIcon,
     workflows: [
       "Share daily updates with family members and close friends",
@@ -332,7 +320,7 @@ export const USE_CASES = {
     whyMemos: [
       "New memos start private; set Protected to share with signed-in members",
       "A simple composer that non-technical family members can use",
-      "Your shared memos stay on a server you run",
+      "You choose where to keep your memos",
       "Markdown and attachments work well for notes, photos, and links",
       "The timeline and calendar let you look back through any day",
     ],
@@ -343,8 +331,7 @@ export const USE_CASES = {
     ],
     seo: {
       title: "Memos for Families - Private Family Feed & Shared Notes",
-      description:
-        "See how families and friend groups share updates, photos, and notes on their own Memos instance, visible only to signed-in members, without relying on public platforms.",
+      description: "Keep photos, updates, and everyday notes. Share the memos you choose with family and friends.",
       keywords: [
         "private family social app",
         "family notes app",
@@ -361,7 +348,7 @@ export const USE_CASES = {
     title: "Team Documentation & Collaboration",
     subtitle: "Shared notes, meeting records, and internal updates",
     description:
-      "Small teams use Memos for short shared notes, meeting records, and internal updates. It fits teams that want a simple, self-hosted place to post and search them.",
+      "Keep your own working notes, meeting records, and questions. Share a memo with the people you work with when they need it.",
     icon: UsersIcon,
     workflows: [
       "Share meeting agendas, notes, and action items",
@@ -372,11 +359,11 @@ export const USE_CASES = {
       "Link to specs and design documents with a short summary",
     ],
     whyMemos: [
-      "No per-user licensing",
-      "SQLite by default, with PostgreSQL or MySQL for larger setups",
-      "Set your instance name and logo",
-      "REST API and webhooks connect Memos to team tools",
-      "Self-hosting keeps team notes inside infrastructure you manage",
+      "Your own working notes remain private until you share them",
+      "Each memo keeps its date",
+      "Tags and search bring earlier decisions back",
+      "You can link related memos",
+      "Your export keeps a copy you can take with you",
     ],
     features: [
       { name: "Database Support", slug: "database-support" },
@@ -386,7 +373,7 @@ export const USE_CASES = {
     seo: {
       title: "Memos for Teams - Shared Notes & Internal Updates",
       description:
-        "See how small teams use Memos for shared notes, meeting records, and internal updates. Self-hosted, open source, and simple to run on your own infrastructure.",
+        "Keep your working notes and meeting records. Share each memo with the people who need it, and return to earlier decisions by date or word.",
       keywords: [
         "team wiki software",
         "collaborative note-taking tool",

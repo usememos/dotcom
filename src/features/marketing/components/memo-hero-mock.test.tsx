@@ -1,7 +1,9 @@
+import { readFileSync } from "node:fs";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { act } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { buildHomeCalendar, HOME_MEMOS, HOME_TAGS, memoTags } from "@/features/marketing/data/home-memos";
+import { lockupArtwork } from "@/shared/ui/memos-lockup-artwork";
 import { MemoHeroCalendar } from "./memo-hero-calendar";
 import { MemoHeroContent } from "./memo-hero-content";
 import { MemoHeroMock } from "./memo-hero-mock";
@@ -9,6 +11,25 @@ import { MemoHeroMock } from "./memo-hero-mock";
 vi.mock("@/shared/ui/carbon-ad-card", () => ({
   CarbonAdCard: () => <aside data-testid="carbon-ad" />,
 }));
+
+describe("official Hero preview styles", () => {
+  const css = readFileSync("src/features/marketing/components/home-hero.module.css", "utf8");
+
+  it("scopes both official palettes to the Hero rather than other reconstructions", () => {
+    const light = css.match(/^\.mock \{([^}]+)\}/m)?.[1] ?? "";
+    const dark = css.match(/^\[class~="dark"\] \.mock \{([^}]+)\}/m)?.[1] ?? "";
+    for (const [rule, colors] of [
+      [light, { canvas: "#faf9f6", sidebar: "#f6f5f1", tag: "#e7edf4", save: "#98acc0", weekday: "#969794", "tag-count": "#91958d" }],
+      [dark, { canvas: "#1d1f23", sidebar: "#16191c", tag: "#2d3a48", save: "#406082", weekday: "#a2a5a9", "tag-count": "#9da6ad" }],
+    ] as const) {
+      for (const [token, color] of Object.entries(colors)) expect(rule).toContain(`--mock-${token}: ${color};`);
+    }
+    const tags = css.match(/^\.mock \.memoTag \{([^}]+)\}/m)?.[1] ?? "";
+    expect(tags).toContain("border: 0;");
+    expect(tags).toContain("background: var(--mock-tag);");
+    expect(tags).toContain("font-size: inherit;");
+  });
+});
 
 // Calendar arithmetic uses local calendar days, including month/year rollovers.
 describe("homepage calendar", () => {
@@ -54,6 +75,50 @@ describe("homepage calendar", () => {
 });
 
 describe("homepage example memos", () => {
+  it("uses the official small lockup and the empty editor's subdued Save state", () => {
+    const { container } = render(<MemoHeroMock />);
+    const sidebar = container.querySelector("aside");
+    const lockup = sidebar?.querySelector("svg");
+    expect(lockup).toHaveAttribute("viewBox", lockupArtwork.small.viewBox);
+    expect(lockup?.querySelectorAll("path")[1]).toHaveAttribute("d", lockupArtwork.small.wordmark.d);
+    expect(sidebar).toHaveAttribute("aria-hidden", "true");
+    expect(sidebar).not.toHaveTextContent("Steven");
+    expect(sidebar?.querySelector(".lucide-chevrons-up-down")).not.toBeNull();
+    expect(sidebar?.querySelector(".lucide-library + .lucide-chevron-down")).not.toBeNull();
+    const save = screen.getByRole("button", { name: "Save", hidden: true });
+    expect(save).toBeDisabled();
+    expect(save.closest('[aria-hidden="true"]')).not.toBeNull();
+    expect(screen.getByText("Private")).toBeInTheDocument();
+    expect(screen.queryByText("Ctrl↵")).not.toBeInTheDocument();
+  });
+
+  it("matches Timeline and Views/Tags controls while retaining compose and attachments", () => {
+    const { container } = render(<MemoHeroMock />);
+    const sidebar = container.querySelector("aside") as HTMLElement;
+    expect(within(sidebar).getByText("Timeline")).toBeInTheDocument();
+    expect(within(sidebar).queryByText("Home")).toBeNull();
+    const views = within(sidebar).getByText("Views").closest("section") as HTMLElement;
+    expect(within(views).getByText("Unfinished tasks")).toBeInTheDocument();
+    expect(views.querySelector(".lucide-list-todo")).not.toBeNull();
+    expect(views.firstElementChild?.querySelectorAll("svg")).toHaveLength(1);
+    expect(views.firstElementChild?.querySelector(".lucide-ellipsis")).not.toBeNull();
+    const tags = within(sidebar).getByText("Tags").closest("section") as HTMLElement;
+    expect(tags.firstElementChild?.querySelectorAll("svg")).toHaveLength(0);
+    expect(sidebar.querySelector(".lucide-square-pen")).not.toBeNull();
+    expect(sidebar.querySelector(".lucide-paperclip")).not.toBeNull();
+    expect(sidebar.querySelector('[class*="opacity-"]')).toBeNull();
+  });
+
+  it("shows neutral filled task checks while preserving accessible task states", () => {
+    render(<MemoHeroMock />);
+    const errands = screen.getAllByRole("article")[2];
+    const tasks = within(errands).getAllByRole("listitem");
+    expect(tasks[0].querySelector('[data-checked="true"] svg')).not.toBeNull();
+    expect(tasks[1].querySelector('[data-checked="false"] svg')).toBeNull();
+    expect(within(tasks[0]).getByText("Completed:")).toBeInTheDocument();
+    expect(within(tasks[1]).getByText("To do:")).toBeInTheDocument();
+  });
+
   it("keeps priority order chronological and references resolvable", () => {
     expect(HOME_MEMOS.map((memo) => memo.daysAgo)).toEqual([...HOME_MEMOS.map((memo) => memo.daysAgo)].sort((a, b) => a - b));
     for (const memo of HOME_MEMOS) {

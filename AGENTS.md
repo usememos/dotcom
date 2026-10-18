@@ -72,7 +72,8 @@ See `docs/architecture.md` for current routes, browser-side account data flow, c
 - `src/app/(public)/(site)/blog/` serves blog posts from `content/blog/`.
 - `src/app/(public)/(site)/changelog/` serves release notes from `content/changelog/`.
 - `src/app/(public)/(site)/features/` contains the feature index and SEO pages at `/features/[slug]`.
-- `src/app/(public)/(site)/brand/`, `compare/`, `pricing/`, `privacy/`, `sponsors/`, `use-cases/`, and `web-clipper/` contain static marketing pages.
+- `src/app/(public)/(site)/brand/`, `pricing/`, `privacy/`, `sponsors/`, `use-cases/`, and `web-clipper/` contain static marketing pages.
+- Legacy `/compare` routes permanently redirect to `/features`; keep them out of navigation and discovery.
 - `src/app/(app)/` mounts Clerk and the account shell and sets noindex metadata. `/dashboard` and `/settings/connections` render static shells; their client components handle sign-in and load account/instance data. The layout does not enforce server-side authentication. Sign-in uses Clerk's modal; there is no `(auth)` route group.
 - `src/app/api/search/route.ts` generates the public search index. Other static handlers provide `/og/` images, `/blog/feed.xml`, `/llms.txt`, `/llms-full.txt`, and `/llms.mdx/[...slug]` exports.
 

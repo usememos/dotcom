@@ -1,10 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { BRAND_PROOF_POINTS } from "@/shared/lib/branding";
 import { HeroSection } from "./hero-section";
 
 describe("HeroSection", () => {
-  it("renders the headline and the ambient decorative layer behind it", () => {
+  it("pairs the headline and quiet actions with the product preview on a plain canvas", () => {
     const { container } = render(
       <HeroSection
         title="Test headline"
@@ -16,6 +15,7 @@ describe("HeroSection", () => {
 
     const heading = screen.getByRole("heading", { name: "Test headline" });
     expect(heading).toBeInTheDocument();
+    expect(screen.getByText("Test subtitle")).toHaveClass("text-balance");
     // Scale the brand headline on narrow screens without preventing text wrapping.
     expect(heading.className).toMatch(/text-\[clamp\(/);
     expect(heading.className).not.toMatch(/whitespace-nowrap|text-nowrap/);
@@ -26,12 +26,11 @@ describe("HeroSection", () => {
     expect(demo).toHaveAttribute("target", "_blank");
     expect(demo).toHaveAttribute("rel", "noopener noreferrer");
 
-    for (const point of BRAND_PROOF_POINTS) {
-      expect(screen.getByText(point)).toBeVisible();
-    }
+    expect(screen.queryByText("Deploys in seconds")).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Install" })).not.toHaveClass("bg-zinc-950");
 
-    const ambient = container.querySelector('[aria-hidden="true"].pointer-events-none');
-    expect(ambient).not.toBeNull();
+    expect(screen.getByRole("region", { name: "Example memos — scroll to explore" })).toBeInTheDocument();
+    expect(container.querySelector('[class*="radial-gradient"]')).toBeNull();
   });
 
   it("preserves the prefix and changelog link for historical releases", () => {

@@ -5,6 +5,7 @@ import { HeroAccent } from "@/features/marketing/components/hero-accent";
 import { MarketingSectionHeader } from "@/features/marketing/components/marketing-page";
 import { BRAND_ASSETS_PATH, BRAND_AVATAR_PALETTES } from "@/shared/lib/brand-assets";
 import { buildBreadcrumbJsonLd, buildMarketingMetadata } from "@/shared/lib/seo";
+import { MemosLockup } from "@/shared/ui/memos-lockup";
 import { MemosMark } from "@/shared/ui/memos-mark";
 
 export const metadata: Metadata = buildMarketingMetadata({
@@ -19,8 +20,8 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd([
 ]);
 
 const LOGOS = [
-  { title: "Standard logo", filename: "logo.svg", small: false, description: "Standard logo for general use." },
-  { title: "Small logo", filename: "logo-small.svg", small: true, description: "Simplified version for display at 32px or smaller." },
+  { title: "Standard logo", filename: "mark.svg", small: false, description: "Standard logo for general use." },
+  { title: "Small logo", filename: "mark-small.svg", small: true, description: "Simplified version for display at 32px or smaller." },
 ] as const;
 
 function DownloadLink({ href, name, format }: { href: string; name: string; format: "SVG" | "PNG" }) {
@@ -53,7 +54,7 @@ function MarkPreview({ small = false, dark = false }: { small?: boolean; dark?: 
             </div>
           ))
         ) : (
-          <MemosMark size={144} label={`Memos logo on a ${dark ? "dark" : "light"} background`} />
+          <MemosMark size={144} label="Memos" />
         )}
       </div>
       <span className={`text-xs ${dark ? "text-zinc-400" : "text-zinc-500"}`}>{dark ? "Dark background" : "Light background"}</span>
@@ -72,7 +73,7 @@ export default function BrandPage() {
             Memos <HeroAccent>brand assets.</HeroAccent>
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-7 text-zinc-600 sm:text-lg sm:leading-8 dark:text-zinc-300">
-            The logo is a stylized bird inspired by ancient pictographs. Download the SVG or choose an avatar for your profile.
+            Official marks, wordmarks, avatars, and product previews for Memos.
           </p>
           <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:gap-8">
             {LOGOS.map((logo) => (
@@ -91,15 +92,41 @@ export default function BrandPage() {
               </div>
             ))}
           </div>
-          <div className="mt-10 grid gap-6 text-sm leading-7 text-zinc-600 sm:grid-cols-2 dark:text-zinc-300">
-            <p>
-              Keep the shape and proportions intact, leave clear space around the mark, and choose a color that stands out against its
-              background.
-            </p>
-            <p>
-              The SVG uses <code className="text-zinc-950 dark:text-zinc-100">currentColor</code>. When embedded inline, set its color with
-              CSS. Background color and corner radius are separate choices.
-            </p>
+        </div>
+      </section>
+      <section className="py-14 lg:py-20">
+        <div className="site-container">
+          <MarketingSectionHeader
+            eyebrow="Wordmark"
+            title="The mark and the name."
+            description="Official SVG lettering, with standard, small, and light artwork for dark image embeds."
+            align="left"
+          />
+          <div className="grid gap-10">
+            {[
+              { title: "Standard lockup", filename: "lockup.svg", height: 85 },
+              { title: "Small lockup", filename: "lockup-small.svg", height: 34 },
+              { title: "Lockup on dark", filename: "lockup-on-dark.svg", height: 85 },
+            ].map((lockup) => (
+              <div key={lockup.filename}>
+                <div
+                  className={`grid overflow-hidden rounded-2xl border border-zinc-200 dark:border-white/10 ${lockup.filename === "lockup-on-dark.svg" ? "" : "sm:grid-cols-2"}`}
+                >
+                  {(lockup.filename === "lockup-on-dark.svg" ? [true] : [false, true]).map((dark) => (
+                    <div
+                      key={String(dark)}
+                      className={`flex min-h-40 min-w-0 items-center justify-center px-4 py-8 ${dark ? "bg-zinc-950 text-zinc-100" : "bg-stone-50 text-zinc-950"}`}
+                    >
+                      <MemosLockup height={lockup.height} className="max-w-full h-auto" />
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                  <h3 className="text-lg font-semibold text-zinc-950 dark:text-zinc-100">{lockup.title}</h3>
+                  <DownloadLink href={`${BRAND_ASSETS_PATH}/${lockup.filename}`} name={lockup.title} format="SVG" />
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -114,7 +141,7 @@ export default function BrandPage() {
           <ul className="grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-4 sm:gap-x-8" aria-label="Avatar downloads">
             {BRAND_AVATAR_PALETTES.map((palette) => {
               const name = palette[0].toUpperCase() + palette.slice(1);
-              const src = `${BRAND_ASSETS_PATH}/avatars/memos-${palette}.png`;
+              const src = `${BRAND_ASSETS_PATH}/avatars/${palette}.png`;
               return (
                 <li key={palette}>
                   <Image src={src} alt={`Memos ${name} avatar`} width={512} height={512} className="aspect-square h-auto w-full" />
@@ -128,19 +155,62 @@ export default function BrandPage() {
       </section>
       <section className="py-14 lg:py-20">
         <div className="site-container">
+          <MarketingSectionHeader
+            eyebrow="Product previews"
+            title="The timeline in both themes."
+            description="Matching 1448 × 1086 PNGs, exported from the shared preview sources."
+            align="left"
+          />
+          <div className="grid gap-10 lg:grid-cols-2">
+            {(["light", "dark"] as const).map((theme) => (
+              <figure key={theme}>
+                <Image
+                  src={`${BRAND_ASSETS_PATH}/previews/timeline-${theme}.png`}
+                  alt={`The Memos timeline with a composer and recent memos in ${theme} mode`}
+                  width={1448}
+                  height={1086}
+                  className="h-auto w-full"
+                />
+                <figcaption className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                  <h3 className="text-lg font-semibold text-zinc-950 dark:text-zinc-100">
+                    {theme === "light" ? "Light preview" : "Dark preview"}
+                  </h3>
+                  <DownloadLink
+                    href={`${BRAND_ASSETS_PATH}/previews/timeline-${theme}.png`}
+                    name={`${theme === "light" ? "Light" : "Dark"} preview`}
+                    format="PNG"
+                  />
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="py-14 lg:py-20">
+        <div className="site-container">
           <h2 className="text-balance font-serif text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl dark:text-zinc-100">
             Using the brand
           </h2>
           <p className="mt-5 max-w-2xl text-sm leading-7 text-zinc-600 dark:text-zinc-300">
-            Wordmark typography, capitalization, and the primary color palette remain under exploration.
+            Positioning, approved copy, and asset usage are maintained in the shared brand document.
+          </p>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-zinc-600 dark:text-zinc-300">
+            The SVG wordmark uses Source Serif 4 Semibold, licensed under the{" "}
+            <a
+              href="/brand/OFL-SourceSerif4.txt"
+              className="rounded-sm underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4"
+            >
+              SIL Open Font License 1.1
+            </a>
+            .
           </p>
           <a
             href="https://github.com/usememos/.github/blob/main/BRAND.md"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 inline-flex min-h-10 items-center rounded-lg text-sm font-semibold text-brand-700 underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600 dark:text-brand-300"
+            className="mt-4 inline-flex min-h-10 items-center rounded-sm text-sm font-medium text-brand-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600 dark:text-brand-300"
           >
-            Read the brand guidelines
+            Brand guidance
           </a>
         </div>
       </section>

@@ -16,7 +16,7 @@ describe("PricingPage", () => {
     expect(screen.getByText("Memos software")).toBeInTheDocument();
     expect(screen.getAllByText("$0")).toHaveLength(3);
     expect(screen.getByText("The only costs are the ones you choose.")).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: /Install Memos/ })[0]).toHaveAttribute("href", "/docs/getting-started");
+    expect(screen.getAllByRole("link", { name: /Installation/ })[0]).toHaveAttribute("href", "/docs/getting-started");
     expect(screen.queryByRole("navigation", { name: "Breadcrumb" })).not.toBeInTheDocument();
   });
 
@@ -26,7 +26,7 @@ describe("PricingPage", () => {
     const software = structuredData.find((entry) => entry["@type"] === "SoftwareApplication");
     const faq = structuredData.find((entry) => entry["@type"] === "FAQPage");
 
-    expect(metadata.title).toBe("Pricing: Free, Open-Source, Self-Hosted");
+    expect(metadata.title).toBe("Pricing");
     expect(metadata.description).toContain("no license fee");
     expect(metadata.alternates?.canonical).toBe("https://usememos.com/pricing");
     expect(software).toMatchObject({

@@ -9,15 +9,13 @@ export function HomeWriteSection() {
   return (
     <section id="write" className="scroll-mt-20 bg-white py-16 dark:bg-zinc-950 sm:py-20 lg:py-24">
       <div className="site-container flex flex-col items-center text-center">
-        <ChapterHeader eyebrow="Write" title="Simple by default. Powerful when you need it." />
+        <ChapterHeader eyebrow="Write" title="A thought can be a memo." />
 
-        <div className="mt-14 w-full sm:mt-16">
-          <MemoAnatomyShowcase />
-        </div>
+        <MemoAnatomyShowcase />
 
         <p className="mt-14 max-w-2xl text-pretty text-base leading-7 text-zinc-600 sm:mt-16 sm:text-[1.0625rem] sm:leading-8 dark:text-zinc-300">
-          Most memos are a line or two. When a thought needs more, the same memo takes a checklist, a photo, a place, or a link to another
-          memo, and others can react and reply. Nothing to set up first.
+          A line or two is enough. You can add a checklist, a photo, a place, or a link to another memo when you need it. People you share
+          with can react and reply.
         </p>
         <p className="mt-4 max-w-2xl text-pretty text-sm leading-7 text-zinc-500 dark:text-zinc-400">
           Away from Memos? Save pages with the{" "}

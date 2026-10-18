@@ -24,18 +24,18 @@ describe("social preview artwork", () => {
     expect(png[25]).toBe(6); // RGBA: backgrounds belong to the renderer.
   });
 
-  it("pairs the official mark with the serif wordmark and selected two-blue palette", () => {
+  it("uses the official outlined lockup and selected two-blue palette", () => {
     const html = renderToStaticMarkup(
       <SocialPreviewImage preview={{ title: BRAND_TAGLINE_LINES.join("\n"), description, section: "Blog" }} artwork="timeline.png" />,
     );
-    expect(html).toContain(">Memos</span>");
+    expect(html).not.toContain(">Memos</span>");
     expect(html).toContain("font-family:Liberation Serif");
-    expect(html.match(/font-weight:400/g)).toHaveLength(2);
+    expect(html.match(/font-weight:400/g)).toHaveLength(1);
     expect(html).toContain("font-size:76px");
     expect(html).toContain("background:#c0d9e3");
     expect(html).toContain("background:#79a9c8");
     expect(html).toContain("color:#25363e");
-    expect(html).toContain('viewBox="112 32 288 448"');
+    expect(html).toContain('viewBox="0 0 624.4055 170.0"');
     expect(html.match(/<img /g)).toHaveLength(1);
     expect(html.match(/<svg /g)).toHaveLength(1);
     expect(html).not.toMatch(/badge|Blog|text-shadow/);

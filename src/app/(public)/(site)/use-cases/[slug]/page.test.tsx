@@ -13,15 +13,15 @@ describe("UseCasePage", () => {
 
     expect(screen.getByRole("heading", { level: 1, name: "Homelab & Self-Hosting Community" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: "Ways it fits the day." })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { level: 2, name: "The fit stays simple." })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: "Writing and looking back." })).toBeInTheDocument();
     expect(screen.queryByText("01")).not.toBeInTheDocument();
 
     for (const workflow of USE_CASES["self-hosting"].workflows) {
       expect(screen.getAllByText(workflow).length).toBeGreaterThan(0);
     }
 
-    // The page closes on the shared start chapter, with one install action.
-    expect(screen.getByRole("link", { name: /Install Memos/ })).toHaveAttribute("href", "/docs/getting-started");
+    // The page ends with quiet documentation references.
+    expect(screen.getByRole("link", { name: "Documentation" })).toHaveAttribute("href", "/docs");
     // Every use case shows its own example timeline in the hero.
     expect(screen.getByTestId("use-case-timeline").querySelectorAll("article")).toHaveLength(3);
   });

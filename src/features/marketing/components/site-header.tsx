@@ -22,6 +22,36 @@ import { MemosLockup } from "@/shared/ui/memos-lockup";
 const MOBILE_NAV_ID = "site-mobile-navigation";
 const DESKTOP_NAV_ITEM_CLASS =
   "inline-flex h-8 items-center gap-1 rounded-md px-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+const UTILITY_LINK_CLASS =
+  "inline-flex h-8 items-center gap-1.5 rounded-md px-2 text-sm font-semibold whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
+
+function SiteUtilityLinks({ githubStarCount }: { githubStarCount: string }) {
+  return (
+    <>
+      <a
+        href={GITHUB_REPO_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Memos on GitHub, ${githubStarCount} stars`}
+        className={UTILITY_LINK_CLASS}
+      >
+        <GithubIcon aria-hidden="true" className="size-3.5 shrink-0" />
+        <StarIcon aria-hidden="true" className="size-3.5 shrink-0 fill-current" />
+        <span aria-hidden="true" className="tabular-nums">
+          {githubStarCount}
+        </span>
+      </a>
+      <a href={SITE_NAV_DEMO.href} target="_blank" rel="noopener noreferrer" className={UTILITY_LINK_CLASS}>
+        {SITE_NAV_DEMO.name}
+        <ArrowUpRightIcon aria-hidden="true" className="size-3.5 shrink-0" />
+      </a>
+      <Link href={SITE_NAV_CTA.href} prefetch={false} className={UTILITY_LINK_CLASS}>
+        {SITE_NAV_CTA.name}
+        <ArrowRightIcon aria-hidden="true" className="size-3.5 shrink-0" />
+      </Link>
+    </>
+  );
+}
 
 interface MobileSiteNavLinkProps {
   item: SiteNavLink;
@@ -185,7 +215,7 @@ export function SiteHeader() {
           <MemosLockup />
         </Link>
 
-        <ul className="ml-5 hidden items-center gap-1 md:flex">
+        <ul className="ml-5 hidden items-center gap-1 lg:flex">
           {SITE_NAV_ITEMS.map((item) => (
             <li key={item.name}>
               {"items" in item ? (
@@ -204,46 +234,14 @@ export function SiteHeader() {
           ))}
         </ul>
 
-        <div className="ml-auto hidden items-center gap-2 md:flex">
-          <a
-            href={GITHUB_REPO_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Memos on GitHub, ${githubStarCount} stars`}
-            className={cn(
-              buttonVariants({ variant: "outline", size: "sm" }),
-              "h-8 rounded-full border-zinc-200 bg-background/70 px-2.5 shadow-none dark:border-white/15 dark:bg-background/50",
-            )}
-          >
-            <GithubIcon className="size-4" />
-            <span aria-hidden="true" className="mx-1 h-3.5 w-px bg-border" />
-            <StarIcon aria-hidden="true" className="size-3.5 fill-current text-muted-foreground" />
-            <span aria-hidden="true" className="text-xs font-semibold tabular-nums">
-              {githubStarCount}
-            </span>
-          </a>
-          <a
-            href={SITE_NAV_DEMO.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(
-              buttonVariants({ variant: "outline", size: "sm" }),
-              "h-8 rounded-full border-zinc-200 bg-background/70 px-3 shadow-none dark:border-white/15 dark:bg-background/50",
-            )}
-          >
-            {SITE_NAV_DEMO.name}
-            <ArrowUpRightIcon aria-hidden="true" className="size-3.5 text-muted-foreground" />
-          </a>
-          <Link href={SITE_NAV_CTA.href} prefetch={false} className={cn(buttonVariants({ size: "sm" }), "h-8 rounded-full px-3")}>
-            {SITE_NAV_CTA.name}
-            <ArrowRightIcon aria-hidden="true" />
-          </Link>
+        <div className="ml-auto hidden items-center gap-2 lg:flex">
+          <SiteUtilityLinks githubStarCount={githubStarCount} />
         </div>
 
         <button
           ref={toggleRef}
           type="button"
-          className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "ml-auto md:hidden")}
+          className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "ml-auto lg:hidden")}
           aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
           aria-controls={MOBILE_NAV_ID}
           aria-expanded={mobileMenuOpen}
@@ -257,7 +255,7 @@ export function SiteHeader() {
         <div
           id={MOBILE_NAV_ID}
           hidden={!mobileMenuOpen}
-          className="absolute inset-x-0 top-14 max-h-[calc(100dvh-3.5rem)] overflow-y-auto overscroll-contain border-b border-border bg-background/95 py-4 shadow-lg backdrop-blur-lg md:hidden"
+          className="absolute inset-x-0 top-14 max-h-[calc(100dvh-3.5rem)] overflow-y-auto overscroll-contain border-b border-border bg-background/95 py-4 shadow-lg backdrop-blur-lg lg:hidden"
         >
           <div className="site-container flex flex-col gap-4">
             {SITE_NAV_ITEMS.map((item) =>
@@ -274,25 +272,8 @@ export function SiteHeader() {
                 <MobileSiteNavLink key={item.href} item={item} pathname={pathname} activeHref={activeHref} />
               ),
             )}
-            <MobileSiteNavLink item={SITE_NAV_DEMO} pathname={pathname} activeHref={activeHref} />
-            <div className="grid grid-cols-2 gap-2 border-t border-border pt-4">
-              <Link href={SITE_NAV_CTA.href} prefetch={false} className={cn(buttonVariants({ size: "default" }), "rounded-full")}>
-                {SITE_NAV_CTA.name}
-                <ArrowRightIcon aria-hidden="true" />
-              </Link>
-              <a
-                href={GITHUB_REPO_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Memos on GitHub, ${githubStarCount} stars`}
-                className={cn(buttonVariants({ variant: "outline", size: "default" }), "rounded-full")}
-              >
-                <GithubIcon className="size-4" />
-                <span className="inline-flex items-center gap-1 text-xs font-semibold tabular-nums">
-                  <StarIcon aria-hidden="true" className="size-3.5 fill-current text-muted-foreground" />
-                  {githubStarCount}
-                </span>
-              </a>
+            <div className="flex flex-wrap items-center gap-2 border-t border-border pt-4">
+              <SiteUtilityLinks githubStarCount={githubStarCount} />
             </div>
           </div>
         </div>

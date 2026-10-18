@@ -45,13 +45,6 @@ interface MarketingSummaryBandProps {
   separators?: boolean;
 }
 
-interface MarketingCtaSectionProps {
-  title: ReactNode;
-  description: ReactNode;
-  actions?: readonly MarketingAction[];
-  borderTop?: boolean;
-}
-
 interface MarketingFaqSectionProps {
   eyebrow: string;
   title: ReactNode;
@@ -66,21 +59,18 @@ function isExternalHref(href: string) {
 
 export function MarketingActionLink({
   action,
-  variant = action.variant ?? "primary",
   tone = "default",
 }: {
   action: MarketingAction;
   variant?: "primary" | "secondary";
   tone?: "default" | "inverse";
 }) {
-  const className =
+  const className = cn(
+    "group inline-flex min-h-10 items-center gap-2 rounded-sm py-2 text-sm font-medium underline decoration-zinc-300 underline-offset-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4",
     tone === "inverse"
-      ? variant === "primary"
-        ? "group inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-zinc-950 transition-colors hover:bg-zinc-100"
-        : "group inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 bg-transparent px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
-      : variant === "primary"
-        ? "group inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-950 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white"
-        : "group inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 dark:border-white/15 dark:bg-transparent dark:text-zinc-100 dark:hover:bg-white/8";
+      ? "text-white decoration-white/30 hover:text-brand-200 focus-visible:outline-brand-300"
+      : "text-zinc-950 hover:text-brand-700 focus-visible:outline-brand-700 dark:text-zinc-100 dark:decoration-white/20 dark:hover:text-brand-300 dark:focus-visible:outline-brand-300",
+  );
 
   const content = (
     <>
@@ -119,7 +109,7 @@ export function MarketingActions({
   }
 
   return (
-    <div className={cn("flex flex-col gap-3 sm:flex-row", align === "center" ? "justify-center" : "justify-start")}>
+    <div className={cn("flex flex-wrap gap-x-6 gap-y-1", align === "center" ? "justify-center" : "justify-start")}>
       {actions.map((action, index) => (
         <MarketingActionLink
           key={`${action.href}-${index}`}
@@ -233,22 +223,6 @@ export function MarketingSummaryBand({ items, numbered = false, separators = tru
             </p>
           </div>
         ))}
-      </div>
-    </section>
-  );
-}
-
-export function MarketingCtaSection({ title, description, actions = [], borderTop = false }: MarketingCtaSectionProps) {
-  return (
-    <section className={cn("py-14 lg:py-20", borderTop && "border-t border-zinc-200 dark:border-white/10")}>
-      <div className="site-container">
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 className="mb-6 text-balance font-serif text-4xl font-semibold tracking-normal text-zinc-950 dark:text-zinc-100 sm:text-5xl">
-            {title}
-          </h2>
-          <p className="mx-auto mb-10 max-w-2xl text-base leading-8 text-zinc-600 dark:text-zinc-300 sm:text-lg">{description}</p>
-          <MarketingActions actions={actions} />
-        </div>
       </div>
     </section>
   );

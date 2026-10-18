@@ -2,7 +2,7 @@
   animation: copy-in 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* Product tokens sampled from demo.usememos.com, shared by every product reconstruction on the Homepage. */
+/* Shared defaults for the other product reconstructions. Hero overrides follow the official previews. */
 .productTokens {
   --mock-canvas: oklch(98.18% 0.0054 95.0986);
   --mock-sidebar: oklch(96.63% 0.008 98.8792);
@@ -16,11 +16,6 @@
   color: var(--mock-ink);
 }
 
-.mock {
-  composes: productTokens;
-  animation: mock-in 800ms 120ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
 [class~="dark"] .productTokens {
   --mock-canvas: #181818;
   --mock-sidebar: #202020;
@@ -30,6 +25,83 @@
   --mock-border: #41413d;
   --mock-accent: #a8c7e7;
   --mock-selected: #33332f;
+}
+
+/* .github/tools/preview/{preview,dark}.css; kept inside the Hero artifact. */
+.mock {
+  composes: productTokens;
+  --mock-canvas: #faf9f6;
+  --mock-sidebar: #f6f5f1;
+  --mock-card: #fff;
+  --mock-ink: #242011;
+  --mock-muted: #74736e;
+  --mock-border: #e5e4e1;
+  --mock-action: #9e9d99;
+  --mock-accent: #315f90;
+  --mock-selected: #ebe9e3;
+  --mock-tag: #e7edf4;
+  --mock-tag-ink: #2f5e8d;
+  --mock-save: #98acc0;
+  --mock-save-ink: #fdfcfb;
+  --mock-day-active: #dce5ed;
+  --mock-day-today: #afc3da;
+  --mock-day-today-ink: var(--mock-ink);
+  --mock-day-outside: #bcbdb8;
+  --mock-checkbox: #9c9e9f;
+  --mock-checkbox-done: #a2a3a4;
+  --mock-check: #fff;
+  --mock-completed: #909192;
+  --mock-reference: #85888d;
+  --mock-reference-label: #a3a5a9;
+  --mock-lockup: #17201c;
+  --mock-switcher: #858782;
+  --mock-nav-icon: #7f817e;
+  --mock-nav-chevron: #777b76;
+  --mock-weekday: #969794;
+  --mock-section-heading: #8d8f89;
+  --mock-view-ink: #4e514d;
+  --mock-view-icon: #8c9089;
+  --mock-tag-row-ink: #565954;
+  --mock-tag-row-icon: #8f938c;
+  --mock-tag-count: #91958d;
+  animation: mock-in 800ms 120ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+[class~="dark"] .mock {
+  --mock-canvas: #1d1f23;
+  --mock-sidebar: #16191c;
+  --mock-card: #25282c;
+  --mock-ink: #dbdee2;
+  --mock-muted: #a2a5a9;
+  --mock-border: #3f4348;
+  --mock-action: #7d8084;
+  --mock-accent: #91bae5;
+  --mock-selected: #2b3138;
+  --mock-tag: #2d3a48;
+  --mock-tag-ink: #9ec2e8;
+  --mock-save: #406082;
+  --mock-save-ink: #212428;
+  --mock-day-active: #2b3c4d;
+  --mock-day-today: #456b92;
+  --mock-day-today-ink: #edf2f7;
+  --mock-day-outside: #8f969d;
+  --mock-checkbox: #87929d;
+  --mock-checkbox-done: #7d8994;
+  --mock-check: #171e25;
+  --mock-completed: #a3a9b0;
+  --mock-reference: #a3acb7;
+  --mock-reference-label: #a1aab4;
+  --mock-lockup: #dbe5de;
+  --mock-switcher: #a0a8a8;
+  --mock-nav-icon: #a2a9ac;
+  --mock-nav-chevron: #a6adb2;
+  --mock-weekday: #a2a5a9;
+  --mock-section-heading: #a0a7ac;
+  --mock-view-ink: #b9c0c5;
+  --mock-view-icon: #9da6ad;
+  --mock-tag-row-ink: #b9c0c5;
+  --mock-tag-row-icon: #9da6ad;
+  --mock-tag-count: #9da6ad;
 }
 
 .memoSurface {
@@ -138,6 +210,67 @@
   font-weight: 400;
 }
 
+.mock .memoSurface {
+  border-color: var(--mock-border);
+}
+
+.mock .memoTag {
+  border: 0;
+  background: var(--mock-tag);
+  padding: 0 5px;
+  color: var(--mock-tag-ink);
+  font-size: inherit;
+  line-height: 16px;
+}
+
+.mock .memoReference {
+  color: var(--mock-reference);
+}
+
+.mock .referenceLabel {
+  color: var(--mock-reference-label);
+  opacity: 1;
+}
+
+.mock .completedTask {
+  color: var(--mock-completed);
+}
+
+.mock .reactionPill {
+  background: var(--mock-selected);
+}
+
+.taskCheckbox {
+  display: grid;
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid var(--mock-checkbox);
+  border-radius: 2px;
+  background: var(--mock-card);
+}
+
+.taskCheckbox[data-checked="true"] {
+  border-color: var(--mock-checkbox-done);
+  background: var(--mock-checkbox-done);
+  color: var(--mock-check);
+}
+
+.composerSave {
+  display: grid;
+  height: 24px;
+  place-items: center;
+  border: 0;
+  border-radius: 6px;
+  background: var(--mock-save);
+  padding: 0 8px;
+  color: var(--mock-save-ink);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
 .mockControl {
   display: flex;
   align-items: center;
@@ -146,10 +279,6 @@
   border-radius: 6px;
   background: var(--mock-canvas);
   box-shadow: 0 1px 2px #0000000d;
-}
-
-.caret {
-  animation: caret-blink 1.2s step-end infinite;
 }
 
 @keyframes copy-in {
@@ -174,21 +303,9 @@
   }
 }
 
-@keyframes caret-blink {
-  0%,
-  48% {
-    opacity: 1;
-  }
-  49%,
-  100% {
-    opacity: 0;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .copy,
-  .mock,
-  .caret {
+  .mock {
     animation: none;
   }
 }

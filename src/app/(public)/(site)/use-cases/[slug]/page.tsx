@@ -124,7 +124,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
 
       <section className="py-16 sm:py-20 lg:py-24">
         <div className="site-container">
-          <ChapterHeader eyebrow="Why Memos" title="The fit stays simple." />
+          <ChapterHeader eyebrow="Your memos" title="Writing and looking back." />
           <ul className="mx-auto mt-12 grid max-w-4xl gap-x-14 gap-y-6 sm:mt-14 sm:grid-cols-2">
             {useCase.whyMemos.map((reason) => (
               <li key={reason} className="flex gap-3">
@@ -138,7 +138,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
 
       <section className="bg-zinc-950 py-20 text-white sm:py-24 lg:py-28">
         <div className="site-container">
-          <ChapterHeader tone="inverse" eyebrow="Related features" title="Follow the useful parts." />
+          <ChapterHeader tone="inverse" eyebrow="Related features" title="Related features." />
           <ul className="mx-auto mt-12 grid max-w-4xl gap-4 sm:mt-14 sm:grid-cols-3">
             {useCase.features.map((feature) => {
               const featureDefinition = getFeature(feature.slug);
@@ -157,7 +157,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
                         className="size-4 text-zinc-500 motion-safe:transition-transform motion-safe:group-hover:translate-x-1 group-hover:text-brand-300"
                       />
                     </span>{" "}
-                    <span className="mt-1.5 block text-sm text-zinc-400">{isWip ? "Work in progress" : "Explore the feature"}</span>
+                    <span className="mt-1.5 block text-sm text-zinc-400">{isWip ? "Work in progress" : "Feature details"}</span>
                   </Link>
                 </li>
               );
@@ -166,14 +166,7 @@ export default async function UseCasePage({ params }: { params: Promise<{ slug: 
         </div>
       </section>
 
-      <StartSection
-        title="Start with one useful note."
-        description="Install Memos on infrastructure you control, then shape the timeline around the work you already do."
-        actions={[
-          { label: "Install Memos", href: "/docs/getting-started", showArrow: true },
-          { label: "Explore use cases", href: "/use-cases", variant: "secondary" },
-        ]}
-      />
+      <StartSection />
     </main>
   );
 }

@@ -12,11 +12,11 @@ import { JsonLdScript } from "@/shared/ui/json-ld-script";
 export const metadata: Metadata = {
   ...buildMarketingMetadata({
     title: "Use Cases",
-    description: "See where Memos fits best: quick notes, daily logs, links, snippets, private updates, and lightweight documentation.",
+    description: "Keep quick thoughts, daily logs, links, snippets, and updates for family and friends.",
     path: "/use-cases",
   }),
   title: "Use Cases",
-  description: "See where Memos fits best: quick notes, daily logs, links, snippets, private updates, and lightweight documentation.",
+  description: "Keep quick thoughts, daily logs, links, snippets, and updates for family and friends.",
   keywords: [
     "note taking use cases",
     "self-hosted notes",
@@ -50,14 +50,14 @@ const USE_CASE_GROUPS = [
     id: "shared",
     eyebrow: "With people",
     title: "Keep a small shared record.",
-    description: "Share updates and working context without building a full workspace.",
+    description: "Each person keeps their own memos and chooses what to share.",
     slugs: ["family", "teams"],
   },
   {
     id: "operational",
     eyebrow: "Close to the work",
-    title: "Document systems and sensitive work.",
-    description: "Put technical and private notes next to infrastructure you control.",
+    title: "Keep notes beside your work.",
+    description: "Keep snippets, observations, and reminders you can return to later.",
     slugs: ["developers", "self-hosting", "privacy-professionals"],
   },
 ] as const;
@@ -127,7 +127,7 @@ export default function UseCasesPage() {
       <StartSection
         description="Write short memos as they come, and find them later by search, tag, or date."
         actions={[
-          { label: "Install Memos", href: "/docs/getting-started", showArrow: true },
+          { label: "Installation", href: "/docs/getting-started", showArrow: true },
           { label: "See Features", href: "/features" },
         ]}
       />
