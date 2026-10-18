@@ -28,6 +28,7 @@ export interface SourcePage {
   data: {
     title: string;
     description?: string;
+    image_description?: string;
     feature_image?: string;
     published_at?: string;
     date?: string;

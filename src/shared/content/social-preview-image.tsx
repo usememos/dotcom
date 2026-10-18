@@ -49,6 +49,7 @@ function truncateText(value: string, maxLength: number): string {
 export function SocialPreviewImage({ preview, artwork }: { preview: SocialPreviewCopy; artwork: string }) {
   const title = truncateText(preview.title, 100);
   const titleSize = title.length > 80 ? 52 : title.length > 55 ? 62 : 76;
+  const imageDescription = preview.section === "Blog" || preview.section === "Changelog" ? preview.imageDescription?.trim() : undefined;
 
   return (
     <div
@@ -82,10 +83,10 @@ export function SocialPreviewImage({ preview, artwork }: { preview: SocialPrevie
         style={{
           display: "flex",
           position: "absolute",
-          top: 196,
+          top: imageDescription ? 186 : 196,
           left: 72,
           width: 650,
-          height: 340,
+          height: imageDescription ? 360 : 340,
           flexDirection: "column",
           justifyContent: "center",
           overflow: "hidden",
@@ -98,6 +99,7 @@ export function SocialPreviewImage({ preview, artwork }: { preview: SocialPrevie
             fontSize: titleSize,
             lineHeight: 1.06,
             fontWeight: 400,
+            flexShrink: 0,
             letterSpacing: titleSize === 52 ? -1.5 : -2.15,
             whiteSpace: "pre-wrap",
             wordBreak: "break-word",
@@ -108,6 +110,21 @@ export function SocialPreviewImage({ preview, artwork }: { preview: SocialPrevie
         >
           {title}
         </div>
+        {imageDescription ? (
+          <div
+            style={{
+              display: "block",
+              width: 620,
+              marginTop: 24,
+              fontSize: 36,
+              lineHeight: 1.18,
+              flexShrink: 0,
+              textWrap: "balance",
+            }}
+          >
+            {imageDescription}
+          </div>
+        ) : null}
       </div>
     </div>
   );

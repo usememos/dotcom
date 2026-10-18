@@ -23,7 +23,6 @@ export function getBlogIndexSocialPreview(): ContentSocialPreview {
   return {
     title,
     description: "Product notes, guides, and project updates from the team building Memos.",
-    imageDescription: "Ideas, updates, and stories\nfrom the Memos team.",
     url: absoluteUrl("/blog"),
     imageUrl: buildGeneratedImageUrl(blogImagePath()),
     imageAlt: `${title} - ${SITE_NAME}`,
@@ -38,6 +37,7 @@ export function getBlogSocialPreview(page: SourcePage): ContentSocialPreview {
   const basePreview = {
     title,
     description: compactDescription(page.data.description, "Insights and stories from the team building Memos."),
+    imageDescription: page.data.image_description,
     url: absoluteUrl(page.url),
     imageAlt: `${title} - ${SITE_NAME}`,
     section: "Blog" as const,
@@ -86,6 +86,7 @@ export function getChangelogSocialPreview(page: SourcePage): ContentSocialPrevie
   const basePreview = {
     title,
     description,
+    imageDescription: page.data.image_description,
     url: absoluteUrl(page.url),
     imageAlt: `${title} - ${SITE_NAME}`,
     section: "Changelog" as const,

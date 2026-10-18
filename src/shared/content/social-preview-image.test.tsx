@@ -4,6 +4,12 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { GET as getDefaultImage } from "@/app/og/home/image.png/route";
 import { getDocsSocialPreview } from "@/features/docs/lib/social-preview";
+import {
+  getBlogIndexSocialPreview,
+  getBlogSocialPreview,
+  getChangelogIndexSocialPreview,
+  getChangelogSocialPreview,
+} from "@/features/editorial/lib/social-preview";
 import { BRAND_DESCRIPTION, BRAND_TAGLINE_LINES } from "@/shared/lib/branding";
 import { buildContentMetadata } from "./social-preview";
 import { createSocialPreviewImage, SocialPreviewImage } from "./social-preview-image";
@@ -72,13 +78,73 @@ describe("social preview artwork", () => {
   });
 
   it.each([
+    ["Blog", getBlogSocialPreview],
+    ["Changelog", getChangelogSocialPreview],
+  ] as const)("renders authored %s summaries without replacing the metadata description", (section, getPreview) => {
+    const imageDescription = "Spaces, inline images, and Views.";
+    const preview = getPreview({
+      url: `/${section.toLowerCase()}/example`,
+      slugs: ["example"],
+      data: { title: "Release v0.31.0", description, image_description: imageDescription },
+    });
+    const html = renderToStaticMarkup(<SocialPreviewImage preview={preview} artwork="timeline.png" />);
+    expect(html).toContain(imageDescription);
+    expect(html).not.toContain(description);
+    expect(html).toContain("font-size:76px");
+    const metadata = buildContentMetadata(preview);
+    expect(metadata.openGraph?.description).toBe(description);
+    expect(metadata.twitter?.description).toBe(description);
+  });
+
+  it("keeps indexes and articles without authored summaries title-only", () => {
+    const previews = [
+      getBlogIndexSocialPreview(),
+      getChangelogIndexSocialPreview(),
+      getBlogSocialPreview({ url: "/blog/example", slugs: ["example"], data: { title: "Example", description } }),
+      getChangelogSocialPreview({ url: "/changelog/0-1-0", slugs: ["0-1-0"], data: { title: "Release v0.1.0" } }),
+    ];
+    for (const preview of previews) {
+      const html = renderToStaticMarkup(<SocialPreviewImage preview={preview} artwork="timeline.png" />);
+      expect(preview.imageDescription).toBeUndefined();
+      expect(html).not.toContain(preview.description);
+      expect(html).not.toContain("font-size:36px");
+    }
+  });
+
+  it("preserves explicit blog covers when an image summary is provided", () => {
+    const preview = getBlogSocialPreview({
+      url: "/blog/example",
+      slugs: ["example"],
+      data: { title: "Example", description, image_description: "A short summary.", feature_image: "/cover.png" },
+    });
+    expect(preview.imageSourceKind).toBe("explicit");
+    expect(preview.imageUrl).toBe("https://usememos.com/cover.png");
+  });
+
+  it("escapes authored summaries and ignores whitespace-only copy", () => {
+    const preview = { title: "Example", description, section: "Blog" as const };
+    const html = renderToStaticMarkup(
+      <SocialPreviewImage preview={{ ...preview, imageDescription: "<script>alert(1)</script>" }} artwork="timeline.png" />,
+    );
+    expect(html).not.toContain("<script>");
+    expect(html).toContain("&lt;script&gt;");
+    const emptyHtml = renderToStaticMarkup(<SocialPreviewImage preview={{ ...preview, imageDescription: "  " }} artwork="timeline.png" />);
+    expect(emptyHtml).not.toContain("font-size:36px");
+  });
+
+  it.each([
     "Blog",
     "Memos 0.31.0",
     "Choosing a Storage for Your Resource: Database, S3 or Local Storage?",
     "Deployment-managed configuration for your self-hosted Memos instance and connected applications",
     "A".repeat(120),
   ])("renders a compact 1200 × 630 PNG for %s", async (title) => {
-    const response = await createSocialPreviewImage({ title, description });
+    const response = await createSocialPreviewImage({
+      title,
+      description,
+      section: "Blog",
+      imageDescription: "How storage choices affect performance and backups.",
+    });
     expect(response.headers.get("content-type")).toBe("image/png");
     const png = Buffer.from(await response.arrayBuffer());
     expect(png.subarray(1, 4).toString()).toBe("PNG");

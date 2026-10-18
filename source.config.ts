@@ -1,6 +1,8 @@
 import { defineConfig, defineDocs, frontmatterSchema, metaSchema } from "fumadocs-mdx/config";
 import { z } from "zod";
 
+const imageDescriptionSchema = z.string().trim().min(1).max(80).optional();
+
 // Enhanced schemas for Memos documentation
 export const docs = defineDocs({
   docs: {
@@ -31,6 +33,7 @@ export const blog = defineDocs({
     postprocess: { includeProcessedMarkdown: true },
     schema: frontmatterSchema.extend({
       description: z.string(),
+      image_description: imageDescriptionSchema,
       published_at: z.string(),
       feature_image: z.string().optional(),
       tags: z.array(z.string()).optional(),
@@ -48,6 +51,7 @@ export const changelog = defineDocs({
       version: z.string().optional(),
       date: z.string().optional(),
       description: z.string().optional(),
+      image_description: imageDescriptionSchema,
       breaking: z.boolean().optional(),
       features: z.array(z.string()).optional(),
       fixes: z.array(z.string()).optional(),
