@@ -1,5 +1,4 @@
-// Identity artwork: usememos/.github@6fe87bfcd881e6ffd977e1041b8835cae9efc56d.
-// Preview PNGs: usememos/.github@e116e6081d0aca4896a8120d9c4ddae37191daf7.
+// Identity artwork and preview PNGs: usememos/.github@182692fc40034a3e64ecffcead01cae742fb52d4.
 // Fixed public URLs; static asset headers require revalidation before reuse.
 export const BRAND_ASSETS_PATH = "/brand";
 export const BRAND_LOGO_URL = `https://usememos.com${BRAND_ASSETS_PATH}/avatars/memos-graphite.png`;

@@ -29,7 +29,7 @@ describe("MemosMark", () => {
   });
 
   it.each([34, 45, 46, 88])("preserves the official lockup at %ipx canvas height", (height) => {
-    const filename = height * (24 / 34) <= 32 ? "lockup-small.svg" : "lockup.svg";
+    const filename = "lockup.svg";
     const original = new DOMParser().parseFromString(readFileSync(`public/brand/${filename}`, "utf8"), "image/svg+xml");
     const { container } = render(<MemosLockup height={height} />);
     const svg = screen.getByRole("img", { name: "Memos" });

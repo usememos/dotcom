@@ -27,20 +27,28 @@ vi.mock("@/features/marketing/components/home-faq-section", () => ({
   HomeFaqSection: () => <section data-testid="home-faq" />,
 }));
 
+import { BRAND_DESCRIPTION, BRAND_HEADLINE } from "@/shared/lib/branding";
 import HomePage from "./page";
 
 describe("HomePage", () => {
-  it("renders the chosen hero title as one accessible heading with the ownership accent", () => {
+  it("pairs the canonical headline and description in the hero", () => {
     render(<HomePage />);
 
     expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
-    expect(screen.getByRole("heading", { level: 1, name: "Seconds to write. Yours to keep." })).toBeVisible();
-    expect(screen.getByText("Yours to keep.")).toHaveClass("text-brand-600", "dark:text-brand-300");
-    expect(
-      screen.getByText(
-        "Memos is a timeline for quick thoughts, daily notes, and things you want to remember. No title or folder to choose before you write.",
-      ),
-    ).toBeVisible();
+    expect(screen.getByRole("heading", { level: 1, name: BRAND_HEADLINE })).toBeVisible();
+    expect(screen.getByText(BRAND_DESCRIPTION)).toBeVisible();
+  });
+
+  it("emphasizes only everyday thoughts with the shared brand accent", () => {
+    render(<HomePage />);
+
+    const heading = screen.getByRole("heading", { level: 1, name: BRAND_HEADLINE });
+    const accent = screen.getByText("everyday thoughts.", { selector: "span" });
+    expect(heading.textContent).toBe(BRAND_HEADLINE);
+    expect(heading).toContainElement(accent);
+    expect(accent).toHaveClass("text-brand-600", "dark:text-brand-300");
+    expect(accent).not.toHaveClass("block", "whitespace-nowrap");
+    expect(heading.querySelectorAll("span")).toHaveLength(1);
   });
 
   it("tells the story in brand order: write, find, own, then answers", () => {

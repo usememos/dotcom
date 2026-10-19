@@ -59,6 +59,17 @@ describe("SiteHeader", () => {
     expect(screen.getByRole("link", { name: "Docs" })).not.toHaveClass("text-primary");
   });
 
+  it("scales the official lockup uniformly to fit the compact header link", () => {
+    render(<SiteHeader />);
+
+    const homeLink = screen.getByRole("link", { name: "Memos", exact: true });
+    const lockup = within(homeLink).getByRole("img", { name: "Memos" });
+    expect(homeLink).toHaveClass("h-10", "items-center");
+    expect(lockup).toHaveAttribute("height", "36");
+    const [, , artworkWidth, artworkHeight] = lockup.getAttribute("viewBox")?.split(" ").map(Number) ?? [];
+    expect(Number(lockup.getAttribute("width")) / Number(lockup.getAttribute("height"))).toBeCloseTo(artworkWidth / artworkHeight);
+  });
+
   it("uses consistent text links and explicitly sized 14px utility icons", () => {
     render(<SiteHeader />);
     const links = [

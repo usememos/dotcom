@@ -8,9 +8,8 @@ type MemosLockupProps = Omit<SVGProps<SVGSVGElement>, "children" | "viewBox" | "
 };
 
 /** Official outlined lettering and bird, scaled together with their original padding. */
-export function MemosLockup({ height = 34, label = "Memos", className, ...props }: MemosLockupProps) {
-  // The visible bird occupies 24/34 of the small lockup's canvas height.
-  const artwork = height * (24 / 34) <= 32 ? lockupArtwork.small : lockupArtwork.standard;
+export function MemosLockup({ height = 45, label = "Memos", className, ...props }: MemosLockupProps) {
+  const artwork = lockupArtwork;
 
   return (
     <svg
@@ -29,10 +28,8 @@ export function MemosLockup({ height = 34, label = "Memos", className, ...props 
       {label ? <title>{label}</title> : null}
       <g transform={artwork.transform}>
         <path d={artwork.bird.d} transform={artwork.bird.transform} fill="currentColor" fillRule="evenodd" />
-        <g transform={artwork.wordmark.transform}>
-          <path d={artwork.wordmark.d} transform={artwork.wordmark.pathTransform} fill="currentColor" />
-        </g>
       </g>
+      <path d={artwork.wordmark.d} transform={artwork.wordmark.transform} fill="currentColor" />
     </svg>
   );
 }

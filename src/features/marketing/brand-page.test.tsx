@@ -14,7 +14,7 @@ describe("brand asset catalog", () => {
       const png = readFileSync(`public${BRAND_ASSETS_PATH}/avatars/${palette}.png`);
       expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([512, 512]);
     }
-    for (const name of ["Standard lockup", "Small lockup", "Lockup on dark"])
+    for (const name of ["Standard lockup", "Compatibility lockup", "Lockup on dark"])
       expect(screen.getByRole("link", { name: `Download SVG — ${name}` })).toBeVisible();
     for (const theme of ["light", "dark"]) {
       const png = readFileSync(`public/brand/previews/timeline-${theme}.png`);

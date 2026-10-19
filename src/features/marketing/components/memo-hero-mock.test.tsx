@@ -75,12 +75,12 @@ describe("homepage calendar", () => {
 });
 
 describe("homepage example memos", () => {
-  it("uses the official small lockup and the empty editor's subdued Save state", () => {
+  it("uses the official uniform lockup and the empty editor's subdued Save state", () => {
     const { container } = render(<MemoHeroMock />);
     const sidebar = container.querySelector("aside");
     const lockup = sidebar?.querySelector("svg");
-    expect(lockup).toHaveAttribute("viewBox", lockupArtwork.small.viewBox);
-    expect(lockup?.querySelectorAll("path")[1]).toHaveAttribute("d", lockupArtwork.small.wordmark.d);
+    expect(lockup).toHaveAttribute("viewBox", lockupArtwork.viewBox);
+    expect(lockup?.querySelectorAll("path")[1]).toHaveAttribute("d", lockupArtwork.wordmark.d);
     expect(sidebar).toHaveAttribute("aria-hidden", "true");
     expect(sidebar).not.toHaveTextContent("Steven");
     expect(sidebar?.querySelector(".lucide-chevrons-up-down")).not.toBeNull();

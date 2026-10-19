@@ -40,7 +40,7 @@ export function HeroSection({ version = "26.10-rc.1", title, subtitle, primaryCt
             </Link>
           ) : null}
 
-          <h1 className="mt-6 text-balance font-serif text-[clamp(2.25rem,10.5vw,3.25rem)] leading-[0.96] font-semibold tracking-[-0.04em] text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-[4.25rem]">
+          <h1 className="mt-6 text-balance font-serif text-[clamp(2.25rem,10.5vw,3.25rem)] leading-[0.96] font-semibold tracking-[-0.04em] text-zinc-950 dark:text-zinc-50 sm:text-6xl lg:text-[3.25rem]">
             {title}
           </h1>
 

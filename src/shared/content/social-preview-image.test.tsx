@@ -10,7 +10,7 @@ import {
   getChangelogIndexSocialPreview,
   getChangelogSocialPreview,
 } from "@/features/editorial/lib/social-preview";
-import { BRAND_DESCRIPTION, BRAND_TAGLINE_LINES } from "@/shared/lib/branding";
+import { BRAND_DESCRIPTION, BRAND_HEADLINE } from "@/shared/lib/branding";
 import { buildContentMetadata } from "./social-preview";
 import { createSocialPreviewImage, SocialPreviewImage } from "./social-preview-image";
 
@@ -32,7 +32,7 @@ describe("social preview artwork", () => {
 
   it("uses the official outlined lockup and selected two-blue palette", () => {
     const html = renderToStaticMarkup(
-      <SocialPreviewImage preview={{ title: BRAND_TAGLINE_LINES.join("\n"), description, section: "Blog" }} artwork="timeline.png" />,
+      <SocialPreviewImage preview={{ title: BRAND_HEADLINE, description, section: "Blog" }} artwork="timeline.png" />,
     );
     expect(html).not.toContain(">Memos</span>");
     expect(html).toContain("font-family:Liberation Serif");
@@ -41,7 +41,7 @@ describe("social preview artwork", () => {
     expect(html).toContain("background:#c0d9e3");
     expect(html).toContain("background:#79a9c8");
     expect(html).toContain("color:#25363e");
-    expect(html).toContain('viewBox="0 0 624.4055 170.0"');
+    expect(html).toContain('viewBox="0 0 625.4569 190.0000"');
     expect(html.match(/<img /g)).toHaveLength(1);
     expect(html.match(/<svg /g)).toHaveLength(1);
     expect(html).not.toMatch(/badge|Blog|text-shadow/);

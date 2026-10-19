@@ -5,7 +5,7 @@ import { HomeFaqSection } from "@/features/marketing/components/home-faq-section
 import { HomeFindSection } from "@/features/marketing/components/home-find-section";
 import { HomeOwnSection } from "@/features/marketing/components/home-own-section";
 import { HomeWriteSection } from "@/features/marketing/components/home-write-section";
-import { BRAND_DESCRIPTION, BRAND_TAGLINE_LINES, BRAND_TITLE } from "@/shared/lib/branding";
+import { BRAND_DESCRIPTION, BRAND_HEADLINE, BRAND_TITLE } from "@/shared/lib/branding";
 import { buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/shared/lib/seo";
 
 export const metadata: Metadata = {
@@ -35,18 +35,18 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
+  const headlineAccentStart = BRAND_HEADLINE.indexOf("everyday thoughts.");
+
   return (
     <main className="flex flex-1 flex-col overflow-x-hidden bg-white dark:bg-zinc-950">
       <HeroSection
         title={
           <>
-            <span className="block text-balance">{BRAND_TAGLINE_LINES[0]}</span>{" "}
-            <span className="block text-balance">
-              <HeroAccent>{BRAND_TAGLINE_LINES[1]}</HeroAccent>
-            </span>
+            {BRAND_HEADLINE.slice(0, headlineAccentStart)}
+            <HeroAccent>{BRAND_HEADLINE.slice(headlineAccentStart)}</HeroAccent>
           </>
         }
-        subtitle="Memos is a timeline for quick thoughts, daily notes, and things you want to remember. No title or folder to choose before you write."
+        subtitle={BRAND_DESCRIPTION}
         primaryCta={{ text: "Installation", href: "/docs/getting-started" }}
         secondaryCta={{ text: "Demo", href: "https://demo.usememos.com/", external: true }}
       />

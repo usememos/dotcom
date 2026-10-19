@@ -99,13 +99,13 @@ export default function BrandPage() {
           <MarketingSectionHeader
             eyebrow="Wordmark"
             title="The mark and the name."
-            description="Official SVG lettering, with standard, small, and light artwork for dark image embeds."
+            description="One set of SVG outlines at every size, with light artwork for dark image embeds."
             align="left"
           />
           <div className="grid gap-10">
             {[
               { title: "Standard lockup", filename: "lockup.svg", height: 85 },
-              { title: "Small lockup", filename: "lockup-small.svg", height: 34 },
+              { title: "Compatibility lockup", filename: "lockup-small.svg", height: 45 },
               { title: "Lockup on dark", filename: "lockup-on-dark.svg", height: 85 },
             ].map((lockup) => (
               <div key={lockup.filename}>
@@ -195,7 +195,8 @@ export default function BrandPage() {
             Positioning, approved copy, and asset usage are maintained in the shared brand document.
           </p>
           <p className="mt-3 max-w-2xl text-sm leading-7 text-zinc-600 dark:text-zinc-300">
-            The SVG wordmark uses Source Serif 4 Semibold, licensed under the{" "}
+            Use the same lockup at every size, with a recommended minimum width of 145 px. The compact download is a compatibility URL. The
+            SVG wordmark uses Source Serif 4 at weight 550, licensed under the{" "}
             <a
               href="/brand/OFL-SourceSerif4.txt"
               className="rounded-sm underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4"

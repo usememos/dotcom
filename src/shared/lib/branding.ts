@@ -1,14 +1,8 @@
-// Canonical product copy from usememos/.github@6fe87bfcd881e6ffd977e1041b8835cae9efc56d.
+// Canonical product copy from usememos/.github@182692fc40034a3e64ecffcead01cae742fb52d4.
 // Change upstream BRAND.md first, then propagate these strings verbatim.
-export const BRAND_TAGLINE_LINES = ["Seconds to write.", "Yours to keep."] as const;
-export const BRAND_TAGLINE = BRAND_TAGLINE_LINES.join(" ");
-export const BRAND_TITLE = `Memos - ${BRAND_TAGLINE}`;
-/** BRAND.md One-liner: repository descriptions and page metadata. */
-export const BRAND_DESCRIPTION = "A timeline for your thoughts. Just type. It stays yours.";
-/** BRAND.md Short: website and README product description. */
-export const BRAND_SHORT =
-  "Memos is a place for every quick thought. No title, no folder, nothing to pick: type, and the thought is kept on the day you wrote it. Your memos stay where you decide, yours alone until you share one with family and friends.";
-/** BRAND.md Standard: documentation introduction and store listings. */
-export const BRAND_STANDARD =
-  "Memos is an open-source timeline for your quick thoughts. It asks nothing first: no title to invent, no folder to pick, no place to put it. Type, and the thought is kept before it goes. Every memo keeps the day it was written, so any day can be found again: by scrolling, by calendar, by tag, or by word. Your memos live where you decide, report to no one, and leave as plain Markdown whenever you like. They are yours alone until you share one with family or friends, who write their own memos and see only what you choose to show.";
-export const BRAND_SOCIAL_DESCRIPTION = BRAND_DESCRIPTION;
+export const BRAND_HEADLINE = "Simple note-taking for your everyday thoughts.";
+export const BRAND_TITLE = `Memos - ${BRAND_HEADLINE}`;
+export const BRAND_DESCRIPTION =
+  "Memos is an open-source, self-hosted note-taking app that brings your everyday thoughts together in a personal timeline. Your data stays yours, and you choose what to keep private or share.";
+export const BRAND_FULL_INTRODUCTION =
+  "Memos is an open-source, self-hosted note-taking app for your everyday thoughts. It’s a place to write what’s on your mind as you go about your day. A single sentence can be a whole memo, or you can take your time with a longer entry, using Markdown to give your words more structure.\n\nThese moments of writing gradually become a personal record. Each memo stays with the day you wrote it, bringing your thoughts together in a timeline you can look back through. Tags connect related thoughts across those days, making it easy to pick up a topic again or find something you remember writing.\n\nThat record lives on your own server, and your data stays yours. You choose what stays private, what to share with family and friends, and what to publish on the web. In shared spaces, you can write alongside others while each person keeps their own memos.";

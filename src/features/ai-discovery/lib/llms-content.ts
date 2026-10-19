@@ -1,6 +1,6 @@
 import { FEATURES, getAllFeatureSlugs } from "@/features/marketing/data/features";
 import { getAllUseCaseSlugs, USE_CASES } from "@/features/marketing/data/use-cases";
-import { BRAND_STANDARD } from "@/shared/lib/branding";
+import { BRAND_FULL_INTRODUCTION } from "@/shared/lib/branding";
 import { absoluteUrl, SITE_NAME } from "@/shared/lib/seo";
 
 /**
@@ -9,7 +9,7 @@ import { absoluteUrl, SITE_NAME } from "@/shared/lib/seo";
  * module takes plain data so it stays trivially testable.
  */
 
-export const LLMS_SUMMARY = BRAND_STANDARD;
+export const LLMS_SUMMARY = BRAND_FULL_INTRODUCTION;
 
 export interface PageMeta {
   url: string;

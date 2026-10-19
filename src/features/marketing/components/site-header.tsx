@@ -212,7 +212,7 @@ export function SiteHeader() {
           prefetch={false}
           className="inline-flex h-10 items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
         >
-          <MemosLockup />
+          <MemosLockup height={36} />
         </Link>
 
         <ul className="ml-5 hidden items-center gap-1 lg:flex">

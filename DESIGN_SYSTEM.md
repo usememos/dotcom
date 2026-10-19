@@ -391,16 +391,16 @@ before implementation.
 
 | Role | Canonical treatment |
 | --- | --- |
-| Brand hero | `font-serif text-[clamp(2.25rem,10.5vw,3.25rem)] leading-[0.96] font-semibold tracking-[-0.04em] sm:text-6xl lg:text-[4.25rem]` |
+| Brand hero | `font-serif text-[clamp(2.25rem,10.5vw,3.25rem)] leading-[0.96] font-semibold tracking-[-0.04em] sm:text-6xl lg:text-[3.25rem]` |
 | Campaign hero | `font-serif text-5xl leading-[0.98] font-semibold tracking-[-0.035em] sm:text-6xl lg:text-7xl` |
 | Standard marketing H1 | `font-serif text-5xl leading-[1.04] font-semibold tracking-[-0.035em] sm:text-6xl lg:text-7xl` |
 | Section thesis | `font-serif text-[2.5rem] leading-[1.03] font-semibold tracking-[-0.035em] sm:text-5xl lg:text-[3.35rem]` |
 | Compact section title | `font-serif text-3xl font-semibold tracking-tight sm:text-4xl` |
 | Editorial index H1 | `font-serif text-4xl font-semibold sm:text-6xl` |
 
-The brand hero's fluid mobile size keeps the approved tagline readable as two
-sentences at narrow widths. Keep each sentence on its own line when space permits,
-but allow wrapping when larger text settings require it.
+The brand hero uses the canonical Headline at the display scale above.
+Let it wrap naturally within the hero column, with balanced line breaks; do not
+retain forced lines from a retired tagline.
 
 Display headings MUST use `text-balance`, but balance is not a substitute for a
 correct content column. A page H1 MUST use the available hero column by default;
@@ -454,9 +454,9 @@ hover or supporting signal. Brand-filled controls MAY be used when the
 surrounding composition requires it, but blue MUST NOT become a default fill
 for every action and icon.
 
-Use `HeroAccent` for display emphasis, including the second line of the
-Homepage tagline. Its `text-brand-600 dark:text-brand-300` treatment is the standard brand
-accent, not a page-specific exception.
+Use `HeroAccent` when a phrase needs display emphasis. Its
+`text-brand-600 dark:text-brand-300` treatment is the standard brand accent, not a
+page-specific exception.
 
 Color rules:
 
@@ -572,10 +572,18 @@ preserves the supplied standalone geometry; `MemosLockup` preserves the supplied
 bird and outlined lettering as one uniformly scaled SVG, including its viewBox
 and padding. Do not recreate the wordmark with a local font, trim its canvas,
 stretch the artwork, add outlines, or recolor individual parts. Choose the small
-mark at 32px or below; choose lockup variants by visible bird height, not canvas
-height. Inline artwork inherits `currentColor` with dark fill on light surfaces
-and light fill on dark surfaces. This identity migration also applies to the
+mark at 32px or below. Use the same lockup outlines and proportions at every
+size; `lockup-small.svg` is a compatibility URL. The recommended minimum lockup
+width is 145px, including canvas padding. Inline artwork inherits `currentColor`
+with dark fill on light surfaces and light fill on dark surfaces. This identity migration also applies to the
 existing shared logo in Docs and fallback pages, without changing their layout.
+
+At the user's request, the public site header uses a compact 36px canvas height
+for the complete lockup, approximately 118.5px wide, inside its 40px home link.
+This placement is a scoped exception to the recommended 145px minimum width:
+it balances the identity against the 14px navigation in the 56px header.
+Preserve the official paths, proportions, alignment, and canvas padding, and
+check legibility in both themes. Other lockup placements retain their own sizes.
 
 Keep the existing blue browser favicon and Celadon Apple touch icons as scoped
 platform treatments. They do not define a primary brand palette. Legacy public
@@ -782,10 +790,11 @@ A durable user-requested exception MUST be recorded in this document with its
 route, scope, reason, and affected rule. Registered page signatures are part of
 the system and are not exceptions.
 
-- The Homepage hero uses the canonical tagline from `branding.ts`, with each
-  sentence on its own line where space permits and `HeroAccent` on the second.
-  Allow natural wrapping at narrow widths and larger text settings. The former
-  custom headline is retired by this brand migration.
+- The Homepage hero pairs the canonical Headline and Description from
+  `branding.ts`. Preserve their wording and allow natural, balanced heading
+  wrapping at narrow widths and larger text settings.
+  Emphasize `everyday thoughts.` with the inline `HeroAccent` brand-blue
+  treatment; allow the phrase to wrap naturally with the rest of the headline.
   Keep its canvas plain in both themes; ambient dot grids and colored glows do
   not explain the product and MUST NOT be added as background decoration.
 
@@ -816,13 +825,6 @@ the system and are not exceptions.
   database storage, and the instance operator's hosting and backup responsibility.
   These operational facts belong in the ownership answer, rather than being
   removed or repeated as promotional badges.
-
-- At the user's request, the visible Homepage hero subtitle at `/` is
-  "Memos is a timeline for quick thoughts, daily notes, and things you want to
-  remember. No title or folder to choose before you write."
-  Use balanced wrapping for this short standalone text. This scoped exception
-  to section 16 gives the hero a concise product introduction. The upstream
-  canonical descriptions continue to apply to metadata and other surfaces.
 
 - At the user's request, the Homepage's `MemoHeroMock` follows the official
   `.github/tools/preview/` light and dark styles: the supplied SVG lockup,
