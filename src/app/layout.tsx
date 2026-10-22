@@ -135,7 +135,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     name: "Memos",
     url: "https://usememos.com",
     logo: BRAND_LOGO_URL,
-    sameAs: [GITHUB_REPO_URL, "https://twitter.com/usaboringmemos", "https://discord.gg/tfPJa4UmAv"],
+    sameAs: [GITHUB_REPO_URL, "https://t.me/memosxtg", "https://twitter.com/usaboringmemos", "https://discord.gg/tfPJa4UmAv"],
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer support",
