@@ -11,6 +11,7 @@ const reviewedPageFiles = [
   join(srcRoot, "app", "(public)", "(site)", "pricing", "page.tsx"),
   join(srcRoot, "app", "(public)", "(site)", "privacy", "page.tsx"),
   join(srcRoot, "app", "(public)", "(site)", "web-clipper", "page.tsx"),
+  join(srcRoot, "app", "(public)", "(site)", "editor", "page.tsx"),
   join(srcRoot, "app", "(public)", "(site)", "features", "page.tsx"),
   join(srcRoot, "app", "(public)", "(site)", "features", "[slug]", "page.tsx"),
 ];

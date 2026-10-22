@@ -324,6 +324,7 @@ signature MUST arise from the subject's real material:
 - a browser selection and clip panel for Web Clipper
 - an accurate memo timeline for quick capture
 - a real command surface for deployment
+- a live editor beside its Markdown output for the Editor page
 
 The signature MAY use a page-owned component, CSS module, scoped palette, or
 custom animation. Those choices are allowed by the system and are not an
@@ -864,6 +865,39 @@ the system and are not exceptions.
   At the user's request, every featured sponsor uses the same fixed, left-aligned
   logo row. The order follows the shared sponsor list; the panel does not rotate
   or animate sponsor logos.
+
+- At the user's request, `/editor` is a focused tool page (§7.2) for
+  `@usememos/editor`, and its signature is the playground: a real, running
+  instance of the published package beside a pane that shows the Markdown it
+  stores, directly under the hero copy and spanning the `site-container`. The
+  playground is the page's primary proof and MUST stay a real editor, never a
+  static reconstruction. Its theme tokens map to the site's own CSS variables
+  (`--foreground`, `--primary`, `--border`, …) so it follows light and dark
+  without a registered palette; the package's own callout and selection colors
+  remain inside the artifact under §14. Its frame, pane rules, and controls are
+  artifact separators. The page's other figures (the preserved-source
+  comparison, the shortcut ledger, and the install snippets) MUST describe
+  documented behavior of the pinned package version, and the preserved-source
+  figure is verified by a test against the real serializer. Facts such as bundle
+  size and spec conformance are quoted from the package's own documentation,
+  with their measurement date, and are not restyled as a metrics dashboard.
+
+- At the user's request (2026-10-22), `/editor` is styled as a standalone tool
+  page and does not follow the other pages' treatment. Scope: the route and the
+  `editor-*` components under `src/features/marketing/components/`. Its rule is
+  that everything is one of two voices: rendered content in Source Serif and
+  Inter on paper, raw Markdown in a page-scoped IBM Plex Mono (loaded through
+  `next/font` in the route, exposed as `--font-editor-mono`) on ink. The page
+  owns a scoped palette in `editor-showcase.module.css`: paper `#f4f6fa`, ink
+  `#12151c`, caret blue `#1f5eff`, selection wash `#dbe6ff`, and their dark
+  counterparts, which overrides §10 (a second monospace family) and §11 (raw
+  page colors). It drops uppercase eyebrows, icon medallions, and arrow-suffixed
+  links in favor of sentence-case headings, mono specimens of the keystroke or
+  Markdown that triggers a feature, and underlined links; the playground frame
+  carries a blue-tinted shadow (§12). The size comparison quotes the editor
+  project's own measurement of other editors and names its date; it is a single
+  measure on one scale with the subject highlighted, not a competitive page.
+  Other routes MUST NOT adopt these tokens.
 
 ## 23. Migration
 

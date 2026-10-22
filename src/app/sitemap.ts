@@ -103,6 +103,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
+      url: `${BASE_URL}/editor`,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
       url: `${BASE_URL}/use-cases`,
       changeFrequency: "monthly" as const,
       priority: 0.7,

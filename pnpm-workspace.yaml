@@ -3,5 +3,7 @@ allowBuilds:
   esbuild: true
   sharp: true
   workerd: true
+minimumReleaseAgeExclude:
+  - '@usememos/editor@26.10.25'
 patchedDependencies:
   '@opennextjs/aws@4.1.2': patches/@opennextjs__aws@4.1.2.patch

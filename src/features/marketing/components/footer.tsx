@@ -10,6 +10,7 @@ import {
   MessageCircleIcon,
   NewspaperIcon,
   PaletteIcon,
+  PenLineIcon,
   PuzzleIcon,
   ScaleIcon,
   ShieldCheckIcon,
@@ -38,6 +39,7 @@ interface FooterProps {
 const COMPACT_LINKS: Array<{ href: string; label: string; external?: boolean }> = [
   { href: "/docs", label: "Docs" },
   { href: "/web-clipper", label: "Web Clipper" },
+  { href: "/editor", label: "Editor" },
   { href: "/features", label: "Features" },
   { href: "/changelog", label: "Changelog" },
   { href: "/blog", label: "Blog" },
@@ -78,6 +80,7 @@ const FOOTER_COLUMNS: FooterColumn[] = [
     title: "Tools",
     links: [
       { href: "/web-clipper", label: "Web Clipper", icon: PuzzleIcon },
+      { href: "/editor", label: "Editor", icon: PenLineIcon },
       { href: "https://demo.usememos.com/", label: "Live Demo", icon: ExternalLinkIcon, external: true },
     ],
   },

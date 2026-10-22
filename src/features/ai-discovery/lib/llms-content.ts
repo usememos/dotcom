@@ -71,6 +71,17 @@ export function buildLlmsIndex(input: { docs: PageMeta[]; blog: PageMeta[]; chan
   );
 
   out.push(
+    ...sectionLines("Tools", [
+      formatLine("Web Clipper", "/web-clipper", "Browser extension that saves pages, selections, and images to your memos as Markdown."),
+      formatLine(
+        "Editor",
+        "/editor",
+        "The open-source block editor inside Memos, published as @usememos/editor for React or any web app, with a live playground.",
+      ),
+    ]),
+  );
+
+  out.push(
     ...sectionLines(
       "Blog",
       input.blog.map((page) => formatLine(page.title, page.url, page.description)),

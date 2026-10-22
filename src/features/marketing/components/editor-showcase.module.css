@@ -1,0 +1,424 @@
+/*
+ * /editor page styles. Everything on the page is one of two voices: rendered
+ * (serif and sans on paper) or raw Markdown (mono on ink). The tokens below are
+ * scoped to the page; see DESIGN_SYSTEM.md §22 for the registration.
+ */
+
+.page {
+  --font-mono: var(--font-editor-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* light-dark() follows the color-scheme the theme toggle sets on :root. */
+  --ed-paper: light-dark(#f4f6fa, #0e1015);
+  --ed-white: light-dark(#ffffff, #151820);
+  --ed-ink: light-dark(#12151c, #07090d);
+  --ed-ink-2: light-dark(#1a1e27, #10131a);
+  --ed-ink-text: #d6dce8;
+  --ed-ink-muted: light-dark(#8a93a6, #7f889b);
+  --ed-text: light-dark(#15181f, #eef0f4);
+  --ed-muted: light-dark(#5b6270, #9aa3b2);
+  --ed-accent: light-dark(#1f5eff, #7aa2ff);
+  --ed-wash: light-dark(#dbe6ff, #1b2b55);
+  --ed-line: light-dark(#dfe4ec, #262b36);
+  color: var(--ed-text);
+  background: var(--ed-white);
+}
+
+/* Surfaces */
+.paper {
+  background: var(--ed-paper);
+}
+
+.ink {
+  background: var(--ed-ink);
+  color: var(--ed-ink-text);
+}
+
+.muted {
+  color: var(--ed-muted);
+}
+
+.inkMuted {
+  color: var(--ed-ink-muted);
+}
+
+.accent {
+  color: var(--ed-accent);
+}
+
+/* The headline keeps its own Markdown mark, as the editor shows source at the caret. */
+.heading {
+  font-family: var(--font-display-serif), Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.mark {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  color: var(--ed-accent);
+  opacity: 0.55;
+  margin-right: 0.12em;
+  letter-spacing: 0;
+}
+
+/* Package spec chip: the real install target. */
+.spec {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.75rem;
+  padding: 0 0.75rem;
+  border-radius: 999px;
+  background: var(--ed-wash);
+  color: var(--ed-text);
+}
+
+/* Links: an underline that gets heavier on hover, no arrows. */
+.link {
+  color: var(--ed-text);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--ed-accent) 45%, transparent);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.2em;
+  border-radius: 2px;
+  transition:
+    text-decoration-color 150ms ease,
+    color 150ms ease;
+}
+
+.link:hover {
+  color: var(--ed-accent);
+  text-decoration-color: var(--ed-accent);
+}
+
+.link:focus-visible {
+  outline: 2px solid var(--ed-accent);
+  outline-offset: 4px;
+}
+
+.ink .link {
+  color: #fff;
+}
+
+.ink .link:hover {
+  color: color-mix(in oklab, var(--ed-accent) 55%, white);
+}
+
+/* The playground frame: paper chrome, white editor, ink Markdown. */
+.frame {
+  border: 1px solid var(--ed-line);
+  border-radius: 1.25rem;
+  background: var(--ed-white);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.6) inset,
+    0 24px 60px -24px color-mix(in oklab, var(--ed-accent) 30%, transparent),
+    0 12px 32px -16px rgb(18 21 28 / 0.25);
+  animation: editor-rise 700ms 120ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.heroCopy {
+  animation: editor-rise 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.chrome {
+  background: var(--ed-paper);
+  border-bottom: 1px solid var(--ed-line);
+}
+
+.segment {
+  display: inline-flex;
+  padding: 2px;
+  gap: 2px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--ed-text) 8%, transparent);
+}
+
+.segmentButton {
+  height: 1.75rem;
+  padding: 0 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ed-muted);
+  transition:
+    color 150ms ease,
+    background-color 150ms ease;
+}
+
+.segmentButton[aria-pressed="true"] {
+  background: var(--ed-white);
+  color: var(--ed-text);
+  box-shadow: 0 1px 2px rgb(18 21 28 / 0.12);
+}
+
+.segmentButton:focus-visible,
+.toolButton:focus-visible,
+.inkButton:focus-visible {
+  outline: 2px solid var(--ed-accent);
+  outline-offset: 2px;
+}
+
+.toolButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  height: 1.75rem;
+  padding: 0 0.625rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ed-muted);
+  transition:
+    color 150ms ease,
+    background-color 150ms ease;
+}
+
+.toolButton:hover:not(:disabled) {
+  color: var(--ed-text);
+  background: color-mix(in oklab, var(--ed-text) 8%, transparent);
+}
+
+.toolButton:disabled {
+  opacity: 0.4;
+}
+
+.toolButton[aria-pressed="true"] {
+  color: var(--ed-accent);
+  background: var(--ed-wash);
+}
+
+.inkButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  height: 1.75rem;
+  padding: 0 0.625rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ed-ink-muted);
+  transition:
+    color 150ms ease,
+    background-color 150ms ease;
+}
+
+.inkButton:hover {
+  color: #fff;
+  background: rgb(255 255 255 / 0.1);
+}
+
+.output {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.5rem;
+  color: var(--ed-ink-text);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.output:focus-visible {
+  outline: 2px solid var(--ed-accent);
+  outline-offset: -2px;
+}
+
+/* The character count blinks once per change, like a status bar. */
+.count {
+  animation: editor-tick 500ms ease-out both;
+  border-radius: 4px;
+  padding: 0 0.25rem;
+}
+
+@keyframes editor-tick {
+  from {
+    background: var(--ed-accent);
+    color: #fff;
+  }
+  to {
+    background: transparent;
+    color: inherit;
+  }
+}
+
+.key {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1;
+  padding: 3px 5px;
+  border-radius: 4px;
+  background: var(--ed-white);
+  border: 1px solid var(--ed-line);
+  color: var(--ed-text);
+  white-space: pre;
+}
+
+/* Install command */
+.install {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.375rem 0.375rem 1rem;
+  border-radius: 0.75rem;
+  background: var(--ed-ink);
+  color: var(--ed-ink-text);
+}
+
+.installCode {
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  line-height: 1.75rem;
+  color: #fff;
+}
+
+.installButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  height: 2.25rem;
+  padding: 0 0.75rem;
+  border-radius: 0.5rem;
+  background: var(--ed-accent);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: filter 150ms ease;
+}
+
+.installButton:hover {
+  filter: brightness(1.12);
+}
+
+.installButton:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* Preserved-source figure */
+.source {
+  border: 1px solid var(--ed-line);
+  border-radius: 0.875rem;
+  background: var(--ed-white);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.5rem;
+  color: var(--ed-muted);
+  padding: 0.875rem 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.sourceLine {
+  display: block;
+  padding: 0 1rem 0 0.875rem;
+  border-left: 3px solid transparent;
+}
+
+.sourceEdited {
+  color: var(--ed-text);
+}
+
+.sourceChanged {
+  color: var(--ed-text);
+  background: var(--ed-wash);
+  border-left-color: var(--ed-accent);
+}
+
+/* Feature specimens: the keystroke or Markdown that triggers the feature. */
+.specimen {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.5rem;
+  padding: 0.125rem 0.625rem;
+  border-radius: 0.375rem;
+  background: var(--ed-wash);
+  color: var(--ed-text);
+  white-space: pre;
+}
+
+/* Shortcut ledger */
+.ledgerRow {
+  display: grid;
+  grid-template-columns: minmax(6.5rem, 9rem) 1fr;
+  gap: 1rem;
+  align-items: baseline;
+  padding: 0.625rem 0;
+  border-top: 1px solid var(--ed-line);
+}
+
+.ledgerRow:first-child {
+  border-top: 0;
+}
+
+/* Code frames on ink */
+.codeFrame {
+  border-radius: 0.875rem;
+  background: var(--ed-ink-2);
+  border: 1px solid rgb(255 255 255 / 0.08);
+  overflow: hidden;
+}
+
+.codeFrameTitle {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ed-ink-muted);
+  padding: 0.625rem 1rem;
+  border-bottom: 1px solid rgb(255 255 255 / 0.08);
+}
+
+.codeFrameBody {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5rem;
+  color: #fff;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+/* Size comparison: one measure, thin bars, the subject highlighted. */
+.barRow {
+  display: grid;
+  grid-template-columns: minmax(8rem, 13rem) 1fr auto;
+  gap: 0.75rem 1rem;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.barTrack {
+  height: 10px;
+  border-radius: 4px;
+  background: rgb(255 255 255 / 0.06);
+  overflow: hidden;
+}
+
+.bar {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--ed-ink-muted);
+}
+
+.barSubject {
+  background: var(--ed-accent);
+}
+
+@keyframes editor-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroCopy,
+  .frame,
+  .count {
+    animation: none;
+  }
+}
