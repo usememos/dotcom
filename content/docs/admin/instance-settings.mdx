@@ -9,8 +9,9 @@ Common areas include:
 
 - Instance access policy: public or private access, stored independently of the canonical instance URL.
 - General access controls: user registration, password auth, username and nickname changes, week start day, and custom instance profile.
-- Storage settings: named database, local filesystem, or S3-compatible configurations with stable IDs, a default for new uploads, file path templates, and upload limits.
-- Memo-related settings: content length limits, double-click editing, and allowed reaction values.
+- Storage settings: named database, local filesystem, or S3-compatible configurations with stable IDs, a default for new uploads, and file path templates.
+- Usage limits: memo length, upload size, memo count, and total storage, for everyone or for named users.
+- Memo-related settings: allowed reaction values.
 - Notification settings: SMTP email delivery, sender details, reply-to address, and the email test endpoint.
 - AI settings: instance-level OpenAI or Gemini providers and speech-to-text transcription defaults.
 
@@ -21,6 +22,16 @@ Tag colors and content-blur rules are user settings in Memos 0.30 and later, not
 In 0.31, the `ACCESS` setting determines whether anonymous visitors may read public content. `MEMOS_INSTANCE_URL` supplies the canonical external address and no longer changes an existing access policy. Use [deployment-managed access configuration](/docs/configuration/deployment-configuration#access-policy) when infrastructure should own this setting.
 
 Active instance admins manage these policies and can read and manage individual memos, including other authors' private and Space-only memos. They do not automatically become Space members, and collection listings still filter by audience. See [Users & Roles](/docs/admin/users-roles).
+
+## Usage limits
+
+From 26.10, **Settings › Usage limits** replaces the earlier upload size and memo content length settings; their old values are not carried over. Limits cover four metrics: memo length, size of one upload, number of memos (comments and archived memos included), and total upload storage.
+
+Entries are checked in order. The last entry applies to all users, and an entry above it gives the users it names their own limits; each user gets the first entry that names them. An unset limit, or `0`, is unlimited, and administrators are limited like everyone else. Without any configured limits, Memos allows 8 KiB per memo and 32 MiB per file, with no memo count or storage limit.
+
+A save or upload that would exceed a limit is refused with a message naming the limit. Nothing already stored is hidden or removed. Each user can see their current usage in **My Account**. Use [deployment-managed configuration](/docs/configuration/deployment-configuration#usage-limits) when infrastructure should own these limits; while the file is mounted, the setting cannot be changed in the app.
+
+Double-click to edit is no longer an instance setting. Each person chooses it per browser under **Settings › Preferences › This device**.
 
 ## Sensitive settings
 

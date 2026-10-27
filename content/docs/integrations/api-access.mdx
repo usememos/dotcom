@@ -30,7 +30,7 @@ For browser-based integrations, bearer-token requests may be sent cross-origin. 
 
 ## 26.10 client migration
 
-These breaking changes apply to **26.10-rc.1**. Use the [tagged API changelog](https://github.com/usememos/memos/blob/26.10-rc.1/proto/api/CHANGELOG.md) and [OpenAPI specification](https://github.com/usememos/memos/blob/26.10-rc.1/proto/gen/openapi.yaml) for the exact release contract.
+These breaking changes apply to **26.10.0-rc.2**. Use the [tagged API changelog](https://github.com/usememos/memos/blob/26.10.0-rc.2/proto/api/CHANGELOG.md) and [OpenAPI specification](https://github.com/usememos/memos/blob/26.10.0-rc.2/proto/gen/openapi.yaml) for the exact release contract.
 
 ### Paths and encoding
 
@@ -39,6 +39,15 @@ These breaking changes apply to **26.10-rc.1**. Use the [tagged API changelog](h
 - Resource types use `memos.api/<Type>` and `google.rpc.ErrorInfo.domain` becomes `memos.api`.
 - In this release, old REST and procedure paths return `410 Gone` with an `UNIMPLEMENTED` error. They are removed in the next release.
 - Protobuf field numbers change. Regenerate clients that use binary protobuf encoding; JSON clients must update the renamed fields below. Proto field names are shown in `snake_case`; gateway JSON uses their `camelCase` equivalents.
+- Field numbers restart from 1 and enum values from 0 in declaration order, including `User.Role` (`ADMIN = 1`, `USER = 2`) and `UserSetting.Key` (`GENERAL = 1`, `WEBHOOKS = 2`, `TAGS = 3`). Update clients that send numeric enum values.
+
+### Tokens, limits, and settings
+
+- Access tokens are bound to the user's password hash. Tokens issued before the upgrade are rejected, and a password change or administrator reset invalidates existing ones; refresh or sign in again. Personal access tokens are unaffected.
+- `StorageSetting.upload_size_limit_mb` and `MemoRelatedSetting.content_length_limit` are removed without migration. Read and replace limits through the `USAGE_LIMITS` instance setting (`instance/settings/USAGE_LIMITS`), an ordered list where the first entry naming a user applies and the last entry applies to everyone. `UserUsage` reports the effective `limits` and `limit_index`.
+- Handle `RESOURCE_EXHAUSTED` with reason `QUOTA_EXCEEDED`; its metadata carries `metric`, `limit`, and `usage`.
+- `MemoRelatedSetting.enable_double_click_edit` is removed; `MemoRelatedSetting` keeps only `reactions`.
+- `ListAttachments` uses the shared opaque page token and returns `next_page_token` only when more results exist.
 
 ### Renamed methods, fields, and types
 

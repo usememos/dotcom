@@ -21,6 +21,7 @@ describe("compareChangelogVersions", () => {
     expect(compareChangelogVersions("Release 26.10-rc.10", "Release 26.10-rc.2")).toBeLessThan(0);
     expect(compareChangelogVersions("Release 26.10", "Release 26.10-rc.10")).toBeLessThan(0);
     expect(compareChangelogVersions("Release 26.10.1", "Release 26.10.1-rc.1")).toBeLessThan(0);
+    expect(compareChangelogVersions("Release 26.10.0-rc.2", "Release 26.10-rc.1")).toBeLessThan(0);
   });
 });
 

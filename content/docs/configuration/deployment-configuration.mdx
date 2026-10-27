@@ -1,6 +1,6 @@
 ---
 title: Deployment-Managed Configuration
-description: Manage access, authentication, storage, notifications, memo behavior, and AI settings from mounted JSON files.
+description: Manage access, authentication, storage, memo behavior, usage limits, notifications, and AI settings from mounted JSON files.
 category: configuration
 tags: ["configuration", "self-hosting", "docker", "kubernetes"]
 difficulty: advanced
@@ -78,6 +78,7 @@ Memos scans direct children of `/etc/secrets` and reads only these filename patt
 | General settings | `memos-instance-setting-general.json` | `GENERAL` |
 | Storage settings | `memos-instance-setting-storage.json` | `STORAGE` |
 | Memo behavior | `memos-instance-setting-memo-related.json` | `MEMO_RELATED` |
+| Usage limits (26.10+) | `memos-instance-setting-usage-limits.json` | `USAGE_LIMITS` |
 | Email notifications | `memos-instance-setting-notification.json` | `NOTIFICATION` |
 | AI providers | `memos-instance-setting-ai.json` | `AI` |
 
@@ -173,7 +174,6 @@ In deployment files, `storages[].type` must be `STORAGE_TYPE_DATABASE`, `STORAGE
   "key": "STORAGE",
   "storageSetting": {
     "filepathTemplate": "assets/{timestamp}_{uuid}_{filename}",
-    "uploadSizeLimitMb": "30",
     "defaultStorageId": "team-assets",
     "storages": [
       {
@@ -197,6 +197,8 @@ In deployment files, `storages[].type` must be `STORAGE_TYPE_DATABASE`, `STORAGE
 
 Keep every configuration referenced by existing attachments when replacing this complete settings group. Changing the default affects new uploads only. Legacy `storageType` and top-level `s3Config` remain supported for compatibility, but new configurations should use the named format. This example requires 0.31 or later; use `neosmemo/memos:0.31.0` to pin the release.
 
+From 26.10, the per-file cap is the `uploadBytes` [usage limit](#usage-limits); remove `uploadSizeLimitMb` from storage files, which no longer accept it.
+
 Only enable `insecureSkipTlsVerify` for a trusted S3-compatible endpoint using a self-signed certificate. It disables TLS certificate verification.
 
 ### Memo behavior
@@ -205,14 +207,46 @@ Only enable `insecureSkipTlsVerify` for a trusted S3-compatible endpoint using a
 {
   "key": "MEMO_RELATED",
   "memoRelatedSetting": {
-    "contentLengthLimit": 1048576,
-    "enableDoubleClickEdit": true,
     "reactions": ["👍", "❤️", "🎉"]
   }
 }
 ```
 
-`contentLengthLimit` is measured in bytes. `reactions` supplies the allowed reaction values for the instance.
+`reactions` supplies the allowed reaction values for the instance and is the only field in this group from 26.10. Memos 26.10 rejects files that still set `contentLengthLimit` or `enableDoubleClickEdit`: memo length moves to [usage limits](#usage-limits), and double-click to edit is a per-browser preference under **Settings › Preferences › This device**.
+
+### Usage limits
+
+From 26.10, `USAGE_LIMITS` caps memo length, upload size, memo count, and total storage. The file holds an ordered list of entries. Each entry except the last names users by numeric `userIds`; the last entry sets `allUsers: true` and applies to everyone else. A user gets the first entry that names them.
+
+```json
+{
+  "key": "USAGE_LIMITS",
+  "usageLimitsSetting": {
+    "limits": [
+      {
+        "userIds": [1],
+        "storageBytes": "0",
+        "uploadBytes": "268435456"
+      },
+      {
+        "allUsers": true,
+        "memoContentBytes": "8192",
+        "uploadBytes": "33554432",
+        "storageBytes": "1073741824"
+      }
+    ]
+  }
+}
+```
+
+| Field | Limits |
+| --- | --- |
+| `memoCount` | Memos a user has created, including comments and archived memos |
+| `memoContentBytes` | UTF-8 size of one memo's content |
+| `uploadBytes` | Size of one uploaded file |
+| `storageBytes` | Total size of a user's uploads; external links do not count |
+
+Values are byte or memo counts written as strings. An omitted metric or `0` means unlimited, and administrators are limited like everyone else. User IDs stay stable when a user is renamed. Without this setting, Memos uses 8 KiB per memo and 32 MiB per file with no count or storage limit. A limit refuses new saves and uploads only; nothing already stored is hidden or removed.
 
 ### Notifications
 

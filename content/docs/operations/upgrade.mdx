@@ -24,11 +24,11 @@ debugging an integration against the current API reference.
 
 ## Upgrading to 26.10
 
-**26.10-rc.1 is a release candidate.** Back up before upgrading and pin `neosmemo/memos:26.10-rc.1` to test this release. It does not update the `stable` container tag. Read the [release changelog](/changelog/26-10-rc-1).
+**26.10.0-rc.2 is a release candidate.** Back up before upgrading and pin `neosmemo/memos:26.10.0-rc.2` to test this release. It does not update the `stable` container tag. Read the [release changelog](/changelog/26-10-0-rc-2).
 
 ### Required upgrade path
 
-- From **0.31.0**, upgrade directly.
+- From **0.31.0** or **26.10-rc.1**, upgrade directly.
 - From **0.22 through 0.30**, first upgrade to **0.31.0** and start it successfully, then install 26.10.
 - From a version **earlier than 0.22**, first run **0.25.3**, then **0.31.0**, then install 26.10.
 - Fresh installations can start with 26.10 directly.
@@ -39,6 +39,9 @@ debugging an integration against the current API reference.
 - Replace the removed built-in Tasks View with a [View](/docs/usage/views) using `has_task_list && has_incomplete_tasks`.
 - Move a top-level memo by editing its Space in the audience menu, then saving. The separate Move to Space action is removed.
 - Deleting a memo now deletes its comments and nested replies as well. Review a discussion before deleting its parent.
+- Every user signs in again: sessions and cached access tokens expire on upgrade. Personal access tokens keep working.
+- The upload size and memo length settings are replaced by **Settings › Usage limits**, and old values are not carried over. The default is 8 KiB per memo and 32 MiB per file; if you changed the old caps, set the all-users entry again.
+- Remove `enableDoubleClickEdit` and `contentLengthLimit` from a mounted memo-related file and `uploadSizeLimitMb` from a storage file; Memos does not start while they remain. Move limits to a [usage limits file](/docs/configuration/deployment-configuration#usage-limits). Double-click to edit is a per-browser preference.
 
 After upgrading, verify sign-in, existing memos, attachments, creator and Space filters, and API integrations. Check that Calendar and Map expose only the memos each signed-in user or visitor can read.
 
@@ -140,7 +143,7 @@ See the [Binary guide](/docs/deploy/binary) for service setup.
 
 `neosmemo/memos:stable` tracks the latest stable release, which is convenient but upgrades implicitly on every pull. For production, pin a specific version tag (for example `neosmemo/memos:0.31.0`) and upgrade deliberately.
 
-From 26.10 onward, release tags use calendar versions without a `v` prefix: `26.10` is a monthly release and `26.10.1` is a patch. Stable releases publish exact-version, monthly-series, and `stable` container tags. Release candidates publish only their exact tag, such as `26.10-rc.1`.
+From 26.10 onward, release tags use calendar versions in the form `YY.MM.N` without a `v` prefix: `26.10.0` is the first release of a month and `26.10.1` is a patch. Stable releases publish the exact-version tag, the monthly-series tag (`26.10`), and `stable`. Release candidates add `-rc.K` and publish only their exact tag, such as `26.10.0-rc.2`.
 
 ## Verify after upgrading
 

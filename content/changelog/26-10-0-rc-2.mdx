@@ -1,0 +1,61 @@
+---
+title: Release 26.10.0-rc.2
+description: A new block editor, per-user usage limits, calendar versioning, automatic SSO sign-in, and a rebuilt HTTP server
+image_description: A new editor, usage limits, and calendar versions.
+date: "2026-10-27"
+breaking: true
+---
+
+> The second 26.10 release candidate brings a new editor that writes and reads memos the same way, per-user usage limits, and calendar versioning. Sign-in, browsing, Markdown rendering, and the server improve throughout.
+
+## Upgrade notes
+
+- **Upgrade path** - If you use a version earlier than 0.31.0, upgrade to 0.31.0 and start it successfully before installing this release. Versions earlier than 0.22 must first run 0.25.3, then 0.31.0. You can upgrade directly from 0.31.0 or 26.10-rc.1; fresh installations need no intermediate release.
+- **Everyone signs in again** - Access tokens are now tied to the account password. All sessions and cached access tokens expire on upgrade, and a password change or administrator reset signs the account out on other devices. Personal access tokens are unaffected.
+- **Usage limits replace two settings** - The upload size and memo length instance settings are removed, and their values are not carried over. The built-in default is 8 KiB per memo and 32 MiB per file, with no memo count or storage limit. If you changed the old caps, set the all-users entry under **Settings › Usage limits**.
+- **Removed options** - Double-click to edit is now a per-browser preference, and a deployment config that still sets `enableDoubleClickEdit` is rejected. The composer's formatting toolbar preference is removed. As in rc.1, the built-in Tasks View and the Move to Space action are gone: use a [View](/docs/usage/views) with `has_task_list && has_incomplete_tasks`, and choose a memo's Space in the editor's audience menu.
+- **Release numbering** - Versions are now `YY.MM.N`, such as `26.10.0`, with `-rc.K` for candidates and no `v` prefix. This is a release candidate; install it with the exact container tag `neosmemo/memos:26.10.0-rc.2`. Stable releases also publish the month tag (`26.10`) and `stable`.
+- **API clients** - REST paths move from `/api/v1/...` to `/api/...`, and Connect and gRPC procedures use `/memos.api.<Service>/<Method>`. Clients must update renamed fields and types; binary protobuf clients must regenerate from the new schema. This release also renumbers fields and enums, replaces the upload and content-length settings with the `USAGE_LIMITS` instance setting, and returns `RESOURCE_EXHAUSTED` with reason `QUOTA_EXCEEDED` when a limit is hit. Old paths return `410 Gone` for this release and will be removed in the next release. Follow the [26.10 API migration checklist](/docs/integrations/api-access#2610-client-migration).
+
+See the [upgrade guide](/docs/operations/upgrade#upgrading-to-2610) before updating an existing installation.
+
+## New features
+
+### One editor for writing and reading
+
+- **Block editor** - Writing and reading share one editor, so a memo looks the same while you type and after you save. Format selected text from the toolbar, the slash menu, or Markdown shortcuts.
+- **Markdown mode** - Edit the raw text from the **＋** menu. Your choice is remembered on each device.
+- **Focus mode** - Open a narrower sheet with larger text when you want to concentrate on a draft.
+- **Suggestions and transcription** - New drafts suggest tags, checklist formatting, and visibility from your current filters or View. Transcribe an existing audio attachment into the draft with your configured provider.
+
+### Usage limits
+
+- **Four metrics** - Limit memo length, upload size, memo count, and total storage in one place under **Settings › Usage limits**.
+- **Per-user entries** - Entries are ordered: the last applies to everyone, and an entry above it gives the users it names their own limits.
+- **Clear refusals** - A refused save or upload names the limit it hit. Nothing already stored is hidden or removed, and **My Account** shows your current usage.
+
+### Browsing and sign-in
+
+- **Keep your scope** - The selected creator or Space follows you across Timeline, Calendar, Map, and Attachments.
+- **New filters** - Filter memos with `has_attachments` and `has_image`.
+- **Calendar and Map for visitors** - Signed-out visitors can browse Calendar and Map, which show authors when several people write. Memo timestamps are links.
+- **Space and visibility together** - Pick a memo's Space next to its visibility in the editor's audience menu, including while editing.
+- **Automatic SSO** - When passwords are disabled and there is a single SSO provider, sign-in starts SSO automatically and returns you to the page you wanted.
+- **Device preferences** - Link previews and double-click to edit are per-browser choices under **Settings › Preferences › This device**.
+
+## Improvements and fixes
+
+- **Markdown** - Tables fill the width with a tinted header and wrap at words. Footnotes collect at the end of a memo with backlinks. Quotes and callouts can hold lists, inline HTML such as `<ruby>` renders again, collapsible sections and heading sizes match between editing and reading, and Bilibili players embed.
+- **Code and diagrams** - Mermaid diagrams follow the theme and fit the memo's width, and code highlighting is lighter.
+- **Image previews** - Pinch to zoom, pan, and swipe between images. Controls stay on screen on mobile, and attachments load on plain HTTP instances.
+- **Memos and filters** - Pinned memos have a clearer marker in single-creator feeds. New memos keep their place after an immediate edit and take the time of saving under a date filter. `has_task_list == false` matches memos without that property, constant operands no longer shift later filter conditions, deleting a memo removes its whole comment thread, and blurred content stays out of the detail sidebar.
+- **Interface** - A refreshed logo and brand copy. Menus, dialogs, and controls share one surface style with visible focus. Sidebar menus stay anchored while scrolling, submenus stay on screen in narrow viewports, dialogs restore default focus, notifications follow the theme, and the composer renders with the Home page.
+- **Languages and link previews** - Norwegian Nynorsk is available, the Korean hidden-content label uses neutral wording, and large web pages produce more reliable preview titles and images.
+- **Server and security** - The HTTP layer now runs on the Go standard library with unchanged routes and behavior; report any difference you notice behind your reverse proxy. The last administrator cannot be removed, `/healthz` reports database outages, the administrator's username is hidden from anonymous requests, outbound fetches refuse the CGNAT range, and hidden paths such as `/.well-known/` return 404. Token store failures no longer appear as 401, authorization errors are JSON, and MariaDB works. Go and gRPC are updated for CVE-2026-78669 and CVE-2026-84445.
+- **API** - `ListAttachments` uses the shared opaque page token and returns one only when more results exist.
+
+Report regressions in [GitHub issues](https://github.com/usememos/memos/issues).
+
+**Release**: [26.10.0-rc.2 on GitHub](https://github.com/usememos/memos/releases/tag/26.10.0-rc.2)
+
+**Full changelog**: [v0.31.0...26.10.0-rc.2](https://github.com/usememos/memos/compare/v0.31.0...26.10.0-rc.2)

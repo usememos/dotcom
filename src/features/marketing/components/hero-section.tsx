@@ -20,7 +20,7 @@ interface HeroSectionProps {
   };
 }
 
-export function HeroSection({ version = "26.10-rc.1", title, subtitle, primaryCta, secondaryCta }: HeroSectionProps) {
+export function HeroSection({ version = "26.10.0-rc.2", title, subtitle, primaryCta, secondaryCta }: HeroSectionProps) {
   return (
     <section className="relative overflow-hidden bg-white dark:bg-zinc-950">
       <div className="site-container grid gap-12 pt-12 pb-16 sm:pt-14 sm:pb-20 lg:grid-cols-[minmax(0,36rem)_minmax(0,1fr)] lg:items-center lg:gap-12 lg:py-20">
