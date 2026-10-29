@@ -52,7 +52,7 @@ Keep at least one admin account with a known password. This gives you a recovery
 
 ## OAuth2 and SSO
 
-SSO is the right choice for team instances that already use a central identity system. Configure the provider in instance settings, then test login with a non-admin account before forcing the whole instance onto SSO-only behavior.
+SSO is the right choice for team instances that already use a central identity system. Configure the provider in instance settings, then test login with a non-admin account before forcing the whole instance onto SSO-only behavior. To keep providers and the sign-in policy under deployment control, declare them in [declarative configuration](/docs/configuration/declarative-configuration#sso-only-deployment) instead.
 
 The OAuth2 callback URL for your Memos instance is:
 

@@ -2,6 +2,7 @@
   "title": "Instance Service",
   "pages": [
     "BatchGetInstanceSettings",
+    "GetConfigurationStatus",
     "GetInstanceProfile",
     "GetInstanceSetting",
     "GetInstanceStats",

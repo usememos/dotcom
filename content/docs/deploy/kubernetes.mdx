@@ -23,7 +23,8 @@ SQLite works for a single replica and is the easiest option, but it ties you to 
 
 - one Memos replica when using SQLite
 - a persistent volume mounted at `/var/opt/memos`
-- `MEMOS_INSTANCE_URL` set to the canonical external URL, with private or public access selected separately through the [ACCESS setting](/docs/configuration/deployment-configuration#access-policy)
+- `MEMOS_INSTANCE_URL` set to the canonical external URL, with private or public access selected separately through the [ACCESS setting](/docs/configuration/declarative-configuration#access-policy)
+- [declarative configuration](/docs/configuration/declarative-configuration#kubernetes) mounted from a Secret or ConfigMap at `/etc/memos/config` when identity providers and instance settings should come from the cluster
 - TLS termination at the ingress layer
 - standard forwarded headers preserved
 

@@ -53,6 +53,14 @@ const checks = [
     cacheControlIncludes: "s-maxage=31536000",
     openNextCache: "HIT",
   },
+  {
+    path: "/docs/configuration/deployment-configuration",
+    status: 308,
+    type: "text",
+    redirect: "manual",
+    location: "/docs/configuration/declarative-configuration",
+  },
+  { path: "/docs/configuration/declarative-configuration", type: "html", contains: "memos config plan" },
   ...["/compare", "/compare/obsidian", "/compare/notion"].map((path) => ({
     path,
     status: 308,

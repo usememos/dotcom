@@ -22,6 +22,8 @@ All flags and their corresponding environment variables:
 | `--webhook-private-network-allowlist` | `MEMOS_WEBHOOK_PRIVATE_NETWORK_ALLOWLIST` | empty | Allowed private destinations: exact hostnames, IP addresses, or CIDRs |
 | `--allow-private-webhooks` | `MEMOS_ALLOW_PRIVATE_WEBHOOKS` | `false` | Deprecated blanket exception for private webhook destinations |
 | `--log-level` | `MEMOS_LOG_LEVEL` | `info` | Log verbosity (`debug`, `info`, `warn`, `error`) |
+| `--config-dir` | `MEMOS_CONFIG_DIR` | `/etc/memos/config` | Directory of [declarative configuration](/docs/configuration/declarative-configuration) files (26.10+) |
+| `--config-apply` | `MEMOS_CONFIG_APPLY` | `startup` | `startup` applies the configuration directory before serving; `off` leaves it to `memos config apply` (26.10+) |
 
 ### Data directory defaults
 
@@ -42,7 +44,7 @@ In Memos 0.31, access is controlled by the `ACCESS` instance setting, through `a
 - `INSTANCE_ACCESS_MODE_PRIVATE`: anonymous visitors are sent to sign-in; anonymous API access is limited to endpoints such as setup, authentication, registration when allowed, and explicit shared memos.
 - `INSTANCE_ACCESS_MODE_PUBLIC`: eligible public memos, profiles, and Explore can be read anonymously.
 
-Configure access in instance settings or with a [deployment-managed JSON file](/docs/configuration/deployment-configuration#access-policy). It is not a runtime flag or environment variable.
+Configure access in instance settings or with [declarative configuration](/docs/configuration/declarative-configuration#access-policy). It is not a runtime flag or environment variable.
 
 `MEMOS_INSTANCE_URL` supplies the canonical external address, including for a private instance behind a proxy. It must be an absolute HTTP(S) URL without credentials, a query, or a fragment, such as `https://memos.example.com`.
 

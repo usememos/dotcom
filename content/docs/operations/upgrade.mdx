@@ -41,7 +41,14 @@ debugging an integration against the current API reference.
 - Deleting a memo now deletes its comments and nested replies as well. Review a discussion before deleting its parent.
 - Every user signs in again: sessions and cached access tokens expire on upgrade. Personal access tokens keep working.
 - The upload size and memo length settings are replaced by **Settings › Usage limits**, and old values are not carried over. The default is 8 KiB per memo and 32 MiB per file; if you changed the old caps, set the all-users entry again.
-- Remove `enableDoubleClickEdit` and `contentLengthLimit` from a mounted memo-related file and `uploadSizeLimitMb` from a storage file; Memos does not start while they remain. Move limits to a [usage limits file](/docs/configuration/deployment-configuration#usage-limits). Double-click to edit is a per-browser preference.
+- Double-click to edit is a per-browser preference under **Settings › Preferences › This device**.
+
+### Deployment configuration
+
+- Memos 26.10 no longer reads `memos-idp-*.json` or `memos-instance-setting-*.json` from `/etc/secrets`, and does not warn when they are present. Release candidates up to 26.10.0-rc.2 still read them. Without conversion, the values stored in the database take effect again, which can re-enable password sign-in or remove a file-only SSO provider. Convert the files to [declarative configuration](/docs/configuration/declarative-configuration#migrate-from-etcsecrets) and check them with `memos config plan` before upgrading.
+- Mount the converted files at `/etc/memos/config`, or point `MEMOS_CONFIG_DIR` at them. Memos applies them at startup unless `MEMOS_CONFIG_APPLY=off`, and stops if they cannot be applied.
+- Declarative configuration uses API field names: identity providers are `identity-providers/<uid>` with a `title`, storage types are `S3`, `LOCAL`, or `DATABASE`, and usage limits name users as `users/<username>`. Memo length and upload size belong in the [usage limits setting](/docs/configuration/declarative-configuration#usage-limits); `contentLengthLimit`, `enableDoubleClickEdit`, and `uploadSizeLimitMb` are rejected.
+- API writes are validated more strictly: identity providers need a client ID, absolute HTTP(S) endpoints, and an identifier mapping; a changed S3 storage needs an endpoint, region, bucket, and both keys; and the `BASIC` setting cannot be written. Writes to resources the configuration manages fail with `FAILED_PRECONDITION`.
 
 After upgrading, verify sign-in, existing memos, attachments, creator and Space filters, and API integrations. Check that Calendar and Map expose only the memos each signed-in user or visitor can read.
 
@@ -53,7 +60,7 @@ These notes apply to **0.31.0**, the latest stable release. Back up before upgra
 
 - A missing `ACCESS` setting is initialized once from the previous URL-based behavior: configured URL means public, empty URL means private. Later URL changes do not change access policy.
 - Upgrade or drain every older replica before changing access. Older binaries still use the URL to decide who may read anonymously.
-- `MEMOS_INSTANCE_URL` must be absolute HTTP(S), without credentials, a query, or a fragment. Configure it separately from the [access policy](/docs/configuration/deployment-configuration#access-policy).
+- `MEMOS_INSTANCE_URL` must be absolute HTTP(S), without credentials, a query, or a fragment. Configure it separately from the [access policy](/docs/configuration/declarative-configuration#access-policy).
 - Replace blanket private-webhook access with `--webhook-private-network-allowlist` or `MEMOS_WEBHOOK_PRIVATE_NETWORK_ALLOWLIST`. The older allow-private option remains compatible but is deprecated.
 - Building from source requires Go 1.27 or newer.
 

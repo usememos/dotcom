@@ -19,7 +19,7 @@ Tag colors and content-blur rules are user settings in Memos 0.30 and later, not
 
 ## Access policy
 
-In 0.31, the `ACCESS` setting determines whether anonymous visitors may read public content. `MEMOS_INSTANCE_URL` supplies the canonical external address and no longer changes an existing access policy. Use [deployment-managed access configuration](/docs/configuration/deployment-configuration#access-policy) when infrastructure should own this setting.
+In 0.31, the `ACCESS` setting determines whether anonymous visitors may read public content. `MEMOS_INSTANCE_URL` supplies the canonical external address and no longer changes an existing access policy. Use [declarative configuration](/docs/configuration/declarative-configuration#access-policy) when infrastructure should own this setting.
 
 Active instance admins manage these policies and can read and manage individual memos, including other authors' private and Space-only memos. They do not automatically become Space members, and collection listings still filter by audience. See [Users & Roles](/docs/admin/users-roles).
 
@@ -29,7 +29,7 @@ From 26.10, **Settings › Usage limits** replaces the earlier upload size and m
 
 Entries are checked in order. The last entry applies to all users, and an entry above it gives the users it names their own limits; each user gets the first entry that names them. An unset limit, or `0`, is unlimited, and administrators are limited like everyone else. Without any configured limits, Memos allows 8 KiB per memo and 32 MiB per file, with no memo count or storage limit.
 
-A save or upload that would exceed a limit is refused with a message naming the limit. Nothing already stored is hidden or removed. Each user can see their current usage in **My Account**. Use [deployment-managed configuration](/docs/configuration/deployment-configuration#usage-limits) when infrastructure should own these limits; while the file is mounted, the setting cannot be changed in the app.
+A save or upload that would exceed a limit is refused with a message naming the limit. Nothing already stored is hidden or removed. Each user can see their current usage in **My Account**. Use [declarative configuration](/docs/configuration/declarative-configuration#usage-limits) when infrastructure should own these limits; while the configuration manages them, the setting cannot be changed in the app.
 
 Double-click to edit is no longer an instance setting. Each person chooses it per browser under **Settings › Preferences › This device**.
 

@@ -17,7 +17,7 @@ In 0.31, storage settings contain named configurations with stable IDs. Choose a
 
 Keep configurations that existing attachments still reference, including their credentials and backing objects. A new default is not a storage migration. Legacy settings migrate automatically on upgrade.
 
-API and deployment-file clients should use `storages` and `defaultStorageId`. The older `storageType` and top-level `s3Config` fields remain compatibility fields. See the [deployment configuration example](/docs/configuration/deployment-configuration#storage).
+API clients and declarative configuration files should use `storages` and `defaultStorageId`. The older `storageType` and top-level `s3Config` fields remain compatibility fields. See the [declarative configuration example](/docs/configuration/declarative-configuration#storage).
 
 ## Database storage
 

@@ -197,6 +197,13 @@ const config = {
         destination: "/docs/integrations/api-access",
         permanent: true,
       },
+      // Declarative configuration replaced the /etc/secrets loader in 26.10; the
+      // guide moved with it. The browser keeps #fragments across the redirect.
+      {
+        source: "/docs/configuration/deployment-configuration",
+        destination: "/docs/configuration/declarative-configuration",
+        permanent: true,
+      },
       // End-to-end practices now live in their own Guides section. Preserve
       // the original Usage URLs for bookmarks, inbound links, and search equity.
       {

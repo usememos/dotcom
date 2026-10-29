@@ -6,6 +6,8 @@ published_at: 2026/7/21 12:00:00
 tags: ["Self-Hosting", "Configuration", "Security"]
 ---
 
+> **Update:** From 26.10, the `/etc/secrets` files described here are replaced by [declarative configuration](/docs/configuration/declarative-configuration), which adds a plan, an atomic apply, and bootstrap administrators. Memos 26.10 no longer reads `/etc/secrets`; follow the [migration steps](/docs/configuration/declarative-configuration#migrate-from-etcsecrets) before upgrading.
+
 A while ago, I redeployed [demo.usememos.com](https://demo.usememos.com) for a reason that had nothing to do with a new release: someone had changed the login settings again.
 
 Our demo is intentionally open so people can explore Memos without installing anything first. In an earlier version of the demo, that also meant a visitor could disable a login method or change an identity provider. The server was still healthy, yet the next person could no longer sign in. One of us then had to restore the configuration and redeploy.
@@ -83,4 +85,4 @@ The public demo now receives its login-related configuration from mounted files.
 
 This is the boundary we wanted. People can explore the product without accidentally removing the sign-in path for the next visitor, and every restart produces the same effective login configuration.
 
-The full file formats and supported settings are available in the [deployment-managed configuration guide](/docs/configuration/deployment-configuration).
+The full file formats and supported settings are available in the [declarative configuration guide](/docs/configuration/declarative-configuration).

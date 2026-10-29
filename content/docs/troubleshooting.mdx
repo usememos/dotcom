@@ -41,7 +41,7 @@ Confirm which storage backend the instance uses. If attachments are stored outsi
 
 ## Access changed unexpectedly after an upgrade
 
-In 0.31, inspect the effective `ACCESS` setting and any `memos-instance-setting-access.json` deployment override. Changing `MEMOS_INSTANCE_URL` does not change an existing access policy. Upgrade all replicas before changing the policy, and restart replicas when changing file-backed settings.
+In 0.31, inspect the effective `ACCESS` setting and whether [declarative configuration](/docs/configuration/declarative-configuration#access-policy) manages it. Changing `MEMOS_INSTANCE_URL` does not change an existing access policy. Upgrade all replicas before changing the policy, and restart replicas after applying configuration changes.
 
 ## Sign-in fails after upgrading to 0.31
 

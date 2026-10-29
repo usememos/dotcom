@@ -1,0 +1,608 @@
+---
+title: Declarative Configuration
+description: Describe identity providers, instance settings, and bootstrap administrators in JSON files, review the plan, and apply it in one transaction.
+category: configuration
+tags: ["configuration", "self-hosting", "docker", "kubernetes"]
+difficulty: advanced
+estimatedTime: 20 minutes
+lastUpdated: "2026-10-29"
+---
+
+From 26.10, Memos can take identity providers, instance settings, and bootstrap administrators from JSON files. The files describe the state the instance should have. Memos compares them with the database, shows the difference as a plan, and applies the plan in one database transaction. Resources the files manage become read-only in the app and the API, so a change made in the admin UI cannot silently disappear at the next restart.
+
+Use this when SSO, storage credentials, registration policy, or the first administrator should come from Docker Compose, Kubernetes, GitOps, or a secret manager. For a personal instance, the admin UI remains the simplest option.
+
+Declarative configuration replaces the `/etc/secrets` loader from 0.30 and 0.31. Memos 26.10 no longer reads `memos-idp-*.json` or `memos-instance-setting-*.json` files. Convert them before upgrading: see [Migrate from `/etc/secrets`](#migrate-from-etcsecrets).
+
+## How it works
+
+| Part | What it is |
+| --- | --- |
+| Configuration files | Every `*.json` file in the configuration directory, merged into one desired state |
+| Instance database | The identity providers, instance settings, and users Memos actually stores |
+| State record | A database record listing which resources the files manage. It never stores a configured value |
+| Plan | The changes needed to make the instance match the files, with secrets redacted |
+| Apply | The plan written in one serializable transaction: it either completes or changes nothing |
+
+Applying the same files twice produces an empty second plan. A failed apply leaves the database and the state record as they were.
+
+## Quick start with Docker Compose
+
+Create a configuration directory and a file holding the administrator password:
+
+```text
+.
+├── compose.yaml
+├── memos-admin-password
+└── memos-config/
+    └── instance.json
+```
+
+Add `memos-config/instance.json`:
+
+```json
+{
+  "instanceSettings": [
+    {
+      "name": "instance/settings/ACCESS",
+      "accessSetting": { "accessMode": "INSTANCE_ACCESS_MODE_PRIVATE" }
+    },
+    {
+      "name": "instance/settings/GENERAL",
+      "generalSetting": {
+        "disallowUserRegistration": true,
+        "customProfile": { "title": "Team Memos", "description": "Notes for our team" }
+      }
+    }
+  ],
+  "users": [
+    {
+      "name": "users/admin",
+      "username": "admin",
+      "role": "ADMIN",
+      "password": "${file:/run/secrets/memos-admin-password}"
+    }
+  ],
+  "lifecycle": [{ "resource": "users/admin", "preventDestroy": true, "writeOnlyVersion": 1 }]
+}
+```
+
+Mount the directory read-only at `/etc/memos/config` and pass the password as a Compose secret:
+
+```yaml
+services:
+  memos:
+    image: neosmemo/memos:stable
+    ports:
+      - "5230:5230"
+    volumes:
+      - ./memos-data:/var/opt/memos
+      - ./memos-config:/etc/memos/config:ro
+    secrets:
+      - memos-admin-password
+
+secrets:
+  memos-admin-password:
+    file: ./memos-admin-password
+```
+
+The container runs as UID `10001`, so both the directory and the password file must be readable by that user. Check the files:
+
+```bash
+docker compose run --rm memos config validate
+```
+
+For an existing instance, also review what will change in its database. `plan` needs an existing database, so skip it on a fresh install:
+
+```bash
+docker compose run --rm memos config plan
+```
+
+When the plan shows what you expect, recreate the container. Memos applies the configuration at startup, before it serves requests:
+
+```bash
+docker compose up -d --force-recreate
+docker compose logs memos
+```
+
+The startup log reports the state serial and the names of the resources that changed. It never prints configured values.
+
+## Configuration directory
+
+Memos reads every regular file whose name ends in `.json` directly inside the configuration directory:
+
+- The directory is `/etc/memos/config` unless `--config-dir` or `MEMOS_CONFIG_DIR` names another.
+- Subdirectories are not read, and files with other extensions are ignored, so the directory can share a mount with unrelated files.
+- Symlinks that resolve to regular files are followed, which makes Kubernetes Secret and ConfigMap volumes work.
+- Each file must be no larger than 1 MiB.
+- A missing directory is an empty configuration. An unreadable directory or file is an error.
+
+All files form one configuration. Split it across files however you like, but declare each resource in exactly one file: declaring the same resource name twice is an error that names both files. Renaming a file does not change which resource it manages.
+
+## File format
+
+Each file is one JSON object with any of these fields:
+
+| Field | Contains |
+| --- | --- |
+| `identityProviders` | [OAuth2 identity providers](#identity-providers) |
+| `instanceSettings` | [Instance setting groups](#instance-settings) |
+| `users` | [Bootstrap users](#bootstrap-users), usually administrators |
+| `lifecycle` | [Rules](#lifecycle-rules) that adjust how a declared resource is planned |
+| `removed` | Resources to [stop managing or delete](#remove-a-resource) |
+
+Resources use the same JSON shape and field names as the [Memos API](/docs/api/latest), and every resource is identified by its API resource name, such as `identity-providers/company-sso` or `instance/settings/GENERAL`. A file written for one release therefore follows the API compatibility policy: fields are deprecated for at least one release before they are removed, and Memos logs a warning when a file uses a deprecated field.
+
+Decoding is strict:
+
+- Unknown fields are errors. This catches misspellings and files written for a newer Memos.
+- Output-only fields, such as `createTime` or `apiKeySet`, are errors.
+- Enum values must be written by name, such as `"OAUTH2"`, not by number.
+
+## Secrets
+
+A string value written as `${env:NAME}` is replaced with that environment variable, and `${file:/absolute/path}` with that file's contents, trailing line breaks removed. Use references so the configuration files contain no secrets and can be committed or baked into an image:
+
+```json
+"clientSecret": "${env:OIDC_CLIENT_SECRET}"
+```
+
+- A reference must be the whole string value. A reference inside a longer string is an error.
+- An environment variable set to an empty string is a valid empty value. An unset variable, an unreadable file, or a referenced file larger than 64 KiB is an error.
+- Write `$${` for a literal `${`.
+- Errors name the reference, never the value.
+
+Plain secret values in a file are still allowed when the file itself is mounted as a secret.
+
+## Identity providers
+
+An identity provider is managed whole: an omitted field takes its default value rather than the stored one.
+
+```json
+{
+  "identityProviders": [
+    {
+      "name": "identity-providers/company-sso",
+      "type": "OAUTH2",
+      "title": "Company SSO",
+      "identifierFilter": "",
+      "config": {
+        "oauth2Config": {
+          "clientId": "memos",
+          "clientSecret": "${env:OIDC_CLIENT_SECRET}",
+          "authUrl": "https://idp.example.com/oauth/authorize",
+          "tokenUrl": "https://idp.example.com/oauth/token",
+          "userInfoUrl": "https://idp.example.com/oauth/userinfo",
+          "scopes": ["openid", "profile", "email"],
+          "fieldMapping": {
+            "identifier": "sub",
+            "displayName": "name",
+            "email": "email",
+            "avatarUrl": "picture"
+          }
+        }
+      }
+    }
+  ]
+}
+```
+
+- The ID after `identity-providers/` is 1 to 36 letters, digits, or hyphens, starting and ending with a letter or digit. Keep it stable: accounts that signed in through the provider are linked to it.
+- `type` is `OAUTH2`, and `title` is required.
+- `clientId`, absolute HTTP(S) `authUrl`, `tokenUrl`, and `userInfoUrl`, and `fieldMapping.identifier` are required. `clientSecret` and `scopes` are optional because public clients have neither.
+
+The OAuth2 callback URL is `https://<your-instance>/auth/callback`. See [Authentication](/docs/configuration/authentication) for provider setup and identity mapping.
+
+## Instance settings
+
+Each instance setting names its group and carries the matching settings object:
+
+| Resource name | Settings field |
+| --- | --- |
+| `instance/settings/ACCESS` | `accessSetting` |
+| `instance/settings/GENERAL` | `generalSetting` |
+| `instance/settings/STORAGE` | `storageSetting` |
+| `instance/settings/MEMO_RELATED` | `memoRelatedSetting` |
+| `instance/settings/USAGE_LIMITS` | `usageLimitsSetting` |
+| `instance/settings/NOTIFICATION` | `notificationSetting` |
+| `instance/settings/AI` | `aiSetting` |
+
+A setting group is managed whole: the file is the complete group, never a patch, and an omitted field takes its default value. To leave one field editable in the app, release it with [`ignoreChanges`](#lifecycle-rules). The `BASIC` and `TAGS` groups cannot be configured.
+
+### Access policy
+
+```json
+{
+  "name": "instance/settings/ACCESS",
+  "accessSetting": { "accessMode": "INSTANCE_ACCESS_MODE_PRIVATE" }
+}
+```
+
+Use `INSTANCE_ACCESS_MODE_PUBLIC` to allow eligible anonymous public reads. The mode must be `PRIVATE` or `PUBLIC`; an omitted or unspecified mode is rejected. This setting does not revoke existing share links.
+
+Set `MEMOS_INSTANCE_URL` separately to the canonical external HTTP(S) URL. A private instance can have a canonical URL behind a reverse proxy. See [Environment Variables](/docs/configuration/environment-variables#public-and-private-mode).
+
+### General
+
+```json
+{
+  "name": "instance/settings/GENERAL",
+  "generalSetting": {
+    "disallowUserRegistration": false,
+    "disallowPasswordAuth": false,
+    "disallowChangeUsername": false,
+    "disallowChangeNickname": false,
+    "weekStartDayOffset": 1,
+    "additionalStyle": "",
+    "additionalScript": "",
+    "customProfile": {
+      "title": "Team Memos",
+      "description": "Notes for our team",
+      "logoUrl": "https://example.com/logo.png"
+    }
+  }
+}
+```
+
+`weekStartDayOffset` accepts `0` for Sunday through `6` for Saturday.
+
+### Storage
+
+Declare named storage configurations in `storages` and select the one for new uploads with `defaultStorageId`. Existing attachments keep using the configuration they were uploaded with.
+
+```json
+{
+  "name": "instance/settings/STORAGE",
+  "storageSetting": {
+    "filepathTemplate": "assets/{timestamp}_{uuid}_{filename}",
+    "defaultStorageId": "team-assets",
+    "storages": [
+      {
+        "id": "team-assets",
+        "name": "Team assets",
+        "type": "S3",
+        "s3Config": {
+          "accessKeyId": "${env:S3_ACCESS_KEY_ID}",
+          "accessKeySecret": "${env:S3_SECRET_ACCESS_KEY}",
+          "endpoint": "https://s3.example.com",
+          "region": "us-east-1",
+          "bucket": "memos-assets",
+          "usePathStyle": false,
+          "insecureSkipTlsVerify": false
+        }
+      }
+    ]
+  }
+}
+```
+
+- `type` is `DATABASE`, `LOCAL`, or `S3`.
+- Storage IDs must be unique and non-empty, and `defaultStorageId` must name a declared storage.
+- Every S3 storage needs an endpoint, region, bucket, and both keys.
+- Keep every configuration that existing attachments still reference. Changing the default affects new uploads only.
+- The legacy `storageType` and top-level `s3Config` fields remain for compatibility; new files should use `storages`.
+
+Only enable `insecureSkipTlsVerify` for a trusted S3-compatible endpoint with a self-signed certificate. It disables TLS certificate verification. See [Storage](/docs/configuration/storage).
+
+### Memo behavior
+
+```json
+{
+  "name": "instance/settings/MEMO_RELATED",
+  "memoRelatedSetting": { "reactions": ["👍", "❤️", "🎉"] }
+}
+```
+
+`reactions` is the list of allowed reactions. Memo length is a [usage limit](#usage-limits), and double-click to edit is a per-browser preference under **Settings › Preferences › This device**.
+
+### Usage limits
+
+`USAGE_LIMITS` caps memo length, upload size, memo count, and total storage. Entries are checked in order: each entry except the last names users, the last sets `allUsers: true`, and a user gets the first entry that names them.
+
+```json
+{
+  "name": "instance/settings/USAGE_LIMITS",
+  "usageLimitsSetting": {
+    "limits": [
+      { "users": ["users/admin"], "uploadBytes": "268435456" },
+      {
+        "allUsers": true,
+        "memoContentBytes": "8192",
+        "uploadBytes": "33554432",
+        "storageBytes": "1073741824"
+      }
+    ]
+  }
+}
+```
+
+| Field | Limits |
+| --- | --- |
+| `memoCount` | Memos a user has created, including comments and archived memos |
+| `memoContentBytes` | UTF-8 size of one memo's content |
+| `uploadBytes` | Size of one uploaded file |
+| `storageBytes` | Total size of a user's uploads; external links do not count |
+
+Values are byte or memo counts written as strings. An omitted metric or `0` means unlimited, and administrators are limited like everyone else. Without this setting, Memos allows 8 KiB per memo and 32 MiB per file, with no count or storage limit. A limit refuses new saves and uploads only; nothing already stored is hidden or removed.
+
+Users are named by resource name. A plan fails when a named user does not exist, and while the setting is managed, the app refuses to rename or delete a user it names. Remove the user from the file and apply first.
+
+### Notifications
+
+```json
+{
+  "name": "instance/settings/NOTIFICATION",
+  "notificationSetting": {
+    "email": {
+      "enabled": true,
+      "smtpHost": "smtp.example.com",
+      "smtpPort": 587,
+      "smtpUsername": "memos",
+      "smtpPassword": "${env:SMTP_PASSWORD}",
+      "fromEmail": "memos@example.com",
+      "fromName": "Memos",
+      "replyTo": "support@example.com",
+      "useTls": true,
+      "useSsl": false
+    }
+  }
+}
+```
+
+When email is enabled, `smtpHost`, a positive `smtpPort`, and `fromEmail` are required. Do not enable both `useTls` and `useSsl`.
+
+### AI providers
+
+```json
+{
+  "name": "instance/settings/AI",
+  "aiSetting": {
+    "providers": [
+      {
+        "id": "openai-main",
+        "title": "OpenAI",
+        "type": "OPENAI",
+        "endpoint": "https://api.openai.com/v1",
+        "apiKey": "${env:OPENAI_API_KEY}"
+      }
+    ],
+    "transcription": {
+      "providerId": "openai-main",
+      "model": "gpt-4o-mini-transcribe",
+      "language": "en",
+      "prompt": ""
+    }
+  }
+}
+```
+
+Every provider needs a unique `id`, a `title`, a type of `OPENAI` or `GEMINI`, and an `apiKey`. `transcription.providerId` must name a provider in the same setting. An empty OpenAI endpoint defaults to `https://api.openai.com/v1`; an empty Gemini endpoint defaults to `https://generativelanguage.googleapis.com/v1beta`.
+
+## Bootstrap users
+
+Users let an instance come up with its administrator before anyone opens a browser. The configuration manages only what it declares; the rest of the profile belongs to the user.
+
+```json
+{
+  "users": [
+    {
+      "name": "users/admin",
+      "username": "admin",
+      "role": "ADMIN",
+      "displayName": "Administrator",
+      "email": "admin@example.com",
+      "password": "${file:/run/secrets/memos-admin-password}"
+    }
+  ],
+  "lifecycle": [{ "resource": "users/admin", "preventDestroy": true, "writeOnlyVersion": 1 }]
+}
+```
+
+- `username` must match the ID after `users/`. `role` is `ADMIN` or `USER`.
+- `displayName` and `email` are managed only when present. Omit them to let the user edit them; `"displayName": ""` manages the field as empty.
+- `password` is write-only. Memos sets it when the user is created and again only when `writeOnlyVersion` increases, so the administrator can change their password in the app without the next restart undoing it. To reset a password from the files, change the secret and raise `writeOnlyVersion`. A password set this way signs the user out of every session.
+- Configuration never deletes a user. Delete one in **Settings** after [releasing](#remove-a-resource) it.
+
+## Lifecycle rules
+
+A `lifecycle` entry adjusts how one declared resource is planned:
+
+| Field | Effect |
+| --- | --- |
+| `resource` | Required. The resource name the rule applies to |
+| `ignoreChanges` | Field paths, in the JSON names used by the file, that the configuration sets on creation but no longer manages. The app can edit them |
+| `preventDestroy` | A `removed` entry cannot destroy the resource while the last apply set this |
+| `writeOnlyVersion` | Raise it to send write-only fields such as a user's `password` again |
+
+For example, to manage the general settings while letting administrators edit custom CSS in the app:
+
+```json
+{
+  "lifecycle": [
+    { "resource": "instance/settings/GENERAL", "ignoreChanges": ["generalSetting.additionalStyle"] }
+  ]
+}
+```
+
+## Plan and apply
+
+The `memos config` commands work against the instance database. Pass the same `--data`, `--driver`, and `--dsn` flags or `MEMOS_*` variables as the server; `docker compose run --rm memos config …` inherits them from the service.
+
+| Command | Does |
+| --- | --- |
+| `memos config validate` | Decodes and validates the files without a database. Exits `0` or `1` |
+| `memos config plan` | Prints the changes apply would make. Never writes or migrates. `--json` prints the plan as JSON, and `--detailed-exitcode` exits `0` for no changes, `1` for an error, and `2` for changes |
+| `memos config apply` | Migrates the database, plans, applies in one transaction, and prints the plan it applied. Nothing is written on error |
+| `memos config state` | Prints the state record: managed resources, the serial, and the last apply. Takes `--json` |
+
+Every command takes `--config-dir`. `plan` fails when the SQLite database does not exist or its schema is not the one the binary expects. `apply` migrates first, so it can also bootstrap a fresh instance before the server's first start.
+
+A plan reads like Terraform's:
+
+```text
+Plan: 1 to create, 0 to update, 0 to destroy; 1 to adopt.
+
+  + identity-providers/company-sso  (sso.json)
+  ~ instance/settings/GENERAL       (instance.json)  adopt
+        generalSetting.disallowPasswordAuth: false -> true
+        generalSetting.customProfile.title:  "Memos" -> "Team Memos"
+```
+
+| Action | Meaning |
+| --- | --- |
+| create | Declared and not yet in the database |
+| adopt | Declared and already in the database, but not yet managed; apply writes the diff shown and starts managing it |
+| update | Managed, and the database differs from the files |
+| drift | Shown on an update or create when the files did not change, so the instance was changed outside them, for example by a direct database edit or a restored backup |
+| destroy | An identity provider deleted by a `removed` entry |
+| reset | A setting group returned to the defaults of a fresh instance by a `removed` entry |
+| release | No longer managed; the database value stays as it is |
+
+Secret values print as `(sensitive)` and passwords as `(write-only, version N)`.
+
+### When apply runs
+
+By default, Memos applies the configuration every time the server starts, after database migration and before any service starts. A plan error or failed apply stops startup, so the server never runs with a configuration it could not apply.
+
+Set `--config-apply=off` or `MEMOS_CONFIG_APPLY=off` to apply only through `memos config apply`, for example from a deployment job that runs before replicas roll. Replicas started with `off` still enforce read-only managed resources.
+
+### Multiple replicas
+
+Replicas that start together are safe: the first to commit applies the changes, and the others find nothing to do. During a rolling update with different files, the last replica to start wins, so mount identical files on every replica, or apply from a job and run replicas with `off`.
+
+A running replica can keep using a cached setting for up to ten minutes after another process applies a change; the access policy is never cached. Restart replicas after changing settings, which a rollout does anyway.
+
+## Remove a resource
+
+A managed resource that disappears from the files is a plan error, not an implicit deletion: an accidentally deleted identity-provider block cannot lock everyone out. Declare the removal instead:
+
+```json
+{
+  "removed": [
+    { "resource": "identity-providers/old-sso", "destroy": true },
+    { "resource": "instance/settings/AI", "destroy": false }
+  ]
+}
+```
+
+- `destroy: false` releases the resource: the files stop managing it, the database keeps its current value, and it becomes editable in the app.
+- `destroy: true` deletes an identity provider, or resets a setting group to its defaults. Users cannot be destroyed; release them and delete them in **Settings**.
+- A resource whose last apply set `preventDestroy` cannot be destroyed in one step. Apply once without `preventDestroy`, then apply the removal.
+
+Accounts linked to a destroyed identity provider keep the link. Signing in through it works again if a provider with the same name is created later.
+
+Once applied, a `removed` entry has no further effect and can be deleted from the file.
+
+## Managed resources in the app
+
+While a resource is managed, the app refuses changes to its managed fields:
+
+- Settings pages show **Managed by configuration** with the source file and disable managed controls. Fields released by `ignoreChanges`, and passwords, stay editable.
+- **Settings › Configuration** lists the managed resources, their files and fields, and the last apply.
+- An API write that would change a managed field fails with `FAILED_PRECONDITION` and reason `MANAGED_BY_CONFIGURATION`, naming the resource, file, and fields. Edit the file and apply it instead.
+- Administrators can read the same status from [`GET /api/instance/configuration`](/docs/api/latest/instanceservice/GetConfigurationStatus). It returns resource names, files, and field paths, never values.
+
+## SSO-only deployment
+
+Declare an [identity provider](#identity-providers) and, in the same configuration, set `disallowPasswordAuth` in the general settings:
+
+```json
+{
+  "instanceSettings": [
+    {
+      "name": "instance/settings/GENERAL",
+      "generalSetting": { "disallowPasswordAuth": true, "disallowUserRegistration": false }
+    }
+  ]
+}
+```
+
+Keep `disallowUserRegistration` set to `false` if first-time SSO users should be created automatically. A plan that disables password sign-in for regular users without leaving an identity provider fails before anything is written. Administrators can still use password sign-in for recovery.
+
+## Kubernetes
+
+Store the configuration in a Secret, or in a ConfigMap whose secret values are `${env:…}` references, and mount it at `/etc/memos/config`:
+
+```yaml
+spec:
+  containers:
+    - name: memos
+      image: neosmemo/memos:stable
+      env:
+        - name: OIDC_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: memos-oidc
+              key: client-secret
+      volumeMounts:
+        - name: memos-config
+          mountPath: /etc/memos/config
+          readOnly: true
+  volumes:
+    - name: memos-config
+      configMap:
+        name: memos-config
+```
+
+Mounted files update in place, but Memos applies them only at startup or through `memos config apply`. After changing them, restart the workload:
+
+```bash
+kubectl rollout restart deployment/memos
+```
+
+For several replicas, consider a Job that runs `memos config plan --detailed-exitcode` and `memos config apply` before the rollout, with `MEMOS_CONFIG_APPLY=off` on the Deployment.
+
+## Migrate from `/etc/secrets`
+
+Memos 0.30, 0.31, and the 26.10 release candidates up to 26.10.0-rc.2 read `memos-idp-*.json` and `memos-instance-setting-*.json` from `/etc/secrets` at every startup and let those files override the database without changing it. Memos 26.10 ignores those files and does not warn about them. If you upgrade without converting them, the values stored in the database take effect again: password sign-in may be re-enabled, a file-only identity provider disappears, and storage or SMTP credentials revert.
+
+Convert every file before upgrading:
+
+| `/etc/secrets` file | Declarative configuration |
+| --- | --- |
+| `memos-idp-<label>.json` with `"uid": "primary-sso"` | An `identityProviders` entry with `"name": "identity-providers/primary-sso"`. Keep the UID so linked accounts keep working |
+| Identity provider `"name"` | `"title"` |
+| `memos-instance-setting-<group>.json` with `"key": "GENERAL"` | An `instanceSettings` entry with `"name": "instance/settings/GENERAL"` and the same settings object |
+| Storage `"type": "STORAGE_TYPE_S3"` | `"type": "S3"` (also `DATABASE` and `LOCAL`) |
+| Usage limits `"userIds": [1]` | `"users": ["users/<username>"]` |
+| Inline secrets | Inline values still work; prefer `${env:…}` or `${file:…}` references |
+
+Then:
+
+1. Back up the database and confirm administrator password access.
+2. Put the converted files in a new configuration directory and mount it at `/etc/memos/config`.
+3. Run `memos config validate`, then `memos config plan` with the 26.10 binary against a copy of the database or the upgraded instance. Expect `adopt` for every resource Memos already stores and `create` for the rest. Check the diffs: they show what the database held underneath the old files.
+4. Start 26.10 and confirm the startup log reports the applied configuration.
+5. Remove the `/etc/secrets` mount.
+
+Earlier identity-provider bootstraps copied providers into the database. Declaring the same UID adopts that stored provider instead of creating a duplicate.
+
+## Security
+
+- Treat the configuration directory as sensitive. Mount it read-only and restrict file permissions.
+- Prefer `${env:…}` and `${file:…}` references to secret values in files, and never commit real credentials.
+- Plans, logs, the state record, and the configuration status never contain configured values. A database dump reveals which resources are managed, not their values.
+- `memos config` commands need database access and therefore the same trust as the server.
+- Keep the files with your [backups](/docs/operations/backup-restore) so a restored instance can be configured identically, without placing secrets in a public backup.
+
+## Troubleshooting
+
+### Memos does not start
+
+The error names the directory and lists each problem. Run `memos config validate` for file problems, such as unknown fields, unresolved references, or missing S3 or SMTP values, and `memos config plan` for problems that need the database, such as a usage limit naming a missing user or disabling password sign-in without an identity provider.
+
+### A managed resource is no longer declared
+
+The plan reports `managed but no longer declared`. Add a [`removed` entry](#remove-a-resource) that releases or destroys it.
+
+### A file is ignored
+
+Check that it sits directly in the configuration directory, not in a subdirectory or `/etc/secrets`, and that its name ends in `.json`. Run `memos config state` to see what the instance manages.
+
+### A change in the app is refused
+
+The resource is managed by configuration. Edit the file named in the error and apply it, or release the field with `ignoreChanges`.
+
+### A new password from the files does not apply
+
+Passwords are sent only on creation and when `writeOnlyVersion` increases. Raise it in the user's `lifecycle` entry.
