@@ -61,6 +61,13 @@ const checks = [
     location: "/docs/configuration/declarative-configuration",
   },
   { path: "/docs/configuration/declarative-configuration", type: "html", contains: "memos config plan" },
+  {
+    path: "/blog/deployment-managed-configuration-in-memos",
+    status: 308,
+    type: "text",
+    redirect: "manual",
+    location: "/blog/declarative-configuration-in-memos",
+  },
   ...["/compare", "/compare/obsidian", "/compare/notion"].map((path) => ({
     path,
     status: 308,

@@ -1,0 +1,143 @@
+---
+title: "Declarative Configuration: Plan and Apply Your Instance as Code"
+description: The Terraform and Kubernetes workflow, for Memos. Describe sign-in, settings, and administrators in files, review a plan, and apply it in one transaction.
+image_description: Your instance as code. Describe it, plan it, apply it.
+published_at: "2026-10-29"
+tags: ["Self-Hosting", "Configuration", "Security"]
+---
+
+If you run Memos for a team, a few settings matter more than the rest: how people sign in, where uploads go, and who the administrators are. You want them identical after every deploy and on every server, in place before anyone opens a browser, and safe from a well-meant click in the admin panel.
+
+Memos 26.10 brings declarative configuration, the model Terraform and Kubernetes made standard, to these settings. You keep them in JSON files. Memos compares the files with its database, shows you what would change, and applies the change in one step. Whatever the files manage becomes read-only in the app.
+
+## What the first version could not tell you
+
+This replaces the `/etc/secrets` files we added in July. They solved the problem that prompted them: visitors to our public demo could no longer change its login settings and lock out the next person. But the loader held the files in memory and let them override the database for as long as the process ran. That kept it small, and it left questions an operator could not answer:
+
+- **What happens when a file disappears?** The value stored underneath came back, silently. Removing a settings file could re-enable password sign-in.
+- **What is managed right now?** Only the files on each server knew. Neither the admin UI nor the API could say.
+- **What will change?** An edited file took effect at the next restart, with no preview.
+- **Will my file still work after an upgrade?** The files used internal storage formats that carry no compatibility promise.
+
+There was also no way to create the first administrator without opening a browser, so a fully automated install still needed a manual step.
+
+## Files, a state record, a plan, and an apply
+
+Like Terraform, the model has four parts:
+
+- **Files** describe the identity providers, instance settings, and bootstrap users you want.
+- **A state record** in the database lists which resources the files manage. It never stores a value.
+- **A plan** compares the files with the database and shows each change before anything is written.
+- **An apply** writes the plan in one database transaction. It either completes or changes nothing, and applying the same files again finds nothing to do.
+
+The files use the same JSON shape as the Memos API, so they follow its compatibility policy: a field is deprecated for at least one release before it is removed, and Memos warns when a file still uses one.
+
+## Try it with Docker Compose
+
+Put one or more JSON files in a directory. This one makes the instance private, keeps registration closed, and creates an administrator:
+
+```json
+{
+  "instanceSettings": [
+    {
+      "name": "instance/settings/ACCESS",
+      "accessSetting": { "accessMode": "INSTANCE_ACCESS_MODE_PRIVATE" }
+    },
+    {
+      "name": "instance/settings/GENERAL",
+      "generalSetting": {
+        "disallowUserRegistration": true,
+        "customProfile": { "title": "Team Memos" }
+      }
+    }
+  ],
+  "users": [
+    {
+      "name": "users/admin",
+      "username": "admin",
+      "role": "ADMIN",
+      "password": "${file:/run/secrets/memos-admin-password}"
+    }
+  ]
+}
+```
+
+The password is not in the file. A string written as `${file:/path}` or `${env:NAME}` is replaced when Memos reads it, so the configuration itself can live in version control.
+
+Mount the directory at `/etc/memos/config`:
+
+```yaml
+services:
+  memos:
+    image: neosmemo/memos:stable
+    ports:
+      - "5230:5230"
+    volumes:
+      - ./memos-data:/var/opt/memos
+      - ./memos-config:/etc/memos/config:ro
+    secrets:
+      - memos-admin-password
+
+secrets:
+  memos-admin-password:
+    file: ./memos-admin-password
+```
+
+Check the files, then start Memos:
+
+```bash
+docker compose run --rm memos config validate
+docker compose up -d
+```
+
+Memos applies the configuration at startup, after migrating the database and before serving requests. If the files cannot be applied, Memos stops instead of running with half a configuration.
+
+Declarative configuration ships in Memos 26.10. Until that release reaches the `stable` tag, use `neosmemo/memos:canary` to try it.
+
+## Read the plan before you apply it
+
+On an existing instance, `memos config plan` shows what the files would change:
+
+```text
+Plan: 1 to create, 0 to update, 0 to destroy; 1 to adopt.
+
+  + identity-providers/company-sso  (sso.json)
+  ~ instance/settings/GENERAL       (instance.json)  adopt
+        generalSetting.disallowPasswordAuth: false -> true
+```
+
+`adopt` means the resource already exists in the database and the files will start managing it. The diff shows exactly what they change, and secrets print as `(sensitive)`. When a managed resource was changed outside the files, for example by a direct database edit or a restored backup, the plan marks it as drift.
+
+With `--detailed-exitcode`, a deployment pipeline can stop on unexpected changes. You can also apply from a job with `memos config apply` and start your servers with `MEMOS_CONFIG_APPLY=off`. Several servers starting together are safe either way: the first one applies, and the rest find nothing to do.
+
+## Removing something has to be explicit
+
+If you delete a managed resource from the files, the plan fails instead of deleting it. An accidentally removed identity provider should not lock everyone out of an instance. To remove a resource, say so:
+
+```json
+{ "removed": [{ "resource": "identity-providers/old-sso", "destroy": true }] }
+```
+
+`destroy: false` releases the resource instead: the files stop managing it, and it becomes editable in the app again. Configuration never deletes users. Release them and delete them in **Settings**, where the usual confirmations apply.
+
+## The app shows what the files own
+
+A managed resource is read-only in the app and the API. Settings pages show **Managed by configuration** with the source file and disable the managed fields. **Settings › Configuration** lists everything the files manage, and an API write that would change a managed field fails with an error naming the file to edit.
+
+This is a deliberate difference from Terraform, which allows the change and reverts it at the next apply. An administrator should learn it at the settings page, not discover the next morning that their change has disappeared.
+
+Some fields are not worth locking. `ignoreChanges` releases individual fields, such as custom CSS, so the files can set them once and the app can edit them afterwards. Passwords are never locked: an administrator created from the files can still change their password in the app.
+
+## Moving from `/etc/secrets`
+
+Memos 26.10 no longer reads `memos-idp-*.json` or `memos-instance-setting-*.json` files. If you use them, convert them before upgrading. Otherwise the values stored in the database take effect again.
+
+The conversion is mostly renaming:
+
+- `"uid": "company-sso"` becomes `"name": "identity-providers/company-sso"`, and the provider's old `name` becomes `title`. Keep the same UID so linked accounts keep working.
+- `"key": "GENERAL"` becomes `"name": "instance/settings/GENERAL"`. The settings object stays the same.
+- Storage types drop their prefix, so `STORAGE_TYPE_S3` becomes `S3`, and usage limits name users as `users/<username>` instead of numeric IDs.
+
+Everything can go into a single file. If your host can only mount files at `/etc/secrets`, as Render does, set `MEMOS_CONFIG_DIR=/etc/secrets` and remove the old files in the same deploy: Memos reads every `.json` file in that directory and stops on any it cannot decode. That is how we are moving our demo, whose four files become one `config.json`.
+
+The [declarative configuration guide](/docs/configuration/declarative-configuration) covers every resource, the `memos config` commands, Kubernetes, and the complete migration from `/etc/secrets`.

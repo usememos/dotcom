@@ -198,10 +198,16 @@ const config = {
         permanent: true,
       },
       // Declarative configuration replaced the /etc/secrets loader in 26.10; the
-      // guide moved with it. The browser keeps #fragments across the redirect.
+      // guide and its announcement post moved with it. The browser keeps
+      // #fragments across the redirect.
       {
         source: "/docs/configuration/deployment-configuration",
         destination: "/docs/configuration/declarative-configuration",
+        permanent: true,
+      },
+      {
+        source: "/blog/deployment-managed-configuration-in-memos",
+        destination: "/blog/declarative-configuration-in-memos",
         permanent: true,
       },
       // End-to-end practices now live in their own Guides section. Preserve
