@@ -19,6 +19,11 @@ describe("normalize", () => {
     });
   });
 
+  it("reads the 26.10 tagCounts map and prefers it over a legacy tagCount", () => {
+    const raw = { totalMemoCount: 1, tagCounts: { work: 3, life: 2, play: 1 }, tagCount: { stale: 1 } };
+    expect(normalizeUserStats(raw, ["memoCreatedTimestamps"])?.tagCount).toBe(3);
+  });
+
   it("falls back to the second timestamp field when the first is absent", () => {
     const raw = { memoDisplayTimestamps: ["2025-03-01T00:00:00Z"] };
     const result = normalizeUserStats(raw, ["memoCreatedTimestamps", "memoDisplayTimestamps"]);

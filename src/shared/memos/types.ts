@@ -7,8 +7,13 @@ export type NormalizedStats = {
   createdTimestamps: string[];
 };
 
+/** REST prefix of a Memos instance: `/api` from 26.10 on, `/api/v1` for 0.x. */
+export type MemosApiBasePath = "/api" | "/api/v1";
+
 export type MemosApiAdapter = {
-  id: "gen-a" | "gen-b" | "fallback";
+  id: "gen-a" | "gen-b" | "gen-c" | "fallback";
+  /** The REST prefix this generation serves. */
+  basePath: MemosApiBasePath;
   /** Path (relative to the instance origin) for the user stats request. */
   statsPath: (userId: string) => string;
   /** Maps a raw `:getStats` response to the normalized shape, or null when the payload is not an object. */

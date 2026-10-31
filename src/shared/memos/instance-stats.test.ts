@@ -12,10 +12,9 @@ function router(routes: Record<string, () => Promise<Response>>) {
     fetchImpl: async (url: RequestInfo | URL) => {
       const path = (url as string).replace("https://memos.example.com", "");
       const handler = Object.entries(routes).find(([key]) => path.startsWith(key))?.[1];
-      if (!handler) {
-        throw new Error(`no route for ${path}`);
-      }
-      return handler();
+      // An unrouted path answers like a real instance would for an unknown API
+      // path: a 404, not a network failure.
+      return handler ? handler() : new Response("not found", { status: 404 });
     },
   };
 }
@@ -26,6 +25,18 @@ const STATS_BODY = {
   memoTypeStats: { linkCount: 1, codeCount: 0, todoCount: 0, undoCount: 0 },
   memoCreatedTimestamps: ["2025-01-09T10:00:00Z", "2025-01-09T12:00:00Z"],
 };
+
+/** 26.10 shape: `tagCounts` replaces `tagCount`. */
+const STATS_BODY_26 = {
+  name: "users/7",
+  totalMemoCount: 2,
+  tagCounts: { a: 1, b: 1 },
+  memoTypeStats: { linkCount: 1, codeCount: 0, todoCount: 0, undoCount: 0 },
+  memoCreatedTimestamps: ["2025-01-09T10:00:00Z", "2025-01-09T12:00:00Z"],
+};
+
+/** Memos 26.10 answers every `/api/v1` path with 410 Gone. */
+const GONE = async () => Response.json({ code: 12, message: "UNIMPLEMENTED" }, { status: 410 });
 
 describe("fetchInstanceStats", () => {
   it("discovers user + version, then returns ok stats bucketed by UTC day", async () => {
@@ -41,6 +52,70 @@ describe("fetchInstanceStats", () => {
     expect(result.instanceVersion).toBe("0.29.1");
     expect(result.stats.totalMemoCount).toBe(2);
     expect(result.stats.days).toEqual([{ date: "2025-01-09", count: 2 }]);
+  });
+
+  it("talks to a 26.10 instance under /api and never retries removed /api/v1 paths after the profile", async () => {
+    const seen: string[] = [];
+    const deps = router({
+      "/api/v1/": GONE,
+      "/api/instance/profile": async () => Response.json({ version: "26.10.0" }),
+      "/api/auth/me": async () => Response.json({ user: { name: "users/7" } }),
+      "/api/users/7:getStats": async () => Response.json(STATS_BODY_26),
+    });
+    const fetchImpl = deps.fetchImpl;
+    deps.fetchImpl = async (url, init) => {
+      seen.push((url as string).replace("https://memos.example.com", ""));
+      return fetchImpl(url, init);
+    };
+    const result = await fetchInstanceStats(CREDS, undefined, deps);
+    expect(result.status).toBe("ok");
+    if (result.status !== "ok") return;
+    expect(result.instanceVersion).toBe("26.10.0");
+    expect(result.stats.tagCount).toBe(2);
+    expect(result.stats.days).toEqual([{ date: "2025-01-09", count: 2 }]);
+    expect(seen).toEqual(["/api/instance/profile", "/api/auth/me", "/api/users/7:getStats"]);
+  });
+
+  it("falls back to /api/v1 when a 0.x instance serves its SPA shell at /api/instance/profile", async () => {
+    const deps = router({
+      "/api/instance/profile": async () =>
+        new Response("<!doctype html><title>Memos</title>", { status: 200, headers: { "content-type": "text/html" } }),
+      "/api/v1/instance/profile": async () => Response.json({ version: "0.31.0" }),
+      "/api/v1/auth/me": async () => Response.json({ user: { name: "users/7" } }),
+      "/api/v1/users/7:getStats": async () => Response.json(STATS_BODY),
+    });
+    const result = await fetchInstanceStats(CREDS, undefined, deps);
+    expect(result.status).toBe("ok");
+    if (result.status !== "ok") return;
+    expect(result.instanceVersion).toBe("0.31.0");
+  });
+
+  it("uses cached userId and version hints to skip discovery on a 26.10 instance", async () => {
+    let profileCalls = 0;
+    const deps = router({
+      "/api/v1/": GONE,
+      "/api/instance/profile": async () => {
+        profileCalls++;
+        return Response.json({ version: "26.10.0" });
+      },
+      "/api/users/7:getStats": async () => Response.json(STATS_BODY_26),
+    });
+    const result = await fetchInstanceStats(CREDS, { userId: "7", version: "26.10.0" }, deps);
+    expect(result.status).toBe("ok");
+    expect(profileCalls).toBe(0);
+  });
+
+  it("rediscovers through the profile when the hint has no version", async () => {
+    const deps = router({
+      "/api/v1/": GONE,
+      "/api/instance/profile": async () => Response.json({ version: "26.10.0" }),
+      "/api/auth/me": async () => Response.json({ user: { name: "users/7" } }),
+      "/api/users/7:getStats": async () => Response.json(STATS_BODY_26),
+    });
+    const result = await fetchInstanceStats(CREDS, { userId: "7", version: null }, deps);
+    expect(result.status).toBe("ok");
+    if (result.status !== "ok") return;
+    expect(result.instanceVersion).toBe("26.10.0");
   });
 
   it("uses a cached userId hint to skip discovery", async () => {
@@ -71,9 +146,9 @@ describe("fetchInstanceStats", () => {
 
   it("flags an unparseable stats shape on a too-new version as unsupported-version", async () => {
     const deps = router({
-      "/api/v1/instance/profile": async () => Response.json({ version: "27.1.0" }),
-      "/api/v1/auth/me": async () => Response.json({ user: { name: "users/7" } }),
-      "/api/v1/users/7:getStats": async () => Response.json("not-an-object"),
+      "/api/instance/profile": async () => Response.json({ version: "27.1.0" }),
+      "/api/auth/me": async () => Response.json({ user: { name: "users/7" } }),
+      "/api/users/7:getStats": async () => Response.json("not-an-object"),
     });
     const result = await fetchInstanceStats(CREDS, undefined, deps);
     expect(result.status).toBe("error");
@@ -107,6 +182,31 @@ describe("testInstanceConnection", () => {
       "/api/v1/auth/me": async () => Response.json({ user: { displayName: "Steven" } }),
     });
     expect(await testInstanceConnection(CREDS, deps)).toEqual({ ok: true, name: "Steven", version: "0.30.0" });
+  });
+
+  it("authenticates a 26.10 instance under /api", async () => {
+    const deps = router({
+      "/api/v1/": GONE,
+      "/api/instance/profile": async () => Response.json({ version: "26.10.0" }),
+      "/api/auth/me": async () => Response.json({ user: { displayName: "Steven" } }),
+    });
+    expect(await testInstanceConnection(CREDS, deps)).toEqual({ ok: true, name: "Steven", version: "26.10.0" });
+  });
+
+  it("reports unauthorized from the first profile attempt instead of probing the other prefix", async () => {
+    let v1Calls = 0;
+    const deps = router({
+      "/api/v1/": async () => {
+        v1Calls++;
+        return GONE();
+      },
+      "/api/instance/profile": async () => new Response(null, { status: 401 }),
+    });
+    const result = await testInstanceConnection(CREDS, deps);
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.error.kind).toBe("unauthorized");
+    expect(v1Calls).toBe(0);
   });
 
   it("returns a classified error detail on failure", async () => {

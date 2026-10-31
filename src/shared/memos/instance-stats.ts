@@ -4,7 +4,7 @@ import { isRecord } from "./memos-settings";
 import type { MemosStatsData } from "./memos-stats";
 import { bucketByUtcDay } from "./stats-bucketing";
 import { LATEST_SUPPORTED_VERSION, MINIMUM_SUPPORTED_VERSION } from "./supported-versions";
-import { compareVersion, resolveAdapter } from "./versions";
+import { compareVersion, resolveAdapter, resolveApiBasePath } from "./versions";
 
 export type InstanceStatsDeps = InstanceFetchDeps & {
   /** Overridable for tests; defaults to () => new Date(). */
@@ -47,7 +47,7 @@ function extractVersion(payload: unknown): string | null {
   return null;
 }
 
-/** `GET /api/v1/auth/me` display name; the resource `name` ("users/1") is excluded. */
+/** `GET {basePath}/auth/me` display name; the resource `name` ("users/1") is excluded. */
 function extractUserDisplayName(payload: unknown): string | null {
   if (!isRecord(payload)) {
     return null;
@@ -104,27 +104,29 @@ async function fetchStatsForUser(
 }
 
 async function buildStats(creds: MemosCredentials, deps: InstanceStatsDeps, hints?: StatsHints): Promise<InstanceStatsResult> {
-  // Fast path: a cached userId hint skips profile + auth/me. On any failure we
-  // fall through to discovery (self-heal).
+  // Fast path: cached userId + version hints skip profile + auth/me. The version
+  // picks the API prefix, so a hint without one goes through discovery. On any
+  // failure we fall through to discovery (self-heal).
   const hintedUserId = hints ? sanitizeUserIdHint(hints.userId) : null;
-  if (hintedUserId !== null) {
+  const hintedVersion = hints ? sanitizeVersionHint(hints.version) : null;
+  if (hintedUserId !== null && hintedVersion !== null) {
     try {
-      return await fetchStatsForUser(creds, deps, hintedUserId, sanitizeVersionHint(hints?.version ?? null));
+      return await fetchStatsForUser(creds, deps, hintedUserId, hintedVersion);
     } catch {
       // fall through to discovery
     }
   }
 
-  // Discovery: version (profile, best-effort) + user id (auth/me, required).
-  const [profile, me] = await Promise.allSettled([getProfile(creds, deps), getAuthMe(creds, deps)]);
-  if (me.status === "rejected") {
-    throw me.reason;
-  }
-  const userId = extractUserId(me.value);
+  // Discovery: the profile tells us the version and therefore which API prefix
+  // auth/me lives under; the user id (auth/me) is required.
+  const profile = await getProfile(creds, deps);
+  const version = extractVersion(profile.payload);
+  const basePath = (version !== null ? resolveApiBasePath(version) : null) ?? profile.basePath;
+  const me = await getAuthMe(creds, basePath, deps);
+  const userId = extractUserId(me);
   if (userId === null) {
     throw new InstanceError("bad-response");
   }
-  const version = profile.status === "fulfilled" ? extractVersion(profile.value) : null;
   return fetchStatsForUser(creds, deps, userId, version);
 }
 
@@ -158,7 +160,7 @@ export async function fetchInstanceStats(
 export async function testInstanceConnection(creds: MemosCredentials, deps: InstanceStatsDeps = {}): Promise<ConnectionTestResult> {
   try {
     const profile = await getProfile(creds, deps);
-    const version = extractVersion(profile);
+    const version = extractVersion(profile.payload);
     if (version === null) {
       throw new InstanceError("bad-response");
     }
@@ -170,7 +172,7 @@ export async function testInstanceConnection(creds: MemosCredentials, deps: Inst
       throw new InstanceError("unsupported-version", version, "below-minimum");
     }
 
-    const me = await getAuthMe(creds, deps);
+    const me = await getAuthMe(creds, resolveApiBasePath(version) ?? profile.basePath, deps);
     const name = extractUserDisplayName(me);
     if (name === null) {
       throw new InstanceError("bad-response");

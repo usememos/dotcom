@@ -21,7 +21,7 @@ function readTimestamps(raw: Record<string, unknown>, fields: string[]): string[
 /**
  * Maps a raw Memos `:getStats` response to the normalized shape. `timestampFields`
  * lists the heatmap timestamp fields to try in order (versions differ: gen-a uses
- * `memoDisplayTimestamps`, gen-b uses `memoCreatedTimestamps`). Returns null only
+ * `memoDisplayTimestamps`, gen-b and gen-c use `memoCreatedTimestamps`). Returns null only
  * when the payload is not an object.
  */
 export function normalizeUserStats(raw: unknown, timestampFields: string[]): NormalizedStats | null {
@@ -29,9 +29,11 @@ export function normalizeUserStats(raw: unknown, timestampFields: string[]): Nor
     return null;
   }
   const types = isRecord(raw.memoTypeStats) ? raw.memoTypeStats : {};
+  // 26.10 renamed `tagCount` to `tagCounts`; both are a tag -> count map.
+  const tagCounts = isRecord(raw.tagCounts) ? raw.tagCounts : isRecord(raw.tagCount) ? raw.tagCount : {};
   return {
     totalMemoCount: readNumber(raw.totalMemoCount),
-    tagCount: isRecord(raw.tagCount) ? Object.keys(raw.tagCount).length : 0,
+    tagCount: Object.keys(tagCounts).length,
     memoTypeStats: {
       link: readNumber(types.linkCount),
       code: readNumber(types.codeCount),

@@ -107,8 +107,10 @@ metadata must not be treated as server-owned authorization data.
 
 The connection form validates the URL and tests the instance before saving.
 `src/shared/memos/instance-client.ts` sends the personal access token directly
-to the instance's `/api/v1` endpoints. It handles timeouts, redirects, mixed
-content, and CORS/network failures. `instance-stats.ts` and `versions.ts` resolve
+to the instance's REST endpoints: `/api` from Memos 26.10 and `/api/v1` for 0.x.
+The profile request probes both prefixes, and the reported version selects the
+prefix for later calls. It handles timeouts, redirects, mixed content, and
+CORS/network failures. `instance-stats.ts` and `versions.ts` resolve
 the instance user and normalize version-specific statistics for the overview.
 The instance must be reachable from the browser and permit the site's origin.
 

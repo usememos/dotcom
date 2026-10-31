@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { resolveAdapter } from "./versions";
+import { resolveAdapter, resolveApiBasePath } from "./versions";
 
 describe("versions", () => {
   const BASE = {
@@ -16,6 +16,7 @@ describe("versions", () => {
     "0.28.0": { ...BASE, memoCreatedTimestamps: TS },
     "0.29.1": { ...BASE, memoCreatedTimestamps: TS, memoUpdatedTimestamps: TS },
     "0.30.0-rc.1": { ...BASE, memoCreatedTimestamps: TS, memoUpdatedTimestamps: TS },
+    "26.10.0": { ...BASE, tagCount: undefined, tagCounts: { a: 1, b: 2 }, memoCreatedTimestamps: TS, memoUpdatedTimestamps: TS },
     latest: { ...BASE, memoCreatedTimestamps: TS, memoUpdatedTimestamps: TS },
   };
 
@@ -41,6 +42,9 @@ describe("versions", () => {
     expect(resolveAdapter("0.30.0").id).toBe("gen-b");
     expect(resolveAdapter("0.30.0-rc.1").id).toBe("gen-b");
     expect(resolveAdapter("v0.29.1").id).toBe("gen-b");
+    expect(resolveAdapter("26.10.0").id).toBe("gen-c");
+    expect(resolveAdapter("26.10.0-rc.2").id).toBe("gen-c");
+    expect(resolveAdapter("27.1.0").id).toBe("gen-c");
   });
 
   it("unparseable / missing / below-26 versions fall back, and the fallback reads either timestamp field", () => {
@@ -52,9 +56,20 @@ describe("versions", () => {
     expect(fallback.normalizeStats({ ...BASE, memoDisplayTimestamps: TS }).createdTimestamps).toEqual(TS);
   });
 
-  it("all adapters target the same stats path", () => {
+  it("0.x adapters use the /api/v1 stats path and calendar versions use /api", () => {
     for (const version of ["0.26.2", "0.28.0", ""]) {
+      expect(resolveAdapter(version).basePath).toBe("/api/v1");
       expect(resolveAdapter(version).statsPath("42")).toBe("/api/v1/users/42:getStats");
     }
+    expect(resolveAdapter("26.10.0").basePath).toBe("/api");
+    expect(resolveAdapter("26.10.0").statsPath("42")).toBe("/api/users/42:getStats");
+  });
+
+  it("resolveApiBasePath picks the prefix from the major version", () => {
+    expect(resolveApiBasePath("0.31.0")).toBe("/api/v1");
+    expect(resolveApiBasePath("v0.26.2")).toBe("/api/v1");
+    expect(resolveApiBasePath("26.10.0")).toBe("/api");
+    expect(resolveApiBasePath("26.10-rc.1")).toBe("/api");
+    expect(resolveApiBasePath("nightly")).toBeNull();
   });
 });

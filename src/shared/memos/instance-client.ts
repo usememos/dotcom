@@ -1,4 +1,5 @@
 import { InstanceError } from "./errors";
+import type { MemosApiBasePath } from "./types";
 
 export type MemosCredentials = { instanceUrl: string; accessToken: string };
 
@@ -35,7 +36,7 @@ function currentProtocol(deps: InstanceFetchDeps): string {
 async function isReachable(instanceUrl: string, deps: InstanceFetchDeps): Promise<boolean> {
   const fetchImpl = deps.fetchImpl ?? fetch;
   try {
-    await fetchImpl(buildUrl(instanceUrl, "/api/v1/instance/profile"), {
+    await fetchImpl(buildUrl(instanceUrl, "/api/instance/profile"), {
       method: "GET",
       mode: "no-cors",
       signal: AbortSignal.timeout(deps.timeoutMs ?? INSTANCE_REQUEST_TIMEOUT_MS),
@@ -90,12 +91,37 @@ export async function instanceFetchJson(creds: MemosCredentials, path: string, d
   }
 }
 
-export function getProfile(creds: MemosCredentials, deps?: InstanceFetchDeps): Promise<unknown> {
-  return instanceFetchJson(creds, "/api/v1/instance/profile", deps);
+/** Base paths to try before the instance version is known: 26.10+ first, then 0.x. */
+const PROFILE_BASE_PATHS: readonly MemosApiBasePath[] = ["/api", "/api/v1"];
+
+export type InstanceProfile = { payload: unknown; basePath: MemosApiBasePath };
+
+/**
+ * Fetches the instance profile without knowing the API generation. Memos 26.10
+ * serves `/api/instance/profile` and answers `/api/v1/...` with 410; 0.x serves
+ * `/api/v1/instance/profile` and returns the SPA shell (or 404) for `/api/...`.
+ * Both wrong-generation outcomes classify as "bad-response", so that is the only
+ * failure that moves on to the next base path; auth, CORS, and network errors
+ * are reported from the first attempt.
+ */
+export async function getProfile(creds: MemosCredentials, deps?: InstanceFetchDeps): Promise<InstanceProfile> {
+  let lastError: unknown;
+  for (const basePath of PROFILE_BASE_PATHS) {
+    try {
+      const payload = await instanceFetchJson(creds, `${basePath}/instance/profile`, deps);
+      return { payload, basePath };
+    } catch (error) {
+      if (!(error instanceof InstanceError) || error.kind !== "bad-response") {
+        throw error;
+      }
+      lastError = error;
+    }
+  }
+  throw lastError;
 }
 
-export function getAuthMe(creds: MemosCredentials, deps?: InstanceFetchDeps): Promise<unknown> {
-  return instanceFetchJson(creds, "/api/v1/auth/me", deps);
+export function getAuthMe(creds: MemosCredentials, basePath: MemosApiBasePath, deps?: InstanceFetchDeps): Promise<unknown> {
+  return instanceFetchJson(creds, `${basePath}/auth/me`, deps);
 }
 
 export function getStats(creds: MemosCredentials, statsPath: string, deps?: InstanceFetchDeps): Promise<unknown> {
