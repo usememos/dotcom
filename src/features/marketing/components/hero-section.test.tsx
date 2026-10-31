@@ -19,7 +19,7 @@ describe("HeroSection", () => {
     // Scale the brand headline on narrow screens without preventing text wrapping.
     expect(heading.className).toMatch(/text-\[clamp\(/);
     expect(heading.className).not.toMatch(/whitespace-nowrap|text-nowrap/);
-    expect(screen.getByRole("link", { name: /Release candidate\s*26\.10\.0-rc\.2/ })).toHaveAttribute("href", "/changelog/26-10-0-rc-2");
+    expect(screen.getByRole("link", { name: /Latest release\s*26\.10\.0/ })).toHaveAttribute("href", "/changelog/26-10-0");
     expect(screen.getByRole("link", { name: "Install" })).toHaveAttribute("href", "/install");
     const demo = screen.getByRole("link", { name: "Demo" });
     expect(demo).toHaveAttribute("href", "https://demo.example.com/");

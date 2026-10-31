@@ -24,11 +24,11 @@ debugging an integration against the current API reference.
 
 ## Upgrading to 26.10
 
-**26.10.0-rc.2 is a release candidate.** Back up before upgrading and pin `neosmemo/memos:26.10.0-rc.2` to test this release. It does not update the `stable` container tag. Read the [release changelog](/changelog/26-10-0-rc-2).
+**26.10.0 is the current stable release.** Back up before upgrading, then pull `neosmemo/memos:26.10.0`, the month tag `26.10`, or `stable`. Read the [release changelog](/changelog/26-10-0).
 
 ### Required upgrade path
 
-- From **0.31.0** or **26.10-rc.1**, upgrade directly.
+- From **0.31.0**, **26.10-rc.1**, or **26.10.0-rc.2**, upgrade directly.
 - From **0.22 through 0.30**, first upgrade to **0.31.0** and start it successfully, then install 26.10.
 - From a version **earlier than 0.22**, first run **0.25.3**, then **0.31.0**, then install 26.10.
 - Fresh installations can start with 26.10 directly.
@@ -148,7 +148,7 @@ See the [Binary guide](/docs/deploy/binary) for service setup.
 
 ## Pinning versions
 
-`neosmemo/memos:stable` tracks the latest stable release, which is convenient but upgrades implicitly on every pull. For production, pin a specific version tag (for example `neosmemo/memos:0.31.0`) and upgrade deliberately.
+`neosmemo/memos:stable` tracks the latest stable release, which is convenient but upgrades implicitly on every pull. For production, pin a specific version tag (for example `neosmemo/memos:26.10.0`) and upgrade deliberately.
 
 From 26.10 onward, release tags use calendar versions in the form `YY.MM.N` without a `v` prefix: `26.10.0` is the first release of a month and `26.10.1` is a patch. Stable releases publish the exact-version tag, the monthly-series tag (`26.10`), and `stable`. Release candidates add `-rc.K` and publish only their exact tag, such as `26.10.0-rc.2`.
 

@@ -1,0 +1,68 @@
+---
+title: Release 26.10.0
+description: A rich editor, per-user usage limits, declarative configuration, streamed exports, and the first calendar-versioned stable release
+image_description: A rich editor, usage limits, and declarative configuration.
+date: "2026-10-31"
+breaking: true
+---
+
+> Memos 26.10.0 opens memos in a rich editor that shows them as they will look while you write, adds per-user usage limits, and lets operators describe identity providers, settings, and users in configuration files. Browsing, Markdown rendering, sign-in, security, and the server improve throughout, and releases now use calendar versions.
+
+## Upgrade notes
+
+- **Upgrade path** - If you use a version earlier than 0.31.0, upgrade to 0.31.0 and start it successfully before installing this release. Versions earlier than 0.22 must first run 0.25.3, then 0.31.0. You can upgrade directly from 0.31.0, 26.10-rc.1, or 26.10.0-rc.2; fresh installations need no intermediate release.
+- **Everyone signs in again** - Access tokens are tied to the account password. Cached access tokens expire on upgrade, and a password change or administrator reset signs the account out elsewhere. Browser sessions renew silently; API clients that hold access tokens must refresh or sign in again. Personal access tokens are unaffected.
+- **Usage limits replace two settings** - The upload size and memo length instance settings are removed, and their values are not carried over. The built-in default is 8 KiB per memo and 32 MiB per file, with no memo count or storage limit. If you changed the old caps, set the all-users entry under **Settings › Usage limits**.
+- **`/etc/secrets` is no longer read** - The deployment configuration files introduced in 0.31.0 (`memos-idp-*.json`, `memos-instance-setting-*.json`) are ignored, and the database values they overrode take effect again. Move those resources into a configuration directory as [declarative configuration](/docs/configuration/declarative-configuration#migrate-from-etcsecrets), keep the same identity provider UID so linked accounts keep working, and run `memos config plan` to preview before the first start.
+- **Export is an administrator action** - The Export button is gone for members, and the `ExportMemos` API is removed. Administrators download any account's archive; the archive content and the import flow are unchanged.
+- **Removed options** - Double-click to edit is a per-browser preference, and the composer's formatting toolbar preference is removed. The built-in Tasks View is gone: use a [View](/docs/usage/views) with `has_task_list && has_incomplete_tasks`. The Move to Space action is gone: choose a memo's Space in the editor's audience menu. The editor opens in rich mode; turn on Markdown mode under **Settings › Editor** to keep writing raw Markdown, as the old per-browser choice is not carried over.
+- **Demo mode** - The seeded demo no longer ships a public access token or fixed user IDs. Its content attaches to users declared in the configuration directory, or to the same four demo users as before when none is declared.
+- **Release numbering** - Versions are now `YY.MM.N`, such as `26.10.0`, with `-rc.K` for candidates and no `v` prefix. This stable release publishes the exact tag `neosmemo/memos:26.10.0`, the month tag `26.10`, and `stable`.
+- **API clients** - REST paths move from `/api/v1/...` to `/api/...`, and Connect and gRPC procedures use `/memos.api.<Service>/<Method>`. Clients must update renamed fields and types; binary protobuf clients must regenerate from the new schema. Fields and enums are renumbered, the upload and content-length settings are replaced by the `USAGE_LIMITS` instance setting, exceeding a limit returns `RESOURCE_EXHAUSTED` with reason `QUOTA_EXCEEDED`, and writes to a file-managed resource return `FAILED_PRECONDITION`. Old paths return `410 Gone` for this release and will be removed in the next release. Follow the [26.10 API migration checklist](/docs/integrations/api-access#2610-client-migration).
+
+See the [upgrade guide](/docs/operations/upgrade#upgrading-to-2610) before updating an existing installation.
+
+## New features
+
+### Rich editor
+
+- **Write what you read** - Memos opens in a rich editor by default: text looks the way the saved memo will, with a toolbar over selected text, a slash menu, and Markdown shortcuts.
+- **Markdown mode** - Keep the raw text from the **＋** menu. The choice is now saved to your account under **Settings › Editor**.
+- **Focus mode** - Open a narrower sheet with larger text when you want to concentrate on a draft.
+- **Suggestions and transcription** - New drafts suggest tags, checklist formatting, and visibility from your current filters or View. Transcribe an existing audio attachment into the draft with your configured provider.
+- **Space and visibility together** - The visibility control is an audience menu: pick who can read the memo, then the Space it belongs to, or none. It works while editing too, so a memo moves between Spaces from the same menu.
+
+### Usage limits
+
+- **Four metrics** - Limit memo length, upload size, memo count, and total storage in one place under **Settings › Usage limits**.
+- **Per-user entries** - Entries are ordered: the last applies to everyone, and an entry above it gives the users it names their own limits.
+- **Clear refusals** - A refused save or upload names the limit it hit. Nothing already stored is hidden or removed, and **My Account** shows your current usage.
+
+### Browsing and sign-in
+
+- **Keep your scope** - Pick a creator or a Space once in the sidebar and Timeline, Calendar, Map, and Attachments all show it. Home, Explore, and profile pages are one place now.
+- **Filter by attachments** - `has_attachments` and `has_image` select memos with files or pictures, in Views, Quick Find, and the API.
+- **Automatic SSO** - When passwords are disabled and there is a single SSO provider, sign-in starts SSO automatically and returns you to the page you wanted. Identity providers are validated when created or changed.
+- **Device preferences** - Link previews and double-click to edit are per-browser choices under **Settings › Preferences › This device**.
+
+### Administration
+
+- **Declarative configuration** - Describe identity providers, instance settings, bootstrap users, and their SSO identities in JSON files under `/etc/memos/config` (`--config-dir` or `MEMOS_CONFIG_DIR`). The server applies the directory at startup, or `memos config validate | plan | apply | state` does it from the command line, so a fresh instance is usable without a browser and staging can match production. Resources the files manage show **Managed by configuration** in Settings and cannot be changed through the UI or API until the file releases them. Secrets come from `${env:NAME}` and `${file:/path}`. Read the [declarative configuration guide](/docs/configuration/declarative-configuration).
+- **Streamed exports** - Exporting an account's memos is an administrator action that streams the archive straight to the download, so large archives no longer depend on server memory. Administrators export any account from **Settings › Members** or **Export & Import**; members ask an administrator for their archive.
+
+## Improvements and fixes
+
+- **Markdown** - Tables fill the width with a tinted header and wrap at words. Footnotes collect at the end of a memo with backlinks. Quotes and callouts can hold lists, inline HTML such as `<ruby>` renders again, collapsible sections and heading sizes match between editing and reading, and Bilibili players embed. Check all and Uncheck all reach tasks inside quotes and nested lists.
+- **Code and diagrams** - Mermaid diagrams follow the theme and fit the memo's width, labels on custom fills stay readable in dark mode, and pie, git, and timeline palettes follow Mermaid's theme variables. Code highlighting is lighter.
+- **Images and attachments** - Pinch to zoom, pan, and swipe between images; arrow keys switch items again and the full-screen preview has square corners. Attachments open in a new tab with a separate download button, controls stay on screen on mobile, files load on plain HTTP instances, and names containing `%`, `?`, or `#` download and share correctly.
+- **Memos and filters** - Pinned memos have a clearer marker in single-creator feeds. New memos keep their place after an immediate edit and take the time of saving under a date filter. `has_task_list == false` matches memos without that property, constant operands no longer shift later filter conditions, deleting a memo removes its whole comment thread, and blurred content stays out of the detail sidebar.
+- **Interface** - A refreshed logo and brand copy. Menus, dialogs, and controls share one surface style with visible focus. Sidebar menus stay anchored while scrolling, submenus stay on screen in narrow viewports, dialogs restore default focus, notifications follow the theme, the composer renders with the Home page, the sidebar switcher shows the Space mark beside the creator, and a memo's timestamp links to it.
+- **Languages and link previews** - Norwegian Nynorsk is available, the Korean hidden-content label uses neutral wording, and large web pages produce more reliable preview titles and images.
+- **Server and security** - The HTTP layer now runs on the Go standard library with unchanged routes and behavior; report any difference you notice behind your reverse proxy. The last administrator cannot be removed, `/healthz` reports database outages, the administrator's username is hidden from anonymous requests, outbound fetches refuse the CGNAT range, and hidden paths such as `/.well-known/` return 404. Token store failures no longer appear as 401, authorization errors are JSON, and MariaDB works. Go and gRPC are updated for CVE-2026-78669 and CVE-2026-84445.
+- **API and MCP** - `ListAttachments` uses the shared opaque page token and returns one only when more results exist. The MCP reaction tool no longer shows a redundant `parent` argument beside its path.
+
+Report regressions in [GitHub issues](https://github.com/usememos/memos/issues).
+
+**Release**: [26.10.0 on GitHub](https://github.com/usememos/memos/releases/tag/26.10.0)
+
+**Full changelog**: [v0.31.0...26.10.0](https://github.com/usememos/memos/compare/v0.31.0...26.10.0)
