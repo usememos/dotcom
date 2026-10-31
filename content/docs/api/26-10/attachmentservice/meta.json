@@ -1,0 +1,12 @@
+{
+  "title": "Attachment Service",
+  "pages": [
+    "BatchDeleteAttachments",
+    "CreateAttachment",
+    "DeleteAttachment",
+    "GetAttachment",
+    "ListAttachments",
+    "UpdateAttachment",
+    "UploadAttachment"
+  ]
+}

@@ -3096,34 +3096,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
-    /api/users/{user}:exportMemos:
-        get:
-            tags:
-                - UserService
-            description: |-
-                ExportMemos writes every memo the user created, with comments, archived
-                 memos, and attachment files, as a Memos export file (a ZIP file, see
-                 docs/design/memos-export-format.md). Only the user may export their own
-                 memos. The body is the archive; content_type is its media type.
-            operationId: UserService_ExportMemos
-            parameters:
-                - name: user
-                  in: path
-                  description: The user id.
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        '*/*': {}
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
     /api/users/{user}:getStats:
         get:
             tags:
@@ -4281,9 +4253,11 @@ components:
                         Output only. The resource name of the identity provider.
                          Format: identity-providers/{idp}
                 externalUid:
-                    readOnly: true
                     type: string
-                    description: Output only. The external user identifier from the identity provider.
+                    description: |-
+                        The external user identifier from the identity provider: the subject that
+                         signs in as this user. Set by signing in through the provider, or declared
+                         in a configuration file for a declared user.
             description: LinkedIdentity is an SSO identity linked to a user account.
         ListAttachmentsResponse:
             type: object
@@ -5696,7 +5670,21 @@ components:
                     allOf:
                         - $ref: '#/components/schemas/UserSetting_TagsSetting'
                     description: The value of the TAGS setting.
+                editorSetting:
+                    allOf:
+                        - $ref: '#/components/schemas/UserSetting_EditorSetting'
+                    description: The value of the EDITOR setting.
             description: UserSetting is one group of a user's preferences, identified by its key.
+        UserSetting_EditorSetting:
+            type: object
+            properties:
+                sourceMode:
+                    type: boolean
+                    description: |-
+                        Optional. Whether the official client's memo editor uses source mode,
+                         which shows and edits memos as Markdown text instead of formatted text.
+                         The official client calls this "Markdown mode".
+            description: EditorSetting holds the user's memo editor preferences.
         UserSetting_GeneralSetting:
             type: object
             properties:

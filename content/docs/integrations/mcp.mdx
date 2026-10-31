@@ -21,6 +21,10 @@ The previous prompts, resources, tool-filtering headers, route aliases, and unpr
 
 Replace `shortcut_list_shortcuts` with `user_list_memo_views`. Existing saved filters migrate automatically, but client tool names and request mappings must change. Tool calls also follow the new author and Space membership permissions. Comments created without an explicit visibility default to `PRIVATE`. See [API migration notes](/docs/integrations/api-access#031-client-migration).
 
+### Migrating to 26.10
+
+Tool names are unchanged. The `/mcp` endpoint keeps its path while REST routes drop the `/api/v1` prefix, so clients that also call the REST API follow the [26.10 migration checklist](/docs/integrations/api-access#2610-client-migration). The reaction tool no longer lists a redundant `parent` argument beside its path. Usage limits apply to tool calls: a memo or upload over a limit fails with `RESOURCE_EXHAUSTED` and names the metric.
+
 ## Connecting a client
 
 The server uses the **Streamable HTTP** transport. Point any MCP client that supports it at your instance's `/mcp` endpoint and authenticate with a [personal access token](/docs/integrations/api-access) as a Bearer credential:

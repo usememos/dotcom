@@ -71,7 +71,7 @@ describe("fetchInstanceStats", () => {
 
   it("flags an unparseable stats shape on a too-new version as unsupported-version", async () => {
     const deps = router({
-      "/api/v1/instance/profile": async () => Response.json({ version: "0.40.0" }),
+      "/api/v1/instance/profile": async () => Response.json({ version: "27.1.0" }),
       "/api/v1/auth/me": async () => Response.json({ user: { name: "users/7" } }),
       "/api/v1/users/7:getStats": async () => Response.json("not-an-object"),
     });
@@ -79,7 +79,7 @@ describe("fetchInstanceStats", () => {
     expect(result.status).toBe("error");
     if (result.status !== "error") return;
     expect(result.error.kind).toBe("unsupported-version");
-    expect(result.error.why).toContain("0.40.0");
+    expect(result.error.why).toContain("27.1.0");
   });
 
   it("surfaces CORS detail with the page origin in remediation", async () => {

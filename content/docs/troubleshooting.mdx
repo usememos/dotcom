@@ -43,6 +43,10 @@ Confirm which storage backend the instance uses. If attachments are stored outsi
 
 In 0.31, inspect the effective `ACCESS` setting and whether [declarative configuration](/docs/configuration/declarative-configuration#access-policy) manages it. Changing `MEMOS_INSTANCE_URL` does not change an existing access policy. Upgrade all replicas before changing the policy, and restart replicas after applying configuration changes.
 
+## Everyone is signed out after upgrading to 26.10
+
+This is expected. Access tokens are tied to the account password, and tokens issued before the upgrade expire. Browser sessions renew silently; API clients that hold access tokens must refresh or sign in again. Personal access tokens keep working. A password change or administrator reset also signs the account out on other devices.
+
 ## Sign-in fails after upgrading to 0.31
 
 Check the exact stored username, including capitalization. Username lookup and password sign-in are case-sensitive.

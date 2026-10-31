@@ -8,6 +8,13 @@
     "isLatest": true
   },
   {
+    "slug": "26-10",
+    "label": "26.10.x",
+    "sourceRef": "refs/tags/26.10.0",
+    "snapshotVersion": "26.10.0",
+    "apiBasePath": "/api"
+  },
+  {
     "slug": "0-31",
     "label": "0.31.x",
     "sourceRef": "refs/tags/v0.31.0",
@@ -19,7 +26,8 @@
     "label": "0.30.x",
     "sourceRef": "refs/tags/v0.30.0",
     "snapshotVersion": "0.30.0",
-    "apiBasePath": "/api/v1"
+    "apiBasePath": "/api/v1",
+    "archived": true
   },
   {
     "slug": "0-29",

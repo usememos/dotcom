@@ -1,26 +1,28 @@
 ---
 title: Export & Import
-description: Download your memos and attachments as a ZIP file, then import them into your account on another Memos instance.
+description: Administrators download an account's memos and attachments as a ZIP file; anyone can import that file into their account on another Memos instance.
 ---
 
-Use **Settings → Export & Import** to keep a portable copy of your memos or move them to another instance. Export and import are available starting in Memos 0.31.
+Use **Settings → Export & Import** to keep a portable copy of memos or move them to another instance. Export and import were introduced in Memos 0.31. Since 26.10, export is an administrator action; import is open to every account.
 
-## Export your memos
+## Export an account's memos
 
-1. Sign in to the account whose memos you want to export.
-2. Open **Settings → Export & Import**.
-3. Under **Export memos**, choose **Export memos** and wait for the ZIP download.
+Instance administrators export any account's memos, including their own. Members ask an administrator for their archive.
 
-The file is named `memos-export-<username>-<timestamp>.zip`. It uses Memos Export Format, with Markdown content and JSON metadata for each memo, plus attached files. You can read the Markdown outside Memos; keep the original ZIP intact for importing.
+1. Sign in as an instance administrator.
+2. Open **Settings → Members** and choose the account, or open **Settings → Export & Import**.
+3. Choose **Export memos** and wait for the ZIP download.
 
-The export includes all memos you authored across Spaces, regardless of the current sidebar filters:
+The archive streams straight to the download, so large exports do not depend on server memory. One export runs at a time per instance; a second request waits until the first finishes. The file is named `memos-export-<username>-<timestamp>.zip`. It uses Memos Export Format, with Markdown content and JSON metadata for each memo, plus attached files. You can read the Markdown outside Memos; keep the original ZIP intact for importing.
 
-- active and archived memos, including comments you wrote
+The export includes all memos the account authored across Spaces:
+
+- active and archived memos, including comments the account wrote
 - creation and update times, visibility, pinned state, location, and Space references
 - memo Relations and comment-parent references
 - files attached to those memos, including files stored in the database, on disk, or in S3-compatible storage
 
-External attachment links remain links; their remote files are not downloaded into the ZIP. Unused uploads and other people's memo content are not included, even when you can read them. An export of your memos is therefore not a complete export of a shared Space or its discussions.
+External attachment links remain links; their remote files are not downloaded into the ZIP. Unused uploads and other people's memo content are not included. An export of one account's memos is therefore not a complete export of a shared Space or its discussions.
 
 The ZIP can contain private notes and files and is not encrypted. Store it somewhere appropriate for that content.
 
@@ -42,7 +44,7 @@ Memos identifies an existing memo by its ID, not by identical text or title.
 | Option | Result for a matching memo in your account |
 | --- | --- |
 | **Keep mine** | Skip it and keep your current version. This is the default. |
-| **Replace with the imported version** | Replace it with the exported content and settings. Export before using this if you need to retain the current version. |
+| **Replace with the imported version** | Replace it with the exported content and settings. Ask for an export before using this if you need to retain the current version. |
 | **Create a copy** | Leave it unchanged and create a separate memo with a new ID. Repeating this option creates more copies. |
 
 Memos without a match are created in your signed-in account. An ID collision with another user's memo creates a new ID rather than replacing their memo.
@@ -61,8 +63,8 @@ The report lists **Created**, **Updated**, **Skipped**, and **Failed** counts, p
 
 If the uploaded file expires before you confirm the import, choose the file again. Keep the source account and ZIP until you have checked the imported content, attachments, placement, and visibility.
 
-## Personal exports and instance backups
+## Account exports and instance backups
 
-Use this feature for your own memo content. It does not transfer user accounts, account or instance settings, access tokens, share links, revision history, or Space membership. For recovery of an entire instance, back up its database, attachment storage, and configuration following [Backup & Restore](/docs/operations/backup-restore).
+Use this feature for one account's memo content. It does not transfer user accounts, account or instance settings, access tokens, share links, revision history, or Space membership. For recovery of an entire instance, back up its database, attachment storage, and configuration following [Backup & Restore](/docs/operations/backup-restore).
 
 To share a picture of one memo instead, use [Share as image](/docs/usage/sharing#share-as-image).

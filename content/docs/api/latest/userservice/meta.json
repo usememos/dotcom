@@ -13,7 +13,6 @@
     "DeleteUser",
     "DeleteUserNotification",
     "DeleteUserWebhook",
-    "ExportMemos",
     "GetLinkedIdentity",
     "GetMemoView",
     "GetUser",

@@ -3,8 +3,8 @@ import { getAuthMe, getProfile, getStats, type InstanceFetchDeps, type MemosCred
 import { isRecord } from "./memos-settings";
 import type { MemosStatsData } from "./memos-stats";
 import { bucketByUtcDay } from "./stats-bucketing";
-import { LATEST_SUPPORTED_MINOR, MINIMUM_SUPPORTED_VERSION } from "./supported-versions";
-import { compareVersion, parseMinor, resolveAdapter } from "./versions";
+import { LATEST_SUPPORTED_VERSION, MINIMUM_SUPPORTED_VERSION } from "./supported-versions";
+import { compareVersion, resolveAdapter } from "./versions";
 
 export type InstanceStatsDeps = InstanceFetchDeps & {
   /** Overridable for tests; defaults to () => new Date(). */
@@ -81,10 +81,10 @@ async function fetchStatsForUser(
   const raw = await getStats(creds, adapter.statsPath(userId), deps);
   const normalized = adapter.normalizeStats(raw);
   if (normalized === null) {
-    const minor = parseMinor(version ?? "");
+    const latestComparison = compareVersion(version ?? "", LATEST_SUPPORTED_VERSION);
     // A null normalize on a version newer than we map means the shape changed —
     // report it as unsupported rather than a generic bad response.
-    if (minor !== null && minor > LATEST_SUPPORTED_MINOR) {
+    if (latestComparison !== null && latestComparison > 0) {
       throw new InstanceError("unsupported-version", version ?? undefined, "above-latest");
     }
     throw new InstanceError("bad-response");

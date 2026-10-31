@@ -1,0 +1,21 @@
+{
+  "title": "Space Service",
+  "pages": [
+    "AcceptSpaceInvitation",
+    "CreateSpace",
+    "CreateSpaceInvitation",
+    "DeclineSpaceInvitation",
+    "DeleteSpace",
+    "DeleteSpaceInvitation",
+    "DeleteSpaceMember",
+    "GetSpace",
+    "GetSpaceInvitation",
+    "GetSpaceMember",
+    "ListSpaceInvitations",
+    "ListSpaceMembers",
+    "ListSpaces",
+    "ListUserSpaceInvitations",
+    "UpdateSpace",
+    "UpdateSpaceMember"
+  ]
+}

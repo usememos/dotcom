@@ -6,7 +6,7 @@ import { apiDocsVersions, isApiDocsVersion, isKnownApiDocsVersion, isSearchableD
 describe("apiDocsVersions", () => {
   it("exposes only the three published API references", () => {
     expect(apiDocsVersions).toHaveLength(3);
-    expect(apiDocsVersions.map((version) => version.slug)).toEqual(["latest", "0-31", "0-30"]);
+    expect(apiDocsVersions.map((version) => version.slug)).toEqual(["latest", "26-10", "0-31"]);
   });
 
   it("does not treat archived snapshots as public routes", () => {
