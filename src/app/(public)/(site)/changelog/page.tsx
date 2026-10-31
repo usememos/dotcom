@@ -64,10 +64,7 @@ export default function ChangelogPage() {
                   href={entry.url}
                   title={version}
                   description={getChangelogDescription(version, entry.data.description)}
-                  labels={[
-                    ...(index === 0 ? [{ label: "Latest", tone: "accent" as const }] : []),
-                    ...(entry.data.breaking ? [{ label: "Breaking", tone: "danger" as const }] : []),
-                  ]}
+                  labels={index === 0 ? [{ label: "Latest", tone: "accent" as const }] : []}
                   meta={
                     entry.data.date ? (
                       <>
