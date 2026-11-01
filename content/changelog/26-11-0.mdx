@@ -1,0 +1,25 @@
+---
+title: Release 26.11.0
+description: Japanese and Korean input in Safari, clear attachment errors, a steadier server cache, and a startup warning for unread /etc/secrets files
+image_description: Safari input, attachment errors, and a steadier cache.
+date: "2026-11-01"
+---
+
+> Memos 26.11.0 fixes typing Japanese and Korean in Safari and makes attachment failures visible instead of opaque. The server cache and upgrades from 0.31 deployment files are also more reliable.
+
+## Upgrade notes
+
+- **Upgrade path** - Upgrade directly from 26.10.0. Installations on 0.31.0 or earlier follow the [26.10 upgrade path](/docs/operations/upgrade#required-upgrade-path) and can install 26.11.0 in place of 26.10.0.
+- **Unread `/etc/secrets` files** - Since 26.10.0, the deployment configuration files in `/etc/secrets` (`memos-idp-*.json`, `memos-instance-setting-*.json`) are not read. Startup now logs a warning naming any that are still present, so settings they used to provide, such as an S3 storage or an identity provider, no longer revert silently. Move them into `/etc/memos/config` as [declarative configuration](/docs/configuration/declarative-configuration#migrate-from-etcsecrets).
+
+## Fixes and polish
+
+- **Editor** - Typing Japanese or Korean in Safari no longer selects the first word of a new line while the input method is composing.
+- **Attachments** - When an attachment cannot be read, the server answers with a JSON error instead of labelling it as the file's own type, so a PDF that fails to load no longer reaches the browser's viewer as a broken document. Missing local files return 404, and every failure is logged with its cause.
+- **Server** - The in-memory cache keeps its entry count exact and no longer drops a fresh write when an expired entry under the same key is removed at the same moment, so it stays within its size limit under load.
+
+Report regressions in [GitHub issues](https://github.com/usememos/memos/issues).
+
+**Release**: [26.11.0 on GitHub](https://github.com/usememos/memos/releases/tag/26.11.0)
+
+**Full changelog**: [26.10.0...26.11.0](https://github.com/usememos/memos/compare/26.10.0...26.11.0)

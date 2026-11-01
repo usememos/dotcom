@@ -24,7 +24,7 @@ debugging an integration against the current API reference.
 
 ## Upgrading to 26.10
 
-**26.10.0 is the current stable release.** Back up before upgrading, then pull `neosmemo/memos:26.10.0`, the month tag `26.10`, or `stable`. Read the [release changelog](/changelog/26-10-0).
+**26.11.0 is the current stable release.** It includes every 26.10 change below, so the same upgrade path and notes apply. Back up before upgrading, then pull `neosmemo/memos:26.11.0`, the month tag `26.11`, or `stable`. Read the [26.10.0](/changelog/26-10-0) and [26.11.0](/changelog/26-11-0) changelogs.
 
 ### Required upgrade path
 
@@ -45,7 +45,7 @@ debugging an integration against the current API reference.
 
 ### Deployment configuration
 
-- Memos 26.10 no longer reads `memos-idp-*.json` or `memos-instance-setting-*.json` from `/etc/secrets`, and does not warn when they are present. Release candidates up to 26.10.0-rc.2 still read them. Without conversion, the values stored in the database take effect again, which can re-enable password sign-in or remove a file-only SSO provider. Convert the files to [declarative configuration](/docs/configuration/declarative-configuration#migrate-from-etcsecrets) and check them with `memos config plan` before upgrading.
+- Memos 26.10 no longer reads `memos-idp-*.json` or `memos-instance-setting-*.json` from `/etc/secrets`. 26.10.0 does not warn when they are present; from 26.11.0, startup logs a warning naming each one. Release candidates up to 26.10.0-rc.2 still read them. Without conversion, the values stored in the database take effect again, which can re-enable password sign-in or remove a file-only SSO provider. Convert the files to [declarative configuration](/docs/configuration/declarative-configuration#migrate-from-etcsecrets) and check them with `memos config plan` before upgrading.
 - Mount the converted files at `/etc/memos/config`, or point `MEMOS_CONFIG_DIR` at them. Memos applies them at startup unless `MEMOS_CONFIG_APPLY=off`, and stops if they cannot be applied.
 - Declarative configuration uses API field names: identity providers are `identity-providers/<uid>` with a `title`, storage types are `S3`, `LOCAL`, or `DATABASE`, and usage limits name users as `users/<username>`. Memo length and upload size belong in the [usage limits setting](/docs/configuration/declarative-configuration#usage-limits); `contentLengthLimit`, `enableDoubleClickEdit`, and `uploadSizeLimitMb` are rejected.
 - API writes are validated more strictly: identity providers need a client ID, absolute HTTP(S) endpoints, and an identifier mapping; a changed S3 storage needs an endpoint, region, bucket, and both keys; and the `BASIC` setting cannot be written. Writes to resources the configuration manages fail with `FAILED_PRECONDITION`.
@@ -148,7 +148,7 @@ See the [Binary guide](/docs/deploy/binary) for service setup.
 
 ## Pinning versions
 
-`neosmemo/memos:stable` tracks the latest stable release, which is convenient but upgrades implicitly on every pull. For production, pin a specific version tag (for example `neosmemo/memos:26.10.0`) and upgrade deliberately.
+`neosmemo/memos:stable` tracks the latest stable release, which is convenient but upgrades implicitly on every pull. For production, pin a specific version tag (for example `neosmemo/memos:26.11.0`) and upgrade deliberately.
 
 From 26.10 onward, release tags use calendar versions in the form `YY.MM.N` without a `v` prefix: `26.10.0` is the first release of a month and `26.10.1` is a patch. Stable releases publish the exact-version tag, the monthly-series tag (`26.10`), and `stable`. Release candidates add `-rc.K` and publish only their exact tag, such as `26.10.0-rc.2`.
 

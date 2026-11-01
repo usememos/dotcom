@@ -554,7 +554,7 @@ For several replicas, consider a Job that runs `memos config plan --detailed-exi
 
 ## Migrate from `/etc/secrets`
 
-Memos 0.30, 0.31, and the 26.10 release candidates up to 26.10.0-rc.2 read `memos-idp-*.json` and `memos-instance-setting-*.json` from `/etc/secrets` at every startup and let those files override the database without changing it. Memos 26.10 ignores those files and does not warn about them. If you upgrade without converting them, the values stored in the database take effect again: password sign-in may be re-enabled, a file-only identity provider disappears, and storage or SMTP credentials revert.
+Memos 0.30, 0.31, and the 26.10 release candidates up to 26.10.0-rc.2 read `memos-idp-*.json` and `memos-instance-setting-*.json` from `/etc/secrets` at every startup and let those files override the database without changing it. Memos 26.10 ignores those files; 26.10.0 does not warn about them, and from 26.11.0 startup logs a warning naming each one. If you upgrade without converting them, the values stored in the database take effect again: password sign-in may be re-enabled, a file-only identity provider disappears, and storage or SMTP credentials revert.
 
 Convert every file before upgrading:
 
