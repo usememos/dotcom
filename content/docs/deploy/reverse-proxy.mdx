@@ -16,11 +16,13 @@ In Memos 0.31, `MEMOS_INSTANCE_URL` and access policy are independent. A private
 
 ## Client addresses and rate limiting
 
-Memos rate-limits sign-in, signup, link previews, uploads, and writes by default (`MEMOS_RATE_LIMIT`, 26.10+). Limits for anonymous requests are counted per client address. Memos only reads that address from `X-Forwarded-For` or `X-Real-Ip` when the request comes from a trusted proxy, set with `MEMOS_TRUSTED_PROXIES`:
+Memos rate-limits sign-in, signup, link previews, uploads, and writes by default (`MEMOS_RATE_LIMIT`, 0.31+). Limits for anonymous requests are counted per client address. Memos only reads that address from `X-Forwarded-For` or `X-Real-Ip` when the request comes from a trusted proxy, set with `MEMOS_TRUSTED_PROXIES`:
 
 - the default, `private`, trusts loopback and private network ranges, which covers a proxy on the same host or Docker network
-- if your proxy reaches Memos from a public address, list it, for example `MEMOS_TRUSTED_PROXIES=203.0.113.10` or a CIDR. Otherwise Memos ignores the forwarding headers and every user behind the proxy shares one limit
-- if other hosts on your private network are untrusted, or Memos is reached through a NAT hop that shows a private address without rewriting headers, set the real proxy address or `none`. Otherwise a client can forge `X-Forwarded-For` to get a fresh limit
+- list every proxy in the chain that is not on a private address, for example `MEMOS_TRUSTED_PROXIES=private,203.0.113.10` or a CIDR. This includes a CDN or load balancer in front of a local proxy: Memos walks `X-Forwarded-For` from the right and stops at the first untrusted address, so an unlisted public proxy becomes the "client" and every user behind it shares one limit
+- if other hosts on your private network are untrusted, or Memos is reached through a NAT hop that shows a private address without rewriting headers, list the real proxy addresses instead of `private`, or set `none`. Otherwise a client can forge `X-Forwarded-For` to get a fresh limit
+- configure the outermost proxy to replace any `X-Forwarded-For` and `X-Real-Ip` headers sent by clients instead of appending to them
+- when the proxy connects through a Unix socket (`MEMOS_UNIX_SOCK`), there is no peer IP address, so Memos ignores the forwarding headers and all clients share one limit. Connect over TCP if you need per-client limits
 
 ## Why this matters
 
