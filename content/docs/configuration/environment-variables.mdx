@@ -22,6 +22,8 @@ All flags and their corresponding environment variables:
 | `--webhook-private-network-allowlist` | `MEMOS_WEBHOOK_PRIVATE_NETWORK_ALLOWLIST` | empty | Allowed private destinations: exact hostnames, IP addresses, or CIDRs |
 | `--allow-private-webhooks` | `MEMOS_ALLOW_PRIVATE_WEBHOOKS` | `false` | Deprecated blanket exception for private webhook destinations |
 | `--log-level` | `MEMOS_LOG_LEVEL` | `info` | Log verbosity (`debug`, `info`, `warn`, `error`) |
+| `--rate-limit` | `MEMOS_RATE_LIMIT` | `true` | Request rate limiting for sign-in, signup, link previews, uploads, and writes; `false` turns every limit off (26.10+) |
+| `--trusted-proxies` | `MEMOS_TRUSTED_PROXIES` | `private` | Proxies whose forwarding headers identify the client address: IPs, CIDRs, `private` (loopback and private ranges), or `none`; comma-separated (26.10+). See [Reverse Proxy](/docs/deploy/reverse-proxy#client-addresses-and-rate-limiting) |
 | `--config-dir` | `MEMOS_CONFIG_DIR` | `/etc/memos/config` | Directory of [declarative configuration](/docs/configuration/declarative-configuration) files (26.10+) |
 | `--config-apply` | `MEMOS_CONFIG_APPLY` | `startup` | `startup` applies the configuration directory before serving; `off` leaves it to `memos config apply` (26.10+) |
 
@@ -62,6 +64,7 @@ An explicit flag always wins over the environment variable for the same setting.
 
 - select private or public access explicitly in the `ACCESS` instance setting
 - set `MEMOS_INSTANCE_URL` to the canonical external URL when the app sits behind a proxy
+- if the proxy is not on a loopback or private address, list it in `MEMOS_TRUSTED_PROXIES` so rate limits apply per client
 - prefer explicit `MEMOS_DRIVER` and `MEMOS_DSN` when you are not using SQLite defaults
 - allow only required private webhook destinations with `MEMOS_WEBHOOK_PRIVATE_NETWORK_ALLOWLIST`; leave the deprecated blanket option disabled
 - keep secrets such as database credentials outside committed compose files

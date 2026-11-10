@@ -14,6 +14,14 @@ For production, run Memos behind a reverse proxy such as Nginx, Caddy, or Traefi
 
 In Memos 0.31, `MEMOS_INSTANCE_URL` and access policy are independent. A private instance can have a canonical URL behind a publicly reachable proxy. Select private or public access through the `ACCESS` instance setting; changing the URL does not change an existing access policy. The URL must be absolute HTTP(S), without credentials, a query, or a fragment.
 
+## Client addresses and rate limiting
+
+Memos rate-limits sign-in, signup, link previews, uploads, and writes by default (`MEMOS_RATE_LIMIT`, 26.10+). Limits for anonymous requests are counted per client address. Memos only reads that address from `X-Forwarded-For` or `X-Real-Ip` when the request comes from a trusted proxy, set with `MEMOS_TRUSTED_PROXIES`:
+
+- the default, `private`, trusts loopback and private network ranges, which covers a proxy on the same host or Docker network
+- if your proxy reaches Memos from a public address, list it, for example `MEMOS_TRUSTED_PROXIES=203.0.113.10` or a CIDR. Otherwise Memos ignores the forwarding headers and every user behind the proxy shares one limit
+- if other hosts on your private network are untrusted, or Memos is reached through a NAT hop that shows a private address without rewriting headers, set the real proxy address or `none`. Otherwise a client can forge `X-Forwarded-For` to get a fresh limit
+
 ## Why this matters
 
 A reverse proxy gives you:
