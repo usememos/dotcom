@@ -1,0 +1,12 @@
+{
+  "title": "Instance Service",
+  "pages": [
+    "BatchGetInstanceSettings",
+    "GetConfigurationStatus",
+    "GetInstanceProfile",
+    "GetInstanceSetting",
+    "GetInstanceStats",
+    "TestInstanceEmailSetting",
+    "UpdateInstanceSetting"
+  ]
+}

@@ -1,0 +1,43 @@
+---
+title: Release 26.11.1
+description: Drawings and image annotations, searchable emoji reactions, attachment reordering, and fixes for editing and memo updates
+image_description: Drawings, image annotations, and searchable emoji reactions.
+date: "2026-11-16"
+breaking: true
+---
+
+> Memos 26.11.1 adds Markup for drawings and image annotations, lets you search all Unicode emoji for reactions, and makes attachments easier to arrange. The interface, editor, and sign-in forms also improve.
+
+## Upgrade notes
+
+- **Reaction configuration** - The `InstanceSetting.MemoRelatedSetting` type, `memo_related_setting` field, and `MEMO_RELATED` key are removed. Before upgrading, delete `instance/settings/MEMO_RELATED` and `memoRelatedSetting` declarations from configuration files, including references in `lifecycle` or `removed`. Memos rejects files that still contain them. The next configuration apply automatically releases the old ownership record. Stored reactions remain intact; API clients must stop using the removed setting.
+- **Database migration** - Back up the database, then stop every Memos instance and other database writers. Start one instance on the new version to create the attachment index and advance the schema to 26.11.1. Restart the remaining instances only after migration succeeds. On large attachment tables, index creation can take time and block writes. Do not mix Memos versions against one database or advance the schema marker manually.
+- **Custom CSS** - Update additional style rules that use old variables or classes, including `--background`, `--primary`, and `text-muted-foreground`, to target the new `--mu-*` variables and `mu-` classes.
+
+## New features
+
+- **Markup** - Draw in a memo or annotate an image while preserving the original. Drawings are PNG attachments with the editable scene embedded, so you can reopen and change them later. Switching between viewing and editing preserves the view.
+- **Attachments** - The composer and saved memos share the same image gallery and file rows. Reorder attachments with drag and drop, a long press on touch devices, or Alt and the arrow keys.
+- **Reactions** - Search for any Unicode emoji in the reaction picker. Existing reactions remain available.
+
+## Fixes and polish
+
+- **Editor** - Links to custom apps retain their targets, and pasting a URL into inline code keeps the code formatting. Japanese IME conversion preserves committed text and caret positions. Markdown mode has a transparent background and no longer displays a label beside Save or Update.
+- **Memo updates** - Overlapping requests for edits, pins, reactions, and moves between spaces preserve the latest state.
+- **Interface** - Controls and settings use consistent sizing and styling. Memo content has clearer spacing and better contrast in dark mode. Tags work with the keyboard, and the icon picker keeps its position while you search or switch tabs.
+- **Account forms** - Cancelling account, member, or password edits clears the draft before the dialog opens again. Changing a role no longer submits a password from a cancelled edit.
+- **Sign-in** - Errors appear within the form, passwords have a show/hide control, and theme and language choices stay inside the sign-in layout. When registration is closed, the registration page redirects to sign-in with a notice.
+- **Markdown** - Snippets keep spaces at hard line breaks and count characters correctly when truncating text.
+
+## Administration and integrations
+
+- **Attachment performance** - New indexes speed up attachment lookups and the With attachments and Photos filters, including when attachment bytes are stored in the database.
+- **Security** - Go and HTML parsing dependencies are updated with security fixes. Fetching a malicious link preview no longer causes excessive CPU use.
+- **Deployment** - Missing static assets return `Cache-Control: no-store`, so caches do not retain those 404 responses after a deployment.
+- **Attachment API** - Use `UploadAttachmentSpec.replace_attachment` to replace the content of an attachment you own while retaining its name, memo, and creation time. Administrators can also replace attachments. External links and motion-photo parts cannot be replaced.
+
+Report regressions in [GitHub issues](https://github.com/usememos/memos/issues).
+
+**Release**: [26.11.1 on GitHub](https://github.com/usememos/memos/releases/tag/26.11.1)
+
+**Full changelog**: [26.11.0...26.11.1](https://github.com/usememos/memos/compare/26.11.0...26.11.1)

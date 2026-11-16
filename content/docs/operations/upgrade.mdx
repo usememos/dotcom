@@ -22,16 +22,43 @@ documentation.
 If your instance falls outside this window, upgrade it before developing or
 debugging an integration against the current API reference.
 
+## Upgrading to 26.11
+
+**26.11.1 is the current stable release.** Pin `neosmemo/memos:26.11.1`, or use the month tag `26.11` or `stable`. Read the [26.11.1 changelog](/changelog/26-11-1).
+
+Installations on 26.10.0 or 26.11.0 can upgrade directly. Older installations must follow the [required upgrade path](#required-upgrade-path) and review the 26.10 changes below; after the required intermediate versions, install 26.11.1.
+
+### Reaction configuration
+
+The `MEMO_RELATED` instance setting, `InstanceSetting.MemoRelatedSetting` type, and `memo_related_setting` field are removed. Reactions now use the full Unicode emoji picker, and stored reactions are preserved.
+
+Before upgrading, remove `instance/settings/MEMO_RELATED` and `memoRelatedSetting` declarations from configuration files, including references in `lifecycle` or `removed`. Files containing them are rejected. Do not add a `removed` entry: the next configuration apply releases the old ownership record automatically. API clients must stop reading or writing the removed setting. See [declarative configuration](/docs/configuration/declarative-configuration#memo-behavior).
+
+### Attachment index migration
+
+1. Back up the database and attachments.
+2. Stop all Memos instances and every other database writer.
+3. Start one instance on 26.11.1. It creates the attachment index and advances the schema to 26.11.1.
+4. Wait for migration to succeed before starting the remaining instances on the same version.
+
+Index creation can take time on large attachment tables and block writes. Do not run different Memos versions against the same database or advance the schema marker manually. Follow these steps even when using the Docker, Compose, or binary commands below.
+
+### Custom CSS and integrations
+
+Additional CSS that targets old variables or classes, including `--background`, `--primary`, and `text-muted-foreground`, must target the new `--mu-*` variables and `mu-` classes. Review custom styles in both themes after upgrading.
+
+API clients can now replace an attachment’s content through `UploadAttachmentSpec.replace_attachment`. Review the [26.11 client migration notes](/docs/integrations/api-access#2611-client-migration) and verify existing integrations against the [26.11 API reference](/docs/api/26-11).
+
 ## Upgrading to 26.10
 
-**26.11.0 is the current stable release.** It includes every 26.10 change below, so the same upgrade path and notes apply. Back up before upgrading, then pull `neosmemo/memos:26.11.0`, the month tag `26.11`, or `stable`. Read the [26.10.0](/changelog/26-10-0) and [26.11.0](/changelog/26-11-0) changelogs.
+These changes first shipped in **26.10.0** and also apply when upgrading an older installation directly to 26.11.1. Read the [26.10.0](/changelog/26-10-0) and [26.11.0](/changelog/26-11-0) changelogs alongside the newer notes above.
 
 ### Required upgrade path
 
 - From **0.31.0**, **26.10-rc.1**, or **26.10.0-rc.2**, upgrade directly.
-- From **0.22 through 0.30**, first upgrade to **0.31.0** and start it successfully, then install 26.10.
-- From a version **earlier than 0.22**, first run **0.25.3**, then **0.31.0**, then install 26.10.
-- Fresh installations can start with 26.10 directly.
+- From **0.22 through 0.30**, first upgrade to **0.31.0** and start it successfully, then install 26.11.1.
+- From a version **earlier than 0.22**, first run **0.25.3**, then **0.31.0**, then install 26.11.1.
+- Fresh installations can start with 26.11.1 directly.
 
 ### Clients and workflows
 
@@ -148,7 +175,7 @@ See the [Binary guide](/docs/deploy/binary) for service setup.
 
 ## Pinning versions
 
-`neosmemo/memos:stable` tracks the latest stable release, which is convenient but upgrades implicitly on every pull. For production, pin a specific version tag (for example `neosmemo/memos:26.11.0`) and upgrade deliberately.
+`neosmemo/memos:stable` tracks the latest stable release, which is convenient but upgrades implicitly on every pull. For production, pin a specific version tag (for example `neosmemo/memos:26.11.1`) and upgrade deliberately.
 
 From 26.10 onward, release tags use calendar versions in the form `YY.MM.N` without a `v` prefix: `26.10.0` is the first release of a month and `26.10.1` is a patch. Stable releases publish the exact-version tag, the monthly-series tag (`26.10`), and `stable`. Release candidates add `-rc.K` and publish only their exact tag, such as `26.10.0-rc.2`.
 

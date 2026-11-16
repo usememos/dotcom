@@ -1,7 +1,7 @@
 const baseUrl = process.env.SMOKE_BASE_URL ?? "http://localhost:8788";
 
 const checks = [
-  { path: "/", type: "html", contains: "Seconds to write.", cacheControlIncludes: "s-maxage=31536000" },
+  { path: "/", type: "html", contains: "/changelog/26-11-1", cacheControlIncludes: "s-maxage=31536000" },
   { path: "/brand", type: "html", contains: "/brand/lockup-small.svg" },
   {
     path: "/brand/logo.svg",
@@ -42,8 +42,17 @@ const checks = [
     contains: "Best practices to write a TAG",
   },
   { path: "/changelog/0-31-0", type: "html", contains: "Shared Spaces" },
-  { path: "/docs/api/0-31", type: "html", contains: "v0.31.0" },
-  { path: "/docs/api/0-31/userservice/ExportMemos", type: "html", contains: "Export Memos" },
+  { path: "/changelog/26-11-1", type: "html", contains: "Markup" },
+  { path: "/docs/api/26-11", type: "html", contains: "26.11.1" },
+  { path: "/docs/api/26-11/attachmentservice/UploadAttachment", type: "html", contains: "Upload Attachment" },
+  { path: "/docs/api/26-10", type: "html", contains: "26.10.0" },
+  ...["/docs/api/0-31", "/docs/api/0-31/userservice/ExportMemos"].map((path) => ({
+    path,
+    status: 308,
+    type: "text",
+    redirect: "manual",
+    location: "/docs/operations/upgrade",
+  })),
   { path: "/docs/api/0-29/memoservice/ListMemos", type: "html", contains: "Upgrading to 0.31" },
   { path: "/dashboard", type: "html", cacheControlIncludes: "s-maxage=31536000" },
   { path: "/scratchpad", status: 404, type: "html", openNextCache: "HIT" },
@@ -150,7 +159,7 @@ function assertCheck(check, response, body) {
   if (check.type === "search-index" && (body?.type !== "advanced" || !Array.isArray(body?.internalDocumentIDStore?.internalIdToId))) {
     throw new Error(`${check.path} expected a static Orama search index`);
   }
-  if (check.type === "search-index" && body.internalDocumentIDStore.internalIdToId.some((id) => id.startsWith("/docs/api/0-"))) {
+  if (check.type === "search-index" && body.internalDocumentIDStore.internalIdToId.some((id) => /^\/docs\/api\/\d/.test(id))) {
     throw new Error(`${check.path} unexpectedly indexed a historical API snapshot`);
   }
   if (check.type === "png") {

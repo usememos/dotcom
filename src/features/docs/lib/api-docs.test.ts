@@ -6,10 +6,12 @@ import { apiDocsVersions, isApiDocsVersion, isKnownApiDocsVersion, isSearchableD
 describe("apiDocsVersions", () => {
   it("exposes only the three published API references", () => {
     expect(apiDocsVersions).toHaveLength(3);
-    expect(apiDocsVersions.map((version) => version.slug)).toEqual(["latest", "26-10", "0-31"]);
+    expect(apiDocsVersions.map((version) => version.slug)).toEqual(["latest", "26-11", "26-10"]);
   });
 
   it("does not treat archived snapshots as public routes", () => {
+    expect(isApiDocsVersion("0-31")).toBe(false);
+    expect(isKnownApiDocsVersion("0-31")).toBe(true);
     expect(isApiDocsVersion("0-29")).toBe(false);
     expect(isKnownApiDocsVersion("0-29")).toBe(true);
     expect(isApiDocsVersion("0-28")).toBe(false);
@@ -29,6 +31,16 @@ describe("apiDocsVersions", () => {
       expect(schema).toContain(version.isLatest ? "url: '{instanceUrl}'" : "url: https://demo.usememos.com");
     }
   });
+
+  it("publishes the 26.11 attachment API without the removed reaction setting", () => {
+    for (const slug of ["latest", "26-11"]) {
+      const schema = readFileSync(join(process.cwd(), "openapi", `${slug}.yaml`), "utf8");
+
+      expect(schema).toContain("replaceAttachment:");
+      expect(schema).not.toContain("memoRelatedSetting:");
+      expect(schema).not.toContain("InstanceSetting_MemoRelatedSetting:");
+    }
+  });
 });
 
 describe("isSearchableDocsPath", () => {
@@ -43,6 +55,8 @@ describe("isSearchableDocsPath", () => {
   });
 
   it("excludes historical API snapshots", () => {
+    expect(isSearchableDocsPath("/docs/api/26-11/memoservice/ListMemos")).toBe(false);
+    expect(isSearchableDocsPath("/docs/api/26-10/memoservice/ListMemos")).toBe(false);
     expect(isSearchableDocsPath("/docs/api/0-31/memoservice/ListMemos")).toBe(false);
     expect(isSearchableDocsPath("/docs/api/0-30")).toBe(false);
     expect(isSearchableDocsPath("/docs/api/0-29/memoservice/ListMemos")).toBe(false);

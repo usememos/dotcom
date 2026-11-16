@@ -5,7 +5,7 @@ category: configuration
 tags: ["configuration", "self-hosting", "docker", "kubernetes"]
 difficulty: advanced
 estimatedTime: 20 minutes
-lastUpdated: "2026-10-29"
+lastUpdated: "2026-11-16"
 ---
 
 From 26.10, Memos can take identity providers, instance settings, and bootstrap administrators from JSON files. The files describe the state the instance should have. Memos compares them with the database, shows the difference as a plan, and applies the plan in one database transaction. Resources the files manage become read-only in the app and the API, so a change made in the admin UI cannot silently disappear at the next restart.
@@ -202,7 +202,6 @@ Each instance setting names its group and carries the matching settings object:
 | `instance/settings/ACCESS` | `accessSetting` |
 | `instance/settings/GENERAL` | `generalSetting` |
 | `instance/settings/STORAGE` | `storageSetting` |
-| `instance/settings/MEMO_RELATED` | `memoRelatedSetting` |
 | `instance/settings/USAGE_LIMITS` | `usageLimitsSetting` |
 | `instance/settings/NOTIFICATION` | `notificationSetting` |
 | `instance/settings/AI` | `aiSetting` |
@@ -286,14 +285,11 @@ Only enable `insecureSkipTlsVerify` for a trusted S3-compatible endpoint with a 
 
 ### Memo behavior
 
-```json
-{
-  "name": "instance/settings/MEMO_RELATED",
-  "memoRelatedSetting": { "reactions": ["👍", "❤️", "🎉"] }
-}
-```
+From 26.11.1, reactions use the full Unicode emoji picker. The `MEMO_RELATED` setting and `memoRelatedSetting` field are removed.
 
-`reactions` is the list of allowed reactions. Memo length is a [usage limit](#usage-limits), and double-click to edit is a per-browser preference under **Settings › Preferences › This device**.
+Before upgrading, remove `instance/settings/MEMO_RELATED` and `memoRelatedSetting` declarations from configuration files, including references in `lifecycle` and `removed`. Files containing them are rejected. Do not add a `removed` entry for the old setting: the next configuration apply automatically releases its ownership record. Stored reactions are preserved.
+
+Memo length is a [usage limit](#usage-limits), and double-click to edit is a per-browser preference under **Settings › Preferences › This device**.
 
 ### Usage limits
 

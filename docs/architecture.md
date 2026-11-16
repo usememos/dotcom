@@ -64,7 +64,7 @@ client-safe Memos protocol and connection data helpers live in `src/shared/memos
   to an existing local snapshot, so check the refresh log before claiming it is
   current. Ordinary builds use committed schemas and do not download new ones.
 - The published API window is Latest (`main`) plus the two newest minor series
-  (currently 0.31 and 0.30). Retired YAML snapshots remain committed; their pages
+  (currently 26.11 and 26.10). Retired YAML snapshots remain committed; their pages
   redirect to the upgrade guide. Keep `src/shared/memos/supported-versions.ts`
   aligned with the manifest. The minimum instance version supported by the
   account app is a separate compatibility setting.

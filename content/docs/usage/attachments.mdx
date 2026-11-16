@@ -1,6 +1,6 @@
 ---
 title: Attachments
-description: Add files to memos, browse them in the attachment library, and clean up unused files.
+description: Add and reorder attachments, draw or annotate images with Markup, and browse or clean up files.
 ---
 
 Attachments let you keep files close to the notes they belong to. This is useful for screenshots, design references, PDFs, exported data, and other supporting material.
@@ -12,6 +12,26 @@ Attachments let you keep files close to the notes they belong to. This is useful
 - paste screenshots directly from the clipboard when supported
 
 The app uploads files in smaller chunks automatically. No separate setting is needed; the instance's file-size limits still apply.
+
+## Arranging attachments
+
+From 26.11.1, the composer shows the same image gallery and file rows as a saved memo. Reorder attachments before saving:
+
+- drag gallery tiles, or long-press a tile on a touch device before dragging
+- focus a gallery tile and use `Alt` with the arrow keys to move it
+- drag a file row by its handle, or focus the handle and use the arrow keys
+
+Save the memo to keep the new order. Newly uploaded files and existing attachments share that order.
+
+## Drawings and image annotations
+
+Choose **Markup** from the editor’s insert menu to start a drawing. Choose **Add** to place the drawing among the memo’s pending attachments, then save the memo to upload it.
+
+To annotate an ordinary local or instance-hosted image, choose **Markup** from its attachment actions. The image opens as a locked background. Applying your annotations keeps the original and adds a separate `.canvas.png` beside it. A saved image preview also offers **Markup**; **Save copy** saves the annotation to that memo. External images and motion-photo groups do not support annotation.
+
+Drawings are ordinary PNG attachments with an editable scene embedded. Open one and choose **Edit markup** to change it. Switching between viewing and editing preserves the visible area, pan, and zoom. Saving changes to an owned drawing preserves its attachment name and existing links.
+
+Save your work before closing. Closing with unsaved changes asks you to discard them; Markup has no recoverable draft storage in 26.11.1. The memo editor’s text draft does not preserve an unsaved drawing.
 
 ## Inline images and drafts
 

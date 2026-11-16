@@ -15,7 +15,7 @@ Tokens are scoped to your user: API calls made with a token can do what your use
 
 ## Call the API
 
-Pass the token in the `Authorization` header. Memos 26.10 and the Latest API on `main` use `/api`:
+Pass the token in the `Authorization` header. Memos 26.10 and later calendar releases use `/api`, as does the Latest API on `main`:
 
 ```bash
 curl -H "Authorization: Bearer memos_pat_..." \
@@ -24,9 +24,19 @@ curl -H "Authorization: Bearer memos_pat_..." \
 
 Memos 0.30 and 0.31 use `/api/v1` instead. Select the [API reference for your instance version](/docs/api) before using an endpoint in an integration.
 
-When moving a client from 0.31 to 26.10, follow the [migration checklist](#2610-client-migration). The Latest API reference tracks `main` and may include later changes.
+When moving a client from 0.31 to a calendar release, follow the [26.10 migration checklist](#2610-client-migration) and the [26.11 changes](#2611-client-migration). The Latest API reference tracks `main` and may include later changes.
 
 For browser-based integrations, bearer-token requests may be sent cross-origin. Cookie authentication remains same-origin; do not build third-party API clients around a user's browser session cookie.
+
+## 26.11 client migration
+
+These changes apply to **26.11.1**. The [26.11 API reference](/docs/api/26-11) uses the [tagged OpenAPI specification](https://github.com/usememos/memos/blob/26.11.1/proto/gen/openapi.yaml).
+
+- `InstanceSetting.MemoRelatedSetting`, `memo_related_setting` (`memoRelatedSetting` in JSON), and the `MEMO_RELATED` key are removed. Stop reading or writing that setting. Reactions accept Unicode emoji through the picker, and existing reactions remain stored. Configuration files containing the removed setting are rejected; follow the [configuration migration](/docs/configuration/declarative-configuration#memo-behavior).
+- `UploadAttachmentSpec.replace_attachment` (`replaceAttachment` in JSON) is an optional attachment resource name such as `attachments/abc`. Set it in the initial `UploadAttachment` spec to replace an existing attachment’s content when the upload finishes. Leave `attachment_id` and `attachment.memo` empty. Only the uploader or an administrator may replace the file; external links and motion-photo parts cannot be replaced.
+- Replacement preserves the attachment’s resource name, memo, and creation time. The new upload supplies its filename, media type, size, and media metadata, and the old cached thumbnail is discarded. `UpdateAttachment` still updates only the filename.
+
+Review the [26.11 upgrade notes](/docs/operations/upgrade#upgrading-to-2611) before deploying against a shared database.
 
 ## 26.10 client migration
 
@@ -46,7 +56,7 @@ These breaking changes apply to **26.10.0**. Use the [tagged API changelog](http
 - Access tokens are bound to the user's password hash. Tokens issued before the upgrade are rejected, and a password change or administrator reset invalidates existing ones; refresh or sign in again. Personal access tokens are unaffected.
 - `StorageSetting.upload_size_limit_mb` and `MemoRelatedSetting.content_length_limit` are removed without migration. Read and replace limits through the `USAGE_LIMITS` instance setting (`instance/settings/USAGE_LIMITS`), an ordered list where the first entry naming a user applies and the last entry applies to everyone. `UserUsage` reports the effective `limits` and `limit_index`.
 - Handle `RESOURCE_EXHAUSTED` with reason `QUOTA_EXCEEDED`; its metadata carries `metric`, `limit`, and `usage`.
-- `MemoRelatedSetting.enable_double_click_edit` is removed; `MemoRelatedSetting` keeps only `reactions`.
+- `MemoRelatedSetting.enable_double_click_edit` is removed. In 26.10.0, `MemoRelatedSetting` keeps only `reactions`; [26.11.1 removes the setting entirely](#2611-client-migration).
 - `ListAttachments` uses the shared opaque page token and returns `next_page_token` only when more results exist.
 - `UserService.ExportMemos` is removed. Instance administrators download any account's archive from `GET /file/users/{username}/export`, authenticated like attachments with a Bearer header or session cookie. One export runs at a time per instance; a second request receives `429`. `ImportMemos` is unchanged.
 - A write that changes a field managed by [declarative configuration](/docs/configuration/declarative-configuration) returns `FAILED_PRECONDITION` with `ErrorInfo{reason: MANAGED_BY_CONFIGURATION}` naming the file and fields. `GET /api/instance/configuration` lists what is managed.
@@ -88,7 +98,7 @@ A memo's `space` is a resource name such as `spaces/team-notes`, or absent when 
 
 When moving a `SPACE` memo, include both `space` and `visibility` in the update mask and explicitly confirm `SPACE` visibility for the destination. When withdrawing it to Unassigned, select a non-Space visibility in the same update. Share links cannot be created for `SPACE` memos; revoke existing links before changing a memo to that audience.
 
-The [Latest API reference](/docs/api/latest) tracks `main`, which may include changes after the latest stable release. The [26.10 reference](/docs/api/26-10) is generated from the 26.10.0 tag, and the [0.31 reference](/docs/api/0-31) covers the previous release series. For the exact 26.10.0 schema, use the [tagged OpenAPI specification](https://github.com/usememos/memos/blob/26.10.0/proto/gen/openapi.yaml).
+The [Latest API reference](/docs/api/latest) tracks `main`, which may include changes after the latest stable release. The [26.11 reference](/docs/api/26-11) is generated from the 26.11.1 tag, and the [26.10 reference](/docs/api/26-10) uses the 26.10.0 tag. Older rendered references redirect to the [upgrade guide](/docs/operations/upgrade); historical OpenAPI snapshots remain in the website repository.
 
 ## Where to go next
 

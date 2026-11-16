@@ -11,11 +11,12 @@ Common areas include:
 - General access controls: user registration, password auth, username and nickname changes, week start day, and custom instance profile.
 - Storage settings: named database, local filesystem, or S3-compatible configurations with stable IDs, a default for new uploads, and file path templates.
 - Usage limits: memo length, upload size, memo count, and total storage, for everyone or for named users.
-- Memo-related settings: allowed reaction values.
 - Notification settings: SMTP email delivery, sender details, reply-to address, and the email test endpoint.
 - AI settings: instance-level OpenAI or Gemini providers and speech-to-text transcription defaults.
 
 Tag colors and content-blur rules are user settings in Memos 0.30 and later, not instance settings. See [Tags](/docs/usage/tags).
+
+From 26.11.1, reactions use a searchable Unicode emoji picker and no longer have an instance-wide allowed list. The `MEMO_RELATED` setting is removed. Remove it from [declarative configuration](/docs/configuration/declarative-configuration#memo-behavior) before upgrading; existing reactions are preserved.
 
 ## Access policy
 
