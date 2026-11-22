@@ -59,7 +59,11 @@ Views use CEL (Common Expression Language) filter expressions. A View filter mus
 | `has_code` | boolean | `has_code` |
 | `has_incomplete_tasks` | boolean | `has_incomplete_tasks` |
 | `has_location` | boolean | `has_location` |
+| `has_attachments` | boolean | `pinned && has_attachments` |
+| `has_image` | boolean | `has_image && tag in ["travel"]` |
 | `space` | resource name or null | `space == "spaces/team-notes"` |
+
+`has_attachments` matches memos with any attached file. `has_image` matches memos with an attached image or a Markdown image in the text.
 
 ### Operators and functions
 

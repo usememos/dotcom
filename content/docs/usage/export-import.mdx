@@ -13,7 +13,9 @@ Instance administrators export any account's memos, including their own. Members
 2. Open **Settings → Members** and choose the account, or open **Settings → Export & Import**.
 3. Choose **Export memos** and wait for the ZIP download.
 
-The archive streams straight to the download, so large exports do not depend on server memory. One export runs at a time per instance; a second request waits until the first finishes. The file is named `memos-export-<username>-<timestamp>.zip`. It uses Memos Export Format, with Markdown content and JSON metadata for each memo, plus attached files. You can read the Markdown outside Memos; keep the original ZIP intact for importing.
+The archive streams directly to the download. Each instance runs one export at a time. A second export request receives HTTP `429 Too Many Requests` and can be retried after the first export finishes.
+
+The file is named `memos-export-<username>-<timestamp>.zip`. It uses Memos Export Format, with Markdown content and JSON metadata for each memo, plus attached files. You can read the Markdown outside Memos. Keep the original ZIP intact for importing.
 
 The export includes all memos the account authored across Spaces:
 
