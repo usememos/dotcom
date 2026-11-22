@@ -1,0 +1,45 @@
+---
+title: Release 26.11.2
+description: Show comments in memo lists, reorder Views, and use the full timeline width. Includes a MariaDB upgrade fix and breaking changes to the comment API.
+image_description: Comments in memo lists and a full-width timeline.
+date: "2026-11-22"
+breaking: true
+---
+
+> You can now read comments alongside your memos, put your most-used Views first, and give long entries the full width of the timeline. If you use the API or MCP, update how you list and create comments when you upgrade.
+
+## New features
+
+- **Comments in memo lists** - Turn on **Include comments** under **Settings → Preferences → This device**. A strip above each comment identifies the memo it replies to. This preference is off by default. Compact mode now lives in the same settings and applies to every memo list. Your existing choice carries over.
+- **Views** - Choose **Move up** or **Move down** from a View’s menu to change its position.
+- **Timeline width** - Choose **Full width** in the timeline display menu to expand the memo column.
+- **Calendar** - The month picker marks months with memos. Use the arrow keys to move between months and years. If a month fails to load, the calendar shows an error.
+
+## Upgrade notes
+
+### API and MCP clients
+
+A comment is now a memo with a parent. Existing comments carry over automatically. The API includes comments in memo lists and user statistics regardless of the display preference on your device.
+
+- **Keep top-level results** - Add `parent == null` to the filter for `ListMemos`, `GetUserStats`, or `ListUserStats` to preserve previous results.
+- **Read comments** - Replace `ListMemoComments` with `ListMemos`. For example, filter by `parent == "memos/abc123"` to get direct replies to that memo. Each reply has its own audience. A reader can see a reply even when they lack access to its parent.
+- **Write comments** - Replace `CreateMemoComment` with `CreateMemo` and set `memo.parent` to the parent memo’s resource name. The parent is fixed after creation. The old GET and POST routes at `/api/memos/{memo}/comments` are gone.
+- **Read relationships** - Memo relations now contain only `REFERENCE` links. Use `Memo.parent` to find a comment’s parent and `Memo.comment_count` to read a memo’s comment count.
+- **MCP tools** - Replace `memo_list_memo_comments` with `memo_list_memos` using the same parent filter. Replace `memo_create_memo_comment` with `memo_create_memo` and set `memo.parent`.
+
+### Database upgrades
+
+There is no schema change from 26.11.1. If your MariaDB upgrade stopped with `Unknown column 'IS_VISIBLE'`, you can upgrade directly to 26.11.2.
+
+When upgrading from 26.11.0 or earlier, follow the [26.11.1 upgrade notes](/changelog/26-11-1#upgrade-notes). Back up the database, stop all writers, and start one Memos instance to run the migration. On MySQL or MariaDB, if an interrupted migration already created `idx_attachment_memo_id_type`, drop that index before retrying.
+
+## Fixes and improvements
+
+- **Editor** - The audience picker names who can read your memo before you save it. In Markdown mode, a space typed after confirming a Korean word stays after the word. The memo link picker can find text containing quotes or backslashes.
+- **Attachments and sharing** - Thumbnails load for attachments stored at external URLs, including imported images. Copying a share link also works on instances served over plain HTTP.
+- **Tags and exports** - Tag settings show how many memos match a wildcard rule. Exports with more than 500 memos no longer duplicate links between memos.
+- **Interface** - Save, update, comment, and sign-in buttons show when a request is in progress. The sidebar calendar outlines today’s date.
+- **Performance** - Memos spends less time parsing long entries when you list, save, or import them.
+- **Servers and integrations** - MariaDB supports JSON boolean filters and queries under `ONLY_FULL_GROUP_BY`. A native Windows ARM64 binary is available. API clients can reorder Views with `UserService.ReorderMemoViews` and filter memos by `name`. On PostgreSQL and MySQL, an empty `in []` filter on a scalar field returns no matches.
+
+[Release on GitHub](https://github.com/usememos/memos/releases/tag/26.11.2) · [Full changelog since 26.11.1](https://github.com/usememos/memos/compare/26.11.1...26.11.2)

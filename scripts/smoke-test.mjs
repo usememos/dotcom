@@ -1,7 +1,7 @@
 const baseUrl = process.env.SMOKE_BASE_URL ?? "http://localhost:8788";
 
 const checks = [
-  { path: "/", type: "html", contains: "/changelog/26-11-1", cacheControlIncludes: "s-maxage=31536000" },
+  { path: "/", type: "html", contains: "/changelog/26-11-2", cacheControlIncludes: "s-maxage=31536000" },
   { path: "/brand", type: "html", contains: "/brand/lockup-small.svg" },
   {
     path: "/brand/logo.svg",
@@ -43,6 +43,7 @@ const checks = [
   },
   { path: "/changelog/0-31-0", type: "html", contains: "Shared Spaces" },
   { path: "/changelog/26-11-1", type: "html", contains: "Markup" },
+  { path: "/changelog/26-11-2", type: "html", contains: "Include comments" },
   { path: "/docs/api/26-11", type: "html", contains: "26.11.1" },
   { path: "/docs/api/26-11/attachmentservice/UploadAttachment", type: "html", contains: "Upload Attachment" },
   { path: "/docs/api/26-10", type: "html", contains: "26.10.0" },
