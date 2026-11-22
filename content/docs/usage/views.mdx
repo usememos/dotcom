@@ -32,6 +32,7 @@ Views appear in the sidebar. Select one to apply its filter to your memo list; t
 The Views page lists every View with its title and filter. Each row has a menu to:
 
 - **Edit** — load the View back into the form to change its title, icon, or filter
+- **Move up** or **Move down** — change the order of your Views
 - **Delete** — remove a View you no longer use, after a confirmation step
 
 ## Filter expression syntax
@@ -42,6 +43,8 @@ Views use CEL (Common Expression Language) filter expressions. A View filter mus
 
 | Field | Type | Example |
 | --- | --- | --- |
+| `name` | resource name | `name == "memos/abc123"` |
+| `parent` | resource name or null | `parent == null` |
 | `content` | string | `content.contains("meeting")` |
 | `creator` | string | `creator == "users/1"` |
 | `creator_id` | integer | `creator_id == 42` |

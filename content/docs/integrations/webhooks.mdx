@@ -16,7 +16,7 @@ Webhooks are dispatched on:
 
 ## Payload
 
-Memos sends a JSON payload containing `activityType`, `creator`, and the affected `memo`. Comment-created payloads include the parent relation so receivers can identify the conversation.
+Memos sends a JSON payload containing `activityType`, `creator`, and the affected `memo`. Starting in 26.11.2, read `memo.parent` on a comment-created event to identify the conversation. Earlier releases included the parent in `memo.relations`.
 
 Refer to the [API reference](/docs/api) for the current webhook-related endpoints.
 

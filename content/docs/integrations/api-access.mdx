@@ -30,7 +30,22 @@ For browser-based integrations, bearer-token requests may be sent cross-origin. 
 
 ## 26.11 client migration
 
-These changes apply to **26.11.1**. The [26.11 API reference](/docs/api/26-11) uses the [tagged OpenAPI specification](https://github.com/usememos/memos/blob/26.11.1/proto/gen/openapi.yaml).
+The [26.11 API reference](/docs/api/26-11) uses the [26.11.2 OpenAPI specification](https://github.com/usememos/memos/blob/26.11.2/proto/gen/openapi.yaml).
+
+### Comments and Views in 26.11.2
+
+A comment is a memo with a `parent`. Existing comments keep their parent. Update clients that used the GET or POST route at `/api/memos/{memo}/comments`. Both operations have been removed.
+
+| Client operation | Request in 26.11.2 |
+| --- | --- |
+| List top-level memos | `ListMemos` includes comments by default. Add `parent == null` to the filter to exclude them. The same filter preserves top-level counts in `GetUserStats` and `ListUserStats`. |
+| Read direct replies | Replace `ListMemoComments` with `ListMemos` and filter by the parent, for example `parent == "memos/abc123"`. Each reply has its own audience. The parent's identity is visible even if the reader cannot open it. |
+| Create a reply | Replace `CreateMemoComment` with `POST /api/memos`. Set `parent` in the JSON body alongside `content` and `visibility`. The parent cannot change after creation. |
+| Read relationships | Read `parent` on a reply and `commentCount` on its parent. The count includes direct replies the caller can read. The relations API now carries only `REFERENCE` links. |
+
+Memo filters also accept `name`, for example `name == "memos/abc123"`. To reorder Views, send every View resource name for the user exactly once, in the desired order. See [Reorder Views](/docs/api/26-11/userservice/ReorderMemoViews).
+
+### Reactions and attachments in 26.11.1
 
 - `InstanceSetting.MemoRelatedSetting`, `memo_related_setting` (`memoRelatedSetting` in JSON), and the `MEMO_RELATED` key are removed. Stop reading or writing that setting. Reactions accept Unicode emoji through the picker, and existing reactions remain stored. Configuration files containing the removed setting are rejected; follow the [configuration migration](/docs/configuration/declarative-configuration#memo-behavior).
 - `UploadAttachmentSpec.replace_attachment` (`replaceAttachment` in JSON) is an optional attachment resource name such as `attachments/abc`. Set it in the initial `UploadAttachment` spec to replace an existing attachment’s content when the upload finishes. Leave `attachment_id` and `attachment.memo` empty. Only the uploader or an administrator may replace the file; external links and motion-photo parts cannot be replaced.
@@ -98,7 +113,7 @@ A memo's `space` is a resource name such as `spaces/team-notes`, or absent when 
 
 When moving a `SPACE` memo, include both `space` and `visibility` in the update mask and explicitly confirm `SPACE` visibility for the destination. When withdrawing it to Unassigned, select a non-Space visibility in the same update. Share links cannot be created for `SPACE` memos; revoke existing links before changing a memo to that audience.
 
-The [Latest API reference](/docs/api/latest) tracks `main`, which may include changes after the latest stable release. The [26.11 reference](/docs/api/26-11) is generated from the 26.11.1 tag, and the [26.10 reference](/docs/api/26-10) uses the 26.10.0 tag. Older rendered references redirect to the [upgrade guide](/docs/operations/upgrade); historical OpenAPI snapshots remain in the website repository.
+The [Latest API reference](/docs/api/latest) tracks `main`, which may include changes after the latest stable release. The [26.11 reference](/docs/api/26-11) uses the 26.11.2 tag, and the [26.10 reference](/docs/api/26-10) uses the 26.10.0 tag. Older rendered references redirect to the [upgrade guide](/docs/operations/upgrade); historical OpenAPI snapshots remain in the website repository.
 
 ## Where to go next
 

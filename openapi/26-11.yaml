@@ -5,7 +5,7 @@ openapi: 3.0.3
 info:
     title: "Memos API"
     version: "26.11.x"
-    x-memos-source-version: "26.11.1"
+    x-memos-source-version: "26.11.2"
 paths:
     /api/ai:transcribe:
         post:
@@ -688,8 +688,9 @@ paths:
             tags:
                 - MemoService
             description: |-
-                ListMemos lists the memos the caller can read, excluding comments.
-                 Anonymous callers can list only when the instance allows public access.
+                ListMemos lists the memos the caller can read, comments included. Narrow
+                 to top-level memos with the filter `parent == null`. Anonymous callers can
+                 list only when the instance allows public access.
             operationId: MemoService_ListMemos
             parameters:
                 - name: pageSize
@@ -712,11 +713,15 @@ paths:
                   description: |-
                     Optional. A CEL expression to filter memos. Combine terms with && and ||.
                      Available fields:
+                       name (string resource name; match several with
+                         `name in ["memos/abc", "memos/def"]`),
                        content (string), creator (string, e.g. "users/1"),
                        created_ts / updated_ts (timestamp), pinned (bool),
                        visibility (string: PRIVATE | PROTECTED | PUBLIC | SPACE),
                        space (string resource name, or null when the memo has no space;
                          supports == and comparisons against null, e.g. space != null),
+                       parent (string resource name of the memo this one comments on, or null
+                         for a top-level memo; supports == and comparisons against null),
                        tags (list<string>; match with `"work" in tags`, not `tag == "work"`),
                        has_task_list / has_link / has_code / has_incomplete_tasks (bool),
                        has_location (bool; true when the memo has a location attached),
@@ -728,6 +733,8 @@ paths:
                      Examples:
                        pinned == true && visibility == "PUBLIC"
                        space == "spaces/team" or space == null
+                       parent == null (top-level memos only)
+                       parent == "memos/abc" (the comments on one memo)
                        tags.exists(t, t == "urgent")
                        content.contains("roadmap") && created_ts > now - duration("168h")
                   schema:
@@ -781,7 +788,8 @@ paths:
             description: |-
                 CreateMemo creates a memo owned by the authenticated user. The request body
                  is a Memo; set its Markdown content and visibility (defaults to PRIVATE).
-                 Requires authentication.
+                 Set memo.parent to create a comment on that memo, which must be readable by
+                 the caller and not archived. Requires authentication.
             operationId: MemoService_CreateMemo
             parameters:
                 - name: memoId
@@ -1036,96 +1044,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
-    /api/memos/{memo}/comments:
-        get:
-            tags:
-                - MemoService
-            description: |-
-                ListMemoComments lists the active comments on a memo that the caller can
-                 read. Requires read access to the memo.
-            operationId: MemoService_ListMemoComments
-            parameters:
-                - name: memo
-                  in: path
-                  description: The memo id.
-                  required: true
-                  schema:
-                    type: string
-                - name: pageSize
-                  in: query
-                  description: |-
-                    Optional. The maximum number of comments to return. The service may return
-                     fewer. Defaults to 50; values above 1000 are coerced to 1000.
-                  schema:
-                    type: integer
-                    format: int32
-                - name: pageToken
-                  in: query
-                  description: |-
-                    Optional. A page token from a previous call. Provide it to retrieve the
-                     next page.
-                  schema:
-                    type: string
-                - name: orderBy
-                  in: query
-                  description: Optional. The order to sort results by. Currently ignored by the server.
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/ListMemoCommentsResponse'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
-        post:
-            tags:
-                - MemoService
-            description: |-
-                CreateMemoComment atomically creates an independent memo plus one immutable
-                 COMMENT context relation to the named memo. The new memo keeps its own
-                 placement, visibility, authorship, and lifecycle. The named memo must be
-                 readable by the caller and not archived.
-            operationId: MemoService_CreateMemoComment
-            parameters:
-                - name: memo
-                  in: path
-                  description: The memo id.
-                  required: true
-                  schema:
-                    type: string
-                - name: commentId
-                  in: query
-                  description: |-
-                    Optional. The ID to use for the comment memo, in the same format as
-                     CreateMemoRequest.memo_id. If empty, a unique ID is generated.
-                  schema:
-                    type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/Memo'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Memo'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
     /api/memos/{memo}/reactions:
         get:
             tags:
@@ -1280,10 +1198,9 @@ paths:
             tags:
                 - MemoService
             description: |-
-                SetMemoRelations replaces the full set of mutable REFERENCE relations on a
-                 memo. COMMENT relations are immutable creation context and are rejected by
-                 this RPC. An empty list clears references without changing COMMENT.
-                 Requires the memo creator or an instance administrator.
+                SetMemoRelations replaces the full set of relations on a memo with the
+                 provided list. An empty list clears them. Requires the memo creator or an
+                 instance administrator.
             operationId: MemoService_SetMemoRelations
             parameters:
                 - name: memo
@@ -2927,6 +2844,40 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
+    /api/users/{user}/views:reorder:
+        post:
+            tags:
+                - UserService
+            description: |-
+                ReorderMemoViews sets the order of a user's memo views, which is the order
+                 ListMemoViews returns them in. Only the user may call it.
+            operationId: UserService_ReorderMemoViews
+            parameters:
+                - name: user
+                  in: path
+                  description: The user id.
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ReorderMemoViewsRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ReorderMemoViewsResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /api/users/{user}/webhooks:
         get:
             tags:
@@ -3114,8 +3065,8 @@ paths:
                 - name: filter
                   in: query
                   description: |-
-                    Optional. A CEL expression selecting the readable non-comment memos to
-                     count. Supports the same fields as ListMemos, including `space`.
+                    Optional. A CEL expression selecting the readable memos to count.
+                     Supports the same fields as ListMemos, including `space` and `parent`.
                   schema:
                     type: string
             responses:
@@ -4288,18 +4239,6 @@ components:
                     type: string
                     description: A token to retrieve the next page. Empty when there are no more pages.
             description: Response message for MemoService.ListMemoAttachments.
-        ListMemoCommentsResponse:
-            type: object
-            properties:
-                comments:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/Memo'
-                    description: The comment memos.
-                nextPageToken:
-                    type: string
-                    description: A token to retrieve the next page. Empty when there are no more pages.
-            description: Response message for MemoService.ListMemoComments.
         ListMemoReactionsResponse:
             type: object
             properties:
@@ -4601,9 +4540,7 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/MemoRelation'
-                    description: |-
-                        Optional. The relations of the memo in both directions. Only REFERENCE
-                         relations can be set; COMMENT relations are output only.
+                    description: Optional. The relations of the memo in both directions.
                 reactions:
                     readOnly: true
                     type: array
@@ -4611,12 +4548,11 @@ components:
                         $ref: '#/components/schemas/Reaction'
                     description: Output only. The reactions to the memo.
                 parent:
-                    readOnly: true
                     type: string
                     description: |-
-                        Output only. The context memo of this COMMENT relation, if any.
-                         Its identity is returned even when the caller cannot read the parent.
-                         Fetch the parent independently; this field does not grant read access.
+                        Optional. Immutable. The memo this memo comments on. Set it on creation
+                         to create a comment; unset for a top-level memo. Its identity is returned
+                         even when the caller cannot read the parent, and grants no read access.
                          Format: memos/{memo}
                 tags:
                     readOnly: true
@@ -4645,6 +4581,13 @@ components:
                         Optional. The last update time. Defaults to the current time when unset on
                          creation.
                     format: date-time
+                commentCount:
+                    readOnly: true
+                    type: integer
+                    description: |-
+                        Output only. The number of comments directly on this memo that the caller
+                         can read.
+                    format: int32
             description: Memo is a Markdown note written by a user.
         MemoRelation:
             required:
@@ -4656,18 +4599,15 @@ components:
                 memo:
                     allOf:
                         - $ref: '#/components/schemas/MemoRelation_MemoRef'
-                    description: Required. The source memo of the relation. For COMMENT, the comment.
+                    description: Required. The source memo of the relation.
                 relatedMemo:
                     allOf:
                         - $ref: '#/components/schemas/MemoRelation_MemoRef'
-                    description: |-
-                        Required. The target memo of the relation. For COMMENT, the memo being
-                         commented on.
+                    description: Required. The target memo of the relation.
                 type:
                     enum:
                         - TYPE_UNSPECIFIED
                         - REFERENCE
-                        - COMMENT
                     type: string
                     description: Required. The type of the relation.
                     format: enum
@@ -4687,7 +4627,7 @@ components:
                     type: string
                     description: |-
                         Output only. A plain-text snippet of the memo content. Empty in
-                         ListMemos and ListMemoComments responses.
+                         ListMemos responses.
             description: MemoRef identifies a memo in a relation.
         MemoShare:
             type: object
@@ -4984,6 +4924,36 @@ components:
                     description: When the new access token expires.
                     format: date-time
             description: Response message for AuthService.RefreshToken.
+        ReorderMemoViewsRequest:
+            required:
+                - parent
+                - names
+            type: object
+            properties:
+                parent:
+                    type: string
+                    description: |-
+                        Required. The user whose memo views are reordered.
+                         Format: users/{user}
+                names:
+                    type: array
+                    items:
+                        type: string
+                    description: |-
+                        Required. The resource names of all the user's memo views, in the new
+                         order. The service rejects a list that omits a memo view, repeats one, or
+                         names one the user does not have.
+                         Format: users/{user}/views/{view}
+            description: Request message for UserService.ReorderMemoViews.
+        ReorderMemoViewsResponse:
+            type: object
+            properties:
+                memoViews:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/MemoView'
+                    description: The memo views in their new order.
+            description: Response message for UserService.ReorderMemoViews.
         SetMemoAttachmentsRequest:
             required:
                 - name
@@ -5016,9 +4986,7 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/MemoRelation'
-                    description: |-
-                        Required. The complete set of REFERENCE relations for the memo. COMMENT
-                         relations are rejected.
+                    description: Required. The complete set of relations for the memo.
             description: Request message for MemoService.SetMemoRelations.
         SignInRequest:
             type: object
@@ -5787,7 +5755,9 @@ components:
                          uploads and attachments in all spaces. Excludes temporary uploads and
                          derived files. Returned only by GetUserStats for the authenticated user's
                          own stats, independently of the request's memo filter.
-            description: UserStats is a summary of a user's memos. Comments are not counted.
+            description: |-
+                UserStats is a summary of a user's memos. Comments are counted unless the
+                 filter excludes them with `parent == null`.
         UserStats_MemoTypeStats:
             type: object
             properties:

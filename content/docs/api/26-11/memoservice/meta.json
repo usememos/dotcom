@@ -3,7 +3,6 @@
   "pages": [
     "BatchGetLinkMetadata",
     "CreateMemo",
-    "CreateMemoComment",
     "CreateMemoShare",
     "DeleteMemo",
     "DeleteMemoReaction",
@@ -12,7 +11,6 @@
     "GetMemo",
     "GetSharedMemo",
     "ListMemoAttachments",
-    "ListMemoComments",
     "ListMemoReactions",
     "ListMemoRelations",
     "ListMemoShares",

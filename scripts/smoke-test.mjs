@@ -33,7 +33,7 @@ const checks = [
   {
     path: "/docs/usage/views",
     type: "html",
-    contains: "A View is a named, reusable set of Memo filter conditions.",
+    contains: "parent == null",
     openNextCache: "HIT",
   },
   {
@@ -44,7 +44,8 @@ const checks = [
   { path: "/changelog/0-31-0", type: "html", contains: "Shared Spaces" },
   { path: "/changelog/26-11-1", type: "html", contains: "Markup" },
   { path: "/changelog/26-11-2", type: "html", contains: "Include comments" },
-  { path: "/docs/api/26-11", type: "html", contains: "26.11.1" },
+  { path: "/docs/api/26-11", type: "html", contains: "26.11.2" },
+  { path: "/docs/api/26-11/userservice/ReorderMemoViews", type: "html", contains: "Reorder Views" },
   { path: "/docs/api/26-11/attachmentservice/UploadAttachment", type: "html", contains: "Upload Attachment" },
   { path: "/docs/api/26-10", type: "html", contains: "26.10.0" },
   ...["/docs/api/0-31", "/docs/api/0-31/userservice/ExportMemos"].map((path) => ({

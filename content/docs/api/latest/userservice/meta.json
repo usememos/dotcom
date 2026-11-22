@@ -29,6 +29,7 @@
     "ListUserStats",
     "ListUserWebhooks",
     "ListUsers",
+    "ReorderMemoViews",
     "UpdateMemoView",
     "UpdateUser",
     "UpdateUserNotification",
