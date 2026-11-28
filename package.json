@@ -13,7 +13,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "build:worker": "opennextjs-cloudflare build",
+    "build:worker": "node scripts/fetch-git-history.mjs && opennextjs-cloudflare build",
     "deploy": "node scripts/verify-deploy-env.mjs && opennextjs-cloudflare deploy -- --keep-vars",
     "deploy:dry-run": "pnpm build:worker && wrangler deploy --dry-run",
     "upload": "node scripts/verify-deploy-env.mjs && opennextjs-cloudflare upload -- --keep-vars",

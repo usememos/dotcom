@@ -46,7 +46,7 @@ Use `pnpm` for all package scripts, with the version declared in `package.json`.
 | Generate Fumadocs source | `pnpm docs:generate:source` | Rebuilds ignored `.source/` files without downloading API specs |
 | Generate scoped docs styles | `pnpm docs:generate:styles` | Rebuilds the generated `/docs`-scoped Fumadocs stylesheet |
 | Generate Cloudflare types | `pnpm typegen` | Writes `cloudflare-env.d.ts` |
-| Build Cloudflare Worker | `pnpm run build:worker` | Generates sources/styles, runs the Next.js build, and creates the OpenNext artifact |
+| Build Cloudflare Worker | `pnpm run build:worker` | Fetches full Git history when the checkout is shallow, then generates sources/styles, runs the Next.js build, and creates the OpenNext artifact |
 | Cloudflare preview | `pnpm run preview` | Builds with OpenNext and serves the Workers runtime on port 8788 |
 | Cloudflare deploy | `pnpm run deploy` | Deploys an existing OpenNext artifact, preserving existing vars |
 | Cloudflare version upload | `pnpm run upload` | Uploads an existing OpenNext artifact without promoting it |
@@ -168,6 +168,7 @@ Use `pnpm run preview` or `pnpm run deploy:dry-run` to validate Cloudflare produ
 - `pnpm-workspace.yaml` explicitly allows dependency build scripts for Clerk shared code, esbuild, sharp, and workerd. Investigate new blocked-build warnings rather than assuming they are cosmetic.
 - The production build generates hundreds of static pages, so `pnpm build` can take a while.
 - Do not edit generated files in `.source/`.
+- Docs last-modified dates (in `sitemap.xml` and docs JSON-LD) come from Git history through the fumadocs `lastModified` plugin, which `source.config.ts` enables only when the checkout is not shallow. `scripts/fetch-git-history.mjs` unshallows build hosts before `build:worker`; if it cannot, the build continues and publishes no docs dates. The generated page type has a `lastModified` field only when the plugin is on, so read it through `getDocLastModified()` in `src/features/docs/lib/last-modified.ts`.
 - Set `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` before building the static account routes; deploy and upload check that it is present. There are no current `CLERK_SECRET_KEY` consumers or server-side Clerk handlers. Introduce server credentials and narrowly matched auth middleware together when a feature needs them.
 - Ordinary builds use committed API schemas. `pnpm docs:refresh` can fall back to a local snapshot after a failed download; inspect its log before claiming a snapshot is current.
 - Before adding persistence or a binding, document the feature's requirements and follow `docs/architecture.md` ("Future data layer"). D1, Drizzle, KV, and Clerk user-sync webhooks are not existing infrastructure or mandatory next steps.
