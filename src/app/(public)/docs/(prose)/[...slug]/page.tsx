@@ -42,6 +42,7 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
       "@type": "Organization",
       name: "Memos Team",
     },
+    ...(page.data.lastModified ? { dateModified: page.data.lastModified.toISOString() } : {}),
   };
 
   return (

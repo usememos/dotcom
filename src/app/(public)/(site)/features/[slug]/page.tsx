@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ChapterHeader } from "@/features/marketing/components/chapter-header";
 import { FeatureShowcase, hasFeatureShowcase } from "@/features/marketing/components/feature-showcase";
 import { PageHero } from "@/features/marketing/components/page-hero";
-import { StartSection } from "@/features/marketing/components/start-section";
+import { DEFAULT_START_LINKS, StartSection } from "@/features/marketing/components/start-section";
 import { getAllFeatureSlugs, getFeature, isFeatureSlug } from "@/features/marketing/data/features";
 import {
   buildBreadcrumbItems,
@@ -147,7 +147,7 @@ export default async function FeaturePage({ params }: FeaturePageProps) {
         </div>
       </section>
 
-      <StartSection />
+      <StartSection actions={[...(feature.docs ?? []), ...DEFAULT_START_LINKS]} />
     </main>
   );
 }

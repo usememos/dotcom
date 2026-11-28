@@ -21,6 +21,21 @@ describe("FeaturePage", () => {
     expect(container.querySelector("[data-note], [data-arrow]")).toBeNull();
   });
 
+  it("lists the feature's own docs before the shared references", async () => {
+    await renderFeature("self-hosted");
+
+    expect(screen.getByRole("link", { name: "Deployment guides" })).toHaveAttribute("href", "/docs/deploy");
+    expect(screen.getByRole("link", { name: "Reverse proxy guide" })).toHaveAttribute("href", "/docs/deploy/reverse-proxy");
+    expect(screen.getByRole("link", { name: "Documentation" })).toHaveAttribute("href", "/docs");
+  });
+
+  it("falls back to the shared references when a feature has no docs of its own", async () => {
+    await renderFeature("no-fees");
+
+    expect(screen.getByRole("link", { name: "Documentation" })).toHaveAttribute("href", "/docs");
+    expect(screen.queryByRole("link", { name: "Deployment guides" })).not.toBeInTheDocument();
+  });
+
   it("labels unreleased features and never presents them as available", async () => {
     await renderFeature("import");
 

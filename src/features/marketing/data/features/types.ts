@@ -1,6 +1,12 @@
 import type { LucideIcon } from "lucide-react";
 import type { FEATURE_SLUGS } from "./slugs";
 
+/** A documentation page that explains how to use or set up a feature. */
+export interface FeatureDocLink {
+  label: string;
+  href: `/docs${string}`;
+}
+
 export interface FeatureDefinition {
   title: string;
   /**
@@ -10,6 +16,8 @@ export interface FeatureDefinition {
    */
   searchTitle?: string;
   description: string;
+  /** Docs pages listed under "Further reading". Each must be an existing docs route. */
+  docs?: readonly FeatureDocLink[];
   icon: LucideIcon;
   wip?: boolean;
   hero: {

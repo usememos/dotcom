@@ -13,6 +13,14 @@ describe("root layout", () => {
     expect(layoutSource).not.toMatch(/ClerkProvider/);
   });
 
+  it("describes one organization and references it from the software and website data", () => {
+    expect(layoutSource.match(/"@type": "Organization"/g)).toHaveLength(1);
+    expect(layoutSource).toMatch(/"@id": ORGANIZATION_ID/);
+    expect(layoutSource).toMatch(/author: ORGANIZATION_REFERENCE/);
+    expect(layoutSource.match(/publisher: ORGANIZATION_REFERENCE/g)).toHaveLength(2);
+    expect(layoutSource).not.toMatch(/ProductivityApplication/);
+  });
+
   it("owns the global theme without initializing Fumadocs", () => {
     expect(layoutSource).toMatch(/from "next-themes"/);
     expect(layoutSource).toMatch(/<ThemeProvider/);

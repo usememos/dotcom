@@ -29,7 +29,7 @@ const softwareJsonLd = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   name: "Memos",
-  applicationCategory: "ProductivityApplication",
+  applicationCategory: "UtilitiesApplication",
   operatingSystem: "Cross-platform",
   description: "Free, open-source, self-hosted note-taking software with no subscriptions or paid feature tiers.",
   url: absoluteUrl("/pricing"),

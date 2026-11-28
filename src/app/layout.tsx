@@ -86,13 +86,20 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
+// One Organization node, referenced by id from the software and website nodes so
+// search engines read them as the same entity instead of three unrelated ones.
+const ORGANIZATION_ID = "https://usememos.com/#organization";
+const ORGANIZATION_REFERENCE = { "@id": ORGANIZATION_ID };
+
 export default function Layout({ children }: { children: ReactNode }) {
   const softwareJsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
+    "@id": "https://usememos.com/#software",
     name: "Memos",
     description: BRAND_DESCRIPTION,
-    applicationCategory: "ProductivityApplication",
+    // Google accepts only its listed app types; there is no note-taking or productivity value.
+    applicationCategory: "UtilitiesApplication",
     operatingSystem: "Cross-platform",
     offers: {
       "@type": "Offer",
@@ -101,20 +108,8 @@ export default function Layout({ children }: { children: ReactNode }) {
     },
     url: "https://usememos.com",
     downloadUrl: GITHUB_REPO_URL,
-    author: {
-      "@type": "Organization",
-      name: "Memos Team",
-      url: "https://usememos.com",
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "Memos",
-      url: "https://usememos.com",
-      logo: {
-        "@type": "ImageObject",
-        url: BRAND_LOGO_URL,
-      },
-    },
+    author: ORGANIZATION_REFERENCE,
+    publisher: ORGANIZATION_REFERENCE,
     image: DEFAULT_OG_IMAGE,
     screenshot: DEFAULT_OG_IMAGE,
     featureList: [
@@ -132,7 +127,9 @@ export default function Layout({ children }: { children: ReactNode }) {
   const organizationJsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": ORGANIZATION_ID,
     name: "Memos",
+    description: BRAND_DESCRIPTION,
     url: "https://usememos.com",
     logo: BRAND_LOGO_URL,
     sameAs: [GITHUB_REPO_URL, "https://t.me/memosxtg", "https://twitter.com/usaboringmemos", "https://discord.gg/tfPJa4UmAv"],
@@ -146,9 +143,11 @@ export default function Layout({ children }: { children: ReactNode }) {
   const websiteJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": "https://usememos.com/#website",
     name: "Memos",
     alternateName: ["usememos", "usememos.com"],
     url: "https://usememos.com",
+    publisher: ORGANIZATION_REFERENCE,
   };
   const siteNavigationJsonLd = buildSiteNavigationJsonLd();
   return (

@@ -155,7 +155,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       .getPages()
       .filter((page) => isIndexableDocPage(page.url))
       .map((page) => {
-        const lastModified = parseDate(page.data.lastUpdated);
+        const lastModified = page.data.lastModified ?? parseDate(page.data.lastUpdated);
 
         return {
           url: `${BASE_URL}${page.url}`,

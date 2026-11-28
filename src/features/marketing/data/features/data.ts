@@ -44,6 +44,11 @@ export const FEATURES = {
     title: "Self-Hosted",
     searchTitle: "Self-hosted note-taking app on your own server",
     description: "Choose where your memos live and who can use your Memos.",
+    docs: [
+      { label: "Deployment guides", href: "/docs/deploy" },
+      { label: "Docker guide", href: "/docs/deploy/docker" },
+      { label: "Reverse proxy guide", href: "/docs/deploy/reverse-proxy" },
+    ],
     icon: ServerIcon,
     hero: {
       title: "Choose where your memos live",
@@ -81,6 +86,10 @@ export const FEATURES = {
   "data-ownership": {
     title: "Data Ownership",
     description: "Keep your own record, with a Markdown export whenever you want a copy.",
+    docs: [
+      { label: "Export and import", href: "/docs/usage/export-import" },
+      { label: "Backup and restore", href: "/docs/operations/backup-restore" },
+    ],
     icon: LockIcon,
     hero: {
       title: "A record that stays yours",
@@ -119,6 +128,10 @@ export const FEATURES = {
     title: "Open Source",
     searchTitle: "Open-source note-taking app under the MIT license",
     description: "MIT licensed and developed in public, so the code can be inspected, forked, and improved.",
+    docs: [
+      { label: "Contributing guide", href: "/docs/development/contributing" },
+      { label: "Build from source", href: "/docs/deploy/development" },
+    ],
     icon: GitBranchIcon,
     hero: {
       title: "Open code you can read",
@@ -193,6 +206,10 @@ export const FEATURES = {
   "no-dependencies": {
     title: "Self-Contained",
     description: "Your memos stay where you choose, without a required outside account.",
+    docs: [
+      { label: "Architecture overview", href: "/docs/operations/architecture" },
+      { label: "Authentication settings", href: "/docs/configuration/authentication" },
+    ],
     icon: CloudOffIcon,
     hero: {
       title: "No outside account required",
@@ -232,6 +249,7 @@ export const FEATURES = {
   "instant-save": {
     title: "Saving & Drafts",
     description: "Your draft is kept in the browser as you type, and a memo saves with one shortcut.",
+    docs: [{ label: "Writing memos", href: "/docs/usage/memos" }],
     icon: SaveIcon,
     hero: {
       title: "Keep the draft, save when it is down",
@@ -269,6 +287,10 @@ export const FEATURES = {
   "quick-capture": {
     title: "Quick Capture",
     description: "Write a memo from any page in Memos, from your browser with the Web Clipper, or from Telegram.",
+    docs: [
+      { label: "Writing memos", href: "/docs/usage/memos" },
+      { label: "Telegram bot", href: "/docs/integrations/telegram-bot" },
+    ],
     icon: PlusCircleIcon,
     hero: {
       title: "Write it down before it is gone",
@@ -307,6 +329,7 @@ export const FEATURES = {
     title: "Markdown Notes",
     searchTitle: "Markdown notes with code, tables, math, and diagrams",
     description: "Write memos in Markdown, with code highlighting, tables, task lists, math, and diagrams.",
+    docs: [{ label: "Writing Markdown", href: "/docs/usage/writing-markdown" }],
     icon: FileTextIcon,
     hero: {
       title: "Write in plain Markdown",
@@ -344,6 +367,10 @@ export const FEATURES = {
   "media-integration": {
     title: "Attachments & Media",
     description: "Attach images, video, audio, and documents to a memo by dropping, pasting, or uploading them.",
+    docs: [
+      { label: "Attachments", href: "/docs/usage/attachments" },
+      { label: "Attachment storage", href: "/docs/configuration/storage" },
+    ],
     icon: ImageIcon,
     hero: {
       title: "Keep files with the memo",
@@ -382,6 +409,10 @@ export const FEATURES = {
   "universal-search": {
     title: "Search & Filters",
     description: "Find a memo again by searching its text, or filter by tag, date, visibility, and more.",
+    docs: [
+      { label: "Search and archive", href: "/docs/usage/search-archive" },
+      { label: "Views", href: "/docs/usage/views" },
+    ],
     icon: SearchIcon,
     hero: {
       title: "Find it when you need it",
@@ -420,6 +451,10 @@ export const FEATURES = {
     title: "Tags",
     searchTitle: "Tags and nested tags for your notes",
     description: "Add #tags as you write, nest them with a slash, and filter your memos by any tag.",
+    docs: [
+      { label: "Tags", href: "/docs/usage/tags" },
+      { label: "Views", href: "/docs/usage/views" },
+    ],
     icon: TagIcon,
     hero: {
       title: "Tag while you write",
@@ -457,6 +492,7 @@ export const FEATURES = {
   "timeline-view": {
     title: "Timeline View",
     description: "Browse quick notes, logs, and ideas in the order you wrote them.",
+    docs: [{ label: "Usage guides", href: "/docs/usage" }],
     icon: ClockIcon,
     hero: {
       title: "Your private timeline",
@@ -495,6 +531,7 @@ export const FEATURES = {
   "public-sharing": {
     title: "Public Sharing",
     description: "Share one memo with a link, make it public, or save it as an image. Everything else stays private.",
+    docs: [{ label: "Sharing", href: "/docs/usage/sharing" }],
     icon: Share2Icon,
     hero: {
       title: "Share only what you choose",
@@ -532,6 +569,7 @@ export const FEATURES = {
   microblog: {
     title: "Microblog",
     description: "Share a quick thought or an update as a public memo when you choose.",
+    docs: [{ label: "Sharing", href: "/docs/usage/sharing" }],
     icon: MessageCircleIcon,
     hero: {
       title: "A thought you can share",
@@ -644,6 +682,7 @@ export const FEATURES = {
   "keyboard-shortcuts": {
     title: "Keyboard Shortcuts",
     description: "Save a memo and format Markdown from the keyboard while you write.",
+    docs: [{ label: "Writing Markdown", href: "/docs/usage/writing-markdown" }],
     icon: KeyboardIcon,
     hero: {
       title: "Write without reaching for the mouse",
@@ -681,6 +720,7 @@ export const FEATURES = {
   "customizable-ui": {
     title: "Customizable",
     description: "Set your instance's name, logo, and theme, and add your own CSS.",
+    docs: [{ label: "Instance settings", href: "/docs/admin/instance-settings" }],
     icon: PaletteIcon,
     hero: {
       title: "Set it up your way",
@@ -720,6 +760,11 @@ export const FEATURES = {
   "cross-platform": {
     title: "Cross-Platform",
     description: "Run Memos with Docker, as a native binary on Linux, macOS, or Windows, or in Kubernetes.",
+    docs: [
+      { label: "Docker guide", href: "/docs/deploy/docker" },
+      { label: "Binary install", href: "/docs/deploy/binary" },
+      { label: "Kubernetes guide", href: "/docs/deploy/kubernetes" },
+    ],
     icon: ServerIcon,
     hero: {
       title: "Deploy where you already run things",
@@ -758,6 +803,7 @@ export const FEATURES = {
   performance: {
     title: "Performance",
     description: "Read and write your memos on modest hardware.",
+    docs: [{ label: "Performance tuning", href: "/docs/operations/performance-tuning" }],
     icon: ZapIcon,
     hero: {
       title: "A place for everyday writing",
@@ -795,6 +841,10 @@ export const FEATURES = {
   lightweight: {
     title: "Lightweight",
     description: "Keep your timeline on modest hardware you already have.",
+    docs: [
+      { label: "Architecture overview", href: "/docs/operations/architecture" },
+      { label: "Docker guide", href: "/docs/deploy/docker" },
+    ],
     icon: FeatherIcon,
     hero: {
       title: "Fits on small hardware",
@@ -832,6 +882,7 @@ export const FEATURES = {
   "database-support": {
     title: "Multi-Database",
     description: "Choose between SQLite, PostgreSQL, or MySQL to match your infrastructure needs.",
+    docs: [{ label: "Database configuration", href: "/docs/configuration/database" }],
     icon: DatabaseIcon,
     hero: {
       title: "Your database, your choice",
@@ -870,6 +921,12 @@ export const FEATURES = {
     title: "API & Integrations",
     searchTitle: "REST API, gRPC API, and MCP server",
     description: "REST and gRPC APIs for custom capture flows, integrations, and automation.",
+    docs: [
+      { label: "API access", href: "/docs/integrations/api-access" },
+      { label: "MCP server", href: "/docs/integrations/mcp" },
+      { label: "Webhooks", href: "/docs/integrations/webhooks" },
+      { label: "API reference", href: "/docs/api/latest" },
+    ],
     icon: CodeIcon,
     hero: {
       title: "Built for integration",
@@ -909,6 +966,7 @@ export const FEATURES = {
   community: {
     title: "Community-Driven",
     description: "Developed in public on GitHub, with discussions, Discord, and outside contributors.",
+    docs: [{ label: "Contributing guide", href: "/docs/development/contributing" }],
     icon: HeartIcon,
     hero: {
       title: "Built together",
@@ -984,6 +1042,7 @@ export const FEATURES = {
   import: {
     title: "Import",
     description: "Import a Memos export ZIP into your account on another instance. Imports from other note apps are not supported.",
+    docs: [{ label: "Export and import", href: "/docs/usage/export-import" }],
     icon: UploadIcon,
     wip: true,
     hero: {
@@ -1023,6 +1082,10 @@ export const FEATURES = {
     title: "Export",
     searchTitle: "Export notes as Markdown and JSON",
     description: "Download every memo you wrote, with attached files, as a ZIP of Markdown and JSON.",
+    docs: [
+      { label: "Export and import", href: "/docs/usage/export-import" },
+      { label: "Backup and restore", href: "/docs/operations/backup-restore" },
+    ],
     icon: DownloadIcon,
     hero: {
       title: "Take your memos with you",

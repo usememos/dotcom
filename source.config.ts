@@ -1,5 +1,22 @@
+import { execFileSync } from "node:child_process";
 import { defineConfig, defineDocs, frontmatterSchema, metaSchema } from "fumadocs-mdx/config";
+import lastModified from "fumadocs-mdx/plugins/last-modified";
 import { z } from "zod";
+
+// Last-modified dates for docs come from Git and feed sitemap.xml and the docs
+// JSON-LD. They are only correct with full history: in a shallow clone every
+// file appears to change in the newest commit. Without full history, emit none.
+function hasFullGitHistory(): boolean {
+  try {
+    const output = execFileSync("git", ["rev-parse", "--is-shallow-repository"], {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    });
+    return output.trim() === "false";
+  } catch {
+    return false;
+  }
+}
 
 const imageDescriptionSchema = z.string().trim().min(1).max(80).optional();
 
@@ -61,6 +78,8 @@ export const changelog = defineDocs({
 });
 
 export default defineConfig({
+  // Blog and changelog entries carry their own published dates.
+  plugins: hasFullGitHistory() ? [lastModified({ filter: (collection) => collection === "docs" })] : [],
   mdxOptions: {
     remarkPlugins: [],
     rehypePlugins: [],

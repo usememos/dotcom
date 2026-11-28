@@ -1,6 +1,6 @@
 import { type MarketingAction, MarketingActions } from "@/features/marketing/components/marketing-page";
 
-const DEFAULT_LINKS: readonly MarketingAction[] = [
+export const DEFAULT_START_LINKS: readonly MarketingAction[] = [
   { label: "Documentation", href: "/docs" },
   { label: "Demo", href: "https://demo.usememos.com/", external: true },
 ];
@@ -9,7 +9,7 @@ const DEFAULT_LINKS: readonly MarketingAction[] = [
 export function StartSection({
   title = "Further reading",
   description,
-  actions = DEFAULT_LINKS,
+  actions = DEFAULT_START_LINKS,
 }: {
   title?: string;
   description?: string;
