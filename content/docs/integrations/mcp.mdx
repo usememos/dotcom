@@ -11,29 +11,7 @@ The server is part of the main Memos binary — there is nothing extra to instal
 https://<your-instance>/mcp
 ```
 
-## Upgrading older MCP clients
-
-Memos 0.30 replaced the earlier MCP implementation with a stateless, tools-only endpoint generated from the OpenAPI schema. Existing clients must use `/mcp` and the service-prefixed tool names listed below.
-
-The previous prompts, resources, tool-filtering headers, route aliases, and unprefixed tool names are no longer available. Tool failures now use the standard MCP `isError` result with readable text content.
-
-### Migrating to 0.31
-
-Replace `shortcut_list_shortcuts` with `user_list_memo_views`. Existing saved filters migrate automatically, but client tool names and request mappings must change. Tool calls also follow the new author and Space membership permissions. Comments created without an explicit visibility default to `PRIVATE`. See [API migration notes](/docs/integrations/api-access#031-client-migration).
-
-### Migrating to 26.10
-
-Tool names are unchanged. The `/mcp` endpoint keeps its path while REST routes drop the `/api/v1` prefix, so clients that also call the REST API follow the [26.10 migration checklist](/docs/integrations/api-access#2610-client-migration). The reaction tool no longer lists a redundant `parent` argument beside its path. Usage limits apply to tool calls: a memo or upload over a limit fails with `RESOURCE_EXHAUSTED` and names the metric.
-
-### Migrating to 26.11.2
-
-Replace `memo_list_memo_comments` with `memo_list_memos`. Set `filter` to `parent == "memos/abc123"` for direct replies to that memo, or `parent == null` for top-level memos.
-
-Replace `memo_create_memo_comment` with `memo_create_memo`. Pass the parent resource name inside the tool’s `body` argument:
-
-```json
-{ "body": { "parent": "memos/abc123", "content": "I’ll bring the notes.", "visibility": "PRIVATE" } }
-```
+Upgrading from an earlier release? See [Upgrading older MCP clients](#upgrading-older-mcp-clients).
 
 ## Connecting a client
 
@@ -106,3 +84,27 @@ Desktop MCP clients work out of the box. Browser-based clients are subject to an
 - **`401` / permission errors** — the token is missing, expired, or lacks access to the resource. Create a fresh token in your user settings.
 - **`403` on connect** — your client sends an `Origin` header that doesn't match the instance. Use a desktop client, or set the instance URL so it matches.
 - **Tool errors** — API failures are returned with `isError: true` and readable text containing the HTTP status and message, so the assistant can react without trying to validate the error as a successful output schema.
+
+## Upgrading older MCP clients
+
+Memos 0.30 replaced the earlier MCP implementation with a stateless, tools-only endpoint generated from the OpenAPI schema. Existing clients must use `/mcp` and the service-prefixed tool names listed under [Available tools](#available-tools).
+
+The previous prompts, resources, tool-filtering headers, route aliases, and unprefixed tool names are no longer available. Tool failures now use the standard MCP `isError` result with readable text content.
+
+### Migrating to 0.31
+
+Replace `shortcut_list_shortcuts` with `user_list_memo_views`. Existing saved filters migrate automatically, but client tool names and request mappings must change. Tool calls also follow the new author and Space membership permissions. Comments created without an explicit visibility default to `PRIVATE`. See [API migration notes](/docs/integrations/api-access#031-client-migration).
+
+### Migrating to 26.10
+
+Tool names are unchanged. The `/mcp` endpoint keeps its path while REST routes drop the `/api/v1` prefix, so clients that also call the REST API follow the [26.10 migration checklist](/docs/integrations/api-access#2610-client-migration). The reaction tool no longer lists a redundant `parent` argument beside its path. Usage limits apply to tool calls: a memo or upload over a limit fails with `RESOURCE_EXHAUSTED` and names the metric.
+
+### Migrating to 26.11.2
+
+Replace `memo_list_memo_comments` with `memo_list_memos`. Set `filter` to `parent == "memos/abc123"` for direct replies to that memo, or `parent == null` for top-level memos.
+
+Replace `memo_create_memo_comment` with `memo_create_memo`. Pass the parent resource name inside the tool’s `body` argument:
+
+```json
+{ "body": { "parent": "memos/abc123", "content": "I’ll bring the notes.", "visibility": "PRIVATE" } }
+```
