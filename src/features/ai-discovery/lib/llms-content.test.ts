@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { buildLlmsFull, buildLlmsIndex, buildMarkdownDocument, isApiDocsUrl, type PageMeta, parseMarkdownSlug } from "./llms-content";
+import {
+  buildCanonicalLinkHeader,
+  buildLlmsFull,
+  buildLlmsIndex,
+  buildMarkdownDocument,
+  isApiDocsUrl,
+  type PageMeta,
+  parseMarkdownSlug,
+} from "./llms-content";
 
 const indexInput: { docs: PageMeta[]; blog: PageMeta[]; changelog: PageMeta[] } = {
   docs: [
@@ -53,6 +61,11 @@ describe("markdown document builders", () => {
   it("buildMarkdownDocument prefixes title and canonical URL", () => {
     const doc = buildMarkdownDocument({ url: "/docs/getting-started", title: "Getting Started", markdown: "Body text.\n" });
     expect(doc).toBe("# Getting Started\nURL: https://usememos.com/docs/getting-started\n\nBody text.\n");
+  });
+
+  it("buildCanonicalLinkHeader names the HTML page for an export slug", () => {
+    expect(buildCanonicalLinkHeader(["docs", "deploy", "docker"])).toBe('<https://usememos.com/docs/deploy/docker>; rel="canonical"');
+    expect(buildCanonicalLinkHeader(["docs"])).toBe('<https://usememos.com/docs>; rel="canonical"');
   });
 
   it("buildLlmsFull concatenates documents with separators", () => {

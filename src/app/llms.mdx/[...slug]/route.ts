@@ -1,3 +1,4 @@
+import { buildCanonicalLinkHeader } from "@/features/ai-discovery/lib/llms-content";
 import { getContentMarkdown, getMarkdownPageParams } from "@/features/ai-discovery/lib/llms-sources";
 
 export const dynamic = "force-static";
@@ -19,6 +20,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
   return new Response(markdown, {
     headers: {
       "Content-Type": "text/markdown; charset=utf-8",
+      Link: buildCanonicalLinkHeader(slug),
     },
   });
 }

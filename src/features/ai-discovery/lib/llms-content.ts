@@ -101,6 +101,14 @@ export function buildMarkdownDocument(page: PageContent): string {
   return `# ${page.title}\nURL: ${absoluteUrl(page.url)}\n\n${page.markdown.trim()}\n`;
 }
 
+/**
+ * `Link` response header for a `/llms.mdx/<slug>` export, naming the HTML page
+ * as canonical so search engines consolidate the Markdown copy into it.
+ */
+export function buildCanonicalLinkHeader(slug: string[]): string {
+  return `<${absoluteUrl(`/${slug.join("/")}`)}>; rel="canonical"`;
+}
+
 export function buildLlmsFull(pages: PageContent[]): string {
   const header = `# ${SITE_NAME} — Full content\n\n> ${LLMS_SUMMARY}\n`;
   const body = pages.map(buildMarkdownDocument).join("\n---\n\n");
