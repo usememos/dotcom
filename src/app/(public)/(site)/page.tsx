@@ -5,12 +5,12 @@ import { HomeFaqSection } from "@/features/marketing/components/home-faq-section
 import { HomeFindSection } from "@/features/marketing/components/home-find-section";
 import { HomeOwnSection } from "@/features/marketing/components/home-own-section";
 import { HomeWriteSection } from "@/features/marketing/components/home-write-section";
-import { BRAND_DESCRIPTION, BRAND_HEADLINE, BRAND_TITLE } from "@/shared/lib/branding";
+import { BRAND_DESCRIPTION, BRAND_HEADLINE, BRAND_SEARCH_TITLE, BRAND_TITLE } from "@/shared/lib/branding";
 import { buildDefaultOpenGraphImages, DEFAULT_OG_IMAGE } from "@/shared/lib/seo";
 
 export const metadata: Metadata = {
   title: {
-    absolute: BRAND_TITLE,
+    absolute: BRAND_SEARCH_TITLE,
   },
   description: BRAND_DESCRIPTION,
   keywords: ["memos", "quick thoughts", "timeline", "Markdown notes", "private notes", "daily notes"],

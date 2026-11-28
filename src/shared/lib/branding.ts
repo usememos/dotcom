@@ -2,6 +2,8 @@
 // Change upstream BRAND.md first, then propagate these strings verbatim.
 export const BRAND_HEADLINE = "Simple note-taking for your everyday thoughts.";
 export const BRAND_TITLE = `Memos - ${BRAND_HEADLINE}`;
+/** Home page and default <title>, shown in search results and browser tabs. Not yet a row in upstream BRAND.md. */
+export const BRAND_SEARCH_TITLE = "Memos - Open-source, self-hosted notes for everyday thoughts";
 export const BRAND_DESCRIPTION =
   "Memos is an open-source, self-hosted note-taking app that brings your everyday thoughts together in a personal timeline. Your data stays yours, and you choose what to keep private or share.";
 export const BRAND_FULL_INTRODUCTION =

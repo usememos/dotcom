@@ -27,8 +27,8 @@ vi.mock("@/features/marketing/components/home-faq-section", () => ({
   HomeFaqSection: () => <section data-testid="home-faq" />,
 }));
 
-import { BRAND_DESCRIPTION, BRAND_HEADLINE } from "@/shared/lib/branding";
-import HomePage from "./page";
+import { BRAND_DESCRIPTION, BRAND_HEADLINE, BRAND_SEARCH_TITLE, BRAND_TITLE } from "@/shared/lib/branding";
+import HomePage, { metadata } from "./page";
 
 describe("HomePage", () => {
   it("pairs the canonical headline and description in the hero", () => {
@@ -37,6 +37,12 @@ describe("HomePage", () => {
     expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
     expect(screen.getByRole("heading", { level: 1, name: BRAND_HEADLINE })).toBeVisible();
     expect(screen.getByText(BRAND_DESCRIPTION)).toBeVisible();
+  });
+
+  it("uses the search title for the page title and the headline for social titles", () => {
+    expect(metadata.title).toEqual({ absolute: BRAND_SEARCH_TITLE });
+    expect(metadata.openGraph?.title).toBe(BRAND_TITLE);
+    expect(metadata.twitter?.title).toBe(BRAND_TITLE);
   });
 
   it("emphasizes only everyday thoughts with the shared brand accent", () => {

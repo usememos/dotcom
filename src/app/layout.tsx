@@ -4,7 +4,7 @@ import { Inter, Source_Serif_4 } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
 import { BRAND_ASSETS_PATH, BRAND_LOGO_URL } from "@/shared/lib/brand-assets";
-import { BRAND_DESCRIPTION, BRAND_TITLE } from "@/shared/lib/branding";
+import { BRAND_DESCRIPTION, BRAND_SEARCH_TITLE, BRAND_TITLE } from "@/shared/lib/branding";
 import { buildSiteNavigationJsonLd, DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_ALT, GITHUB_REPO_URL } from "@/shared/lib/seo";
 
 const inter = Inter({
@@ -22,7 +22,7 @@ const displaySerif = Source_Serif_4({
 export const metadata: Metadata = {
   metadataBase: new URL("https://usememos.com"),
   title: {
-    default: BRAND_TITLE,
+    default: BRAND_SEARCH_TITLE,
     template: "%s - Memos",
   },
   description: BRAND_DESCRIPTION,

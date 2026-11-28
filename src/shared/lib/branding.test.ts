@@ -1,12 +1,13 @@
 import { readFileSync } from "node:fs";
 // @vitest-environment node
 import { describe, expect, it } from "vitest";
-import { BRAND_DESCRIPTION, BRAND_FULL_INTRODUCTION, BRAND_HEADLINE, BRAND_TITLE } from "./branding";
+import { BRAND_DESCRIPTION, BRAND_FULL_INTRODUCTION, BRAND_HEADLINE, BRAND_SEARCH_TITLE, BRAND_TITLE } from "./branding";
 import { buildDefaultOpenGraphImages } from "./seo";
 
 describe("product branding", () => {
   it("keeps the approved copy from BRAND.md", () => {
     expect(BRAND_HEADLINE).toBe("Simple note-taking for your everyday thoughts.");
+    expect(BRAND_SEARCH_TITLE).toBe("Memos - Open-source, self-hosted notes for everyday thoughts");
     expect(BRAND_DESCRIPTION).toBe(
       "Memos is an open-source, self-hosted note-taking app that brings your everyday thoughts together in a personal timeline. Your data stays yours, and you choose what to keep private or share.",
     );
