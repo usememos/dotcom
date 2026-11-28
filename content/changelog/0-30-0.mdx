@@ -13,7 +13,7 @@ breaking: true
 - **Private mode by default** - Instances without `--instance-url` or `MEMOS_INSTANCE_URL` now run in private mode. Anonymous visitors are redirected to sign-in, anonymous API access is limited to setup, authentication, and shared-memo routes, and RSS feeds are unavailable. Set the instance URL to retain the previous public behavior.
 - **Shared memo API** - `GetMemoByShare` and `GET /api/v1/shares/{shareId}` have been replaced by `GetSharedMemo` and `GET /api/v1/shares/{shareToken}/memo`. Share-token responses are now limited to the shared memo, attachments, and reactions; parent memos, comments, and relations are no longer exposed through the token.
 - **CEL timestamp filters** - The `now()` function has been replaced by the `now` timestamp variable, and time fields now use CEL timestamps. Update saved shortcuts to use expressions such as `created_ts >= now - duration("24h")`.
-- **New MCP endpoint and tool names** - MCP is now a stateless, tools-only endpoint generated from the OpenAPI schema. Clients must use `/mcp` and the new service-prefixed tool names. The previous prompts, resources, tool-filtering headers, route aliases, and unprefixed tool names have been removed.
+- **New MCP endpoint and tool names** - MCP is now a stateless, tools-only endpoint generated from the OpenAPI schema. Clients must use `/mcp` and the new service-prefixed tool names. The previous prompts, resources, tool-filtering headers, route aliases, and unprefixed tool names have been removed. See the [MCP server guide](/docs/integrations/mcp#upgrading-older-mcp-clients).
 
 ## New Features
 

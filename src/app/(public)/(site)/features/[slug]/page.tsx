@@ -170,7 +170,7 @@ export async function generateMetadata({ params }: FeaturePageProps): Promise<Me
 
   const pageUrl = `https://usememos.com/features/${slug}`;
   const isWip = feature.wip === true;
-  const title = isWip ? `${feature.title} Feature (WIP)` : `${feature.title} Feature`;
+  const title = isWip ? `${feature.title} Feature (WIP)` : (feature.searchTitle ?? `${feature.title} Feature`);
   const socialTitle = isWip ? `${feature.title} (WIP) - Memos` : `${feature.title} - Memos`;
   const description = isWip ? `Work in progress: ${feature.description}` : feature.description;
 

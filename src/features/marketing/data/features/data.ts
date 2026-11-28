@@ -42,6 +42,7 @@ export const FEATURES = {
   // Own: hosting, data, and license
   "self-hosted": {
     title: "Self-Hosted",
+    searchTitle: "Self-hosted note-taking app on your own server",
     description: "Choose where your memos live and who can use your Memos.",
     icon: ServerIcon,
     hero: {
@@ -116,6 +117,7 @@ export const FEATURES = {
   },
   "open-source": {
     title: "Open Source",
+    searchTitle: "Open-source note-taking app under the MIT license",
     description: "MIT licensed and developed in public, so the code can be inspected, forked, and improved.",
     icon: GitBranchIcon,
     hero: {
@@ -303,6 +305,7 @@ export const FEATURES = {
   },
   "markdown-support": {
     title: "Markdown Notes",
+    searchTitle: "Markdown notes with code, tables, math, and diagrams",
     description: "Write memos in Markdown, with code highlighting, tables, task lists, math, and diagrams.",
     icon: FileTextIcon,
     hero: {
@@ -415,6 +418,7 @@ export const FEATURES = {
   },
   tags: {
     title: "Tags",
+    searchTitle: "Tags and nested tags for your notes",
     description: "Add #tags as you write, nest them with a slash, and filter your memos by any tag.",
     icon: TagIcon,
     hero: {
@@ -603,6 +607,7 @@ export const FEATURES = {
   },
   "pwa-support": {
     title: "Progressive Web App",
+    searchTitle: "Install on Android, iOS, and desktop as a web app",
     description: "Add Memos to your home screen or desktop and open it in its own window.",
     icon: MonitorSmartphoneIcon,
     hero: {
@@ -863,6 +868,7 @@ export const FEATURES = {
   },
   "api-first": {
     title: "API & Integrations",
+    searchTitle: "REST API, gRPC API, and MCP server",
     description: "REST and gRPC APIs for custom capture flows, integrations, and automation.",
     icon: CodeIcon,
     hero: {
@@ -1015,6 +1021,7 @@ export const FEATURES = {
   },
   export: {
     title: "Export",
+    searchTitle: "Export notes as Markdown and JSON",
     description: "Download every memo you wrote, with attached files, as a ZIP of Markdown and JSON.",
     icon: DownloadIcon,
     hero: {

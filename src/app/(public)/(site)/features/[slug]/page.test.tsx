@@ -38,7 +38,11 @@ describe("FeaturePage", () => {
     const wipMetadata = await generateMetadata({ params: Promise.resolve({ slug: "import" }) });
     const staticParams = await generateStaticParams();
 
-    expect(availableMetadata.title).toBe("Self-Hosted Feature");
+    const defaultMetadata = await generateMetadata({ params: Promise.resolve({ slug: "timeline-view" }) });
+
+    expect(availableMetadata.title).toBe("Self-hosted note-taking app on your own server");
+    expect(availableMetadata.openGraph?.title).toBe("Self-Hosted - Memos");
+    expect(defaultMetadata.title).toBe("Timeline View Feature");
     expect(wipMetadata.title).toBe("Import Feature (WIP)");
     expect(wipMetadata.description).toMatch(/^Work in progress:/);
     expect(staticParams).toHaveLength(27);

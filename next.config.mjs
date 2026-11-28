@@ -48,6 +48,40 @@ const API_DOCS_RETIRED_REDIRECTS =
         },
       ];
 
+// [source, destination] pairs, in match order. Destinations must be existing
+// docs pages; src/features/docs/lib/legacy-docs-redirects.test.ts checks both
+// the mapping and that each destination has a content file.
+const LEGACY_DOCS_REDIRECTS = [
+  ["/docs/install/:page(container-install|docker)", "/docs/deploy/docker"],
+  ["/docs/install/:page(startup-options|runtime-options)", "/docs/configuration/environment-variables"],
+  ["/docs/install/database", "/docs/configuration/database"],
+  ["/docs/install/https", "/docs/deploy/reverse-proxy"],
+  ["/docs/install/upgrade", "/docs/operations/upgrade"],
+  ["/docs/:section(install|installation)/:path*", "/docs/deploy"],
+  ["/docs/advanced-settings/:page(authentik|keycloak|sso)", "/docs/configuration/authentication"],
+  ["/docs/advanced-settings/:page(cloudflare-r2|local-storage)", "/docs/configuration/storage"],
+  ["/docs/advanced-settings/mysql", "/docs/configuration/database"],
+  ["/docs/advanced-settings/webhook", "/docs/integrations/webhooks"],
+  ["/docs/advanced-settings/:path*", "/docs/configuration"],
+  ["/docs/keycloak", "/docs/configuration/authentication"],
+  ["/docs/storage", "/docs/configuration/storage"],
+  ["/docs/security", "/docs/configuration/security"],
+  ["/docs/getting-started/memo", "/docs/usage/memos"],
+  ["/docs/getting-started/resources", "/docs/usage/attachments"],
+  ["/docs/getting-started/tags", "/docs/usage/tags"],
+  // Shortcuts became saved views, then Views.
+  ["/docs/:section(getting-started|usage|guides)/:page(shortcuts|saved-views)", "/docs/usage/views"],
+  ["/docs/getting-started/:path+", "/docs/getting-started"],
+  ["/docs/guides/content-syntax", "/docs/usage/writing-markdown"],
+  ["/docs/guides/getting-started", "/docs/getting-started"],
+  ["/docs/integration/telegram-bot", "/docs/integrations/telegram-bot"],
+  ["/docs/integrations/memogram", "/docs/integrations/telegram-bot"],
+  ["/docs/integration/api", "/docs/integrations/api-access"],
+  ["/docs/integration/:path*", "/docs/integrations"],
+  ["/docs/contribute", "/docs/development/contributing"],
+  ["/docs/contribution/:path*", "/docs/development/contributing"],
+].map(([source, destination]) => ({ source, destination, permanent: true }));
+
 // Applied only to the statically generated OG image routes below. Keep the
 // matching Cloudflare asset headers in public/_headers in sync.
 const CORS_HEADERS = [
@@ -252,6 +286,11 @@ const config = {
         destination: "/docs/integrations/api-access",
         permanent: true,
       },
+      // URLs from earlier docs structures (/docs/install, /docs/advanced-settings,
+      // /docs/getting-started/*, …) that Search Console still reports as 404 and
+      // that other sites still link to. Specific rules come first; each section
+      // ends with a catch-all so an unlisted legacy page lands on its section.
+      ...LEGACY_DOCS_REDIRECTS,
       // Legacy Web Clipper deep link (/dashboard?setup=memos[&source=...]) now
       // lands on the canonical connections settings page. Routing layer for the
       // same reason as /docs/api above: the redirect never loads the dashboard
