@@ -45,6 +45,17 @@ describe("root layout", () => {
     expect(existsSync(join(dir, "icon.png"))).toBe(false);
   });
 
+  it("offers search engines a 192px raster of the same favicon, declared before the SVG", () => {
+    const png = readFileSync(join(dir, "../../public/brand/favicon-192.png"));
+
+    // PNG signature, then the IHDR chunk: width and height as big-endian uint32.
+    expect(png.subarray(1, 4).toString("latin1")).toBe("PNG");
+    expect(png.readUInt32BE(16)).toBe(192);
+    expect(png.readUInt32BE(20)).toBe(192);
+    expect(layoutSource.indexOf("favicon-192.png")).toBeGreaterThan(-1);
+    expect(layoutSource.indexOf("favicon-192.png")).toBeLessThan(layoutSource.indexOf("favicon.svg"));
+  });
+
   it("keeps every Apple touch icon fallback identical to the primary icon", () => {
     const primary = readFileSync(join(dir, "../../public/brand/apple-touch-icon.png"));
 

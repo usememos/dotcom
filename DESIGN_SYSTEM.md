@@ -587,7 +587,10 @@ Preserve the official paths, proportions, alignment, and canvas padding, and
 check legibility in both themes. Other lockup placements retain their own sizes.
 
 Keep the existing blue browser favicon and Celadon Apple touch icons as scoped
-platform treatments. They do not define a primary brand palette. Legacy public
+platform treatments. `public/brand/favicon-192.png` is a 192px transparent
+raster of `favicon.svg` for search engines, which need a raster icon larger
+than 48px; re-render it whenever the SVG changes, and declare it before the SVG
+so browsers keep using the SVG. They do not define a primary brand palette. Legacy public
 asset URLs MUST remain available; newly cataloged downloads use the upstream
 filenames under `/brand/`. Assets require revalidation before reuse.
 

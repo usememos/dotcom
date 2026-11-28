@@ -74,7 +74,13 @@ export const metadata: Metadata = {
     images: [DEFAULT_OG_IMAGE],
   },
   icons: {
-    icon: [{ url: `${BRAND_ASSETS_PATH}/favicon.svg`, type: "image/svg+xml", sizes: "any" }],
+    // The PNG comes first so browsers that read SVG still pick the SVG declared
+    // after it. Search engines need a raster icon larger than 48px; Google does
+    // not list SVG among its supported favicon formats.
+    icon: [
+      { url: `${BRAND_ASSETS_PATH}/favicon-192.png`, type: "image/png", sizes: "192x192" },
+      { url: `${BRAND_ASSETS_PATH}/favicon.svg`, type: "image/svg+xml", sizes: "any" },
+    ],
     shortcut: "/favicon.ico?v=bird-blue",
     apple: [{ url: `${BRAND_ASSETS_PATH}/apple-touch-icon.png?v=celadon`, sizes: "180x180", type: "image/png" }],
   },
