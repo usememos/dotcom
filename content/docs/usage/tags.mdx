@@ -24,6 +24,12 @@ Tags are recognized in ordinary text, including headings and list items. Code, l
 
 0.31 does not automatically rebuild stored tag indexes. Rendering and editing use the new grammar immediately, while filters, counts, and statistics adopt it as each memo is saved again. If an older memo displays a tag but does not yet appear in its filter, save that memo again.
 
+## Tag suggestions with AI
+
+From 26.11.3, type `#` in the composer and choose **Suggest tags with AI** from the tag picker to get tags for your draft. Suggestions prefer the tags you already use, so your vocabulary stays consistent. They appear with the other suggestions under the draft. Select one to add it; nothing is added until you choose it.
+
+The option appears when an administrator has chosen a text generation provider and model under [**Settings → AI**](/docs/admin/instance-settings#ai-providers). The draft is sent to that provider. Each user can request suggestions 20 times an hour.
+
 ## Personal tag appearance
 
 Open your user settings to assign a background color or content-blur rule to a tag. These rules are personal: each user controls how matching tags and memo content appear in their own account.

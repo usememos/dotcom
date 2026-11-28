@@ -10,7 +10,7 @@ export const SUPPORTED_DOC_VERSIONS = ["latest", "26-11", "26-10"] as const;
  * Calendar versions (`26.10.0`) sort after the old `0.x` line through
  * compareVersion, so compare whole versions rather than minor components.
  */
-export const LATEST_SUPPORTED_VERSION = "26.11.2";
+export const LATEST_SUPPORTED_VERSION = "26.11.3";
 
 /** Oldest instance release covered by the account connection and stats adapters. */
 export const MINIMUM_SUPPORTED_VERSION = "0.26.0";

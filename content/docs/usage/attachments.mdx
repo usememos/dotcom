@@ -52,11 +52,11 @@ The preference applies to future uploads; it does not backfill existing files. L
 
 ## Transcribing audio
 
-If an admin has configured an AI provider with transcription (Admin → Instance Settings → AI), audio attachments can be transcribed into text.
+If an admin has chosen a transcription provider and model under [**Settings → AI**](/docs/admin/instance-settings#ai-providers), audio attachments can be transcribed into text.
 
-- transcription is off until a provider is configured, so the option only appears on instances that have AI enabled
+- transcription is off until a provider and model are chosen, so the option only appears on instances that have it enabled
 - in 26.10, open the memo editor and transcribe an existing audio attachment; the transcript is inserted into the draft for you to review and save, preserving the existing text and original audio
-- providers are bring-your-own-key (OpenAI or Gemini), so transcription uses the instance's own AI account
+- providers are bring-your-own-key, so transcription uses the instance's own AI account; from 26.11.3, OpenAI, Gemini, OpenRouter, and OpenAI-compatible providers can transcribe
 
 This is useful for voice notes and recorded snippets you want to search later as plain text.
 

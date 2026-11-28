@@ -1,4 +1,4 @@
 {
   "title": "AI Service",
-  "pages": ["Transcribe"]
+  "pages": ["ListAIProviderModels", "ListAIProviderTypes", "SuggestTags", "Transcribe"]
 }

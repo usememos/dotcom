@@ -12,7 +12,7 @@ Common areas include:
 - Storage settings: named database, local filesystem, or S3-compatible configurations with stable IDs, a default for new uploads, and file path templates.
 - Usage limits: memo length, upload size, memo count, and total storage, for everyone or for named users.
 - Notification settings: SMTP email delivery, sender details, reply-to address, and the email test endpoint.
-- AI settings: instance-level OpenAI or Gemini providers and speech-to-text transcription defaults.
+- AI settings: instance-level AI providers, and the provider and model used for speech-to-text transcription and tag suggestions.
 
 Tag colors and content-blur rules are user settings in Memos 0.30 and later, not instance settings. See [Tags](/docs/usage/tags).
 
@@ -33,6 +33,19 @@ Entries are checked in order. The last entry applies to all users, and an entry 
 A save or upload that would exceed a limit is refused with a message naming the limit. Nothing already stored is hidden or removed. Each user can see their current usage in **My Account**. Use [declarative configuration](/docs/configuration/declarative-configuration#usage-limits) when infrastructure should own these limits; while the configuration manages them, the setting cannot be changed in the app.
 
 Double-click to edit is no longer an instance setting. Each person chooses it per browser under **Settings › Preferences › This device**.
+
+## AI providers
+
+From 26.11.3, **Settings → AI** names each provider by the service it connects to: OpenAI, Gemini, Anthropic, DeepSeek, OpenRouter, Ollama, or any OpenAI-compatible or Anthropic-compatible API. Ollama and the compatible types can run without an API key. Memos calls the provider from the server with the key you enter; it does not bundle shared AI credentials.
+
+1. Add a provider and choose its type. Enter an endpoint only for a compatible API or a non-default address.
+2. Save it. Memos checks the connection and shows the reason in the dialog when it fails, such as a rejected key or an unreachable endpoint.
+3. Choose a provider and model for **Transcription**, for tag suggestions, or for both. A capability stays off until both are chosen.
+4. Use **Try it** to run transcription or tag suggestions with the saved settings. Each run is a real request to your provider, and nothing is saved.
+
+Each provider shows its status and lists its models in a searchable field. An endpoint must answer without redirecting, and its address is resolved on the Memos server. If Memos runs in a container, use `host.docker.internal` or the service name instead of `localhost`.
+
+The AI setting is readable by administrators only. Other signed-in users see only which AI features are on. Use [declarative configuration](/docs/configuration/declarative-configuration#ai-providers) when infrastructure should own this setting.
 
 ## Sensitive settings
 

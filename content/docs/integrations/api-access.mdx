@@ -30,7 +30,25 @@ For browser-based integrations, bearer-token requests may be sent cross-origin. 
 
 ## 26.11 client migration
 
-The [26.11 API reference](/docs/api/26-11) uses the [26.11.2 OpenAPI specification](https://github.com/usememos/memos/blob/26.11.2/proto/gen/openapi.yaml).
+The [26.11 API reference](/docs/api/26-11) uses the [26.11.3 OpenAPI specification](https://github.com/usememos/memos/blob/26.11.3/proto/gen/openapi.yaml).
+
+### AI settings, SSO, and snippets in 26.11.3
+
+| Area | Change in 26.11.3 |
+| --- | --- |
+| Reading the `AI` setting | The setting is admin only. `GetInstanceSetting` no longer returns it to other signed-in users. Read `InstanceProfile.ai_features` (`aiFeatures` in JSON) to learn which AI features are on. |
+| Capabilities | A capability is on when it is set and off when it is unset. `transcription` and `text_generation` each need both `provider_id` and `model`. An empty `provider_id` no longer means off, and the server no longer chooses a transcription model. |
+| Updating the setting | `UpdateInstanceSetting` replaces the setting whole. Omitting `transcription` or `text_generation` turns that capability off. |
+| Provider types | `InstanceSetting.AIProviderType` names the service: `OPENAI`, `GEMINI`, `ANTHROPIC`, `DEEPSEEK`, `OPENROUTER`, `OLLAMA`, `OPENAI_COMPATIBLE`, or `ANTHROPIC_COMPATIBLE`. The `*_COMPATIBLE` types require an endpoint. `OLLAMA` and the `*_COMPATIBLE` types accept an empty API key. An endpoint equal to its type's default is stored and returned as empty. |
+| API keys | Changing a provider's type or endpoint requires its API key again. An update to the same connection still accepts an empty key to keep the stored one. |
+| Connection check | `UpdateInstanceSetting` lists the models of each new or changed provider. It refuses the save when the key is rejected, the endpoint cannot be reached or redirects, or the provider does not answer in time. The error carries an `AI_*` `google.rpc.ErrorInfo` reason. It also refuses a capability whose provider type cannot serve it, such as an `ANTHROPIC` provider for transcription. |
+| SSO | `AuthService.SignIn` with `sso_credentials` and `UserService.CreateLinkedIdentity` reject a `redirect_uri` that is not `/auth/callback` on the configured instance URL. Instances without an instance URL accept any redirect URI, as before. |
+| Snippets | `Memo.snippet` carries up to 160 characters and ends with “…”. It used to stop at 64 characters and end with “ ...”. Detect a cut snippet by the trailing “…”. |
+| Empty requests | `CreateUserWebhook`, `UpdateAttachment`, and `UpdateUserSetting` return an invalid-argument error for a request without a body. |
+
+New operations: [Suggest Tags](/docs/api/26-11/aiservice/SuggestTags) proposes tags for a draft and allows 20 requests per user per hour. [List AI Provider Types](/docs/api/26-11/aiservice/ListAIProviderTypes) and [List AI Provider Models](/docs/api/26-11/aiservice/ListAIProviderModels) describe provider types and a saved provider's models for administrators.
+
+In the web app, `/spaces/{id}/explore` is removed. Link to `/spaces/{id}`, which shows every member's memos.
 
 ### Comments and Views in 26.11.2
 
@@ -113,7 +131,7 @@ A memo's `space` is a resource name such as `spaces/team-notes`, or absent when 
 
 When moving a `SPACE` memo, include both `space` and `visibility` in the update mask and explicitly confirm `SPACE` visibility for the destination. When withdrawing it to Unassigned, select a non-Space visibility in the same update. Share links cannot be created for `SPACE` memos; revoke existing links before changing a memo to that audience.
 
-The [Latest API reference](/docs/api/latest) tracks `main`, which may include changes after the latest stable release. The [26.11 reference](/docs/api/26-11) uses the 26.11.2 tag, and the [26.10 reference](/docs/api/26-10) uses the 26.10.0 tag. Older rendered references redirect to the [upgrade guide](/docs/operations/upgrade); historical OpenAPI snapshots remain in the website repository.
+The [Latest API reference](/docs/api/latest) tracks `main`, which may include changes after the latest stable release. The [26.11 reference](/docs/api/26-11) uses the 26.11.3 tag, and the [26.10 reference](/docs/api/26-10) uses the 26.10.0 tag. Older rendered references redirect to the [upgrade guide](/docs/operations/upgrade); historical OpenAPI snapshots remain in the website repository.
 
 ## Where to go next
 

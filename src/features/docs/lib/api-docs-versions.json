@@ -10,8 +10,8 @@
   {
     "slug": "26-11",
     "label": "26.11.x",
-    "sourceRef": "refs/tags/26.11.2",
-    "snapshotVersion": "26.11.2",
+    "sourceRef": "refs/tags/26.11.3",
+    "snapshotVersion": "26.11.3",
     "apiBasePath": "/api"
   },
   {

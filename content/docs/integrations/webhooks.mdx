@@ -18,6 +18,8 @@ Webhooks are dispatched on:
 
 Memos sends a JSON payload containing `activityType`, `creator`, and the affected `memo`. Starting in 26.11.2, read `memo.parent` on a comment-created event to identify the conversation. Earlier releases included the parent in `memo.relations`.
 
+From 26.11.3, `memo.snippet` carries up to 160 characters and ends with “…” when cut. Earlier releases stopped at 64 characters and ended with “ ...”.
+
 Refer to the [API reference](/docs/api) for the current webhook-related endpoints.
 
 ## Signing and verification
@@ -45,13 +47,15 @@ Do not reserialize parsed JSON before verification; even an equivalent JSON repr
 
 ## Delivery response
 
-The receiver must return a `2xx` response with a JSON body whose `code` is `0`, for example:
+From 26.11.3, any `2xx` response counts as delivered, including `204 No Content`. Memos ignores the response body. Any other status is a delivery failure.
+
+In 26.11.2 and earlier, the receiver must return a `2xx` response with a JSON body whose `code` is `0`, for example:
 
 ```json
 { "code": 0 }
 ```
 
-Non-`2xx` responses, invalid JSON, or a nonzero `code` are treated as delivery failures.
+Those releases treat invalid JSON or a nonzero `code` as a delivery failure.
 
 ## Network safety
 

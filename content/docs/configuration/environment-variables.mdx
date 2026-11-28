@@ -17,7 +17,7 @@ All flags and their corresponding environment variables:
 | `--data` | `MEMOS_DATA` | auto | Data directory |
 | `--driver` | `MEMOS_DRIVER` | `sqlite` | Database backend (`sqlite`, `mysql`, `postgres`) |
 | `--dsn` | `MEMOS_DSN` | auto | Database connection string |
-| `--instance-url` | `MEMOS_INSTANCE_URL` | `` | Canonical external URL; independent of access policy |
+| `--instance-url` | `MEMOS_INSTANCE_URL` | `` | Canonical external URL; independent of access policy. From 26.11.3, SSO accepts only this URL's `/auth/callback` |
 | `--demo` | `MEMOS_DEMO` | `false` | Demo mode |
 | `--webhook-private-network-allowlist` | `MEMOS_WEBHOOK_PRIVATE_NETWORK_ALLOWLIST` | empty | Allowed private destinations: exact hostnames, IP addresses, or CIDRs |
 | `--allow-private-webhooks` | `MEMOS_ALLOW_PRIVATE_WEBHOOKS` | `false` | Deprecated blanket exception for private webhook destinations |

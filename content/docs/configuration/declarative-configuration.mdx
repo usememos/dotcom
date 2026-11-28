@@ -358,21 +358,41 @@ When email is enabled, `smtpHost`, a positive `smtpPort`, and `fromEmail` are re
         "id": "openai-main",
         "title": "OpenAI",
         "type": "OPENAI",
-        "endpoint": "https://api.openai.com/v1",
         "apiKey": "${env:OPENAI_API_KEY}"
       }
     ],
     "transcription": {
       "providerId": "openai-main",
-      "model": "gpt-4o-mini-transcribe",
+      "model": "gpt-transcribe",
       "language": "en",
       "prompt": ""
+    },
+    "textGeneration": {
+      "providerId": "openai-main",
+      "model": "gpt-5-mini"
     }
   }
 }
 ```
 
-Every provider needs a unique `id`, a `title`, a type of `OPENAI` or `GEMINI`, and an `apiKey`. `transcription.providerId` must name a provider in the same setting. An empty OpenAI endpoint defaults to `https://api.openai.com/v1`; an empty Gemini endpoint defaults to `https://generativelanguage.googleapis.com/v1beta`.
+Every provider needs a unique `id`, a `title`, and a `type`. From 26.11.3, the type names the service the provider connects to:
+
+| Type | Default endpoint | API key | Serves |
+| --- | --- | --- | --- |
+| `OPENAI` | `https://api.openai.com/v1` | Required | Text generation, transcription |
+| `GEMINI` | `https://generativelanguage.googleapis.com/v1beta` | Required | Text generation, transcription |
+| `ANTHROPIC` | `https://api.anthropic.com` | Required | Text generation |
+| `DEEPSEEK` | `https://api.deepseek.com` | Required | Text generation |
+| `OPENROUTER` | `https://openrouter.ai/api/v1` | Required | Text generation, transcription |
+| `OLLAMA` | `http://localhost:11434/v1` | Optional | Text generation |
+| `OPENAI_COMPATIBLE` | None; `endpoint` is required | Optional | Text generation, transcription |
+| `ANTHROPIC_COMPATIBLE` | None; `endpoint` is required | Optional | Text generation |
+
+Leave `endpoint` empty to use the type's default. A custom endpoint must be an `http` or `https` URL that answers without redirecting. The address is resolved on the Memos server, so `localhost` means the server or container that runs Memos.
+
+`transcription` turns on speech to text, and `textGeneration` turns on tag suggestions. Each needs a `providerId` that names a provider in the same setting and a `model`. Omit a capability to turn it off. A capability cannot use a provider type that does not serve it.
+
+Before upgrading a file written for 26.11.2 or earlier, add a `model` to `transcription` and change any `OPENAI` provider that points at another service to that service's type or to `OPENAI_COMPATIBLE`. Provider calls no longer read `OPENAI_*` environment variables from the server; reference the key with `${env:...}` in `apiKey` as shown above.
 
 ## Bootstrap users
 

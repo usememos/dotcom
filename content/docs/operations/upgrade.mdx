@@ -24,11 +24,28 @@ debugging an integration against the current API reference.
 
 ## Upgrading to 26.11
 
-**26.11.2 is the current stable release.** Pin `neosmemo/memos:26.11.2`, or use the month tag `26.11` or `stable`. Read the [26.11.2 changelog](/changelog/26-11-2).
+**26.11.3 is the current stable release.** Pin `neosmemo/memos:26.11.3`, or use the month tag `26.11` or `stable`. Read the [26.11.3 changelog](/changelog/26-11-3).
 
-Installations on 26.10.0, 26.11.0, or 26.11.1 can upgrade directly. Older installations must follow the [required upgrade path](#required-upgrade-path) and review the 26.10 changes below; after the required intermediate versions, install 26.11.2.
+Installations on 26.10.0 or any 26.11 release can upgrade directly. Older installations must follow the [required upgrade path](#required-upgrade-path) and review the 26.10 changes below; after the required intermediate versions, install 26.11.3.
 
-In 26.11.2, API lists and user statistics include comments by default. To keep top-level results, add `parent == null` to your filter. If your integration calls the old comment endpoints or MCP tools, follow the [client migration guide](/docs/integrations/api-access#2611-client-migration).
+From 26.11.2, API lists and user statistics include comments by default. To keep top-level results, add `parent == null` to your filter. If your integration calls the old comment endpoints or MCP tools, follow the [client migration guide](/docs/integrations/api-access#2611-client-migration).
+
+### SSO and the instance URL
+
+From 26.11.3, when `--instance-url` or `MEMOS_INSTANCE_URL` is set, SSO sign-in and identity linking accept only `<instance URL>/auth/callback` as the redirect URI. The instance URL must be the address people sign in at, with the same scheme, host, and port. When the browser's address differs, sign-in fails with `redirect_uri must be <instance URL>/auth/callback`.
+
+Before upgrading, check the instance URL and confirm that your identity provider's registered redirect URI is `<instance URL>/auth/callback`. Instances without an instance URL behave as before. See [Authentication](/docs/configuration/authentication#oauth2-and-sso).
+
+### AI settings
+
+26.11.3 names each AI provider by the service it connects to and checks the connection when you save. After upgrading, open **Settings → AI** as an administrator and review each provider.
+
+- A transcription setting stored without a model reads as off. Choose its provider and model again.
+- A provider of type `OPENAI` that points at another service keeps working, but is offered only what OpenAI serves. Change its type to the real service (`DEEPSEEK`, `OPENROUTER`, `OLLAMA`) or to `OPENAI_COMPATIBLE`, and enter the API key again when you do.
+- A provider endpoint must be an `http` or `https` URL that answers without redirecting. Enter the final URL.
+- Provider calls no longer read `OPENAI_*` environment variables set on the server. Put the key and endpoint in the provider itself.
+
+Configuration files and API clients that write the `AI` setting must declare a model for each capability and use the new provider types. Follow the [AI providers configuration](/docs/configuration/declarative-configuration#ai-providers) and the [client migration guide](/docs/integrations/api-access#ai-settings-sso-and-snippets-in-26113).
 
 ### Reaction configuration
 
@@ -38,13 +55,13 @@ Before upgrading, remove `instance/settings/MEMO_RELATED` and `memoRelatedSettin
 
 ### Attachment index migration
 
-26.11.2 uses the 26.11.1 schema. If your instance already runs 26.11.1, the index is in place. If MariaDB stopped on `Unknown column 'IS_VISIBLE'`, upgrade directly to 26.11.2. On MySQL or MariaDB, if an interrupted migration already created `idx_attachment_memo_id_type`, drop that index before retrying.
+26.11.2 and 26.11.3 use the 26.11.1 schema. If your instance already runs 26.11.1 or later, the index is in place. If MariaDB stopped on `Unknown column 'IS_VISIBLE'`, upgrade directly to 26.11.3. On MySQL or MariaDB, if an interrupted migration already created `idx_attachment_memo_id_type`, drop that index before retrying.
 
 For databases still on 26.11.0 or earlier:
 
 1. Back up the database and attachments.
 2. Stop all Memos instances and every other database writer.
-3. Start one instance on 26.11.2. It creates the attachment index and advances the schema to 26.11.1.
+3. Start one instance on 26.11.3. It creates the attachment index and advances the schema to 26.11.1.
 4. Wait for migration to succeed before starting the remaining instances on the same version.
 
 Index creation can take time on large attachment tables and block writes. Do not run different Memos versions against the same database or advance the schema marker manually. Follow these steps even when using the Docker, Compose, or binary commands below.
@@ -57,14 +74,14 @@ API clients can now replace an attachment’s content through `UploadAttachmentS
 
 ## Upgrading to 26.10
 
-These changes first shipped in **26.10.0** and also apply when upgrading an older installation directly to 26.11.2. Read the [26.10.0](/changelog/26-10-0) and [26.11.0](/changelog/26-11-0) changelogs alongside the newer notes above.
+These changes first shipped in **26.10.0** and also apply when upgrading an older installation directly to 26.11.3. Read the [26.10.0](/changelog/26-10-0) and [26.11.0](/changelog/26-11-0) changelogs alongside the newer notes above.
 
 ### Required upgrade path
 
 - From **0.31.0**, **26.10-rc.1**, or **26.10.0-rc.2**, upgrade directly.
-- From **0.22 through 0.30**, first upgrade to **0.31.0** and start it successfully, then install 26.11.2.
-- From a version **earlier than 0.22**, first run **0.25.3**, then **0.31.0**, then install 26.11.2.
-- Fresh installations can start with 26.11.2 directly.
+- From **0.22 through 0.30**, first upgrade to **0.31.0** and start it successfully, then install 26.11.3.
+- From a version **earlier than 0.22**, first run **0.25.3**, then **0.31.0**, then install 26.11.3.
+- Fresh installations can start with 26.11.3 directly.
 
 ### Clients and workflows
 
@@ -181,7 +198,7 @@ See the [Binary guide](/docs/deploy/binary) for service setup.
 
 ## Pinning versions
 
-`neosmemo/memos:stable` tracks the latest stable release, which is convenient but upgrades implicitly on every pull. For production, pin a specific version tag (for example `neosmemo/memos:26.11.2`) and upgrade deliberately.
+`neosmemo/memos:stable` tracks the latest stable release, which is convenient but upgrades implicitly on every pull. For production, pin a specific version tag (for example `neosmemo/memos:26.11.3`) and upgrade deliberately.
 
 From 26.10 onward, release tags use calendar versions in the form `YY.MM.N` without a `v` prefix: `26.10.0` is the first release of a month and `26.10.1` is a patch. Stable releases publish the exact-version tag, the monthly-series tag (`26.10`), and `stable`. Release candidates add `-rc.K` and publish only their exact tag, such as `26.10.0-rc.2`.
 

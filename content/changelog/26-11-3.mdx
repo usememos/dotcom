@@ -1,0 +1,66 @@
+---
+title: Release 26.11.3
+description: Get AI tag suggestions, browse one shared timeline per Space, and open memo actions with a right-click. Includes breaking changes to the AI setting and SSO redirect URIs.
+image_description: AI tag suggestions and one shared timeline per Space.
+date: "2026-11-28"
+breaking: true
+---
+
+> Memos can now suggest tags for a draft, every Space has one timeline its members share, and a right-click opens a memo’s actions. If you run AI providers or SSO, read the upgrade notes before you upgrade.
+
+## New features
+
+- **Tag suggestions** - Choose **Suggest tags with AI** in the composer to get tags for your draft. Suggestions prefer the tags you already use. An administrator must first select a text generation provider under **Settings → AI**.
+- **Spaces** - A Space has one timeline that shows every member’s readable memos, newest first. A memo written in a Space starts with the Space audience, and a comment starts with its parent’s audience, so members see each other’s memos and comments. You can still pick any audience before saving.
+- **Places and account** - The sidebar title lists Home, Explore, and every Space in one menu. Your account moves to the last row of the sidebar, with Inbox, Archived, Settings, theme, language, and Sign out. The row shows the unread count while something is unread.
+- **Memo actions** - Right-click a memo card to open its More menu at the pointer. Links, images, and selected text keep the browser’s own menu.
+- **Calendar** - The month grid lists every memo of a day, one row each, and ends with “+N more” when a day holds more than fit.
+- **AI providers** - **Settings → AI** names each provider by the service it connects to: OpenAI, Gemini, Anthropic, DeepSeek, OpenRouter, Ollama, or any OpenAI-compatible or Anthropic-compatible API. Ollama and the compatible types can run without an API key. Each provider shows its status and lists its models in a searchable field. Saving a provider checks the connection, and **Try it** runs transcription or tag suggestions with the saved settings.
+
+## Upgrade notes
+
+### Database upgrades
+
+There is no schema change from 26.11.2. When upgrading from 26.11.0 or earlier, follow the [26.11.1 upgrade notes](/changelog/26-11-1#upgrade-notes). Back up the database, stop all writers, and start one Memos instance to run the migration.
+
+### SSO and the instance URL
+
+If `--instance-url` is set, it must be the address people sign in at, with the same scheme, host, and port. SSO sign-in and identity linking now accept only `<instance URL>/auth/callback` as the redirect URI. When the browser’s address differs, they fail with `redirect_uri must be <instance URL>/auth/callback`.
+
+Before upgrading, check the instance URL and confirm that your identity provider’s registered redirect URI is `<instance URL>/auth/callback`. Instances without an instance URL behave as before.
+
+### AI settings
+
+Administrators should open **Settings → AI** after upgrading.
+
+- **Transcription** - A transcription setting stored without a model reads as off. Choose its provider and model again.
+- **Provider types** - A provider of type `OPENAI` that points at another service keeps working, but is offered only what OpenAI serves. Change its type to the real service (`DEEPSEEK`, `OPENROUTER`, `OLLAMA`) or to `OPENAI_COMPATIBLE`, and enter the API key again when you do.
+- **Endpoints** - A provider endpoint must be an `http` or `https` URL that answers without redirecting. Enter the final URL.
+- **Environment variables** - Provider calls no longer read `OPENAI_*` environment variables set on the server. Put the key and endpoint in the provider itself.
+
+### API clients and configuration files
+
+Clients and [configuration files](/docs/configuration/declarative-configuration#ai-providers) that write the `AI` instance setting must change as follows.
+
+- **Access** - The setting is admin only. `GetInstanceSetting` no longer returns it to other signed-in users. They read `InstanceProfile.ai_features` instead.
+- **Capabilities** - A capability is on when it is set and off when it is unset. `transcription` and `text_generation` each need both `provider_id` and `model`. An empty `provider_id` no longer means off, and the server no longer chooses a transcription model.
+- **Whole replacement** - `UpdateInstanceSetting` replaces the setting whole. Omitting `transcription` or `text_generation` turns that capability off.
+- **Provider types** - `InstanceSetting.AIProviderType` names the service: `OPENAI`, `GEMINI`, `ANTHROPIC`, `DEEPSEEK`, `OPENROUTER`, `OLLAMA`, `OPENAI_COMPATIBLE`, or `ANTHROPIC_COMPATIBLE`. The `*_COMPATIBLE` types require an endpoint. `OLLAMA` and the `*_COMPATIBLE` types accept an empty API key. An endpoint equal to its type’s default is stored and returned as empty.
+- **API keys** - Changing a provider’s type or endpoint requires its API key again. An update to the same connection still accepts an empty key to keep the stored one.
+- **Connection check** - `UpdateInstanceSetting` lists the models of each new or changed provider. It refuses the save when the key is rejected, the endpoint cannot be reached or redirects, or the provider does not answer in time. The error carries an `AI_*` `google.rpc.ErrorInfo` reason. It also refuses a capability whose provider type cannot serve it, such as an `ANTHROPIC` provider for transcription.
+- **SSO** - `AuthService.SignIn` with `sso_credentials` and `UserService.CreateLinkedIdentity` reject a `redirect_uri` that is not `/auth/callback` on the configured instance URL.
+- **Space links** - `/spaces/{id}/explore` is removed. Use `/spaces/{id}`, which now shows every member’s memos.
+- **Snippets** - `Memo.snippet` carries up to 160 characters and ends with “…”. It used to stop at 64 characters and end with “ ...”. Clients and webhook receivers that detect a cut snippet by its trailing “ ...” need to look for “…”.
+
+## Fixes and improvements
+
+- **Editor and attachments** - Editing or renaming an attachment, such as a saved drawing, keeps its place in the memo. Mermaid diagrams draw without the code block background and in the app’s font. Code blocks highlight Visual Basic (`vb`, `vba`, `vbnet`, `vbscript`). Copying coordinates also works on instances served over plain HTTP.
+- **Memo view** - Opening a memo keeps the line wrapping it has in the timeline. A metadata row keeps its detail readable while hovered, such as a related memo’s date or a file’s type and size. Long timestamp tooltips wrap inside the tooltip.
+- **Snippets** - Snippets of linked, related, and parent memos keep @mentions, put a space between nested list items, and show escaped characters and entities as the text they stand for. Long memos also parse faster.
+- **Files** - Two uploads with the same filename at the same moment no longer overwrite each other on local storage whose path template has no `{uuid}`. Local attachments named `index.html` open instead of returning 404. On a private instance, a file request with an expired session gets a sign-in error instead of a server error.
+- **Import** - Importing an archive that replaces a memo checks the image references of the incoming content. An import that fails no longer deletes unlinked attachments that existed before it.
+- **Interface and languages** - Bengali is available. Korean, Hebrew, Russian, and Simplified Chinese translate their remaining English strings, and Japanese translates usage limits. **Full width** sits with the layout options and says why the Auto layout locks it. Long Space lists scroll inside their menu.
+- **AI errors** - A failed provider call reports a fixed message and a reason, such as a rejected key, an exhausted quota, or an unreachable endpoint. An unreachable `localhost` endpoint explains that the address is resolved on the Memos server. Audio that Gemini cannot take is refused as an invalid request instead of a server error.
+- **Servers and integrations** - A webhook receiver that answers 2xx without a JSON body, such as `204 No Content`, counts as delivered. `config plan` checks linked identities and the remaining sign-in methods against the state the apply would leave. API clients can call `AIService.SuggestTags`, limited to 20 requests per user per hour. `CreateUserWebhook`, `UpdateAttachment`, and `UpdateUserSetting` return an invalid-argument error for a request without a body. The background pass that rebuilds memo metadata no longer skips a memo when memos are deleted while it runs.
+
+[Release on GitHub](https://github.com/usememos/memos/releases/tag/26.11.3) · [Full changelog since 26.11.2](https://github.com/usememos/memos/compare/26.11.2...26.11.3)

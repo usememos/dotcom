@@ -63,6 +63,8 @@ https://<your-instance>/auth/callback
 
 Register that exact URL in the OAuth2 application for your identity provider.
 
+From 26.11.3, when the instance URL is set with `--instance-url` or `MEMOS_INSTANCE_URL`, Memos accepts only `<instance URL>/auth/callback` as the redirect URI for SSO sign-in and identity linking. Set the instance URL to the address people sign in at, with the same scheme, host, and port. Sign-in from any other address fails with `redirect_uri must be <instance URL>/auth/callback`. Instances without an instance URL accept the callback of the address in the browser.
+
 ### How SSO users are matched
 
 Memos stores local users separately from external SSO accounts. When a user signs in through SSO, Memos reads the configured identifier field from the provider's user info response and looks for an existing linked identity.

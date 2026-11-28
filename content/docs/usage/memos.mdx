@@ -16,9 +16,11 @@ A memo is one thought, written down: short, untitled, and saved to your timeline
 
 ## Navigation and creation
 
-The resizable sidebar contains [Calendar](#calendar), [Map](#map), Views, tags, Quick Find, and navigation for the current route. Open the global composer from the sidebar to write without returning to Home.
+The resizable sidebar contains [Calendar](#calendar), [Map](#map), Views, tags, Quick Find, and navigation for the current route. Open the global composer from the sidebar to write without returning to Home. From 26.11.3, the sidebar title lists Home, Explore, and every Space in one menu, and your account sits in the sidebar's last row with Inbox, Archived, Settings, theme, language, and Sign out.
 
-Selecting a Space scopes browsing and memo creation to that Space. Check placement and visibility before saving; assigning a memo does not change its audience. Existing memos remain Unassigned after upgrading. See [Spaces](/docs/usage/spaces) for scope and membership rules.
+Right-click a memo card to open its More menu at the pointer. Links, images, and selected text keep the browser's own menu.
+
+Selecting a Space scopes browsing and memo creation to that Space. A memo written in a Space starts with the Space audience. Check placement and visibility before saving; assigning an existing memo does not change its audience. Existing memos remain Unassigned after upgrading. See [Spaces](/docs/usage/spaces) for scope and membership rules.
 
 Authors can edit their own memos; editing an assigned memo also requires active membership in its Space. Active instance administrators can read and manage individual memos without authorship or Space membership. Space admin roles do not grant editing rights to another author's content.
 
@@ -35,14 +37,14 @@ Authors can edit their own memos; editing an assigned memo also requires active 
 - file attachments
 - drawings and image annotations with [Markup](/docs/usage/attachments#drawings-and-image-annotations)
 - memo visibility controls
-- tag suggestions when you type `#`
+- tag suggestions when you type `#`, plus [AI tag suggestions](/docs/usage/tags#tag-suggestions-with-ai) when an administrator has enabled them
 - auto-saved drafts cached locally so content is not lost on page reload
 
 In 26.10, memos open in the rich editor by default. Turn on Markdown mode from the **＋** menu or under **Settings › Editor** to keep writing raw Markdown. New drafts offer optional tag, checklist, and visibility suggestions based on your current filters or selected View. Apply a suggestion to add it to the draft; it disappears once fulfilled. Choose the Space and visibility together in the audience menu, then save the memo.
 
 ## Browsing your memos
 
-In 26.10, Timeline, Calendar, Map, and Attachments retain the selected creator and [Space](/docs/usage/spaces) when you switch between them. Combine that scope with a [View](/docs/usage/views) or tag filters to narrow readable memos. Select the main **Memos** context to browse across Spaces. Archived memos are available separately under [Archived](/docs/usage/search-archive#archive).
+In 26.10, Timeline, Calendar, Map, and Attachments retain the selected creator and [Space](/docs/usage/spaces) when you switch between them. Combine that scope with a [View](/docs/usage/views) or tag filters to narrow readable memos. Choose **Home** or **Explore** from the sidebar title to browse outside a Space. Archived memos are available separately under [Archived](/docs/usage/search-archive#archive).
 
 Calendar and Map also support signed-out visitors when public access is enabled; visitors only see memos they can read. Photos and author avatars help distinguish entries when browsing several creators.
 
@@ -62,7 +64,7 @@ left off.
 
 Open **Calendar** from the sidebar to revisit a day's notes or review a month. The month picker marks months that contain memos, so you can spot earlier entries. Open it from the month heading and use the arrow keys to navigate months and years. The previous and next controls move one month at a time. **Today** returns to the current month.
 
-Select a day to read its memos in a panel on desktop or below the grid on mobile. Days show counts and previews when available. The calendar uses your local time zone and the selected creation or update time setting, with creation time as the default.
+Select a day to read its memos in a panel on desktop or below the grid on mobile. From 26.11.3, the month grid lists every memo of a day, one row each, and ends with “+N more” when a day holds more than fit. The calendar uses your local time zone and the selected creation or update time setting, with creation time as the default.
 
 To fill in an entry for a particular date, open that day and choose **New memo on this day**. The composer starts with that date as the creation and update time and uses the current Space. Check the date, placement, and visibility before saving. Later edits can move a memo to a different day when browsing by update time; use creation time to review a journal by its entry dates.
 

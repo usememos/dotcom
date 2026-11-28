@@ -7,11 +7,11 @@ Spaces bring members and memos together inside one Memos instance. Each memo sti
 
 ## Create or join a Space
 
-1. Open the Space switcher in the sidebar and choose **Create Space**.
+1. Open the places menu from the sidebar title and choose **Create Space**.
 2. Enter a name and an optional description. Memos generates a stable ID, or you can supply a custom ID during creation.
 3. Open **Settings → Spaces** to manage the Space. Its creator becomes the first Space admin.
 4. In the members section, invite an existing user and choose the **User** or **Admin** role.
-5. The invited user opens **Inbox** and chooses **Accept** or **Decline** on the invitation. Invitations are also available in **Settings → Spaces**. After accepting, choose **Open space** or select it from the sidebar switcher.
+5. The invited user opens **Inbox** and chooses **Accept** or **Decline** on the invitation. Invitations are also available in **Settings → Spaces**. After accepting, choose **Open space** or select it from the places menu.
 
 An invitation grants no access until accepted. It is an invitation to an existing account on the instance, not an email invitation or an account registration link.
 
@@ -34,6 +34,8 @@ Choose placement and visibility separately:
 
 Active instance administrators can also read and manage individual private and Space-only memos without Space membership. Collection listings still filter by audience.
 
+From 26.11.3, a memo written in a Space starts with the `SPACE` audience, and a comment starts with its parent's audience, so members see each other's memos and comments. These are starting values: you can still pick any audience before saving, and editing or moving an existing memo does not change its audience.
+
 `SPACE` requires a Space assignment. Assigning a `PRIVATE` memo does not make it visible to the other members. Assigning a `PROTECTED` or `PUBLIC` memo does not restrict it to members. A non-member who can read such a memo does not gain access to the Space feed, membership list, or settings.
 
 Choose the Space when composing a memo, or change placement on a memo you authored. You must be a member of the destination Space. Moving a memo preserves its identity and relations. For a `SPACE` memo, confirm the destination audience when moving it; choose a different visibility when returning it to Unassigned.
@@ -55,7 +57,11 @@ Existing reactions stay with the memo. Comments and linked memos keep their own 
 
 ## Browse in context
 
-Select a Space from the sidebar switcher to scope browsing, new memo creation, statistics, filters, and attachments to that Space. Choose the main **Memos** context to browse across the memos available to you. In 26.10, switching between Timeline, [Calendar](/docs/usage/memos#calendar), [Map](/docs/usage/memos#map), and Attachments preserves both the creator and Space selection; Calendar and Map can show readable memos from several creators.
+The sidebar title names where you are. From 26.11.3, its menu lists **Home** (your own memos), **Explore** (every memo you can read), and each Space you belong to. Select a Space to scope browsing, new memo creation, statistics, filters, and attachments to that Space. Choose **Home** or **Explore** to leave the Space and browse across the memos available to you.
+
+A Space has one timeline at `/spaces/{id}`. It shows every member's readable memos, newest first, and is never narrowed to one creator. The separate `/spaces/{id}/explore` page is removed; update saved links to `/spaces/{id}`.
+
+In 26.10, switching between Timeline, [Calendar](/docs/usage/memos#calendar), [Map](/docs/usage/memos#map), and Attachments preserves both the creator and Space selection; Calendar and Map can show readable memos from several creators.
 
 Opening a memo and returning to its collection preserves the Space and filters, so you can continue browsing where you left off.
 
