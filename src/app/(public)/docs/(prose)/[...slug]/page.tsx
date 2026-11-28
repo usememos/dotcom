@@ -6,6 +6,7 @@ import { MainContentAds } from "@/features/docs/components/ads-section";
 import { DocsArticleBody } from "@/features/docs/components/docs-article-body";
 import { MarkdownCopyButton, ViewOptionsPopover } from "@/features/docs/components/page-actions";
 import { buildDocsBreadcrumbs } from "@/features/docs/lib/breadcrumbs";
+import { getDocLastModified } from "@/features/docs/lib/last-modified";
 import { getDocsMDXComponents } from "@/features/docs/lib/mdx-components";
 import { getDocsSocialPreview } from "@/features/docs/lib/social-preview";
 import { tocConfig } from "@/features/docs/lib/toc-config";
@@ -32,6 +33,7 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
 
   const breadcrumbs = buildDocsBreadcrumbs(page.url, page.data.title);
 
+  const lastModified = getDocLastModified(page.data);
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "TechArticle",
@@ -42,7 +44,7 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
       "@type": "Organization",
       name: "Memos Team",
     },
-    ...(page.data.lastModified ? { dateModified: page.data.lastModified.toISOString() } : {}),
+    ...(lastModified ? { dateModified: lastModified.toISOString() } : {}),
   };
 
   return (

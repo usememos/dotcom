@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { isKnownApiDocsVersion, latestApiDocsVersion } from "@/features/docs/lib/api-docs";
+import { getDocLastModified } from "@/features/docs/lib/last-modified";
 import { getAllFeatureSlugs } from "@/features/marketing/data/features";
 import { getAllUseCaseSlugs } from "@/features/marketing/data/use-cases";
 import { blogSource, changelogSource, source } from "@/shared/content/source";
@@ -155,7 +156,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       .getPages()
       .filter((page) => isIndexableDocPage(page.url))
       .map((page) => {
-        const lastModified = page.data.lastModified ?? parseDate(page.data.lastUpdated);
+        const lastModified = getDocLastModified(page.data) ?? parseDate(page.data.lastUpdated);
 
         return {
           url: `${BASE_URL}${page.url}`,
