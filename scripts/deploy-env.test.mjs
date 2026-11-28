@@ -9,8 +9,13 @@ import { fileURLToPath } from "node:url";
 const packageJson = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
 const verifyDeployEnvPath = fileURLToPath(new URL("./verify-deploy-env.mjs", import.meta.url));
 
-test("production deploy verifies build-time Clerk public env before OpenNext build", () => {
-  assert.match(packageJson.scripts.deploy, /^node scripts\/verify-deploy-env\.mjs && opennextjs-cloudflare build &&/);
+// `build:worker` creates the OpenNext artifact once; deploy and upload check the
+// Clerk public env and then reuse that artifact without rebuilding it.
+test("deploy and upload verify the Clerk public env first and do not rebuild", () => {
+  for (const name of ["deploy", "upload"]) {
+    assert.match(packageJson.scripts[name], /^node scripts\/verify-deploy-env\.mjs && opennextjs-cloudflare /);
+    assert.doesNotMatch(packageJson.scripts[name], /opennextjs-cloudflare build/);
+  }
 });
 
 test("deploy env verification requires the Clerk publishable key", () => {

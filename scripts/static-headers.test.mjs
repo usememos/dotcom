@@ -100,9 +100,11 @@ test("generated homepage Open Graph image allows cross-origin reads", async () =
   assert.equal(headers.get("access-control-allow-methods"), "GET, HEAD, OPTIONS");
 });
 
-test("static assets allow cross-origin reads from any domain by default", async () => {
+// Cross-origin reads are granted to the Open Graph images only (see the test
+// above). The site-wide default must not carry them.
+test("static assets do not allow cross-origin reads by default", async () => {
   const headers = await readHeadersBlock("/*");
 
-  assert.equal(headers.get("access-control-allow-origin"), "*");
-  assert.equal(headers.get("access-control-allow-methods"), "GET, HEAD, OPTIONS");
+  assert.equal(headers.has("access-control-allow-origin"), false);
+  assert.equal(headers.has("access-control-allow-methods"), false);
 });

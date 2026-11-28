@@ -72,6 +72,11 @@ jobs:
       - name: Run tests
         run: pnpm test
 
+      # Build, deploy, and header configuration checks that run on Node's own
+      # test runner, outside Vitest.
+      - name: Run script tests
+        run: pnpm test:scripts
+
   build:
     name: Build
     runs-on: ubuntu-latest

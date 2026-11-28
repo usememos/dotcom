@@ -12,6 +12,7 @@
     "start": "next start",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:scripts": "node --test scripts/*.test.mjs",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "build:worker": "node scripts/fetch-git-history.mjs && opennextjs-cloudflare build",
     "deploy": "node scripts/verify-deploy-env.mjs && opennextjs-cloudflare deploy -- --keep-vars",

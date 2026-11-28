@@ -10,9 +10,13 @@ function headersBySource(entries, source) {
   return new Map(entry.headers.map((header) => [header.key.toLowerCase(), header.value]));
 }
 
-test("all Next responses allow cross-origin reads from any domain", async () => {
-  const headers = headersBySource(await nextConfig.headers(), "/:path*");
+test("only generated Open Graph images allow cross-origin reads", async () => {
+  const rules = await nextConfig.headers();
+  const ogImages = headersBySource(rules, "/og/:path*");
+  const allResponses = headersBySource(rules, "/:path*");
 
-  assert.equal(headers.get("access-control-allow-origin"), "*");
-  assert.equal(headers.get("access-control-allow-methods"), "GET, HEAD, OPTIONS");
+  assert.equal(ogImages.get("access-control-allow-origin"), "*");
+  assert.equal(ogImages.get("access-control-allow-methods"), "GET, HEAD, OPTIONS");
+  assert.equal(allResponses.has("access-control-allow-origin"), false);
+  assert.equal(allResponses.has("access-control-allow-methods"), false);
 });

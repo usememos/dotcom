@@ -37,6 +37,7 @@ Use `pnpm` for all package scripts, with the version declared in `package.json`.
 | Install dependencies | `pnpm install` | Regenerates Fumadocs sources and the docs-scoped UI stylesheet |
 | Develop locally | `pnpm dev` | Starts Next.js with Turbopack on port 3000 |
 | Run tests | `pnpm test` | Vitest (`*.test.ts`/`*.test.tsx`); `pnpm test:watch` to watch |
+| Run script tests | `pnpm test:scripts` | Node test runner over `scripts/*.test.mjs` (build, deploy, and header configuration) |
 | Build | `pnpm build` | Full production build for the static site |
 | Start production server | `pnpm start` | Runs the local Next.js production server |
 | Lint | `pnpm lint` | Runs static revalidation audit, metadata audit, and Biome |
@@ -57,9 +58,9 @@ Use `pnpm` for all package scripts, with the version declared in `package.json`.
 
 For day-to-day work, use `pnpm dev`. Before deployment-sensitive changes, prefer `pnpm run preview` because it runs the built app in the Cloudflare Workers runtime instead of the local Node.js server.
 
-Standard verification is `pnpm test`, `pnpm lint`, and `pnpm build`, with `pnpm run preview` plus smoke tests when the change could affect production routing or runtime behavior. CI runs `test`, `lint`, and the Cloudflare dry-run build.
+Standard verification is `pnpm test`, `pnpm test:scripts`, `pnpm lint`, and `pnpm build`, with `pnpm run preview` plus smoke tests when the change could affect production routing or runtime behavior. CI runs `test`, `test:scripts`, `lint`, and the Cloudflare dry-run build.
 
-`pnpm test` runs the TypeScript tests under `src/` using `vitest.config.mts`. The Node tests in `scripts/*.test.mjs` are separate and are not run by that command or the current CI test job; run relevant ones explicitly for configuration changes.
+`pnpm test` runs the TypeScript tests under `src/` using `vitest.config.mts`. The Node tests in `scripts/*.test.mjs` cover build, deploy, and header configuration; run them with `pnpm test:scripts`. CI runs both in its test job.
 
 ## Architecture
 

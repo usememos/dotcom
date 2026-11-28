@@ -223,10 +223,9 @@ the acting user from the verified session, not a client-supplied `userId`.
   Testing Library cleanup, and a `matchMedia` stub. It does not install IndexedDB.
 - Mock Clerk and inject fetch dependencies for instance-client tests; do not
   contact real accounts or instances in unit tests.
-- `scripts/*.test.mjs` use Node's test runner and are not included in `pnpm test`
-  or the current CI test job. Run a relevant script test explicitly when changing
-  the configuration it covers.
-- Standard validation is `pnpm test`, `pnpm lint`, and `pnpm build`. For routing
+- `scripts/*.test.mjs` use Node's test runner and are not included in
+  `pnpm test`; run them with `pnpm test:scripts`. CI runs both in its test job.
+- Standard validation is `pnpm test`, `pnpm test:scripts`, `pnpm lint`, and `pnpm build`. For routing
   or runtime changes, use `pnpm run preview` and run
   `SMOKE_BASE_URL=http://localhost:8788 pnpm run smoke`. `pnpm start` checks only
   the local Next.js production server, not the Workers runtime.
